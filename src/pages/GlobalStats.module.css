@@ -1,0 +1,134 @@
+.page {
+  animation: fadeIn 0.35s ease;
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+.header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+  font-family: var(--font-serif);
+  color: var(--gold-light);
+}
+
+.header p {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.refresh {
+  padding: 0.4rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.grandTotal {
+  text-align: center;
+  padding: 1rem;
+  background: var(--surface);
+  border-radius: 14px;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--border);
+}
+
+.grandTotal span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.grandTotal strong {
+  font-size: 2rem;
+  color: var(--gold);
+  font-family: var(--font-serif);
+}
+
+.list {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 0.5rem 0.65rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.rank {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  min-width: 1.5rem;
+}
+
+.icon {
+  font-size: 1.25rem;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.info strong {
+  font-size: 0.9rem;
+}
+
+.bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.info small {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.points {
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 0.95rem;
+}
+
+.note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.5;
+  padding: 0.75rem;
+  background: rgba(201, 162, 39, 0.06);
+  border-radius: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,139 @@
+.page {
+  animation: fadeIn 0.35s ease;
+}
+
+.back {
+  display: inline-block;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.hero {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  margin-bottom: 1.5rem;
+  border-top: 3px solid var(--accent, var(--gold));
+}
+
+.icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.hero h1 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-serif);
+  color: var(--text);
+}
+
+.hero p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.pointsBadge {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(201, 162, 39, 0.15);
+  color: var(--gold);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem;
+}
+
+.levels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.level {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem 1.15rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.level:active {
+  transform: scale(0.98);
+}
+
+.level.done {
+  border-color: rgba(74, 124, 89, 0.5);
+}
+
+.level[data-difficulty='beginner'] {
+  border-left: 3px solid #6dbf7e;
+}
+
+.level[data-difficulty='easy'] {
+  border-left: 3px solid #7eb8d4;
+}
+
+.level[data-difficulty='medium'] {
+  border-left: 3px solid var(--gold);
+}
+
+.level[data-difficulty='hard'] {
+  border-left: 3px solid #d4845c;
+}
+
+.level[data-difficulty='expert'] {
+  border-left: 3px solid #c45c7a;
+}
+
+.levelLabel {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.levelMeta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.badge {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: #6dbf7e;
+  font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,146 @@
+.page {
+  animation: fadeIn 0.4s ease;
+}
+
+.hero {
+  text-align: center;
+  padding: 1.5rem 0 2rem;
+}
+
+.cross {
+  display: inline-block;
+  font-size: 2.5rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 12px rgba(201, 162, 39, 0.4));
+}
+
+.hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+  font-family: var(--font-serif);
+  color: var(--gold-light);
+}
+
+.hero p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.greeting {
+  text-align: center;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.stat {
+  text-align: center;
+  padding: 1rem 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 1.5rem;
+  color: var(--gold);
+  font-family: var(--font-serif);
+}
+
+.stat span {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cta {
+  display: block;
+  text-align: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--gold) 0%, #a67c00 100%);
+  color: #1a1208;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 14px;
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+  box-shadow: 0 4px 16px rgba(201, 162, 39, 0.35);
+  transition: transform 0.2s;
+}
+
+.cta:active {
+  transform: scale(0.98);
+}
+
+.modesPreview {
+  margin-bottom: 1.5rem;
+}
+
+.modesPreview h2 {
+  font-size: 1rem;
+  color: var(--gold-light);
+  margin: 0 0 0.5rem;
+  font-family: var(--font-serif);
+}
+
+.modesPreview ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.modesPreview a {
+  display: block;
+  padding: 0.65rem 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.how h2 {
+  font-size: 1rem;
+  color: var(--gold-light);
+  margin: 0 0 0.75rem;
+  font-family: var(--font-serif);
+}
+
+.how ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

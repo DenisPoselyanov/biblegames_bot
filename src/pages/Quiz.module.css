@@ -1,0 +1,242 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--bg);
+  animation: fadeIn 0.3s ease;
+}
+
+.top {
+  flex-shrink: 0;
+  padding: 0.75rem 1rem 0.5rem;
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 1.1rem;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+
+.topMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.themeBadge,
+.diffBadge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.diffBadge {
+  color: var(--gold);
+  border-color: rgba(201, 162, 39, 0.35);
+}
+
+.counter {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.progressBar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressBar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), #e8c547);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.spacer {
+  flex: 1 1 auto;
+  min-height: 0.5rem;
+}
+
+.bottomPanel {
+  flex-shrink: 0;
+  padding: 1.25rem 1rem calc(1.25rem + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.questionText {
+  font-size: 1.15rem;
+  line-height: 1.45;
+  margin: 0 0 1rem;
+  font-family: var(--font-serif);
+  color: var(--text);
+}
+
+.options {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.option {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  text-align: left;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.1s;
+}
+
+.option:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.option.selected {
+  border-color: var(--gold);
+  background: rgba(201, 162, 39, 0.12);
+}
+
+.option.correct {
+  border-color: #4a9c5d;
+  background: rgba(74, 156, 93, 0.18);
+  color: #9ee0ad;
+}
+
+.option.wrong {
+  border-color: #9c4a4a;
+  background: rgba(156, 74, 74, 0.18);
+  color: #e8b0b0;
+}
+
+.reference {
+  margin: 0 0 0.85rem;
+  font-size: 0.85rem;
+  color: var(--gold);
+  font-style: italic;
+  text-align: center;
+}
+
+.btnPrimary {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--gold), #a67c00);
+  color: #1a1208;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.25rem;
+}
+
+.btnSecondary {
+  display: block;
+  text-align: center;
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.errorMsg {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.backLink {
+  display: block;
+  text-align: center;
+  color: var(--gold);
+}
+
+.resultCard {
+  margin: auto 1rem;
+  text-align: center;
+  padding: 2rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.resultIcon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.resultCard h1 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-serif);
+  color: var(--gold-light);
+}
+
+.resultTheme {
+  color: var(--text-muted);
+  margin: 0 0 1rem;
+}
+
+.resultScore {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.resultPoints {
+  font-size: 2rem;
+  color: var(--gold);
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  font-family: var(--font-serif);
+}
+
+.resultHint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0 0 1.5rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

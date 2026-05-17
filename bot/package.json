@@ -1,0 +1,13 @@
+{
+  "name": "bible-game-bot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs",
+    "dev": "node --watch index.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "grammy": "^1.35.0"
+  }
+}
