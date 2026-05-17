@@ -1,0 +1,482 @@
+[
+  {
+    "id": "geography-beginner-ai-00001",
+    "themeId": "geography",
+    "difficulty": "beginner",
+    "text": "На якій горі розмовляли Бог і Мойсей (Ек. 19:2)?",
+    "options": [
+      "Сінайській",
+      "Гори Запряжієвій",
+      "Гори Средобережній",
+      "Гори Пред-Моавовій"
+    ],
+    "correctIndex": 0,
+    "reference": "Вих. 3:12",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:05.099Z"
+  },
+  {
+    "id": "geography-beginner-ai-00002",
+    "themeId": "geography",
+    "difficulty": "beginner",
+    "text": "Які ворота були розташовані на схід від міста Єрусалим (Ізд. 9:3)?",
+    "options": [
+      "Сіонські ворота",
+      "Дафнавові ворота",
+      "Гольгофаські ворота",
+      "Шемарові ворота"
+    ],
+    "correctIndex": 1,
+    "reference": "Ізд. 9:3",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:05.100Z"
+  },
+  {
+    "id": "geography-beginner-ai-00003",
+    "themeId": "geography",
+    "difficulty": "beginner",
+    "text": "Після якої річки розділив Самсон філістійцями (Сд. 15:10)?",
+    "options": [
+      "Гілонській",
+      "Аронітській",
+      "Форкінійській",
+      "Сіхоринській"
+    ],
+    "correctIndex": 2,
+    "reference": "Сд. 15:10",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:05.100Z"
+  },
+  {
+    "id": "geography-beginner-ai-00004",
+    "themeId": "geography",
+    "difficulty": "beginner",
+    "text": "До якого царства належав Давид (І Цар. 17:12)?",
+    "options": [
+      "Царство Ізраїлю",
+      "Царство Йуди",
+      "Царство Моава",
+      "Царство Амона"
+    ],
+    "correctIndex": 1,
+    "reference": "І Цар. 17:12",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:05.100Z"
+  },
+  {
+    "id": "geography-beginner-ai-00005",
+    "themeId": "geography",
+    "difficulty": "beginner",
+    "text": "На якій річці розташована межа між землями ізраїльтян і аморейців (Нум. 34:11)?",
+    "options": [
+      "Жаб'ячій",
+      "Сіфонівській",
+      "Євфратській",
+      "Тигрівській"
+    ],
+    "correctIndex": 2,
+    "reference": "Нум. 34:11",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:05.100Z"
+  },
+  {
+    "id": "geography-beginner-ai-00006",
+    "themeId": "geography",
+    "difficulty": "beginner",
+    "text": "На якій горі розмістилися старозавітні юдеї в епоху вавилонського полону (Іс. 52:1)?",
+    "options": [
+      "Гора Сіонська",
+      "Гора Голгофа",
+      "Гора Запряжієва",
+      "Гора Синей"
+    ],
+    "correctIndex": 3,
+    "reference": "Іс. 52:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:05.100Z"
+  },
+  {
+    "id": "geography-easy-ai-00007",
+    "themeId": "geography",
+    "difficulty": "easy",
+    "text": "Чесне місто, де проповідував Ісус Христос (Іван 5:2):",
+    "options": [
+      "Йерусалим",
+      "Назарет",
+      "Каперея-Кафі",
+      "Тарсіс"
+    ],
+    "correctIndex": 1,
+    "reference": "Ів. 5:2",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:45.288Z"
+  },
+  {
+    "id": "geography-easy-ai-00008",
+    "themeId": "geography",
+    "difficulty": "easy",
+    "text": "Річка, у якій Ісаїя бачив Бога (Іс. 43:2):",
+    "options": [
+      "Тигрис",
+      "Ніл",
+      "Євфрат",
+      "Кир"
+    ],
+    "correctIndex": 2,
+    "reference": "Іс. 43:2",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:45.288Z"
+  },
+  {
+    "id": "geography-easy-ai-00009",
+    "themeId": "geography",
+    "difficulty": "easy",
+    "text": "Місто, де проповідував Павло (Дії 16:9):",
+    "options": [
+      "Філадельфія",
+      "Солоух",
+      "Вавилон",
+      "Корінф"
+    ],
+    "correctIndex": 0,
+    "reference": "Дії 16:9",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:45.288Z"
+  },
+  {
+    "id": "geography-easy-ai-00010",
+    "themeId": "geography",
+    "difficulty": "easy",
+    "text": "Гора, на якій Бог дав Мойсеєві Десять заповідей (Втор. 5:1):",
+    "options": [
+      "Зіон",
+      "Гора Синай",
+      "Гора Орієн",
+      "Гелікон"
+    ],
+    "correctIndex": 1,
+    "reference": "Втор. 5:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:45.288Z"
+  },
+  {
+    "id": "geography-easy-ai-00011",
+    "themeId": "geography",
+    "difficulty": "easy",
+    "text": "Місто, де проживав Соломон (Цар. 2:1):",
+    "options": [
+      "Єрусалим",
+      "Бейт-Шеан",
+      "Газара",
+      "Таршиш"
+    ],
+    "correctIndex": 0,
+    "reference": "Цар. 2:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:45.289Z"
+  },
+  {
+    "id": "geography-easy-ai-00012",
+    "themeId": "geography",
+    "difficulty": "easy",
+    "text": "Країна, у якій жив Ісус Навино (Числа 34:11):",
+    "options": [
+      "Галад",
+      "Моав",
+      "Амонон",
+      "Філістимляни"
+    ],
+    "correctIndex": 1,
+    "reference": "Числа 34:11",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:45.289Z"
+  },
+  {
+    "id": "geography-medium-ai-00013",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "У якому місті розташована синагога Давида та Соломона?",
+    "options": [
+      "Єрусалим (Деут. 12:5)",
+      "Беер-Шеба (І Самуїл 10:3)",
+      "Газа (І Самуїл 17:44)",
+      "Самарія (Мих. 1:6)"
+    ],
+    "correctIndex": 0,
+    "reference": "Деут. 12:5",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:37:43.848Z"
+  },
+  {
+    "id": "geography-medium-ai-00014",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "Країна, де жив Ісайя, апостол Христовий?",
+    "options": [
+      "Ізраїль (Іс. 1:1)",
+      "Єгипет (Іс. 19:1)",
+      "Персія (Іс. 21:1)",
+      "Греція (Іс. 26:1)"
+    ],
+    "correctIndex": 0,
+    "reference": "Іс. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:37:43.848Z"
+  },
+  {
+    "id": "geography-medium-ai-00015",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "Яку річку намагався перетнути Ісус Христос, але не зміг через величезне число людей (Мар. 6:33)?",
+    "options": [
+      "Тигр (Мар. 7:24)",
+      "Євфрат (Лк. 3:3)",
+      "Іордан (Йол. 4:15)",
+      "Ніл (Дії 10:1)"
+    ],
+    "correctIndex": 2,
+    "reference": "Мар. 6:33",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:37:43.848Z"
+  },
+  {
+    "id": "geography-medium-ai-00016",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "Назва гори, де апостоли взятті на небо (Ап. 1:12)?",
+    "options": [
+      "Гора Оліветова (Лк. 24:50)",
+      "Гора Тавор (Ис. 2:3)",
+      "Гора Синай (Вір. 4:11)",
+      "Гора Голгофа (Мар. 15:22)"
+    ],
+    "correctIndex": 1,
+    "reference": "Ап. 1:12",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:37:43.848Z"
+  },
+  {
+    "id": "geography-medium-ai-00017",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "У якому місті апостоли Стефан та Лука зустрілися?",
+    "options": [
+      "Сидон (Дії 9:30)",
+      "Родос (Акт. 14:10)",
+      "Фінікія (Дії 27:4)",
+      "Афіни (Дії 17:15)"
+    ],
+    "correctIndex": 3,
+    "reference": "Дії 17:15",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:37:43.848Z"
+  },
+  {
+    "id": "geography-medium-ai-00018",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "Яка гора називається Горою Божої благодаті (Тим. 1:16)?",
+    "options": [
+      "Гора Оліветова (Лк. 24:50)",
+      "Гора Синай (Вір. 4:11)",
+      "Гора Голгофа (Мар. 15:22)",
+      "Гора Тавор (Ис. 2:3)"
+    ],
+    "correctIndex": 3,
+    "reference": "Тим. 1:16",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:37:43.848Z"
+  },
+  {
+    "id": "geography-hard-ai-00019",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "Яка гора, на якій Бог сказав Мойсеєві: \"Спустися на Африку?\"",
+    "options": [
+      "Гора Синай",
+      "Гора Тімор",
+      "Гора Сіон",
+      "Гора Гілбоа"
+    ],
+    "correctIndex": 0,
+    "reference": "Вих. 24:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:38:28.140Z"
+  },
+  {
+    "id": "geography-hard-ai-00020",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "У якому місті Бог дав Ноя новий Заповіт?",
+    "options": [
+      "Єрусалим",
+      "Баб-ель-Мандеб",
+      "Нойс",
+      "Ур-Хала"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 9:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:38:28.140Z"
+  },
+  {
+    "id": "geography-hard-ai-00021",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "Річка, яку через неї перетнув Ісус Христос, щоб дійти до Єрусалима, це?",
+    "options": [
+      "Жиронда",
+      "Іордан",
+      "Дунай",
+      "Ніл"
+    ],
+    "correctIndex": 1,
+    "reference": "Мк. 10:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:38:28.140Z"
+  },
+  {
+    "id": "geography-hard-ai-00022",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "У якому місті Йосип зустрів Марію Магдаліну після рескресії Ісуса Христа?",
+    "options": [
+      "Єрусалим",
+      "Антіохія",
+      "Тевес",
+      "Магнезія"
+    ],
+    "correctIndex": 1,
+    "reference": "Мк. 16:9",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:38:28.140Z"
+  },
+  {
+    "id": "geography-hard-ai-00023",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "В якому місті Бог повідомив Мойсеєві, що народ Ізраїлю буде жити?",
+    "options": [
+      "Єрусалим",
+      "Дендерон",
+      "Елат",
+      "Кадіш"
+    ],
+    "correctIndex": 2,
+    "reference": "Вих. 15:2",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:38:28.140Z"
+  },
+  {
+    "id": "geography-hard-ai-00024",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "У якій країні жив апостол Павло перед тим, як стати місіонером?",
+    "options": [
+      "Сирія",
+      "Єгипет",
+      "Македонія",
+      "Туреччина"
+    ],
+    "correctIndex": 2,
+    "reference": "Ді. 16:6",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:38:28.140Z"
+  },
+  {
+    "id": "geography-expert-ai-00025",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "У якій країні, згадується в Біблії, розташоване місто Ур (Гезерет-Хаддад)?",
+    "options": [
+      "Єгипет",
+      "Месопотамія",
+      "Палестина",
+      "Ефіопія"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 11:31",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:40:12.190Z"
+  },
+  {
+    "id": "geography-expert-ai-00026",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "Що є найвищою горою в Біблії і розташована вона в країні Галаад?",
+    "options": [
+      "Оливкова гора",
+      "Гора Небо",
+      "Гора Сіон",
+      "Хермон"
+    ],
+    "correctIndex": 3,
+    "reference": "Прит. 8:9",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:40:12.190Z"
+  },
+  {
+    "id": "geography-expert-ai-00027",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "Названа річка в Біблії, яка впадає в Червоне море та відома своєю великою кількістю риби?",
+    "options": [
+      "Ніл",
+      "Євфрат",
+      "Тигр",
+      "Жаб'яча"
+    ],
+    "correctIndex": 3,
+    "reference": "Мд. 17:9",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:40:12.190Z"
+  },
+  {
+    "id": "geography-expert-ai-00028",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "Що є найпівнічнішою згаданою у Біблії областю в Палестині?",
+    "options": [
+      "Даан",
+      "Ашдод",
+      "Газа",
+      "Тель-Марійе"
+    ],
+    "correctIndex": 0,
+    "reference": "Втор. 1:7",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:40:12.190Z"
+  },
+  {
+    "id": "geography-expert-ai-00029",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "У Біблії згадується річка, яка розділяє Палестину на північну і південну частини?",
+    "options": [
+      "Ніл",
+      "Євфрат",
+      "Жордан",
+      "Тигр"
+    ],
+    "correctIndex": 2,
+    "reference": "Числа 34:11",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:40:12.190Z"
+  },
+  {
+    "id": "geography-expert-ai-00030",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "В Біблії згадується місто, яке є столицею Самарії?",
+    "options": [
+      "Хелбон",
+      "Бет-Шеан",
+      "Назарет",
+      "Самарія"
+    ],
+    "correctIndex": 3,
+    "reference": "Дії 9:32",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:40:12.190Z"
+  }
+]

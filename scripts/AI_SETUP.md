@@ -25,7 +25,9 @@ npm run generate-ai -- --theme paul --count 30 --difficulty medium
 
 # по всіх 15 темах (довго!)
 npm run generate-ai -- --all --count 20
-
+# 🔥 МАСОВА ГЕНЕРАЦІЯ: вся база за раз!
+# Генерує для КОЖНОЇ теми на КОЖНОМУ рівні складності
+npm run generate-ai -- --bulk-generate 50
 # статистика
 npm run questions:stats
 ```
@@ -35,7 +37,7 @@ npm run questions:stats
 ## 3. Telegram-бот (зручно з телефону)
 
 ```bash
-cp .env.example .env
+copy .env.example .env
 # Заповни BOT_TOKEN (від @BotFather) та ADMIN_IDS (твій id)
 
 cd bot && npm install && cd ..
@@ -57,9 +59,16 @@ npm run bot
 
 | Ціль | Команда |
 |------|---------|
+| Швидка база | `--bulk-generate 50` (усі теми і рівні) |
 | ~200 на тему | `--count 200` кілька разів |
 | різні рівні | `--difficulty easy` окремо для кожного |
 | перевірка | `npm run questions:stats` |
+
+**Зверни увагу:** `--bulk-generate 50` означає:
+- 15 тем × 5 рівнів складності = **75 ітерацій**
+- На кожну ітерацію: **50 питань**
+- Загалом: до **3750 питань** (залежить від успіху AI)
+- Час: 10–30 хвилин залежно від ПК
 
 Після генерації перезапусти `npm run dev` — Vite підхопить нові JSON.
 

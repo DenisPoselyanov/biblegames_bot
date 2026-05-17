@@ -24,6 +24,7 @@ function parseArgs() {
   const opts = {
     theme: null,
     all: false,
+    bulkGenerate: false,
     count: 30,
     difficulty: 'all',
     model: DEFAULT_MODEL,
@@ -32,13 +33,18 @@ function parseArgs() {
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--theme' && args[i + 1]) opts.theme = args[++i];
     else if (args[i] === '--all') opts.all = true;
+    else if (args[i] === '--bulk-generate' && args[i + 1]) {
+      opts.bulkGenerate = true;
+      opts.count = parseInt(args[++i], 10);
+    }
     else if (args[i] === '--count' && args[i + 1]) opts.count = parseInt(args[++i], 10);
     else if (args[i] === '--difficulty' && args[i + 1]) opts.difficulty = args[++i];
     else if (args[i] === '--model' && args[i + 1]) opts.model = args[++i];
   }
 
-  if (!opts.all && (!opts.theme || !getTheme(opts.theme))) {
-    console.error('❌ Вкажи --theme <id> або --all');
+  // Валідація: якщо не bulk-generate, потрібна або тема, або --all
+  if (!opts.bulkGenerate && !opts.all && (!opts.theme || !getTheme(opts.theme))) {
+    console.error('❌ Вкажи --theme <id>, --all або --bulk-generate <count>');
     console.error('Теми:', THEME_IDS.join(', '));
     process.exit(1);
   }
@@ -146,18 +152,46 @@ async function main() {
     process.exit(1);
   }
 
-  const themes = opts.all ? THEME_IDS : [opts.theme];
   let grandTotal = 0;
 
-  for (const themeId of themes) {
-    console.log(`\n📚 ${themeId}`);
-    const added = await generateForTheme(
-      themeId,
-      opts.count,
-      opts.difficulty,
-      opts.model,
-    );
-    grandTotal += added;
+  // Режим масової генерації: усі теми, усі рівні, одна кількість
+  if (opts.bulkGenerate) {
+    console.log(`\n🔥 МАСОВА ГЕНЕРАЦІЯ: ${opts.count} питань на тему/рівень`);
+    console.log(`📊 Буде згенеровано: ${THEME_IDS.length} тем × ${DIFFICULTIES.length} рівнів`);
+    console.log(`💡 Загалом ітерацій: ${THEME_IDS.length * DIFFICULTIES.length}\n`);
+
+    for (const themeId of THEME_IDS) {
+      console.log(`\n📚 ${themeId}`);
+      for (const difficulty of DIFFICULTIES) {
+        try {
+          const batch = await generateBatch(themeId, difficulty, opts.count, opts.model);
+          if (batch.length > 0) {
+            const result = appendQuestions(themeId, batch);
+            grandTotal += result.added;
+            console.log(`  ✅ ${difficulty}: +${result.added} (всього в базі: ${result.after})`);
+          } else {
+            console.log(`  ⚠️  ${difficulty}: не вдалось згенерувати`);
+          }
+        } catch (e) {
+          console.error(`  ❌ ${difficulty}: ${e.message}`);
+        }
+      }
+    }
+  } 
+  // Стандартні режими
+  else {
+    const themes = opts.all ? THEME_IDS : [opts.theme];
+
+    for (const themeId of themes) {
+      console.log(`\n📚 ${themeId}`);
+      const added = await generateForTheme(
+        themeId,
+        opts.count,
+        opts.difficulty,
+        opts.model,
+      );
+      grandTotal += added;
+    }
   }
 
   console.log('\n==========================================');
