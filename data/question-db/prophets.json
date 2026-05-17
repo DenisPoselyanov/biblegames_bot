@@ -1,0 +1,322 @@
+[
+  {
+    "id": "prophets-beginner-ai-00001",
+    "themeId": "prophets",
+    "difficulty": "beginner",
+    "text": "Який пророк ВЗ пророкував про повернення Ізраїлю до Єрусалиму після багаторічної вигнання?",
+    "options": [
+      "Ілля",
+      "Єремія",
+      "Даниїл",
+      "Ісая"
+    ],
+    "correctIndex": 1,
+    "reference": "Єр. 30:3",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:09:01.779Z"
+  },
+  {
+    "id": "prophets-beginner-ai-00002",
+    "themeId": "prophets",
+    "difficulty": "beginner",
+    "text": "Чий спосіб був розділений на чотири частини над річкою Курім (Керех)?",
+    "options": [
+      "Ісая",
+      "Єремія",
+      "Ілля",
+      "Даниїл"
+    ],
+    "correctIndex": 2,
+    "reference": "Ос. 5:10",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:09:01.779Z"
+  },
+  {
+    "id": "prophets-beginner-ai-00003",
+    "themeId": "prophets",
+    "difficulty": "beginner",
+    "text": "Що вбачав Ілля над Галілейським озером?",
+    "options": [
+      "Ангела Господнього",
+      "Христа",
+      "Лев",
+      "Дракона"
+    ],
+    "correctIndex": 0,
+    "reference": "Мф. 3:13-17",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:09:01.779Z"
+  },
+  {
+    "id": "prophets-beginner-ai-00004",
+    "themeId": "prophets",
+    "difficulty": "beginner",
+    "text": "Кому Даниїл пообіцяв відкриті очі та розуміння пророцтв на шістдесяти тижнів?",
+    "options": [
+      "Ісая",
+      "Єремію",
+      "Йоана Богослова",
+      "Давида"
+    ],
+    "correctIndex": 3,
+    "reference": "Дан. 9:24",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:09:01.779Z"
+  },
+  {
+    "id": "prophets-easy-ai-00005",
+    "themeId": "prophets",
+    "difficulty": "easy",
+    "text": "Який пророк із наведених у темі приніс батькам Ісая свою першу синє шатку (сурожниця)?",
+    "options": [
+      "Ілля",
+      "Єремія",
+      "Ісая",
+      "Даниїл"
+    ],
+    "correctIndex": 0,
+    "reference": "Іс. 3:1-7",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:09:28.202Z"
+  },
+  {
+    "id": "prophets-easy-ai-00006",
+    "themeId": "prophets",
+    "difficulty": "easy",
+    "text": "Хто з пророків передбачив будівництво другого Храму (Темплу)?",
+    "options": [
+      "Ілля",
+      "Єремія",
+      "Ісая",
+      "Даниїл"
+    ],
+    "correctIndex": 1,
+    "reference": "Єр. 7:1-15",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:09:28.202Z"
+  },
+  {
+    "id": "prophets-easy-ai-00007",
+    "themeId": "prophets",
+    "difficulty": "easy",
+    "text": "Хто з наведених у темі пророкував прихід Месії?",
+    "options": [
+      "Ілля",
+      "Єремія",
+      "Ісая",
+      "Даниїл"
+    ],
+    "correctIndex": 2,
+    "reference": "Іс. 9:6-7",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:09:28.202Z"
+  },
+  {
+    "id": "prophets-easy-ai-00008",
+    "themeId": "prophets",
+    "difficulty": "easy",
+    "text": "Який з наведених у темі пророкував про Велике Відлуння (Велика Недоля)?",
+    "options": [
+      "Ілля",
+      "Єремія",
+      "Ісая",
+      "Даниїл"
+    ],
+    "correctIndex": 3,
+    "reference": "Єр. 30:1-7",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:09:28.202Z"
+  },
+  {
+    "id": "prophets-medium-ai-00009",
+    "themeId": "prophets",
+    "difficulty": "medium",
+    "text": "Який пророк відомий своєю пророцтвом «Повернись до Господа, Бог твоїх предків, і Небо буде вашим верхом, а Земля — вашими корнями»?",
+    "options": [
+      "Ілля",
+      "Єремія",
+      "Ісая",
+      "Даниїл"
+    ],
+    "correctIndex": 2,
+    "reference": "Амос 9:15",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:09:51.735Z"
+  },
+  {
+    "id": "prophets-medium-ai-00010",
+    "themeId": "prophets",
+    "difficulty": "medium",
+    "text": "Чию книгу Біблії міститься відоме пророцтво «Як вовк проривається з лісу, так прийде Господь»?",
+    "options": [
+      "Книга Ісаї",
+      "Книга Єремії",
+      "Книга Даніїла",
+      "Книга Хроник"
+    ],
+    "correctIndex": 0,
+    "reference": "Хол. 5:8",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:09:51.735Z"
+  },
+  {
+    "id": "prophets-hard-ai-00011",
+    "themeId": "prophets",
+    "difficulty": "hard",
+    "text": "Який пророк описав Баала, ідола канаанського народу?",
+    "options": [
+      "Ілля",
+      "Єремія",
+      "Даниїл",
+      "Ісая"
+    ],
+    "correctIndex": 0,
+    "reference": "1Цар. 18:27",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:10:24.053Z"
+  },
+  {
+    "id": "prophets-hard-ai-00012",
+    "themeId": "prophets",
+    "difficulty": "hard",
+    "text": "Який пророк описав сновидіння про колесо?",
+    "options": [
+      "Єремія",
+      "Ілля",
+      "Даниїл",
+      "Ісая"
+    ],
+    "correctIndex": 2,
+    "reference": "Дан. 7:1-3",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:10:24.053Z"
+  },
+  {
+    "id": "prophets-hard-ai-00013",
+    "themeId": "prophets",
+    "difficulty": "hard",
+    "text": "Хто пророкував покарання для Ізраїлю через розкол його на два королівства?",
+    "options": [
+      "Ісая",
+      "Єремія",
+      "Даниїл",
+      "Ілля"
+    ],
+    "correctIndex": 1,
+    "reference": "1Цар. 11:3",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:10:24.053Z"
+  },
+  {
+    "id": "prophets-hard-ai-00014",
+    "themeId": "prophets",
+    "difficulty": "hard",
+    "text": "Який пророк передбачив повернення в Батьківщину і відновлення Ізраїлю?",
+    "options": [
+      "Ісая",
+      "Єремія",
+      "Даниїл",
+      "Ілля"
+    ],
+    "correctIndex": 0,
+    "reference": "Іс. 11:11-12",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:10:24.053Z"
+  },
+  {
+    "id": "prophets-hard-ai-00015",
+    "themeId": "prophets",
+    "difficulty": "hard",
+    "text": "Хто пророкував про Магу і його роль у прихованні та відкритті справжнього Месії?",
+    "options": [
+      "Єремія",
+      "Ілля",
+      "Даниїл",
+      "Ісая"
+    ],
+    "correctIndex": 3,
+    "reference": "Дан. 12:10",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:10:24.053Z"
+  },
+  {
+    "id": "prophets-expert-ai-00016",
+    "themeId": "prophets",
+    "difficulty": "expert",
+    "text": "Який пророк, покликаний Богом уже до з'явився на сцені в часи Соломона, і відомий своїм засудженням жертвоприношень з козлів та баранів (Ісая 1:11)?",
+    "options": [
+      "А) Ілля",
+      "Б) Даниїл",
+      "В) Єремія",
+      "Г) Ісая"
+    ],
+    "correctIndex": 3,
+    "reference": "Іс. 1:11",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:11:05.850Z"
+  },
+  {
+    "id": "prophets-expert-ai-00017",
+    "themeId": "prophets",
+    "difficulty": "expert",
+    "text": "Котрий з пророків передбачив розділення Юдеї та Ізраїлю на два царства (2 Цар. 17:10-13)?",
+    "options": [
+      "А) Ілля",
+      "Б) Даниїл",
+      "В) Ісая",
+      "Г) Єремія"
+    ],
+    "correctIndex": 0,
+    "reference": "2 Цар. 17:10-13",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:11:05.850Z"
+  },
+  {
+    "id": "prophets-expert-ai-00018",
+    "themeId": "prophets",
+    "difficulty": "expert",
+    "text": "Котрий з пророків передбачив прихід Месії і описав його в образах лани, вовка та ягня (Дан. 7:13-14)?",
+    "options": [
+      "А) Ілля",
+      "Б) Даниїл",
+      "В) Єремія",
+      "Г) Ісая"
+    ],
+    "correctIndex": 2,
+    "reference": "Дан. 7:13-14",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:11:05.850Z"
+  },
+  {
+    "id": "prophets-expert-ai-00019",
+    "themeId": "prophets",
+    "difficulty": "expert",
+    "text": "Хто з пророків передбачив повернення юдеїв до Єрусалиму після їх вигнання (Єр. 32:27)?",
+    "options": [
+      "А) Ілля",
+      "Б) Даниїл",
+      "В) Ісая",
+      "Г) Єремія"
+    ],
+    "correctIndex": 0,
+    "reference": "Єр. 32:27",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:11:05.850Z"
+  },
+  {
+    "id": "prophets-expert-ai-00020",
+    "themeId": "prophets",
+    "difficulty": "expert",
+    "text": "Котрий з пророків передбачив потоп (Іс. 54:9)?",
+    "options": [
+      "А) Ілля",
+      "Б) Даниїл",
+      "В) Єремія",
+      "Г) Ісая"
+    ],
+    "correctIndex": 3,
+    "reference": "Іс. 54:9",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:11:05.850Z"
+  }
+]

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "revelation-beginner-ai-00001",
+    "themeId": "revelation",
+    "difficulty": "beginner",
+    "text": "Який символ у книзі Одкровення описує себе як золоту печатку, що містить образ людини?",
+    "options": [
+      "Лисиця",
+      "Лев",
+      "Орел",
+      "Ангел"
+    ],
+    "correctIndex": 3,
+    "reference": "Одкр. 5:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:27:18.412Z"
+  },
+  {
+    "id": "revelation-beginner-ai-00002",
+    "themeId": "revelation",
+    "difficulty": "beginner",
+    "text": "Скільки описується церков у книзі Одкровення?",
+    "options": [
+      "Дві",
+      "П'ять",
+      "Сім",
+      "Дев'ять"
+    ],
+    "correctIndex": 2,
+    "reference": "Одкр. 1:10",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:27:18.412Z"
+  },
+  {
+    "id": "revelation-beginner-ai-00003",
+    "themeId": "revelation",
+    "difficulty": "beginner",
+    "text": "Яке останнє події в книзі Одкровення буде настати після сходження Христа зі славою?",
+    "options": [
+      "Другий пришестя Христа",
+      "Відродження мертвих",
+      "Суд Божий",
+      "Перемога над Сатаною"
+    ],
+    "correctIndex": 0,
+    "reference": "Одкр. 19:11-21",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:27:18.412Z"
+  },
+  {
+    "id": "revelation-beginner-ai-00004",
+    "themeId": "revelation",
+    "difficulty": "beginner",
+    "text": "За яке події в книзі Одкровення буде сказано: «І небо відкрилось, як великий скінь»?",
+    "options": [
+      "Відкриття семи церков",
+      "Відкриття скриньки з пророцтвами",
+      "Прибуття нового Ангела",
+      "Сходження Христа на небо"
+    ],
+    "correctIndex": 3,
+    "reference": "Одкр. 4:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:27:18.412Z"
+  },
+  {
+    "id": "revelation-easy-ai-00005",
+    "themeId": "revelation",
+    "difficulty": "easy",
+    "text": "Яка з церков Одкровення поширюється на усі народі та мови (Одкр. 5:9)?",
+    "options": [
+      "Церква Бабальона",
+      "Самотня Велика Церква",
+      "Церква Божия, що витримала",
+      "Церква Єрусалимська"
+    ],
+    "correctIndex": 2,
+    "reference": "Одкр. 14:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:27:35.702Z"
+  },
+  {
+    "id": "revelation-easy-ai-00006",
+    "themeId": "revelation",
+    "difficulty": "easy",
+    "text": "Який символ з Книги Одкровення описує Семигорівську Війну (Одкр. 9:13-21)?",
+    "options": [
+      "Червоний дракон",
+      "Коротавиця",
+      "Змія",
+      "Конь"
+    ],
+    "correctIndex": 3,
+    "reference": "Одкр. 9:17",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:27:35.702Z"
+  },
+  {
+    "id": "revelation-medium-ai-00007",
+    "themeId": "revelation",
+    "difficulty": "medium",
+    "text": "Які символи використовує Ангел у Візіоні Одкровення?",
+    "options": [
+      "Лаврове листя, сонце і місяць, колесо",
+      "Овен, лев, людина",
+      "Білий конь, червоний конь, чорний конь",
+      "Семисвітловий стовп, дракон, змії"
+    ],
+    "correctIndex": 3,
+    "reference": "Одкр. 4:2-8, 6:1-2",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:27:54.333Z"
+  }
+]

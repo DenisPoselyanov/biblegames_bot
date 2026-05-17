@@ -1,0 +1,354 @@
+[
+  {
+    "id": "mosaic-law-beginner-ai-00001",
+    "themeId": "mosaic-law",
+    "difficulty": "beginner",
+    "text": "Скільки заповідей Мойсею дав Бог на горі Сінай?",
+    "options": [
+      "600",
+      "10",
+      "120",
+      "666"
+    ],
+    "correctIndex": 2,
+    "reference": "Вих. 24:12",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:50:30.837Z"
+  },
+  {
+    "id": "mosaic-law-beginner-ai-00002",
+    "themeId": "mosaic-law",
+    "difficulty": "beginner",
+    "text": "Яка з видів тварин не могла бути принесена жертвою на вівтарі?",
+    "options": [
+      "Кішка",
+      "Бородавчаста тварина",
+      "Слон",
+      "Лев"
+    ],
+    "correctIndex": 1,
+    "reference": "Левіт. 11:26",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:50:30.837Z"
+  },
+  {
+    "id": "mosaic-law-beginner-ai-00003",
+    "themeId": "mosaic-law",
+    "difficulty": "beginner",
+    "text": "На скільки років очистилися священники, які брали участь у службі в Святилищі після жертвоприношення великого ковчегу?",
+    "options": [
+      "7 днів",
+      "30 днів",
+      "40 днів",
+      "1 рік"
+    ],
+    "correctIndex": 2,
+    "reference": "Левіт. 16:34",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:50:30.837Z"
+  },
+  {
+    "id": "mosaic-law-beginner-ai-00005",
+    "themeId": "mosaic-law",
+    "difficulty": "beginner",
+    "text": "На якому кольорі був зав'язаний пояс скинії?",
+    "options": [
+      "Блакитний",
+      "Жовтий",
+      "Золотистий",
+      "Червоний"
+    ],
+    "correctIndex": 3,
+    "reference": "Екл. 10:5",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:50:30.837Z"
+  },
+  {
+    "id": "mosaic-law-easy-ai-00005",
+    "themeId": "mosaic-law",
+    "difficulty": "easy",
+    "text": "Скільки заповідей є у Торі?",
+    "options": [
+      "613",
+      "10",
+      "40",
+      "10 commandments"
+    ],
+    "correctIndex": 0,
+    "reference": "Вих. 24:12",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:51:43.424Z"
+  },
+  {
+    "id": "mosaic-law-easy-ai-00006",
+    "themeId": "mosaic-law",
+    "difficulty": "easy",
+    "text": "Яка частина арки Ноя була прикрита шкірою тварин?",
+    "options": [
+      "Сторона вхідна",
+      "Дошка зверху",
+      "Внутрішня стіна",
+      "Сторона задня"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 6:14",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:51:43.424Z"
+  },
+  {
+    "id": "mosaic-law-easy-ai-00007",
+    "themeId": "mosaic-law",
+    "difficulty": "easy",
+    "text": "Коли Мойсей отримав Господні заповіді на горі Сінай?",
+    "options": [
+      "Після сходу сонця",
+      "На початку дня",
+      "Вночі",
+      "Після заходу сонця"
+    ],
+    "correctIndex": 3,
+    "reference": "Исх. 19:16",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:51:43.424Z"
+  },
+  {
+    "id": "mosaic-law-easy-ai-00008",
+    "themeId": "mosaic-law",
+    "difficulty": "easy",
+    "text": "Які святі дні були найбільш поважними у Старому Заповіті?",
+    "options": [
+      "Субота і п'ятниця",
+      "Великдень і Різдво",
+      "Йом-Кіпур та Суkkot",
+      "Освячення жертовника"
+    ],
+    "correctIndex": 2,
+    "reference": "Лев. 23:2",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:51:43.424Z"
+  },
+  {
+    "id": "mosaic-law-easy-ai-00009",
+    "themeId": "mosaic-law",
+    "difficulty": "easy",
+    "text": "Чи можна було використовувати золото для виготовлення усталів Тори?",
+    "options": [
+      "Так",
+      "Ні, тільки срібло",
+      "Тодішнє золото мало іншу цінність",
+      "Золото можна було використовувати для усталів та святих речей"
+    ],
+    "correctIndex": 3,
+    "reference": "Числ. 8:24",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:51:43.424Z"
+  },
+  {
+    "id": "mosaic-law-medium-ai-00011",
+    "themeId": "mosaic-law",
+    "difficulty": "medium",
+    "text": "Скільки шматків текстилу було в золотій шнурочку, який був на скинії Мoseя?",
+    "options": [
+      "6 шматків",
+      "8 шматків",
+      "12 шматків",
+      "10 шматків"
+    ],
+    "correctIndex": 1,
+    "reference": "Ек. 25:39",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:52:12.407Z"
+  },
+  {
+    "id": "mosaic-law-medium-ai-00012",
+    "themeId": "mosaic-law",
+    "difficulty": "medium",
+    "text": "Яка жертва приносилась на священному ковшані, коли Ізраїль був в дикому степу?",
+    "options": [
+      "Кормлену курку",
+      "Овецю",
+      "Барана",
+      "Тельця"
+    ],
+    "correctIndex": 2,
+    "reference": "Вих. 15:2",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:52:12.407Z"
+  },
+  {
+    "id": "mosaic-law-medium-ai-00013",
+    "themeId": "mosaic-law",
+    "difficulty": "medium",
+    "text": "Що символізував ковчег Заповідей?",
+    "options": [
+      "Травоїду",
+      "Пожежі",
+      "Священного письма",
+      "Безхребетних"
+    ],
+    "correctIndex": 3,
+    "reference": "Лев. 16:2",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:52:12.407Z"
+  },
+  {
+    "id": "mosaic-law-hard-ai-00013",
+    "themeId": "mosaic-law",
+    "difficulty": "hard",
+    "text": "Які дві частини складають архангельську святилищу, яке було побудоване на горі Гориш (Ебер-гайєль) Мойсеєм?",
+    "options": [
+      "Святіня та Святаянія",
+      "Архангел і Табірет",
+      "Табірет та Менора",
+      "Менора та Арка"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 26:33-34",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:52:50.876Z"
+  },
+  {
+    "id": "mosaic-law-hard-ai-00014",
+    "themeId": "mosaic-law",
+    "difficulty": "hard",
+    "text": "Коли могли жерці зробити жертву Богу в єврейському храмі?",
+    "options": [
+      "В будь-яку пору доби",
+      "Тільки під час священних днів",
+      "Тільки під час ночі",
+      "Раніше існував лише один жертвенник"
+    ],
+    "correctIndex": 1,
+    "reference": "Лев. 24:3-9",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:52:50.876Z"
+  },
+  {
+    "id": "mosaic-law-hard-ai-00015",
+    "themeId": "mosaic-law",
+    "difficulty": "hard",
+    "text": "Яка частина святилища служила для підтримки лампи?",
+    "options": [
+      "Кругла стовпа",
+      "Табірет",
+      "Менора",
+      "Святаянія"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 25:31",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:52:50.876Z"
+  },
+  {
+    "id": "mosaic-law-hard-ai-00016",
+    "themeId": "mosaic-law",
+    "difficulty": "hard",
+    "text": "На якій з торинських гори записані Заповіді Божі?",
+    "options": [
+      "Гора Синай",
+      "Гора Сінеїт",
+      "Гора Хор",
+      "Гора Рафам"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 19:20",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:52:50.876Z"
+  },
+  {
+    "id": "mosaic-law-hard-ai-00017",
+    "themeId": "mosaic-law",
+    "difficulty": "hard",
+    "text": "Які дві частини входили до складу архангельської святилищі?",
+    "options": [
+      "Менора та Арка",
+      "Аркя і Табірет",
+      "Святіня та Святаянія",
+      "Табірет та Менора"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 26:33-34",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:52:50.876Z"
+  },
+  {
+    "id": "mosaic-law-expert-ai-00018",
+    "themeId": "mosaic-law",
+    "difficulty": "expert",
+    "text": "Який закон отримали монолітичні камені із записів закону на них (Скинія, Вих.",
+    "options": [
+      "Закон Ізраїля",
+      "Закон Адонаї",
+      "Закон Давида",
+      "Закон Мойсея"
+    ],
+    "correctIndex": 3,
+    "reference": "Вих. 25:16",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:53:30.498Z"
+  },
+  {
+    "id": "mosaic-law-expert-ai-00019",
+    "themeId": "mosaic-law",
+    "difficulty": "expert",
+    "text": "Скільки заповідей було в Столінні Законі (Тридцять дві, Чотирнадцять, Шістдесят два чи Шістьсот шістдесят два)?",
+    "options": [
+      "Шістдесят два",
+      "Чотирнадцять",
+      "Сто двадцять три",
+      "Шістьсот шістдесят два"
+    ],
+    "correctIndex": 0,
+    "reference": "Вих. 24:12",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:53:30.498Z"
+  },
+  {
+    "id": "mosaic-law-expert-ai-00020",
+    "themeId": "mosaic-law",
+    "difficulty": "expert",
+    "text": "Який із святих днів починався з першого дня тижневого циклу?",
+    "options": [
+      "Субота",
+      "Неділя",
+      "Понеділок",
+      "Четвер"
+    ],
+    "correctIndex": 2,
+    "reference": "Лв. 23:10",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:53:30.498Z"
+  },
+  {
+    "id": "mosaic-law-expert-ai-00021",
+    "themeId": "mosaic-law",
+    "difficulty": "expert",
+    "text": "Яким тваринам було заборонено їсти у випадку звичаю жертвопринесення (Бут.",
+    "options": [
+      "Птахи, овочі, землеробські продукти",
+      "Риби, м'ясо, птиці",
+      "Свіжі тварини, старі тварини, дикі тварини",
+      "Свині, кролики, мурахи"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 7:3",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:53:30.498Z"
+  },
+  {
+    "id": "mosaic-law-expert-ai-00022",
+    "themeId": "mosaic-law",
+    "difficulty": "expert",
+    "text": "Яка жертва приносилась Богу на свято Песах?",
+    "options": [
+      "Молодняк",
+      "Голівниця",
+      "Кров'янка",
+      "Овечко"
+    ],
+    "correctIndex": 3,
+    "reference": "Лв. 23:5",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:53:30.498Z"
+  }
+]

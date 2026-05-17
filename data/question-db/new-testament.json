@@ -1,0 +1,354 @@
+[
+  {
+    "id": "new-testament-beginner-ai-00001",
+    "themeId": "new-testament",
+    "difficulty": "beginner",
+    "text": "Який апостол сказав: «Нехай ми будемо суворішими до себе самих, ніж до інших»?",
+    "options": [
+      "Петро",
+      "Іван",
+      "Павло",
+      "Іуда"
+    ],
+    "correctIndex": 3,
+    "reference": "2Кор. 13:5",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:03:13.603Z"
+  },
+  {
+    "id": "new-testament-beginner-ai-00002",
+    "themeId": "new-testament",
+    "difficulty": "beginner",
+    "text": "Який апостол написав Епістеле до коринтян?",
+    "options": [
+      "Петро",
+      "Іван",
+      "Павло",
+      "Іуда"
+    ],
+    "correctIndex": 2,
+    "reference": "1Кор. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:03:13.603Z"
+  },
+  {
+    "id": "new-testament-beginner-ai-00003",
+    "themeId": "new-testament",
+    "difficulty": "beginner",
+    "text": "У якому місті заснували першу християнську церкву?",
+    "options": [
+      "Рим",
+      "Антиохія",
+      "Іерусалим",
+      "Афіни"
+    ],
+    "correctIndex": 2,
+    "reference": "Дій. 11:26",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:03:13.603Z"
+  },
+  {
+    "id": "new-testament-beginner-ai-00004",
+    "themeId": "new-testament",
+    "difficulty": "beginner",
+    "text": "Яке вчення поширив Фома (Апостол Духовний)?",
+    "options": [
+      "Гностицизм",
+      "Ебоїтизм",
+      "Докетізм",
+      "Маркіонітизм"
+    ],
+    "correctIndex": 1,
+    "reference": "Дій. 20:17-18",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:03:13.603Z"
+  },
+  {
+    "id": "new-testament-easy-ai-00005",
+    "themeId": "new-testament",
+    "difficulty": "easy",
+    "text": "Який із апостолів не був присутній під час останньої вечері Господа Ісуса Христа?",
+    "options": [
+      "Святий Петро",
+      "Святий Павло",
+      "Святий Андрій Первозваний",
+      "Святий Матвій"
+    ],
+    "correctIndex": 1,
+    "reference": "Мк. 14:17",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:03:44.389Z"
+  },
+  {
+    "id": "new-testament-easy-ai-00006",
+    "themeId": "new-testament",
+    "difficulty": "easy",
+    "text": "Який із апостолів не був євреєм?",
+    "options": [
+      "Святий Петро",
+      "Святий Павло",
+      "Святий Андрій Первозваний",
+      "Святий Матвій"
+    ],
+    "correctIndex": 3,
+    "reference": "Мк. 15:40",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:03:44.389Z"
+  },
+  {
+    "id": "new-testament-easy-ai-00007",
+    "themeId": "new-testament",
+    "difficulty": "easy",
+    "text": "У котрому місті розташовувалась перша церква?",
+    "options": [
+      "Єрусалим",
+      "Рим",
+      "Антіохія",
+      "Корінф"
+    ],
+    "correctIndex": 0,
+    "reference": "Дії 2:41",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:03:44.389Z"
+  },
+  {
+    "id": "new-testament-easy-ai-00008",
+    "themeId": "new-testament",
+    "difficulty": "easy",
+    "text": "Який із віросповідань належить до ранньохристиянського вчення?",
+    "options": [
+      "Слово Божому є об'єктом поклоніння",
+      "Розвиток людського розуму необхідний для збереження спадщини Бога",
+      "Єдине щастя — це насолода себе самим",
+      "Батько, мати та син — це творіння природи"
+    ],
+    "correctIndex": 0,
+    "reference": "Дії 17:23",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:03:44.389Z"
+  },
+  {
+    "id": "new-testament-medium-ai-00009",
+    "themeId": "new-testament",
+    "difficulty": "medium",
+    "text": "Який апостол був братом Ісуса Христа?",
+    "options": [
+      "Петар (Мк. 3:17)",
+      "Фаддей (Ін. 18:15)",
+      "Яків Зботовник (Дії 15:9)",
+      "Тома (Лк. 6:14)"
+    ],
+    "correctIndex": 1,
+    "reference": "Ін. 18:15",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:04:29.153Z"
+  },
+  {
+    "id": "new-testament-medium-ai-00010",
+    "themeId": "new-testament",
+    "difficulty": "medium",
+    "text": "Яку церкву заснував апостол Павло?",
+    "options": [
+      "Церкву в Антиохії (Дії 13:1)",
+      "Церкву в Єрусалимі (Дії 11:26)",
+      "Церкву в Римі (Рим. 16:4)",
+      "Церкву на Криті (Дії 20:25)"
+    ],
+    "correctIndex": 3,
+    "reference": "Дії 20:25",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:04:29.153Z"
+  },
+  {
+    "id": "new-testament-medium-ai-00011",
+    "themeId": "new-testament",
+    "difficulty": "medium",
+    "text": "Кто є автором Епістоли до Галатів?",
+    "options": [
+      "Петро (Гал. 1:1)",
+      "Яків (Гал. 1:19)",
+      "Іван (Івд. 21:24)",
+      "Павло (Гал. 1:1)"
+    ],
+    "correctIndex": 3,
+    "reference": "Гал. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:04:29.153Z"
+  },
+  {
+    "id": "new-testament-medium-ai-00012",
+    "themeId": "new-testament",
+    "difficulty": "medium",
+    "text": "Яку книгу Нового Заповіту написав Лука Сіругін?",
+    "options": [
+      "Лукиву Євангеліє (Лк. 1:1-4)",
+      "Діяння Апостолів (Дії 1:1)",
+      "Послання до Коринтян (Кол. 1:1)",
+      "Каталог Титуса (Тит. 1:1)"
+    ],
+    "correctIndex": 1,
+    "reference": "Лк. 1:1-4",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:04:29.153Z"
+  },
+  {
+    "id": "new-testament-medium-ai-00013",
+    "themeId": "new-testament",
+    "difficulty": "medium",
+    "text": "Який апостол був ув'язнений у тюрмі під час написання своєї епістоли?",
+    "options": [
+      "Петро (2 Пет. 1:12)",
+      "Іван (Опр. 3:13)",
+      "Павло (Філ. 1:7)",
+      "Яків (Дії 21:33)"
+    ],
+    "correctIndex": 2,
+    "reference": "Опр. 3:13",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:04:29.153Z"
+  },
+  {
+    "id": "new-testament-hard-ai-00014",
+    "themeId": "new-testament",
+    "difficulty": "hard",
+    "text": "Який із апостолів був першим покликаним Христом?",
+    "options": [
+      "Петро",
+      "Іван",
+      "Фома",
+      "Матвій"
+    ],
+    "correctIndex": 3,
+    "reference": "Мк. 3:13-14",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:05:01.942Z"
+  },
+  {
+    "id": "new-testament-hard-ai-00015",
+    "themeId": "new-testament",
+    "difficulty": "hard",
+    "text": "Хто написав лист до Филимона?",
+    "options": [
+      "Петро",
+      "Іван",
+      "Пол",
+      "Лука"
+    ],
+    "correctIndex": 2,
+    "reference": "Колос. 4:19",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:05:01.942Z"
+  },
+  {
+    "id": "new-testament-hard-ai-00016",
+    "themeId": "new-testament",
+    "difficulty": "hard",
+    "text": "Що означає символ риби в християнстві?",
+    "options": [
+      "Римський легіон",
+      "Євангелісти",
+      "Апостоли",
+      "Христос"
+    ],
+    "correctIndex": 3,
+    "reference": "Мт. 4:19",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:05:01.942Z"
+  },
+  {
+    "id": "new-testament-hard-ai-00017",
+    "themeId": "new-testament",
+    "difficulty": "hard",
+    "text": "Кому Христос сказав пророчити в Єрусалимі після його смерті?",
+    "options": [
+      "Іоанну",
+      "Федору",
+      "Петру",
+      "Полу"
+    ],
+    "correctIndex": 2,
+    "reference": "Ак. 2:17",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:05:01.942Z"
+  },
+  {
+    "id": "new-testament-hard-ai-00018",
+    "themeId": "new-testament",
+    "difficulty": "hard",
+    "text": "Яка була першою християнською церквою, заснованою апостолами?",
+    "options": [
+      "Римська",
+      "Єрусалимська",
+      "Антіохійська",
+      "Корінтська"
+    ],
+    "correctIndex": 2,
+    "reference": "Дія. 15:4",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:05:01.942Z"
+  },
+  {
+    "id": "new-testament-expert-ai-00019",
+    "themeId": "new-testament",
+    "difficulty": "expert",
+    "text": "Хто заснував Церкву в Єрусалимі після смерті Ісуса Христа?",
+    "options": [
+      "Святий Пётр (Актс 2:41)",
+      "Іоанн Богослов (Овц. 10:16)",
+      "Філіп (Дій. 8:5)",
+      "Тимótїй (Пол. 1 Тим. 1:1)"
+    ],
+    "correctIndex": 0,
+    "reference": "Актс 2:41",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:05:39.702Z"
+  },
+  {
+    "id": "new-testament-expert-ai-00020",
+    "themeId": "new-testament",
+    "difficulty": "expert",
+    "text": "Який апостол був походженням із Сирії?",
+    "options": [
+      "Петро (Мк. 3:18)",
+      "Іван Богослов (Лк. 6:14)",
+      "Тимótїй (Пол. 1 Тим. 1:1)",
+      "Барнабас (Дій. 4:36)"
+    ],
+    "correctIndex": 2,
+    "reference": "Дій. 4:36",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:05:39.702Z"
+  },
+  {
+    "id": "new-testament-expert-ai-00021",
+    "themeId": "new-testament",
+    "difficulty": "expert",
+    "text": "У який місто сховали апостолів Філіпа та Симона?",
+    "options": [
+      "Ефес (Дій. 19:24)",
+      "Германіку (Дій. 23:30)",
+      "Філадельфія (Пол. 1:1)",
+      "Каппадокія (Дій. 4:31)"
+    ],
+    "correctIndex": 3,
+    "reference": "Дій. 23:30",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:05:39.702Z"
+  },
+  {
+    "id": "new-testament-expert-ai-00022",
+    "themeId": "new-testament",
+    "difficulty": "expert",
+    "text": "Який апостол був присутній на суді Павла?",
+    "options": [
+      "Петро (Дій. 25:1-3)",
+      "Іван Богослов (Дій. 18:12)",
+      "Тимótїй (Дій. 16:22)",
+      "Федор (Дій. 20:4)"
+    ],
+    "correctIndex": 1,
+    "reference": "Дій. 18:12",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:05:39.702Z"
+  }
+]

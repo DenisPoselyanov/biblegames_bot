@@ -93,8 +93,11 @@ function runGenerate(themeId, count, difficulty = 'all') {
     child.stderr.on('data', (d) => {
       err += d.toString();
     });
+    child.on('error', (e) => {
+      reject(new Error(`Ошибка запуска: ${e.message}`));
+    });
     child.on('close', (code) => {
-      if (code === 0) resolve(out || 'Готово.');
+      if (code === 0 || code === 130 || code === 143) resolve(out || 'Готово.');
       else reject(new Error(err || out || `exit ${code}`));
     });
   });
@@ -122,8 +125,11 @@ function runBulkGenerate(count) {
     child.stderr.on('data', (d) => {
       err += d.toString();
     });
+    child.on('error', (e) => {
+      reject(new Error(`Ошибка запуска: ${e.message}`));
+    });
     child.on('close', (code) => {
-      if (code === 0) resolve(out || 'Готово.');
+      if (code === 0 || code === 130 || code === 143) resolve(out || 'Готово.');
       else reject(new Error(err || out || `exit ${code}`));
     });
   });

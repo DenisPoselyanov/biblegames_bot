@@ -478,5 +478,373 @@
     "reference": "Дії 9:32",
     "source": "ai",
     "createdAt": "2026-05-17T18:40:12.190Z"
+  },
+  {
+    "id": "geography-beginner-ai-00031",
+    "themeId": "geography",
+    "difficulty": "beginner",
+    "text": "У якому місті Ісус був хрещений Йоанном Хрестителем?",
+    "options": [
+      "Єрусалим",
+      "Назарет",
+      "Іерусалим Самоюн",
+      "Бет-Хаґайарім"
+    ],
+    "correctIndex": 3,
+    "reference": "Мк. 1:9",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:44:34.190Z"
+  },
+  {
+    "id": "geography-beginner-ai-00032",
+    "themeId": "geography",
+    "difficulty": "beginner",
+    "text": "У якої країні розташоване місто Дамаск?",
+    "options": [
+      "Єгипет",
+      "Ізраїль",
+      "Сирія",
+      "Палестина"
+    ],
+    "correctIndex": 2,
+    "reference": "2Цар. 8:4",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:44:34.191Z"
+  },
+  {
+    "id": "geography-beginner-ai-00033",
+    "themeId": "geography",
+    "difficulty": "beginner",
+    "text": "Річка, в якій Ісус відпочив після чотирьох днів путівлі, називається",
+    "options": [
+      "Йордан",
+      "Нил",
+      "Тигр",
+      "Євфрат"
+    ],
+    "correctIndex": 0,
+    "reference": "Мк. 6:31",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:44:34.191Z"
+  },
+  {
+    "id": "geography-beginner-ai-00034",
+    "themeId": "geography",
+    "difficulty": "beginner",
+    "text": "У якій горі Ісус надихнувся для проголошення Своїх слів?",
+    "options": [
+      "Гора Набору",
+      "Гора Тавор",
+      "Гора Синай",
+      "Гора Тabor"
+    ],
+    "correctIndex": 3,
+    "reference": "Лк. 21:37",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:44:34.191Z"
+  },
+  {
+    "id": "geography-easy-ai-00035",
+    "themeId": "geography",
+    "difficulty": "easy",
+    "text": "Яке місто є столицею Ізраїлю, якщо говорити згідно зі Старим Заповітом?",
+    "options": [
+      "Єрусалим",
+      "Іерусалим",
+      "Йерусалим",
+      "Ієріхон"
+    ],
+    "correctIndex": 0,
+    "reference": "Іл. 3:5",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:45:01.780Z"
+  },
+  {
+    "id": "geography-easy-ai-00036",
+    "themeId": "geography",
+    "difficulty": "easy",
+    "text": "Що є найбільшою річкою у Святому Письмі?",
+    "options": [
+      "Ніл",
+      "Євфрат",
+      "Тигр",
+      "Негроль"
+    ],
+    "correctIndex": 1,
+    "reference": "Ос. 2:8",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:45:01.780Z"
+  },
+  {
+    "id": "geography-easy-ai-00037",
+    "themeId": "geography",
+    "difficulty": "easy",
+    "text": "У якій країні розташована Вавилон?",
+    "options": [
+      "Єгипет",
+      "Сирія",
+      "Месопотамія",
+      "Іран"
+    ],
+    "correctIndex": 2,
+    "reference": "Йоіл. 1:6",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:45:01.780Z"
+  },
+  {
+    "id": "geography-easy-ai-00038",
+    "themeId": "geography",
+    "difficulty": "easy",
+    "text": "Яка гора, на якій проводить Мойсей перепис ізраїльського народу?",
+    "options": [
+      "Гора Галаде",
+      "Гора Хуріна",
+      "Гора Синай",
+      "Гора Тіфертуа"
+    ],
+    "correctIndex": 3,
+    "reference": "Чис. 26:2",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:45:01.780Z"
+  },
+  {
+    "id": "geography-medium-ai-00039",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "У якої країні розташовано місто Дамаск, згадуване в Біблії?",
+    "options": [
+      "А) Єгипет",
+      "Б) Сирія",
+      "В) Палестина",
+      "Г) Месопотамія"
+    ],
+    "correctIndex": 1,
+    "reference": "Іс. 17:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:45:35.230Z"
+  },
+  {
+    "id": "geography-medium-ai-00040",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "Найбільша річка в Біблії — це?",
+    "options": [
+      "А) Еуфрат",
+      "Б) Тигр",
+      "В) Ніл",
+      "Г) Євфрат"
+    ],
+    "correctIndex": 3,
+    "reference": "Іс. 8:7",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:45:35.230Z"
+  },
+  {
+    "id": "geography-medium-ai-00041",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "З якої гори бачить Бог Сион?",
+    "options": [
+      "А) Гора Оливкова",
+      "Б) Гора Канаанська",
+      "В) Гора Сихар",
+      "Г) Гора Герізоїм"
+    ],
+    "correctIndex": 1,
+    "reference": "Пс. 48:3",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:45:35.230Z"
+  },
+  {
+    "id": "geography-medium-ai-00042",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "У якому місті мешкав Іосип з братом Даниєлем?",
+    "options": [
+      "А) Єрусалим",
+      "Б) Мехон-ха-Мааках",
+      "В) Розташ",
+      "Г) Сідонія"
+    ],
+    "correctIndex": 2,
+    "reference": "Дан. 1:5",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:45:35.230Z"
+  },
+  {
+    "id": "geography-medium-ai-00043",
+    "themeId": "geography",
+    "difficulty": "medium",
+    "text": "Столиця Єгипту в часи Мойсея знаходилась на березі якої з річок?",
+    "options": [
+      "А) Тигр",
+      "Б) Ніл",
+      "В) Евфрат",
+      "Г) Євфрат"
+    ],
+    "correctIndex": 1,
+    "reference": "Исх. 11:2",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:45:35.230Z"
+  },
+  {
+    "id": "geography-hard-ai-00044",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "У якому місті було поховано Давид?",
+    "options": [
+      "Єрусалимі",
+      "Хевроні",
+      "Назареті",
+      "Галілеї"
+    ],
+    "correctIndex": 1,
+    "reference": "Цар. 2:10",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:46:03.844Z"
+  },
+  {
+    "id": "geography-hard-ai-00045",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "Річка, де жив Іона, розташована на території якої сучасної держави?",
+    "options": [
+      "Ізраїлю",
+      "Єгипту",
+      "Сирії",
+      "Ассирії"
+    ],
+    "correctIndex": 0,
+    "reference": "Іони 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:46:03.844Z"
+  },
+  {
+    "id": "geography-hard-ai-00046",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "На якій горі Бог дав Мойсею закони?",
+    "options": [
+      "Сінаї",
+      "Хермон",
+      "Зафон",
+      "Тавор"
+    ],
+    "correctIndex": 0,
+    "reference": "Лев. 25:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:46:03.844Z"
+  },
+  {
+    "id": "geography-hard-ai-00047",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "У якій країні розташований Сідонім?",
+    "options": [
+      "Єгипет",
+      "Фінікія",
+      "Сирія",
+      "Месопотамія"
+    ],
+    "correctIndex": 1,
+    "reference": "Дій. 21:3",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:46:03.844Z"
+  },
+  {
+    "id": "geography-hard-ai-00048",
+    "themeId": "geography",
+    "difficulty": "hard",
+    "text": "На якій річці Бог сказав Іосу взірватися?",
+    "options": [
+      "Іордан",
+      "Євфрат",
+      "Тигр",
+      "Ніл"
+    ],
+    "correctIndex": 3,
+    "reference": "Мат. 4:18",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:46:03.844Z"
+  },
+  {
+    "id": "geography-expert-ai-00049",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "Дove знаходиться гора, де Бог дав Закони Мойсеєві (Мойсеєві набулося 60 років)?",
+    "options": [
+      "Горіш-Буван (Ісх. 19:2)",
+      "Гори Синай (Вих. 3:12)",
+      "Гора Герізім (Дв. 5:2)",
+      "Харан (Лев. 26:40)"
+    ],
+    "correctIndex": 1,
+    "reference": "Вих. 19:20",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:46:54.499Z"
+  },
+  {
+    "id": "geography-expert-ai-00050",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "Яка річка впадає в Північне Молодецьке море (Моря Червоне)?",
+    "options": [
+      "Куріха (Ісх. 13:17)",
+      "Піор (Вих. 2:8)",
+      "Аракс (Бут. 14:25)",
+      "Тигр (Дв. 1:3)"
+    ],
+    "correctIndex": 0,
+    "reference": "Ісх. 27:11",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:46:54.499Z"
+  },
+  {
+    "id": "geography-expert-ai-00051",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "Місто, в якому розташована печера, де Мойсей знав Бога (Бог з'явився Мойсеєві у вогні в печері)?",
+    "options": [
+      "Гедес (Ісх. 3:1)",
+      "Мареш (Вих. 2:16)",
+      "Сінед (Чис. 32:10)",
+      "Харан (Бут. 12:5)"
+    ],
+    "correctIndex": 1,
+    "reference": "Ісх. 3:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:46:54.499Z"
+  },
+  {
+    "id": "geography-expert-ai-00052",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "Яке місто було столицею царства Іродянина Ервеса (Ервес - син Матфей)?",
+    "options": [
+      "Цезарея-Філіппі (Мат. 16:13)",
+      "Цезарея-Палестина (Марк 8:27)",
+      "Рамла (Лук. 3:34)",
+      "Хермонсал (Дан. 2:35)"
+    ],
+    "correctIndex": 0,
+    "reference": "Лук. 3:31",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:46:54.499Z"
+  },
+  {
+    "id": "geography-expert-ai-00053",
+    "themeId": "geography",
+    "difficulty": "expert",
+    "text": "В якої країні жили перші люди - Адам і Єва (Адам і Єва не були створені на землі)?",
+    "options": [
+      "Едем (Бут. 2:8)",
+      "Уріа (Бут. 14:24)",
+      "Єфрат (Бут. 32:9)",
+      "Герон (Вір. 5:1)"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 2:8",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:46:54.499Z"
   }
 ]

@@ -1,0 +1,322 @@
+[
+  {
+    "id": "old-testament-beginner-ai-00001",
+    "themeId": "old-testament",
+    "difficulty": "beginner",
+    "text": "Який пророк відомий тим, що написав книгу Пророків?",
+    "options": [
+      "Мойсей",
+      "Ісаїя",
+      "Давид",
+      "Єремія"
+    ],
+    "correctIndex": 2,
+    "reference": "От. 11:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:47:25.166Z"
+  },
+  {
+    "id": "old-testament-beginner-ai-00002",
+    "themeId": "old-testament",
+    "difficulty": "beginner",
+    "text": "Скільки братів у Авраама було?",
+    "options": [
+      "Два",
+      "Три",
+      "Чотири",
+      "П'ять"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 12:8",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:47:25.166Z"
+  },
+  {
+    "id": "old-testament-beginner-ai-00003",
+    "themeId": "old-testament",
+    "difficulty": "beginner",
+    "text": "Який із королів Ізраїлю славився своєю музикою та був багато питаний у книзі Псалми?",
+    "options": [
+      "Соломон",
+      "Авраам",
+      "Мойсей",
+      "Давид"
+    ],
+    "correctIndex": 3,
+    "reference": "Пс. 18:32",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:47:25.166Z"
+  },
+  {
+    "id": "old-testament-beginner-ai-00004",
+    "themeId": "old-testament",
+    "difficulty": "beginner",
+    "text": "Які закони дав Мойсей Ізраїлю під горою Синай?",
+    "options": [
+      "Закон Соломоновій",
+      "Закон Авраамовський",
+      "Закон Йовавітевський",
+      "Закон Мойсеєвський"
+    ],
+    "correctIndex": 3,
+    "reference": "Вих. 12:49",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:47:25.166Z"
+  },
+  {
+    "id": "old-testament-beginner-ai-00005",
+    "themeId": "old-testament",
+    "difficulty": "beginner",
+    "text": "Книги Святого Письма, які приписують автором пророка Ісаїю?",
+    "options": [
+      "Ісайя",
+      "Ієзекіїль",
+      "Йова",
+      "Єремія"
+    ],
+    "correctIndex": 0,
+    "reference": "Іс. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:47:25.166Z"
+  },
+  {
+    "id": "old-testament-easy-ai-00006",
+    "themeId": "old-testament",
+    "difficulty": "easy",
+    "text": "Хто проголосив Богу: «Я — Господь, не створивши людину безразумною або глухим слухом?»",
+    "options": [
+      "Мойсей (Исх. 4:16)",
+      "Авраам (Бут. 22:18)",
+      "Давид (Пс. 32:9)",
+      "Отцем Ісаака (Бут. 18:27)"
+    ],
+    "correctIndex": 0,
+    "reference": "Исх. 4:16",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:10.834Z"
+  },
+  {
+    "id": "old-testament-easy-ai-00007",
+    "themeId": "old-testament",
+    "difficulty": "easy",
+    "text": "Який закон можна назвати «Торі»?",
+    "options": [
+      "Закон Мойсея (Лев. 25:1)",
+      "Закон Авраама (Бут. 26:5)",
+      "Закон Давида (Пс. 89:3)",
+      "Закон пророка Ісаї (Іс. 1:18)"
+    ],
+    "correctIndex": 0,
+    "reference": "Лев. 25:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:10.835Z"
+  },
+  {
+    "id": "old-testament-easy-ai-00008",
+    "themeId": "old-testament",
+    "difficulty": "easy",
+    "text": "Хто привів народ ізраїльський через Червоне море?",
+    "options": [
+      "Ангел Божий (Ісх. 14:19)",
+      "Мойсей (Ісх. 14:27)",
+      "Гавріїл (Втор. 3:2)",
+      "Самсон (Суд. 15:16)"
+    ],
+    "correctIndex": 1,
+    "reference": "Ісх. 14:27",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:10.835Z"
+  },
+  {
+    "id": "old-testament-easy-ai-00009",
+    "themeId": "old-testament",
+    "difficulty": "easy",
+    "text": "Який пророк оголосив про прийдешнього Месію?",
+    "options": [
+      "Єзекіїль (Єзд. 34:23)",
+      "Ісая (Іс. 7:14)",
+      "Даниїл (Дан. 9:25)",
+      "Йова (Йов 38:6)"
+    ],
+    "correctIndex": 1,
+    "reference": "Іс. 7:14",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:10.835Z"
+  },
+  {
+    "id": "old-testament-easy-ai-00010",
+    "themeId": "old-testament",
+    "difficulty": "easy",
+    "text": "Хто оголосив, що Бог дарує землю Ізраїлю навіки?",
+    "options": [
+      "Авраам (Бут. 28:13)",
+      "Мойсей (Лев. 25:23)",
+      "Давид (Пс. 106:45)",
+      "Софонія (Соф. 3:12)"
+    ],
+    "correctIndex": 2,
+    "reference": "Лев. 25:23",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:10.835Z"
+  },
+  {
+    "id": "old-testament-medium-ai-00011",
+    "themeId": "old-testament",
+    "difficulty": "medium",
+    "text": "Який бог дав Авраамові ім'я Бога, якого сьогодні називають Єгови?",
+    "options": [
+      "А) Астарте",
+      "Б) Баал",
+      "В) Молих",
+      "Г) Єгова"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 6:4",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:43.946Z"
+  },
+  {
+    "id": "old-testament-medium-ai-00012",
+    "themeId": "old-testament",
+    "difficulty": "medium",
+    "text": "Кто записав Старий Завіт?",
+    "options": [
+      "А) Авраам",
+      "Б) Мойсей",
+      "В) Давид",
+      "Г) Пророки"
+    ],
+    "correctIndex": 2,
+    "reference": "Дан. 10:21",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:43.947Z"
+  },
+  {
+    "id": "old-testament-medium-ai-00013",
+    "themeId": "old-testament",
+    "difficulty": "medium",
+    "text": "Який пророк відомий тим, що написав книгу про потоп?",
+    "options": [
+      "А) Авраам",
+      "Б) Ісая",
+      "В) Мойсей",
+      "Г) Ної"
+    ],
+    "correctIndex": 0,
+    "reference": "Пр. 16:8",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:43.947Z"
+  },
+  {
+    "id": "old-testament-medium-ai-00014",
+    "themeId": "old-testament",
+    "difficulty": "medium",
+    "text": "Кто утримав море, щоб дати Ізраїлю перемогти фараона в битві при Червоному морі?",
+    "options": [
+      "А) Мойсей",
+      "Б) Давид",
+      "В) Самсон",
+      "Г) Єзекіїль"
+    ],
+    "correctIndex": 1,
+    "reference": "Втор. 14:26",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:43.947Z"
+  },
+  {
+    "id": "old-testament-medium-ai-00015",
+    "themeId": "old-testament",
+    "difficulty": "medium",
+    "text": "У Старому Завіті, який закон дав Бог Ізраїлю на горі Сінай?",
+    "options": [
+      "А) Закон Мойсея",
+      "Б) Закон Давида",
+      "В) Закон Самсона",
+      "Г) Закон Аарона"
+    ],
+    "correctIndex": 0,
+    "reference": "Втор. 5:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:43.947Z"
+  },
+  {
+    "id": "old-testament-hard-ai-00016",
+    "themeId": "old-testament",
+    "difficulty": "hard",
+    "text": "Який пророк записав книгу, яка містить вісімдесят віршів по скіпетру та мечі?",
+    "options": [
+      "Ісаїя",
+      "Йоїла",
+      "Аггеїв",
+      "Озеас"
+    ],
+    "correctIndex": 1,
+    "reference": "Амос 7:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:49:22.760Z"
+  },
+  {
+    "id": "old-testament-hard-ai-00017",
+    "themeId": "old-testament",
+    "difficulty": "hard",
+    "text": "Що змусило Мойсея вбити Егіптянина, який обізвівся закопати свого сина живим?",
+    "options": [
+      "Побачивши цю сцену",
+      "Читаючи про це в старозавітних писаннях",
+      "Любитель історії",
+      "Немає інформації про таку подію"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 7:23",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:49:22.760Z"
+  },
+  {
+    "id": "old-testament-hard-ai-00018",
+    "themeId": "old-testament",
+    "difficulty": "hard",
+    "text": "Хто був спадкоємцем Авраама як главою ісраельських племен?",
+    "options": [
+      "Йосип",
+      "Давид",
+      "Мойсей",
+      "Соломон"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 13:6",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:49:22.760Z"
+  },
+  {
+    "id": "old-testament-hard-ai-00019",
+    "themeId": "old-testament",
+    "difficulty": "hard",
+    "text": "Який закон був даний Авраамом, попередником Ізраїлю?",
+    "options": [
+      "Тора (П'ятикнижжя Мойсеєвому)",
+      "Зехін (Скрижалі Моря)",
+      "Хук (Скрижалі Сіону)",
+      "Єхезкіл (Книга пророка Єзекіїля)"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 15:6",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:49:22.760Z"
+  },
+  {
+    "id": "old-testament-hard-ai-00020",
+    "themeId": "old-testament",
+    "difficulty": "hard",
+    "text": "Коли Давид зустрів Голіата у битві, скільки пальців мав останній на руці?",
+    "options": [
+      "Два",
+      "Три",
+      "Чотири",
+      "П'ять"
+    ],
+    "correctIndex": 2,
+    "reference": "1 Самуїл 17:4",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:49:22.760Z"
+  }
+]
