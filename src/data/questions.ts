@@ -337,6 +337,18 @@ export function getQuestionsForLevel(
   return pickQuestionsFromPool(pool, count);
 }
 
+export function getMixedQuestionsByDifficulty(
+  difficulty: Difficulty,
+  count: number,
+  excludeIds: string[] = [],
+): Question[] {
+  const excluded = new Set(excludeIds);
+  const pool = ALL_QUESTIONS.filter(
+    (question) => question.difficulty === difficulty && !excluded.has(question.id),
+  );
+  return pickQuestionsFromPool(pool, count);
+}
+
 /** Вбудована база + AI JSON з data/question-db */
 export async function getQuestionsForLevelAsync(
   themeId: string,

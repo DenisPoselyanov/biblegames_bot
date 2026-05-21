@@ -66,6 +66,25 @@ npm run dev              # гра
 
 У грі: **Гра → Кімната (Kahoot)** → створити або приєднатися за кодом.
 
+### Backend storage mode
+
+Server підтримує 2 режими зберігання:
+
+- `STORAGE_PROVIDER=json` — локальний `server/.data/db.json`
+- `STORAGE_PROVIDER=sql` — PostgreSQL/Supabase через `DATABASE_URL`
+
+Швидка перевірка storage:
+
+```bash
+curl http://localhost:3001/health/storage
+```
+
+Очікувана відповідь:
+
+```json
+{ "ok": true, "provider": "json" }
+```
+
 ## Локальна AI — тисячі питань (Ollama)
 
 Детальна інструкція: [`scripts/AI_SETUP.md`](scripts/AI_SETUP.md)

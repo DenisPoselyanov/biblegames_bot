@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getThemeById } from '../data/themes';
 import { getQuestionCountByDifficulty, getQuestionCountByDifficultyAsync } from '../data/questions';
-import { preloadThemeQuestions } from '../data/questionDbLoader';
 import { usePlayer } from '../context/PlayerContext';
 import {
   DIFFICULTIES,
@@ -31,7 +30,6 @@ export function ThemeDetail() {
   const [questionCounts, setQuestionCounts] = useState<Partial<Record<Difficulty, number>>>({});
 
   useEffect(() => {
-    preloadThemeQuestions(theme.id);
     let cancelled = false;
 
     Promise.all(
@@ -56,7 +54,7 @@ export function ThemeDetail() {
 
   return (
     <section className={styles.page}>
-      <Link to="/play/solo" className={styles.back}>
+      <Link to="/play/study" className={styles.back}>
         ← Теми
       </Link>
 
@@ -82,7 +80,7 @@ export function ThemeDetail() {
           return (
             <li key={diff}>
               <Link
-                to={`/play/solo/quiz/${theme.id}/${diff}`}
+                to={`/play/study/quiz/${theme.id}/${diff}`}
                 className={`${styles.level} ${done ? styles.done : ''}`}
                 data-difficulty={diff}
               >

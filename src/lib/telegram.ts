@@ -20,4 +20,34 @@ export function isInsideTelegram(): boolean {
   return Boolean(WebApp.initDataUnsafe?.user?.id);
 }
 
+export const haptic = {
+  impact: (style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft' = 'light') => {
+    try {
+      if (WebApp.HapticFeedback) {
+        WebApp.HapticFeedback.impactOccurred(style);
+      }
+    } catch (e) {
+      console.warn('Haptic impact failed:', e);
+    }
+  },
+  notification: (type: 'error' | 'success' | 'warning') => {
+    try {
+      if (WebApp.HapticFeedback) {
+        WebApp.HapticFeedback.notificationOccurred(type);
+      }
+    } catch (e) {
+      console.warn('Haptic notification failed:', e);
+    }
+  },
+  selection: () => {
+    try {
+      if (WebApp.HapticFeedback) {
+        WebApp.HapticFeedback.selectionChanged();
+      }
+    } catch (e) {
+      console.warn('Haptic selection failed:', e);
+    }
+  },
+};
+
 export { WebApp };

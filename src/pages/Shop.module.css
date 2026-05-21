@@ -1,0 +1,135 @@
+.page {
+  animation: fadeIn 0.3s ease;
+  padding: 1.5rem 0 3rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.header h1 {
+  font-family: var(--font-serif);
+  color: var(--gold-light);
+  margin: 0 0 0.25rem;
+}
+
+.header p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.balanceCard {
+  background: linear-gradient(135deg, rgba(201, 162, 39, 0.15), rgba(201, 162, 39, 0.05));
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  border-radius: 14px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.balanceCard span {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.balanceCard strong {
+  color: var(--gold);
+  font-size: 1.25rem;
+  font-family: var(--font-serif);
+}
+
+.section h2 {
+  font-size: 1rem;
+  color: var(--gold-light);
+  margin: 0 0 1rem;
+  font-family: var(--font-serif);
+}
+
+.avatarsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+}
+
+.avatarCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 0.75rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.2s;
+}
+
+.activeCard {
+  border-color: var(--gold);
+  box-shadow: 0 4px 15px rgba(201, 162, 39, 0.15);
+}
+
+.emojiWrapper {
+  font-size: 3rem;
+}
+
+.avatarCard h3 {
+  font-size: 0.85rem;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.action {
+  margin-top: auto;
+}
+
+.badgeActive {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold);
+  background: rgba(201, 162, 39, 0.15);
+  padding: 0.35rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+}
+
+.btnApply,
+.btnBuy {
+  padding: 0.45rem 1rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnApply {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btnApply:active {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btnBuy {
+  background: linear-gradient(135deg, var(--gold), #a67c00);
+  border: none;
+  color: #1a1208;
+}
+
+.btnBuy:active {
+  transform: scale(0.96);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

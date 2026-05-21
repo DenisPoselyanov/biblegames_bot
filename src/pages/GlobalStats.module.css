@@ -3,7 +3,7 @@
 }
 
 .header {
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 }
 
 .header h1 {
@@ -20,21 +20,20 @@
 }
 
 .refresh {
-  padding: 0.4rem 0.75rem;
+  padding: 0.45rem 0.8rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--text-muted);
   font-size: 0.8rem;
-  cursor: pointer;
 }
 
 .grandTotal {
   text-align: center;
-  padding: 1rem;
+  padding: 0.85rem 1rem;
   background: var(--surface);
   border-radius: 14px;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
   border: 1px solid var(--border);
 }
 
@@ -47,24 +46,58 @@
 }
 
 .grandTotal strong {
-  font-size: 2rem;
+  font-size: 1.75rem;
   color: var(--gold);
   font-family: var(--font-serif);
 }
 
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.tabs button {
+  min-height: 2.35rem;
+  padding: 0 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-weight: 800;
+}
+
+.tabs .activeTab {
+  border-color: rgba(201, 162, 39, 0.5);
+  background: rgba(201, 162, 39, 0.14);
+  color: var(--gold-light);
+}
+
 .list {
   list-style: none;
-  margin: 0 0 1.5rem;
+  margin: 0 0 1rem;
   padding: 0;
+  display: grid;
+  gap: 0.5rem;
 }
 
 .item {
+  width: 100%;
   display: grid;
   grid-template-columns: auto auto 1fr auto;
   align-items: center;
   gap: 0.5rem 0.65rem;
-  padding: 0.85rem 0;
-  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: inherit;
+  text-align: left;
+}
+
+.currentPlayer {
+  border-color: rgba(201, 162, 39, 0.5);
 }
 
 .rank {
@@ -100,6 +133,7 @@
   display: block;
   height: 100%;
   border-radius: 2px;
+  background: var(--gold);
   transition: width 0.4s ease;
 }
 
@@ -122,6 +156,16 @@
   padding: 0.75rem;
   background: rgba(201, 162, 39, 0.06);
   border-radius: 10px;
+}
+
+@media (max-width: 360px) {
+  .item {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .icon {
+    display: none;
+  }
 }
 
 @keyframes fadeIn {

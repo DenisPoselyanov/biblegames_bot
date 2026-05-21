@@ -1,8 +1,33 @@
 import type { GlobalStats, PlayerProfile } from '../types';
 import { THEMES } from '../data/themes';
+import { DEFAULT_COSMETIC_THEME_ID } from '../data/cosmetics';
 
 const PROFILE_KEY = 'bible-game-profile';
 const GLOBAL_STATS_KEY = 'bible-game-global-stats';
+
+function normalizeProfile(profile: Partial<PlayerProfile>, userId: string, displayName: string): PlayerProfile {
+  return {
+    userId,
+    displayName: profile.displayName ?? displayName,
+    totalPoints: profile.totalPoints ?? 0,
+    themePoints: profile.themePoints ?? {},
+    completedLevels: profile.completedLevels ?? [],
+    survivalHighScore: profile.survivalHighScore ?? 0,
+    millionaireWins: profile.millionaireWins ?? 0,
+    millionaireMaxLevel: profile.millionaireMaxLevel ?? 0,
+    unlockedThemes: profile.unlockedThemes?.length
+      ? profile.unlockedThemes
+      : [DEFAULT_COSMETIC_THEME_ID],
+    activeTheme: profile.activeTheme ?? DEFAULT_COSMETIC_THEME_ID,
+    achievements: profile.achievements ?? [],
+    avatar: profile.avatar ?? '',
+    coins: profile.coins ?? 0,
+    unlockedAvatars: profile.unlockedAvatars ?? [],
+    streakDays: profile.streakDays ?? 0,
+    lastActiveAt: profile.lastActiveAt ?? null,
+    studyMastery: profile.studyMastery ?? {},
+  };
+}
 
 function emptyGlobalStats(): GlobalStats {
   const themes: GlobalStats['themes'] = {};
@@ -22,18 +47,12 @@ export function loadProfile(userId: string, displayName: string): PlayerProfile 
     const raw = localStorage.getItem(PROFILE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as PlayerProfile;
-      if (parsed.userId === userId) return parsed;
+      if (parsed.userId === userId) return normalizeProfile(parsed, userId, displayName);
     }
   } catch {
     /* ignore */
   }
-  return {
-    userId,
-    displayName,
-    totalPoints: 0,
-    themePoints: {},
-    completedLevels: [],
-  };
+  return normalizeProfile({}, userId, displayName);
 }
 
 export function saveProfile(profile: PlayerProfile): void {

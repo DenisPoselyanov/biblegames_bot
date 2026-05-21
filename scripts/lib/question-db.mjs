@@ -78,11 +78,6 @@ export function normalizeAiQuestion(raw, themeId, difficulty, index) {
   };
 }
 
-// Ограничиваем количество вопросов до запрошенного (защита от AI, которая генерирует больше)
-export function limitQuestions(questions, maxCount) {
-  return questions.slice(0, maxCount);
-}
-
 export function appendQuestions(themeId, newQuestions) {
   const existing = loadThemeQuestions(themeId);
   const merged = dedupeQuestions([...existing, ...newQuestions]);

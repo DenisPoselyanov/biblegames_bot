@@ -93,43 +93,8 @@ function runGenerate(themeId, count, difficulty = 'all') {
     child.stderr.on('data', (d) => {
       err += d.toString();
     });
-    child.on('error', (e) => {
-      reject(new Error(`Ошибка запуска: ${e.message}`));
-    });
     child.on('close', (code) => {
-      if (code === 0 || code === 130 || code === 143) resolve(out || 'Готово.');
-      else reject(new Error(err || out || `exit ${code}`));
-    });
-  });
-}
-
-function runBulkGenerate(count) {
-  return new Promise((resolve, reject) => {
-    const args = [
-      'scripts/generate-questions-ai.mjs',
-      '--bulk-generate',
-      String(count),
-    ];
-
-    const child = spawn('node', args, {
-      cwd: ROOT,
-      env: { ...process.env },
-      shell: process.platform === 'win32',
-    });
-
-    let out = '';
-    let err = '';
-    child.stdout.on('data', (d) => {
-      out += d.toString();
-    });
-    child.stderr.on('data', (d) => {
-      err += d.toString();
-    });
-    child.on('error', (e) => {
-      reject(new Error(`Ошибка запуска: ${e.message}`));
-    });
-    child.on('close', (code) => {
-      if (code === 0 || code === 130 || code === 143) resolve(out || 'Готово.');
+      if (code === 0) resolve(out || 'Готово.');
       else reject(new Error(err || out || `exit ${code}`));
     });
   });
@@ -140,8 +105,7 @@ bot.command('start', async (ctx) => {
   await ctx.reply(
     '👋 *Біблійна гра — адмін-бот*\n\n' +
       '/stats — скільки AI-питань у базі\n' +
-      '/generate `<тема>` `<кількість>` — 1 тема\n' +
-      '/generateall `<кількість>` — усі теми×рівні\n' +
+      '/generate `<тема>` `<кількість>` — Ollama\n' +
       '/themes — список тем\n' +
       '/help — довідка',
     { parse_mode: 'Markdown' },
@@ -153,9 +117,8 @@ bot.command('help', async (ctx) => {
   await ctx.reply(
     '*Команди:*\n' +
       '`/stats`\n' +
-      '`/generate geography 50` — одна тема\n' +
-      '`/generate paul 20 medium` — одна тема + складність\n' +
-      '`/generateall 50` — 🔥 усі теми×рівні\n' +
+      '`/generate geography 50`\n' +
+      '`/generate paul 20 medium`\n' +
       '`/themes`\n\n' +
       '*Ollama:* `ollama serve` + `ollama pull mistral`\n' +
       '*Модель:* OLLAMA_MODEL у .env',
@@ -210,58 +173,6 @@ bot.command('generate', async (ctx) => {
     const after = loadThemeQuestions(themeId).length;
     await ctx.reply(
       `✅ Готово!\nТема \`${themeId}\`: *${after}* питань у AI-базі.\n\n\`\`\`\n${log.slice(-800)}\n\`\`\``,
-      { parse_mode: 'Markdown' },
-    );
-  } catch (e) {
-    await ctx.reply(`❌ Помилка:\n\`${e.message.slice(0, 500)}\``, {
-      parse_mode: 'Markdown',
-    });
-  }
-});
-
-bot.command('generateall', async (ctx) => {
-  if (await denyUnlessAdmin(ctx)) return;
-
-  const text = ctx.message?.text ?? '';
-  const argsText = text.replace(/^\/generateall(?:@\w+)?\s*/i, '').trim();
-  const count = parseInt(argsText, 10) || 30;
-
-  if (!argsText || isNaN(count)) {
-    await ctx.reply('❌ Використання: `/generateall 50`', {
-      parse_mode: 'Markdown',
-    });
-    return;
-  }
-
-  const totalIterations = THEME_IDS.length * DIFFICULTIES.length;
-  const estimatedQuestions = totalIterations * count;
-
-  await ctx.reply(
-    `🔥 *МАСОВА ГЕНЕРАЦІЯ* запущена!\n\n` +
-      `📊 Параметри:\n` +
-      `• На тему/рівень: *${count}* питань\n` +
-      `• Всього тем: *${THEME_IDS.length}*\n` +
-      `• Всього рівнів: *${DIFFICULTIES.length}*\n` +
-      `• Ітерацій: *${totalIterations}*\n` +
-      `• Макс питань: ~*${estimatedQuestions}*\n\n` +
-      `⏳ Це може займати *10–30 хвилин* або більше. Не вимикай Ollama!`,
-    { parse_mode: 'Markdown' },
-  );
-
-  try {
-    const log = await runBulkGenerate(count);
-    const dbStats = getGlobalStats();
-    let totalInDb = 0;
-    for (const themeId of THEME_IDS) {
-      const s = dbStats[themeId];
-      totalInDb += s?.total ?? 0;
-    }
-
-    await ctx.reply(
-      `✅ *ГОТОВО!*\n\n` +
-      `📊 Статистика:\n` +
-      `• Всього питань в AI-базі: *${totalInDb}*\n\n` +
-      `Останні логи:\n\`\`\`\n${log.slice(-1000)}\n\`\`\``,
       { parse_mode: 'Markdown' },
     );
   } catch (e) {

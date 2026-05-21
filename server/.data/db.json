@@ -1,0 +1,488 @@
+{
+  "profiles": {
+    "guest": {
+      "userId": "guest",
+      "displayName": "Гість",
+      "totalPoints": 190,
+      "themePoints": {
+        "geography": 100
+      },
+      "completedLevels": [
+        {
+          "themeId": "geography",
+          "difficulty": "easy",
+          "score": 5,
+          "maxScore": 7,
+          "completedAt": "2026-05-16T22:31:15.976Z"
+        },
+        {
+          "themeId": "geography",
+          "difficulty": "expert",
+          "score": 6,
+          "maxScore": 10,
+          "completedAt": "2026-05-16T22:13:43.146Z"
+        },
+        {
+          "themeId": "geography",
+          "difficulty": "medium",
+          "score": 5,
+          "maxScore": 7,
+          "completedAt": "2026-05-16T22:27:00.042Z"
+        },
+        {
+          "themeId": "geography",
+          "difficulty": "beginner",
+          "score": 0,
+          "maxScore": 7,
+          "completedAt": "2026-05-16T23:10:46.147Z"
+        }
+      ],
+      "survivalHighScore": 27,
+      "millionaireWins": 0,
+      "millionaireMaxLevel": 3,
+      "unlockedThemes": [
+        "classic",
+        "eden-garden"
+      ],
+      "activeTheme": "classic",
+      "achievements": [
+        "aesthete",
+        "mastery-expert"
+      ],
+      "avatar": "sword",
+      "coins": 190,
+      "unlockedAvatars": [
+        "fish",
+        "sword"
+      ],
+      "streakDays": 0,
+      "lastActiveAt": null,
+      "studyMastery": {
+        "": {
+          "mastery": 7,
+          "confidence": 100,
+          "lastReviewedAt": "2026-05-21T15:08:04.350Z",
+          "errorTags": [],
+          "correctStreak": 1,
+          "wrongCount": 0,
+          "totalAnswers": 1
+        }
+      },
+      "updatedAt": "2026-05-21T15:08:04.374Z"
+    }
+  },
+  "stats": {
+    "guest": {
+      "themes": {
+        "geography": {
+          "themeId": "geography",
+          "totalPoints": 100,
+          "gamesPlayed": 5,
+          "playersCount": 1
+        },
+        "old-testament": {
+          "themeId": "old-testament",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "mosaic-law": {
+          "themeId": "mosaic-law",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "paul": {
+          "themeId": "paul",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "judges": {
+          "themeId": "judges",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "kings": {
+          "themeId": "kings",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "new-testament": {
+          "themeId": "new-testament",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "gospels": {
+          "themeId": "gospels",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "prophets": {
+          "themeId": "prophets",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "psalms": {
+          "themeId": "psalms",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "parables": {
+          "themeId": "parables",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "commandments": {
+          "themeId": "commandments",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "miracles": {
+          "themeId": "miracles",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "patriarchs": {
+          "themeId": "patriarchs",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        },
+        "revelation": {
+          "themeId": "revelation",
+          "totalPoints": 0,
+          "gamesPlayed": 0,
+          "playersCount": 0
+        }
+      },
+      "lastUpdated": "2026-05-21T15:07:25.736Z",
+      "userId": "guest",
+      "updatedAt": "2026-05-21T15:07:25.827Z"
+    }
+  },
+  "studyAnswers": {
+    "guest": []
+  },
+  "telemetry": {
+    "guest": [
+      {
+        "name": "question_answered",
+        "createdAt": "2026-05-21T15:08:04.350Z",
+        "payload": {
+          "questionId": "mosaic-law-beginner-x4",
+          "subthemeId": "",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T15:07:50.241Z",
+        "payload": {
+          "groupId": "bible-context",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T15:07:45.935Z",
+        "payload": {
+          "groupId": "bible-context",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T15:07:38.309Z",
+        "payload": {
+          "groupId": "old-testament-world",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T15:07:25.491Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T15:07:25.488Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T15:07:25.488Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T14:49:33.506Z",
+        "payload": {
+          "groupId": "old-testament-world",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:49:25.116Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:49:25.114Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:49:25.114Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:46:04.223Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:46:04.220Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:46:04.220Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:42:45.880Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:42:45.878Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:34:13.549Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:34:13.537Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T14:28:17.867Z",
+        "payload": {
+          "groupId": "old-testament-world",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:28:15.877Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:28:15.875Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T14:22:38.550Z",
+        "payload": {
+          "groupId": "new-testament-world",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:22:31.730Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:22:31.728Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:22:26.568Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:22:26.568Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T14:22:17.404Z",
+        "payload": {
+          "groupId": "new-testament-world",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T14:22:11.411Z",
+        "payload": {
+          "groupId": "old-testament-world",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T14:22:08.051Z",
+        "payload": {
+          "groupId": "bible-context",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T14:21:58.397Z",
+        "payload": {
+          "groupId": "new-testament-world",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T14:21:56.375Z",
+        "payload": {
+          "groupId": "old-testament-world",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-05-21T14:21:51.434Z",
+        "payload": {
+          "groupId": "bible-context",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:21:37.497Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:21:37.496Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:21:18.801Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T14:21:18.799Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T13:12:23.521Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T13:12:23.520Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T12:17:17.901Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T12:17:17.899Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T12:09:45.901Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-05-21T12:09:45.900Z",
+        "payload": {
+          "userId": "guest"
+        }
+      }
+    ]
+  }
+}

@@ -143,12 +143,18 @@
   color: #e8b0b0;
 }
 
-.reference {
+.referenceButton {
+  display: block;
+  width: 100%;
   margin: 0 0 0.85rem;
-  font-size: 0.85rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  border-radius: 12px;
+  background: rgba(201, 162, 39, 0.1);
   color: var(--gold);
-  font-style: italic;
-  text-align: center;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .btnPrimary {
@@ -239,4 +245,21 @@
   to {
     opacity: 1;
   }
+}
+
+.sprintTimer {
+  background: var(--gold);
+  color: #1a1208;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  margin: 1rem 1rem -0.5rem;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.9; }
+  to { opacity: 1; }
 }

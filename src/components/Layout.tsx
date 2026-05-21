@@ -22,13 +22,13 @@ export function Layout() {
             <span>🎮</span>
             <small>Гра</small>
           </NavLink>
+          <NavLink to="/shop" className={({ isActive }) => (isActive ? styles.active : '')}>
+            <span>🛍️</span>
+            <small>Крамниця</small>
+          </NavLink>
           <NavLink to="/profile" className={({ isActive }) => (isActive ? styles.active : '')}>
             <span>👤</span>
             <small>Профіль</small>
-          </NavLink>
-          <NavLink to="/stats" className={({ isActive }) => (isActive ? styles.active : '')}>
-            <span>🏆</span>
-            <small>Рейтинг</small>
           </NavLink>
         </nav>
       )}

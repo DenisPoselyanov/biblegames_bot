@@ -36,6 +36,43 @@
   gap: 0.75rem;
 }
 
+.groupCard,
+.groupBack {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(12, 13, 16, 0.7);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.95rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.groupIcon {
+  font-size: 1.45rem;
+}
+
+.groupBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+}
+
+.groupBody small {
+  color: var(--text-muted);
+}
+
+.groupArrow {
+  opacity: 0.75;
+}
+
+.groupBack {
+  justify-content: center;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

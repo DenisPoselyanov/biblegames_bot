@@ -1,0 +1,63 @@
+{
+  "generatedAt": "2026-05-21T15:01:58.852Z",
+  "summary": {
+    "totalQuestions": 225,
+    "studyPoolSize": 184,
+    "gamePoolSize": 225,
+    "overlap": 184
+  },
+  "stats": {
+    "study": {
+      "total": 184,
+      "byDifficulty": {
+        "easy": 66,
+        "medium": 64,
+        "hard": 54
+      },
+      "byTheme": {
+        "geography": 15,
+        "old-testament": 14,
+        "mosaic-law": 13,
+        "paul": 12,
+        "judges": 13,
+        "kings": 12,
+        "new-testament": 5,
+        "gospels": 15,
+        "prophets": 9,
+        "psalms": 6,
+        "parables": 13,
+        "commandments": 13,
+        "miracles": 14,
+        "patriarchs": 15,
+        "revelation": 15
+      }
+    },
+    "game": {
+      "total": 225,
+      "byDifficulty": {
+        "easy": 75,
+        "medium": 75,
+        "hard": 75
+      },
+      "byTheme": {
+        "geography": 15,
+        "old-testament": 15,
+        "mosaic-law": 15,
+        "paul": 15,
+        "judges": 15,
+        "kings": 15,
+        "new-testament": 15,
+        "gospels": 15,
+        "prophets": 15,
+        "psalms": 15,
+        "parables": 15,
+        "commandments": 15,
+        "miracles": 15,
+        "patriarchs": 15,
+        "revelation": 15
+      }
+    },
+    "overlap": 184
+  },
+  "excludedFromStudyCount": 41
+}

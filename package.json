@@ -11,16 +11,19 @@
     "generate-ai": "node scripts/generate-questions-ai.mjs",
     "questions:stats": "node scripts/analyze-questions.mjs",
     "analyze-questions": "node scripts/analyze-questions.mjs",
+    "analyze-quality": "tsx scripts/analyzeQuestionQuality.ts",
+    "analyze-pools": "tsx scripts/analyzeQuestionPools.ts",
+    "test-classification": "tsx scripts/testQuestionClassification.ts",
+    "test-social": "tsx scripts/testSocialFeatures.ts",
     "bot": "node bot/index.mjs",
     "bot:install": "npm install --prefix bot",
     "server": "npm run start --prefix server",
     "server:dev": "npm run dev --prefix server",
-    "server:install": "npm install --prefix server",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "server:install": "npm install --prefix server"
   },
   "dependencies": {
     "@twa-dev/sdk": "^8.0.2",
+    "pg": "^8.21.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.15.1",
@@ -35,8 +38,8 @@
     "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
-    "gh-pages": "^6.3.0",
     "globals": "^17.6.0",
+    "tsx": "^4.19.2",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12"

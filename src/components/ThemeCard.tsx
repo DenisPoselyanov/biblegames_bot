@@ -13,7 +13,7 @@ export function ThemeCard({ theme, points }: ThemeCardProps) {
 
   return (
     <Link
-      to={`/play/solo/themes/${theme.id}`}
+      to={`/play/study/themes/${theme.id}`}
       className={styles.card}
       style={{ '--accent': theme.color } as React.CSSProperties}
     >

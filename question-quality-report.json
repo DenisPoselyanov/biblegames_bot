@@ -1,0 +1,2352 @@
+{
+  "generatedAt": "2026-05-21T14:59:26.204Z",
+  "summary": {
+    "total": 225,
+    "approved": 223,
+    "quarantined": 2,
+    "pending": 0,
+    "rejected": 0
+  },
+  "quarantineStats": {
+    "total": 2,
+    "pending_review": 2,
+    "approved_fix": 0,
+    "rejected": 0
+  },
+  "issueTypes": {
+    "unclear_reference": 41,
+    "duplicate": 2
+  },
+  "reports": [
+    {
+      "questionId": "geography-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.383Z"
+    },
+    {
+      "questionId": "geography-easy-2",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.389Z"
+    },
+    {
+      "questionId": "geography-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.393Z"
+    },
+    {
+      "questionId": "geography-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.398Z"
+    },
+    {
+      "questionId": "geography-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.401Z"
+    },
+    {
+      "questionId": "geography-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.405Z"
+    },
+    {
+      "questionId": "geography-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.409Z"
+    },
+    {
+      "questionId": "geography-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.413Z"
+    },
+    {
+      "questionId": "geography-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.417Z"
+    },
+    {
+      "questionId": "geography-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.421Z"
+    },
+    {
+      "questionId": "geography-hard-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.425Z"
+    },
+    {
+      "questionId": "geography-hard-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.429Z"
+    },
+    {
+      "questionId": "geography-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.433Z"
+    },
+    {
+      "questionId": "geography-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.437Z"
+    },
+    {
+      "questionId": "geography-hard-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.440Z"
+    },
+    {
+      "questionId": "old-testament-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.444Z"
+    },
+    {
+      "questionId": "old-testament-easy-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.447Z"
+    },
+    {
+      "questionId": "old-testament-easy-3",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.451Z"
+    },
+    {
+      "questionId": "old-testament-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.454Z"
+    },
+    {
+      "questionId": "old-testament-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.458Z"
+    },
+    {
+      "questionId": "old-testament-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.462Z"
+    },
+    {
+      "questionId": "old-testament-medium-2",
+      "status": "approved",
+      "ambiguityScore": 45,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.466Z"
+    },
+    {
+      "questionId": "old-testament-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.470Z"
+    },
+    {
+      "questionId": "old-testament-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.474Z"
+    },
+    {
+      "questionId": "old-testament-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.478Z"
+    },
+    {
+      "questionId": "old-testament-hard-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.482Z"
+    },
+    {
+      "questionId": "old-testament-hard-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.486Z"
+    },
+    {
+      "questionId": "old-testament-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.490Z"
+    },
+    {
+      "questionId": "old-testament-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.493Z"
+    },
+    {
+      "questionId": "old-testament-hard-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.497Z"
+    },
+    {
+      "questionId": "mosaic-law-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.500Z"
+    },
+    {
+      "questionId": "mosaic-law-easy-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.504Z"
+    },
+    {
+      "questionId": "mosaic-law-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.508Z"
+    },
+    {
+      "questionId": "mosaic-law-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.512Z"
+    },
+    {
+      "questionId": "mosaic-law-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.516Z"
+    },
+    {
+      "questionId": "mosaic-law-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.520Z"
+    },
+    {
+      "questionId": "mosaic-law-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.524Z"
+    },
+    {
+      "questionId": "mosaic-law-medium-3",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.528Z"
+    },
+    {
+      "questionId": "mosaic-law-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.532Z"
+    },
+    {
+      "questionId": "mosaic-law-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.536Z"
+    },
+    {
+      "questionId": "mosaic-law-hard-1",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.538Z"
+    },
+    {
+      "questionId": "mosaic-law-hard-2",
+      "status": "approved",
+      "ambiguityScore": 15,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.542Z"
+    },
+    {
+      "questionId": "mosaic-law-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.546Z"
+    },
+    {
+      "questionId": "mosaic-law-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.549Z"
+    },
+    {
+      "questionId": "mosaic-law-hard-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.553Z"
+    },
+    {
+      "questionId": "paul-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.557Z"
+    },
+    {
+      "questionId": "paul-easy-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.561Z"
+    },
+    {
+      "questionId": "paul-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.564Z"
+    },
+    {
+      "questionId": "paul-easy-4",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.567Z"
+    },
+    {
+      "questionId": "paul-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.570Z"
+    },
+    {
+      "questionId": "paul-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.575Z"
+    },
+    {
+      "questionId": "paul-medium-2",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.579Z"
+    },
+    {
+      "questionId": "paul-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.584Z"
+    },
+    {
+      "questionId": "paul-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.588Z"
+    },
+    {
+      "questionId": "paul-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.592Z"
+    },
+    {
+      "questionId": "paul-hard-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.596Z"
+    },
+    {
+      "questionId": "paul-hard-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.600Z"
+    },
+    {
+      "questionId": "paul-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.603Z"
+    },
+    {
+      "questionId": "paul-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.607Z"
+    },
+    {
+      "questionId": "paul-hard-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.611Z"
+    },
+    {
+      "questionId": "judges-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.615Z"
+    },
+    {
+      "questionId": "judges-easy-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.619Z"
+    },
+    {
+      "questionId": "judges-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.623Z"
+    },
+    {
+      "questionId": "judges-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.627Z"
+    },
+    {
+      "questionId": "judges-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.631Z"
+    },
+    {
+      "questionId": "judges-medium-1",
+      "status": "approved",
+      "ambiguityScore": 15,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.634Z"
+    },
+    {
+      "questionId": "judges-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.638Z"
+    },
+    {
+      "questionId": "judges-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.642Z"
+    },
+    {
+      "questionId": "judges-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.646Z"
+    },
+    {
+      "questionId": "judges-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.650Z"
+    },
+    {
+      "questionId": "judges-hard-1",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.653Z"
+    },
+    {
+      "questionId": "judges-hard-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.656Z"
+    },
+    {
+      "questionId": "judges-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.660Z"
+    },
+    {
+      "questionId": "judges-hard-4",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.664Z"
+    },
+    {
+      "questionId": "judges-hard-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.668Z"
+    },
+    {
+      "questionId": "kings-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.672Z"
+    },
+    {
+      "questionId": "kings-easy-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.675Z"
+    },
+    {
+      "questionId": "kings-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.679Z"
+    },
+    {
+      "questionId": "kings-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.683Z"
+    },
+    {
+      "questionId": "kings-easy-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.687Z"
+    },
+    {
+      "questionId": "kings-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.690Z"
+    },
+    {
+      "questionId": "kings-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.694Z"
+    },
+    {
+      "questionId": "kings-medium-3",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.698Z"
+    },
+    {
+      "questionId": "kings-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.700Z"
+    },
+    {
+      "questionId": "kings-medium-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.704Z"
+    },
+    {
+      "questionId": "kings-hard-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.708Z"
+    },
+    {
+      "questionId": "kings-hard-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.712Z"
+    },
+    {
+      "questionId": "kings-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.716Z"
+    },
+    {
+      "questionId": "kings-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.719Z"
+    },
+    {
+      "questionId": "kings-hard-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.723Z"
+    },
+    {
+      "questionId": "new-testament-easy-1",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.725Z"
+    },
+    {
+      "questionId": "new-testament-easy-2",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.729Z"
+    },
+    {
+      "questionId": "new-testament-easy-3",
+      "status": "approved",
+      "ambiguityScore": 15,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.732Z"
+    },
+    {
+      "questionId": "new-testament-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.736Z"
+    },
+    {
+      "questionId": "new-testament-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.739Z"
+    },
+    {
+      "questionId": "new-testament-medium-1",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.743Z"
+    },
+    {
+      "questionId": "new-testament-medium-2",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.748Z"
+    },
+    {
+      "questionId": "new-testament-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.751Z"
+    },
+    {
+      "questionId": "new-testament-medium-4",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.755Z"
+    },
+    {
+      "questionId": "new-testament-medium-5",
+      "status": "quarantined",
+      "ambiguityScore": 0,
+      "qualityScore": 80,
+      "duplicateIds": [
+        "revelation-easy-2"
+      ],
+      "issues": [
+        {
+          "type": "duplicate",
+          "severity": "high",
+          "message": "Знайдено 1 подібних питань",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.759Z"
+    },
+    {
+      "questionId": "new-testament-hard-1",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.763Z"
+    },
+    {
+      "questionId": "new-testament-hard-2",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.765Z"
+    },
+    {
+      "questionId": "new-testament-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.769Z"
+    },
+    {
+      "questionId": "new-testament-hard-4",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.773Z"
+    },
+    {
+      "questionId": "new-testament-hard-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.777Z"
+    },
+    {
+      "questionId": "gospels-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.780Z"
+    },
+    {
+      "questionId": "gospels-easy-2",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.783Z"
+    },
+    {
+      "questionId": "gospels-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.787Z"
+    },
+    {
+      "questionId": "gospels-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.791Z"
+    },
+    {
+      "questionId": "gospels-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.794Z"
+    },
+    {
+      "questionId": "gospels-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.798Z"
+    },
+    {
+      "questionId": "gospels-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.801Z"
+    },
+    {
+      "questionId": "gospels-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.804Z"
+    },
+    {
+      "questionId": "gospels-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.809Z"
+    },
+    {
+      "questionId": "gospels-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.812Z"
+    },
+    {
+      "questionId": "gospels-hard-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.816Z"
+    },
+    {
+      "questionId": "gospels-hard-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.819Z"
+    },
+    {
+      "questionId": "gospels-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.821Z"
+    },
+    {
+      "questionId": "gospels-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.825Z"
+    },
+    {
+      "questionId": "gospels-hard-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.829Z"
+    },
+    {
+      "questionId": "prophets-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.833Z"
+    },
+    {
+      "questionId": "prophets-easy-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.836Z"
+    },
+    {
+      "questionId": "prophets-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.841Z"
+    },
+    {
+      "questionId": "prophets-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.845Z"
+    },
+    {
+      "questionId": "prophets-easy-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.849Z"
+    },
+    {
+      "questionId": "prophets-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.852Z"
+    },
+    {
+      "questionId": "prophets-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.856Z"
+    },
+    {
+      "questionId": "prophets-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.860Z"
+    },
+    {
+      "questionId": "prophets-medium-4",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.864Z"
+    },
+    {
+      "questionId": "prophets-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.867Z"
+    },
+    {
+      "questionId": "prophets-hard-1",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.869Z"
+    },
+    {
+      "questionId": "prophets-hard-2",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.873Z"
+    },
+    {
+      "questionId": "prophets-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.877Z"
+    },
+    {
+      "questionId": "prophets-hard-4",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.881Z"
+    },
+    {
+      "questionId": "prophets-hard-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.885Z"
+    },
+    {
+      "questionId": "psalms-easy-1",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.889Z"
+    },
+    {
+      "questionId": "psalms-easy-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.891Z"
+    },
+    {
+      "questionId": "psalms-easy-3",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.894Z"
+    },
+    {
+      "questionId": "psalms-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.897Z"
+    },
+    {
+      "questionId": "psalms-easy-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.901Z"
+    },
+    {
+      "questionId": "psalms-medium-1",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.904Z"
+    },
+    {
+      "questionId": "psalms-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.907Z"
+    },
+    {
+      "questionId": "psalms-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.910Z"
+    },
+    {
+      "questionId": "psalms-medium-4",
+      "status": "approved",
+      "ambiguityScore": 15,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.914Z"
+    },
+    {
+      "questionId": "psalms-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.917Z"
+    },
+    {
+      "questionId": "psalms-hard-1",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.919Z"
+    },
+    {
+      "questionId": "psalms-hard-2",
+      "status": "approved",
+      "ambiguityScore": 15,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.923Z"
+    },
+    {
+      "questionId": "psalms-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.926Z"
+    },
+    {
+      "questionId": "psalms-hard-4",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.930Z"
+    },
+    {
+      "questionId": "psalms-hard-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.933Z"
+    },
+    {
+      "questionId": "parables-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.937Z"
+    },
+    {
+      "questionId": "parables-easy-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.940Z"
+    },
+    {
+      "questionId": "parables-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.943Z"
+    },
+    {
+      "questionId": "parables-easy-4",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.947Z"
+    },
+    {
+      "questionId": "parables-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.951Z"
+    },
+    {
+      "questionId": "parables-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.953Z"
+    },
+    {
+      "questionId": "parables-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.957Z"
+    },
+    {
+      "questionId": "parables-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.961Z"
+    },
+    {
+      "questionId": "parables-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.965Z"
+    },
+    {
+      "questionId": "parables-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.968Z"
+    },
+    {
+      "questionId": "parables-hard-1",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.971Z"
+    },
+    {
+      "questionId": "parables-hard-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.975Z"
+    },
+    {
+      "questionId": "parables-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.979Z"
+    },
+    {
+      "questionId": "parables-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.982Z"
+    },
+    {
+      "questionId": "parables-hard-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:25.987Z"
+    },
+    {
+      "questionId": "commandments-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.990Z"
+    },
+    {
+      "questionId": "commandments-easy-2",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.993Z"
+    },
+    {
+      "questionId": "commandments-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:25.996Z"
+    },
+    {
+      "questionId": "commandments-easy-4",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.000Z"
+    },
+    {
+      "questionId": "commandments-easy-5",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.003Z"
+    },
+    {
+      "questionId": "commandments-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.007Z"
+    },
+    {
+      "questionId": "commandments-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.011Z"
+    },
+    {
+      "questionId": "commandments-medium-3",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.013Z"
+    },
+    {
+      "questionId": "commandments-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.017Z"
+    },
+    {
+      "questionId": "commandments-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.022Z"
+    },
+    {
+      "questionId": "commandments-hard-1",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:26.026Z"
+    },
+    {
+      "questionId": "commandments-hard-2",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:26.030Z"
+    },
+    {
+      "questionId": "commandments-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.034Z"
+    },
+    {
+      "questionId": "commandments-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.039Z"
+    },
+    {
+      "questionId": "commandments-hard-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.043Z"
+    },
+    {
+      "questionId": "miracles-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.047Z"
+    },
+    {
+      "questionId": "miracles-easy-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.049Z"
+    },
+    {
+      "questionId": "miracles-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.053Z"
+    },
+    {
+      "questionId": "miracles-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.057Z"
+    },
+    {
+      "questionId": "miracles-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.061Z"
+    },
+    {
+      "questionId": "miracles-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.064Z"
+    },
+    {
+      "questionId": "miracles-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.068Z"
+    },
+    {
+      "questionId": "miracles-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.072Z"
+    },
+    {
+      "questionId": "miracles-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.076Z"
+    },
+    {
+      "questionId": "miracles-medium-5",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:26.079Z"
+    },
+    {
+      "questionId": "miracles-hard-1",
+      "status": "approved",
+      "ambiguityScore": 25,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.083Z"
+    },
+    {
+      "questionId": "miracles-hard-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.086Z"
+    },
+    {
+      "questionId": "miracles-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.091Z"
+    },
+    {
+      "questionId": "miracles-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.095Z"
+    },
+    {
+      "questionId": "miracles-hard-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.100Z"
+    },
+    {
+      "questionId": "patriarchs-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.104Z"
+    },
+    {
+      "questionId": "patriarchs-easy-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.107Z"
+    },
+    {
+      "questionId": "patriarchs-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.110Z"
+    },
+    {
+      "questionId": "patriarchs-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.114Z"
+    },
+    {
+      "questionId": "patriarchs-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.118Z"
+    },
+    {
+      "questionId": "patriarchs-medium-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.121Z"
+    },
+    {
+      "questionId": "patriarchs-medium-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.125Z"
+    },
+    {
+      "questionId": "patriarchs-medium-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.128Z"
+    },
+    {
+      "questionId": "patriarchs-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.131Z"
+    },
+    {
+      "questionId": "patriarchs-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.135Z"
+    },
+    {
+      "questionId": "patriarchs-hard-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.139Z"
+    },
+    {
+      "questionId": "patriarchs-hard-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.141Z"
+    },
+    {
+      "questionId": "patriarchs-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.145Z"
+    },
+    {
+      "questionId": "patriarchs-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.149Z"
+    },
+    {
+      "questionId": "patriarchs-hard-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.153Z"
+    },
+    {
+      "questionId": "revelation-easy-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.155Z"
+    },
+    {
+      "questionId": "revelation-easy-2",
+      "status": "quarantined",
+      "ambiguityScore": 0,
+      "qualityScore": 80,
+      "duplicateIds": [
+        "new-testament-medium-5"
+      ],
+      "issues": [
+        {
+          "type": "duplicate",
+          "severity": "high",
+          "message": "Знайдено 1 подібних питань",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-21T14:59:26.159Z"
+    },
+    {
+      "questionId": "revelation-easy-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.161Z"
+    },
+    {
+      "questionId": "revelation-easy-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.165Z"
+    },
+    {
+      "questionId": "revelation-easy-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.169Z"
+    },
+    {
+      "questionId": "revelation-medium-1",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.171Z"
+    },
+    {
+      "questionId": "revelation-medium-2",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.175Z"
+    },
+    {
+      "questionId": "revelation-medium-3",
+      "status": "approved",
+      "ambiguityScore": 10,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.178Z"
+    },
+    {
+      "questionId": "revelation-medium-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.181Z"
+    },
+    {
+      "questionId": "revelation-medium-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.185Z"
+    },
+    {
+      "questionId": "revelation-hard-1",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.189Z"
+    },
+    {
+      "questionId": "revelation-hard-2",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.193Z"
+    },
+    {
+      "questionId": "revelation-hard-3",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.195Z"
+    },
+    {
+      "questionId": "revelation-hard-4",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.199Z"
+    },
+    {
+      "questionId": "revelation-hard-5",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-21T14:59:26.203Z"
+    }
+  ]
+}
