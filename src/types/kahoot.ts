@@ -25,6 +25,8 @@ export interface KahootRoomSettings {
   questionCount: number;
   timePerQuestion: number;
   difficulty: Difficulty;
+  playlistId?: string;
+  questionIds?: string[];
 }
 
 export interface KahootRoomState {

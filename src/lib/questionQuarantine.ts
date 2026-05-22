@@ -53,7 +53,7 @@ export class QuestionQuarantineManager {
   /**
    * Схвалити виправлення питання
    */
-  approveFix(questionId: string, reviewedBy: string): boolean {
+  approveFix(questionId: string, _reviewedBy: string): boolean {
     const quarantine = this.quarantinedQuestions.get(questionId);
     if (!quarantine) return false;
 
@@ -65,7 +65,7 @@ export class QuestionQuarantineManager {
   /**
    * Відхилити питання (видалити з бази)
    */
-  rejectQuestion(questionId: string, reviewedBy: string): boolean {
+  rejectQuestion(questionId: string, _reviewedBy: string): boolean {
     const quarantine = this.quarantinedQuestions.get(questionId);
     if (!quarantine) return false;
 

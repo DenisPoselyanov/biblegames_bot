@@ -1,11 +1,17 @@
 import type { Difficulty, FriendChallenge } from '../types';
 
+const CHALLENGES_STORAGE_KEY = 'bible-game-friend-challenges-v1';
+
 /**
  * Менеджер викликів друзів
  */
 export class FriendChallengeManager {
   private challenges: Map<string, FriendChallenge> = new Map();
   private readonly CHALLENGE_EXPIRY_HOURS = 24; // Виклик діє 24 години
+
+  constructor() {
+    this.loadFromStorage();
+  }
 
   /**
    * Створити виклик друга
@@ -42,6 +48,7 @@ export class FriendChallengeManager {
     };
 
     this.challenges.set(id, challenge);
+    this.saveToStorage();
     return challenge;
   }
 
@@ -89,6 +96,7 @@ export class FriendChallengeManager {
 
     challenge.status = 'accepted';
     this.challenges.set(challengeId, challenge);
+    this.saveToStorage();
     return challenge;
   }
 
@@ -101,6 +109,7 @@ export class FriendChallengeManager {
 
     challenge.status = 'declined';
     this.challenges.set(challengeId, challenge);
+    this.saveToStorage();
     return challenge;
   }
 
@@ -116,6 +125,7 @@ export class FriendChallengeManager {
     challenge.challengedScore = challengedScore;
     challenge.completedAt = new Date().toISOString();
     this.challenges.set(challengeId, challenge);
+    this.saveToStorage();
     return challenge;
   }
 
@@ -131,7 +141,9 @@ export class FriendChallengeManager {
       return false;
     }
 
-    return this.challenges.delete(challengeId);
+    const removed = this.challenges.delete(challengeId);
+    if (removed) this.saveToStorage();
+    return removed;
   }
 
   /**
@@ -152,6 +164,7 @@ export class FriendChallengeManager {
         cleaned++;
       }
     }
+    if (cleaned) this.saveToStorage();
     return cleaned;
   }
 
@@ -188,7 +201,7 @@ export class FriendChallengeManager {
     });
 
     return {
-      total: userChallenges.length,
+      totalGames: userChallenges.length,
       completed: completed.length,
       pending: userChallenges.filter(c => c.status === 'pending').length,
       accepted: userChallenges.filter(c => c.status === 'accepted').length,
@@ -214,11 +227,11 @@ export class FriendChallengeManager {
     }));
 
     return stats
-      .filter(s => s.total > 0)
+      .filter(s => s.totalGames > 0)
       .sort((a, b) => {
         if (b.wins !== a.wins) return b.wins - a.wins;
         if (b.winRate !== a.winRate) return b.winRate - a.winRate;
-        return b.total - a.total;
+        return b.totalGames - a.totalGames;
       });
   }
 
@@ -242,6 +255,32 @@ export class FriendChallengeManager {
       declined: all.filter(c => c.status === 'declined').length,
       expired: all.filter(c => this.isExpired(c)).length,
     };
+  }
+
+  private loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(CHALLENGES_STORAGE_KEY);
+      if (!raw) return;
+      const list = JSON.parse(raw) as FriendChallenge[];
+      if (!Array.isArray(list)) return;
+      for (const c of list) {
+        if (!c?.id) continue;
+        this.challenges.set(c.id, c);
+      }
+    } catch {
+      return;
+    }
+  }
+
+  private saveToStorage() {
+    try {
+      localStorage.setItem(
+        CHALLENGES_STORAGE_KEY,
+        JSON.stringify(Array.from(this.challenges.values())),
+      );
+    } catch {
+      return;
+    }
   }
 }
 

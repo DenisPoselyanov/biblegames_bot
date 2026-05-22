@@ -1,0 +1,10 @@
+name: CodeGraph
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: codegraph
+    type: stdio
+    command: codegraph
+    args:
+      - serve
+      - --mcp

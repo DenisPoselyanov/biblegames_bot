@@ -222,16 +222,11 @@ export class QuestionQualityValidator {
    */
   private detectTypos(question: Question): string[] {
     const typos: string[] = [];
-    const commonTypos = {
-      'іісус': 'ісус',
-      'бог': 'бог',
-      'христос': 'христос',
-    };
 
     const allText = [question.text, ...question.options].join(' ').toLowerCase();
     
     // Проста перевірка на повторені літери
-    const repeatedLetters = allText.match(/([а-яа-яґєії])\1{2,}/g);
+    const repeatedLetters = allText.match(/([а-яґєії])\1{2,}/g);
     if (repeatedLetters) {
       typos.push(...repeatedLetters);
     }

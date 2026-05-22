@@ -1,15 +1,46 @@
 #!/usr/bin/env tsx
 /**
  * Скрипт для аналізу та ініціалізації пулів питань
+ * Аналізує як вбудовані (TS), так і AI-генеровані питання (JSON з data/question-db/)
  */
 import { QUESTIONS } from '../src/data/questions';
 import { questionPoolManager } from '../src/lib/questionPools';
+import { questionQuarantineManager } from '../src/lib/questionQuarantine';
+import fs from 'fs';
+import path from 'path';
 import type { Question } from '../src/types';
 
-console.log('🔍 Початок аналізу пулів питань...\n');
+const DB_DIR = path.resolve('data/question-db');
+
+function loadAiQuestions(): Question[] {
+  if (!fs.existsSync(DB_DIR)) return [];
+  const all: Question[] = [];
+  for (const file of fs.readdirSync(DB_DIR).filter(f => f.endsWith('.json'))) {
+    try {
+      const data: Question[] = JSON.parse(fs.readFileSync(path.join(DB_DIR, file), 'utf-8'));
+      all.push(...data);
+    } catch { /* skip broken json */ }
+  }
+  return all;
+}
+
+const AI_QUESTIONS = loadAiQuestions();
+const ALL_QUESTIONS = [...QUESTIONS, ...AI_QUESTIONS];
+
+console.log(`🔍 Початок аналізу пулів питань... (вбудовані: ${QUESTIONS.length}, AI: ${AI_QUESTIONS.length}, разом: ${ALL_QUESTIONS.length})\n`);
+
+// Синхронізуємо карантин з quarantineManager (якщо analyze-quality був запущений)
+// та встановлюємо значення за замовчуванням
+for (const q of ALL_QUESTIONS) {
+  const quarantineInfo = questionQuarantineManager.getQuarantineInfo(q.id);
+  if (quarantineInfo) {
+    q.quarantined = true;
+    q.quarantineReason = quarantineInfo.reason;
+  }
+}
 
 // Спочатку класифікуємо всі питання
-questionPoolManager.initializePools(QUESTIONS);
+questionPoolManager.initializePools(ALL_QUESTIONS);
 
 // Отримуємо статистику
 const stats = questionPoolManager.getPoolStats();
@@ -70,9 +101,8 @@ const gameEasyQuestions = questionPoolManager.getGameQuestions({
 console.log(`Game pool, easy difficulty, ambiguity ≤ 30: ${gameEasyQuestions.length} питань`);
 
 // Аналіз питань, які не потрапили в study pool
-const allQuestions = QUESTIONS;
 const studyQuestions = questionPoolManager.getStudyQuestions();
-const excludedFromStudy = allQuestions.filter(q => 
+const excludedFromStudy = ALL_QUESTIONS.filter(q => 
   !studyQuestions.find(sq => sq.id === q.id)
 );
 
@@ -96,11 +126,12 @@ if (excludedFromStudy.length > 10) {
 }
 
 // Збереження звіту в файл
-const fs = await import('fs');
-const reportData = {
+  const reportData = {
   generatedAt: new Date().toISOString(),
   summary: {
-    totalQuestions: allQuestions.length,
+    totalQuestions: ALL_QUESTIONS.length,
+    embeddedCount: QUESTIONS.length,
+    aiCount: AI_QUESTIONS.length,
     studyPoolSize: stats.study.total,
     gamePoolSize: stats.game.total,
     overlap: stats.overlap,

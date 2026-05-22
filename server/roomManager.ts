@@ -6,7 +6,7 @@ import type {
   KahootRoomSettings,
   KahootRoomState,
 } from '../src/types/kahoot';
-import { getKahootQuestionsSync } from '../src/data/kahootQuestions';
+import { getKahootQuestionsByIdsSync, getKahootQuestionsSync } from '../src/data/kahootQuestions';
 
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const REVEAL_MS = 5000;
@@ -69,6 +69,7 @@ export class RoomManager {
       settings: {
         ...settings,
         themeIds: [...new Set(settings.themeIds)],
+        questionIds: settings.questionIds?.length ? [...new Set(settings.questionIds)] : undefined,
       },
       players: new Map([[hostSocketId, host]]),
       questions: [],
@@ -127,8 +128,18 @@ export class RoomManager {
     if (room.hostId !== hostSocketId) throw new Error('Лише ведучий може змінювати налаштування');
     if (room.phase !== 'lobby') throw new Error('Налаштування можна змінити лише в лобі');
 
-    if (settings.themeIds?.length) {
-      room.settings.themeIds = [...new Set(settings.themeIds)];
+    if (settings.themeIds) {
+      room.settings.themeIds = [...new Set(settings.themeIds)].filter(Boolean);
+      room.settings.questionIds = undefined;
+      room.settings.playlistId = undefined;
+    }
+    if (settings.questionIds) {
+      room.settings.questionIds = settings.questionIds.length
+        ? [...new Set(settings.questionIds)].filter(Boolean)
+        : undefined;
+    }
+    if (settings.playlistId !== undefined) {
+      room.settings.playlistId = settings.playlistId || undefined;
     }
     if (settings.questionCount) {
       room.settings.questionCount = Math.min(20, Math.max(3, settings.questionCount));
@@ -151,13 +162,17 @@ export class RoomManager {
     if (room.hostId !== hostSocketId) throw new Error('Лише ведучий може почати гру');
     if (room.phase !== 'lobby') throw new Error('Гра вже почалась');
     if (room.players.size < 1) throw new Error('Потрібен хоча б один гравець');
-    if (room.settings.themeIds.length === 0) throw new Error('Оберіть хоча б одну тему');
+    if (!room.settings.questionIds?.length && room.settings.themeIds.length === 0) {
+      throw new Error('Оберіть хоча б одну тему або плейлист');
+    }
 
-    const questions = getKahootQuestionsSync(
-      room.settings.themeIds,
-      room.settings.questionCount,
-      room.settings.difficulty,
-    );
+    const questions = room.settings.questionIds?.length
+      ? getKahootQuestionsByIdsSync(room.settings.questionIds, room.settings.questionCount)
+      : getKahootQuestionsSync(
+          room.settings.themeIds,
+          room.settings.questionCount,
+          room.settings.difficulty,
+        );
 
     if (questions.length < 3) {
       throw new Error('Недостатньо питань для обраних тем');

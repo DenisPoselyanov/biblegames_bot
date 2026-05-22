@@ -1,4 +1,5 @@
 import type { Difficulty, Question } from '../types';
+import { questionQuarantineManager } from './questionQuarantine';
 
 /**
  * Типи пулів питань
@@ -102,7 +103,6 @@ export class QuestionPoolManager {
     // Аналіз змісту для навчання
     const hasExplanation = !!(question.explanationShort || question.explanationDeep);
     const hasReference = !!question.reference;
-    const isComplex = ['hard', 'expert'].includes(question.difficulty);
 
     // Правила для study pool
     let studyEligible = true;
@@ -127,7 +127,8 @@ export class QuestionPoolManager {
       studyEligible = false;
       reasons.push('no_explanation');
     }
-    if (question.quarantined) {
+    const isQuarantined = question.quarantined || !!questionQuarantineManager.getQuarantineInfo(question.id);
+    if (isQuarantined) {
       studyEligible = false;
       reasons.push('quarantined');
     }
@@ -156,7 +157,7 @@ export class QuestionPoolManager {
       gameEligible = false;
       reasons.push(`difficulty_not_allowed_${question.difficulty}`);
     }
-    if (question.quarantined) {
+    if (isQuarantined) {
       gameEligible = false;
       reasons.push('quarantined');
     }
@@ -217,18 +218,17 @@ export class QuestionPoolManager {
     const rules = this.getModeSpecificRules(mode);
     const pool = mode === 'exploration' ? this.getStudyQuestions() : this.getGameQuestions();
     
+    const allowed = rules.allowedDifficulties ?? ['easy', 'medium', 'hard', 'expert'];
     let filtered = pool.filter(q => {
-      if (!rules.allowedDifficulties.includes(q.difficulty)) return false;
+      if (!allowed.includes(q.difficulty)) return false;
       if (rules.requireReference && !q.reference) return false;
       return true;
     });
 
     // Сортування за складністю для певних режимів
     if (mode === 'millionaire') {
-      filtered.sort((a, b) => {
-        const order = { easy: 0, medium: 1, hard: 2, expert: 3 };
-        return order[a.difficulty] - order[b.difficulty];
-      });
+      const difficultyOrder: Record<string, number> = { beginner: 0, easy: 1, medium: 2, hard: 3, expert: 4 };
+      filtered.sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
     }
 
     return filtered.slice(0, count);

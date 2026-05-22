@@ -1,12 +1,23 @@
 {
-  "generatedAt": "2026-05-21T14:59:26.204Z",
+  "generatedAt": "2026-05-22T09:12:28.055Z",
   "summary": {
-    "total": 225,
-    "approved": 223,
+    "total": 526,
+    "embeddedCount": 225,
+    "aiCount": 301,
+    "approved": 523,
     "quarantined": 2,
-    "pending": 0,
-    "rejected": 0
+    "pending": 1,
+    "rejected": 0,
+    "similarPairsCount": 1,
+    "similarGroupsCount": 1
   },
+  "topSimilarPairs": [
+    {
+      "q1": "new-testament-medium-5",
+      "q2": "revelation-easy-2",
+      "similarity": 1
+    }
+  ],
   "quarantineStats": {
     "total": 2,
     "pending_review": 2,
@@ -14,8 +25,10 @@
     "rejected": 0
   },
   "issueTypes": {
-    "unclear_reference": 41,
-    "duplicate": 2
+    "unclear_reference": 44,
+    "duplicate": 2,
+    "wrong_difficulty": 72,
+    "ambiguous": 2
   },
   "reports": [
     {
@@ -25,7 +38,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.383Z"
+      "reviewedAt": "2026-05-22T09:12:20.028Z"
     },
     {
       "questionId": "geography-easy-2",
@@ -34,7 +47,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.389Z"
+      "reviewedAt": "2026-05-22T09:12:20.041Z"
     },
     {
       "questionId": "geography-easy-3",
@@ -43,7 +56,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.393Z"
+      "reviewedAt": "2026-05-22T09:12:20.054Z"
     },
     {
       "questionId": "geography-easy-4",
@@ -52,7 +65,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.398Z"
+      "reviewedAt": "2026-05-22T09:12:20.067Z"
     },
     {
       "questionId": "geography-easy-5",
@@ -61,7 +74,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.401Z"
+      "reviewedAt": "2026-05-22T09:12:20.079Z"
     },
     {
       "questionId": "geography-medium-1",
@@ -70,7 +83,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.405Z"
+      "reviewedAt": "2026-05-22T09:12:20.091Z"
     },
     {
       "questionId": "geography-medium-2",
@@ -79,7 +92,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.409Z"
+      "reviewedAt": "2026-05-22T09:12:20.103Z"
     },
     {
       "questionId": "geography-medium-3",
@@ -88,7 +101,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.413Z"
+      "reviewedAt": "2026-05-22T09:12:20.116Z"
     },
     {
       "questionId": "geography-medium-4",
@@ -97,7 +110,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.417Z"
+      "reviewedAt": "2026-05-22T09:12:20.128Z"
     },
     {
       "questionId": "geography-medium-5",
@@ -106,7 +119,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.421Z"
+      "reviewedAt": "2026-05-22T09:12:20.139Z"
     },
     {
       "questionId": "geography-hard-1",
@@ -115,7 +128,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.425Z"
+      "reviewedAt": "2026-05-22T09:12:20.150Z"
     },
     {
       "questionId": "geography-hard-2",
@@ -124,7 +137,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.429Z"
+      "reviewedAt": "2026-05-22T09:12:20.161Z"
     },
     {
       "questionId": "geography-hard-3",
@@ -133,7 +146,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.433Z"
+      "reviewedAt": "2026-05-22T09:12:20.172Z"
     },
     {
       "questionId": "geography-hard-4",
@@ -142,7 +155,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.437Z"
+      "reviewedAt": "2026-05-22T09:12:20.183Z"
     },
     {
       "questionId": "geography-hard-5",
@@ -151,7 +164,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.440Z"
+      "reviewedAt": "2026-05-22T09:12:20.195Z"
     },
     {
       "questionId": "old-testament-easy-1",
@@ -160,7 +173,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.444Z"
+      "reviewedAt": "2026-05-22T09:12:20.205Z"
     },
     {
       "questionId": "old-testament-easy-2",
@@ -169,7 +182,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.447Z"
+      "reviewedAt": "2026-05-22T09:12:20.214Z"
     },
     {
       "questionId": "old-testament-easy-3",
@@ -178,7 +191,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.451Z"
+      "reviewedAt": "2026-05-22T09:12:20.225Z"
     },
     {
       "questionId": "old-testament-easy-4",
@@ -187,7 +200,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.454Z"
+      "reviewedAt": "2026-05-22T09:12:20.236Z"
     },
     {
       "questionId": "old-testament-easy-5",
@@ -196,7 +209,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.458Z"
+      "reviewedAt": "2026-05-22T09:12:20.247Z"
     },
     {
       "questionId": "old-testament-medium-1",
@@ -205,7 +218,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.462Z"
+      "reviewedAt": "2026-05-22T09:12:20.259Z"
     },
     {
       "questionId": "old-testament-medium-2",
@@ -214,7 +227,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.466Z"
+      "reviewedAt": "2026-05-22T09:12:20.272Z"
     },
     {
       "questionId": "old-testament-medium-3",
@@ -223,7 +236,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.470Z"
+      "reviewedAt": "2026-05-22T09:12:20.283Z"
     },
     {
       "questionId": "old-testament-medium-4",
@@ -232,7 +245,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.474Z"
+      "reviewedAt": "2026-05-22T09:12:20.295Z"
     },
     {
       "questionId": "old-testament-medium-5",
@@ -241,7 +254,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.478Z"
+      "reviewedAt": "2026-05-22T09:12:20.306Z"
     },
     {
       "questionId": "old-testament-hard-1",
@@ -250,7 +263,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.482Z"
+      "reviewedAt": "2026-05-22T09:12:20.319Z"
     },
     {
       "questionId": "old-testament-hard-2",
@@ -259,7 +272,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.486Z"
+      "reviewedAt": "2026-05-22T09:12:20.332Z"
     },
     {
       "questionId": "old-testament-hard-3",
@@ -268,7 +281,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.490Z"
+      "reviewedAt": "2026-05-22T09:12:20.346Z"
     },
     {
       "questionId": "old-testament-hard-4",
@@ -277,7 +290,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.493Z"
+      "reviewedAt": "2026-05-22T09:12:20.354Z"
     },
     {
       "questionId": "old-testament-hard-5",
@@ -293,7 +306,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.497Z"
+      "reviewedAt": "2026-05-22T09:12:20.370Z"
     },
     {
       "questionId": "mosaic-law-easy-1",
@@ -302,7 +315,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.500Z"
+      "reviewedAt": "2026-05-22T09:12:20.379Z"
     },
     {
       "questionId": "mosaic-law-easy-2",
@@ -311,7 +324,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.504Z"
+      "reviewedAt": "2026-05-22T09:12:20.391Z"
     },
     {
       "questionId": "mosaic-law-easy-3",
@@ -320,7 +333,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.508Z"
+      "reviewedAt": "2026-05-22T09:12:20.403Z"
     },
     {
       "questionId": "mosaic-law-easy-4",
@@ -329,7 +342,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.512Z"
+      "reviewedAt": "2026-05-22T09:12:20.414Z"
     },
     {
       "questionId": "mosaic-law-easy-5",
@@ -338,7 +351,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.516Z"
+      "reviewedAt": "2026-05-22T09:12:20.426Z"
     },
     {
       "questionId": "mosaic-law-medium-1",
@@ -347,7 +360,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.520Z"
+      "reviewedAt": "2026-05-22T09:12:20.438Z"
     },
     {
       "questionId": "mosaic-law-medium-2",
@@ -356,7 +369,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.524Z"
+      "reviewedAt": "2026-05-22T09:12:20.449Z"
     },
     {
       "questionId": "mosaic-law-medium-3",
@@ -365,7 +378,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.528Z"
+      "reviewedAt": "2026-05-22T09:12:20.462Z"
     },
     {
       "questionId": "mosaic-law-medium-4",
@@ -374,7 +387,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.532Z"
+      "reviewedAt": "2026-05-22T09:12:20.473Z"
     },
     {
       "questionId": "mosaic-law-medium-5",
@@ -383,7 +396,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.536Z"
+      "reviewedAt": "2026-05-22T09:12:20.484Z"
     },
     {
       "questionId": "mosaic-law-hard-1",
@@ -399,7 +412,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.538Z"
+      "reviewedAt": "2026-05-22T09:12:20.492Z"
     },
     {
       "questionId": "mosaic-law-hard-2",
@@ -415,7 +428,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.542Z"
+      "reviewedAt": "2026-05-22T09:12:20.504Z"
     },
     {
       "questionId": "mosaic-law-hard-3",
@@ -424,7 +437,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.546Z"
+      "reviewedAt": "2026-05-22T09:12:20.516Z"
     },
     {
       "questionId": "mosaic-law-hard-4",
@@ -433,7 +446,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.549Z"
+      "reviewedAt": "2026-05-22T09:12:20.528Z"
     },
     {
       "questionId": "mosaic-law-hard-5",
@@ -442,7 +455,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.553Z"
+      "reviewedAt": "2026-05-22T09:12:20.541Z"
     },
     {
       "questionId": "paul-easy-1",
@@ -451,7 +464,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.557Z"
+      "reviewedAt": "2026-05-22T09:12:20.553Z"
     },
     {
       "questionId": "paul-easy-2",
@@ -460,7 +473,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.561Z"
+      "reviewedAt": "2026-05-22T09:12:20.564Z"
     },
     {
       "questionId": "paul-easy-3",
@@ -469,7 +482,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.564Z"
+      "reviewedAt": "2026-05-22T09:12:20.575Z"
     },
     {
       "questionId": "paul-easy-4",
@@ -485,7 +498,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.567Z"
+      "reviewedAt": "2026-05-22T09:12:20.583Z"
     },
     {
       "questionId": "paul-easy-5",
@@ -494,7 +507,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.570Z"
+      "reviewedAt": "2026-05-22T09:12:20.595Z"
     },
     {
       "questionId": "paul-medium-1",
@@ -503,7 +516,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.575Z"
+      "reviewedAt": "2026-05-22T09:12:20.608Z"
     },
     {
       "questionId": "paul-medium-2",
@@ -519,7 +532,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.579Z"
+      "reviewedAt": "2026-05-22T09:12:20.620Z"
     },
     {
       "questionId": "paul-medium-3",
@@ -528,7 +541,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.584Z"
+      "reviewedAt": "2026-05-22T09:12:20.631Z"
     },
     {
       "questionId": "paul-medium-4",
@@ -537,7 +550,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.588Z"
+      "reviewedAt": "2026-05-22T09:12:20.642Z"
     },
     {
       "questionId": "paul-medium-5",
@@ -546,7 +559,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.592Z"
+      "reviewedAt": "2026-05-22T09:12:20.655Z"
     },
     {
       "questionId": "paul-hard-1",
@@ -555,7 +568,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.596Z"
+      "reviewedAt": "2026-05-22T09:12:20.667Z"
     },
     {
       "questionId": "paul-hard-2",
@@ -564,7 +577,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.600Z"
+      "reviewedAt": "2026-05-22T09:12:20.679Z"
     },
     {
       "questionId": "paul-hard-3",
@@ -573,7 +586,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.603Z"
+      "reviewedAt": "2026-05-22T09:12:20.690Z"
     },
     {
       "questionId": "paul-hard-4",
@@ -582,7 +595,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.607Z"
+      "reviewedAt": "2026-05-22T09:12:20.702Z"
     },
     {
       "questionId": "paul-hard-5",
@@ -598,7 +611,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.611Z"
+      "reviewedAt": "2026-05-22T09:12:20.714Z"
     },
     {
       "questionId": "judges-easy-1",
@@ -607,7 +620,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.615Z"
+      "reviewedAt": "2026-05-22T09:12:20.725Z"
     },
     {
       "questionId": "judges-easy-2",
@@ -616,7 +629,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.619Z"
+      "reviewedAt": "2026-05-22T09:12:20.736Z"
     },
     {
       "questionId": "judges-easy-3",
@@ -625,7 +638,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.623Z"
+      "reviewedAt": "2026-05-22T09:12:20.748Z"
     },
     {
       "questionId": "judges-easy-4",
@@ -634,7 +647,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.627Z"
+      "reviewedAt": "2026-05-22T09:12:20.762Z"
     },
     {
       "questionId": "judges-easy-5",
@@ -643,7 +656,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.631Z"
+      "reviewedAt": "2026-05-22T09:12:20.774Z"
     },
     {
       "questionId": "judges-medium-1",
@@ -659,7 +672,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.634Z"
+      "reviewedAt": "2026-05-22T09:12:20.784Z"
     },
     {
       "questionId": "judges-medium-2",
@@ -668,7 +681,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.638Z"
+      "reviewedAt": "2026-05-22T09:12:20.796Z"
     },
     {
       "questionId": "judges-medium-3",
@@ -677,7 +690,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.642Z"
+      "reviewedAt": "2026-05-22T09:12:20.807Z"
     },
     {
       "questionId": "judges-medium-4",
@@ -686,7 +699,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.646Z"
+      "reviewedAt": "2026-05-22T09:12:20.819Z"
     },
     {
       "questionId": "judges-medium-5",
@@ -695,7 +708,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.650Z"
+      "reviewedAt": "2026-05-22T09:12:20.831Z"
     },
     {
       "questionId": "judges-hard-1",
@@ -704,7 +717,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.653Z"
+      "reviewedAt": "2026-05-22T09:12:20.842Z"
     },
     {
       "questionId": "judges-hard-2",
@@ -713,7 +726,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.656Z"
+      "reviewedAt": "2026-05-22T09:12:20.851Z"
     },
     {
       "questionId": "judges-hard-3",
@@ -722,7 +735,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.660Z"
+      "reviewedAt": "2026-05-22T09:12:20.862Z"
     },
     {
       "questionId": "judges-hard-4",
@@ -738,7 +751,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.664Z"
+      "reviewedAt": "2026-05-22T09:12:20.874Z"
     },
     {
       "questionId": "judges-hard-5",
@@ -747,7 +760,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.668Z"
+      "reviewedAt": "2026-05-22T09:12:20.886Z"
     },
     {
       "questionId": "kings-easy-1",
@@ -756,7 +769,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.672Z"
+      "reviewedAt": "2026-05-22T09:12:20.898Z"
     },
     {
       "questionId": "kings-easy-2",
@@ -765,7 +778,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.675Z"
+      "reviewedAt": "2026-05-22T09:12:20.910Z"
     },
     {
       "questionId": "kings-easy-3",
@@ -774,7 +787,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.679Z"
+      "reviewedAt": "2026-05-22T09:12:20.922Z"
     },
     {
       "questionId": "kings-easy-4",
@@ -783,7 +796,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.683Z"
+      "reviewedAt": "2026-05-22T09:12:20.934Z"
     },
     {
       "questionId": "kings-easy-5",
@@ -799,7 +812,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.687Z"
+      "reviewedAt": "2026-05-22T09:12:20.945Z"
     },
     {
       "questionId": "kings-medium-1",
@@ -808,7 +821,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.690Z"
+      "reviewedAt": "2026-05-22T09:12:20.956Z"
     },
     {
       "questionId": "kings-medium-2",
@@ -817,7 +830,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.694Z"
+      "reviewedAt": "2026-05-22T09:12:20.968Z"
     },
     {
       "questionId": "kings-medium-3",
@@ -833,7 +846,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.698Z"
+      "reviewedAt": "2026-05-22T09:12:20.982Z"
     },
     {
       "questionId": "kings-medium-4",
@@ -842,7 +855,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.700Z"
+      "reviewedAt": "2026-05-22T09:12:20.991Z"
     },
     {
       "questionId": "kings-medium-5",
@@ -858,7 +871,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.704Z"
+      "reviewedAt": "2026-05-22T09:12:21.003Z"
     },
     {
       "questionId": "kings-hard-1",
@@ -867,7 +880,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.708Z"
+      "reviewedAt": "2026-05-22T09:12:21.015Z"
     },
     {
       "questionId": "kings-hard-2",
@@ -876,7 +889,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.712Z"
+      "reviewedAt": "2026-05-22T09:12:21.027Z"
     },
     {
       "questionId": "kings-hard-3",
@@ -885,7 +898,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.716Z"
+      "reviewedAt": "2026-05-22T09:12:21.038Z"
     },
     {
       "questionId": "kings-hard-4",
@@ -894,7 +907,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.719Z"
+      "reviewedAt": "2026-05-22T09:12:21.048Z"
     },
     {
       "questionId": "kings-hard-5",
@@ -903,7 +916,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.723Z"
+      "reviewedAt": "2026-05-22T09:12:21.061Z"
     },
     {
       "questionId": "new-testament-easy-1",
@@ -919,7 +932,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.725Z"
+      "reviewedAt": "2026-05-22T09:12:21.071Z"
     },
     {
       "questionId": "new-testament-easy-2",
@@ -935,7 +948,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.729Z"
+      "reviewedAt": "2026-05-22T09:12:21.082Z"
     },
     {
       "questionId": "new-testament-easy-3",
@@ -951,7 +964,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.732Z"
+      "reviewedAt": "2026-05-22T09:12:21.092Z"
     },
     {
       "questionId": "new-testament-easy-4",
@@ -960,7 +973,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.736Z"
+      "reviewedAt": "2026-05-22T09:12:21.103Z"
     },
     {
       "questionId": "new-testament-easy-5",
@@ -969,7 +982,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.739Z"
+      "reviewedAt": "2026-05-22T09:12:21.115Z"
     },
     {
       "questionId": "new-testament-medium-1",
@@ -985,7 +998,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.743Z"
+      "reviewedAt": "2026-05-22T09:12:21.127Z"
     },
     {
       "questionId": "new-testament-medium-2",
@@ -1001,7 +1014,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.748Z"
+      "reviewedAt": "2026-05-22T09:12:21.140Z"
     },
     {
       "questionId": "new-testament-medium-3",
@@ -1010,7 +1023,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.751Z"
+      "reviewedAt": "2026-05-22T09:12:21.152Z"
     },
     {
       "questionId": "new-testament-medium-4",
@@ -1026,7 +1039,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.755Z"
+      "reviewedAt": "2026-05-22T09:12:21.163Z"
     },
     {
       "questionId": "new-testament-medium-5",
@@ -1044,7 +1057,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.759Z"
+      "reviewedAt": "2026-05-22T09:12:21.175Z"
     },
     {
       "questionId": "new-testament-hard-1",
@@ -1060,7 +1073,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.763Z"
+      "reviewedAt": "2026-05-22T09:12:21.189Z"
     },
     {
       "questionId": "new-testament-hard-2",
@@ -1076,7 +1089,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.765Z"
+      "reviewedAt": "2026-05-22T09:12:21.197Z"
     },
     {
       "questionId": "new-testament-hard-3",
@@ -1085,7 +1098,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.769Z"
+      "reviewedAt": "2026-05-22T09:12:21.211Z"
     },
     {
       "questionId": "new-testament-hard-4",
@@ -1101,7 +1114,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.773Z"
+      "reviewedAt": "2026-05-22T09:12:21.224Z"
     },
     {
       "questionId": "new-testament-hard-5",
@@ -1117,7 +1130,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.777Z"
+      "reviewedAt": "2026-05-22T09:12:21.243Z"
     },
     {
       "questionId": "gospels-easy-1",
@@ -1126,7 +1139,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.780Z"
+      "reviewedAt": "2026-05-22T09:12:21.253Z"
     },
     {
       "questionId": "gospels-easy-2",
@@ -1135,7 +1148,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.783Z"
+      "reviewedAt": "2026-05-22T09:12:21.266Z"
     },
     {
       "questionId": "gospels-easy-3",
@@ -1144,7 +1157,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.787Z"
+      "reviewedAt": "2026-05-22T09:12:21.277Z"
     },
     {
       "questionId": "gospels-easy-4",
@@ -1153,7 +1166,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.791Z"
+      "reviewedAt": "2026-05-22T09:12:21.288Z"
     },
     {
       "questionId": "gospels-easy-5",
@@ -1162,7 +1175,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.794Z"
+      "reviewedAt": "2026-05-22T09:12:21.299Z"
     },
     {
       "questionId": "gospels-medium-1",
@@ -1171,7 +1184,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.798Z"
+      "reviewedAt": "2026-05-22T09:12:21.310Z"
     },
     {
       "questionId": "gospels-medium-2",
@@ -1180,7 +1193,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.801Z"
+      "reviewedAt": "2026-05-22T09:12:21.320Z"
     },
     {
       "questionId": "gospels-medium-3",
@@ -1189,7 +1202,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.804Z"
+      "reviewedAt": "2026-05-22T09:12:21.334Z"
     },
     {
       "questionId": "gospels-medium-4",
@@ -1198,7 +1211,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.809Z"
+      "reviewedAt": "2026-05-22T09:12:21.348Z"
     },
     {
       "questionId": "gospels-medium-5",
@@ -1207,7 +1220,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.812Z"
+      "reviewedAt": "2026-05-22T09:12:21.360Z"
     },
     {
       "questionId": "gospels-hard-1",
@@ -1216,7 +1229,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.816Z"
+      "reviewedAt": "2026-05-22T09:12:21.371Z"
     },
     {
       "questionId": "gospels-hard-2",
@@ -1225,7 +1238,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.819Z"
+      "reviewedAt": "2026-05-22T09:12:21.382Z"
     },
     {
       "questionId": "gospels-hard-3",
@@ -1234,7 +1247,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.821Z"
+      "reviewedAt": "2026-05-22T09:12:21.390Z"
     },
     {
       "questionId": "gospels-hard-4",
@@ -1243,7 +1256,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.825Z"
+      "reviewedAt": "2026-05-22T09:12:21.402Z"
     },
     {
       "questionId": "gospels-hard-5",
@@ -1252,7 +1265,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.829Z"
+      "reviewedAt": "2026-05-22T09:12:21.415Z"
     },
     {
       "questionId": "prophets-easy-1",
@@ -1261,7 +1274,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.833Z"
+      "reviewedAt": "2026-05-22T09:12:21.425Z"
     },
     {
       "questionId": "prophets-easy-2",
@@ -1270,7 +1283,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.836Z"
+      "reviewedAt": "2026-05-22T09:12:21.437Z"
     },
     {
       "questionId": "prophets-easy-3",
@@ -1279,7 +1292,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.841Z"
+      "reviewedAt": "2026-05-22T09:12:21.449Z"
     },
     {
       "questionId": "prophets-easy-4",
@@ -1288,7 +1301,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.845Z"
+      "reviewedAt": "2026-05-22T09:12:21.460Z"
     },
     {
       "questionId": "prophets-easy-5",
@@ -1304,7 +1317,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.849Z"
+      "reviewedAt": "2026-05-22T09:12:21.471Z"
     },
     {
       "questionId": "prophets-medium-1",
@@ -1313,7 +1326,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.852Z"
+      "reviewedAt": "2026-05-22T09:12:21.483Z"
     },
     {
       "questionId": "prophets-medium-2",
@@ -1322,7 +1335,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.856Z"
+      "reviewedAt": "2026-05-22T09:12:21.494Z"
     },
     {
       "questionId": "prophets-medium-3",
@@ -1331,7 +1344,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.860Z"
+      "reviewedAt": "2026-05-22T09:12:21.506Z"
     },
     {
       "questionId": "prophets-medium-4",
@@ -1347,7 +1360,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.864Z"
+      "reviewedAt": "2026-05-22T09:12:21.517Z"
     },
     {
       "questionId": "prophets-medium-5",
@@ -1356,7 +1369,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.867Z"
+      "reviewedAt": "2026-05-22T09:12:21.528Z"
     },
     {
       "questionId": "prophets-hard-1",
@@ -1372,7 +1385,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.869Z"
+      "reviewedAt": "2026-05-22T09:12:21.536Z"
     },
     {
       "questionId": "prophets-hard-2",
@@ -1388,7 +1401,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.873Z"
+      "reviewedAt": "2026-05-22T09:12:21.548Z"
     },
     {
       "questionId": "prophets-hard-3",
@@ -1397,7 +1410,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.877Z"
+      "reviewedAt": "2026-05-22T09:12:21.560Z"
     },
     {
       "questionId": "prophets-hard-4",
@@ -1413,7 +1426,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.881Z"
+      "reviewedAt": "2026-05-22T09:12:21.573Z"
     },
     {
       "questionId": "prophets-hard-5",
@@ -1429,7 +1442,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.885Z"
+      "reviewedAt": "2026-05-22T09:12:21.585Z"
     },
     {
       "questionId": "psalms-easy-1",
@@ -1445,7 +1458,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.889Z"
+      "reviewedAt": "2026-05-22T09:12:21.597Z"
     },
     {
       "questionId": "psalms-easy-2",
@@ -1454,7 +1467,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.891Z"
+      "reviewedAt": "2026-05-22T09:12:21.606Z"
     },
     {
       "questionId": "psalms-easy-3",
@@ -1470,7 +1483,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.894Z"
+      "reviewedAt": "2026-05-22T09:12:21.616Z"
     },
     {
       "questionId": "psalms-easy-4",
@@ -1479,7 +1492,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.897Z"
+      "reviewedAt": "2026-05-22T09:12:21.625Z"
     },
     {
       "questionId": "psalms-easy-5",
@@ -1495,7 +1508,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.901Z"
+      "reviewedAt": "2026-05-22T09:12:21.637Z"
     },
     {
       "questionId": "psalms-medium-1",
@@ -1511,7 +1524,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.904Z"
+      "reviewedAt": "2026-05-22T09:12:21.646Z"
     },
     {
       "questionId": "psalms-medium-2",
@@ -1520,7 +1533,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.907Z"
+      "reviewedAt": "2026-05-22T09:12:21.658Z"
     },
     {
       "questionId": "psalms-medium-3",
@@ -1529,7 +1542,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.910Z"
+      "reviewedAt": "2026-05-22T09:12:21.666Z"
     },
     {
       "questionId": "psalms-medium-4",
@@ -1545,7 +1558,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.914Z"
+      "reviewedAt": "2026-05-22T09:12:21.679Z"
     },
     {
       "questionId": "psalms-medium-5",
@@ -1554,7 +1567,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.917Z"
+      "reviewedAt": "2026-05-22T09:12:21.688Z"
     },
     {
       "questionId": "psalms-hard-1",
@@ -1570,7 +1583,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.919Z"
+      "reviewedAt": "2026-05-22T09:12:21.697Z"
     },
     {
       "questionId": "psalms-hard-2",
@@ -1586,7 +1599,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.923Z"
+      "reviewedAt": "2026-05-22T09:12:21.709Z"
     },
     {
       "questionId": "psalms-hard-3",
@@ -1595,7 +1608,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.926Z"
+      "reviewedAt": "2026-05-22T09:12:21.718Z"
     },
     {
       "questionId": "psalms-hard-4",
@@ -1611,7 +1624,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.930Z"
+      "reviewedAt": "2026-05-22T09:12:21.731Z"
     },
     {
       "questionId": "psalms-hard-5",
@@ -1627,7 +1640,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.933Z"
+      "reviewedAt": "2026-05-22T09:12:21.741Z"
     },
     {
       "questionId": "parables-easy-1",
@@ -1636,7 +1649,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.937Z"
+      "reviewedAt": "2026-05-22T09:12:21.753Z"
     },
     {
       "questionId": "parables-easy-2",
@@ -1645,7 +1658,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.940Z"
+      "reviewedAt": "2026-05-22T09:12:21.762Z"
     },
     {
       "questionId": "parables-easy-3",
@@ -1654,7 +1667,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.943Z"
+      "reviewedAt": "2026-05-22T09:12:21.774Z"
     },
     {
       "questionId": "parables-easy-4",
@@ -1663,7 +1676,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.947Z"
+      "reviewedAt": "2026-05-22T09:12:21.786Z"
     },
     {
       "questionId": "parables-easy-5",
@@ -1672,7 +1685,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.951Z"
+      "reviewedAt": "2026-05-22T09:12:21.801Z"
     },
     {
       "questionId": "parables-medium-1",
@@ -1681,7 +1694,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.953Z"
+      "reviewedAt": "2026-05-22T09:12:21.812Z"
     },
     {
       "questionId": "parables-medium-2",
@@ -1690,7 +1703,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.957Z"
+      "reviewedAt": "2026-05-22T09:12:21.824Z"
     },
     {
       "questionId": "parables-medium-3",
@@ -1699,7 +1712,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.961Z"
+      "reviewedAt": "2026-05-22T09:12:21.835Z"
     },
     {
       "questionId": "parables-medium-4",
@@ -1708,7 +1721,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.965Z"
+      "reviewedAt": "2026-05-22T09:12:21.846Z"
     },
     {
       "questionId": "parables-medium-5",
@@ -1717,7 +1730,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.968Z"
+      "reviewedAt": "2026-05-22T09:12:21.859Z"
     },
     {
       "questionId": "parables-hard-1",
@@ -1733,7 +1746,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.971Z"
+      "reviewedAt": "2026-05-22T09:12:21.867Z"
     },
     {
       "questionId": "parables-hard-2",
@@ -1742,7 +1755,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.975Z"
+      "reviewedAt": "2026-05-22T09:12:21.878Z"
     },
     {
       "questionId": "parables-hard-3",
@@ -1751,7 +1764,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.979Z"
+      "reviewedAt": "2026-05-22T09:12:21.890Z"
     },
     {
       "questionId": "parables-hard-4",
@@ -1760,7 +1773,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.982Z"
+      "reviewedAt": "2026-05-22T09:12:21.901Z"
     },
     {
       "questionId": "parables-hard-5",
@@ -1776,7 +1789,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:25.987Z"
+      "reviewedAt": "2026-05-22T09:12:21.914Z"
     },
     {
       "questionId": "commandments-easy-1",
@@ -1785,7 +1798,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.990Z"
+      "reviewedAt": "2026-05-22T09:12:21.926Z"
     },
     {
       "questionId": "commandments-easy-2",
@@ -1794,7 +1807,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.993Z"
+      "reviewedAt": "2026-05-22T09:12:21.937Z"
     },
     {
       "questionId": "commandments-easy-3",
@@ -1803,7 +1816,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:25.996Z"
+      "reviewedAt": "2026-05-22T09:12:21.945Z"
     },
     {
       "questionId": "commandments-easy-4",
@@ -1812,7 +1825,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.000Z"
+      "reviewedAt": "2026-05-22T09:12:21.956Z"
     },
     {
       "questionId": "commandments-easy-5",
@@ -1821,7 +1834,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.003Z"
+      "reviewedAt": "2026-05-22T09:12:21.968Z"
     },
     {
       "questionId": "commandments-medium-1",
@@ -1830,7 +1843,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.007Z"
+      "reviewedAt": "2026-05-22T09:12:21.979Z"
     },
     {
       "questionId": "commandments-medium-2",
@@ -1839,7 +1852,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.011Z"
+      "reviewedAt": "2026-05-22T09:12:21.990Z"
     },
     {
       "questionId": "commandments-medium-3",
@@ -1848,7 +1861,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.013Z"
+      "reviewedAt": "2026-05-22T09:12:21.998Z"
     },
     {
       "questionId": "commandments-medium-4",
@@ -1857,7 +1870,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.017Z"
+      "reviewedAt": "2026-05-22T09:12:22.010Z"
     },
     {
       "questionId": "commandments-medium-5",
@@ -1866,7 +1879,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.022Z"
+      "reviewedAt": "2026-05-22T09:12:22.023Z"
     },
     {
       "questionId": "commandments-hard-1",
@@ -1882,7 +1895,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:26.026Z"
+      "reviewedAt": "2026-05-22T09:12:22.036Z"
     },
     {
       "questionId": "commandments-hard-2",
@@ -1898,7 +1911,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:26.030Z"
+      "reviewedAt": "2026-05-22T09:12:22.048Z"
     },
     {
       "questionId": "commandments-hard-3",
@@ -1907,7 +1920,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.034Z"
+      "reviewedAt": "2026-05-22T09:12:22.062Z"
     },
     {
       "questionId": "commandments-hard-4",
@@ -1916,7 +1929,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.039Z"
+      "reviewedAt": "2026-05-22T09:12:22.076Z"
     },
     {
       "questionId": "commandments-hard-5",
@@ -1925,7 +1938,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.043Z"
+      "reviewedAt": "2026-05-22T09:12:22.087Z"
     },
     {
       "questionId": "miracles-easy-1",
@@ -1934,7 +1947,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.047Z"
+      "reviewedAt": "2026-05-22T09:12:22.099Z"
     },
     {
       "questionId": "miracles-easy-2",
@@ -1943,7 +1956,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.049Z"
+      "reviewedAt": "2026-05-22T09:12:22.107Z"
     },
     {
       "questionId": "miracles-easy-3",
@@ -1952,7 +1965,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.053Z"
+      "reviewedAt": "2026-05-22T09:12:22.126Z"
     },
     {
       "questionId": "miracles-easy-4",
@@ -1961,7 +1974,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.057Z"
+      "reviewedAt": "2026-05-22T09:12:22.139Z"
     },
     {
       "questionId": "miracles-easy-5",
@@ -1970,7 +1983,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.061Z"
+      "reviewedAt": "2026-05-22T09:12:22.152Z"
     },
     {
       "questionId": "miracles-medium-1",
@@ -1979,7 +1992,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.064Z"
+      "reviewedAt": "2026-05-22T09:12:22.159Z"
     },
     {
       "questionId": "miracles-medium-2",
@@ -1988,7 +2001,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.068Z"
+      "reviewedAt": "2026-05-22T09:12:22.171Z"
     },
     {
       "questionId": "miracles-medium-3",
@@ -1997,7 +2010,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.072Z"
+      "reviewedAt": "2026-05-22T09:12:22.182Z"
     },
     {
       "questionId": "miracles-medium-4",
@@ -2006,7 +2019,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.076Z"
+      "reviewedAt": "2026-05-22T09:12:22.194Z"
     },
     {
       "questionId": "miracles-medium-5",
@@ -2022,7 +2035,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:26.079Z"
+      "reviewedAt": "2026-05-22T09:12:22.202Z"
     },
     {
       "questionId": "miracles-hard-1",
@@ -2031,7 +2044,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.083Z"
+      "reviewedAt": "2026-05-22T09:12:22.213Z"
     },
     {
       "questionId": "miracles-hard-2",
@@ -2040,7 +2053,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.086Z"
+      "reviewedAt": "2026-05-22T09:12:22.224Z"
     },
     {
       "questionId": "miracles-hard-3",
@@ -2049,7 +2062,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.091Z"
+      "reviewedAt": "2026-05-22T09:12:22.236Z"
     },
     {
       "questionId": "miracles-hard-4",
@@ -2058,7 +2071,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.095Z"
+      "reviewedAt": "2026-05-22T09:12:22.248Z"
     },
     {
       "questionId": "miracles-hard-5",
@@ -2067,7 +2080,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.100Z"
+      "reviewedAt": "2026-05-22T09:12:22.261Z"
     },
     {
       "questionId": "patriarchs-easy-1",
@@ -2076,7 +2089,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.104Z"
+      "reviewedAt": "2026-05-22T09:12:22.273Z"
     },
     {
       "questionId": "patriarchs-easy-2",
@@ -2085,7 +2098,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.107Z"
+      "reviewedAt": "2026-05-22T09:12:22.284Z"
     },
     {
       "questionId": "patriarchs-easy-3",
@@ -2094,7 +2107,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.110Z"
+      "reviewedAt": "2026-05-22T09:12:22.291Z"
     },
     {
       "questionId": "patriarchs-easy-4",
@@ -2103,7 +2116,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.114Z"
+      "reviewedAt": "2026-05-22T09:12:22.303Z"
     },
     {
       "questionId": "patriarchs-easy-5",
@@ -2112,7 +2125,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.118Z"
+      "reviewedAt": "2026-05-22T09:12:22.315Z"
     },
     {
       "questionId": "patriarchs-medium-1",
@@ -2121,7 +2134,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.121Z"
+      "reviewedAt": "2026-05-22T09:12:22.331Z"
     },
     {
       "questionId": "patriarchs-medium-2",
@@ -2130,7 +2143,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.125Z"
+      "reviewedAt": "2026-05-22T09:12:22.344Z"
     },
     {
       "questionId": "patriarchs-medium-3",
@@ -2139,7 +2152,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.128Z"
+      "reviewedAt": "2026-05-22T09:12:22.354Z"
     },
     {
       "questionId": "patriarchs-medium-4",
@@ -2148,7 +2161,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.131Z"
+      "reviewedAt": "2026-05-22T09:12:22.366Z"
     },
     {
       "questionId": "patriarchs-medium-5",
@@ -2157,7 +2170,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.135Z"
+      "reviewedAt": "2026-05-22T09:12:22.378Z"
     },
     {
       "questionId": "patriarchs-hard-1",
@@ -2166,7 +2179,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.139Z"
+      "reviewedAt": "2026-05-22T09:12:22.389Z"
     },
     {
       "questionId": "patriarchs-hard-2",
@@ -2175,7 +2188,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.141Z"
+      "reviewedAt": "2026-05-22T09:12:22.398Z"
     },
     {
       "questionId": "patriarchs-hard-3",
@@ -2184,7 +2197,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.145Z"
+      "reviewedAt": "2026-05-22T09:12:22.409Z"
     },
     {
       "questionId": "patriarchs-hard-4",
@@ -2193,7 +2206,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.149Z"
+      "reviewedAt": "2026-05-22T09:12:22.421Z"
     },
     {
       "questionId": "patriarchs-hard-5",
@@ -2202,7 +2215,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.153Z"
+      "reviewedAt": "2026-05-22T09:12:22.432Z"
     },
     {
       "questionId": "revelation-easy-1",
@@ -2211,7 +2224,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.155Z"
+      "reviewedAt": "2026-05-22T09:12:22.440Z"
     },
     {
       "questionId": "revelation-easy-2",
@@ -2229,7 +2242,7 @@
           "autoFixable": false
         }
       ],
-      "reviewedAt": "2026-05-21T14:59:26.159Z"
+      "reviewedAt": "2026-05-22T09:12:22.451Z"
     },
     {
       "questionId": "revelation-easy-3",
@@ -2238,7 +2251,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.161Z"
+      "reviewedAt": "2026-05-22T09:12:22.462Z"
     },
     {
       "questionId": "revelation-easy-4",
@@ -2247,7 +2260,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.165Z"
+      "reviewedAt": "2026-05-22T09:12:22.474Z"
     },
     {
       "questionId": "revelation-easy-5",
@@ -2256,7 +2269,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.169Z"
+      "reviewedAt": "2026-05-22T09:12:22.486Z"
     },
     {
       "questionId": "revelation-medium-1",
@@ -2265,7 +2278,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.171Z"
+      "reviewedAt": "2026-05-22T09:12:22.493Z"
     },
     {
       "questionId": "revelation-medium-2",
@@ -2274,7 +2287,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.175Z"
+      "reviewedAt": "2026-05-22T09:12:22.506Z"
     },
     {
       "questionId": "revelation-medium-3",
@@ -2283,7 +2296,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.178Z"
+      "reviewedAt": "2026-05-22T09:12:22.514Z"
     },
     {
       "questionId": "revelation-medium-4",
@@ -2292,7 +2305,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.181Z"
+      "reviewedAt": "2026-05-22T09:12:22.526Z"
     },
     {
       "questionId": "revelation-medium-5",
@@ -2301,7 +2314,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.185Z"
+      "reviewedAt": "2026-05-22T09:12:22.538Z"
     },
     {
       "questionId": "revelation-hard-1",
@@ -2310,7 +2323,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.189Z"
+      "reviewedAt": "2026-05-22T09:12:22.547Z"
     },
     {
       "questionId": "revelation-hard-2",
@@ -2319,7 +2332,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.193Z"
+      "reviewedAt": "2026-05-22T09:12:22.559Z"
     },
     {
       "questionId": "revelation-hard-3",
@@ -2328,7 +2341,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.195Z"
+      "reviewedAt": "2026-05-22T09:12:22.566Z"
     },
     {
       "questionId": "revelation-hard-4",
@@ -2337,7 +2350,7 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.199Z"
+      "reviewedAt": "2026-05-22T09:12:22.578Z"
     },
     {
       "questionId": "revelation-hard-5",
@@ -2346,7 +2359,3254 @@
       "qualityScore": 100,
       "duplicateIds": [],
       "issues": [],
-      "reviewedAt": "2026-05-21T14:59:26.203Z"
+      "reviewedAt": "2026-05-22T09:12:22.591Z"
+    },
+    {
+      "questionId": "commandments-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто складні для початківців",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:22.635Z"
+    },
+    {
+      "questionId": "commandments-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:22.653Z"
+    },
+    {
+      "questionId": "commandments-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:22.681Z"
+    },
+    {
+      "questionId": "commandments-beginner-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:22.700Z"
+    },
+    {
+      "questionId": "commandments-easy-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.716Z"
+    },
+    {
+      "questionId": "commandments-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.732Z"
+    },
+    {
+      "questionId": "commandments-easy-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.751Z"
+    },
+    {
+      "questionId": "commandments-easy-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.770Z"
+    },
+    {
+      "questionId": "commandments-hard-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.783Z"
+    },
+    {
+      "questionId": "commandments-hard-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.804Z"
+    },
+    {
+      "questionId": "commandments-hard-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.824Z"
+    },
+    {
+      "questionId": "commandments-hard-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.844Z"
+    },
+    {
+      "questionId": "commandments-hard-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.875Z"
+    },
+    {
+      "questionId": "geography-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.890Z"
+    },
+    {
+      "questionId": "geography-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:22.904Z"
+    },
+    {
+      "questionId": "geography-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:22.917Z"
+    },
+    {
+      "questionId": "geography-beginner-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.931Z"
+    },
+    {
+      "questionId": "geography-beginner-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:22.944Z"
+    },
+    {
+      "questionId": "geography-beginner-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:22.958Z"
+    },
+    {
+      "questionId": "geography-easy-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.970Z"
+    },
+    {
+      "questionId": "geography-easy-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.981Z"
+    },
+    {
+      "questionId": "geography-easy-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:22.993Z"
+    },
+    {
+      "questionId": "geography-easy-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.005Z"
+    },
+    {
+      "questionId": "geography-easy-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.017Z"
+    },
+    {
+      "questionId": "geography-easy-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.028Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.047Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.066Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.083Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.104Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00017",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.122Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00018",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.141Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00019",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.155Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00020",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.167Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00021",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.180Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00022",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.192Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00023",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.204Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00024",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.219Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00025",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.240Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00026",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.255Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00027",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.268Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00028",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.280Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00029",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.291Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00030",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.303Z"
+    },
+    {
+      "questionId": "geography-beginner-ai-00031",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.316Z"
+    },
+    {
+      "questionId": "geography-beginner-ai-00032",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.327Z"
+    },
+    {
+      "questionId": "geography-beginner-ai-00033",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.339Z"
+    },
+    {
+      "questionId": "geography-beginner-ai-00034",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.353Z"
+    },
+    {
+      "questionId": "geography-easy-ai-00035",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.365Z"
+    },
+    {
+      "questionId": "geography-easy-ai-00036",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.376Z"
+    },
+    {
+      "questionId": "geography-easy-ai-00037",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.387Z"
+    },
+    {
+      "questionId": "geography-easy-ai-00038",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.400Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00039",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.413Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00040",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.425Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00041",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.441Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00042",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.454Z"
+    },
+    {
+      "questionId": "geography-medium-ai-00043",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.467Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00044",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.479Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00045",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.491Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00046",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.502Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00047",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.514Z"
+    },
+    {
+      "questionId": "geography-hard-ai-00048",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.526Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00049",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.546Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00050",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.563Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00051",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.582Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00052",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.601Z"
+    },
+    {
+      "questionId": "geography-expert-ai-00053",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.619Z"
+    },
+    {
+      "questionId": "gospels-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.632Z"
+    },
+    {
+      "questionId": "gospels-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.645Z"
+    },
+    {
+      "questionId": "gospels-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.657Z"
+    },
+    {
+      "questionId": "gospels-beginner-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.670Z"
+    },
+    {
+      "questionId": "gospels-beginner-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.684Z"
+    },
+    {
+      "questionId": "gospels-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.700Z"
+    },
+    {
+      "questionId": "gospels-easy-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.724Z"
+    },
+    {
+      "questionId": "gospels-easy-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.745Z"
+    },
+    {
+      "questionId": "gospels-easy-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.762Z"
+    },
+    {
+      "questionId": "gospels-medium-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.774Z"
+    },
+    {
+      "questionId": "gospels-medium-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.786Z"
+    },
+    {
+      "questionId": "gospels-medium-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.798Z"
+    },
+    {
+      "questionId": "gospels-medium-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:23.810Z"
+    },
+    {
+      "questionId": "gospels-hard-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.838Z"
+    },
+    {
+      "questionId": "gospels-hard-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.876Z"
+    },
+    {
+      "questionId": "gospels-expert-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.889Z"
+    },
+    {
+      "questionId": "gospels-expert-ai-00017",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.905Z"
+    },
+    {
+      "questionId": "gospels-expert-ai-00018",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.932Z"
+    },
+    {
+      "questionId": "gospels-expert-ai-00019",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.946Z"
+    },
+    {
+      "questionId": "gospels-expert-ai-00020",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.958Z"
+    },
+    {
+      "questionId": "judges-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.972Z"
+    },
+    {
+      "questionId": "judges-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:23.985Z"
+    },
+    {
+      "questionId": "judges-easy-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.015Z"
+    },
+    {
+      "questionId": "judges-easy-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.034Z"
+    },
+    {
+      "questionId": "judges-medium-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.046Z"
+    },
+    {
+      "questionId": "judges-medium-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.057Z"
+    },
+    {
+      "questionId": "judges-hard-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.070Z"
+    },
+    {
+      "questionId": "judges-hard-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.088Z"
+    },
+    {
+      "questionId": "judges-hard-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.106Z"
+    },
+    {
+      "questionId": "judges-hard-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.121Z"
+    },
+    {
+      "questionId": "judges-hard-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.134Z"
+    },
+    {
+      "questionId": "judges-expert-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.150Z"
+    },
+    {
+      "questionId": "judges-expert-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.167Z"
+    },
+    {
+      "questionId": "judges-expert-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.181Z"
+    },
+    {
+      "questionId": "judges-expert-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.195Z"
+    },
+    {
+      "questionId": "judges-expert-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.209Z"
+    },
+    {
+      "questionId": "kings-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.221Z"
+    },
+    {
+      "questionId": "kings-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.234Z"
+    },
+    {
+      "questionId": "kings-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.246Z"
+    },
+    {
+      "questionId": "kings-beginner-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.258Z"
+    },
+    {
+      "questionId": "kings-easy-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.276Z"
+    },
+    {
+      "questionId": "kings-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.295Z"
+    },
+    {
+      "questionId": "kings-easy-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 15,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.308Z"
+    },
+    {
+      "questionId": "kings-easy-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.320Z"
+    },
+    {
+      "questionId": "kings-medium-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.340Z"
+    },
+    {
+      "questionId": "kings-medium-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.358Z"
+    },
+    {
+      "questionId": "kings-medium-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.378Z"
+    },
+    {
+      "questionId": "kings-medium-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.399Z"
+    },
+    {
+      "questionId": "kings-hard-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.412Z"
+    },
+    {
+      "questionId": "kings-hard-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.426Z"
+    },
+    {
+      "questionId": "kings-hard-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.438Z"
+    },
+    {
+      "questionId": "kings-hard-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.450Z"
+    },
+    {
+      "questionId": "kings-expert-ai-00017",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.462Z"
+    },
+    {
+      "questionId": "kings-expert-ai-00018",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для експертів занадто коротке",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.473Z"
+    },
+    {
+      "questionId": "kings-expert-ai-00019",
+      "status": "pending",
+      "ambiguityScore": 90,
+      "qualityScore": 75,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "ambiguous",
+          "severity": "medium",
+          "message": "Питання має високий рівень неоднозначності (90/100)",
+          "autoFixable": false
+        },
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.485Z"
+    },
+    {
+      "questionId": "kings-expert-ai-00020",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.501Z"
+    },
+    {
+      "questionId": "miracles-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.527Z"
+    },
+    {
+      "questionId": "miracles-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.554Z"
+    },
+    {
+      "questionId": "miracles-easy-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.567Z"
+    },
+    {
+      "questionId": "miracles-easy-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.580Z"
+    },
+    {
+      "questionId": "miracles-easy-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.592Z"
+    },
+    {
+      "questionId": "miracles-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.607Z"
+    },
+    {
+      "questionId": "miracles-medium-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.633Z"
+    },
+    {
+      "questionId": "miracles-medium-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.658Z"
+    },
+    {
+      "questionId": "miracles-hard-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.678Z"
+    },
+    {
+      "questionId": "miracles-hard-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.699Z"
+    },
+    {
+      "questionId": "miracles-hard-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.718Z"
+    },
+    {
+      "questionId": "miracles-hard-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.734Z"
+    },
+    {
+      "questionId": "miracles-hard-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.752Z"
+    },
+    {
+      "questionId": "miracles-expert-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.770Z"
+    },
+    {
+      "questionId": "miracles-expert-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.788Z"
+    },
+    {
+      "questionId": "miracles-expert-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 5,
+      "qualityScore": 95,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "unclear_reference",
+          "severity": "low",
+          "message": "Відсутнє біблійне посилання",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.803Z"
+    },
+    {
+      "questionId": "miracles-expert-ai-00017",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.822Z"
+    },
+    {
+      "questionId": "miracles-expert-ai-00018",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.841Z"
+    },
+    {
+      "questionId": "mosaic-law-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.850Z"
+    },
+    {
+      "questionId": "mosaic-law-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.863Z"
+    },
+    {
+      "questionId": "mosaic-law-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 45,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.876Z"
+    },
+    {
+      "questionId": "mosaic-law-beginner-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.887Z"
+    },
+    {
+      "questionId": "mosaic-law-easy-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.896Z"
+    },
+    {
+      "questionId": "mosaic-law-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.910Z"
+    },
+    {
+      "questionId": "mosaic-law-easy-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.924Z"
+    },
+    {
+      "questionId": "mosaic-law-easy-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.939Z"
+    },
+    {
+      "questionId": "mosaic-law-easy-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.957Z"
+    },
+    {
+      "questionId": "mosaic-law-medium-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 90,
+      "qualityScore": 85,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "ambiguous",
+          "severity": "medium",
+          "message": "Питання має високий рівень неоднозначності (90/100)",
+          "autoFixable": false
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:24.970Z"
+    },
+    {
+      "questionId": "mosaic-law-medium-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.983Z"
+    },
+    {
+      "questionId": "mosaic-law-medium-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:24.996Z"
+    },
+    {
+      "questionId": "mosaic-law-hard-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.012Z"
+    },
+    {
+      "questionId": "mosaic-law-hard-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.030Z"
+    },
+    {
+      "questionId": "mosaic-law-hard-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.044Z"
+    },
+    {
+      "questionId": "mosaic-law-hard-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.057Z"
+    },
+    {
+      "questionId": "mosaic-law-hard-ai-00017",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.071Z"
+    },
+    {
+      "questionId": "mosaic-law-expert-ai-00018",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.085Z"
+    },
+    {
+      "questionId": "mosaic-law-expert-ai-00019",
+      "status": "approved",
+      "ambiguityScore": 15,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.101Z"
+    },
+    {
+      "questionId": "mosaic-law-expert-ai-00020",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:25.112Z"
+    },
+    {
+      "questionId": "mosaic-law-expert-ai-00021",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.132Z"
+    },
+    {
+      "questionId": "mosaic-law-expert-ai-00022",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:25.145Z"
+    },
+    {
+      "questionId": "new-testament-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:25.157Z"
+    },
+    {
+      "questionId": "new-testament-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.168Z"
+    },
+    {
+      "questionId": "new-testament-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.180Z"
+    },
+    {
+      "questionId": "new-testament-beginner-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.192Z"
+    },
+    {
+      "questionId": "new-testament-easy-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.206Z"
+    },
+    {
+      "questionId": "new-testament-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.223Z"
+    },
+    {
+      "questionId": "new-testament-easy-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.236Z"
+    },
+    {
+      "questionId": "new-testament-easy-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.259Z"
+    },
+    {
+      "questionId": "new-testament-medium-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.276Z"
+    },
+    {
+      "questionId": "new-testament-medium-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.295Z"
+    },
+    {
+      "questionId": "new-testament-medium-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.311Z"
+    },
+    {
+      "questionId": "new-testament-medium-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.331Z"
+    },
+    {
+      "questionId": "new-testament-medium-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.348Z"
+    },
+    {
+      "questionId": "new-testament-hard-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.359Z"
+    },
+    {
+      "questionId": "new-testament-hard-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.370Z"
+    },
+    {
+      "questionId": "new-testament-hard-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.382Z"
+    },
+    {
+      "questionId": "new-testament-hard-ai-00017",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.394Z"
+    },
+    {
+      "questionId": "new-testament-hard-ai-00018",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.407Z"
+    },
+    {
+      "questionId": "new-testament-expert-ai-00019",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.426Z"
+    },
+    {
+      "questionId": "new-testament-expert-ai-00020",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.445Z"
+    },
+    {
+      "questionId": "new-testament-expert-ai-00021",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.463Z"
+    },
+    {
+      "questionId": "new-testament-expert-ai-00022",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.481Z"
+    },
+    {
+      "questionId": "old-testament-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:25.492Z"
+    },
+    {
+      "questionId": "old-testament-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.503Z"
+    },
+    {
+      "questionId": "old-testament-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:25.515Z"
+    },
+    {
+      "questionId": "old-testament-beginner-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.530Z"
+    },
+    {
+      "questionId": "old-testament-beginner-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:25.541Z"
+    },
+    {
+      "questionId": "old-testament-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.560Z"
+    },
+    {
+      "questionId": "old-testament-easy-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.579Z"
+    },
+    {
+      "questionId": "old-testament-easy-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.596Z"
+    },
+    {
+      "questionId": "old-testament-easy-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.613Z"
+    },
+    {
+      "questionId": "old-testament-easy-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.632Z"
+    },
+    {
+      "questionId": "old-testament-medium-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.646Z"
+    },
+    {
+      "questionId": "old-testament-medium-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.659Z"
+    },
+    {
+      "questionId": "old-testament-medium-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.672Z"
+    },
+    {
+      "questionId": "old-testament-medium-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.686Z"
+    },
+    {
+      "questionId": "old-testament-medium-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.703Z"
+    },
+    {
+      "questionId": "old-testament-hard-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.716Z"
+    },
+    {
+      "questionId": "old-testament-hard-ai-00017",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.736Z"
+    },
+    {
+      "questionId": "old-testament-hard-ai-00018",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.749Z"
+    },
+    {
+      "questionId": "old-testament-hard-ai-00019",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.768Z"
+    },
+    {
+      "questionId": "old-testament-hard-ai-00020",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.782Z"
+    },
+    {
+      "questionId": "parables-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:25.819Z"
+    },
+    {
+      "questionId": "parables-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:25.848Z"
+    },
+    {
+      "questionId": "parables-easy-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.866Z"
+    },
+    {
+      "questionId": "parables-easy-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.882Z"
+    },
+    {
+      "questionId": "parables-medium-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.909Z"
+    },
+    {
+      "questionId": "parables-medium-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.935Z"
+    },
+    {
+      "questionId": "parables-hard-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.964Z"
+    },
+    {
+      "questionId": "parables-hard-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:25.996Z"
+    },
+    {
+      "questionId": "parables-expert-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.017Z"
+    },
+    {
+      "questionId": "parables-expert-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.036Z"
+    },
+    {
+      "questionId": "parables-expert-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.050Z"
+    },
+    {
+      "questionId": "parables-expert-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.073Z"
+    },
+    {
+      "questionId": "parables-expert-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.098Z"
+    },
+    {
+      "questionId": "patriarchs-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.110Z"
+    },
+    {
+      "questionId": "patriarchs-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.124Z"
+    },
+    {
+      "questionId": "patriarchs-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.136Z"
+    },
+    {
+      "questionId": "patriarchs-beginner-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.148Z"
+    },
+    {
+      "questionId": "patriarchs-easy-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.162Z"
+    },
+    {
+      "questionId": "patriarchs-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.175Z"
+    },
+    {
+      "questionId": "patriarchs-easy-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.189Z"
+    },
+    {
+      "questionId": "patriarchs-easy-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.205Z"
+    },
+    {
+      "questionId": "patriarchs-medium-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.217Z"
+    },
+    {
+      "questionId": "patriarchs-medium-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.228Z"
+    },
+    {
+      "questionId": "patriarchs-medium-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.240Z"
+    },
+    {
+      "questionId": "patriarchs-medium-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.252Z"
+    },
+    {
+      "questionId": "patriarchs-medium-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.264Z"
+    },
+    {
+      "questionId": "patriarchs-hard-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.279Z"
+    },
+    {
+      "questionId": "patriarchs-hard-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.294Z"
+    },
+    {
+      "questionId": "patriarchs-hard-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.307Z"
+    },
+    {
+      "questionId": "patriarchs-hard-ai-00017",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.323Z"
+    },
+    {
+      "questionId": "patriarchs-hard-ai-00018",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.338Z"
+    },
+    {
+      "questionId": "patriarchs-hard-ai-00019",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.351Z"
+    },
+    {
+      "questionId": "patriarchs-hard-ai-00020",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.364Z"
+    },
+    {
+      "questionId": "patriarchs-hard-ai-00021",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.378Z"
+    },
+    {
+      "questionId": "patriarchs-expert-ai-00022",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.391Z"
+    },
+    {
+      "questionId": "patriarchs-expert-ai-00023",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.405Z"
+    },
+    {
+      "questionId": "patriarchs-expert-ai-00024",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.418Z"
+    },
+    {
+      "questionId": "patriarchs-expert-ai-00025",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.432Z"
+    },
+    {
+      "questionId": "paul-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.443Z"
+    },
+    {
+      "questionId": "paul-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.455Z"
+    },
+    {
+      "questionId": "paul-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.467Z"
+    },
+    {
+      "questionId": "paul-beginner-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.483Z"
+    },
+    {
+      "questionId": "paul-easy-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.498Z"
+    },
+    {
+      "questionId": "paul-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.523Z"
+    },
+    {
+      "questionId": "paul-easy-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.546Z"
+    },
+    {
+      "questionId": "paul-easy-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.565Z"
+    },
+    {
+      "questionId": "paul-medium-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.578Z"
+    },
+    {
+      "questionId": "paul-medium-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.595Z"
+    },
+    {
+      "questionId": "paul-medium-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 15,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.613Z"
+    },
+    {
+      "questionId": "paul-medium-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.626Z"
+    },
+    {
+      "questionId": "paul-medium-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.646Z"
+    },
+    {
+      "questionId": "paul-hard-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.661Z"
+    },
+    {
+      "questionId": "paul-hard-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.679Z"
+    },
+    {
+      "questionId": "paul-hard-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.694Z"
+    },
+    {
+      "questionId": "paul-hard-ai-00017",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.710Z"
+    },
+    {
+      "questionId": "paul-hard-ai-00018",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.724Z"
+    },
+    {
+      "questionId": "paul-expert-ai-00019",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.744Z"
+    },
+    {
+      "questionId": "paul-expert-ai-00020",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.758Z"
+    },
+    {
+      "questionId": "prophets-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.770Z"
+    },
+    {
+      "questionId": "prophets-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.781Z"
+    },
+    {
+      "questionId": "prophets-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.793Z"
+    },
+    {
+      "questionId": "prophets-beginner-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.806Z"
+    },
+    {
+      "questionId": "prophets-easy-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.819Z"
+    },
+    {
+      "questionId": "prophets-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.831Z"
+    },
+    {
+      "questionId": "prophets-easy-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.843Z"
+    },
+    {
+      "questionId": "prophets-easy-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.856Z"
+    },
+    {
+      "questionId": "prophets-medium-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.870Z"
+    },
+    {
+      "questionId": "prophets-medium-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.885Z"
+    },
+    {
+      "questionId": "prophets-hard-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.897Z"
+    },
+    {
+      "questionId": "prophets-hard-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.910Z"
+    },
+    {
+      "questionId": "prophets-hard-ai-00013",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.923Z"
+    },
+    {
+      "questionId": "prophets-hard-ai-00014",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.935Z"
+    },
+    {
+      "questionId": "prophets-hard-ai-00015",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:26.948Z"
+    },
+    {
+      "questionId": "prophets-expert-ai-00016",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.965Z"
+    },
+    {
+      "questionId": "prophets-expert-ai-00017",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.979Z"
+    },
+    {
+      "questionId": "prophets-expert-ai-00018",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:26.994Z"
+    },
+    {
+      "questionId": "prophets-expert-ai-00019",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:27.008Z"
+    },
+    {
+      "questionId": "prophets-expert-ai-00020",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Варіанти відповідей занадто прості для експертів",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:27.021Z"
+    },
+    {
+      "questionId": "psalms-easy-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.035Z"
+    },
+    {
+      "questionId": "psalms-easy-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.048Z"
+    },
+    {
+      "questionId": "psalms-easy-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.062Z"
+    },
+    {
+      "questionId": "psalms-easy-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.073Z"
+    },
+    {
+      "questionId": "psalms-easy-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.086Z"
+    },
+    {
+      "questionId": "psalms-hard-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.101Z"
+    },
+    {
+      "questionId": "psalms-hard-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.117Z"
+    },
+    {
+      "questionId": "psalms-expert-ai-00008",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.134Z"
+    },
+    {
+      "questionId": "psalms-expert-ai-00009",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.155Z"
+    },
+    {
+      "questionId": "psalms-expert-ai-00010",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.172Z"
+    },
+    {
+      "questionId": "psalms-expert-ai-00011",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.190Z"
+    },
+    {
+      "questionId": "psalms-expert-ai-00012",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.207Z"
+    },
+    {
+      "questionId": "revelation-beginner-ai-00001",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:27.221Z"
+    },
+    {
+      "questionId": "revelation-beginner-ai-00002",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.233Z"
+    },
+    {
+      "questionId": "revelation-beginner-ai-00003",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:27.250Z"
+    },
+    {
+      "questionId": "revelation-beginner-ai-00004",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 90,
+      "duplicateIds": [],
+      "issues": [
+        {
+          "type": "wrong_difficulty",
+          "severity": "medium",
+          "message": "Питання для початківців занадто довге",
+          "autoFixable": true
+        }
+      ],
+      "reviewedAt": "2026-05-22T09:12:27.268Z"
+    },
+    {
+      "questionId": "revelation-easy-ai-00005",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.285Z"
+    },
+    {
+      "questionId": "revelation-easy-ai-00006",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.300Z"
+    },
+    {
+      "questionId": "revelation-medium-ai-00007",
+      "status": "approved",
+      "ambiguityScore": 0,
+      "qualityScore": 100,
+      "duplicateIds": [],
+      "issues": [],
+      "reviewedAt": "2026-05-22T09:12:27.321Z"
     }
   ]
 }

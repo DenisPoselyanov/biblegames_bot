@@ -1,10 +1,26 @@
-import type { Playlist, Question, Theme } from '../types';
+import type { Difficulty, Playlist } from '../types';
+import { ALL_QUESTIONS } from '../data/questions';
+
+const PLAYLISTS_STORAGE_KEY = 'bible-game-playlists-v1';
+
+function shuffle<T>(array: T[]): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
 
 /**
  * Менеджер плейлистів для Kahoot
  */
 export class PlaylistManager {
   private playlists: Map<string, Playlist> = new Map();
+
+  constructor() {
+    this.loadFromStorage();
+  }
 
   /**
    * Створити новий плейлист
@@ -38,6 +54,7 @@ export class PlaylistManager {
     };
 
     this.playlists.set(id, playlist);
+    this.saveToStorage();
     return playlist;
   }
 
@@ -90,6 +107,7 @@ export class PlaylistManager {
     };
 
     this.playlists.set(id, updated);
+    this.saveToStorage();
     return updated;
   }
 
@@ -99,7 +117,9 @@ export class PlaylistManager {
   deletePlaylist(id: string, userId: string): boolean {
     const playlist = this.playlists.get(id);
     if (!playlist || playlist.creatorId !== userId) return false;
-    return this.playlists.delete(id);
+    const removed = this.playlists.delete(id);
+    if (removed) this.saveToStorage();
+    return removed;
   }
 
   /**
@@ -112,6 +132,7 @@ export class PlaylistManager {
     playlist.likes++;
     playlist.updatedAt = new Date().toISOString();
     this.playlists.set(id, playlist);
+    this.saveToStorage();
     return true;
   }
 
@@ -125,6 +146,7 @@ export class PlaylistManager {
     playlist.plays++;
     playlist.updatedAt = new Date().toISOString();
     this.playlists.set(id, playlist);
+    this.saveToStorage();
     return true;
   }
 
@@ -148,11 +170,13 @@ export class PlaylistManager {
     }
 
     // Фільтри
-    if (filters?.themeId) {
-      results = results.filter(p => p.themes.includes(filters.themeId));
+    const themeFilter = filters?.themeId;
+    if (themeFilter) {
+      results = results.filter(p => p.themes.includes(themeFilter));
     }
-    if (filters?.minPlays) {
-      results = results.filter(p => p.plays >= filters.minPlays);
+    const minPlaysFilter = filters?.minPlays;
+    if (minPlaysFilter) {
+      results = results.filter(p => p.plays >= minPlaysFilter);
     }
     if (filters?.creatorId) {
       results = results.filter(p => p.creatorId === filters.creatorId);
@@ -179,14 +203,14 @@ export class PlaylistManager {
    * Видобуття тем з питань (потрібна база питань)
    */
   private extractThemesFromQuestions(questionIds: string[]): string[] {
-    // Це заглушка - в реальному коді потрібно мати доступ до бази питань
-    // Для демо повернемо порожній масив
-    return [];
-    
-    // В реальному коді:
-    // const questions = questionIds.map(id => getQuestionById(id)).filter(Boolean);
-    // const themes = new Set(questions.map(q => q.themeId));
-    // return Array.from(themes);
+    const map = new Map<string, string>();
+    for (const q of ALL_QUESTIONS) map.set(q.id, q.themeId);
+    const themes = new Set<string>();
+    for (const id of questionIds) {
+      const themeId = map.get(id);
+      if (themeId) themes.add(themeId);
+    }
+    return [...themes];
   }
 
   /**
@@ -226,6 +250,49 @@ export class PlaylistManager {
       totalPlays: all.reduce((sum, p) => sum + p.plays, 0),
       totalLikes: all.reduce((sum, p) => sum + p.likes, 0),
     };
+  }
+
+  pickQuestionsForPlaylist(params: {
+    themeIds: string[];
+    difficulty?: Difficulty;
+    count: number;
+  }): string[] {
+    const ids = new Set<string>();
+    const difficulty = params.difficulty;
+    const pool = ALL_QUESTIONS.filter(
+      (q) => params.themeIds.includes(q.themeId) && (!difficulty || q.difficulty === difficulty),
+    );
+    for (const q of shuffle(pool)) {
+      ids.add(q.id);
+      if (ids.size >= Math.min(100, Math.max(1, params.count))) break;
+    }
+    return [...ids];
+  }
+
+  private loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(PLAYLISTS_STORAGE_KEY);
+      if (!raw) return;
+      const list = JSON.parse(raw) as Playlist[];
+      if (!Array.isArray(list)) return;
+      for (const p of list) {
+        if (!p?.id || !p?.creatorId) continue;
+        this.playlists.set(p.id, p);
+      }
+    } catch {
+      return;
+    }
+  }
+
+  private saveToStorage() {
+    try {
+      localStorage.setItem(
+        PLAYLISTS_STORAGE_KEY,
+        JSON.stringify(Array.from(this.playlists.values())),
+      );
+    } catch {
+      return;
+    }
   }
 }
 

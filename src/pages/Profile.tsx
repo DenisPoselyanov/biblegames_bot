@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { THEMES } from '../data/themes';
 import { usePlayer } from '../context/PlayerContext';
@@ -6,17 +7,36 @@ import { DIFFICULTY_LABELS } from '../types';
 import { ACHIEVEMENTS } from '../data/achievements';
 import { COSMETIC_THEMES, getAvatarById } from '../data/cosmetics';
 import { STUDY_THEME_GROUPS } from '../data/study_themes';
+import { communityManager } from '../lib/communities';
+import { friendChallengeManager } from '../lib/friendChallenges';
 import styles from './Profile.module.css';
 
 export function Profile() {
   const { profile, setActiveTheme, purchaseTheme } = usePlayer();
   const { displayName, userId } = useTelegram();
+  const [socialVersion, setSocialVersion] = useState(0);
+  const [friendIdInput, setFriendIdInput] = useState('');
 
   const themeProgress = THEMES.map((theme) => ({
     theme,
     points: profile.themePoints[theme.id] ?? 0,
     levels: profile.completedLevels.filter((l) => l.themeId === theme.id),
   })).filter((t) => t.points > 0 || t.levels.length > 0);
+
+  const socialProfile = useMemo(
+    () => communityManager.getSocialProfile(userId),
+    [userId, socialVersion],
+  );
+
+  const challengeStats = useMemo(
+    () => friendChallengeManager.getUserStats(userId),
+    [userId, socialVersion],
+  );
+
+  const communitiesCount = useMemo(
+    () => communityManager.getUserCommunities(userId).length,
+    [userId, socialVersion],
+  );
 
   const handleSelectTheme = (themeId: string) => {
     setActiveTheme(themeId);
@@ -29,6 +49,40 @@ export function Profile() {
         alert('Недостатньо очок для придбання цієї теми!');
       }
     }
+  };
+
+  const handleAddFriend = () => {
+    const friendId = friendIdInput.trim();
+    if (!friendId) return;
+    const ok = communityManager.addFriend(userId, friendId);
+    if (!ok) {
+      alert('Не вдалося додати друга (можливо, вже доданий або заблокований)');
+      return;
+    }
+    setFriendIdInput('');
+    setSocialVersion((v) => v + 1);
+  };
+
+  const handleRemoveFriend = (friendId: string) => {
+    communityManager.removeFriend(userId, friendId);
+    setSocialVersion((v) => v + 1);
+  };
+
+  const handleBlock = (blockedUserId: string) => {
+    communityManager.blockUser(userId, blockedUserId);
+    setSocialVersion((v) => v + 1);
+  };
+
+  const handleUnblock = (blockedUserId: string) => {
+    communityManager.unblockUser(userId, blockedUserId);
+    setSocialVersion((v) => v + 1);
+  };
+
+  const setPrivacy = (key: keyof typeof socialProfile.privacySettings, value: boolean) => {
+    communityManager.updateSocialProfile(userId, {
+      privacySettings: { ...socialProfile.privacySettings, [key]: value },
+    });
+    setSocialVersion((v) => v + 1);
   };
 
   return (
@@ -58,7 +112,131 @@ export function Profile() {
 
       <div className={styles.profileActions}>
         <Link to="/stats" className={styles.actionBtn}>🏆 Загальний Рейтинг</Link>
+        <Link to="/admin" className={styles.actionBtn}>⚙️ Адмін-панель</Link>
       </div>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>🤝 Соціальне</h2>
+
+        <div className={styles.socialLinks}>
+          <Link to="/social/challenges" className={styles.actionBtn}>⚔️ Виклики друзів</Link>
+          <Link to="/social/communities" className={styles.actionBtn}>🏘️ Спільноти</Link>
+        </div>
+
+        <section className={styles.statsGrid} style={{ marginTop: '0.75rem' }}>
+          <article className={styles.statsCard}>
+            <span className={styles.statsLabel}>Друзі</span>
+            <strong className={styles.statsValue}>{socialProfile.friends.length}</strong>
+          </article>
+          <article className={styles.statsCard}>
+            <span className={styles.statsLabel}>Спільноти</span>
+            <strong className={styles.statsValue}>{communitiesCount}</strong>
+          </article>
+          <article className={styles.statsCard}>
+            <span className={styles.statsLabel}>Winrate</span>
+            <strong className={styles.statsValue}>{challengeStats.winRate}%</strong>
+          </article>
+        </section>
+
+        <div className={styles.socialPanel}>
+          <div className={styles.socialRow}>
+            <label className={styles.socialField}>
+              <span>ID друга</span>
+              <input
+                value={friendIdInput}
+                onChange={(e) => setFriendIdInput(e.target.value)}
+                placeholder="Наприклад: 123456"
+              />
+            </label>
+            <button type="button" className={styles.socialMiniBtn} onClick={handleAddFriend}>
+              Додати
+            </button>
+          </div>
+
+          {socialProfile.friends.length === 0 ? (
+            <p className={styles.sectionSubtitle} style={{ margin: 0 }}>
+              Поки що немає друзів
+            </p>
+          ) : (
+            <ul className={styles.socialList}>
+              {socialProfile.friends.map((id) => (
+                <li key={id} className={styles.socialItem}>
+                  <span>{id}</span>
+                  <div className={styles.socialRow} style={{ justifyContent: 'flex-end' }}>
+                    <button type="button" className={styles.socialMiniBtn} onClick={() => handleRemoveFriend(id)}>
+                      Видалити
+                    </button>
+                    <button type="button" className={styles.socialMiniBtn} onClick={() => handleBlock(id)}>
+                      Блок
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className={styles.socialPanel}>
+          <div className={styles.toggleRow}>
+            <label>
+              <input
+                type="checkbox"
+                checked={socialProfile.privacySettings.showProfile}
+                onChange={(e) => setPrivacy('showProfile', e.target.checked)}
+              />
+              Показувати профіль
+            </label>
+          </div>
+          <div className={styles.toggleRow}>
+            <label>
+              <input
+                type="checkbox"
+                checked={socialProfile.privacySettings.showStats}
+                onChange={(e) => setPrivacy('showStats', e.target.checked)}
+              />
+              Показувати статистику
+            </label>
+          </div>
+          <div className={styles.toggleRow}>
+            <label>
+              <input
+                type="checkbox"
+                checked={socialProfile.privacySettings.allowChallenges}
+                onChange={(e) => setPrivacy('allowChallenges', e.target.checked)}
+              />
+              Дозволити виклики
+            </label>
+          </div>
+          <div className={styles.toggleRow}>
+            <label>
+              <input
+                type="checkbox"
+                checked={socialProfile.privacySettings.showInLeaderboards}
+                onChange={(e) => setPrivacy('showInLeaderboards', e.target.checked)}
+              />
+              У лідербордах
+            </label>
+          </div>
+        </div>
+
+        {socialProfile.blockedUsers.length > 0 && (
+          <div className={styles.socialPanel}>
+            <h3 className={styles.sectionTitle} style={{ margin: 0 }}>
+              🚫 Заблоковані
+            </h3>
+            <ul className={styles.socialList}>
+              {socialProfile.blockedUsers.map((id) => (
+                <li key={id} className={styles.socialItem}>
+                  <span>{id}</span>
+                  <button type="button" className={styles.socialMiniBtn} onClick={() => handleUnblock(id)}>
+                    Розблок
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
 
       {/* Розділ Досягнень */}
       <section className={styles.section}>

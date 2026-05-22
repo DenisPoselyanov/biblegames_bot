@@ -21,12 +21,15 @@ export function KahootHub() {
         <Link to="/play/kahoot/join" className={styles.btnSecondary}>
           Приєднатися за кодом
         </Link>
+        <Link to="/play/kahoot/playlists" className={styles.btnSecondary}>
+          Плейлисти
+        </Link>
       </div>
 
       <article className={styles.hint}>
         <h3>Як це працює</h3>
         <ol>
-          <li>Ведучий обирає теми та кількість питань</li>
+          <li>Ведучий обирає теми або плейлист</li>
           <li>Гравці вводять код кімнати та нікнейм</li>
           <li>Відповіді на час — більше очок за швидкість</li>
         </ol>

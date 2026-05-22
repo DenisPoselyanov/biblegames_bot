@@ -127,22 +127,33 @@ export function KahootRoom() {
 
         {isHost && (
           <>
-            <h2 className={styles.sub}>Теми</h2>
-            <ThemePicker
-              selected={localThemes.length ? localThemes : room.settings.themeIds}
-              onChange={handleThemeChange}
-            />
+            {room.settings.questionIds?.length ? (
+              <p className={styles.themeList}>
+                Джерело: плейлист · {room.settings.questionCount || room.settings.questionIds.length} питань
+              </p>
+            ) : (
+              <>
+                <h2 className={styles.sub}>Теми</h2>
+                <ThemePicker
+                  selected={localThemes.length ? localThemes : room.settings.themeIds}
+                  onChange={handleThemeChange}
+                />
+              </>
+            )}
           </>
         )}
 
-        {!isHost && room.settings.themeIds.length > 0 && (
-          <p className={styles.themeList}>
-            Теми:{' '}
-            {room.settings.themeIds
-              .map((id) => getThemeById(id)?.title ?? id)
-              .join(', ')}
-          </p>
-        )}
+        {!isHost &&
+          (room.settings.themeIds.length > 0 ? (
+            <p className={styles.themeList}>
+              Теми:{' '}
+              {room.settings.themeIds
+                .map((id) => getThemeById(id)?.title ?? id)
+                .join(', ')}
+            </p>
+          ) : room.settings.questionIds?.length ? (
+            <p className={styles.themeList}>Джерело: плейлист</p>
+          ) : null)}
 
         <ul className={styles.playerList}>
           {room.players.map((p) => (
@@ -165,7 +176,10 @@ export function KahootRoom() {
             type="button"
             className={styles.btnPrimary}
             onClick={handleStart}
-            disabled={room.players.length < 1 || room.settings.themeIds.length === 0}
+            disabled={
+              room.players.length < 1 ||
+              (room.settings.themeIds.length === 0 && !room.settings.questionIds?.length)
+            }
           >
             Почати гру ({room.players.length} гравців)
           </button>

@@ -1,63 +1,67 @@
 {
-  "generatedAt": "2026-05-21T15:01:58.852Z",
+  "generatedAt": "2026-05-22T09:16:08.638Z",
   "summary": {
-    "totalQuestions": 225,
-    "studyPoolSize": 184,
-    "gamePoolSize": 225,
-    "overlap": 184
+    "totalQuestions": 526,
+    "embeddedCount": 225,
+    "aiCount": 301,
+    "studyPoolSize": 423,
+    "gamePoolSize": 468,
+    "overlap": 365
   },
   "stats": {
     "study": {
-      "total": 184,
+      "total": 423,
       "byDifficulty": {
-        "easy": 66,
-        "medium": 64,
-        "hard": 54
+        "easy": 129,
+        "medium": 115,
+        "hard": 121,
+        "beginner": 58
       },
       "byTheme": {
-        "geography": 15,
-        "old-testament": 14,
-        "mosaic-law": 13,
-        "paul": 12,
-        "judges": 13,
-        "kings": 12,
-        "new-testament": 5,
-        "gospels": 15,
-        "prophets": 9,
-        "psalms": 6,
-        "parables": 13,
-        "commandments": 13,
-        "miracles": 14,
-        "patriarchs": 15,
-        "revelation": 15
+        "geography": 57,
+        "old-testament": 34,
+        "mosaic-law": 30,
+        "paul": 30,
+        "judges": 24,
+        "kings": 28,
+        "new-testament": 23,
+        "gospels": 28,
+        "prophets": 24,
+        "psalms": 13,
+        "parables": 21,
+        "commandments": 26,
+        "miracles": 27,
+        "patriarchs": 36,
+        "revelation": 22
       }
     },
     "game": {
-      "total": 225,
+      "total": 468,
       "byDifficulty": {
-        "easy": 75,
-        "medium": 75,
-        "hard": 75
+        "easy": 138,
+        "medium": 126,
+        "hard": 144,
+        "expert": 60
       },
       "byTheme": {
-        "geography": 15,
-        "old-testament": 15,
-        "mosaic-law": 15,
-        "paul": 15,
-        "judges": 15,
-        "kings": 15,
-        "new-testament": 15,
-        "gospels": 15,
-        "prophets": 15,
-        "psalms": 15,
-        "parables": 15,
-        "commandments": 15,
-        "miracles": 15,
-        "patriarchs": 15,
-        "revelation": 15
+        "geography": 58,
+        "old-testament": 30,
+        "mosaic-law": 33,
+        "paul": 31,
+        "judges": 29,
+        "kings": 31,
+        "new-testament": 33,
+        "gospels": 30,
+        "prophets": 31,
+        "psalms": 27,
+        "parables": 26,
+        "commandments": 24,
+        "miracles": 31,
+        "patriarchs": 36,
+        "revelation": 18
       }
     },
-    "overlap": 184
+    "overlap": 365
   },
-  "excludedFromStudyCount": 41
+  "excludedFromStudyCount": 103
 }

@@ -1,5 +1,7 @@
 import type { Community, CommunityLeaderboard, LeaderboardEntry, SocialProfile } from '../types';
 
+const COMMUNITIES_STORAGE_KEY = 'bible-game-communities-v1';
+
 /**
  * Менеджер спільнот
  */
@@ -7,6 +9,10 @@ export class CommunityManager {
   private communities: Map<string, Community> = new Map();
   private socialProfiles: Map<string, SocialProfile> = new Map();
   private leaderboards: Map<string, CommunityLeaderboard> = new Map();
+
+  constructor() {
+    this.loadFromStorage();
+  }
 
   /**
    * Створити спільноту
@@ -36,7 +42,8 @@ export class CommunityManager {
     
     // Створюємо лідерборд для спільноти
     this.createLeaderboard(id);
-    
+
+    this.saveToStorage();
     return community;
   }
 
@@ -90,6 +97,7 @@ export class CommunityManager {
     this.communities.set(communityId, community);
     
     this.addCommunityToProfile(userId, communityId);
+    this.saveToStorage();
     return true;
   }
 
@@ -108,6 +116,22 @@ export class CommunityManager {
     this.communities.set(communityId, community);
     
     this.removeCommunityFromProfile(userId, communityId);
+    this.saveToStorage();
+    return true;
+  }
+
+  removeMember(communityId: string, memberId: string, userId: string): boolean {
+    const community = this.communities.get(communityId);
+    if (!community || community.creatorId !== userId) return false;
+    if (memberId === community.creatorId) return false;
+
+    const index = community.memberIds.indexOf(memberId);
+    if (index === -1) return false;
+
+    community.memberIds.splice(index, 1);
+    this.communities.set(communityId, community);
+    this.removeCommunityFromProfile(memberId, communityId);
+    this.saveToStorage();
     return true;
   }
 
@@ -123,10 +147,12 @@ export class CommunityManager {
       this.removeCommunityFromProfile(memberId, communityId);
     });
 
-    // Видаляємо лідерборд
-    this.leaderboards.delete(communityId);
+    const periods: CommunityLeaderboard['period'][] = ['weekly', 'monthly', 'all_time'];
+    periods.forEach((p) => this.leaderboards.delete(`${communityId}_${p}`));
 
-    return this.communities.delete(communityId);
+    const removed = this.communities.delete(communityId);
+    if (removed) this.saveToStorage();
+    return removed;
   }
 
   /**
@@ -145,6 +171,7 @@ export class CommunityManager {
     };
 
     this.communities.set(communityId, updated);
+    this.saveToStorage();
     return updated;
   }
 
@@ -154,6 +181,7 @@ export class CommunityManager {
   getSocialProfile(userId: string): SocialProfile {
     if (!this.socialProfiles.has(userId)) {
       this.socialProfiles.set(userId, this.createDefaultProfile(userId));
+      this.saveToStorage();
     }
     return this.socialProfiles.get(userId)!;
   }
@@ -165,6 +193,7 @@ export class CommunityManager {
     const profile = this.getSocialProfile(userId);
     const updated = { ...profile, ...updates };
     this.socialProfiles.set(userId, updated);
+    this.saveToStorage();
     return updated;
   }
 
@@ -192,6 +221,7 @@ export class CommunityManager {
 
     this.socialProfiles.set(userId, userProfile);
     this.socialProfiles.set(friendId, friendProfile);
+    this.saveToStorage();
     return true;
   }
 
@@ -212,6 +242,7 @@ export class CommunityManager {
 
     this.socialProfiles.set(userId, userProfile);
     this.socialProfiles.set(friendId, friendProfile);
+    this.saveToStorage();
     return true;
   }
 
@@ -229,6 +260,7 @@ export class CommunityManager {
 
     userProfile.blockedUsers.push(blockedUserId);
     this.socialProfiles.set(userId, userProfile);
+    this.saveToStorage();
     return true;
   }
 
@@ -243,6 +275,7 @@ export class CommunityManager {
 
     userProfile.blockedUsers.splice(index, 1);
     this.socialProfiles.set(userId, userProfile);
+    this.saveToStorage();
     return true;
   }
 
@@ -268,13 +301,14 @@ export class CommunityManager {
     };
 
     this.leaderboards.set(key, leaderboard);
+    this.saveToStorage();
     return leaderboard;
   }
 
   /**
    * Отримати глобальний лідерборд
    */
-  getGlobalLeaderboard(period: 'weekly' | 'monthly' | 'all_time' = 'weekly'): LeaderboardEntry[] {
+  getGlobalLeaderboard(_period: 'weekly' | 'monthly' | 'all_time' = 'weekly'): LeaderboardEntry[] {
     // У реальному коді це бірлося б з бази даних
     // Для демо повернемо порожній масив
     return [];
@@ -343,6 +377,53 @@ export class CommunityManager {
    */
   private generateCommunityId(): string {
     return `community_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(COMMUNITIES_STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as {
+        communities?: Community[];
+        profiles?: SocialProfile[];
+        leaderboards?: CommunityLeaderboard[];
+      };
+      if (Array.isArray(parsed.communities)) {
+        for (const c of parsed.communities) {
+          if (!c?.id) continue;
+          this.communities.set(c.id, c);
+        }
+      }
+      if (Array.isArray(parsed.profiles)) {
+        for (const p of parsed.profiles) {
+          if (!p?.userId) continue;
+          this.socialProfiles.set(p.userId, p);
+        }
+      }
+      if (Array.isArray(parsed.leaderboards)) {
+        for (const lb of parsed.leaderboards) {
+          if (!lb?.communityId || !lb?.period) continue;
+          this.leaderboards.set(`${lb.communityId}_${lb.period}`, lb);
+        }
+      }
+    } catch {
+      return;
+    }
+  }
+
+  private saveToStorage() {
+    try {
+      localStorage.setItem(
+        COMMUNITIES_STORAGE_KEY,
+        JSON.stringify({
+          communities: Array.from(this.communities.values()),
+          profiles: Array.from(this.socialProfiles.values()),
+          leaderboards: Array.from(this.leaderboards.values()),
+        }),
+      );
+    } catch {
+      return;
+    }
   }
 
   /**

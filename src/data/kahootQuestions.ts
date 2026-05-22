@@ -65,3 +65,21 @@ export function getKahootQuestionsSync(
 
   return shuffle([...unique.values()]).slice(0, Math.min(count, unique.size));
 }
+
+export function getKahootQuestionsByIdsSync(questionIds: string[], count?: number): Question[] {
+  const map = new Map<string, Question>();
+  for (const q of ALL_QUESTIONS) map.set(q.id, q);
+
+  const unique: Question[] = [];
+  const picked = new Set<string>();
+  for (const id of questionIds) {
+    const q = map.get(id);
+    if (!q) continue;
+    if (picked.has(q.id)) continue;
+    picked.add(q.id);
+    unique.push(q);
+  }
+
+  const limit = Math.min(unique.length, Math.max(1, count ?? unique.length));
+  return shuffle(unique).slice(0, limit);
+}
