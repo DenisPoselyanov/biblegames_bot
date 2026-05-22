@@ -22,7 +22,7 @@ export function KahootPlaylistEditor() {
   const [description, setDescription] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [themeIds, setThemeIds] = useState<string[]>(['geography']);
-  const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [difficulty, setDifficulty] = useState<Difficulty>('youth');
   const [questionCount, setQuestionCount] = useState(10);
   const [questionIds, setQuestionIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);

@@ -1,8 +1,8 @@
 [
   {
-    "id": "miracles-beginner-ai-00001",
+    "id": "miracles-baby-ai-00001",
     "themeId": "miracles",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Які чудеса Ісус зробив після свого Хрещення за Марком?",
     "options": [
       "Зцілив паралітика у Синаї (Мк. 1:23-28)",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T19:20:57.096Z"
   },
   {
-    "id": "miracles-beginner-ai-00002",
+    "id": "miracles-baby-ai-00002",
     "themeId": "miracles",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Який випадок згадується в Євангелії від Івана, коли Ісус використав хліб і рибу для улюбленої вечері зі своїми учнями?",
     "options": [
       "Чудеса Ісуса: Зцілення, воскресіння, природа. (Ін. 21:1-14)",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T19:20:57.096Z"
   },
   {
-    "id": "miracles-easy-ai-00003",
+    "id": "miracles-child-ai-00003",
     "themeId": "miracles",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Чим Ісус зцілив хворого, коли він був ще в Галілеї (Марк 1:40-45)?",
     "options": [
       "Лепрозою",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T19:21:29.538Z"
   },
   {
-    "id": "miracles-easy-ai-00004",
+    "id": "miracles-child-ai-00004",
     "themeId": "miracles",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Яку вода Ісус перетворив на вино в Кані Галилейській (Йол. 2:13)?",
     "options": [
       "Виноградну",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T19:21:29.538Z"
   },
   {
-    "id": "miracles-easy-ai-00005",
+    "id": "miracles-child-ai-00005",
     "themeId": "miracles",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який апостол Ісус відправив у Кесарію Філіппійську з метою вигнати нечисть із магазину якого торговця?",
     "options": [
       "Петро",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T19:21:29.538Z"
   },
   {
-    "id": "miracles-easy-ai-00006",
+    "id": "miracles-child-ai-00006",
     "themeId": "miracles",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який Ісус воскресив з мертвих по дорозі до Єрусалиму (Лк. 7:11-15)?",
     "options": [
       "Сімона Синедерита",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T19:21:29.538Z"
   },
   {
-    "id": "miracles-medium-ai-00007",
+    "id": "miracles-youth-ai-00007",
     "themeId": "miracles",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яке чудо Ісуса зцілило навіть не тільки людей, але і тварин?",
     "options": [
       "А) Чуде сиротинці (Мк. 7:31-37)",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T19:21:56.078Z"
   },
   {
-    "id": "miracles-medium-ai-00008",
+    "id": "miracles-youth-ai-00008",
     "themeId": "miracles",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "У якому чуді Ісус прирекла ворону, щоб вона полетіла і розірвалася над невозможним місцем?",
     "options": [
       "А) Чудо прораження пшениці та ячменю (Ів. 6:9)",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T19:21:56.078Z"
   },
   {
-    "id": "miracles-hard-ai-00009",
+    "id": "miracles-student-ai-00009",
     "themeId": "miracles",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Який з чудес Ісуса описано у Мк. 5:41?",
     "options": [
       "Приведення з водами, що не принагрівались (Йо. 5:4)",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T19:22:48.550Z"
   },
   {
-    "id": "miracles-hard-ai-00010",
+    "id": "miracles-student-ai-00010",
     "themeId": "miracles",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Яке чудо Ісуса відбулося у Сінеї (Іс. 63:11)?",
     "options": [
       "Воскресіння сина вдови (Лк. 7:14)",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T19:22:48.550Z"
   },
   {
-    "id": "miracles-hard-ai-00011",
+    "id": "miracles-student-ai-00011",
     "themeId": "miracles",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Чия матір зцілив Ісус, коли вона накладала руку на його голову (Мт. 9:25)?",
     "options": [
       "Тамари (Мк. 14:3)",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T19:22:48.550Z"
   },
   {
-    "id": "miracles-hard-ai-00012",
+    "id": "miracles-student-ai-00012",
     "themeId": "miracles",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Якому пророку Ісус надіслав дух повеління у Синеї (Іс. 61:1)?",
     "options": [
       "Єзекіїлю (Мк. 1:2)",
@@ -192,9 +192,9 @@
     "createdAt": "2026-05-17T19:22:48.550Z"
   },
   {
-    "id": "miracles-hard-ai-00013",
+    "id": "miracles-student-ai-00013",
     "themeId": "miracles",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Чию невіру Ісус відшмагав демони у Галілеї (Мт. 9:32)?",
     "options": [
       "Скофіоти (Ді. 13:6)",
@@ -208,9 +208,9 @@
     "createdAt": "2026-05-17T19:22:48.550Z"
   },
   {
-    "id": "miracles-expert-ai-00014",
+    "id": "miracles-preacher-ai-00014",
     "themeId": "miracles",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "У якій книзі Святого Письма описано історію про зцілення паралітика, який був увезений через стежку трьох брам?",
     "options": [
       "Вічня Псалмів 15:1",
@@ -224,9 +224,9 @@
     "createdAt": "2026-05-17T19:23:45.401Z"
   },
   {
-    "id": "miracles-expert-ai-00015",
+    "id": "miracles-preacher-ai-00015",
     "themeId": "miracles",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Яку історію розповідає Новий Завіт про воскресіння юнака, який лежав на гробі своїх батьків?",
     "options": [
       "Письмо до Коринтян 15:36",
@@ -240,9 +240,9 @@
     "createdAt": "2026-05-17T19:23:45.401Z"
   },
   {
-    "id": "miracles-expert-ai-00016",
+    "id": "miracles-preacher-ai-00016",
     "themeId": "miracles",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який чудовий вчитель описав у своїй книзі історію про зцілення витоку крові з язика, коли він потрапив на шпагу?",
     "options": [
       "Флавій Йосип Флавій",
@@ -255,9 +255,9 @@
     "createdAt": "2026-05-17T19:23:45.401Z"
   },
   {
-    "id": "miracles-expert-ai-00017",
+    "id": "miracles-preacher-ai-00017",
     "themeId": "miracles",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який із чудес Ісуса описує зцілення сліпого, коли він проштовхнув за ними пальцем і сказав: «Повірте, отець нашим світликом»?",
     "options": [
       "Маркове Євангеліє 8:23",
@@ -271,9 +271,9 @@
     "createdAt": "2026-05-17T19:23:45.401Z"
   },
   {
-    "id": "miracles-expert-ai-00018",
+    "id": "miracles-preacher-ai-00018",
     "themeId": "miracles",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який із чудес описує історію про те, як Ісус викликав до себе з води великого рибу?",
     "options": [
       "Маркове Євангеліє 4:36-41",

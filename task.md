@@ -81,6 +81,46 @@
   - [x] Async friend challenges.
   - [x] Group/community leaderboards (opt-in).
 
+## G. Phase 6 — Difficulty System + Topics (Completed)
+
+- [x] **G1. Нова система складності (7 рівнів)**
+  - [x] Оновити `Difficulty` тип: `baby`, `child`, `youth`, `student`, `preacher`, `teacher`, `theologian`
+  - [x] Додати emoji в `DIFFICULTY_LABELS`
+  - [x] Оновити `DIFFICULTY_POINTS` та `DIFFICULTY_ORDER`
+  - [x] Оновити `isValidDifficulty`
+  - [x] `src/data/questions.ts`: замінити всі old difficulty на new у `q()` викликах
+  - [x] `src/data/questions-extra.ts`: замінити всі old difficulty на new
+  - [x] `src/data/kahootQuestions.ts`: default difficulty + fallback
+  - [x] `src/pages/AdminPanel.tsx`: `difficultyColor` для 7 рівнів
+  - [x] `src/lib/questionPools.ts`: `POOL_CONFIGS` + `getModeSpecificRules` + `difficultyOrder`
+  - [x] `src/lib/questionQuality.ts`: `calibrateDifficulty` + `validateDifficulty` + `getDifficultyLevel` + `getDifficultyByLevel`
+  - [x] `scripts/lib/themes-config.mjs`: `DIFFICULTIES` масив на 7
+  - [x] `scripts/generate-questions-ai.mjs`: `buildPrompt` опис 7 рівнів
+  - [x] `bot/index.mjs`: валідація DIFFICULTIES
+  - [x] `scripts/analyzeQuestionPools.ts`: фільтри складності
+  - [x] `scripts/testSocialFeatures.ts`: оновлено difficulty + question IDs
+  - [x] `src/types/gameModes.ts`: default difficulty
+  - [x] `data/question-db/*.json`: оновлено difficulty та ID у всіх AI-питаннях
+
+- [x] **G2. AI функція генерації ієрархії тем**
+  - [x] Додати тип `TopicNode` (рекурсивний) + `TopicHierarchyMap` в `src/types/index.ts`
+  - [x] Створити `scripts/generate-topics-ai.mjs` (Ollama) + додати npm script
+  - [x] Створити директорію `data/topics-db/` з 15 JSON файлами
+  - [x] Створити `src/data/topicDbLoader.ts` для завантаження (loadTopicHierarchy, loadAllTopicHierarchies, flattenTopicNodes, countTopicNodes)
+
+- [x] **G3. Оновлення адмін-панелі**
+  - [x] Розділити на "🏷️ Теми" та "❓ Запитання" (основні вкладки)
+  - [x] Вкладка Теми: дерево з розкриттям (TopicTreeNode компонент), аналіз кількості питань
+  - [x] Вкладка Запитання: підвкладки 🚧 Карантин / 📋 Звіти якості / 🗂️ Пули питань
+  - [x] Оновити CSS (subTabs, subTabBtn, themeGrid)
+
+- [x] **G4. AI сортування існуючих питань**
+  - [x] Створити `scripts/sortQuestionsByCategory.ts` з tsx
+  - [x] Маппінг старих рівнів на нові (DIFICULTY_MAP)
+  - [x] Призначення підтем для кожного питання з topic hierarchy
+  - [x] Збереження в `data/question-categories.json`
+  - [x] npm script: `npm run sort-questions`
+
 ## 🔧 Code Review — AI аналіз та адмін-панель
 
 - [x] **D4. Додати AI-пошук дублікатів через Jaccard similarity**

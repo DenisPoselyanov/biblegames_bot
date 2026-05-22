@@ -11,19 +11,23 @@ import styles from './Survival.module.css';
 const STARTING_LIVES = 3;
 const TIME_PER_QUESTION = 20;
 const POINTS_BY_DIFFICULTY: Record<Difficulty, number> = {
-  beginner: 5,
-  easy: 10,
-  medium: 15,
-  hard: 20,
-  expert: 30,
+  baby: 5,
+  child: 10,
+  youth: 15,
+  student: 20,
+  preacher: 25,
+  teacher: 30,
+  theologian: 40,
 };
 
 function getDifficultyForScore(score: number): Difficulty {
-  if (score <= 5) return 'beginner';
-  if (score <= 15) return 'easy';
-  if (score <= 30) return 'medium';
-  if (score <= 50) return 'hard';
-  return 'expert';
+  if (score <= 5) return 'baby';
+  if (score <= 15) return 'child';
+  if (score <= 30) return 'youth';
+  if (score <= 50) return 'student';
+  if (score <= 75) return 'preacher';
+  if (score <= 100) return 'teacher';
+  return 'theologian';
 }
 
 function pickSurvivalQuestion(score: number, excludeIds: string[]): Question | null {

@@ -15,7 +15,7 @@ export function Challenges() {
   const [friendId, setFriendId] = useState('');
   const [friendName, setFriendName] = useState('');
   const [themeId, setThemeId] = useState<string>('');
-  const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [difficulty, setDifficulty] = useState<Difficulty>('youth');
   const [error, setError] = useState<string | null>(null);
 
   const data = useMemo(() => {
@@ -48,7 +48,7 @@ export function Challenges() {
     setFriendId('');
     setFriendName('');
     setThemeId('');
-    setDifficulty('medium');
+    setDifficulty('youth');
     setVersion((v) => v + 1);
   };
 

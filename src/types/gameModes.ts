@@ -51,5 +51,5 @@ export const GAME_MODES: GameMode[] = [
 export const KAHOOT_DEFAULTS = {
   questionCount: 10,
   timePerQuestionSec: 20,
-  difficulty: 'medium' as const,
+  difficulty: 'youth' as const,
 };

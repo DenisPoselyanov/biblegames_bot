@@ -1,8 +1,8 @@
 [
   {
-    "id": "geography-beginner-ai-00001",
+    "id": "geography-baby-ai-00001",
     "themeId": "geography",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "На якій горі розмовляли Бог і Мойсей (Ек. 19:2)?",
     "options": [
       "Сінайській",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T18:36:05.099Z"
   },
   {
-    "id": "geography-beginner-ai-00002",
+    "id": "geography-baby-ai-00002",
     "themeId": "geography",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Які ворота були розташовані на схід від міста Єрусалим (Ізд. 9:3)?",
     "options": [
       "Сіонські ворота",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T18:36:05.100Z"
   },
   {
-    "id": "geography-beginner-ai-00003",
+    "id": "geography-baby-ai-00003",
     "themeId": "geography",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Після якої річки розділив Самсон філістійцями (Сд. 15:10)?",
     "options": [
       "Гілонській",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T18:36:05.100Z"
   },
   {
-    "id": "geography-beginner-ai-00004",
+    "id": "geography-baby-ai-00004",
     "themeId": "geography",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "До якого царства належав Давид (І Цар. 17:12)?",
     "options": [
       "Царство Ізраїлю",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T18:36:05.100Z"
   },
   {
-    "id": "geography-beginner-ai-00005",
+    "id": "geography-baby-ai-00005",
     "themeId": "geography",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "На якій річці розташована межа між землями ізраїльтян і аморейців (Нум. 34:11)?",
     "options": [
       "Жаб'ячій",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T18:36:05.100Z"
   },
   {
-    "id": "geography-beginner-ai-00006",
+    "id": "geography-baby-ai-00006",
     "themeId": "geography",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "На якій горі розмістилися старозавітні юдеї в епоху вавилонського полону (Іс. 52:1)?",
     "options": [
       "Гора Сіонська",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T18:36:05.100Z"
   },
   {
-    "id": "geography-easy-ai-00007",
+    "id": "geography-child-ai-00007",
     "themeId": "geography",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Чесне місто, де проповідував Ісус Христос (Іван 5:2):",
     "options": [
       "Йерусалим",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T18:36:45.288Z"
   },
   {
-    "id": "geography-easy-ai-00008",
+    "id": "geography-child-ai-00008",
     "themeId": "geography",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Річка, у якій Ісаїя бачив Бога (Іс. 43:2):",
     "options": [
       "Тигрис",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T18:36:45.288Z"
   },
   {
-    "id": "geography-easy-ai-00009",
+    "id": "geography-child-ai-00009",
     "themeId": "geography",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Місто, де проповідував Павло (Дії 16:9):",
     "options": [
       "Філадельфія",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T18:36:45.288Z"
   },
   {
-    "id": "geography-easy-ai-00010",
+    "id": "geography-child-ai-00010",
     "themeId": "geography",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Гора, на якій Бог дав Мойсеєві Десять заповідей (Втор. 5:1):",
     "options": [
       "Зіон",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T18:36:45.288Z"
   },
   {
-    "id": "geography-easy-ai-00011",
+    "id": "geography-child-ai-00011",
     "themeId": "geography",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Місто, де проживав Соломон (Цар. 2:1):",
     "options": [
       "Єрусалим",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T18:36:45.289Z"
   },
   {
-    "id": "geography-easy-ai-00012",
+    "id": "geography-child-ai-00012",
     "themeId": "geography",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Країна, у якій жив Ісус Навино (Числа 34:11):",
     "options": [
       "Галад",
@@ -192,9 +192,9 @@
     "createdAt": "2026-05-17T18:36:45.289Z"
   },
   {
-    "id": "geography-medium-ai-00013",
+    "id": "geography-youth-ai-00013",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "У якому місті розташована синагога Давида та Соломона?",
     "options": [
       "Єрусалим (Деут. 12:5)",
@@ -208,9 +208,9 @@
     "createdAt": "2026-05-17T18:37:43.848Z"
   },
   {
-    "id": "geography-medium-ai-00014",
+    "id": "geography-youth-ai-00014",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Країна, де жив Ісайя, апостол Христовий?",
     "options": [
       "Ізраїль (Іс. 1:1)",
@@ -224,9 +224,9 @@
     "createdAt": "2026-05-17T18:37:43.848Z"
   },
   {
-    "id": "geography-medium-ai-00015",
+    "id": "geography-youth-ai-00015",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яку річку намагався перетнути Ісус Христос, але не зміг через величезне число людей (Мар. 6:33)?",
     "options": [
       "Тигр (Мар. 7:24)",
@@ -240,9 +240,9 @@
     "createdAt": "2026-05-17T18:37:43.848Z"
   },
   {
-    "id": "geography-medium-ai-00016",
+    "id": "geography-youth-ai-00016",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Назва гори, де апостоли взятті на небо (Ап. 1:12)?",
     "options": [
       "Гора Оліветова (Лк. 24:50)",
@@ -256,9 +256,9 @@
     "createdAt": "2026-05-17T18:37:43.848Z"
   },
   {
-    "id": "geography-medium-ai-00017",
+    "id": "geography-youth-ai-00017",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "У якому місті апостоли Стефан та Лука зустрілися?",
     "options": [
       "Сидон (Дії 9:30)",
@@ -272,9 +272,9 @@
     "createdAt": "2026-05-17T18:37:43.848Z"
   },
   {
-    "id": "geography-medium-ai-00018",
+    "id": "geography-youth-ai-00018",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яка гора називається Горою Божої благодаті (Тим. 1:16)?",
     "options": [
       "Гора Оліветова (Лк. 24:50)",
@@ -288,9 +288,9 @@
     "createdAt": "2026-05-17T18:37:43.848Z"
   },
   {
-    "id": "geography-hard-ai-00019",
+    "id": "geography-student-ai-00019",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Яка гора, на якій Бог сказав Мойсеєві: \"Спустися на Африку?\"",
     "options": [
       "Гора Синай",
@@ -304,9 +304,9 @@
     "createdAt": "2026-05-17T18:38:28.140Z"
   },
   {
-    "id": "geography-hard-ai-00020",
+    "id": "geography-student-ai-00020",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "У якому місті Бог дав Ноя новий Заповіт?",
     "options": [
       "Єрусалим",
@@ -320,9 +320,9 @@
     "createdAt": "2026-05-17T18:38:28.140Z"
   },
   {
-    "id": "geography-hard-ai-00021",
+    "id": "geography-student-ai-00021",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Річка, яку через неї перетнув Ісус Христос, щоб дійти до Єрусалима, це?",
     "options": [
       "Жиронда",
@@ -336,9 +336,9 @@
     "createdAt": "2026-05-17T18:38:28.140Z"
   },
   {
-    "id": "geography-hard-ai-00022",
+    "id": "geography-student-ai-00022",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "У якому місті Йосип зустрів Марію Магдаліну після рескресії Ісуса Христа?",
     "options": [
       "Єрусалим",
@@ -352,9 +352,9 @@
     "createdAt": "2026-05-17T18:38:28.140Z"
   },
   {
-    "id": "geography-hard-ai-00023",
+    "id": "geography-student-ai-00023",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "В якому місті Бог повідомив Мойсеєві, що народ Ізраїлю буде жити?",
     "options": [
       "Єрусалим",
@@ -368,9 +368,9 @@
     "createdAt": "2026-05-17T18:38:28.140Z"
   },
   {
-    "id": "geography-hard-ai-00024",
+    "id": "geography-student-ai-00024",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "У якій країні жив апостол Павло перед тим, як стати місіонером?",
     "options": [
       "Сирія",
@@ -384,9 +384,9 @@
     "createdAt": "2026-05-17T18:38:28.140Z"
   },
   {
-    "id": "geography-expert-ai-00025",
+    "id": "geography-preacher-ai-00025",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "У якій країні, згадується в Біблії, розташоване місто Ур (Гезерет-Хаддад)?",
     "options": [
       "Єгипет",
@@ -400,9 +400,9 @@
     "createdAt": "2026-05-17T18:40:12.190Z"
   },
   {
-    "id": "geography-expert-ai-00026",
+    "id": "geography-preacher-ai-00026",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Що є найвищою горою в Біблії і розташована вона в країні Галаад?",
     "options": [
       "Оливкова гора",
@@ -416,9 +416,9 @@
     "createdAt": "2026-05-17T18:40:12.190Z"
   },
   {
-    "id": "geography-expert-ai-00027",
+    "id": "geography-preacher-ai-00027",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Названа річка в Біблії, яка впадає в Червоне море та відома своєю великою кількістю риби?",
     "options": [
       "Ніл",
@@ -432,9 +432,9 @@
     "createdAt": "2026-05-17T18:40:12.190Z"
   },
   {
-    "id": "geography-expert-ai-00028",
+    "id": "geography-preacher-ai-00028",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Що є найпівнічнішою згаданою у Біблії областю в Палестині?",
     "options": [
       "Даан",
@@ -448,9 +448,9 @@
     "createdAt": "2026-05-17T18:40:12.190Z"
   },
   {
-    "id": "geography-expert-ai-00029",
+    "id": "geography-preacher-ai-00029",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "У Біблії згадується річка, яка розділяє Палестину на північну і південну частини?",
     "options": [
       "Ніл",
@@ -464,9 +464,9 @@
     "createdAt": "2026-05-17T18:40:12.190Z"
   },
   {
-    "id": "geography-expert-ai-00030",
+    "id": "geography-preacher-ai-00030",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "В Біблії згадується місто, яке є столицею Самарії?",
     "options": [
       "Хелбон",
@@ -480,9 +480,9 @@
     "createdAt": "2026-05-17T18:40:12.190Z"
   },
   {
-    "id": "geography-beginner-ai-00031",
+    "id": "geography-baby-ai-00031",
     "themeId": "geography",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "У якому місті Ісус був хрещений Йоанном Хрестителем?",
     "options": [
       "Єрусалим",
@@ -496,9 +496,9 @@
     "createdAt": "2026-05-17T18:44:34.190Z"
   },
   {
-    "id": "geography-beginner-ai-00032",
+    "id": "geography-baby-ai-00032",
     "themeId": "geography",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "У якої країні розташоване місто Дамаск?",
     "options": [
       "Єгипет",
@@ -512,9 +512,9 @@
     "createdAt": "2026-05-17T18:44:34.191Z"
   },
   {
-    "id": "geography-beginner-ai-00033",
+    "id": "geography-baby-ai-00033",
     "themeId": "geography",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Річка, в якій Ісус відпочив після чотирьох днів путівлі, називається",
     "options": [
       "Йордан",
@@ -528,9 +528,9 @@
     "createdAt": "2026-05-17T18:44:34.191Z"
   },
   {
-    "id": "geography-beginner-ai-00034",
+    "id": "geography-baby-ai-00034",
     "themeId": "geography",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "У якій горі Ісус надихнувся для проголошення Своїх слів?",
     "options": [
       "Гора Набору",
@@ -544,9 +544,9 @@
     "createdAt": "2026-05-17T18:44:34.191Z"
   },
   {
-    "id": "geography-easy-ai-00035",
+    "id": "geography-child-ai-00035",
     "themeId": "geography",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Яке місто є столицею Ізраїлю, якщо говорити згідно зі Старим Заповітом?",
     "options": [
       "Єрусалим",
@@ -560,9 +560,9 @@
     "createdAt": "2026-05-17T18:45:01.780Z"
   },
   {
-    "id": "geography-easy-ai-00036",
+    "id": "geography-child-ai-00036",
     "themeId": "geography",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Що є найбільшою річкою у Святому Письмі?",
     "options": [
       "Ніл",
@@ -576,9 +576,9 @@
     "createdAt": "2026-05-17T18:45:01.780Z"
   },
   {
-    "id": "geography-easy-ai-00037",
+    "id": "geography-child-ai-00037",
     "themeId": "geography",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "У якій країні розташована Вавилон?",
     "options": [
       "Єгипет",
@@ -592,9 +592,9 @@
     "createdAt": "2026-05-17T18:45:01.780Z"
   },
   {
-    "id": "geography-easy-ai-00038",
+    "id": "geography-child-ai-00038",
     "themeId": "geography",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Яка гора, на якій проводить Мойсей перепис ізраїльського народу?",
     "options": [
       "Гора Галаде",
@@ -608,9 +608,9 @@
     "createdAt": "2026-05-17T18:45:01.780Z"
   },
   {
-    "id": "geography-medium-ai-00039",
+    "id": "geography-youth-ai-00039",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "У якої країні розташовано місто Дамаск, згадуване в Біблії?",
     "options": [
       "А) Єгипет",
@@ -624,9 +624,9 @@
     "createdAt": "2026-05-17T18:45:35.230Z"
   },
   {
-    "id": "geography-medium-ai-00040",
+    "id": "geography-youth-ai-00040",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Найбільша річка в Біблії — це?",
     "options": [
       "А) Еуфрат",
@@ -640,9 +640,9 @@
     "createdAt": "2026-05-17T18:45:35.230Z"
   },
   {
-    "id": "geography-medium-ai-00041",
+    "id": "geography-youth-ai-00041",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "З якої гори бачить Бог Сион?",
     "options": [
       "А) Гора Оливкова",
@@ -656,9 +656,9 @@
     "createdAt": "2026-05-17T18:45:35.230Z"
   },
   {
-    "id": "geography-medium-ai-00042",
+    "id": "geography-youth-ai-00042",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "У якому місті мешкав Іосип з братом Даниєлем?",
     "options": [
       "А) Єрусалим",
@@ -672,9 +672,9 @@
     "createdAt": "2026-05-17T18:45:35.230Z"
   },
   {
-    "id": "geography-medium-ai-00043",
+    "id": "geography-youth-ai-00043",
     "themeId": "geography",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Столиця Єгипту в часи Мойсея знаходилась на березі якої з річок?",
     "options": [
       "А) Тигр",
@@ -688,9 +688,9 @@
     "createdAt": "2026-05-17T18:45:35.230Z"
   },
   {
-    "id": "geography-hard-ai-00044",
+    "id": "geography-student-ai-00044",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "У якому місті було поховано Давид?",
     "options": [
       "Єрусалимі",
@@ -704,9 +704,9 @@
     "createdAt": "2026-05-17T18:46:03.844Z"
   },
   {
-    "id": "geography-hard-ai-00045",
+    "id": "geography-student-ai-00045",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Річка, де жив Іона, розташована на території якої сучасної держави?",
     "options": [
       "Ізраїлю",
@@ -720,9 +720,9 @@
     "createdAt": "2026-05-17T18:46:03.844Z"
   },
   {
-    "id": "geography-hard-ai-00046",
+    "id": "geography-student-ai-00046",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "На якій горі Бог дав Мойсею закони?",
     "options": [
       "Сінаї",
@@ -736,9 +736,9 @@
     "createdAt": "2026-05-17T18:46:03.844Z"
   },
   {
-    "id": "geography-hard-ai-00047",
+    "id": "geography-student-ai-00047",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "У якій країні розташований Сідонім?",
     "options": [
       "Єгипет",
@@ -752,9 +752,9 @@
     "createdAt": "2026-05-17T18:46:03.844Z"
   },
   {
-    "id": "geography-hard-ai-00048",
+    "id": "geography-student-ai-00048",
     "themeId": "geography",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "На якій річці Бог сказав Іосу взірватися?",
     "options": [
       "Іордан",
@@ -768,9 +768,9 @@
     "createdAt": "2026-05-17T18:46:03.844Z"
   },
   {
-    "id": "geography-expert-ai-00049",
+    "id": "geography-preacher-ai-00049",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Дove знаходиться гора, де Бог дав Закони Мойсеєві (Мойсеєві набулося 60 років)?",
     "options": [
       "Горіш-Буван (Ісх. 19:2)",
@@ -784,9 +784,9 @@
     "createdAt": "2026-05-17T18:46:54.499Z"
   },
   {
-    "id": "geography-expert-ai-00050",
+    "id": "geography-preacher-ai-00050",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Яка річка впадає в Північне Молодецьке море (Моря Червоне)?",
     "options": [
       "Куріха (Ісх. 13:17)",
@@ -800,9 +800,9 @@
     "createdAt": "2026-05-17T18:46:54.499Z"
   },
   {
-    "id": "geography-expert-ai-00051",
+    "id": "geography-preacher-ai-00051",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Місто, в якому розташована печера, де Мойсей знав Бога (Бог з'явився Мойсеєві у вогні в печері)?",
     "options": [
       "Гедес (Ісх. 3:1)",
@@ -816,9 +816,9 @@
     "createdAt": "2026-05-17T18:46:54.499Z"
   },
   {
-    "id": "geography-expert-ai-00052",
+    "id": "geography-preacher-ai-00052",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Яке місто було столицею царства Іродянина Ервеса (Ервес - син Матфей)?",
     "options": [
       "Цезарея-Філіппі (Мат. 16:13)",
@@ -832,9 +832,9 @@
     "createdAt": "2026-05-17T18:46:54.499Z"
   },
   {
-    "id": "geography-expert-ai-00053",
+    "id": "geography-preacher-ai-00053",
     "themeId": "geography",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "В якої країні жили перші люди - Адам і Єва (Адам і Єва не були створені на землі)?",
     "options": [
       "Едем (Бут. 2:8)",

@@ -26,16 +26,16 @@ export const POOL_CONFIGS: Record<QuestionPoolType, PoolSelectionRules> = {
   study: {
     minQualityScore: 60,
     maxAmbiguityScore: 50,
-    allowedDifficulties: ['beginner', 'easy', 'medium', 'hard'],
+    allowedDifficulties: ['baby', 'child', 'youth', 'student', 'preacher'],
     requireReference: true,
-    requireExplanation: false, // Знижено вимогу для початкового стану
+    requireExplanation: false,
     allowQuarantined: false,
     maxDuplicatesAllowed: 0,
   },
   game: {
     minQualityScore: 50,
     maxAmbiguityScore: 60,
-    allowedDifficulties: ['easy', 'medium', 'hard', 'expert'],
+    allowedDifficulties: ['child', 'youth', 'student', 'preacher'],
     requireReference: false,
     requireExplanation: false,
     allowQuarantined: false,
@@ -44,7 +44,7 @@ export const POOL_CONFIGS: Record<QuestionPoolType, PoolSelectionRules> = {
   both: {
     minQualityScore: 60,
     maxAmbiguityScore: 50,
-    allowedDifficulties: ['easy', 'medium', 'hard'],
+    allowedDifficulties: ['child', 'youth', 'student'],
     requireReference: true,
     requireExplanation: false,
     allowQuarantined: false,
@@ -218,7 +218,7 @@ export class QuestionPoolManager {
     const rules = this.getModeSpecificRules(mode);
     const pool = mode === 'exploration' ? this.getStudyQuestions() : this.getGameQuestions();
     
-    const allowed = rules.allowedDifficulties ?? ['easy', 'medium', 'hard', 'expert'];
+    const allowed = rules.allowedDifficulties ?? ['child', 'youth', 'student', 'preacher'];
     let filtered = pool.filter(q => {
       if (!allowed.includes(q.difficulty)) return false;
       if (rules.requireReference && !q.reference) return false;
@@ -227,7 +227,7 @@ export class QuestionPoolManager {
 
     // Сортування за складністю для певних режимів
     if (mode === 'millionaire') {
-      const difficultyOrder: Record<string, number> = { beginner: 0, easy: 1, medium: 2, hard: 3, expert: 4 };
+      const difficultyOrder: Record<string, number> = { baby: 0, child: 1, youth: 2, student: 3, preacher: 4, teacher: 5, theologian: 6 };
       filtered.sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
     }
 
@@ -241,22 +241,22 @@ export class QuestionPoolManager {
     switch (mode) {
       case 'millionaire':
         return {
-          allowedDifficulties: ['easy', 'medium', 'hard', 'expert'],
+          allowedDifficulties: ['child', 'youth', 'student', 'preacher'],
           requireReference: false,
         };
       case 'survival':
         return {
-          allowedDifficulties: ['easy', 'medium', 'hard'],
+          allowedDifficulties: ['child', 'youth', 'student'],
           requireReference: false,
         };
       case 'kahoot':
         return {
-          allowedDifficulties: ['easy', 'medium'],
+          allowedDifficulties: ['child', 'youth'],
           requireReference: false,
         };
       case 'exploration':
         return {
-          allowedDifficulties: ['beginner', 'easy', 'medium', 'hard'],
+          allowedDifficulties: ['baby', 'child', 'youth', 'student'],
           requireReference: true,
         };
       default:

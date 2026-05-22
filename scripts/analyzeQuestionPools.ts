@@ -89,13 +89,13 @@ for (const mode of modes) {
 console.log('\n🔍 Тестування фільтрації:');
 
 const studyMediumQuestions = questionPoolManager.getStudyQuestions({
-  difficulty: 'medium',
+  difficulty: 'youth',
   minQualityScore: 70,
 });
-console.log(`\nStudy pool, medium difficulty, quality ≥ 70: ${studyMediumQuestions.length} питань`);
+console.log(`\nStudy pool, youth difficulty, quality ≥ 70: ${studyMediumQuestions.length} питань`);
 
 const gameEasyQuestions = questionPoolManager.getGameQuestions({
-  difficulty: 'easy',
+  difficulty: 'child',
   maxAmbiguityScore: 30,
 });
 console.log(`Game pool, easy difficulty, ambiguity ≤ 30: ${gameEasyQuestions.length} питань`);
@@ -114,7 +114,7 @@ excludedFromStudy.slice(0, 10).forEach(q => {
   // if (!q.explanationShort && !q.explanationDeep) reasons.push('no_explanation');
   if ((q.qualityScore ?? 75) < 60) reasons.push(`low_quality_${q.qualityScore ?? 75}`);
   if ((q.ambiguityScore ?? 30) > 50) reasons.push(`high_ambiguity_${q.ambiguityScore ?? 30}`);
-  if (['expert'].includes(q.difficulty)) reasons.push(`difficulty_not_allowed_${q.difficulty}`);
+  if (['teacher', 'theologian'].includes(q.difficulty)) reasons.push(`difficulty_not_allowed_${q.difficulty}`);
   if (q.quarantined) reasons.push('quarantined');
   
   if (reasons.length === 0) reasons.push('unknown');

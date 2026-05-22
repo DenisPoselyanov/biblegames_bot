@@ -14,7 +14,7 @@ function shuffle<T>(array: T[]): T[] {
 export async function getKahootQuestions(
   themeIds: string[],
   count: number,
-  difficulty: Difficulty = 'medium',
+  difficulty: Difficulty = 'youth',
 ): Promise<Question[]> {
   const pool: Question[] = [];
 
@@ -30,7 +30,7 @@ export async function getKahootQuestions(
 
   if (pool.length === 0) {
     for (const themeId of themeIds) {
-      pool.push(...getQuestionsForLevel(themeId, 'easy', 50));
+      pool.push(...getQuestionsForLevel(themeId, 'child', 50));
     }
   }
 
@@ -46,7 +46,7 @@ export async function getKahootQuestions(
 export function getKahootQuestionsSync(
   themeIds: string[],
   count: number,
-  difficulty: Difficulty = 'medium',
+  difficulty: Difficulty = 'youth',
 ): Question[] {
   const pool = ALL_QUESTIONS.filter(
     (q) => themeIds.includes(q.themeId) && q.difficulty === difficulty,
@@ -54,7 +54,7 @@ export function getKahootQuestionsSync(
 
   if (pool.length === 0) {
     for (const themeId of themeIds) {
-      pool.push(...getQuestionsForLevel(themeId, 'easy', 30));
+      pool.push(...getQuestionsForLevel(themeId, 'child', 30));
     }
   }
 

@@ -17,7 +17,7 @@ export const THEMES = [
   { id: 'revelation', title: 'Відкриття', context: 'Книга Одкровення, символи, церкви, останні події.' },
 ];
 
-export const DIFFICULTIES = ['beginner', 'easy', 'medium', 'hard', 'expert'];
+export const DIFFICULTIES = ['baby', 'child', 'youth', 'student', 'preacher', 'teacher', 'theologian'];
 
 export const THEME_IDS = THEMES.map((t) => t.id);
 

@@ -132,7 +132,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       }
       if (
         themeId === 'geography' &&
-        difficulty === 'expert' &&
+        difficulty === 'teacher' &&
         correctCount === totalQuestions &&
         !updatedAchievements.includes('cartographer')
       ) {

@@ -1,8 +1,8 @@
 [
   {
-    "id": "parables-beginner-ai-00001",
+    "id": "parables-baby-ai-00001",
     "themeId": "parables",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Яка притча Ісуса Христа є найбільш відомою та описує блукачів на шляху до Царства Небесного?",
     "options": [
       "Притча про державу, що розійшлася у війну з собою (Мк. 3:24)",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T19:14:37.254Z"
   },
   {
-    "id": "parables-beginner-ai-00002",
+    "id": "parables-baby-ai-00002",
     "themeId": "parables",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Чим порівняв Ісус Христос своїх слухачів до того, як вони стали наслідувати Його?",
     "options": [
       "Притча про грібне дерево (Мк. 11:20-25)",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T19:14:37.254Z"
   },
   {
-    "id": "parables-easy-ai-00003",
+    "id": "parables-child-ai-00003",
     "themeId": "parables",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Чия притча про син, який пішов до батька і повернувся та був прийнятий назад, розповідається в Євангелії від Луки?",
     "options": [
       "Євангеліє від Матвія",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T19:14:54.414Z"
   },
   {
-    "id": "parables-easy-ai-00004",
+    "id": "parables-child-ai-00004",
     "themeId": "parables",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Чию притчу розповідають про рибалку та сто тисяч риб?",
     "options": [
       "Євангеліє від Матвія",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T19:14:54.414Z"
   },
   {
-    "id": "parables-medium-ai-00005",
+    "id": "parables-youth-ai-00005",
     "themeId": "parables",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яка притча Ісуса Христа описує сільського чоловіка, який зустріч у своїй хаті богом і не визнає його?",
     "options": [
       "Притча про добрих садикам (Лк. 13:6-9)",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T19:15:23.079Z"
   },
   {
-    "id": "parables-medium-ai-00006",
+    "id": "parables-youth-ai-00006",
     "themeId": "parables",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яка притча описує людину, яку схопили злодії і доставили перед суддями, але вони не визначили, які були його звинувачення?",
     "options": [
       "Притча про добрих садикам (Лк. 13:6-9)",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T19:15:23.079Z"
   },
   {
-    "id": "parables-hard-ai-00007",
+    "id": "parables-student-ai-00007",
     "themeId": "parables",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Яка притча Ісуса Христа описує потрясіння Страшного Суду, де люди будуть розділені на праведних і грішних?",
     "options": [
       "А) Притча про добрих садівниками (Мар. 13:28-30)",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T19:15:54.085Z"
   },
   {
-    "id": "parables-hard-ai-00008",
+    "id": "parables-student-ai-00008",
     "themeId": "parables",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Яка притча описує незрячу жінку, яка завдяки своїй вірі у Ісуса Христа отримала зцілення?",
     "options": [
       "А) Притча про добру самарянку (Лк. 10:30-37)",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T19:15:54.085Z"
   },
   {
-    "id": "parables-expert-ai-00009",
+    "id": "parables-preacher-ai-00009",
     "themeId": "parables",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Яка притча Ісуса Христа порівнює Царство Неба до держави, яку люди шукають?",
     "options": [
       "А) Притча про вівця та лів",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T19:16:43.035Z"
   },
   {
-    "id": "parables-expert-ai-00010",
+    "id": "parables-preacher-ai-00010",
     "themeId": "parables",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Хто випадково потрапив на весілля в Галілеї у Притчі про весілля, і яку роль відіграв там?",
     "options": [
       "А) Іоана Хрестителя",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T19:16:43.035Z"
   },
   {
-    "id": "parables-expert-ai-00011",
+    "id": "parables-preacher-ai-00011",
     "themeId": "parables",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Яка притча Ісуса Христа порівнює Бога з яким з предметів, які є в домі?",
     "options": [
       "А) Царями",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T19:16:43.035Z"
   },
   {
-    "id": "parables-expert-ai-00012",
+    "id": "parables-preacher-ai-00012",
     "themeId": "parables",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Чому в Притчі про добрі та злих садівників говориться, що певні рослини повинні бути вирване?",
     "options": [
       "А) Тому, що вони засоромили інші рослини",
@@ -192,9 +192,9 @@
     "createdAt": "2026-05-17T19:16:43.035Z"
   },
   {
-    "id": "parables-expert-ai-00013",
+    "id": "parables-preacher-ai-00013",
     "themeId": "parables",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Яка притча Ісуса Христа описує історію про двох синів, які покинули батька, а потім повернулись назад?",
     "options": [
       "А) Притча про втрачене овечок",

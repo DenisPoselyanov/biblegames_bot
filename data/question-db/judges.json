@@ -1,8 +1,8 @@
 [
   {
-    "id": "judges-beginner-ai-00001",
+    "id": "judges-baby-ai-00001",
     "themeId": "judges",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Який із суддів Ізраїля був сином коваля і мав псевдонім «Храбродум»?",
     "options": [
       "А) Самсон",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T18:56:50.562Z"
   },
   {
-    "id": "judges-beginner-ai-00002",
+    "id": "judges-baby-ai-00002",
     "themeId": "judges",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Кому приписується победа над фараоном Цеффа, а також титул «Міцпаха», який згодом надавався як ім'я?",
     "options": [
       "А) Гедеон",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T18:56:50.562Z"
   },
   {
-    "id": "judges-easy-ai-00003",
+    "id": "judges-child-ai-00003",
     "themeId": "judges",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який з суддів Ізраїлю був першим і його походження?",
     "options": [
       "А) Гедеон - син Манафа, який вирізав сокирою козину барану (Суд. 6:31)",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T18:57:15.852Z"
   },
   {
-    "id": "judges-easy-ai-00004",
+    "id": "judges-child-ai-00004",
     "themeId": "judges",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який із суддів Ізраїлю побив тисячу ворогів з однією сокирою?",
     "options": [
       "А) Гедеон (Суд. 8:4)",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T18:57:15.852Z"
   },
   {
-    "id": "judges-medium-ai-00005",
+    "id": "judges-youth-ai-00005",
     "themeId": "judges",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Який з суддів Ізраїля загинув, кинувшись на меч, щоб уникнути полону?",
     "options": [
       "Гедеон",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T18:57:29.781Z"
   },
   {
-    "id": "judges-medium-ai-00006",
+    "id": "judges-youth-ai-00006",
     "themeId": "judges",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Кто из судей Израиля был жженым и матерью одновременно?",
     "options": [
       "Гедеон",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T18:57:29.781Z"
   },
   {
-    "id": "judges-hard-ai-00007",
+    "id": "judges-student-ai-00007",
     "themeId": "judges",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Який із суддів був першим, що очолив Ізраїль після смерті Йосипа і перед Суддями?",
     "options": [
       "А) Гедеон",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T18:58:09.433Z"
   },
   {
-    "id": "judges-hard-ai-00008",
+    "id": "judges-student-ai-00008",
     "themeId": "judges",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Самсон звівся до Таанітської стониці зі свиткою, щоб читати яку книгу?",
     "options": [
       "А) Книгу пророка Ісаїя",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T18:58:09.433Z"
   },
   {
-    "id": "judges-hard-ai-00009",
+    "id": "judges-student-ai-00009",
     "themeId": "judges",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "У який рік від виходу Ізраїлю з Єгипту відбувся суд Девори і Баріяма?",
     "options": [
       "А) 1207 рік до н. е.",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T18:58:09.433Z"
   },
   {
-    "id": "judges-hard-ai-00010",
+    "id": "judges-student-ai-00010",
     "themeId": "judges",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "У якому місті збудував Єфта стіну, щоб захистити Ізраїль від Амонітів?",
     "options": [
       "А) Єрусалим",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T18:58:09.433Z"
   },
   {
-    "id": "judges-hard-ai-00011",
+    "id": "judges-student-ai-00011",
     "themeId": "judges",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "З якого племені Ізраїля був суддя Гедеон?",
     "options": [
       "А) Манassen",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T18:58:09.433Z"
   },
   {
-    "id": "judges-expert-ai-00012",
+    "id": "judges-preacher-ai-00012",
     "themeId": "judges",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який з суддів Ізраїлю народився сином цнотливої жінки, яка використовувала млин?",
     "options": [
       "А) Гедеон",
@@ -192,9 +192,9 @@
     "createdAt": "2026-05-17T18:58:44.403Z"
   },
   {
-    "id": "judges-expert-ai-00013",
+    "id": "judges-preacher-ai-00013",
     "themeId": "judges",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Хто зі списку суддів Ізраїлю був ідеальним юнаком і не знав жодної помилки?",
     "options": [
       "А) Гедеон",
@@ -208,9 +208,9 @@
     "createdAt": "2026-05-17T18:58:44.403Z"
   },
   {
-    "id": "judges-expert-ai-00014",
+    "id": "judges-preacher-ai-00014",
     "themeId": "judges",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Хто з суддів Ізраїлю бив тисячу ворогів в одній битві?",
     "options": [
       "А) Гедеон",
@@ -224,9 +224,9 @@
     "createdAt": "2026-05-17T18:58:44.403Z"
   },
   {
-    "id": "judges-expert-ai-00015",
+    "id": "judges-preacher-ai-00015",
     "themeId": "judges",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Хто зі списку суддів Ізраїлю боровся проти філістимлян?",
     "options": [
       "А) Гедеон",
@@ -240,9 +240,9 @@
     "createdAt": "2026-05-17T18:58:44.403Z"
   },
   {
-    "id": "judges-expert-ai-00016",
+    "id": "judges-preacher-ai-00016",
     "themeId": "judges",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Хто зі списку суддів Ізраїлю був євреєм-ковалем?",
     "options": [
       "А) Гедеон",

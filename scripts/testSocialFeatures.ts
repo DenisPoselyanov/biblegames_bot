@@ -17,7 +17,7 @@ const playlist1 = playlistManager.createPlaylist(
   'Питання про місця Біблії',
   'user1',
   'Тестовий користувач',
-  ['geography-easy-1', 'geography-easy-2', 'geography-medium-1'],
+  ['geography-child-1', 'geography-child-2', 'geography-youth-1'],
   true
 );
 
@@ -53,8 +53,8 @@ const challenge1 = friendChallengeManager.createChallenge(
   'Друг користувач',
   {
     themeId: 'geography',
-    difficulty: 'medium',
-    questions: ['geography-medium-1', 'geography-medium-2'],
+    difficulty: 'youth',
+    questions: ['geography-youth-1', 'geography-youth-2'],
   }
 );
 

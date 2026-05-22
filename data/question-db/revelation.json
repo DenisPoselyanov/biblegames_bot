@@ -1,8 +1,8 @@
 [
   {
-    "id": "revelation-beginner-ai-00001",
+    "id": "revelation-baby-ai-00001",
     "themeId": "revelation",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Який символ у книзі Одкровення описує себе як золоту печатку, що містить образ людини?",
     "options": [
       "Лисиця",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T19:27:18.412Z"
   },
   {
-    "id": "revelation-beginner-ai-00002",
+    "id": "revelation-baby-ai-00002",
     "themeId": "revelation",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Скільки описується церков у книзі Одкровення?",
     "options": [
       "Дві",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T19:27:18.412Z"
   },
   {
-    "id": "revelation-beginner-ai-00003",
+    "id": "revelation-baby-ai-00003",
     "themeId": "revelation",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Яке останнє події в книзі Одкровення буде настати після сходження Христа зі славою?",
     "options": [
       "Другий пришестя Христа",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T19:27:18.412Z"
   },
   {
-    "id": "revelation-beginner-ai-00004",
+    "id": "revelation-baby-ai-00004",
     "themeId": "revelation",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "За яке події в книзі Одкровення буде сказано: «І небо відкрилось, як великий скінь»?",
     "options": [
       "Відкриття семи церков",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T19:27:18.412Z"
   },
   {
-    "id": "revelation-easy-ai-00005",
+    "id": "revelation-child-ai-00005",
     "themeId": "revelation",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Яка з церков Одкровення поширюється на усі народі та мови (Одкр. 5:9)?",
     "options": [
       "Церква Бабальона",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T19:27:35.702Z"
   },
   {
-    "id": "revelation-easy-ai-00006",
+    "id": "revelation-child-ai-00006",
     "themeId": "revelation",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який символ з Книги Одкровення описує Семигорівську Війну (Одкр. 9:13-21)?",
     "options": [
       "Червоний дракон",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T19:27:35.702Z"
   },
   {
-    "id": "revelation-medium-ai-00007",
+    "id": "revelation-youth-ai-00007",
     "themeId": "revelation",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Які символи використовує Ангел у Візіоні Одкровення?",
     "options": [
       "Лаврове листя, сонце і місяць, колесо",

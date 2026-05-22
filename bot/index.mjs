@@ -118,7 +118,7 @@ bot.command('help', async (ctx) => {
     '*Команди:*\n' +
       '`/stats`\n' +
       '`/generate geography 50`\n' +
-      '`/generate paul 20 medium`\n' +
+      '`/generate paul 20 youth`\n' +
       '`/themes`\n\n' +
       '*Ollama:* `ollama serve` + `ollama pull mistral`\n' +
       '*Модель:* OLLAMA_MODEL у .env',

@@ -30,9 +30,34 @@
 
 .tabs {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 0.4rem;
   margin-bottom: 1rem;
+}
+
+.subTabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.subTabBtn {
+  padding: 0.45rem 0.4rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+.subTabActive {
+  border-color: rgba(100, 150, 200, 0.45);
+  background: rgba(100, 150, 200, 0.12);
+  color: #8bf;
 }
 
 .tabBtn {
@@ -270,6 +295,18 @@
   border: 1px solid var(--border);
   font-size: 0.75rem;
   color: var(--text-muted);
+}
+
+.themeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.6rem;
+}
+
+@media (max-width: 700px) {
+  .themeGrid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .poolOverlap {

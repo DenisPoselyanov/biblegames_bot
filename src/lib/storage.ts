@@ -1,9 +1,21 @@
-import type { GlobalStats, PlayerProfile } from '../types';
+import type { Difficulty, GlobalStats, PlayerProfile } from '../types';
 import { THEMES } from '../data/themes';
 import { DEFAULT_COSMETIC_THEME_ID } from '../data/cosmetics';
 
 const PROFILE_KEY = 'bible-game-profile';
 const GLOBAL_STATS_KEY = 'bible-game-global-stats';
+
+const OLD_DIFFICULTY_MAP: Record<string, Difficulty> = {
+  beginner: 'baby',
+  easy: 'child',
+  medium: 'youth',
+  hard: 'student',
+  expert: 'preacher',
+};
+
+function migrateDifficulty(old: string): Difficulty {
+  return OLD_DIFFICULTY_MAP[old] ?? (old as Difficulty);
+}
 
 function normalizeProfile(profile: Partial<PlayerProfile>, userId: string, displayName: string): PlayerProfile {
   return {
@@ -11,7 +23,10 @@ function normalizeProfile(profile: Partial<PlayerProfile>, userId: string, displ
     displayName: profile.displayName ?? displayName,
     totalPoints: profile.totalPoints ?? 0,
     themePoints: profile.themePoints ?? {},
-    completedLevels: profile.completedLevels ?? [],
+    completedLevels: (profile.completedLevels ?? []).map((l) => ({
+      ...l,
+      difficulty: migrateDifficulty(l.difficulty),
+    })),
     survivalHighScore: profile.survivalHighScore ?? 0,
     millionaireWins: profile.millionaireWins ?? 0,
     millionaireMaxLevel: profile.millionaireMaxLevel ?? 0,

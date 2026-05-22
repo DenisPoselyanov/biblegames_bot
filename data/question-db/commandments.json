@@ -1,8 +1,8 @@
 [
   {
-    "id": "commandments-beginner-ai-00001",
+    "id": "commandments-baby-ai-00001",
     "themeId": "commandments",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Які дві перші заповіді, написані в книзі Буття?",
     "options": [
       "Перша - не мати інших богів перед Мене (Бут. 20:3), Друга - відпочити від роботи один день на тиждень (Бут. 20:11)",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T19:17:43.250Z"
   },
   {
-    "id": "commandments-beginner-ai-00002",
+    "id": "commandments-baby-ai-00002",
     "themeId": "commandments",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Число яке встановлюється Богом як час відпочинку для людини на тиждень?",
     "options": [
       "Сім (Лев. 23:3)",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T19:17:43.250Z"
   },
   {
-    "id": "commandments-beginner-ai-00003",
+    "id": "commandments-baby-ai-00003",
     "themeId": "commandments",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Які заповіді говорять про відносини з ближніми та нелюдськими істотами?",
     "options": [
       "Завзяття до добрих справ, уникання зла (Лев. 19:18)",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T19:17:43.250Z"
   },
   {
-    "id": "commandments-beginner-ai-00004",
+    "id": "commandments-baby-ai-00004",
     "themeId": "commandments",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Чия кров не може бути змішана з іншою по роду (Закон на Синаї)?",
     "options": [
       "Бараняча (Лев. 24:22)",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T19:17:43.250Z"
   },
   {
-    "id": "commandments-easy-ai-00005",
+    "id": "commandments-child-ai-00005",
     "themeId": "commandments",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Яка перша заповідь Бога, яку прийняв народ Ізраїлю під час Закону на Синаї?",
     "options": [
       "Відкидати ідолів",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T19:18:19.753Z"
   },
   {
-    "id": "commandments-easy-ai-00006",
+    "id": "commandments-child-ai-00006",
     "themeId": "commandments",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Що забороняє четверта заповідь Бога?",
     "options": [
       "Служити іншим божествам",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T19:18:19.753Z"
   },
   {
-    "id": "commandments-easy-ai-00007",
+    "id": "commandments-child-ai-00007",
     "themeId": "commandments",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Яка десята заповідь Бога?",
     "options": [
       "Не прагнути до добробуту в день суботній",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T19:18:19.753Z"
   },
   {
-    "id": "commandments-easy-ai-00008",
+    "id": "commandments-child-ai-00008",
     "themeId": "commandments",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Яка заповідь Бога сказує про те, що треба тримати день священним?",
     "options": [
       "Пам'ятати вихід Ізраїлю з Єгипту",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T19:18:19.753Z"
   },
   {
-    "id": "commandments-hard-ai-00009",
+    "id": "commandments-student-ai-00009",
     "themeId": "commandments",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Які дві перші заповіді можна знайти в книзі Буття?",
     "options": [
       "А) 1-3 та 4-6",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T19:19:41.962Z"
   },
   {
-    "id": "commandments-hard-ai-00010",
+    "id": "commandments-student-ai-00010",
     "themeId": "commandments",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Яка заповідь про заповідання не має цифрового номера в книзі Буття?",
     "options": [
       "А) Заповідь чести",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T19:19:41.962Z"
   },
   {
-    "id": "commandments-hard-ai-00011",
+    "id": "commandments-student-ai-00011",
     "themeId": "commandments",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Куди Ісус Христос писав своїми власними руками заповідь любові, яка є основою усіх інших заповітів?",
     "options": [
       "А) Книга Буття",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T19:19:41.962Z"
   },
   {
-    "id": "commandments-hard-ai-00012",
+    "id": "commandments-student-ai-00012",
     "themeId": "commandments",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Який автор описав Дванадцять малих заповідей, які доповнюють Десять великих?",
     "options": [
       "А) Мойсей",
@@ -192,9 +192,9 @@
     "createdAt": "2026-05-17T19:19:41.962Z"
   },
   {
-    "id": "commandments-hard-ai-00013",
+    "id": "commandments-student-ai-00013",
     "themeId": "commandments",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Які два заповіді скасувались у новому Заповіті?",
     "options": [
       "А) Заповідь не чекати злого і навчатися добра, Заповідь любові до себе",

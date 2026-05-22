@@ -12,11 +12,13 @@ const LEVEL_POINTS = [5, 10, 15, 25, 40, 60, 90, 130, 180, 250, 350, 500, 700, 1
 const SAFE_LEVELS = new Set([5, 10]);
 
 function getDifficultyForLevel(level: number): Difficulty {
-  if (level <= 3) return 'beginner';
-  if (level <= 6) return 'easy';
-  if (level <= 9) return 'medium';
-  if (level <= 12) return 'hard';
-  return 'expert';
+  if (level <= 2) return 'baby';
+  if (level <= 4) return 'child';
+  if (level <= 6) return 'youth';
+  if (level <= 8) return 'student';
+  if (level <= 10) return 'preacher';
+  if (level <= 12) return 'teacher';
+  return 'theologian';
 }
 
 function buildMillionaireQuestions(): Question[] {

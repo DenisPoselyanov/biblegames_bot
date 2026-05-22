@@ -1,8 +1,8 @@
 [
   {
-    "id": "mosaic-law-beginner-ai-00001",
+    "id": "mosaic-law-baby-ai-00001",
     "themeId": "mosaic-law",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Скільки заповідей Мойсею дав Бог на горі Сінай?",
     "options": [
       "600",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T18:50:30.837Z"
   },
   {
-    "id": "mosaic-law-beginner-ai-00002",
+    "id": "mosaic-law-baby-ai-00002",
     "themeId": "mosaic-law",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Яка з видів тварин не могла бути принесена жертвою на вівтарі?",
     "options": [
       "Кішка",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T18:50:30.837Z"
   },
   {
-    "id": "mosaic-law-beginner-ai-00003",
+    "id": "mosaic-law-baby-ai-00003",
     "themeId": "mosaic-law",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "На скільки років очистилися священники, які брали участь у службі в Святилищі після жертвоприношення великого ковчегу?",
     "options": [
       "7 днів",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T18:50:30.837Z"
   },
   {
-    "id": "mosaic-law-beginner-ai-00005",
+    "id": "mosaic-law-baby-ai-00005",
     "themeId": "mosaic-law",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "На якому кольорі був зав'язаний пояс скинії?",
     "options": [
       "Блакитний",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T18:50:30.837Z"
   },
   {
-    "id": "mosaic-law-easy-ai-00005",
+    "id": "mosaic-law-child-ai-00005",
     "themeId": "mosaic-law",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Скільки заповідей є у Торі?",
     "options": [
       "613",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T18:51:43.424Z"
   },
   {
-    "id": "mosaic-law-easy-ai-00006",
+    "id": "mosaic-law-child-ai-00006",
     "themeId": "mosaic-law",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Яка частина арки Ноя була прикрита шкірою тварин?",
     "options": [
       "Сторона вхідна",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T18:51:43.424Z"
   },
   {
-    "id": "mosaic-law-easy-ai-00007",
+    "id": "mosaic-law-child-ai-00007",
     "themeId": "mosaic-law",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Коли Мойсей отримав Господні заповіді на горі Сінай?",
     "options": [
       "Після сходу сонця",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T18:51:43.424Z"
   },
   {
-    "id": "mosaic-law-easy-ai-00008",
+    "id": "mosaic-law-child-ai-00008",
     "themeId": "mosaic-law",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Які святі дні були найбільш поважними у Старому Заповіті?",
     "options": [
       "Субота і п'ятниця",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T18:51:43.424Z"
   },
   {
-    "id": "mosaic-law-easy-ai-00009",
+    "id": "mosaic-law-child-ai-00009",
     "themeId": "mosaic-law",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Чи можна було використовувати золото для виготовлення усталів Тори?",
     "options": [
       "Так",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T18:51:43.424Z"
   },
   {
-    "id": "mosaic-law-medium-ai-00011",
+    "id": "mosaic-law-youth-ai-00011",
     "themeId": "mosaic-law",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Скільки шматків текстилу було в золотій шнурочку, який був на скинії Мoseя?",
     "options": [
       "6 шматків",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T18:52:12.407Z"
   },
   {
-    "id": "mosaic-law-medium-ai-00012",
+    "id": "mosaic-law-youth-ai-00012",
     "themeId": "mosaic-law",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яка жертва приносилась на священному ковшані, коли Ізраїль був в дикому степу?",
     "options": [
       "Кормлену курку",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T18:52:12.407Z"
   },
   {
-    "id": "mosaic-law-medium-ai-00013",
+    "id": "mosaic-law-youth-ai-00013",
     "themeId": "mosaic-law",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Що символізував ковчег Заповідей?",
     "options": [
       "Травоїду",
@@ -192,9 +192,9 @@
     "createdAt": "2026-05-17T18:52:12.407Z"
   },
   {
-    "id": "mosaic-law-hard-ai-00013",
+    "id": "mosaic-law-student-ai-00013",
     "themeId": "mosaic-law",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Які дві частини складають архангельську святилищу, яке було побудоване на горі Гориш (Ебер-гайєль) Мойсеєм?",
     "options": [
       "Святіня та Святаянія",
@@ -208,9 +208,9 @@
     "createdAt": "2026-05-17T18:52:50.876Z"
   },
   {
-    "id": "mosaic-law-hard-ai-00014",
+    "id": "mosaic-law-student-ai-00014",
     "themeId": "mosaic-law",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Коли могли жерці зробити жертву Богу в єврейському храмі?",
     "options": [
       "В будь-яку пору доби",
@@ -224,9 +224,9 @@
     "createdAt": "2026-05-17T18:52:50.876Z"
   },
   {
-    "id": "mosaic-law-hard-ai-00015",
+    "id": "mosaic-law-student-ai-00015",
     "themeId": "mosaic-law",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Яка частина святилища служила для підтримки лампи?",
     "options": [
       "Кругла стовпа",
@@ -240,9 +240,9 @@
     "createdAt": "2026-05-17T18:52:50.876Z"
   },
   {
-    "id": "mosaic-law-hard-ai-00016",
+    "id": "mosaic-law-student-ai-00016",
     "themeId": "mosaic-law",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "На якій з торинських гори записані Заповіді Божі?",
     "options": [
       "Гора Синай",
@@ -256,9 +256,9 @@
     "createdAt": "2026-05-17T18:52:50.876Z"
   },
   {
-    "id": "mosaic-law-hard-ai-00017",
+    "id": "mosaic-law-student-ai-00017",
     "themeId": "mosaic-law",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Які дві частини входили до складу архангельської святилищі?",
     "options": [
       "Менора та Арка",
@@ -272,9 +272,9 @@
     "createdAt": "2026-05-17T18:52:50.876Z"
   },
   {
-    "id": "mosaic-law-expert-ai-00018",
+    "id": "mosaic-law-preacher-ai-00018",
     "themeId": "mosaic-law",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який закон отримали монолітичні камені із записів закону на них (Скинія, Вих.",
     "options": [
       "Закон Ізраїля",
@@ -288,9 +288,9 @@
     "createdAt": "2026-05-17T18:53:30.498Z"
   },
   {
-    "id": "mosaic-law-expert-ai-00019",
+    "id": "mosaic-law-preacher-ai-00019",
     "themeId": "mosaic-law",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Скільки заповідей було в Столінні Законі (Тридцять дві, Чотирнадцять, Шістдесят два чи Шістьсот шістдесят два)?",
     "options": [
       "Шістдесят два",
@@ -304,9 +304,9 @@
     "createdAt": "2026-05-17T18:53:30.498Z"
   },
   {
-    "id": "mosaic-law-expert-ai-00020",
+    "id": "mosaic-law-preacher-ai-00020",
     "themeId": "mosaic-law",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який із святих днів починався з першого дня тижневого циклу?",
     "options": [
       "Субота",
@@ -320,9 +320,9 @@
     "createdAt": "2026-05-17T18:53:30.498Z"
   },
   {
-    "id": "mosaic-law-expert-ai-00021",
+    "id": "mosaic-law-preacher-ai-00021",
     "themeId": "mosaic-law",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Яким тваринам було заборонено їсти у випадку звичаю жертвопринесення (Бут.",
     "options": [
       "Птахи, овочі, землеробські продукти",
@@ -336,9 +336,9 @@
     "createdAt": "2026-05-17T18:53:30.498Z"
   },
   {
-    "id": "mosaic-law-expert-ai-00022",
+    "id": "mosaic-law-preacher-ai-00022",
     "themeId": "mosaic-law",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Яка жертва приносилась Богу на свято Песах?",
     "options": [
       "Молодняк",

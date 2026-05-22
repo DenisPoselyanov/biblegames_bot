@@ -1,4 +1,4 @@
-export type Difficulty = 'beginner' | 'easy' | 'medium' | 'hard' | 'expert';
+export type Difficulty = 'baby' | 'child' | 'youth' | 'student' | 'preacher' | 'teacher' | 'theologian';
 
 export interface Theme {
   id: string;
@@ -132,42 +132,63 @@ export interface GlobalStats {
 }
 
 export const DIFFICULTIES: Difficulty[] = [
-  'beginner',
-  'easy',
-  'medium',
-  'hard',
-  'expert',
+  'baby',
+  'child',
+  'youth',
+  'student',
+  'preacher',
+  'teacher',
+  'theologian',
 ];
 
 export const DIFFICULTY_LABELS: Record<Difficulty, string> = {
-  beginner: 'Початковий',
-  easy: 'Легкий',
-  medium: 'Середній',
-  hard: 'Складний',
-  expert: 'Експерт',
+  baby: '👶 Немовля',
+  child: '🧒 Дитина',
+  youth: '🧑 Юнак',
+  student: '🎓 Учень',
+  preacher: '📖 Проповідник',
+  teacher: '👨‍🏫 Учитель',
+  theologian: '⛪ Богослов',
 };
 
 export const DIFFICULTY_POINTS: Record<Difficulty, number> = {
-  beginner: 5,
-  easy: 15,
-  medium: 30,
-  hard: 60,
-  expert: 100,
+  baby: 5,
+  child: 15,
+  youth: 30,
+  student: 50,
+  preacher: 80,
+  teacher: 120,
+  theologian: 200,
 };
 
 export const QUESTIONS_PER_LEVEL = 7;
 
 export const DIFFICULTY_ORDER: Record<Difficulty, number> = {
-  beginner: 0,
-  easy: 1,
-  medium: 2,
-  hard: 3,
-  expert: 4,
+  baby: 0,
+  child: 1,
+  youth: 2,
+  student: 3,
+  preacher: 4,
+  teacher: 5,
+  theologian: 6,
 };
 
 export function isValidDifficulty(value: string): value is Difficulty {
   return DIFFICULTIES.includes(value as Difficulty);
 }
+
+/** Ієрархічний вузол теми (рекурсивний — підтеми будь-якої глибини) */
+export interface TopicNode {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  children: TopicNode[];
+  questionCount?: number;
+}
+
+/** Мапа ієрархій тем: themeId → кореневий TopicNode */
+export type TopicHierarchyMap = Record<string, TopicNode>;
 
 // Типи для системи якості питань (Phase 3)
 export type QuestionQualityStatus = 'pending' | 'approved' | 'rejected' | 'quarantined';

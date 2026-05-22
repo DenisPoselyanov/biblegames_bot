@@ -204,13 +204,18 @@ export class QuestionQualityValidator {
     const optionsLength = question.options.join(' ').length;
 
     switch (question.difficulty) {
-      case 'beginner':
-        if (textLength > 50) return 'Питання для початківців занадто довге';
-        if (optionsLength > 80) return 'Варіанти відповідей занадто складні для початківців';
+      case 'baby':
+        if (textLength > 50) return 'Питання для немовлят занадто довге';
+        if (optionsLength > 80) return 'Варіанти відповідей занадто складні для немовлят';
         break;
-      case 'expert':
-        if (textLength < 30) return 'Питання для експертів занадто коротке';
-        if (optionsLength < 50) return 'Варіанти відповідей занадто прості для експертів';
+      case 'preacher':
+      case 'teacher':
+        if (textLength < 30) return 'Питання для проповідника/вчителя занадто коротке';
+        if (optionsLength < 50) return 'Варіанти відповідей занадто прості для цього рівня';
+        break;
+      case 'theologian':
+        if (textLength < 40) return 'Питання для богослова занадто коротке';
+        if (optionsLength < 60) return 'Варіанти відповідей занадто прості для богослова';
         break;
     }
 
@@ -290,18 +295,20 @@ export class QuestionQualityValidator {
 
   private getDifficultyLevel(difficulty: Difficulty): number {
     const levels: Record<Difficulty, number> = {
-      beginner: 0,
-      easy: 1,
-      medium: 2,
-      hard: 3,
-      expert: 4,
+      baby: 0,
+      child: 1,
+      youth: 2,
+      student: 3,
+      preacher: 4,
+      teacher: 5,
+      theologian: 6,
     };
     return levels[difficulty];
   }
 
   private getDifficultyByLevel(level: number): Difficulty {
-    const levels: Difficulty[] = ['beginner', 'easy', 'medium', 'hard', 'expert'];
-    return levels[level];
+    const levels: Difficulty[] = ['baby', 'child', 'youth', 'student', 'preacher', 'teacher', 'theologian'];
+    return levels[Math.max(0, Math.min(level, levels.length - 1))];
   }
 }
 

@@ -1,8 +1,8 @@
 [
   {
-    "id": "patriarchs-beginner-ai-00001",
+    "id": "patriarchs-baby-ai-00001",
     "themeId": "patriarchs",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Хто з патріархів був першородним предком ісраелітян (Бут. 1:26-30)?",
     "options": [
       "Авраам",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T19:24:14.679Z"
   },
   {
-    "id": "patriarchs-beginner-ai-00002",
+    "id": "patriarchs-baby-ai-00002",
     "themeId": "patriarchs",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Хто з патріархів послабив себе у в'язниці та зміг пробачити своїх братів, які продали його (Іс. 45:2)?",
     "options": [
       "Авраам",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T19:24:14.679Z"
   },
   {
-    "id": "patriarchs-beginner-ai-00003",
+    "id": "patriarchs-baby-ai-00003",
     "themeId": "patriarchs",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Хто з патріархів мав 12 синів (Бут. 35:24)?",
     "options": [
       "Авраам",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T19:24:14.679Z"
   },
   {
-    "id": "patriarchs-beginner-ai-00004",
+    "id": "patriarchs-baby-ai-00004",
     "themeId": "patriarchs",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Хто з патріархів був розділений на дві частини та похований в Хевроні (Іс. 19:21)?",
     "options": [
       "Авраам",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T19:24:14.679Z"
   },
   {
-    "id": "patriarchs-easy-ai-00005",
+    "id": "patriarchs-child-ai-00005",
     "themeId": "patriarchs",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який патріарх був сином патріарха Нахора та його жони Сари, яка була раніше відома як Сарай?",
     "options": [
       "А) Авраам",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T19:24:44.668Z"
   },
   {
-    "id": "patriarchs-easy-ai-00006",
+    "id": "patriarchs-child-ai-00006",
     "themeId": "patriarchs",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Хто був патріархом згадується в книзі Буття як син Ісака та Ріби?",
     "options": [
       "А) Авраам",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T19:24:44.668Z"
   },
   {
-    "id": "patriarchs-easy-ai-00007",
+    "id": "patriarchs-child-ai-00007",
     "themeId": "patriarchs",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Кому в книзі Буття було дано ім'я Єзек'їль (Зефаньях)?",
     "options": [
       "А) Авраам",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T19:24:44.668Z"
   },
   {
-    "id": "patriarchs-easy-ai-00008",
+    "id": "patriarchs-child-ai-00008",
     "themeId": "patriarchs",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Хто з патріархів був похований в мавзолеї, який згодом був перейменований на Царине місто?",
     "options": [
       "А) Авраам",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T19:24:44.668Z"
   },
   {
-    "id": "patriarchs-medium-ai-00009",
+    "id": "patriarchs-youth-ai-00009",
     "themeId": "patriarchs",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Хто з патріархів вперше одружився?",
     "options": [
       "Авраам",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T19:25:15.261Z"
   },
   {
-    "id": "patriarchs-medium-ai-00010",
+    "id": "patriarchs-youth-ai-00010",
     "themeId": "patriarchs",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Чиє ім'я означає «блаженний»?",
     "options": [
       "Авраама",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T19:25:15.261Z"
   },
   {
-    "id": "patriarchs-medium-ai-00011",
+    "id": "patriarchs-youth-ai-00011",
     "themeId": "patriarchs",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Котрий патріарх мав 12 синів і одну дочку Діну?",
     "options": [
       "Авраам",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T19:25:15.261Z"
   },
   {
-    "id": "patriarchs-medium-ai-00012",
+    "id": "patriarchs-youth-ai-00012",
     "themeId": "patriarchs",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Чиє сини були Есме, Нафталі та Зевелеф?",
     "options": [
       "Авраама",
@@ -192,9 +192,9 @@
     "createdAt": "2026-05-17T19:25:15.261Z"
   },
   {
-    "id": "patriarchs-medium-ai-00013",
+    "id": "patriarchs-youth-ai-00013",
     "themeId": "patriarchs",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Котрий патріарх згадується в Євангелії від Матвія як «прабатько народу Якова»?",
     "options": [
       "Авраам",
@@ -208,9 +208,9 @@
     "createdAt": "2026-05-17T19:25:15.261Z"
   },
   {
-    "id": "patriarchs-hard-ai-00014",
+    "id": "patriarchs-student-ai-00014",
     "themeId": "patriarchs",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Який патріарх був сином патріарха Ісака та братом Якова?",
     "options": [
       "А) Авраам",
@@ -224,9 +224,9 @@
     "createdAt": "2026-05-17T19:26:15.088Z"
   },
   {
-    "id": "patriarchs-hard-ai-00015",
+    "id": "patriarchs-student-ai-00015",
     "themeId": "patriarchs",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Коли Яків повернувся до Канаана після розриву з братом Езовом, куди прибув він?",
     "options": [
       "А) Єгипет",
@@ -240,9 +240,9 @@
     "createdAt": "2026-05-17T19:26:15.089Z"
   },
   {
-    "id": "patriarchs-hard-ai-00016",
+    "id": "patriarchs-student-ai-00016",
     "themeId": "patriarchs",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Кому був переданий божий благословення вручати народним старійшинам?",
     "options": [
       "А) Авраам",
@@ -256,9 +256,9 @@
     "createdAt": "2026-05-17T19:26:15.089Z"
   },
   {
-    "id": "patriarchs-hard-ai-00017",
+    "id": "patriarchs-student-ai-00017",
     "themeId": "patriarchs",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Скільки років жив патріарх Авраам загалом?",
     "options": [
       "А) 75 років",
@@ -272,9 +272,9 @@
     "createdAt": "2026-05-17T19:26:15.089Z"
   },
   {
-    "id": "patriarchs-hard-ai-00018",
+    "id": "patriarchs-student-ai-00018",
     "themeId": "patriarchs",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Коли Яків помер, то його сини поклали тіло в гробницю, яка була розташована на якому місці?",
     "options": [
       "А) Єрусалимі",
@@ -288,9 +288,9 @@
     "createdAt": "2026-05-17T19:26:15.089Z"
   },
   {
-    "id": "patriarchs-hard-ai-00019",
+    "id": "patriarchs-student-ai-00019",
     "themeId": "patriarchs",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Куди Ісак був похований?",
     "options": [
       "А) Єрусалимі",
@@ -304,9 +304,9 @@
     "createdAt": "2026-05-17T19:26:15.089Z"
   },
   {
-    "id": "patriarchs-hard-ai-00020",
+    "id": "patriarchs-student-ai-00020",
     "themeId": "patriarchs",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Наймолодший син патріарха Якова мав ім'я?",
     "options": [
       "А) Авраам",
@@ -320,9 +320,9 @@
     "createdAt": "2026-05-17T19:26:15.089Z"
   },
   {
-    "id": "patriarchs-hard-ai-00021",
+    "id": "patriarchs-student-ai-00021",
     "themeId": "patriarchs",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Найстарший син патріарха Якова був названий так через той факт, що вночі його батько побачив?",
     "options": [
       "А) Реубен",
@@ -336,9 +336,9 @@
     "createdAt": "2026-05-17T19:26:15.089Z"
   },
   {
-    "id": "patriarchs-expert-ai-00022",
+    "id": "patriarchs-preacher-ai-00022",
     "themeId": "patriarchs",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Хто з патріархів прийшов до Єгипту і став керувати великою частиною країни?",
     "options": [
       "А) Авраам",
@@ -352,9 +352,9 @@
     "createdAt": "2026-05-17T19:26:46.492Z"
   },
   {
-    "id": "patriarchs-expert-ai-00023",
+    "id": "patriarchs-preacher-ai-00023",
     "themeId": "patriarchs",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який патріарх отримав від ангела доручення покласти Ізраїльтян в землі Канаан?",
     "options": [
       "А) Авраам",
@@ -368,9 +368,9 @@
     "createdAt": "2026-05-17T19:26:46.492Z"
   },
   {
-    "id": "patriarchs-expert-ai-00024",
+    "id": "patriarchs-preacher-ai-00024",
     "themeId": "patriarchs",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Хто з патріархів відправив своїх синів до Сихема для розшуку кращій землі?",
     "options": [
       "А) Авраам",
@@ -384,9 +384,9 @@
     "createdAt": "2026-05-17T19:26:46.492Z"
   },
   {
-    "id": "patriarchs-expert-ai-00025",
+    "id": "patriarchs-preacher-ai-00025",
     "themeId": "patriarchs",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Хто з патріархів проголосив благословення синам Лєвія, які отримали прерогативу лідерства в Ізраїлі?",
     "options": [
       "А) Авраам",

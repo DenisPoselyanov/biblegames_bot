@@ -1,8 +1,8 @@
 [
   {
-    "id": "gospels-beginner-ai-00001",
+    "id": "gospels-baby-ai-00001",
     "themeId": "gospels",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Яке євангеліє повідомляє про перше чудо Ісуса Христа, зміну води в вино на весіллі в Кані Галилейській?",
     "options": [
       "Маркове",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T19:06:20.440Z"
   },
   {
-    "id": "gospels-beginner-ai-00002",
+    "id": "gospels-baby-ai-00002",
     "themeId": "gospels",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Кому зробив Ісус Христос чудо зі згорянням полевими пшеницями, щоб прославити своє святощість?",
     "options": [
       "Мойсею",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T19:06:20.440Z"
   },
   {
-    "id": "gospels-beginner-ai-00003",
+    "id": "gospels-baby-ai-00003",
     "themeId": "gospels",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Яке євангеліє повідомляє про чудо вигодування знемерзлої людини, яка була покладена на тіло Ісуса Христа?",
     "options": [
       "Лукине",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T19:06:20.440Z"
   },
   {
-    "id": "gospels-beginner-ai-00004",
+    "id": "gospels-baby-ai-00004",
     "themeId": "gospels",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Кому Ісус Христос сказав: «Блаженний бідний дух! Бо твоя його є королівством Божим»?",
     "options": [
       "Марії Магдалині",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T19:06:20.440Z"
   },
   {
-    "id": "gospels-beginner-ai-00005",
+    "id": "gospels-baby-ai-00005",
     "themeId": "gospels",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Якому злодюї запропонував Ісус Христос помістити руку правою в огонь, щоб відім'ятися від нечистій руки?",
     "options": [
       "Царині",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T19:06:20.440Z"
   },
   {
-    "id": "gospels-easy-ai-00006",
+    "id": "gospels-child-ai-00006",
     "themeId": "gospels",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Яке євангеліє описує прикликання першого учня Ісуса Христа?",
     "options": [
       "Євангеліє від Матвія",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T19:06:59.636Z"
   },
   {
-    "id": "gospels-easy-ai-00007",
+    "id": "gospels-child-ai-00007",
     "themeId": "gospels",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Що сказав Ісус Христос, коли напився вина і води перед Пасхою?",
     "options": [
       "Я не маю нічого з цього світу",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T19:06:59.636Z"
   },
   {
-    "id": "gospels-easy-ai-00008",
+    "id": "gospels-child-ai-00008",
     "themeId": "gospels",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Як Ісус Христос пророкував, що станеться з Його учнем Яківцем після смерті?",
     "options": [
       "Він буде похований з батьками",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T19:06:59.636Z"
   },
   {
-    "id": "gospels-easy-ai-00009",
+    "id": "gospels-child-ai-00009",
     "themeId": "gospels",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Які чудеса зробив Ісус Христос на Галілейському озері?",
     "options": [
       "Воскресіння сина Наїри",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T19:06:59.636Z"
   },
   {
-    "id": "gospels-medium-ai-00010",
+    "id": "gospels-youth-ai-00010",
     "themeId": "gospels",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Який євангеліст описує чудеса, здійснені Ісусом після смерті Матвія та його послання?",
     "options": [
       "Марко",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T19:07:29.308Z"
   },
   {
-    "id": "gospels-medium-ai-00011",
+    "id": "gospels-youth-ai-00011",
     "themeId": "gospels",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яке євангеліє згадує про вечерю останньої ночі, де Ісус дарує своїм учням хліб і вино?",
     "options": [
       "Марко",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T19:07:29.308Z"
   },
   {
-    "id": "gospels-medium-ai-00012",
+    "id": "gospels-youth-ai-00012",
     "themeId": "gospels",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яке євангеліє розповідає про ім'я якого рибака, якому Ісус дав свою мережу після відмови Петра?",
     "options": [
       "Марко",
@@ -192,9 +192,9 @@
     "createdAt": "2026-05-17T19:07:29.308Z"
   },
   {
-    "id": "gospels-medium-ai-00013",
+    "id": "gospels-youth-ai-00013",
     "themeId": "gospels",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яке євангеліє розповідає про чудеса, здійснені Ісусом у місті Цезареї?",
     "options": [
       "Марко",
@@ -208,9 +208,9 @@
     "createdAt": "2026-05-17T19:07:29.308Z"
   },
   {
-    "id": "gospels-hard-ai-00014",
+    "id": "gospels-student-ai-00014",
     "themeId": "gospels",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Які чудеса зробив Ісус Христа, щоб повернути сина вдови, загиблого в могилі?",
     "options": [
       "Відродив його на місці смерті (Мк. 5:41-42)",
@@ -223,9 +223,9 @@
     "createdAt": "2026-05-17T19:08:01.010Z"
   },
   {
-    "id": "gospels-hard-ai-00015",
+    "id": "gospels-student-ai-00015",
     "themeId": "gospels",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Які слова прославляють Бога за його велич і могутність розмовляє Ісус Христос на горі Голгофській (Мк. 15:34)?",
     "options": [
       "Мистецтво людини не досягне Божої величі, бо тільки Бог сам є Богом (Іс. 40:28)",
@@ -238,9 +238,9 @@
     "createdAt": "2026-05-17T19:08:01.010Z"
   },
   {
-    "id": "gospels-expert-ai-00016",
+    "id": "gospels-preacher-ai-00016",
     "themeId": "gospels",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який євангеліє містить розповідь про чудеса Ісуса в Синаї (38-40 роки н.е.)?",
     "options": [
       "Маркове",
@@ -254,9 +254,9 @@
     "createdAt": "2026-05-17T19:08:34.487Z"
   },
   {
-    "id": "gospels-expert-ai-00017",
+    "id": "gospels-preacher-ai-00017",
     "themeId": "gospels",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "У якому євангелії згадується про останню вечерю Христа зі своїми учнями?",
     "options": [
       "Лукева",
@@ -270,9 +270,9 @@
     "createdAt": "2026-05-17T19:08:34.487Z"
   },
   {
-    "id": "gospels-expert-ai-00018",
+    "id": "gospels-preacher-ai-00018",
     "themeId": "gospels",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "В якому євангелії згадується про чудеса Ісуса в Галілеї?",
     "options": [
       "Маркове",
@@ -286,9 +286,9 @@
     "createdAt": "2026-05-17T19:08:34.487Z"
   },
   {
-    "id": "gospels-expert-ai-00019",
+    "id": "gospels-preacher-ai-00019",
     "themeId": "gospels",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "У якому євангелії згадується про воскресіння Лазаря?",
     "options": [
       "Маркове",
@@ -302,9 +302,9 @@
     "createdAt": "2026-05-17T19:08:34.487Z"
   },
   {
-    "id": "gospels-expert-ai-00020",
+    "id": "gospels-preacher-ai-00020",
     "themeId": "gospels",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який учень Христовий відмовився від Ісуса під час Суду Каяфа?",
     "options": [
       "Петро",

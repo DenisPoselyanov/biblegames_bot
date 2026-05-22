@@ -1,8 +1,8 @@
 [
   {
-    "id": "psalms-easy-ai-00001",
+    "id": "psalms-child-ai-00001",
     "themeId": "psalms",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який Псалм починається словами: «Слава тобі, Господи, моїй Боже, яка є у вічність»?",
     "options": [
       "Пс. 8",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T19:12:17.894Z"
   },
   {
-    "id": "psalms-easy-ai-00002",
+    "id": "psalms-child-ai-00002",
     "themeId": "psalms",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який Псалм розповідає про Давидову релігійну танцювальну пісню перед Богом?",
     "options": [
       "Пс. 150",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T19:12:17.894Z"
   },
   {
-    "id": "psalms-easy-ai-00003",
+    "id": "psalms-child-ai-00003",
     "themeId": "psalms",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який Псалм часто виконували євреї під час жертвоприношень у Храмі Господньому?",
     "options": [
       "Пс. 24",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T19:12:17.894Z"
   },
   {
-    "id": "psalms-easy-ai-00004",
+    "id": "psalms-child-ai-00004",
     "themeId": "psalms",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який Псалм починається словами: «Блаженний людину, яка не піде у суд»?",
     "options": [
       "Пс. 37",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T19:12:17.894Z"
   },
   {
-    "id": "psalms-easy-ai-00005",
+    "id": "psalms-child-ai-00005",
     "themeId": "psalms",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Який Псалм застерігає вірних від прокляття, яке може надійти на них, якщо вони припинять славити Господа?",
     "options": [
       "Пс. 13",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T19:12:17.894Z"
   },
   {
-    "id": "psalms-hard-ai-00006",
+    "id": "psalms-student-ai-00006",
     "themeId": "psalms",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Який Псалом пов'язаний з подіями, коли Давид вигнав з храму Мелхіседека?",
     "options": [
       "Пс. 102 (101),",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T19:13:11.612Z"
   },
   {
-    "id": "psalms-hard-ai-00007",
+    "id": "psalms-student-ai-00007",
     "themeId": "psalms",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "У якому Псалмі Давид співає про те, що Бог розділив море з ворогами Ізраїлю?",
     "options": [
       "Пс. 68 (67),",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T19:13:11.612Z"
   },
   {
-    "id": "psalms-expert-ai-00008",
+    "id": "psalms-preacher-ai-00008",
     "themeId": "psalms",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який Псалом найчастіше згадує храм Господній?",
     "options": [
       "Пс 84 (Абаксук 4)",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T19:14:02.137Z"
   },
   {
-    "id": "psalms-expert-ai-00009",
+    "id": "psalms-preacher-ai-00009",
     "themeId": "psalms",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який Псалом починається з слів: «Благословенний той, кой читає тебе, О Господи, і вчуть се на твоє закону»?",
     "options": [
       "Пс 1 (Машія 1)",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T19:14:02.137Z"
   },
   {
-    "id": "psalms-expert-ai-00010",
+    "id": "psalms-preacher-ai-00010",
     "themeId": "psalms",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який Псалом згадує про те, як Давид був оголошений царю?",
     "options": [
       "Пс 2 (Єгорам 5)",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T19:14:02.137Z"
   },
   {
-    "id": "psalms-expert-ai-00011",
+    "id": "psalms-preacher-ai-00011",
     "themeId": "psalms",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який Псалом найбільше згадує про поклоніння Христу?",
     "options": [
       "Пс 63 (Гіршон 4)",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T19:14:02.137Z"
   },
   {
-    "id": "psalms-expert-ai-00012",
+    "id": "psalms-preacher-ai-00012",
     "themeId": "psalms",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який Псалом починається з молитви про Господа Ісуса Христа?",
     "options": [
       "Пс 9 (Бахалелі 6)",

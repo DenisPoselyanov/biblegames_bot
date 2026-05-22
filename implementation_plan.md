@@ -42,6 +42,44 @@
 Залишилось у Phase 1:
 - Проведено інтеграційний прогін з реальним Postgres/Supabase. Етап закрито!
 
+### Phase 6 — Розширення системи складності + ієрархія тем (2026-05-22)
+
+**Статус: Completed**
+
+#### 6.1. Нова система рівнів складності
+- Замінено 5 рівнів на 7: `baby`(👶), `child`(🧒), `youth`(🧑), `student`(🎓), `preacher`(📖), `teacher`(👨‍🏫), `theologian`(⛪)
+- Оновлено `Difficulty` тип + всі константи (`DIFFICULTIES`, `DIFFICULTY_LABELS`, `DIFFICULTY_POINTS`, `DIFFICULTY_ORDER`) в `src/types/index.ts`
+- Оновлено всі існуючі питання зі старими ID (`beginner→baby`, `easy→child`, `medium→youth`, `hard→student`, `expert→preacher`)
+- Оновлено `data/question-db/*.json` AI-питання (difficulty + ID)
+
+#### 6.2. Оновлення AI функцій
+- `scripts/lib/themes-config.mjs` — масив DIFFICULTIES на 7 рівнів
+- `scripts/generate-questions-ai.mjs` — `buildPrompt` для 7 рівнів
+- `src/lib/questionQuality.ts` — `calibrateDifficulty`, `validateDifficulty`, `getDifficultyLevel`, `getDifficultyByLevel`
+- `src/lib/questionPools.ts` — POOL_CONFIGS, mode rules, difficultyOrder
+- `src/pages/AdminPanel.tsx` — `difficultyColor` для 7 рівнів
+- `bot/index.mjs` — валідація DIFFICULTIES
+- `src/data/kahootQuestions.ts` — default difficulty
+- `src/data/questions.ts` — `getQuestionDistribution`
+
+#### 6.3. AI функція генерації ієрархії тем
+- Новий тип `TopicNode` (рекурсивний, `children: TopicNode[]`) в `src/types/index.ts`
+- Нова директорія `data/topics-db/` з 15 JSON файлами (по одному на тему)
+- `scripts/generate-topics-ai.mjs` — генерація підтем через Ollama
+- `src/data/topicDbLoader.ts` — завантажувач для фронтенду
+- npm script: `npm run generate-topics`
+
+#### 6.4. Оновлення адмін-панелі
+- Розділено на вкладки "🏷️ Теми" та "❓ Запитання"
+- Теми: дерево з розкриттям, аналіз кількості питань
+- Запитання: підвкладки (Карантин, Звіти, Пули)
+
+#### 6.5. AI сортування існуючих питань
+- `scripts/sortQuestionsByCategory.ts` — призначення підтем для кожного питання
+- Маппінг старих рівнів на нові
+- Результат: `data/question-categories.json`
+- npm script: `npm run sort-questions`
+
 ## Bug Fixes & Maintenance (2026-05-21)
 
 ### Critical React Error Fix

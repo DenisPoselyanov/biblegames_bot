@@ -372,7 +372,7 @@ export function Profile() {
                   <small>
                     {points} очок · {levels.length} рівн.
                     {levels.length > 0 &&
-                      ` (${levels.map((l) => DIFFICULTY_LABELS[l.difficulty][0]).join(', ')})`}
+                      ` (${levels.map((l) => (DIFFICULTY_LABELS[l.difficulty] ?? l.difficulty)[0]).join(', ')})`}
                   </small>
                 </div>
               </li>

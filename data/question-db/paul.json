@@ -1,8 +1,8 @@
 [
   {
-    "id": "paul-beginner-ai-00001",
+    "id": "paul-baby-ai-00001",
     "themeId": "paul",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Який апостол був уродженець Тарсі в Кілікії?",
     "options": [
       "Петро",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T18:53:57.439Z"
   },
   {
-    "id": "paul-beginner-ai-00002",
+    "id": "paul-baby-ai-00002",
     "themeId": "paul",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Яку місто апостол Павло зустрічає на дорозі до Дамаска?",
     "options": [
       "Єрусалим",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T18:53:57.439Z"
   },
   {
-    "id": "paul-beginner-ai-00003",
+    "id": "paul-baby-ai-00003",
     "themeId": "paul",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Кому апостол Павло написав лист до Коринфу?",
     "options": [
       "Тімофію",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T18:53:57.439Z"
   },
   {
-    "id": "paul-beginner-ai-00004",
+    "id": "paul-baby-ai-00004",
     "themeId": "paul",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Яку повість проповідував апостол Павло в Афінах?",
     "options": [
       "Повість про Ісуса Христа",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T18:53:57.439Z"
   },
   {
-    "id": "paul-easy-ai-00005",
+    "id": "paul-child-ai-00005",
     "themeId": "paul",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Чим займався Павло до свого навернення?",
     "options": [
       "Мислителем в Єрусалимі",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T18:54:38.375Z"
   },
   {
-    "id": "paul-easy-ai-00006",
+    "id": "paul-child-ai-00006",
     "themeId": "paul",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Якою мірою знав Павло грецьку мову?",
     "options": [
       "Повністю (на рівні родючого діалекту)",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T18:54:38.375Z"
   },
   {
-    "id": "paul-easy-ai-00007",
+    "id": "paul-child-ai-00007",
     "themeId": "paul",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Чим закінчив свою другу подорож до Єрусалиму?",
     "options": [
       "Був арештований і засуджений до смерті",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T18:54:38.375Z"
   },
   {
-    "id": "paul-easy-ai-00008",
+    "id": "paul-child-ai-00008",
     "themeId": "paul",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Які місіонерські мандри зробив Павло разом із Сизою?",
     "options": [
       "Подорож до Кипру і Кілікії",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T18:54:38.375Z"
   },
   {
-    "id": "paul-medium-ai-00009",
+    "id": "paul-youth-ai-00009",
     "themeId": "paul",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "У якому місті апостол Павло написав свою першу листівку?",
     "options": [
       "А) Корінф",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T18:55:17.315Z"
   },
   {
-    "id": "paul-medium-ai-00010",
+    "id": "paul-youth-ai-00010",
     "themeId": "paul",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яким способом апостол Павло зазначив себе на Вітерні?",
     "options": [
       "А) Відтиск ноги",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T18:55:17.315Z"
   },
   {
-    "id": "paul-medium-ai-00011",
+    "id": "paul-youth-ai-00011",
     "themeId": "paul",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Який цар Юдеї зустрічав апостола Павла при його подорожі до Дамаска?",
     "options": [
       "А) Ірод Великий",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T18:55:17.315Z"
   },
   {
-    "id": "paul-medium-ai-00012",
+    "id": "paul-youth-ai-00012",
     "themeId": "paul",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Яку сусідню країну відвідав апостол Павло за час своєї місіонерської подорожі?",
     "options": [
       "А) Лівію",
@@ -192,9 +192,9 @@
     "createdAt": "2026-05-17T18:55:17.315Z"
   },
   {
-    "id": "paul-medium-ai-00013",
+    "id": "paul-youth-ai-00013",
     "themeId": "paul",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Апостол Павло з якими людьми співпрацював під час навернення Грецького пророка?",
     "options": [
       "А) Сила і Лука",
@@ -208,9 +208,9 @@
     "createdAt": "2026-05-17T18:55:17.315Z"
   },
   {
-    "id": "paul-hard-ai-00014",
+    "id": "paul-student-ai-00014",
     "themeId": "paul",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Яке місто було першим місцем, де апостол Павло зупинився після вигнання з Антіохії?",
     "options": [
       "А) Сидон",
@@ -224,9 +224,9 @@
     "createdAt": "2026-05-17T18:55:53.920Z"
   },
   {
-    "id": "paul-hard-ai-00015",
+    "id": "paul-student-ai-00015",
     "themeId": "paul",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Ким було навернене апостолом Павлом разом з Сирією та Кипром?",
     "options": [
       "А) Священиків",
@@ -240,9 +240,9 @@
     "createdAt": "2026-05-17T18:55:53.920Z"
   },
   {
-    "id": "paul-hard-ai-00016",
+    "id": "paul-student-ai-00016",
     "themeId": "paul",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "У якому місті апостол Павло був ув'язнений та написав Філемону лист?",
     "options": [
       "А) Афіни",
@@ -256,9 +256,9 @@
     "createdAt": "2026-05-17T18:55:53.920Z"
   },
   {
-    "id": "paul-hard-ai-00017",
+    "id": "paul-student-ai-00017",
     "themeId": "paul",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Який апостол співпрацював з Павлом під час його подорожі до Македонії?",
     "options": [
       "А) Петро",
@@ -272,9 +272,9 @@
     "createdAt": "2026-05-17T18:55:53.920Z"
   },
   {
-    "id": "paul-hard-ai-00018",
+    "id": "paul-student-ai-00018",
     "themeId": "paul",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "У якому місті апостол Павло помер?",
     "options": [
       "А) Єрусалим",
@@ -288,9 +288,9 @@
     "createdAt": "2026-05-17T18:55:53.920Z"
   },
   {
-    "id": "paul-expert-ai-00019",
+    "id": "paul-preacher-ai-00019",
     "themeId": "paul",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Які міста відвідав апостол Павло під час першої подорожі?",
     "options": [
       "Самоса, Коринф, Афіни, Родос",
@@ -304,9 +304,9 @@
     "createdAt": "2026-05-17T18:56:35.102Z"
   },
   {
-    "id": "paul-expert-ai-00020",
+    "id": "paul-preacher-ai-00020",
     "themeId": "paul",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Яку книгу Нового Завіту написав апостол Павло за власною рукою?",
     "options": [
       "Послання до коринфян",

@@ -1,8 +1,8 @@
 [
   {
-    "id": "kings-beginner-ai-00001",
+    "id": "kings-baby-ai-00001",
     "themeId": "kings",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Який цар Ізраїлю запровадив жертвоприношення в Bethel, Габаоні та у Якові?",
     "options": [
       "Саул",
@@ -16,9 +16,9 @@
     "createdAt": "2026-05-17T18:59:09.492Z"
   },
   {
-    "id": "kings-beginner-ai-00002",
+    "id": "kings-baby-ai-00002",
     "themeId": "kings",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Хто був першим царям Юдеї після розколу з Ізраїлем?",
     "options": [
       "Саул",
@@ -32,9 +32,9 @@
     "createdAt": "2026-05-17T18:59:09.492Z"
   },
   {
-    "id": "kings-beginner-ai-00003",
+    "id": "kings-baby-ai-00003",
     "themeId": "kings",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Найбільший із жіночих царів в Ізраїлі була",
     "options": [
       "Абігай",
@@ -48,9 +48,9 @@
     "createdAt": "2026-05-17T18:59:09.492Z"
   },
   {
-    "id": "kings-beginner-ai-00004",
+    "id": "kings-baby-ai-00004",
     "themeId": "kings",
-    "difficulty": "beginner",
+    "difficulty": "baby",
     "text": "Котрий із царів Ізраїлю був вивезений до Ассирії?",
     "options": [
       "Іоас",
@@ -64,9 +64,9 @@
     "createdAt": "2026-05-17T18:59:09.492Z"
   },
   {
-    "id": "kings-easy-ai-00005",
+    "id": "kings-child-ai-00005",
     "themeId": "kings",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Хто був першим коханим Давида перед Саулом?",
     "options": [
       "Іоав, син Саарею",
@@ -80,9 +80,9 @@
     "createdAt": "2026-05-17T19:00:02.138Z"
   },
   {
-    "id": "kings-easy-ai-00006",
+    "id": "kings-child-ai-00006",
     "themeId": "kings",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Ким був батько царя Соломона та Яробаама?",
     "options": [
       "Давид, цар Ізраїля",
@@ -96,9 +96,9 @@
     "createdAt": "2026-05-17T19:00:02.138Z"
   },
   {
-    "id": "kings-easy-ai-00007",
+    "id": "kings-child-ai-00007",
     "themeId": "kings",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Після розколу царств Ізраїля та Юдеї на які роки проіснував Соломон?",
     "options": [
       "40 років",
@@ -112,9 +112,9 @@
     "createdAt": "2026-05-17T19:00:02.138Z"
   },
   {
-    "id": "kings-easy-ai-00008",
+    "id": "kings-child-ai-00008",
     "themeId": "kings",
-    "difficulty": "easy",
+    "difficulty": "child",
     "text": "Як називав Саул царя Юдеї перед тим як заволодів Ізраїлем?",
     "options": [
       "Абсалон",
@@ -128,9 +128,9 @@
     "createdAt": "2026-05-17T19:00:02.138Z"
   },
   {
-    "id": "kings-medium-ai-00009",
+    "id": "kings-youth-ai-00009",
     "themeId": "kings",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Який цар Ізраїлю запросив пророка Самуіла на з'єднання та прийняття корони?",
     "options": [
       "Цар Соломон (Іцхак 9:16)",
@@ -144,9 +144,9 @@
     "createdAt": "2026-05-17T19:01:42.188Z"
   },
   {
-    "id": "kings-medium-ai-00010",
+    "id": "kings-youth-ai-00010",
     "themeId": "kings",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Кто замінив Давида на троні Ізраїлю після його смерті?",
     "options": [
       "Соломон (Цар. 2:10)",
@@ -160,9 +160,9 @@
     "createdAt": "2026-05-17T19:01:42.188Z"
   },
   {
-    "id": "kings-medium-ai-00011",
+    "id": "kings-youth-ai-00011",
     "themeId": "kings",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "Кто був батьком Соломона?",
     "options": [
       "Цар Саул (І Цар. 16:13)",
@@ -176,9 +176,9 @@
     "createdAt": "2026-05-17T19:01:42.188Z"
   },
   {
-    "id": "kings-medium-ai-00012",
+    "id": "kings-youth-ai-00012",
     "themeId": "kings",
-    "difficulty": "medium",
+    "difficulty": "youth",
     "text": "У якого царя Юдеї розкол царств з Ізраїлем відбувся?",
     "options": [
       "Цар Ровоам (І Цар. 12:19)",
@@ -192,9 +192,9 @@
     "createdAt": "2026-05-17T19:01:42.188Z"
   },
   {
-    "id": "kings-hard-ai-00013",
+    "id": "kings-student-ai-00013",
     "themeId": "kings",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Який цар Ізраїлю першим переміг філістим'ян і став першим ізраїльським монархом, який сидів у місті Яване?",
     "options": [
       "Саул",
@@ -208,9 +208,9 @@
     "createdAt": "2026-05-17T19:02:13.785Z"
   },
   {
-    "id": "kings-hard-ai-00014",
+    "id": "kings-student-ai-00014",
     "themeId": "kings",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Хто з синів царя Соломона попросив взяти від нього місто Давидів за умови визнання його преементом?",
     "options": [
       "Реховоам",
@@ -224,9 +224,9 @@
     "createdAt": "2026-05-17T19:02:13.785Z"
   },
   {
-    "id": "kings-hard-ai-00015",
+    "id": "kings-student-ai-00015",
     "themeId": "kings",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Який з царів Ізраїлю помер, не передавши трон сину, а його спадкоємцем став його брат?",
     "options": [
       "Йосия",
@@ -240,9 +240,9 @@
     "createdAt": "2026-05-17T19:02:13.785Z"
   },
   {
-    "id": "kings-hard-ai-00016",
+    "id": "kings-student-ai-00016",
     "themeId": "kings",
-    "difficulty": "hard",
+    "difficulty": "student",
     "text": "Хто з царів Ізраїлю помер під час осади самарійської фортеці Самарії і був похований на пагорбі Шехер-Ісраель?",
     "options": [
       "Йосия",
@@ -256,9 +256,9 @@
     "createdAt": "2026-05-17T19:02:13.785Z"
   },
   {
-    "id": "kings-expert-ai-00017",
+    "id": "kings-preacher-ai-00017",
     "themeId": "kings",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Який цар Ізраїлю першим завоював Єфраїм, перемістивши межу його північно-західного кордону?",
     "options": [
       "Саул",
@@ -272,9 +272,9 @@
     "createdAt": "2026-05-17T19:02:48.390Z"
   },
   {
-    "id": "kings-expert-ai-00018",
+    "id": "kings-preacher-ai-00018",
     "themeId": "kings",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Хто був першим царем Юдеї?",
     "options": [
       "Саул",
@@ -288,9 +288,9 @@
     "createdAt": "2026-05-17T19:02:48.390Z"
   },
   {
-    "id": "kings-expert-ai-00019",
+    "id": "kings-preacher-ai-00019",
     "themeId": "kings",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Скільки років правив Соломон над Ізраїлем?",
     "options": [
       "41 рік",
@@ -304,9 +304,9 @@
     "createdAt": "2026-05-17T19:02:48.390Z"
   },
   {
-    "id": "kings-expert-ai-00020",
+    "id": "kings-preacher-ai-00020",
     "themeId": "kings",
-    "difficulty": "expert",
+    "difficulty": "preacher",
     "text": "Під час розколу царств, до якого з царств відійшли ізраїльські коліни: Єфрем, Манасия, Зевулун та Асенія",
     "options": [
       "Юдеї",
