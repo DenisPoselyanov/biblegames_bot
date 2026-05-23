@@ -31,7 +31,7 @@
 npm run generate-ai -- --theme geography --count 50
 
 # одна складність
-npm run generate-ai -- --theme paul --count 30 --difficulty medium
+npm run generate-ai -- --theme paul --count 30 --difficulty youth
 
 # інша модель
 npm run generate-ai -- --theme kings --count 20 --model llama3.2
@@ -49,12 +49,12 @@ npm run questions:stats
 - `--theme <id>` — тема (див. список нижче)
 - `--all` — всі теми
 - `--count <N>` — кількість (типово 30, батч по 15)
-- `--difficulty <level>` — beginner/easy/medium/hard/expert (або `all`)
+- `--difficulty <level>` — baby/child/youth/student/preacher/teacher/theologian (або `all`)
 - `--model <name>` — модель Ollama (типово `mistral`)
 
 **15 тем:** geography, old-testament, mosaic-law, paul, judges, kings, new-testament, gospels, prophets, psalms, parables, commandments, miracles, patriarchs, revelation
 
-**5 рівнів складності:** beginner, easy, medium, hard, expert
+**7 рівнів складності:** baby, child, youth, student, preacher, teacher, theologian
 
 ## 4. Telegram-бот (зручно з телефону)
 
@@ -69,11 +69,44 @@ npm run bot
 Команди в боті (тільки для ADMIN_IDS):
 - `/stats` — скільки AI-питань у кожній темі
 - `/generate geography 50` — згенерувати для теми
-- `/generate paul 20 medium` — з рівнем складності
+- `/generate paul 20 youth` — з рівнем складності
 - `/themes` — список id тем
 - `/help` — довідка
 
-## 5. Аналіз якості та пошук дублікатів
+## 5. AI-сортування підгруп у дереві тем
+
+Скрипт `sort-topics-ai` проходить усі файли `data/topics-db/{theme}.json` і для кожної групи просить AI:
+  - відсортувати її підгрупи у теологічно/логічно правильному порядку (хронологія Біблії, канонічний порядок, важливість)
+  - (опційно) перенести підгрупу під іншу батьківську групу в тому ж дереві (--reparent)
+
+```bash
+# Сортування однієї теми
+npm run sort-topics-ai -- --theme paul
+
+# По всіх темах
+npm run sort-topics-ai -- --all
+
+# Дозволити переміщення між групами
+npm run sort-topics-ai -- --all --reparent
+
+# Переглянути зміни без збереження
+npm run sort-topics-ai -- --all --reparent --dry-run
+
+# Зберегти .bak перед перезаписом
+npm run sort-topics-ai -- --all --backup
+```
+
+**Прапорці:**
+- `--theme <id>` — лише одна тема
+- `--all` — всі теми
+- `--reparent` — дозволити переміщення підгруп між батьківськими вузлами
+- `--reorder-only` — лише сортування, без reparent
+- `--dry-run` — лише показати зміни
+- `--backup` — зберегти `.bak` перед перезаписом
+- `--max-depth <N>` — обмежити глибину (типово 5)
+- `--model <name>` — модель Ollama
+
+## 6. Аналіз якості та пошук дублікатів
 
 ```bash
 # Аналіз якості + пошук схожих питань (Jaccard > 75%)
@@ -88,7 +121,7 @@ npm run questions:stats
 
 Звіти зберігаються в корінь проєкту: `question-quality-report.json`, `question-pools-report.json`.
 
-## 6. Система якості (3 рівні)
+## 7. Система якості (3 рівні)
 
 | Рівень | Де | Що робить |
 |--------|----|-----------|
@@ -98,7 +131,7 @@ npm run questions:stats
 
 **Карантин:** питання з низькою якістю автоматично потрапляють до `QuestionQuarantineManager` (`src/lib/questionQuarantine.ts`). Статуси: `pending_review`, `approved_fix`, `rejected`. Із гри виключені.
 
-## 7. Як це працює в грі
+## 8. Як це працює в грі
 
 - Вбудовані питання: `src/data/questions*.ts` (~600+ питань)
 - AI-питання: JSON у `data/question-db/` (завантажуються асинхронно через `src/data/questionDbLoader.ts`)
@@ -130,15 +163,19 @@ npm run questions:stats
 ```
 biblegames_bot/
 ├── data/question-db/          # JSON-файли AI-питань (по темі)
+├── data/topics-db/             # JSON-файли ієрархії тем
 ├── scripts/
-│   ├── generate-questions-ai.mjs    # Генератор (Ollama)
+│   ├── generate-questions-ai.mjs    # Генератор питань (Ollama)
+│   ├── generate-topics-ai.mjs       # Генератор ієрархії тем
+│   ├── sort-topics-ai.mjs           # AI-сортування підгруп у дереві
+│   ├── sortQuestionsByCategory.ts   # AI/heuristic-класифікація питань
 │   ├── analyze-questions.mjs        # Статистика
 │   ├── analyzeQuestionQuality.ts    # Якість + дублікати
 │   ├── analyzeQuestionPools.ts      # Пули (study/game)
 │   └── lib/
-│       ├── ollama.mjs               # HTTP-клієнт Ollama
+│       ├── ollama.mjs               # HTTP-клієнт Ollama (+ JSON parsing)
 │       ├── question-db.mjs          # CRUD + dedupe
-│       └── themes-config.mjs        # 15 тем + 5 складностей
+│       └── themes-config.mjs        # 15 тем + 7 складностей
 ├── bot/index.mjs              # Telegram-бот (admin)
 ├── src/
 │   ├── data/

@@ -11,7 +11,6 @@ import { DIFFICULTIES, THEME_IDS, getTheme } from './lib/themes-config.mjs';
 import { checkOllama, extractJsonArray, queryOllama } from './lib/ollama.mjs';
 import {
   appendQuestions,
-  getGlobalStats,
   loadThemeQuestions,
   normalizeAiQuestion,
 } from './lib/question-db.mjs';
@@ -40,6 +39,17 @@ function parseArgs() {
   if (!opts.all && (!opts.theme || !getTheme(opts.theme))) {
     console.error('❌ Вкажи --theme <id> або --all');
     console.error('Теми:', THEME_IDS.join(', '));
+    process.exit(1);
+  }
+
+  if (!Number.isFinite(opts.count) || opts.count <= 0) {
+    console.error('❌ --count має бути додатним числом');
+    process.exit(1);
+  }
+
+  if (opts.difficulty !== 'all' && !DIFFICULTIES.includes(opts.difficulty)) {
+    console.error(`❌ Невідома складність: ${opts.difficulty}`);
+    console.error('Допустимі:', ['all', ...DIFFICULTIES].join(', '));
     process.exit(1);
   }
 
@@ -116,7 +126,9 @@ async function generateForTheme(themeId, totalCount, difficultyFilter, model) {
         }
         const result = appendQuestions(themeId, batch);
         addedTotal += result.added;
-        remaining -= batch.length;
+        // лічимо лише унікальні (не дублікати), щоб не зупинитись передчасно
+        remaining -= Math.max(result.added, 1);
+        if (result.added === 0) attempts++;
         console.log(`  ✅ ${diff}: +${result.added} (в базі: ${result.after})`);
       } catch (e) {
         console.error(`  ❌ ${diff}: ${e.message}`);

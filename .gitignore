@@ -23,3 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# AI-generated analysis reports
+data/question-categories.json
+question-quality-report.json
+question-pools-report.json
+data/topics-db/*.bak
