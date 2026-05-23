@@ -3,7 +3,7 @@
  * Скрипт для аналізу та ініціалізації пулів питань
  * Аналізує як вбудовані (TS), так і AI-генеровані питання (JSON з data/question-db/)
  */
-import { QUESTIONS } from '../src/data/questions';
+import { ALL_QUESTIONS as QUESTIONS } from '../src/data/questions';
 import { questionPoolManager } from '../src/lib/questionPools';
 import { questionQuarantineManager } from '../src/lib/questionQuarantine';
 import fs from 'fs';

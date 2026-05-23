@@ -59,20 +59,33 @@ export function makeQuestionId(themeId, difficulty, index) {
 }
 
 export function normalizeAiQuestion(raw, themeId, difficulty, index) {
-  const options = raw.options.map((o) => String(o).trim()).filter(Boolean);
+  if (!raw || typeof raw !== 'object') return null;
+
+  const text = String(raw.text ?? '').trim();
+  if (!text) return null;
+
+  if (!Array.isArray(raw.options)) return null;
+  const options = raw.options.map((o) => String(o ?? '').trim()).filter(Boolean);
   if (options.length !== 4) return null;
 
+  // унікальні варіанти (без дублікатів)
+  if (new Set(options.map((o) => o.toLowerCase())).size !== 4) return null;
+
   let correctIndex = typeof raw.correct === 'number' ? raw.correct : raw.correctIndex;
-  if (correctIndex == null || correctIndex < 0 || correctIndex > 3) correctIndex = 0;
+  if (typeof correctIndex !== 'number' || !Number.isInteger(correctIndex) || correctIndex < 0 || correctIndex > 3) {
+    correctIndex = 0;
+  }
+
+  const reference = (raw.ref || raw.reference || '').toString().trim();
 
   return {
     id: makeQuestionId(themeId, difficulty, index),
     themeId,
     difficulty,
-    text: String(raw.text).trim(),
+    text,
     options,
     correctIndex,
-    reference: raw.ref || raw.reference || undefined,
+    reference: reference || undefined,
     source: 'ai',
     createdAt: new Date().toISOString(),
   };
