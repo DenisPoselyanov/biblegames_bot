@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ALL_QUESTIONS } from '../data/questions';
 import { loadAllAiQuestions } from '../data/questionDbLoader';
-import { loadAllTopicHierarchies, flattenTopicNodes } from '../data/topicDbLoader';
+import { loadAllTopicHierarchies, flattenTopicNodes, countQuestionsForTopicNode } from '../data/topicDbLoader';
 import { THEMES } from '../data/themes';
 import { CATEGORIES } from '../data/categories';
 import { DIFFICULTY_LABELS, type Difficulty, type TopicNode, type TopicHierarchyMap } from '../types';
@@ -33,14 +33,15 @@ function difficultyColor(d: Difficulty): string {
   return map[d] || '#888';
 }
 
-function TopicTreeNode({ node, depth, questionsByTheme, allQuestions }: {
+function TopicTreeNode({ node, depth, questionsByTheme, allQuestions, themeQuestions }: {
   node: TopicNode;
   depth: number;
   questionsByTheme: Record<string, number>;
   allQuestions: typeof ALL_QUESTIONS;
+  themeQuestions: typeof ALL_QUESTIONS;
 }) {
   const [expanded, setExpanded] = useState(depth < 1);
-  const questionCount = allQuestions.filter(q => q.themeId === node.id || q.themeId.startsWith(node.id.split('-')[0])).length;
+  const questionCount = countQuestionsForTopicNode(node, themeQuestions, depth === 0);
 
   return (
     <li style={{ marginLeft: depth * 20 }}>
@@ -62,6 +63,7 @@ function TopicTreeNode({ node, depth, questionsByTheme, allQuestions }: {
               depth={depth + 1}
               questionsByTheme={questionsByTheme}
               allQuestions={allQuestions}
+              themeQuestions={themeQuestions}
             />
           ))}
         </ul>
@@ -215,6 +217,7 @@ export function AdminPanel() {
                 depth={0}
                 questionsByTheme={questionsByTheme}
                 allQuestions={ALL_QUESTIONS}
+                themeQuestions={ALL_QUESTIONS.filter(q => q.themeId === selectedThemeId)}
               />
             </ul>
           ) : (
