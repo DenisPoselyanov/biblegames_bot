@@ -216,7 +216,7 @@ async function main() {
   }
 
   console.log('\n📊 Розподіл за темами:');
-  for (const [t, count] of Object.entries(byTheme).sort((a, b) => count - b[1])) {
+  for (const [t, count] of Object.entries(byTheme).sort((a, b) => b[1] - a[1])) {
     console.log(`   ${t}: ${count}`);
   }
 }
