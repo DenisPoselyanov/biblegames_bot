@@ -1,15 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Icon } from '../../../components/Icon';
 import { ThemePicker } from '../../../components/ThemePicker';
 import { useKahootRoom } from '../../../hooks/useKahootRoom';
 import { useTelegram } from '../../../hooks/useTelegram';
 import { playlistManager } from '../../../lib/playlists';
+import { getQuestionCountByDifficulty } from '../../../data/questions';
 import { KAHOOT_DEFAULTS } from '../../../types/gameModes';
 import type { KahootRoomSettings } from '../../../types/kahoot';
-import { DIFFICULTIES, DIFFICULTY_LABELS } from '../../../types';
+import { DIFFICULTIES, DIFFICULTY_LABELS, type Difficulty } from '../../../types';
 import styles from './Kahoot.module.css';
 
 type QuestionSource = 'themes' | 'playlist';
+
+const TIME_OPTIONS = [10, 20, 30, 60];
 
 function shuffle<T>(array: T[]): T[] {
   const result = [...array];
@@ -35,7 +39,7 @@ export function KahootCreate() {
   const [themeIds, setThemeIds] = useState<string[]>(['geography']);
   const [questionCount, setQuestionCount] = useState(KAHOOT_DEFAULTS.questionCount);
   const [timePerQuestion, setTimePerQuestion] = useState(KAHOOT_DEFAULTS.timePerQuestionSec);
-  const [difficulty, setDifficulty] = useState(KAHOOT_DEFAULTS.difficulty);
+  const [difficulties, setDifficulties] = useState<Difficulty[]>([KAHOOT_DEFAULTS.difficulty]);
   const [playlistId, setPlaylistId] = useState('');
   const [explicitQuestionIds, setExplicitQuestionIds] = useState<string[] | null>(null);
   const [loading, setLoading] = useState(false);
@@ -52,6 +56,17 @@ export function KahootCreate() {
     [playlistId],
   );
 
+  const maxAvailableThemes = useMemo(() => {
+    const diffs = difficulties.length > 0 ? difficulties : DIFFICULTIES;
+    return themeIds.reduce((sum, id) => sum + diffs.reduce((s, d) => s + getQuestionCountByDifficulty(id, d), 0), 0);
+  }, [themeIds, difficulties]);
+
+  const sliderMax = source === 'playlist'
+    ? (selectedPlaylist ? Math.max(3, selectedPlaylist.questions.length) : 20)
+    : Math.max(maxAvailableThemes, 1);
+
+  const sliderMin = Math.min(3, sliderMax);
+
   useEffect(() => {
     if (!presetPlaylistId) return;
     setSource('playlist');
@@ -65,7 +80,7 @@ export function KahootCreate() {
   useEffect(() => {
     if (source !== 'playlist') return;
     if (!selectedPlaylist) return;
-    const max = Math.min(20, Math.max(3, selectedPlaylist.questions.length));
+    const max = Math.max(3, selectedPlaylist.questions.length);
     if (questionCount > max) setQuestionCount(max);
   }, [source, selectedPlaylist, questionCount]);
 
@@ -88,15 +103,15 @@ export function KahootCreate() {
       }
 
       const pool = selectedPlaylist.questions;
-      const max = Math.min(20, Math.max(3, pool.length));
+      const max = Math.max(3, pool.length);
       const count = Math.min(max, Math.max(3, questionCount));
       const picked = explicitQuestionIds?.length ? explicitQuestionIds : shuffle(pool).slice(0, count);
 
       settings = {
         themeIds: selectedPlaylist.themes,
-        questionCount: Math.min(20, Math.max(3, picked.length)),
+        questionCount: Math.max(3, picked.length),
         timePerQuestion,
-        difficulty,
+        difficulty: difficulties[0] ?? 'youth',
         playlistId,
         questionIds: picked,
       };
@@ -110,7 +125,7 @@ export function KahootCreate() {
         themeIds,
         questionCount,
         timePerQuestion,
-        difficulty,
+        difficulty: difficulties[0] ?? 'youth',
       };
     }
 
@@ -122,57 +137,54 @@ export function KahootCreate() {
 
   return (
     <section className={styles.page}>
-      <Link to="/play/kahoot" className={styles.back}>
-        ← Kahoot
-      </Link>
-
-      <h1 className={styles.title}>Створити кімнату</h1>
-
-      {!connected && (
-        <p className={styles.warn}>⏳ Підключення до сервера… Запустіть `npm run server`</p>
-      )}
-
-      <label className={styles.field}>
-        <span>Твій нікнейм (ведучий)</span>
-        <input
-          type="text"
-          maxLength={24}
-          placeholder="Наприклад: Олександр"
-          value={hostName}
-          onChange={(e) => setHostName(e.target.value)}
-        />
-      </label>
-
-      <div className={styles.tabs}>
-        <button
-          type="button"
-          className={`${styles.tabBtn} ${source === 'themes' ? styles.tabActive : ''}`}
-          onClick={() => {
-            setSource('themes');
-            setExplicitQuestionIds(null);
-          }}
-        >
-          Теми
-        </button>
-        <button
-          type="button"
-          className={`${styles.tabBtn} ${source === 'playlist' ? styles.tabActive : ''}`}
-          onClick={() => setSource('playlist')}
-        >
-          Плейлист
-        </button>
+      <div className={styles.topRow}>
+        <Link to="/play/kahoot" className={styles.backBtn} aria-label="Назад">
+          <Icon name="back" size={20} />
+        </Link>
       </div>
 
-      {source === 'playlist' ? (
-        <>
+      <h1 className={styles.pageTitle}>Створити кімнату</h1>
+
+      {!connected && (
+        <p className={styles.serverError}>Не вдалося з'єднатися з сервером. Перевірте підключення.</p>
+      )}
+
+      <div className={styles.sectionCard}>
+        <label className={styles.field}>
+          <span>Твій нікнейм (ведучий)</span>
+          <input
+            type="text"
+            maxLength={24}
+            placeholder="Наприклад: Олександр"
+            value={hostName}
+            onChange={(e) => setHostName(e.target.value)}
+          />
+        </label>
+
+        <div className={styles.segmentControl}>
+          <button
+            type="button"
+            className={`${styles.segmentTab} ${source === 'themes' ? styles.segmentActive : ''}`}
+            onClick={() => { setSource('themes'); setExplicitQuestionIds(null); }}
+          >
+            Теми
+          </button>
+          <button
+            type="button"
+            className={`${styles.segmentTab} ${source === 'playlist' ? styles.segmentActive : ''}`}
+            onClick={() => setSource('playlist')}
+          >
+            Плейлист
+          </button>
+          <span className={`${styles.segmentGlider} ${source === 'themes' ? styles.gliderLeft : styles.gliderRight}`} />
+        </div>
+
+        {source === 'playlist' ? (
           <label className={styles.field}>
             <span>Плейлист</span>
             <select
               value={playlistId}
-              onChange={(e) => {
-                setPlaylistId(e.target.value);
-                setExplicitQuestionIds(null);
-              }}
+              onChange={(e) => { setPlaylistId(e.target.value); setExplicitQuestionIds(null); }}
             >
               <option value="">Оберіть плейлист</option>
               {playlistOptions.map((p) => (
@@ -182,66 +194,66 @@ export function KahootCreate() {
               ))}
             </select>
           </label>
-
-          <p className={styles.muted}>
-            {selectedPlaylist ? `Питань у плейлисті: ${selectedPlaylist.questions.length}` : ' '}
-          </p>
-
-          <label className={styles.field}>
-            <span>Кількість питань: {questionCount}</span>
-            <input
-              type="range"
-              min={3}
-              max={selectedPlaylist ? Math.min(20, Math.max(3, selectedPlaylist.questions.length)) : 20}
-              value={questionCount}
-              onChange={(e) => setQuestionCount(Number(e.target.value))}
-            />
-          </label>
-
-          <Link to="/play/kahoot/playlists" className={styles.btnSecondary}>
-            Перейти до плейлистів
-          </Link>
-        </>
-      ) : (
-        <>
-          <h2 className={styles.sub}>Теми для гри</h2>
+        ) : (
           <ThemePicker selected={themeIds} onChange={setThemeIds} />
+        )}
+      </div>
 
-          <label className={styles.field}>
-            <span>Кількість питань: {questionCount}</span>
+      <div className={styles.sectionCard}>
+        <div className={styles.field}>
+          <span>Складність питань</span>
+          <div className={styles.chipGroup}>
+            {DIFFICULTIES.map((d) => (
+              <button
+                key={d}
+                type="button"
+                className={`${styles.chip} ${difficulties.includes(d) ? styles.chipActive : ''}`}
+                onClick={() => setDifficulties((prev) => prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d])}
+              >
+                {DIFFICULTY_LABELS[d]}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <label className={styles.field}>
+          <span className={styles.sliderTitle}>
+            Кількість питань <strong>{questionCount} / {sliderMax}</strong>
+          </span>
+          <div className={styles.sliderWrap}>
+            <span
+              className={styles.sliderValue}
+              style={{ left: `${sliderMax > sliderMin ? ((questionCount - sliderMin) / (sliderMax - sliderMin)) * 100 : 50}%` }}
+            >
+              {questionCount}
+            </span>
             <input
               type="range"
-              min={3}
-              max={20}
+              min={sliderMin}
+              max={sliderMax}
               value={questionCount}
+              className={styles.rangeSlider}
               onChange={(e) => setQuestionCount(Number(e.target.value))}
             />
-          </label>
-        </>
-      )}
+          </div>
+        </label>
 
-      <label className={styles.field}>
-        <span>Складність питань</span>
-        <select value={difficulty} onChange={(e) => setDifficulty(e.target.value as typeof difficulty)}>
-          {DIFFICULTIES.map((d) => (
-            <option key={d} value={d}>
-              {DIFFICULTY_LABELS[d]}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label className={styles.field}>
-        <span>Час на відповідь: {timePerQuestion} с</span>
-        <input
-          type="range"
-          min={10}
-          max={45}
-          step={5}
-          value={timePerQuestion}
-          onChange={(e) => setTimePerQuestion(Number(e.target.value))}
-        />
-      </label>
+        <div className={styles.field}>
+          <span>Час на відповідь</span>
+          <div className={styles.chipGroup}>
+            {TIME_OPTIONS.map((t) => (
+              <button
+                key={t}
+                type="button"
+                className={`${styles.chip} ${timePerQuestion === t ? styles.chipActive : ''}`}
+                onClick={() => setTimePerQuestion(t)}
+              >
+                {t}с
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {error && <p className={styles.error}>{error}</p>}
 

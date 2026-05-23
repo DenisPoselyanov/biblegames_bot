@@ -1,6 +1,39 @@
 import { Link } from 'react-router-dom';
 import { GAME_MODES } from '../../types/gameModes';
+import { Icon } from '../../components/Icon';
+import type { IconName } from '../../components/Icon';
 import styles from './PlayHub.module.css';
+
+interface ModeArt {
+  icon: IconName;
+  gradient: string;
+}
+
+const MODE_ART: Record<string, ModeArt> = {
+  study: {
+    icon: 'study',
+    gradient: 'linear-gradient(145deg, #c9a227, #8b6914)',
+  },
+  millionaire: {
+    icon: 'diamond',
+    gradient: 'linear-gradient(145deg, #8b5cf6, #6d28d9)',
+  },
+  survival: {
+    icon: 'survival',
+    gradient: 'linear-gradient(145deg, #ef4444, #b91c1c)',
+  },
+  kahoot: {
+    icon: 'kahoot',
+    gradient: 'linear-gradient(145deg, #06b6d4, #0369a1)',
+  },
+};
+
+function badgeClass(badge?: string) {
+  if (!badge) return '';
+  if (badge === 'NEW') return styles.badgeNew;
+  if (badge === 'Мультиплеєр') return styles.badgeMultiplayer;
+  return styles.badgeDefault;
+}
 
 export function PlayHub() {
   return (
@@ -11,30 +44,53 @@ export function PlayHub() {
       </header>
 
       <ul className={styles.modes}>
-        {GAME_MODES.map((mode) => (
-          <li key={mode.id}>
-            {mode.available ? (
-              <Link to={mode.path} className={styles.card}>
-                <span className={styles.icon}>{mode.icon}</span>
-                <div className={styles.cardBody}>
-                  <h2>{mode.title}</h2>
-                  {mode.badge && <span className={styles.badge}>{mode.badge}</span>}
-                  <p>{mode.description}</p>
+        {GAME_MODES.map((mode) => {
+          const art = MODE_ART[mode.id];
+          const featured = mode.id === 'study';
+
+          return (
+            <li key={mode.id}>
+              {mode.available ? (
+                <Link
+                  to={mode.path}
+                  className={`${styles.card}${featured ? ` ${styles.cardFeatured}` : ''}`}
+                >
+                  <div className={styles.cardBody}>
+                    <div className={styles.cardHeader}>
+                      <h2>{mode.title}</h2>
+                      {mode.badge && (
+                        <span className={`${styles.badge} ${badgeClass(mode.badge)}`}>
+                          {mode.badge}
+                        </span>
+                      )}
+                    </div>
+                    <p className={styles.cardDesc}>{mode.description}</p>
+                  </div>
+                  <div
+                    className={`${styles.cardArt}${featured ? ` ${styles.cardArtFeatured}` : ''}`}
+                  >
+                    <div className={styles.cardArtBg} style={{ background: art.gradient }} />
+                    <Icon name={art.icon} size={featured ? 96 : 72} className={styles.cardArtIcon} />
+                  </div>
+                </Link>
+              ) : (
+                <div className={`${styles.card} ${styles.disabled}`}>
+                  <div className={styles.cardBody}>
+                    <div className={styles.cardHeader}>
+                      <h2>{mode.title}</h2>
+                      <span className={`${styles.badge} ${styles.badgeSoon}`}>Незабаром</span>
+                    </div>
+                    <p className={styles.cardDesc}>{mode.description}</p>
+                  </div>
+                  <div className={styles.cardArt}>
+                    <div className={styles.cardArtBg} style={{ background: art.gradient }} />
+                    <Icon name={art.icon} size={72} className={styles.cardArtIcon} />
+                  </div>
                 </div>
-                <span className={styles.arrow}>→</span>
-              </Link>
-            ) : (
-              <div className={`${styles.card} ${styles.disabled}`}>
-                <span className={styles.icon}>{mode.icon}</span>
-                <div className={styles.cardBody}>
-                  <h2>{mode.title}</h2>
-                  <span className={styles.badgeSoon}>Незабаром</span>
-                  <p>{mode.description}</p>
-                </div>
-              </div>
-            )}
-          </li>
-        ))}
+              )}
+            </li>
+          );
+        })}
       </ul>
     </section>
   );

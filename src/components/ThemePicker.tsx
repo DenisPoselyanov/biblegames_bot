@@ -47,11 +47,10 @@ export function ThemePicker({ selected, onChange, disabled }: ThemePickerProps) 
               <button
                 type="button"
                 className={`${styles.chip} ${active ? styles.active : ''}`}
-                style={{ '--chip-color': theme.color } as React.CSSProperties}
                 onClick={() => toggle(theme.id)}
                 disabled={disabled}
               >
-                <span>{theme.icon}</span>
+                <span className={styles.chipDot} style={{ background: theme.color }} />
                 <small>{theme.title}</small>
               </button>
             </li>

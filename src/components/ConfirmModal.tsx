@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import styles from './ConfirmModal.module.css';
 import { haptic } from '../lib/telegram';
 
@@ -23,11 +24,11 @@ export function ConfirmModal({
 }: ConfirmModalProps) {
   const [render, setRender] = useState(open);
   const [animateIn, setAnimateIn] = useState(false);
+  const focusTrapRef = useFocusTrap(open && render);
 
   useEffect(() => {
     if (open) {
       setRender(true);
-      // Невелика затримка для запуску анімації
       requestAnimationFrame(() => {
         requestAnimationFrame(() => setAnimateIn(true));
       });
@@ -42,9 +43,14 @@ export function ConfirmModal({
   if (!render) return null;
 
   return (
-    <div className={`${styles.overlay} ${animateIn ? styles.visible : ''}`}>
-      <div className={styles.modal}>
-        <h2 className={styles.title}>{title}</h2>
+    <div
+      className={`${styles.overlay} ${animateIn ? styles.visible : ''}`}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirm-title"
+    >
+      <div className={styles.modal} ref={focusTrapRef}>
+        <h2 id="confirm-title" className={styles.title}>{title}</h2>
         <p className={styles.message}>{message}</p>
         <div className={styles.actions}>
           <button

@@ -1,13 +1,35 @@
 .page {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+  padding-bottom: 5rem;
   animation: fadeIn 0.35s ease;
 }
 
-.back {
-  display: inline-block;
-  color: var(--text-muted);
+.topRow {
+  display: flex;
+  align-items: center;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
   text-decoration: none;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+  flex-shrink: 0;
+  transition: background var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+}
+
+.backBtn:active {
+  background: var(--surface-hover);
+  transform: scale(0.92);
 }
 
 .hero {
@@ -16,7 +38,6 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
-  margin-bottom: 1.5rem;
   border-top: 3px solid var(--accent, var(--gold));
 }
 
@@ -32,21 +53,38 @@
   color: var(--text);
 }
 
-.hero p {
+.hero > p {
   margin: 0;
   color: var(--text-muted);
   font-size: 0.9rem;
 }
 
-.pointsBadge {
-  display: inline-block;
-  margin-top: 0.75rem;
-  padding: 0.35rem 0.75rem;
-  background: rgba(201, 162, 39, 0.15);
-  color: var(--gold);
+.heroChips {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.heroChip,
+.heroChipPoints {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
   border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.heroChipPoints {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(201, 162, 39, 0.12);
+  border-color: rgba(201, 162, 39, 0.25);
+  color: var(--gold-light);
 }
 
 .subtitle {
@@ -54,7 +92,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
-  margin: 0 0 0.75rem;
+  margin: 0;
 }
 
 .levels {
@@ -63,20 +101,19 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.75rem;
 }
 
 .level {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.5rem;
   padding: 1rem 1.15rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 16px;
   text-decoration: none;
   color: inherit;
-  position: relative;
   transition: border-color 0.2s, transform 0.15s;
 }
 
@@ -84,49 +121,111 @@
   transform: scale(0.98);
 }
 
-.level.done {
-  border-color: rgba(74, 124, 89, 0.5);
+.levelDone {
+  border-color: rgba(74, 156, 93, 0.3);
 }
 
-.level[data-difficulty='beginner'] {
-  border-left: 3px solid #6dbf7e;
+.levelTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
-.level[data-difficulty='easy'] {
-  border-left: 3px solid #7eb8d4;
+.levelInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
 }
 
-.level[data-difficulty='medium'] {
-  border-left: 3px solid var(--gold);
-}
-
-.level[data-difficulty='hard'] {
-  border-left: 3px solid #d4845c;
-}
-
-.level[data-difficulty='expert'] {
-  border-left: 3px solid #c45c7a;
+.levelEmoji {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
 }
 
 .levelLabel {
+  display: block;
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--text);
 }
 
 .levelMeta {
-  font-size: 0.8rem;
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+.levelStatus {
+  flex-shrink: 0;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.levelStatusNew {
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  color: var(--gold-light);
+}
+
+.levelStatusDone {
+  background: rgba(74, 156, 93, 0.12);
+  border: 1px solid rgba(74, 156, 93, 0.3);
+  color: var(--success-text);
+  font-size: 1rem;
+  padding: 0.3rem 0.6rem;
+}
+
+.progressArea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.progressRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progressLabel {
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
-.badge {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.75rem;
-  color: #6dbf7e;
+.progressValue {
+  font-size: 0.7rem;
+  color: var(--text-muted);
   font-weight: 600;
+}
+
+.progressBar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressBar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #4a9c5d, #6dbf7e);
+  border-radius: 2px;
+  transition: width 0.3s ease;
 }
 
 @keyframes fadeIn {

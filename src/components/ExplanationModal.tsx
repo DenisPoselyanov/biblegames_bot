@@ -1,4 +1,5 @@
 import type { Question } from '../types';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import styles from './ExplanationModal.module.css';
 
 interface ExplanationModalProps {
@@ -8,6 +9,8 @@ interface ExplanationModalProps {
 }
 
 export function ExplanationModal({ question, open, onClose }: ExplanationModalProps) {
+  const focusTrapRef = useFocusTrap(open);
+
   if (!open) return null;
 
   const answer = question.options[question.correctIndex];
@@ -16,6 +19,7 @@ export function ExplanationModal({ question, open, onClose }: ExplanationModalPr
     <div className={styles.backdrop} role="presentation" onClick={onClose}>
       <article
         className={styles.modal}
+        ref={focusTrapRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="explanation-title"
@@ -33,7 +37,7 @@ export function ExplanationModal({ question, open, onClose }: ExplanationModalPr
         <dl className={styles.details}>
           <div>
             <dt>Правильна відповідь</dt>
-            <dd>{answer}</dd>
+            <dd className={styles.correctAnswer}>{answer}</dd>
           </div>
 
           {question.reference && (
@@ -45,9 +49,9 @@ export function ExplanationModal({ question, open, onClose }: ExplanationModalPr
         </dl>
 
         <p className={styles.explanation}>
-          Це питання прив’язане до біблійного факту або події. Зверни увагу на
+          Це питання прив&rsquo;язане до біблійного факту або події. Зверни увагу на
           правильну відповідь і посилання: вони допомагають закріпити контекст,
-          а не просто запам’ятати варіант.
+          а не просто запам&rsquo;ятати варіант.
         </p>
 
         <button type="button" className={styles.primaryButton} onClick={onClose}>

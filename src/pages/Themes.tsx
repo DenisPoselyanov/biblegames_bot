@@ -5,6 +5,7 @@ import { getThemeById } from '../data/themes';
 import { ThemeCard } from '../components/ThemeCard';
 import { usePlayer } from '../context/PlayerContext';
 import { trackEvent } from '../lib/telemetry';
+import { Icon } from '../components/Icon';
 import styles from './Themes.module.css';
 
 export function Themes() {
@@ -30,12 +31,18 @@ export function Themes() {
 
   return (
     <section className={styles.page}>
-      <Link to="/play" className={styles.back}>
-        ← Режими
-      </Link>
+      <div className={styles.topRow}>
+        <Link to="/play/study" className={styles.backBtn} aria-label="Назад">
+          <Icon name="back" size={20} />
+        </Link>
+        <div className={styles.topChips}>
+          <span className={styles.chip}>📖 Дослідження</span>
+        </div>
+      </div>
+
       <header className={styles.header}>
-        <h1>Дослідження — тематики</h1>
-        <p>Обери загальну тему, а потім заглиблюйся в підтеми</p>
+        <h1>{!activeGroup ? 'Обери тематику' : activeGroup.title}</h1>
+        <p>{!activeGroup ? 'Оберіть загальну тему, а потім заглиблюйтесь у підтеми' : activeGroup.description}</p>
       </header>
 
       {!activeGroup ? (
@@ -44,28 +51,36 @@ export function Themes() {
             <li key={group.id}>
               <button type="button" className={styles.groupCard} onClick={() => handleOpenGroup(group.id)}>
                 <span className={styles.groupIcon}>{group.icon}</span>
-                <span className={styles.groupBody}>
-                  <strong>{group.title}</strong>
-                  <small>{group.description}</small>
-                </span>
+                <div className={styles.groupBody}>
+                  <span className={styles.groupTitle}>{group.title}</span>
+                  <span className={styles.groupDesc}>{group.description}</span>
+                  <span className={styles.groupMeta}>{group.subthemes.length} підтеми</span>
+                </div>
                 <span className={styles.groupArrow}>→</span>
               </button>
             </li>
           ))}
         </ul>
       ) : (
-        <ul className={styles.grid}>
-          <li>
-            <button type="button" className={styles.groupBack} onClick={() => setGroupId(null)}>
-              ← До загальних тем
+        <>
+          <div className={styles.groupHeader}>
+            <button type="button" className={styles.backToGroups} onClick={() => setGroupId(null)}>
+              <Icon name="back" size={16} />
+              До загальних тем
             </button>
-          </li>
-          {subThemes.map((theme) => (
-            <li key={theme.id}>
-              <ThemeCard theme={theme} points={profile.themePoints[theme.id]} />
-            </li>
-          ))}
-        </ul>
+          </div>
+          <ul className={styles.grid}>
+            {subThemes.map((theme) => (
+              <li key={theme.id}>
+                <ThemeCard
+                  theme={theme}
+                  points={profile.themePoints[theme.id]}
+                  mastery={profile.studyMastery[theme.id]?.mastery ?? 0}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </section>
   );

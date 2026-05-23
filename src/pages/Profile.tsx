@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import { THEMES } from '../data/themes';
 import { usePlayer } from '../context/PlayerContext';
 import { useTelegram } from '../hooks/useTelegram';
+import { useToast } from '../components/Toast';
+import { Icon } from '../components/Icon';
+import { useFocusTrap } from '../hooks/useFocusTrap';
+import { haptic, WebApp } from '../lib/telegram';
 import { DIFFICULTY_LABELS } from '../types';
 import { ACHIEVEMENTS } from '../data/achievements';
 import { COSMETIC_THEMES, getAvatarById } from '../data/cosmetics';
@@ -11,11 +15,42 @@ import { communityManager } from '../lib/communities';
 import { friendChallengeManager } from '../lib/friendChallenges';
 import styles from './Profile.module.css';
 
+function CircularProgress({ value, size = 48, stroke = 4 }: { value: number; size?: number; stroke?: number }) {
+  const r = (size - stroke) / 2;
+  const circ = 2 * Math.PI * r;
+  const offset = circ - (value / 100) * circ;
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-label={`${value}%`}>
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--border)" strokeWidth={stroke} />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        fill="none"
+        stroke="var(--gold)"
+        strokeWidth={stroke}
+        strokeLinecap="round"
+        strokeDasharray={circ}
+        strokeDashoffset={offset}
+        transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        style={{ transition: 'stroke-dashoffset 0.6s var(--ease-out)' }}
+      />
+      <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" fill="var(--gold)" fontSize={size * 0.28} fontWeight={800} fontFamily="var(--font-sans)">
+        {value}%
+      </text>
+    </svg>
+  );
+}
+
 export function Profile() {
   const { profile, setActiveTheme, purchaseTheme } = usePlayer();
   const { displayName, userId } = useTelegram();
+  const { showToast } = useToast();
   const [socialVersion, setSocialVersion] = useState(0);
-  const [friendIdInput, setFriendIdInput] = useState('');
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [showAllAchievements, setShowAllAchievements] = useState(false);
+  const [showId, setShowId] = useState(false);
+  const settingsRef = useFocusTrap(settingsOpen);
 
   const themeProgress = THEMES.map((theme) => ({
     theme,
@@ -38,7 +73,12 @@ export function Profile() {
     [userId, socialVersion],
   );
 
+  const unlockedAchievements = ACHIEVEMENTS.filter((a) => profile.achievements.includes(a.id));
+  const lockedAchievements = ACHIEVEMENTS.filter((a) => !profile.achievements.includes(a.id));
+  const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
+
   const handleSelectTheme = (themeId: string) => {
+    haptic.selection();
     setActiveTheme(themeId);
   };
 
@@ -46,20 +86,18 @@ export function Profile() {
     const result = purchaseTheme(themeId);
     if (!result.purchased) {
       if (result.reason === 'points') {
-        alert('Недостатньо очок для придбання цієї теми!');
+        showToast('Недостатньо очок для придбання цієї теми!', 'error');
       }
+    } else {
+      haptic.notification('success');
+      showToast('Тему придбано!', 'success');
     }
   };
 
-  const handleAddFriend = () => {
-    const friendId = friendIdInput.trim();
-    if (!friendId) return;
-    const ok = communityManager.addFriend(userId, friendId);
-    if (!ok) {
-      alert('Не вдалося додати друга (можливо, вже доданий або заблокований)');
-      return;
-    }
-    setFriendIdInput('');
+  const setPrivacy = (key: keyof typeof socialProfile.privacySettings, value: boolean) => {
+    communityManager.updateSocialProfile(userId, {
+      privacySettings: { ...socialProfile.privacySettings, [key]: value },
+    });
     setSocialVersion((v) => v + 1);
   };
 
@@ -78,22 +116,63 @@ export function Profile() {
     setSocialVersion((v) => v + 1);
   };
 
-  const setPrivacy = (key: keyof typeof socialProfile.privacySettings, value: boolean) => {
-    communityManager.updateSocialProfile(userId, {
-      privacySettings: { ...socialProfile.privacySettings, [key]: value },
-    });
-    setSocialVersion((v) => v + 1);
-  };
-
   return (
     <section className={styles.page}>
       <header className={styles.header}>
-        <div className={styles.avatar}>
-          {profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖'}
-        </div>
-        <h1>{displayName}</h1>
-        <p className={styles.id}>ID: {userId}</p>
+        <button
+          className={styles.settingsBtn}
+          onClick={() => { haptic.impact('light'); setSettingsOpen(true); }}
+          aria-label="Налаштування"
+        >
+          <Icon name="settings" size={22} />
+        </button>
+        <div className={styles.avatar}>{avatarEmoji}</div>
+        <h1 onClick={() => setShowId((v) => !v)} style={{ cursor: 'pointer' }} title="Тапни щоб показати ID">
+          {displayName}
+        </h1>
+        {showId && <p className={styles.id}>ID: {userId}</p>}
       </header>
+
+      {settingsOpen && (
+        <div className={styles.settingsOverlay} onClick={() => setSettingsOpen(false)}>
+          <div className={styles.settingsModal} ref={settingsRef} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.settingsHeader}>
+              <h2>⚙️ Налаштування</h2>
+              <button className={styles.settingsClose} onClick={() => setSettingsOpen(false)} aria-label="Закрити">
+                <Icon name="close" size={18} />
+              </button>
+            </div>
+            <Link to="/admin" className={styles.settingsAdminBtn} onClick={() => { haptic.impact('light'); setSettingsOpen(false); }}>
+              <Icon name="admin" size={16} /> Адмін-панель
+            </Link>
+            <div className={styles.toggleRow}>
+              <label><input type="checkbox" checked={socialProfile.privacySettings.showProfile} onChange={(e) => setPrivacy('showProfile', e.target.checked)} /> Показувати профіль</label>
+            </div>
+            <div className={styles.toggleRow}>
+              <label><input type="checkbox" checked={socialProfile.privacySettings.showStats} onChange={(e) => setPrivacy('showStats', e.target.checked)} /> Показувати статистику</label>
+            </div>
+            <div className={styles.toggleRow}>
+              <label><input type="checkbox" checked={socialProfile.privacySettings.allowChallenges} onChange={(e) => setPrivacy('allowChallenges', e.target.checked)} /> Дозволити виклики</label>
+            </div>
+            <div className={styles.toggleRow}>
+              <label><input type="checkbox" checked={socialProfile.privacySettings.showInLeaderboards} onChange={(e) => setPrivacy('showInLeaderboards', e.target.checked)} /> У лідербордах</label>
+            </div>
+            {socialProfile.blockedUsers.length > 0 && (
+              <>
+                <h3 className={styles.blockedTitle}>🚫 Заблоковані</h3>
+                <ul className={styles.blockedList}>
+                  {socialProfile.blockedUsers.map((id) => (
+                    <li key={id} className={styles.blockedItem}>
+                      <span>{id}</span>
+                      <button type="button" className={styles.socialMiniBtn} onClick={() => handleUnblock(id)}>Розблок</button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       <section className={styles.statsGrid}>
         <article className={styles.statsCard}>
@@ -110,243 +189,134 @@ export function Profile() {
         </article>
       </section>
 
-      <div className={styles.profileActions}>
-        <Link to="/stats" className={styles.actionBtn}>🏆 Загальний Рейтинг</Link>
-        <Link to="/admin" className={styles.actionBtn}>⚙️ Адмін-панель</Link>
-      </div>
+      <Link to="/stats" className={styles.ratingBtn}>
+        <Icon name="stats" size={18} /> Загальний Рейтинг
+      </Link>
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>🤝 Соціальне</h2>
-
-        <div className={styles.socialLinks}>
-          <Link to="/social/challenges" className={styles.actionBtn}>⚔️ Виклики друзів</Link>
-          <Link to="/social/communities" className={styles.actionBtn}>🏘️ Спільноти</Link>
+        <div className={styles.socialRow}>
+          <Link to="/social/challenges" className={styles.socialBtn}>
+            <Icon name="challenge" size={22} />
+            <span>Виклики друзів</span>
+          </Link>
+          <Link to="/social/communities" className={styles.socialBtn}>
+            <Icon name="community" size={22} />
+            <span>Спільноти</span>
+          </Link>
         </div>
-
-        <section className={styles.statsGrid} style={{ marginTop: '0.75rem' }}>
-          <article className={styles.statsCard}>
-            <span className={styles.statsLabel}>Друзі</span>
-            <strong className={styles.statsValue}>{socialProfile.friends.length}</strong>
-          </article>
-          <article className={styles.statsCard}>
-            <span className={styles.statsLabel}>Спільноти</span>
-            <strong className={styles.statsValue}>{communitiesCount}</strong>
-          </article>
-          <article className={styles.statsCard}>
-            <span className={styles.statsLabel}>Winrate</span>
-            <strong className={styles.statsValue}>{challengeStats.winRate}%</strong>
-          </article>
-        </section>
-
-        <div className={styles.socialPanel}>
-          <div className={styles.socialRow}>
-            <label className={styles.socialField}>
-              <span>ID друга</span>
-              <input
-                value={friendIdInput}
-                onChange={(e) => setFriendIdInput(e.target.value)}
-                placeholder="Наприклад: 123456"
-              />
-            </label>
-            <button type="button" className={styles.socialMiniBtn} onClick={handleAddFriend}>
-              Додати
-            </button>
-          </div>
-
-          {socialProfile.friends.length === 0 ? (
-            <p className={styles.sectionSubtitle} style={{ margin: 0 }}>
-              Поки що немає друзів
-            </p>
-          ) : (
-            <ul className={styles.socialList}>
-              {socialProfile.friends.map((id) => (
-                <li key={id} className={styles.socialItem}>
-                  <span>{id}</span>
-                  <div className={styles.socialRow} style={{ justifyContent: 'flex-end' }}>
-                    <button type="button" className={styles.socialMiniBtn} onClick={() => handleRemoveFriend(id)}>
-                      Видалити
-                    </button>
-                    <button type="button" className={styles.socialMiniBtn} onClick={() => handleBlock(id)}>
-                      Блок
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div className={styles.socialPanel}>
-          <div className={styles.toggleRow}>
-            <label>
-              <input
-                type="checkbox"
-                checked={socialProfile.privacySettings.showProfile}
-                onChange={(e) => setPrivacy('showProfile', e.target.checked)}
-              />
-              Показувати профіль
-            </label>
-          </div>
-          <div className={styles.toggleRow}>
-            <label>
-              <input
-                type="checkbox"
-                checked={socialProfile.privacySettings.showStats}
-                onChange={(e) => setPrivacy('showStats', e.target.checked)}
-              />
-              Показувати статистику
-            </label>
-          </div>
-          <div className={styles.toggleRow}>
-            <label>
-              <input
-                type="checkbox"
-                checked={socialProfile.privacySettings.allowChallenges}
-                onChange={(e) => setPrivacy('allowChallenges', e.target.checked)}
-              />
-              Дозволити виклики
-            </label>
-          </div>
-          <div className={styles.toggleRow}>
-            <label>
-              <input
-                type="checkbox"
-                checked={socialProfile.privacySettings.showInLeaderboards}
-                onChange={(e) => setPrivacy('showInLeaderboards', e.target.checked)}
-              />
-              У лідербордах
-            </label>
+        <div className={styles.socialQuickStats}>
+          <div><span>Друзі</span><strong>{socialProfile.friends.length}</strong></div>
+          <div><span>Спільноти</span><strong>{communitiesCount}</strong></div>
+          <div>
+            <span>Winrate</span>
+            <CircularProgress value={challengeStats.winRate} size={40} stroke={3} />
           </div>
         </div>
+        <button className={styles.inviteBtn} onClick={() => {
+          const shareUrl = `https://t.me/share/url?url=${encodeURIComponent('https://t.me/biblegames_bot')}&text=${encodeURIComponent('Приєднуйся до біблійної гри! Мій ID: ' + userId)}`;
+          try { WebApp?.openTelegramLink?.(shareUrl); } catch { navigator.clipboard.writeText(userId).then(() => showToast('ID скопійовано: ' + userId, 'success')); }
+        }}>
+          <Icon name="challenge" size={18} /> Запросити друга
+        </button>
+      </section>
 
-        {socialProfile.blockedUsers.length > 0 && (
-          <div className={styles.socialPanel}>
-            <h3 className={styles.sectionTitle} style={{ margin: 0 }}>
-              🚫 Заблоковані
-            </h3>
-            <ul className={styles.socialList}>
-              {socialProfile.blockedUsers.map((id) => (
-                <li key={id} className={styles.socialItem}>
-                  <span>{id}</span>
-                  <button type="button" className={styles.socialMiniBtn} onClick={() => handleUnblock(id)}>
-                    Розблок
-                  </button>
-                </li>
-              ))}
-            </ul>
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>🏆 Кабінет досягнень</h2>
+          <button className={styles.seeAllBtn} onClick={() => setShowAllAchievements(true)}>Усі</button>
+        </div>
+        {unlockedAchievements.length === 0 ? (
+          <p className={styles.empty}>Ще немає досягнень</p>
+        ) : (
+          <div className={styles.achCarousel}>
+            {unlockedAchievements.map((ach) => (
+              <div key={ach.id} className={styles.achBadge} title={ach.description}>
+                <span className={styles.achBadgeIcon}>{ach.icon}</span>
+                <span className={styles.achBadgeLabel}>{ach.title}</span>
+              </div>
+            ))}
           </div>
         )}
       </section>
 
-      {/* Розділ Досягнень */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>🏆 Кабінет досягнень</h2>
-        <div className={styles.achievementsGrid}>
-          {ACHIEVEMENTS.map((ach) => {
-            const isUnlocked = profile.achievements.includes(ach.id);
-            return (
-              <div
-                key={ach.id}
-                className={`${styles.achievementItem} ${isUnlocked ? styles.achUnlocked : styles.achLocked}`}
-                title={ach.description}
-              >
-                <span className={styles.achIcon}>{ach.icon}</span>
-                <div className={styles.achMeta}>
-                  <h3>{ach.title}</h3>
-                  <p>{ach.description}</p>
+      {showAllAchievements && (
+        <div className={styles.settingsOverlay} onClick={() => setShowAllAchievements(false)}>
+          <div className={styles.achModal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.settingsHeader}>
+              <h2>🏆 Мої нагороди</h2>
+              <button className={styles.settingsClose} onClick={() => setShowAllAchievements(false)} aria-label="Закрити"><Icon name="close" size={18} /></button>
+            </div>
+            <div className={styles.achModalList}>
+              <h3>Відкрито ({unlockedAchievements.length})</h3>
+              {unlockedAchievements.map((ach) => (
+                <div key={ach.id} className={`${styles.achievementItem} ${styles.achUnlocked}`}>
+                  <span className={styles.achIcon}>{ach.icon}</span>
+                  <div className={styles.achMeta}><h3>{ach.title}</h3><p>{ach.description}</p></div>
                 </div>
-                {!isUnlocked && <span className={styles.lockBadge}>🔒</span>}
-              </div>
-            );
-          })}
+              ))}
+              {lockedAchievements.length > 0 && (
+                <>
+                  <h3 style={{ marginTop: '1rem', opacity: 0.6 }}>Закрито ({lockedAchievements.length})</h3>
+                  {lockedAchievements.map((ach) => (
+                    <div key={ach.id} className={`${styles.achievementItem} ${styles.achLocked}`}>
+                      <span className={styles.achIcon}>{ach.icon}</span>
+                      <div className={styles.achMeta}><h3>{ach.title}</h3><p>{ach.description}</p></div>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+          </div>
         </div>
-      </section>
+      )}
 
-      {/* Магазин Біблійних Тем */}
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>🎨 Магазин біблійних тем</h2>
-        <p className={styles.sectionSubtitle}>
-          Змінюй оформлення всієї гри відповідно до біблійних локацій
-        </p>
-        <div className={styles.themesShopGrid}>
+        <p className={styles.sectionSubtitle}>Змінюй оформлення гри</p>
+        <div className={styles.shopCarousel}>
           {COSMETIC_THEMES.map((theme) => {
             const isUnlocked = profile.unlockedThemes.includes(theme.id) || theme.price === 0;
             const isActive = profile.activeTheme === theme.id;
-
             return (
-              <div
-                key={theme.id}
-                className={`${styles.shopThemeItem} ${isActive ? styles.themeActiveCard : ''}`}
-              >
-                {/* Колірна палітра-прев'ю */}
-                <div
-                  className={styles.themePalettePreview}
-                  style={{ background: theme.preview.background }}
-                >
-                  <div
-                    className={styles.paletteSurface}
-                    style={{ background: theme.preview.surface }}
-                  >
-                    <span className={styles.paletteText} style={{ color: theme.preview.text }}>
-                      Aa
-                    </span>
-                    <span className={styles.paletteAccent} style={{ background: theme.preview.accent }} />
+              <div key={theme.id} className={`${styles.shopCard} ${isActive ? styles.shopCardActive : ''}`}>
+                <div className={styles.shopPreview} style={{ background: theme.preview.background }}>
+                  <div className={styles.shopPreviewSurface} style={{ background: theme.preview.surface }}>
+                    <span style={{ color: theme.preview.text }}>Aa</span>
+                    <span className={styles.shopAccent} style={{ background: theme.preview.accent }} />
                   </div>
-                  <span className={styles.palettePrimary} style={{ background: theme.preview.primary }} />
+                  <span className={styles.shopPrimary} style={{ background: theme.preview.primary }} />
                 </div>
-
-                <div className={styles.themeShopMeta}>
-                  <h3>{theme.title}</h3>
-                  <p>{theme.description}</p>
-
-                  <div className={styles.themeShopAction}>
-                    {isActive ? (
-                      <span className={styles.badgeActive}>Активна</span>
-                    ) : isUnlocked ? (
-                      <button
-                        type="button"
-                        className={styles.btnApply}
-                        onClick={() => handleSelectTheme(theme.id)}
-                      >
-                        Застосувати
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        className={styles.btnPurchase}
-                        onClick={() => handleBuyTheme(theme.id)}
-                      >
-                        Придбати ({theme.price} очок)
-                      </button>
-                    )}
-                  </div>
-                </div>
+                <h3>{theme.title}</h3>
+                <p>{theme.description}</p>
+                {isActive ? (
+                  <span className={styles.badgeActive}>Активна</span>
+                ) : isUnlocked ? (
+                  <button type="button" className={styles.shopApplyBtn} onClick={() => handleSelectTheme(theme.id)}>Застосувати</button>
+                ) : (
+                  <button type="button" className={styles.shopBuyBtn} onClick={() => handleBuyTheme(theme.id)}>Придбати ({theme.price})</button>
+                )}
               </div>
             );
           })}
         </div>
       </section>
 
-      {/* Mastery Heatmap */}
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>📈 Рівень знань (Mastery)</h2>
         <div className={styles.heatmapContainer}>
-          <p className={styles.sectionSubtitle} style={{ margin: 0 }}>
-            Чим темніший зелений, тим краще засвоєна тема.
-          </p>
+          <p className={styles.sectionSubtitle} style={{ margin: 0 }}>Чим яскравіше — тим краще засвоєна тема</p>
           <div className={styles.heatmapGrid}>
             {STUDY_THEME_GROUPS.flatMap((g) => g.subthemes).map((subtheme) => {
               const mastery = profile.studyMastery[subtheme.id]?.mastery || 0;
-              let colorClass = styles.heatLevel0;
-              if (mastery >= 80) colorClass = styles.heatLevel4;
-              else if (mastery >= 60) colorClass = styles.heatLevel3;
-              else if (mastery >= 40) colorClass = styles.heatLevel2;
-              else if (mastery > 0) colorClass = styles.heatLevel1;
-
               return (
                 <div
                   key={subtheme.id}
-                  className={`${styles.heatCell} ${colorClass}`}
+                  className={styles.heatCell}
+                  style={{
+                    background: mastery >= 80 ? '#39d353' : mastery >= 60 ? '#26a641' : mastery >= 40 ? '#006d32' : mastery > 0 ? '#0e4429' : 'rgba(255,255,255,0.04)',
+                    boxShadow: mastery >= 80 ? '0 0 8px rgba(57, 211, 83, 0.5)' : 'none',
+                  }}
                   title={`${subtheme.title}: ${Math.round(mastery)}%`}
                 />
               );
@@ -355,13 +325,10 @@ export function Profile() {
         </div>
       </section>
 
-      {/* Прогрес за темами */}
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>🗺️ Прогрес за темами</h2>
         {themeProgress.length === 0 ? (
-          <p className={styles.empty}>
-            Ще немає очок. Обери тематику та пройди перший рівень!
-          </p>
+          <p className={styles.empty}>Ще немає очок. Обери тематику та пройди перший рівень!</p>
         ) : (
           <ul className={styles.themeList}>
             {themeProgress.map(({ theme, points, levels }) => (
@@ -369,19 +336,13 @@ export function Profile() {
                 <span className={styles.themeIcon}>{theme.icon}</span>
                 <div className={styles.themeInfo}>
                   <strong>{theme.title}</strong>
-                  <small>
-                    {points} очок · {levels.length} рівн.
-                    {levels.length > 0 &&
-                      ` (${levels.map((l) => (DIFFICULTY_LABELS[l.difficulty] ?? l.difficulty)[0]).join(', ')})`}
-                  </small>
+                  <small>{points} очок · {levels.length} рівн.{levels.length > 0 && ` (${levels.map((l) => (DIFFICULTY_LABELS[l.difficulty] ?? l.difficulty)[0]).join(', ')})`}</small>
                 </div>
               </li>
             ))}
           </ul>
         )}
       </section>
-
-
     </section>
   );
 }

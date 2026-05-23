@@ -1,4 +1,5 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Icon } from './Icon';
 import styles from './Layout.module.css';
 
 export function Layout() {
@@ -13,21 +14,21 @@ export function Layout() {
         <Outlet />
       </main>
       {!hideNav && (
-        <nav className={styles.nav}>
+        <nav className={styles.nav} aria-label="Основна навігація">
           <NavLink to="/" end className={({ isActive }) => (isActive ? styles.active : '')}>
-            <span>🏠</span>
+            <Icon name="home" size={22} aria-label="Головна" />
             <small>Головна</small>
           </NavLink>
           <NavLink to="/play" className={({ isActive }) => (isActive ? styles.active : '')}>
-            <span>🎮</span>
+            <Icon name="play" size={22} aria-label="Гра" />
             <small>Гра</small>
           </NavLink>
           <NavLink to="/shop" className={({ isActive }) => (isActive ? styles.active : '')}>
-            <span>🛍️</span>
+            <Icon name="shop" size={22} aria-label="Крамниця" />
             <small>Крамниця</small>
           </NavLink>
           <NavLink to="/profile" className={({ isActive }) => (isActive ? styles.active : '')}>
-            <span>👤</span>
+            <Icon name="profile" size={22} aria-label="Профіль" />
             <small>Профіль</small>
           </NavLink>
         </nav>

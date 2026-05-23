@@ -1,6 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import { PlayerProvider } from './context/PlayerContext';
 import { Layout } from './components/Layout';
+import { ToastProvider } from './components/Toast';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Home } from './pages/Home';
 import { Themes } from './pages/Themes';
 import { ThemeDetail } from './pages/ThemeDetail';
@@ -38,53 +40,55 @@ function LegacyQuizRedirect() {
 export default function App() {
   return (
     <PlayerProvider>
+      <ToastProvider>
       <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="play" element={<PlayHub />} />
-            <Route path="play/study" element={<StudyHub />} />
-            <Route path="play/study/themes" element={<Themes />} />
-            <Route path="play/study/themes/:themeId" element={<ThemeDetail />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="admin" element={<AdminPanel />} />
-            <Route path="shop" element={<Shop />} />
-            <Route path="stats" element={<GlobalStats />} />
-            <Route path="social/challenges" element={<Challenges />} />
-            <Route path="social/challenges/:challengeId" element={<ChallengeDetails />} />
-            <Route path="social/communities" element={<Communities />} />
-            <Route path="social/communities/:communityId" element={<CommunityDetails />} />
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<ErrorBoundary><Home /></ErrorBoundary>} />
+              <Route path="play" element={<ErrorBoundary><PlayHub /></ErrorBoundary>} />
+              <Route path="play/study" element={<ErrorBoundary><StudyHub /></ErrorBoundary>} />
+              <Route path="play/study/themes" element={<ErrorBoundary><Themes /></ErrorBoundary>} />
+              <Route path="play/study/themes/:themeId" element={<ErrorBoundary><ThemeDetail /></ErrorBoundary>} />
+              <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
+              <Route path="admin" element={<ErrorBoundary><AdminPanel /></ErrorBoundary>} />
+              <Route path="shop" element={<ErrorBoundary><Shop /></ErrorBoundary>} />
+              <Route path="stats" element={<ErrorBoundary><GlobalStats /></ErrorBoundary>} />
+              <Route path="social/challenges" element={<ErrorBoundary><Challenges /></ErrorBoundary>} />
+              <Route path="social/challenges/:challengeId" element={<ErrorBoundary><ChallengeDetails /></ErrorBoundary>} />
+              <Route path="social/communities" element={<ErrorBoundary><Communities /></ErrorBoundary>} />
+              <Route path="social/communities/:communityId" element={<ErrorBoundary><CommunityDetails /></ErrorBoundary>} />
 
-            {/* Старі URL → нові */}
-            <Route path="themes" element={<Navigate to="/play/study" replace />} />
-            <Route path="themes/:themeId" element={<LegacyThemeRedirect />} />
-            <Route path="play/solo" element={<Navigate to="/play/study" replace />} />
-            <Route path="play/solo/themes/:themeId" element={<LegacyThemeRedirect />} />
-          </Route>
+              {/* Старі URL → нові */}
+              <Route path="themes" element={<Navigate to="/play/study" replace />} />
+              <Route path="themes/:themeId" element={<LegacyThemeRedirect />} />
+              <Route path="play/solo" element={<Navigate to="/play/study" replace />} />
+              <Route path="play/solo/themes/:themeId" element={<LegacyThemeRedirect />} />
+            </Route>
 
-          {/* Повноекранні ігрові екрани без нижнього меню */}
-          <Route path="play/study/quiz/:themeId/:difficulty" element={<Quiz mode="practice" />} />
-          <Route path="play/study/review" element={<Quiz mode="review" />} />
-          <Route path="play/study/sprint" element={<Quiz mode="sprint" />} />
-          <Route path="play/study/millionaire" element={<Millionaire />} />
-          <Route path="play/study/survival" element={<Survival />} />
-          <Route path="play/solo/quiz/:themeId/:difficulty" element={<LegacyQuizRedirect />} />
-          <Route path="play/solo/millionaire" element={<Navigate to="/play/study/millionaire" replace />} />
-          <Route path="play/solo/survival" element={<Navigate to="/play/study/survival" replace />} />
-          <Route path="quiz/:themeId/:difficulty" element={<Quiz mode="practice" />} />
+            {/* Повноекранні ігрові екрани без нижнього меню */}
+            <Route path="play/study/quiz/:themeId/:difficulty" element={<ErrorBoundary><Quiz mode="practice" /></ErrorBoundary>} />
+            <Route path="play/study/review" element={<ErrorBoundary><Quiz mode="review" /></ErrorBoundary>} />
+            <Route path="play/study/sprint" element={<ErrorBoundary><Quiz mode="sprint" /></ErrorBoundary>} />
+            <Route path="play/study/millionaire" element={<ErrorBoundary><Millionaire /></ErrorBoundary>} />
+            <Route path="play/study/survival" element={<ErrorBoundary><Survival /></ErrorBoundary>} />
+            <Route path="play/solo/quiz/:themeId/:difficulty" element={<LegacyQuizRedirect />} />
+            <Route path="play/solo/millionaire" element={<Navigate to="/play/study/millionaire" replace />} />
+            <Route path="play/solo/survival" element={<Navigate to="/play/study/survival" replace />} />
+            <Route path="quiz/:themeId/:difficulty" element={<ErrorBoundary><Quiz mode="practice" /></ErrorBoundary>} />
 
-          <Route path="play/kahoot" element={<KahootHub />} />
-          <Route path="play/kahoot/create" element={<KahootCreate />} />
-          <Route path="play/kahoot/join" element={<KahootJoin />} />
-          <Route path="play/kahoot/playlists" element={<KahootPlaylists />} />
-          <Route path="play/kahoot/playlists/new" element={<KahootPlaylistEditor />} />
-          <Route path="play/kahoot/playlists/:playlistId" element={<KahootPlaylistDetails />} />
-          <Route path="play/kahoot/playlists/:playlistId/edit" element={<KahootPlaylistEditor />} />
-          <Route path="play/kahoot/room/:code" element={<KahootRoom />} />
+            <Route path="play/kahoot" element={<ErrorBoundary><KahootHub /></ErrorBoundary>} />
+            <Route path="play/kahoot/create" element={<ErrorBoundary><KahootCreate /></ErrorBoundary>} />
+            <Route path="play/kahoot/join" element={<ErrorBoundary><KahootJoin /></ErrorBoundary>} />
+            <Route path="play/kahoot/playlists" element={<ErrorBoundary><KahootPlaylists /></ErrorBoundary>} />
+            <Route path="play/kahoot/playlists/new" element={<ErrorBoundary><KahootPlaylistEditor /></ErrorBoundary>} />
+            <Route path="play/kahoot/playlists/:playlistId" element={<ErrorBoundary><KahootPlaylistDetails /></ErrorBoundary>} />
+            <Route path="play/kahoot/playlists/:playlistId/edit" element={<ErrorBoundary><KahootPlaylistEditor /></ErrorBoundary>} />
+            <Route path="play/kahoot/room/:code" element={<ErrorBoundary><KahootRoom /></ErrorBoundary>} />
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
       </BrowserRouter>
+      </ToastProvider>
     </PlayerProvider>
   );
 }

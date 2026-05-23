@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTelegram } from '../../hooks/useTelegram';
 import { communityManager } from '../../lib/communities';
+import { Icon } from '../../components/Icon';
 import styles from './Social.module.css';
 
 export function Communities() {
@@ -48,13 +49,15 @@ export function Communities() {
   return (
     <section className={styles.page}>
       <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Спільноти</h1>
-          <p className={styles.muted}>Створи власну або приєднайся до публічної</p>
+        <div className={styles.headerLeft}>
+          <Link to="/profile" className={styles.backBtn} aria-label="Назад">
+            <Icon name="back" size={20} />
+          </Link>
+          <div>
+            <h1 className={styles.title}>Спільноти</h1>
+            <p className={styles.muted}>Створи власну або приєднайся до публічної</p>
+          </div>
         </div>
-        <Link to="/profile" className={styles.btnSecondary}>
-          Профіль
-        </Link>
       </div>
 
       <section className={styles.card}>
@@ -64,24 +67,57 @@ export function Communities() {
 
         <label className={styles.field}>
           <span>Назва</span>
-          <input value={name} onChange={(e) => setName(e.target.value)} maxLength={40} placeholder="Наприклад: Молодь Київ" />
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            maxLength={40}
+            placeholder="Наприклад: Молодь Київ"
+            className={styles.fieldInput}
+          />
         </label>
         <label className={styles.field}>
           <span>Опис</span>
-          <input value={description} onChange={(e) => setDescription(e.target.value)} maxLength={120} placeholder="Короткий опис" />
+          <input
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            maxLength={120}
+            placeholder="Короткий опис спільноти"
+            className={styles.fieldInput}
+          />
         </label>
 
-        <label className={styles.field}>
+        <div className={styles.field}>
           <span>Доступ</span>
-          <select value={isPublic ? 'public' : 'private'} onChange={(e) => setIsPublic(e.target.value === 'public')}>
-            <option value="public">Публічна</option>
-            <option value="private">Приватна</option>
-          </select>
-        </label>
+          <div className={styles.accessCards}>
+            <button
+              type="button"
+              className={`${styles.accessCard} ${isPublic ? styles.accessCardActive : ''}`}
+              onClick={() => setIsPublic(true)}
+            >
+              <span className={styles.accessCardIcon}>🔓</span>
+              <div>
+                <p className={styles.accessCardTitle}>Публічна</p>
+                <p className={styles.accessCardDesc}>Доєднатися може кожен</p>
+              </div>
+            </button>
+            <button
+              type="button"
+              className={`${styles.accessCard} ${!isPublic ? styles.accessCardActive : ''}`}
+              onClick={() => setIsPublic(false)}
+            >
+              <span className={styles.accessCardIcon}>🔒</span>
+              <div>
+                <p className={styles.accessCardTitle}>Приватна</p>
+                <p className={styles.accessCardDesc}>Вхід лише за запрошенням</p>
+              </div>
+            </button>
+          </div>
+        </div>
 
         {error && <p className={styles.error}>{error}</p>}
 
-        <button type="button" className={styles.btnPrimary} onClick={handleCreate}>
+        <button type="button" className={styles.btnFull} onClick={handleCreate}>
+          <Icon name="community" size={18} />
           Створити
         </button>
       </section>
@@ -94,11 +130,16 @@ export function Communities() {
           <span className={styles.badge}>{data.mine.length}</span>
         </div>
         {data.mine.length === 0 ? (
-          <p className={styles.muted}>Поки що немає</p>
+          <div className={styles.emptyState}>
+            <span className={styles.emptyIcon}>🏘️</span>
+            <p className={styles.emptyText}>
+              Ти ще не впровадив жодної спільноти. Створи свою або знайди через пошук нижче!
+            </p>
+          </div>
         ) : (
           <ul className={styles.list}>
             {data.mine.map((c) => (
-              <li key={c.id} className={styles.row}>
+              <li key={c.id} className={styles.communityItem}>
                 <div>
                   <Link to={`/social/communities/${c.id}`} className={styles.link}>
                     {c.name}
@@ -113,19 +154,33 @@ export function Communities() {
       </section>
 
       <section className={styles.card}>
-        <label className={styles.field}>
-          <span>Пошук публічних спільнот</span>
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Введіть назву або опис" />
-        </label>
+        <h2 className={styles.title} style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>
+          Пошук публічних спільнот
+        </h2>
 
-        {data.results.length === 0 ? (
-          <p className={styles.muted}>Нічого не знайдено</p>
-        ) : (
+        <div className={styles.searchField}>
+          <span className={styles.searchIcon}>🔍</span>
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Введіть назву або опис"
+            className={styles.fieldInput}
+            style={{ paddingLeft: '2.4rem' }}
+          />
+        </div>
+
+        {data.results.length === 0 && query.trim() && (
+          <div className={styles.searchEmpty}>
+            <p className={styles.muted}>Нічого не знайдено</p>
+          </div>
+        )}
+
+        {data.results.length > 0 && (
           <ul className={styles.list}>
             {data.results.map((c) => {
               const isMember = data.profile.communities.includes(c.id);
               return (
-                <li key={c.id} className={styles.row}>
+                <li key={c.id} className={styles.communityItem}>
                   <div>
                     <Link to={`/social/communities/${c.id}`} className={styles.link}>
                       {c.name}
@@ -133,9 +188,9 @@ export function Communities() {
                     <p className={styles.muted}>{c.description}</p>
                   </div>
                   {isMember ? (
-                    <span className={styles.badge}>Учасник</span>
+                    <span className={styles.badge}>✅ Учасник</span>
                   ) : (
-                    <button type="button" className={styles.miniBtn} onClick={() => handleJoin(c.id)}>
+                    <button type="button" className={styles.btnJoin} onClick={() => handleJoin(c.id)}>
                       Приєднатись
                     </button>
                   )}

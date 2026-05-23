@@ -78,20 +78,31 @@
   font-weight: 800;
 }
 
+.details .correctAnswer {
+  color: var(--success-text);
+}
+
 .explanation {
-  margin: 0 0 0.85rem;
+  margin: 0 0 1.25rem;
   color: var(--text-muted);
   line-height: 1.55;
 }
 
 .primaryButton {
   width: 100%;
-  min-height: 2.75rem;
+  min-height: 2.85rem;
   border: 0;
-  border-radius: 10px;
-  background: var(--gold);
-  color: #1b1608;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--gold), #a67c00);
+  color: #1a1208;
   font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.primaryButton:active {
+  transform: scale(0.97);
 }
 
 @media (min-width: 720px) {

@@ -1,60 +1,85 @@
 .card {
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: 16px;
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) var(--ease-out);
 }
 
 .card:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
-.card:hover {
-  border-color: var(--accent, var(--gold));
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-}
-
-.icon {
-  font-size: 2rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.body h3 {
-  margin: 0 0 0.25rem;
-  font-size: 1rem;
-  color: var(--text);
-}
-
-.body p {
-  margin: 0;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-.meta {
+.cardLeft {
+  flex: 1;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-right: none;
+  border-radius: 16px 0 0 16px;
+  padding: 1rem 1.15rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  align-items: center;
+}
+
+.cardLeftContent h3 {
+  margin: 0 0 0.25rem;
+  font-size: var(--fs-lg);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.cardLeftContent p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: var(--lh-normal);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
-.questionCount {
-  display: inline-block;
-  font-size: 0.75rem;
+.qCount {
+  font-size: var(--fs-sm);
   color: var(--text-muted);
   font-weight: 500;
 }
 
+.masteryPct {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-full);
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px solid rgba(201, 162, 39, 0.25);
+}
+
 .points {
   display: inline-block;
-  font-size: 0.75rem;
+  margin-top: 0.3rem;
+  font-size: var(--fs-sm);
   color: var(--gold);
   font-weight: 600;
+}
+
+.cardRight {
+  flex-shrink: 0;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 16px 16px 0;
+  position: relative;
+}
+
+.cardIcon {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }

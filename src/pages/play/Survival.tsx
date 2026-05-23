@@ -5,7 +5,9 @@ import { usePlayer } from '../../context/PlayerContext';
 import { ExplanationModal } from '../../components/ExplanationModal';
 import { ConfirmModal } from '../../components/ConfirmModal';
 import { haptic } from '../../lib/telegram';
+import { DIFFICULTY_LABELS } from '../../types';
 import type { Difficulty, Question } from '../../types';
+import { Icon } from '../../components/Icon';
 import styles from './Survival.module.css';
 
 const STARTING_LIVES = 3;
@@ -40,7 +42,7 @@ function pickSurvivalQuestion(score: number, excludeIds: string[]): Question | n
 }
 
 export function Survival() {
-  const { saveSurvivalRun, unlockAchievement } = usePlayer();
+  const { saveSurvivalRun, unlockAchievement, profile } = usePlayer();
   const [question, setQuestion] = useState<Question | null>(() =>
     pickSurvivalQuestion(0, []),
   );
@@ -59,6 +61,7 @@ export function Survival() {
 
   const difficulty = getDifficultyForScore(score);
   const timerProgress = Math.max(0, (timeLeft / TIME_PER_QUESTION) * 100);
+  const isLowTime = timeLeft <= 5;
 
   const livesView = useMemo(
     () => Array.from({ length: STARTING_LIVES }, (_, index) => index < lives),
@@ -185,20 +188,48 @@ export function Survival() {
   }
 
   if (status === 'finished') {
+    const isNewRecord = score > 0 && score >= profile.survivalHighScore;
     return (
       <section className={styles.page}>
-        <article className={styles.resultCard}>
-          <span className={styles.kicker}>Виживання</span>
-          <h1>Забіг завершено</h1>
-          <p className={styles.resultScore}>{score} правильних відповідей</p>
-          <p>Зароблено {points} очок.</p>
+        <div className={styles.resultWrap}>
+          <span className={styles.resultIcon}>💔</span>
+          <h1 className={styles.resultTitle}>Серця закінчилися!</h1>
+          <p className={styles.resultSubtitle}>
+            {score > 0
+              ? `Ти дав ${score} правильних відповідей і заробив ${points} очок.`
+              : 'Спробуй ще раз — наступний забіг буде кращим!'}
+          </p>
+
+          <div className={styles.statsCard}>
+            <div className={styles.statsRow}>
+              <div className={styles.statBlock}>
+                <span className={styles.statBlockLabel}>Раунд</span>
+                <span className={styles.statBlockValue}>{score}</span>
+              </div>
+              <div className={styles.statDividerV} />
+              <div className={styles.statBlock}>
+                <span className={styles.statBlockLabel}>🪙 Очки</span>
+                <span className={styles.statBlockValue}>{points}</span>
+              </div>
+              <div className={styles.statDividerV} />
+              <div className={styles.statBlock}>
+                <span className={styles.statBlockLabel}>🏆 Рекорд</span>
+                <span className={styles.statBlockValue}>{profile.survivalHighScore}</span>
+              </div>
+            </div>
+          </div>
+
+          {isNewRecord && (
+            <p className={styles.newRecordBadge}>🏆 Новий рекорд!</p>
+          )}
+
           <button type="button" className={styles.primaryAction} onClick={restart}>
-            Спробувати ще раз
+            Грати знову
           </button>
           <Link to="/play" className={styles.secondaryAction}>
-            Назад до режимів
+            В головне меню
           </Link>
-        </article>
+        </div>
       </section>
     );
   }
@@ -207,43 +238,51 @@ export function Survival() {
     <section className={styles.page}>
       <header className={styles.top}>
         <div className={styles.topRow}>
-          <span className={styles.topTitle}>Виживання</span>
+          <button
+            type="button"
+            className={styles.backBtn}
+            onClick={() => setExitConfirmOpen(true)}
+            aria-label="Вийти"
+          >
+            <Icon name="close" size={18} />
+          </button>
           <div className={styles.lives} aria-label={`Життів: ${lives}`}>
             {livesView.map((isActive, index) => (
               <span
                 key={index}
-                className={isActive ? styles.lifeActive : styles.lifeLost}
+                className={`${styles.heart} ${isActive ? styles.heartActive : styles.heartLost}`}
               >
-                ♥
+                {isActive ? '❤️' : '🖤'}
               </span>
             ))}
           </div>
         </div>
 
-        <div className={styles.headerMeta}>
-          <div className={styles.metaBadge}>
-            <span className={styles.badgeLabel}>Раунд:</span>
-            <span className={styles.badgeValue}>{score}</span>
+        <div className={styles.statsWidget}>
+          <div className={styles.statItem}>
+            <span className={styles.statLabel}>Раунд</span>
+            <span className={styles.statValue}>{score}</span>
           </div>
-          <div className={styles.metaBadge}>
-            <span className={styles.badgeValue}>{points}</span>
-            <span className={styles.badgeLabel}>очок</span>
+          <div className={styles.statDivider} />
+          <div className={styles.statItem}>
+            <span className={styles.statLabel}>Очки</span>
+            <span className={styles.statValue}>{points}</span>
           </div>
-          <div className={styles.metaBadge}>
-            <span className={styles.badgeLabel}>Складність:</span>
-            <span className={`${styles.badgeValue} ${styles.difficultyBadge}`}>
-              {difficulty}
+          <div className={styles.statDivider} />
+          <div className={styles.statItem}>
+            <span className={styles.statLabel}>Рівень</span>
+            <span className={`${styles.statValue} ${styles.statDifficulty}`}>
+              {DIFFICULTY_LABELS[difficulty].replace(/^[^\s]+\s/, '')}
             </span>
           </div>
         </div>
 
         <div className={styles.timerWrapper}>
-          <div className={styles.timerMeta}>
-            <span>Час лишився</span>
-            <span className={styles.timeVal}>{timeLeft} с</span>
-          </div>
-          <div className={styles.timer} role="progressbar" aria-valuenow={timerProgress}>
+          <div className={`${styles.timer} ${isLowTime ? styles.timerLow : ''}`} role="progressbar" aria-valuenow={timerProgress}>
             <span style={{ width: `${timerProgress}%` }} />
+            <span className={`${styles.timerCenter} ${isLowTime ? styles.timerCenterLow : ''}`}>
+              {timeLeft}
+            </span>
           </div>
         </div>
       </header>
@@ -251,7 +290,9 @@ export function Survival() {
       <div className={styles.spacer} aria-hidden />
 
       <footer className={styles.bottomPanel}>
-        <p className={styles.questionText}>{question.text}</p>
+        <div className={styles.questionCard}>
+          <p className={styles.questionText}>{question.text}</p>
+        </div>
 
         <ul className={styles.options}>
           {question.options.map((option, optionIndex) => {
@@ -282,9 +323,9 @@ export function Survival() {
 
         {status === 'answered' ? (
           <div className={styles.feedback}>
-            <p className={styles.feedbackNotice}>
+            <span className={`${styles.feedbackBadge} ${lastAnswerCorrect ? styles.feedbackCorrect : styles.feedbackWrong}`}>
               {lastAnswerCorrect ? '🎉 Правильно!' : '💔 Життя втрачено.'}
-            </p>
+            </span>
             <button
               type="button"
               className={styles.explanationButton}
@@ -293,35 +334,12 @@ export function Survival() {
               Пояснення {question.reference ? `· ${question.reference}` : ''}
             </button>
             <div className={styles.actionRow}>
-              <button
-                type="button"
-                className={styles.btnExit}
-                onClick={() => {
-                  haptic.impact('light');
-                  setExitConfirmOpen(true);
-                }}
-              >
-                Вийти
-              </button>
               <button type="button" className={styles.btnPrimary} onClick={handleNext}>
                 Далі →
               </button>
             </div>
           </div>
-        ) : (
-          <div className={styles.actionRowPlaying}>
-            <button
-              type="button"
-              className={styles.btnExit}
-              onClick={() => {
-                haptic.impact('light');
-                setExitConfirmOpen(true);
-              }}
-            >
-              Вийти з гри
-            </button>
-          </div>
-        )}
+        ) : null}
       </footer>
 
       <ExplanationModal
@@ -345,4 +363,3 @@ export function Survival() {
     </section>
   );
 }
-

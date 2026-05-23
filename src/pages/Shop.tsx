@@ -1,5 +1,6 @@
 import { usePlayer } from '../context/PlayerContext';
 import { AVATARS } from '../data/cosmetics';
+import { Icon } from '../components/Icon';
 import styles from './Shop.module.css';
 
 export function Shop() {
@@ -21,14 +22,12 @@ export function Shop() {
   return (
     <section className={styles.page}>
       <header className={styles.header}>
-        <h1>🛍️ Крамниця</h1>
-        <p>Купуй аватари за зароблені монети</p>
+        <h1>Крамниця</h1>
+        <span className={styles.balancePill}>
+          <Icon name="coins" size={16} />
+          {profile.coins}
+        </span>
       </header>
-
-      <div className={styles.balanceCard}>
-        <span>Твій баланс:</span>
-        <strong>{profile.coins} монет</strong>
-      </div>
 
       <section className={styles.section}>
         <h2>Аватари</h2>
@@ -36,32 +35,36 @@ export function Shop() {
           {AVATARS.map((avatar) => {
             const isUnlocked = profile.unlockedAvatars.includes(avatar.id);
             const isActive = profile.avatar === avatar.id;
-
             return (
               <div
                 key={avatar.id}
                 className={`${styles.avatarCard} ${isActive ? styles.activeCard : ''}`}
               >
-                <div className={styles.emojiWrapper}>{avatar.emoji}</div>
-                <h3>{avatar.title}</h3>
-                <div className={styles.action}>
-                  {isActive ? (
-                    <span className={styles.badgeActive}>Активний</span>
-                  ) : isUnlocked ? (
-                    <button
-                      className={styles.btnApply}
-                      onClick={() => handleSelectAvatar(avatar.id)}
-                    >
-                      Вибрати
-                    </button>
-                  ) : (
-                    <button
-                      className={styles.btnBuy}
-                      onClick={() => handleBuyAvatar(avatar.id, avatar.price)}
-                    >
-                      {avatar.price} монет
-                    </button>
-                  )}
+                <div className={styles.avatarVisual}>
+                  <span className={styles.avatarEmoji}>{avatar.emoji}</span>
+                </div>
+                <div className={styles.avatarInfo}>
+                  <h3>{avatar.title}</h3>
+                  <div className={styles.action}>
+                    {isActive ? (
+                      <span className={styles.badgeActive}>Екіпіровано</span>
+                    ) : isUnlocked ? (
+                      <button
+                        className={styles.btnApply}
+                        onClick={() => handleSelectAvatar(avatar.id)}
+                      >
+                        Вибрати
+                      </button>
+                    ) : (
+                      <button
+                        className={styles.btnBuy}
+                        onClick={() => handleBuyAvatar(avatar.id, avatar.price)}
+                      >
+                        <Icon name="coins" size={14} />
+                        {avatar.price}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             );

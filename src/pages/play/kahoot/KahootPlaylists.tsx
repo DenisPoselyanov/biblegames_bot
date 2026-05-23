@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Icon } from '../../../components/Icon';
 import { playlistManager } from '../../../lib/playlists';
 import { THEMES } from '../../../data/themes';
 import { useTelegram } from '../../../hooks/useTelegram';
@@ -38,40 +39,48 @@ export function KahootPlaylists() {
 
   return (
     <section className={styles.page}>
-      <Link to="/play/kahoot" className={styles.back}>
-        ← Kahoot
-      </Link>
-
-      <div className={styles.playlistsTop}>
-        <h1 className={styles.title}>Плейлисти</h1>
-        <Link to="/play/kahoot/playlists/new" className={styles.btnSecondary}>
-          + Створити
+      <div className={styles.topRow}>
+        <Link to="/play/kahoot" className={styles.backBtn} aria-label="Назад">
+          <Icon name="back" size={20} />
         </Link>
       </div>
 
-      <div className={styles.tabs}>
+      <h1 className={styles.pageTitle}>Плейлисти</h1>
+
+      <div className={styles.segmentControl}>
         <button
           type="button"
-          className={`${styles.tabBtn} ${tab === 'mine' ? styles.tabActive : ''}`}
+          className={`${styles.segmentTab} ${tab === 'mine' ? styles.segmentActive : ''}`}
           onClick={() => setTab('mine')}
         >
           Мої
         </button>
         <button
           type="button"
-          className={`${styles.tabBtn} ${tab === 'public' ? styles.tabActive : ''}`}
+          className={`${styles.segmentTab} ${tab === 'public' ? styles.segmentActive : ''}`}
           onClick={() => setTab('public')}
         >
           Публічні
         </button>
+        <span className={`${styles.segmentGlider} ${tab === 'mine' ? styles.gliderLeft : styles.gliderRight}`} />
       </div>
 
+      {tab === 'mine' && (
+        <Link to="/play/kahoot/playlists/new" className={styles.createButton}>
+          + Створити плейлист
+        </Link>
+      )}
+
       {list.length === 0 ? (
-        <p className={styles.muted}>
-          {tab === 'mine'
-            ? 'Поки що немає плейлистів. Створи перший і зіграй Kahoot за ним.'
-            : 'Поки що немає публічних плейлистів.'}
-        </p>
+        <div className={styles.emptyState}>
+          <span className={styles.emptyIcon}>📜</span>
+          <strong className={styles.emptyTitle}>Тут порожньо</strong>
+          <p className={styles.emptyDesc}>
+            {tab === 'mine'
+              ? 'Створи свій перший плейлист, щоб зіграти Kahoot за власними правилами!'
+              : 'Публічних плейлистів поки немає. Створи свій і поділися ним!'}
+          </p>
+        </div>
       ) : (
         <ul className={styles.playlistList}>
           {list.map((p) => {

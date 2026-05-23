@@ -254,17 +254,17 @@ export class PlaylistManager {
 
   pickQuestionsForPlaylist(params: {
     themeIds: string[];
-    difficulty?: Difficulty;
+    difficulties?: Difficulty[];
     count: number;
   }): string[] {
     const ids = new Set<string>();
-    const difficulty = params.difficulty;
+    const difficulties = params.difficulties;
     const pool = ALL_QUESTIONS.filter(
-      (q) => params.themeIds.includes(q.themeId) && (!difficulty || q.difficulty === difficulty),
+      (q) => params.themeIds.includes(q.themeId) && (!difficulties || difficulties.length === 0 || difficulties.includes(q.difficulty)),
     );
     for (const q of shuffle(pool)) {
       ids.add(q.id);
-      if (ids.size >= Math.min(100, Math.max(1, params.count))) break;
+      if (ids.size >= Math.max(1, params.count)) break;
     }
     return [...ids];
   }

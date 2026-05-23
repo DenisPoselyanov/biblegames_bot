@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { useTelegram } from '../hooks/useTelegram';
+import { Icon } from '../components/Icon';
+import { getAvatarById } from '../data/cosmetics';
 import { studyRepo } from '../repos/studyRepo';
 import { buildLearningInsight, getDailyTasks } from '../lib/learning';
 import { trackEvent } from '../lib/telemetry';
@@ -10,6 +12,7 @@ import styles from './Home.module.css';
 export function Home() {
   const { profile } = usePlayer();
   const { displayName } = useTelegram();
+  const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
   const verses = [
     { text: 'Бо так полюбив Бог світ, що віддав Сина Свого Однородженого...', reference: 'Івана 3:16' },
     { text: 'Слово Твоє — світильник нозі моїй і світло стежці моїй.', reference: 'Псалом 119:105' },
@@ -43,60 +46,128 @@ export function Home() {
     }
   }, [completedTaskIds]);
 
+  const streakFire = profile.streakDays >= 3 ? '🔥' : profile.streakDays >= 1 ? '✨' : '';
+
   return (
     <section className={styles.page}>
-      <header className={styles.hero}>
-        <p className={styles.greeting}>Мир тобі, {displayName}!</p>
-        <div className={styles.verseCard}>
-          <blockquote>"{dailyVerse.text}"</blockquote>
-          <cite>— {dailyVerse.reference}</cite>
+      <header className={styles.header}>
+        <div className={styles.greeting}>
+          <div className={styles.greetingRow}>
+            <span className={styles.avatarBadge}>{avatarEmoji}</span>
+            Мир тобі, {displayName}!
+          </div>
+          <cite className={styles.verseInline}>
+            "{dailyVerse.text}"
+            <span className={styles.verseRef}>{dailyVerse.reference}</span>
+          </cite>
         </div>
       </header>
 
-      <ul className={styles.statsRow}>
+      <ul className={styles.statsGrid}>
         <li className={styles.stat}>
-          <strong>{profile.coins}</strong>
-          <span>монет</span>
+          <span className={styles.statIconWrap}>
+            <Icon name="coins" size={30} />
+          </span>
+          <span className={styles.statValue}>{profile.coins}</span>
+          <span className={styles.statLabel}>монет</span>
         </li>
         <li className={styles.stat}>
-          <strong>{profile.completedLevels.length}</strong>
-          <span>рівнів</span>
+          <span className={styles.statIconWrap}>
+            <Icon name="trophy" size={30} />
+          </span>
+          <span className={styles.statValue}>{profile.completedLevels.length}</span>
+          <span className={styles.statLabel}>рівнів</span>
         </li>
         <li className={styles.stat}>
-          <strong>{profile.streakDays}</strong>
-          <span>streak</span>
+          <span className={`${styles.statIconWrap} ${styles.statIconWrapEmoji}`}>
+            {streakFire || '📅'}
+          </span>
+          <span className={styles.statValue}>{profile.streakDays}</span>
+          <span className={styles.statLabel}>streak</span>
         </li>
         <li className={styles.stat}>
-          <strong>
+          <span className={styles.statIconWrap}>
+            <Icon name="book" size={30} />
+          </span>
+          <span className={styles.statValue}>
             {Object.keys(profile.themePoints).filter((k) => profile.themePoints[k] > 0).length}
-          </strong>
-          <span>тем</span>
+          </span>
+          <span className={styles.statLabel}>тем</span>
         </li>
       </ul>
 
       <Link to="/play" className={styles.cta}>
-        Продовжити дослідження →
+        <Icon name="play" size={24} />
+        <span>Продовжити дослідження</span>
+        <Icon name="arrow-right" size={20} />
       </Link>
 
       <section className={styles.tasksSection}>
         <h2>Щоденні завдання</h2>
         <ul className={styles.taskList}>
-          {dailyTasks.map((task) => (
-            <li key={task.id} className={styles.taskCard}>
-              <span>{task.title}</span>
-              <strong>{task.progress}/{task.goal}</strong>
-            </li>
-          ))}
+          {dailyTasks.map((task) => {
+            const pct = task.goal > 0 ? Math.min((task.progress / task.goal) * 100, 100) : 0;
+            const done = pct >= 100;
+            return (
+              <li
+                key={task.id}
+                className={`${styles.taskCard} ${done ? styles.taskCardCompleted : ''}`}
+              >
+                <div className={styles.taskInfo}>
+                  <span>{task.title}</span>
+                  <div className={styles.progressBar}>
+                    <div
+                      className={`${styles.progressFill} ${done ? styles.progressFillComplete : ''}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
+                {done ? (
+                  <span className={styles.taskCheck}>
+                    <Icon name="check" size={16} />
+                  </span>
+                ) : (
+                  <span className={styles.taskCount}>
+                    {task.progress}/{task.goal}
+                  </span>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </section>
 
       <section className={styles.tasksSection}>
         <h2>Learning KPI</h2>
-        <ul className={styles.taskList}>
-          <li className={styles.taskCard}><span>Освоєні підтеми</span><strong>{insight.masteredSubthemes}</strong></li>
-          <li className={styles.taskCard}><span>Точність 7 днів</span><strong>{insight.accuracy7d}%</strong></li>
-          <li className={styles.taskCard}><span>Точність 30 днів</span><strong>{insight.accuracy30d}%</strong></li>
-        </ul>
+        <div className={styles.kpiGrid}>
+          <div className={styles.kpiCard}>
+            <Icon name="brain" size={20} />
+            <strong>
+              <span className={`${styles.kpiBadge} ${styles.kpiBadgeGold}`}>
+                {insight.masteredSubthemes}
+              </span>
+            </strong>
+            <span>Освоєно підтем</span>
+          </div>
+          <div className={styles.kpiCard}>
+            <Icon name="star" size={20} />
+            <strong>
+              <span className={`${styles.kpiBadge} ${styles.kpiBadgeGreen}`}>
+                {insight.accuracy7d}%
+              </span>
+            </strong>
+            <span>Точність 7д</span>
+          </div>
+          <div className={styles.kpiCard}>
+            <Icon name="stats" size={20} />
+            <strong>
+              <span className={`${styles.kpiBadge} ${styles.kpiBadgeTeal}`}>
+                {insight.accuracy30d}%
+              </span>
+            </strong>
+            <span>Точність 30д</span>
+          </div>
+        </div>
       </section>
     </section>
   );

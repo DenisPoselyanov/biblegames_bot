@@ -1,12 +1,12 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--space-lg);
 }
 
 .header h1 {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: var(--fs-xl);
   margin: 0 0 0.25rem;
   color: var(--gold-light);
 }
@@ -14,7 +14,7 @@
 .header p {
   margin: 0;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: var(--fs-md);
 }
 
 .modes {
@@ -23,78 +23,156 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-md);
 }
 
+/* ── Card Base ── */
+
 .card {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 0.75rem;
-  align-items: center;
-  padding: 1rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  display: flex;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.2s, transform 0.15s;
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-md);
+  min-height: 120px;
+  transition: transform var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+  cursor: pointer;
 }
 
 .card:active {
-  transform: scale(0.98);
-}
-
-.card:hover {
-  border-color: rgba(201, 162, 39, 0.45);
+  transform: scale(0.97);
 }
 
 .card.disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   pointer-events: none;
 }
 
-.icon {
-  font-size: 2rem;
-  line-height: 1;
+/* ── Featured Card (Дослідження) ── */
+
+.cardFeatured {
+  min-height: 200px;
+  border-color: rgba(201, 162, 39, 0.35);
+  box-shadow: 0 0 24px rgba(201, 162, 39, 0.12), var(--shadow-md);
+}
+
+/* ── Left Body ── */
+
+.cardBody {
+  flex: 1;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-xs);
+  z-index: 1;
+  min-width: 0;
+}
+
+.cardFeatured .cardBody {
+  padding-top: calc(var(--space-lg) + 8px);
+  padding-bottom: calc(var(--space-lg) + 8px);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
 }
 
 .cardBody h2 {
-  margin: 0 0 0.25rem;
-  font-size: 1rem;
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--text);
 }
 
-.cardBody p {
+.cardDesc {
   margin: 0;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  line-height: 1.4;
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: var(--lh-normal);
 }
+
+/* ── Right Art Panel ── */
+
+.cardArt {
+  width: 110px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: -1px -1px -1px 0;
+  overflow: visible;
+}
+
+.cardArtFeatured {
+  /* same width as .cardArt — 110px */
+}
+
+.cardArtBg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.card:hover .cardArtBg {
+  opacity: 0.6;
+}
+
+.cardArt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cardArtIcon {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
+  color: #fff;
+}
+
+/* ── Pill Badges ── */
 
 .badge {
   display: inline-block;
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 0.15rem 0.45rem;
-  border-radius: 6px;
-  background: rgba(201, 162, 39, 0.2);
-  color: var(--gold);
-  margin-bottom: 0.35rem;
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  padding: 0.2rem 0.7rem;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.badgeNew {
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.35);
+}
+
+.badgeMultiplayer {
+  background: linear-gradient(135deg, #f97316, #eab308);
+  color: #1a1208;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.35);
 }
 
 .badgeSoon {
-  display: inline-block;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 0.15rem 0.45rem;
-  border-radius: 6px;
   background: rgba(168, 159, 143, 0.15);
   color: var(--text-muted);
-  margin-bottom: 0.35rem;
 }
 
-.arrow {
+.badgeDefault {
+  background: rgba(201, 162, 39, 0.2);
   color: var(--gold);
-  font-size: 1.25rem;
 }
