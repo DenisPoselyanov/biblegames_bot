@@ -57,6 +57,49 @@ function flattenTopicTitles(node: TopicNode, prefix = ''): Array<{ id: string; t
   return results;
 }
 
+function questionMatchesTopicNode(question: Question, node: { title: string; children?: { title: string }[] }): boolean {
+  const correctAnswer = question.options[question.correctIndex] ?? '';
+  const relevantText = (question.text + ' ' + correctAnswer).toLowerCase();
+
+  const nodeTitle = node.title.toLowerCase();
+  if (nodeTitle.length > 2 && relevantText.includes(nodeTitle)) {
+    return true;
+  }
+
+  if (Array.isArray(node.children)) {
+    for (const child of node.children) {
+      const childTitle = child.title.toLowerCase();
+      if (childTitle.length > 2 && relevantText.includes(childTitle)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function matchTopicIdsForQuestion(question: Question, hierarchy: TopicNode): string[] {
+  const matched: string[] = [hierarchy.id];
+  const flat = flattenTopicTitles(hierarchy);
+  for (const entry of flat) {
+    if (entry.id === hierarchy.id) continue;
+    const node = findNodeById(hierarchy, entry.id);
+    if (node && questionMatchesTopicNode(question, node)) {
+      matched.push(entry.id);
+    }
+  }
+  return matched;
+}
+
+function findNodeById(node: TopicNode, id: string): TopicNode | null {
+  if (node.id === id) return node;
+  for (const child of node.children) {
+    const found = findNodeById(child, id);
+    if (found) return found;
+  }
+  return null;
+}
+
 function mapDifficulty(question: Question): Difficulty {
   const oldDifficulty = DIFFICULTY_MAP[question.difficulty];
   if (oldDifficulty) return oldDifficulty;
@@ -104,12 +147,9 @@ async function main() {
     const mappedDifficulty = mapDifficulty(q);
     const themeId = q.themeId;
     const hierarchy = loadTopicHierarchy(themeId);
-    const topicIds: string[] = [];
-
-    if (hierarchy) {
-      const flat = flattenTopicTitles(hierarchy);
-      topicIds.push(...flat.map(t => t.id));
-    }
+    const topicIds: string[] = hierarchy
+      ? matchTopicIdsForQuestion(q, hierarchy)
+      : [];
 
     results.push({
       id: q.id,
@@ -128,12 +168,9 @@ async function main() {
     const mappedDifficulty = mapDifficulty(q);
     const themeId = q.themeId;
     const hierarchy = loadTopicHierarchy(themeId);
-    const topicIds: string[] = [];
-
-    if (hierarchy) {
-      const flat = flattenTopicTitles(hierarchy);
-      topicIds.push(...flat.map(t => t.id));
-    }
+    const topicIds: string[] = hierarchy
+      ? matchTopicIdsForQuestion(q, hierarchy)
+      : [];
 
     results.push({
       id: q.id,

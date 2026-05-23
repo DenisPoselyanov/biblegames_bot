@@ -1,4 +1,4 @@
-import type { TopicNode, TopicHierarchyMap } from '../types';
+import type { Question, TopicNode, TopicHierarchyMap } from '../types';
 
 const topicModules = import.meta.glob('../../data/topics-db/*.json');
 
@@ -72,4 +72,47 @@ export function flattenTopicNodes(node: TopicNode | null, depth: number = 0): Ar
     }
   }
   return result;
+}
+
+/**
+ * Перевіряє чи питання відноситься до конкретного вузла теми.
+ * Порівнює ЛИШЕ текст питання та правильну відповідь — неправильні
+ * варіанти ігноруються, щоб уникнути хибних збігів.
+ */
+export function questionMatchesTopicNode(question: Question, node: TopicNode): boolean {
+  const correctAnswer = question.options[question.correctIndex] ?? '';
+  const relevantText = (question.text + ' ' + correctAnswer).toLowerCase();
+
+  const nodeTitle = node.title.toLowerCase();
+  if (nodeTitle.length > 2 && relevantText.includes(nodeTitle)) {
+    return true;
+  }
+
+  if (Array.isArray(node.children)) {
+    for (const child of node.children) {
+      const childTitle = child.title.toLowerCase();
+      if (childTitle.length > 2 && relevantText.includes(childTitle)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Рахує кількість питань, що відносяться до вузла теми.
+ * Для кореневого вузла — повертає загальну кількість питань теми.
+ * Для дочірніх вузлів — рахує лише ті питання, що відповідають
+ * вузлу за текстом питання або правильною відповіддю.
+ */
+export function countQuestionsForTopicNode(
+  node: TopicNode,
+  questions: Question[],
+  isRoot: boolean = false,
+): number {
+  if (isRoot) {
+    return questions.length;
+  }
+  return questions.filter(q => questionMatchesTopicNode(q, node)).length;
 }
