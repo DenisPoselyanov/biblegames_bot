@@ -2,17 +2,25 @@
 /**
  * Тестовий скрипт для аналізу класифікації конкретного питання
  */
-import { QUESTIONS } from '../src/data/questions';
+import { ALL_QUESTIONS } from '../src/data/questions';
 import { questionPoolManager, POOL_CONFIGS } from '../src/lib/questionPools';
 
+// CLI: --id <question-id>  (default: geography-child-1)
+const args = process.argv.slice(2);
+let targetId = 'geography-child-1';
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--id' && args[i + 1]) targetId = args[++i];
+}
+
 // Ініціалізація пулів
-questionPoolManager.initializePools(QUESTIONS);
+questionPoolManager.initializePools(ALL_QUESTIONS);
 
 // Знайдемо конкретне питання
-const targetQuestion = QUESTIONS.find(q => q.id === 'geography-easy-1');
+const targetQuestion = ALL_QUESTIONS.find(q => q.id === targetId);
 
 if (!targetQuestion) {
-  console.log('❌ Питання не знайдено');
+  console.log(`❌ Питання не знайдено: ${targetId}`);
+  console.log('Приклади ID:', ALL_QUESTIONS.slice(0, 3).map(q => q.id).join(', '));
   process.exit(1);
 }
 

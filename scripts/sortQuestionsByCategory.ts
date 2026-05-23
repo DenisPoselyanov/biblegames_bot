@@ -2,21 +2,31 @@
 /**
  * AI-сортування питань по категоріях/підтемах та верифікація складності.
  *
- * npm run sort-questions
+ * Класифікує кожне питання у вузли ієрархії тем (data/topics-db/*.json):
+ *   - Завжди приписує питання до кореня (теми)
+ *   - Розширює класифікацію до підтем за збігом назв (heuristic)
+ *   - Якщо Ollama доступна та використовується прапорець --ai — використовує AI
+ *     для уточнення приналежності питання до найкращого вузла.
+ *
+ * Запуск:
+ *   npm run sort-questions               # heuristic only
+ *   npm run sort-questions -- --ai       # додає AI-уточнення (потребує Ollama)
+ *   npm run sort-questions -- --ai --limit 100   # обмежити кількість AI-запитів
+ *   npm run sort-questions -- --theme paul
  */
 
 import { ALL_QUESTIONS } from '../src/data/questions';
-import { questionPoolManager } from '../src/lib/questionPools';
-import { questionQuarantineManager } from '../src/lib/questionQuarantine';
-import { questionQualityValidator } from '../src/lib/questionQuality';
 import fs from 'fs';
 import path from 'path';
 import type { Difficulty, Question, TopicNode } from '../src/types';
+import { checkOllama, extractJson, queryOllama } from './lib/ollama.mjs';
 
 const ROOT = path.resolve('.');
 const TOPICS_DIR = path.join(ROOT, 'data', 'topics-db');
 const DB_DIR = path.resolve('data/question-db');
+const DEFAULT_MODEL = process.env.OLLAMA_MODEL || 'mistral';
 
+/** Старі ключі складності → нові (legacy migration) */
 const DIFFICULTY_MAP: Record<string, Difficulty> = {
   beginner: 'baby',
   easy: 'child',
@@ -24,6 +34,27 @@ const DIFFICULTY_MAP: Record<string, Difficulty> = {
   hard: 'student',
   expert: 'preacher',
 };
+
+const VALID_DIFFICULTIES: Difficulty[] = ['baby', 'child', 'youth', 'student', 'preacher', 'teacher', 'theologian'];
+
+interface CliOpts {
+  ai: boolean;
+  limit: number;
+  theme: string | null;
+  model: string;
+}
+
+function parseArgs(): CliOpts {
+  const args = process.argv.slice(2);
+  const opts: CliOpts = { ai: false, limit: 0, theme: null, model: DEFAULT_MODEL };
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--ai') opts.ai = true;
+    else if (args[i] === '--limit' && args[i + 1]) opts.limit = parseInt(args[++i], 10) || 0;
+    else if (args[i] === '--theme' && args[i + 1]) opts.theme = args[++i];
+    else if (args[i] === '--model' && args[i + 1]) opts.model = args[++i];
+  }
+  return opts;
+}
 
 function loadAiQuestions(): Question[] {
   if (!fs.existsSync(DB_DIR)) return [];
@@ -47,17 +78,30 @@ function loadTopicHierarchy(themeId: string): TopicNode | null {
   }
 }
 
-function flattenTopicTitles(node: TopicNode, prefix = ''): Array<{ id: string; title: string; fullPath: string }> {
-  const results: Array<{ id: string; title: string; fullPath: string }> = [];
+function flattenTopicTitles(node: TopicNode, prefix = ''): Array<{ id: string; title: string; fullPath: string; description: string }> {
+  const results: Array<{ id: string; title: string; fullPath: string; description: string }> = [];
   const fullPath = prefix ? `${prefix} > ${node.title}` : node.title;
-  results.push({ id: node.id, title: node.title, fullPath });
-  for (const child of node.children) {
-    results.push(...flattenTopicTitles(child, fullPath));
+  results.push({ id: node.id, title: node.title, fullPath, description: node.description || '' });
+  if (Array.isArray(node.children)) {
+    for (const child of node.children) {
+      results.push(...flattenTopicTitles(child, fullPath));
+    }
   }
   return results;
 }
 
-function questionMatchesTopicNode(question: Question, node: { title: string; children?: { title: string }[] }): boolean {
+function findNodeById(node: TopicNode, id: string): TopicNode | null {
+  if (node.id === id) return node;
+  if (Array.isArray(node.children)) {
+    for (const child of node.children) {
+      const found = findNodeById(child, id);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+function questionMatchesTopicNode(question: Question, node: TopicNode): boolean {
   const correctAnswer = question.options[question.correctIndex] ?? '';
   const relevantText = (question.text + ' ' + correctAnswer).toLowerCase();
 
@@ -91,41 +135,83 @@ function matchTopicIdsForQuestion(question: Question, hierarchy: TopicNode): str
   return matched;
 }
 
-function findNodeById(node: TopicNode, id: string): TopicNode | null {
-  if (node.id === id) return node;
-  for (const child of node.children) {
-    const found = findNodeById(child, id);
-    if (found) return found;
-  }
-  return null;
-}
-
 function mapDifficulty(question: Question): Difficulty {
   const oldDifficulty = DIFFICULTY_MAP[question.difficulty];
   if (oldDifficulty) return oldDifficulty;
-  const validDifficulties: Difficulty[] = ['baby', 'child', 'youth', 'student', 'preacher', 'teacher', 'theologian'];
-  if (validDifficulties.includes(question.difficulty as Difficulty)) {
+  if (VALID_DIFFICULTIES.includes(question.difficulty as Difficulty)) {
     return question.difficulty as Difficulty;
   }
   return 'child';
 }
 
+async function aiClassifyQuestion(
+  question: Question,
+  hierarchy: TopicNode,
+  model: string,
+): Promise<string[] | null> {
+  const flat = flattenTopicTitles(hierarchy);
+  // Виключаємо корінь — він і так додається
+  const candidates = flat.filter(n => n.id !== hierarchy.id);
+  if (candidates.length === 0) return null;
+
+  const candidatesText = candidates
+    .map(c => `- ${c.id} :: ${c.fullPath}${c.description ? ` — ${c.description}` : ''}`)
+    .join('\n');
+
+  const prompt = `Ти експерт-теолог. Класифікуй біблійне вікторинне питання у найдоречніші вузли ієрархії підтем.
+
+Питання: "${question.text}"
+Правильна відповідь: "${question.options[question.correctIndex] ?? ''}"
+${question.reference ? `Біблійне посилання: ${question.reference}` : ''}
+
+Доступні підтеми (id :: повний шлях):
+${candidatesText}
+
+Поверни до 3 НАЙКРАЩИХ id-ів вузлів, де питання логічно належить. Якщо жоден не підходить — повертай порожній масив.
+
+Відповідай ТІЛЬКИ JSON-масивом id-ів:
+["id1","id2"]`;
+
+  try {
+    const raw = await queryOllama(prompt, model, { temperature: 0.1 });
+    const parsed = extractJson(raw);
+    if (!Array.isArray(parsed)) return null;
+    const validIds = new Set(candidates.map(c => c.id));
+    return parsed.map(String).filter(id => validIds.has(id));
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
+  const opts = parseArgs();
+
   console.log('🤖 AI — сортування питань по категоріях');
   console.log('========================================');
+  if (opts.ai) console.log(`AI-режим увімкнено (модель: ${opts.model})`);
+  if (opts.theme) console.log(`Лише тема: ${opts.theme}`);
+  if (opts.limit > 0) console.log(`AI ліміт: ${opts.limit} питань`);
+  console.log('');
 
-  const aiQuestions = loadAiQuestions();
-  const tsQuestions = ALL_QUESTIONS;
-  const allQuestions = [...aiQuestions];
+  const aiAvailable = opts.ai
+    ? await checkOllama(opts.model).catch(() => false)
+    : false;
 
-  const tsQuestionsMap = new Map<string, Question>();
-  for (const q of tsQuestions) {
-    tsQuestionsMap.set(q.id, q);
+  if (opts.ai && !aiAvailable) {
+    console.warn('⚠️  Ollama недоступна — fallback на heuristic-режим');
   }
 
-  console.log(`Всього питань: ${tsQuestions.length + aiQuestions.length}`);
+  const aiQuestions = loadAiQuestions();
+  const tsQuestions = opts.theme
+    ? ALL_QUESTIONS.filter(q => q.themeId === opts.theme)
+    : ALL_QUESTIONS;
+  const aiFiltered = opts.theme
+    ? aiQuestions.filter(q => q.themeId === opts.theme)
+    : aiQuestions;
+
+  console.log(`Всього питань для обробки: ${tsQuestions.length + aiFiltered.length}`);
   console.log(`  TS/вбудовані: ${tsQuestions.length}`);
-  console.log(`  AI (JSON): ${aiQuestions.length}`);
+  console.log(`  AI (JSON): ${aiFiltered.length}`);
   console.log('');
 
   const results: Array<{
@@ -135,51 +221,49 @@ async function main() {
     difficulty: string;
     mappedDifficulty: string;
     topicIds: string[];
+    aiTopicIds?: string[];
     source: 'ts' | 'ai';
     qualityScore?: number;
     hasReference: boolean;
   }> = [];
 
-  const validDifficulties: Difficulty[] = ['baby', 'child', 'youth', 'student', 'preacher', 'teacher', 'theologian'];
-  const allQuestionsForAnalysis = [...tsQuestions, ...aiQuestions];
+  const all = [
+    ...tsQuestions.map(q => ({ q, source: 'ts' as const })),
+    ...aiFiltered.map(q => ({ q, source: 'ai' as const })),
+  ];
 
-  for (const q of tsQuestions) {
+  let aiCalls = 0;
+  for (let i = 0; i < all.length; i++) {
+    const { q, source } = all[i];
     const mappedDifficulty = mapDifficulty(q);
-    const themeId = q.themeId;
-    const hierarchy = loadTopicHierarchy(themeId);
-    const topicIds: string[] = hierarchy
-      ? matchTopicIdsForQuestion(q, hierarchy)
-      : [];
+    const hierarchy = loadTopicHierarchy(q.themeId);
+    const heuristicIds: string[] = hierarchy ? matchTopicIdsForQuestion(q, hierarchy) : [];
+
+    let aiIds: string[] | undefined;
+    if (aiAvailable && hierarchy && (opts.limit === 0 || aiCalls < opts.limit)) {
+      const proposed = await aiClassifyQuestion(q, hierarchy, opts.model);
+      if (proposed && proposed.length > 0) {
+        aiIds = proposed;
+        aiCalls++;
+      }
+      if (aiCalls % 25 === 0 && aiCalls > 0) {
+        console.log(`   …AI оброблено ${aiCalls} питань`);
+      }
+    }
+
+    const combined = aiIds
+      ? Array.from(new Set([...heuristicIds, ...aiIds]))
+      : heuristicIds;
 
     results.push({
       id: q.id,
       text: q.text.substring(0, 80),
-      themeId,
+      themeId: q.themeId,
       difficulty: q.difficulty,
       mappedDifficulty,
-      topicIds,
-      source: 'ts',
-      qualityScore: q.qualityScore ?? 75,
-      hasReference: !!q.reference,
-    });
-  }
-
-  for (const q of aiQuestions) {
-    const mappedDifficulty = mapDifficulty(q);
-    const themeId = q.themeId;
-    const hierarchy = loadTopicHierarchy(themeId);
-    const topicIds: string[] = hierarchy
-      ? matchTopicIdsForQuestion(q, hierarchy)
-      : [];
-
-    results.push({
-      id: q.id,
-      text: q.text.substring(0, 80),
-      themeId,
-      difficulty: q.difficulty,
-      mappedDifficulty,
-      topicIds,
-      source: 'ai',
+      topicIds: combined,
+      aiTopicIds: aiIds,
+      source,
       qualityScore: q.qualityScore ?? 75,
       hasReference: !!q.reference,
     });
@@ -187,10 +271,12 @@ async function main() {
 
   const output = {
     generatedAt: new Date().toISOString(),
+    options: { ai: aiAvailable, limit: opts.limit, theme: opts.theme, model: opts.model },
     summary: {
-      total: tsQuestions.length + aiQuestions.length,
+      total: results.length,
       tsCount: tsQuestions.length,
-      aiCount: aiQuestions.length,
+      aiCount: aiFiltered.length,
+      aiClassifiedCount: results.filter(r => r.aiTopicIds && r.aiTopicIds.length > 0).length,
     },
     difficultyMapping: DIFFICULTY_MAP,
     questions: results,
@@ -199,8 +285,9 @@ async function main() {
   const outputPath = path.join(ROOT, 'data', 'question-categories.json');
   fs.writeFileSync(outputPath, JSON.stringify(output, null, 2), 'utf8');
 
-  console.log(`✅ Збережено: ${outputPath}`);
+  console.log(`\n✅ Збережено: ${outputPath}`);
   console.log(`   Всього: ${results.length} питань`);
+  console.log(`   AI-класифіковано: ${output.summary.aiClassifiedCount}`);
 
   const byDifficulty: Record<string, number> = {};
   const byTheme: Record<string, number> = {};
@@ -211,7 +298,9 @@ async function main() {
   }
 
   console.log('\n📊 Розподіл за складністю:');
-  for (const [d, count] of Object.entries(byDifficulty).sort((a, b) => validDifficulties.indexOf(a[0] as Difficulty) - validDifficulties.indexOf(b[0] as Difficulty))) {
+  for (const [d, count] of Object.entries(byDifficulty).sort(
+    (a, b) => VALID_DIFFICULTIES.indexOf(a[0] as Difficulty) - VALID_DIFFICULTIES.indexOf(b[0] as Difficulty),
+  )) {
     console.log(`   ${d}: ${count}`);
   }
 

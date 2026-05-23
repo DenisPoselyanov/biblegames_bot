@@ -11,8 +11,8 @@
 import fs from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { THEMES, THEME_IDS, getTheme, GROUPS, getGroup, flattenTopicNodes } from './lib/themes-config.mjs';
-import { checkOllama, extractJsonObject, queryOllama } from './lib/ollama.mjs';
+import { THEME_IDS, getTheme } from './lib/themes-config.mjs';
+import { checkOllama, extractJsonArray, queryOllama } from './lib/ollama.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const TOPICS_DIR = join(__dirname, '..', 'data', 'topics-db');
@@ -185,7 +185,7 @@ function validateTopicNode(node, parentId) {
   return validated;
 }
 
-async function generateForTheme(themeId, model) {
+async function generateForTheme(themeId, model, force = false) {
   const theme = getTheme(themeId);
   if (!theme) {
     console.error(`  ❌ Тему не знайдено: ${themeId}`);
@@ -193,28 +193,36 @@ async function generateForTheme(themeId, model) {
   }
 
   const existing = loadExistingTopics(themeId);
-  if (existing) {
-    console.log(`  ⏩ ${theme.title}: вже існує, пропускаю`);
+  if (existing && !force) {
+    console.log(`  ⏩ ${theme.title}: вже існує, пропускаю (--force для перегенерації)`);
     return existing;
   }
 
   console.log(`  ⏳ ${theme.title}: генерую ієрархію...`);
-  const prompt = buildSinglePrompt(theme);
+  const prompt = buildPrompt(theme);
   const raw = await queryOllama(prompt, model);
-  let parsed;
-  try {
-    parsed = extractJsonObject(raw);
-  } catch {
-    console.error(`  ❌ ${theme.title}: не вдалося розпарсити відповідь`);
-    return null;
-  }
+  const parsed = extractJsonArray(raw);
 
-  let root = validateTopicNode(parsed, themeId);
+  let root;
+  if (parsed && parsed.length > 0) {
+    root = validateTopicNode(parsed[0], themeId);
+  } else {
+    try {
+      const single = JSON.parse(raw);
+      root = validateTopicNode(single, themeId);
+    } catch {
+      console.error(`  ❌ ${theme.title}: не вдалося розпарсити відповідь`);
+      return null;
+    }
+  }
 
   if (!root) {
     console.error(`  ❌ ${theme.title}: кореневий вузол не пройшов валідацію`);
     return null;
   }
+
+  // Гарантуємо id кореня = themeId, якщо AI вигадала інший
+  root.id = themeId;
 
   saveTopics(themeId, root);
   const count = countNodes(root);
@@ -289,12 +297,14 @@ async function main() {
     group: null,
     all: false,
     model: DEFAULT_MODEL,
+    force: false,
   };
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--theme' && args[i + 1]) opts.theme = args[++i];
     else if (args[i] === '--group' && args[i + 1]) opts.group = args[++i];
     else if (args[i] === '--all') opts.all = true;
+    else if (args[i] === '--force') opts.force = true;
     else if (args[i] === '--model' && args[i + 1]) opts.model = args[++i];
   }
 
@@ -336,14 +346,9 @@ async function main() {
 
   let grandTotal = 0;
 
-  for (const target of targets) {
-    console.log(`\n📚 ${target.id} (${target.type})`);
-    let result;
-    if (target.type === 'group') {
-      result = await generateForGroup(target.id, opts.model);
-    } else {
-      result = await generateForTheme(target.id, opts.model);
-    }
+  for (const themeId of themes) {
+    console.log(`\n📚 ${themeId}`);
+    const result = await generateForTheme(themeId, opts.model);
     if (result) {
       console.log('\n   Структура:');
       printHierarchy(result, '   ');

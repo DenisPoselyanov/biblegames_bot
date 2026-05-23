@@ -3,7 +3,7 @@
  * Скрипт для аналізу якості питань та знаходження схожих питань
  * Аналізує як вбудовані (TS), так і AI-генеровані питання (JSON з data/question-db/)
  */
-import { QUESTIONS } from '../src/data/questions';
+import { ALL_QUESTIONS as QUESTIONS } from '../src/data/questions';
 import { questionQualityValidator } from '../src/lib/questionQuality';
 import { questionQuarantineManager } from '../src/lib/questionQuarantine';
 import fs from 'fs';
@@ -30,7 +30,7 @@ const ALL_QUESTIONS = [...QUESTIONS, ...AI_QUESTIONS];
 
 console.log(`🔍 Початок аналізу якості питань... (вбудовані: ${QUESTIONS.length}, AI: ${AI_QUESTIONS.length}, разом: ${ALL_QUESTIONS.length})\n`);
 
-let totalQuestions = ALL_QUESTIONS.length;
+const totalQuestions = ALL_QUESTIONS.length;
 let approvedCount = 0;
 let quarantinedCount = 0;
 let pendingCount = 0;
@@ -196,7 +196,7 @@ for (const [groupKey, questions] of similarGroups) {
     }
     
     console.log(`   📝 ${uniqueQuestions[i].question.id} [${uniqueQuestions[i].question.difficulty}]`);
-    console.log(`      \"${uniqueQuestions[i].question.text.substring(0, 80)}...\"`);
+    console.log(`      "${uniqueQuestions[i].question.text.substring(0, 80)}..."`);
     console.log('');
   }
   
@@ -208,9 +208,9 @@ console.log('🔥 Найбільш схожі пари:');
 similarPairs.slice(0, 10).forEach((pair, index) => {
   console.log(`${index + 1}. Схожість: ${pair.similarity.toFixed(1)}`);
   console.log(`   📝 ${pair.question1.id} [${pair.question1.difficulty}]`);
-  console.log(`      \"${pair.question1.text.substring(0, 80)}...\"`);
+  console.log(`      "${pair.question1.text.substring(0, 80)}..."`);
   console.log(`   📝 ${pair.question2.id} [${pair.question2.difficulty}]`);
-  console.log(`      \"${pair.question2.text.substring(0, 80)}...\"`);
+  console.log(`      "${pair.question2.text.substring(0, 80)}..."`);
   console.log('');
 });
 
