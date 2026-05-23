@@ -65,7 +65,7 @@ export function normalizeAiQuestion(raw, themeId, difficulty, index) {
   let correctIndex = typeof raw.correct === 'number' ? raw.correct : raw.correctIndex;
   if (correctIndex == null || correctIndex < 0 || correctIndex > 3) correctIndex = 0;
 
-  return {
+  const q = {
     id: makeQuestionId(themeId, difficulty, index),
     themeId,
     difficulty,
@@ -76,6 +76,11 @@ export function normalizeAiQuestion(raw, themeId, difficulty, index) {
     source: 'ai',
     createdAt: new Date().toISOString(),
   };
+
+  if (raw.topicPath) q.topicPath = raw.topicPath;
+  if (raw.topicNodeId) q.topicNodeId = raw.topicNodeId;
+
+  return q;
 }
 
 export function appendQuestions(themeId, newQuestions) {

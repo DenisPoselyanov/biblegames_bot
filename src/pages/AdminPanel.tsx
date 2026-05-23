@@ -5,6 +5,7 @@ import { ALL_QUESTIONS } from '../data/questions';
 import { loadAllAiQuestions } from '../data/questionDbLoader';
 import { loadAllTopicHierarchies, flattenTopicNodes } from '../data/topicDbLoader';
 import { THEMES } from '../data/themes';
+import { CATEGORIES } from '../data/categories';
 import { DIFFICULTY_LABELS, type Difficulty, type TopicNode, type TopicHierarchyMap } from '../types';
 import { questionQualityValidator } from '../lib/questionQuality';
 import { questionQuarantineManager } from '../lib/questionQuarantine';
@@ -149,8 +150,8 @@ export function AdminPanel() {
   }, [qualityReports, severityFilter]);
 
   const topicsThemes = useMemo(
-    () => THEMES.filter((t) => topicHierarchies[t.id]),
-    [topicHierarchies],
+    () => THEMES.filter((t) => t.categoryId === selectedThemeId || !selectedThemeId),
+    [selectedThemeId],
   );
 
   const selectedTopic = selectedThemeId ? topicHierarchies[selectedThemeId] : null;
@@ -195,14 +196,14 @@ export function AdminPanel() {
             >
               Всі
             </button>
-            {topicsThemes.map((t) => (
+            {CATEGORIES.map((c) => (
               <button
-                key={t.id}
+                key={c.id}
                 type="button"
-                className={`${styles.miniBtn} ${selectedThemeId === t.id ? styles.miniBtnActive : ''}`}
-                onClick={() => setSelectedThemeId(t.id)}
+                className={`${styles.miniBtn} ${selectedThemeId === c.id ? styles.miniBtnActive : ''}`}
+                onClick={() => setSelectedThemeId(c.id)}
               >
-                {t.icon} {t.title}
+                {c.icon} {c.title}
               </button>
             ))}
           </div>

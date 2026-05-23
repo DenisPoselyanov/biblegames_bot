@@ -1,0 +1,420 @@
+.topicMap {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Контрольна панель */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.viewModes {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.viewModeBtn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s var(--ease-out);
+}
+
+.viewModeBtn:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.viewModeBtnActive {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s var(--ease-out);
+}
+
+.filterBtn:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.filterBtnActive {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.searchInput::placeholder {
+  color: var(--text-dim);
+}
+
+/* Легенда */
+.legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Контент */
+.content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  padding-right: 8px;
+}
+
+.content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 3px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+/* Tree View */
+.treeView {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.node {
+  background: var(--surface-hover);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+  margin-bottom: 4px;
+}
+
+.node:hover {
+  background: var(--surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nodeWithChildren {
+  background: linear-gradient(135deg, var(--surface-hover), var(--surface));
+}
+
+.nodeLeaf {
+  background: var(--surface);
+}
+
+.nodeHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.nodeIcon {
+  font-size: 18px;
+}
+
+.nodeTitle {
+  flex: 1;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.expandIcon {
+  font-size: 12px;
+  color: var(--text-dim);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.node:hover .expandIcon {
+  color: var(--accent);
+}
+
+.nodeMeta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.masteryBadge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.questionCount {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* Heatmap View */
+.heatmapGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 8px;
+  padding: 8px;
+}
+
+.heatmapCell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  font-size: 24px;
+}
+
+.heatmapCell:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.heatmapIcon {
+  font-size: 20px;
+}
+
+/* List View */
+.listView {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.listItem {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.listItemContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: var(--surface-hover);
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+}
+
+.listItemContent:hover {
+  background: var(--surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.listItemMain {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.listItemIcon {
+  font-size: 20px;
+}
+
+.listItemText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.listItemTitle {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.listItemDesc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.listItemMeta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--text-dim);
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Адаптивність для мобільних */
+@media (max-width: 768px) {
+  .topicMap {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .controls {
+    gap: 10px;
+  }
+
+  .viewModes {
+    gap: 6px;
+  }
+
+  .viewModeBtn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .filters {
+    gap: 6px;
+  }
+
+  .filterBtn {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  .legend {
+    gap: 12px;
+    font-size: 11px;
+  }
+
+  .heatmapGrid {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 6px;
+  }
+
+  .heatmapCell {
+    font-size: 20px;
+  }
+
+  .listItemContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .listItemMain {
+    width: 100%;
+  }
+
+  .listItemMeta {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+/* Темна тема */
+@media (prefers-color-scheme: dark) {
+  .topicMap {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .node:hover,
+  .listItemContent:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .heatmapCell:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Анімації */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.node,
+.listItemContent,
+.heatmapCell {
+  animation: fadeIn 0.3s var(--ease-out);
+}

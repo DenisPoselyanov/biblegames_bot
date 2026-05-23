@@ -95,6 +95,100 @@
   margin: 0;
 }
 
+.hierarchySection {
+  margin-bottom: 1rem;
+}
+
+.hierarchyToggle {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.hierarchyToggle:hover {
+  background: var(--surface-hover);
+}
+
+.hierarchyTree {
+  margin-top: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.hierarchyNode {
+  margin-bottom: 0.25rem;
+}
+
+.hierarchyNodeBtn {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: rgba(61, 50, 39, 0.2);
+  border: none;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--duration-fast) var(--ease-out);
+  text-align: left;
+}
+
+.hierarchyNodeBtn:hover {
+  background: rgba(61, 50, 39, 0.3);
+}
+
+.hierarchyNodeSelected {
+  background: rgba(201, 162, 39, 0.2) !important;
+  border: 1px solid rgba(201, 162, 39, 0.3) !important;
+}
+
+.hierarchyNodeIcon {
+  font-size: 1.1rem;
+}
+
+.hierarchyNodeTitle {
+  flex: 1;
+  font-weight: 500;
+}
+
+.hierarchyExpandIcon {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.hierarchyMastery {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.hierarchyChildren {
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--border);
+}
+
+.levelDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .levels {
   list-style: none;
   margin: 0;

@@ -318,5 +318,597 @@
     "reference": "1 Самуїл 17:4",
     "source": "ai",
     "createdAt": "2026-05-17T18:49:22.760Z"
+  },
+  {
+    "id": "old-testament-baby-ai-00021",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Хто батько Авраамовий?",
+    "options": [
+      "Ламмах, син Харан",
+      "Терех, син Нахор",
+      "Нефільм, син Серухіма",
+      "Гомер, син Абрамі"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 11:26",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:01:09.547Z"
+  },
+  {
+    "id": "old-testament-baby-ai-00022",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Кто был первым введенным Моисеем в закон?",
+    "options": [
+      "Ной",
+      "Авраам",
+      "Исаак",
+      "Иосиф"
+    ],
+    "correctIndex": 0,
+    "reference": "Втор. 5:2",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:01:09.547Z"
+  },
+  {
+    "id": "old-testament-baby-ai-00023",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Кто был первым царем Израиля?",
+    "options": [
+      "Давид",
+      "Саул",
+      "Моисей",
+      "Осроэн"
+    ],
+    "correctIndex": 1,
+    "reference": "І Цар. 13:25",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:01:09.547Z"
+  },
+  {
+    "id": "old-testament-baby-ai-00024",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Кто был первым из пророков, упоминаемых в Священном Писании?",
+    "options": [
+      "Иезекииль",
+      "Исайя",
+      "Иоил",
+      "Осэа"
+    ],
+    "correctIndex": 3,
+    "reference": "Пр. 8:40",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:01:09.547Z"
+  },
+  {
+    "id": "old-testament-baby-ai-00025",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Как называется закон Божий, который Моисей получил на горе Синай?",
+    "options": [
+      "Закон Горы",
+      "Закон Моисеев",
+      "Тора",
+      "Закон Господень"
+    ],
+    "correctIndex": 3,
+    "reference": "Втор. 5:22",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:01:09.547Z"
+  },
+  {
+    "id": "old-testament-baby-ai-00026",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Хто був батьком Ісуса?",
+    "options": [
+      "Мойсей",
+      "Авраам",
+      "Давид",
+      "Гіркан"
+    ],
+    "correctIndex": 3,
+    "reference": "Лк. 1:27",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:17:23.832Z"
+  },
+  {
+    "id": "old-testament-baby-ai-00027",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Кто записав Старый Завет?",
+    "options": [
+      "Мойсей",
+      "Пророк Исаия",
+      "Апостол Матфей",
+      "Давид"
+    ],
+    "correctIndex": 2,
+    "reference": "Втор. 31:9, Мк. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:17:23.832Z"
+  },
+  {
+    "id": "old-testament-baby-ai-00028",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Кто получил Божественное заповедь на горе Синай?",
+    "options": [
+      "Мойсей",
+      "Авраам",
+      "Исаия",
+      "Давид"
+    ],
+    "correctIndex": 1,
+    "reference": "Втор. 5:22",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:17:23.832Z"
+  },
+  {
+    "id": "old-testament-child-ai-00029",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Який пророк написав Книгу Ісаїя?",
+    "options": [
+      "А) Авраам",
+      "Б) Мойсей",
+      "В) Давид",
+      "Г) Пророк Ісаїя"
+    ],
+    "correctIndex": 3,
+    "reference": "Іс. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:17:45.015Z"
+  },
+  {
+    "id": "old-testament-child-ai-00030",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Як називають Закон, який отримав Мойсей на горі Синай?",
+    "options": [
+      "А) Закон Мойсея",
+      "Б) Закон Божий",
+      "В) Старий Завіт",
+      "Г) Тора"
+    ],
+    "correctIndex": 3,
+    "reference": "Лев. 27:34",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:17:45.015Z"
+  },
+  {
+    "id": "old-testament-child-ai-00031",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Кім є вівцероб, який став королем Ізраїлю?",
+    "options": [
+      "А) Авраам",
+      "Б) Мойсей",
+      "В) Давид",
+      "Г) Саул"
+    ],
+    "correctIndex": 2,
+    "reference": "І Сам. 16:11",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:17:45.015Z"
+  },
+  {
+    "id": "old-testament-youth-ai-00032",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Який бог промовив Аврааму, щоб той вирушив у Сіон?",
+    "options": [
+      "А) Бог єгипетський",
+      "В) Бог ізраїльський",
+      "Б) Бог ассирійський",
+      "Г) Бог грецький"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 13:4",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:18:09.141Z"
+  },
+  {
+    "id": "old-testament-youth-ai-00033",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Який закон був даний Мойсеєм на горі Синай?",
+    "options": [
+      "А) Закон греків",
+      "В) Закон римлян",
+      "Б) Закон єгиптян",
+      "Г) Закон ізраїльський"
+    ],
+    "correctIndex": 3,
+    "reference": "Вих. 20:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:18:09.141Z"
+  },
+  {
+    "id": "old-testament-youth-ai-00034",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Який цар Ізраїлю був вибраний Богом і став переможцем над філістимлянами?",
+    "options": [
+      "А) Саул",
+      "В) Давид",
+      "Б) Соломон",
+      "Г) Авраам"
+    ],
+    "correctIndex": 2,
+    "reference": "1Цар. 17:54",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:18:09.141Z"
+  },
+  {
+    "id": "old-testament-student-ai-00035",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Який був перший патріарх, який з'явився перед Богом у Мамре?",
+    "options": [
+      "Авраам",
+      "Ісаак",
+      "Єсау",
+      "Ієзекіїль"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 18:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:18:29.847Z"
+  },
+  {
+    "id": "old-testament-student-ai-00036",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Ктому було наказано увійти в землю Кнааану?",
+    "options": [
+      "Мойсеєві",
+      "Ісусу Навину",
+      "Осріелю",
+      "Йосифу"
+    ],
+    "correctIndex": 1,
+    "reference": "Вих. 27:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:18:29.847Z"
+  },
+  {
+    "id": "old-testament-student-ai-00037",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Хто створив небо та землю, за словами Біблії?",
+    "options": [
+      "Бог",
+      "Сонм",
+      "Ангара",
+      "Галатея"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z"
+  },
+  {
+    "id": "old-testament-student-ai-00038",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Кто избран был Богом для создания великого народа?",
+    "options": [
+      "Абрахам",
+      "Мойсей",
+      "Давид",
+      "Исая"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 17:4",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z"
+  },
+  {
+    "id": "old-testament-student-ai-00039",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Чий брат был Мелхизедек?",
+    "options": [
+      "Авраама",
+      "Исаака",
+      "Йосифа",
+      "Иуди"
+    ],
+    "correctIndex": 3,
+    "reference": "Втор. 28:5",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z"
+  },
+  {
+    "id": "old-testament-student-ai-00040",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Кто спустился в ад и вывел душу праведного Лазарева?",
+    "options": [
+      "Мойсей",
+      "Ангел",
+      "Давид",
+      "Сатана"
+    ],
+    "correctIndex": 1,
+    "reference": "Евр. 16:19",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z"
+  },
+  {
+    "id": "old-testament-student-ai-00041",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Каково наименование скрижалей с десятью заповедями Бога?",
+    "options": [
+      "Закон Мойсея",
+      "Закон Господний",
+      "Закон Соломонов",
+      "Закон Абрахама"
+    ],
+    "correctIndex": 0,
+    "reference": "Втор. 5:22",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z"
+  },
+  {
+    "id": "old-testament-student-ai-00042",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Какой книгой Пятикнижия является рассказ о поражении Израилем и приходе вверения из народов, которые его окружают?",
+    "options": [
+      "Лев",
+      "Числи",
+      "Второзаконие",
+      "Бытие"
+    ],
+    "correctIndex": 3,
+    "reference": "Суд. 17:2-8",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z"
+  },
+  {
+    "id": "old-testament-student-ai-00043",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Кого Бог послал к Давиду словами: \"Давид, мой сын, я избрал тебя для того, чтобы стать царём Израиля\"?",
+    "options": [
+      "Самуил",
+      "Авраам",
+      "Иегова",
+      "Мойсей"
+    ],
+    "correctIndex": 0,
+    "reference": "1Цар. 17:17",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z"
+  },
+  {
+    "id": "old-testament-student-ai-00044",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Кто сказал пророчество о возрождении израильского народа в последние дни?",
+    "options": [
+      "Иезекиил",
+      "Даниил",
+      "Йосия",
+      "Амос"
+    ],
+    "correctIndex": 1,
+    "reference": "Откр. 14:3",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z"
+  },
+  {
+    "id": "old-testament-student-ai-00045",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Что было устроено Моисеем для Израиля в пустыне?",
+    "options": [
+      "Храм",
+      "Логово",
+      "Система письменности",
+      "Таблетки Закона"
+    ],
+    "correctIndex": 3,
+    "reference": "Чис. 24:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z"
+  },
+  {
+    "id": "old-testament-student-ai-00046",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Кто был первым королем Израиля?",
+    "options": [
+      "Саул",
+      "Давид",
+      "Йосиф",
+      "Соломон"
+    ],
+    "correctIndex": 3,
+    "reference": "Цар. 1:26",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z"
+  },
+  {
+    "id": "old-testament-preacher-ai-00047",
+    "themeId": "old-testament",
+    "difficulty": "preacher",
+    "text": "Який патриарх став батьком двох народів (Іср. 67:7)?",
+    "options": [
+      "Абрахам",
+      "Мойсей",
+      "Йосип",
+      "Давид"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 15:5",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:20:04.814Z"
+  },
+  {
+    "id": "old-testament-preacher-ai-00048",
+    "themeId": "old-testament",
+    "difficulty": "preacher",
+    "text": "Який пророк відомий своїм описом знищення Нубії (Ос. 9:6)?",
+    "options": [
+      "Ісая",
+      "Єремія",
+      "Наум",
+      "Амос"
+    ],
+    "correctIndex": 3,
+    "reference": "Ос. 9:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:20:04.814Z"
+  },
+  {
+    "id": "old-testament-preacher-ai-00049",
+    "themeId": "old-testament",
+    "difficulty": "preacher",
+    "text": "Хто склав Мойсеєві десять заповідей (Дії 7:53)?",
+    "options": [
+      "Мойсей",
+      "Авраам",
+      "Соломон",
+      "Господь"
+    ],
+    "correctIndex": 2,
+    "reference": "Вих. 20:18-19",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:20:04.814Z"
+  },
+  {
+    "id": "old-testament-teacher-ai-00050",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Хто був першим на ім'я Авраам у Старому Заповіті?",
+    "options": [
+      "А) Лев",
+      "Б) Мойсей",
+      "В) Давид",
+      "Г) Авраам"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 1:26-27",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:20:26.289Z"
+  },
+  {
+    "id": "old-testament-teacher-ai-00051",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Кто возвёл храм Божий в Иерусалиме?",
+    "options": [
+      "А) Авраам",
+      "Б) Мойсей",
+      "В) Салмона",
+      "Г) Давид"
+    ],
+    "correctIndex": 3,
+    "reference": "Цар. 3:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:20:26.289Z"
+  },
+  {
+    "id": "old-testament-teacher-ai-00052",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Який пророк описав бачення про відновлення зруйнованого храму в Иерусалиме?",
+    "options": [
+      "А) Ісаїя",
+      "Б) Єремія",
+      "В) Захарія",
+      "Г) Осея"
+    ],
+    "correctIndex": 1,
+    "reference": "Єр. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:20:26.289Z"
+  },
+  {
+    "id": "old-testament-theologian-ai-00053",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Хто був першим патріархом у роду ізраїльтян за Біблією?",
+    "options": [
+      "Ламех",
+      "Енох",
+      "Адам",
+      "Сета"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 5:1-4",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:21:02.847Z"
+  },
+  {
+    "id": "old-testament-theologian-ai-00054",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Яким способом прийшов Мойсей до фараона Егіпту?",
+    "options": [
+      "Він був посланий Ісмаелем",
+      "Він був знайдений у корзині на Нілі",
+      "Він втек з Єгипту",
+      "Він був пророк із Медії"
+    ],
+    "correctIndex": 1,
+    "reference": "Ез. 28:3",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:21:02.847Z"
+  },
+  {
+    "id": "old-testament-theologian-ai-00055",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Ктому Мойсей подав Десять Заповідей на Сінаї?",
+    "options": [
+      "Давиду",
+      "Єгове",
+      "Авраамові",
+      "Ізраїлю"
+    ],
+    "correctIndex": 3,
+    "reference": "Втор. 5:2",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:21:02.847Z"
+  },
+  {
+    "id": "old-testament-theologian-ai-00056",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Який пророк описав Новий Єрусалим?",
+    "options": [
+      "Осія",
+      "Ієремія",
+      "Єзекіїль",
+      "Ісайя"
+    ],
+    "correctIndex": 3,
+    "reference": "Єз. 40:1-5",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:21:02.848Z"
+  },
+  {
+    "id": "old-testament-theologian-ai-00057",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Хто був наступником Давида як король Ізраїлю?",
+    "options": [
+      "Йоав",
+      "Адонія",
+      "Соломон",
+      "Еліа"
+    ],
+    "correctIndex": 2,
+    "reference": "Цар. 1:5-6",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:21:02.848Z"
   }
 ]

@@ -1,11 +1,21 @@
 export type Difficulty = 'baby' | 'child' | 'youth' | 'student' | 'preacher' | 'teacher' | 'theologian';
 
+export interface Category {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  color: string;
+  themeIds: string[];
+}
+
 export interface Theme {
   id: string;
   title: string;
   description: string;
   icon: string;
   color: string;
+  categoryId: string;
 }
 
 export interface Question {
@@ -67,6 +77,11 @@ export interface MasteryState {
   correctStreak: number;
   wrongCount: number;
   totalAnswers: number;
+  // Поля для ієрархічного контексту
+  nodeId?: string; // TopicNode ID для ієрархічного відстеження
+  hierarchyDepth?: number; // Глибина в ієрархії
+  parentMastery?: number; // Mastery батьківського вузла
+  childMastery?: Record<string, number>; // Mastery дочірніх вузлів
 }
 
 export interface StudyPathNode {
@@ -80,13 +95,21 @@ export interface StudyPath {
   nodes: StudyPathNode[];
 }
 
-export type StudyMode = 'practice' | 'review' | 'sprint';
+export type StudyMode = 'practice' | 'review' | 'sprint' | 'adaptive' | 'micro';
 
 export interface StudySession {
   id: string;
   userId: string;
   mode: StudyMode;
   subthemeId: string;
+  // Поля для ієрархічного контексту
+  selectedNodeId?: string; // Обраний TopicNode для практики
+  hierarchyPath?: string[]; // Шлях до обраного вузла (батьківські IDs)
+  hierarchyDepth?: number; // Глибина в ієрархії
+  // Поля для адаптивних тестів
+  adaptiveConfig?: AdaptiveTestConfig;
+  // Поля для мікротренування
+  microConfig?: MicroTrainingConfig;
   startedAt: string;
   finishedAt?: string;
   answers: AnswerEvent[];
@@ -101,6 +124,9 @@ export interface AnswerEvent {
   selectedIndex?: number;
   correctIndex?: number;
   errorTag?: string;
+  // Поля для ієрархічного контексту
+  nodeId?: string; // TopicNode ID
+  hierarchyDepth?: number; // Глибина в ієрархії
 }
 
 export interface DailyTask {
@@ -142,13 +168,13 @@ export const DIFFICULTIES: Difficulty[] = [
 ];
 
 export const DIFFICULTY_LABELS: Record<Difficulty, string> = {
-  baby: '👶 Немовля',
-  child: '🧒 Дитина',
-  youth: '🧑 Юнак',
-  student: '🎓 Учень',
-  preacher: '📖 Проповідник',
-  teacher: '👨‍🏫 Учитель',
-  theologian: '⛪ Богослов',
+  baby: 'Немовля',
+  child: 'Дитина',
+  youth: 'Юнак',
+  student: 'Учень',
+  preacher: 'Проповідник',
+  teacher: 'Учитель',
+  theologian: 'Богослов',
 };
 
 export const DIFFICULTY_POINTS: Record<Difficulty, number> = {
@@ -185,6 +211,13 @@ export interface TopicNode {
   icon: string;
   children: TopicNode[];
   questionCount?: number;
+  // Додаткові поля для інтеграції
+  themeId?: string; // Зв'язок з існуючою Theme
+  depth?: number; // Глибина в ієрархії
+  parentId?: string; // ID батьківського вузла
+  difficulty?: Difficulty; // Рекомендована складність
+  estimatedTime?: number; // Оцінний час навчання в хвилинах
+  aggregateThemeIds?: string[]; // Для вузла "Всі питання" — список themeId для агрегації
 }
 
 /** Мапа ієрархій тем: themeId → кореневий TopicNode */
@@ -290,4 +323,40 @@ export interface SocialProfile {
     allowChallenges: boolean;
     showInLeaderboards: boolean;
   };
+}
+
+// Типи для адаптивних тестів
+export type QuestionSelectionStrategy = 'balanced' | 'weakness-focused' | 'progressive' | 'random';
+
+export interface AdaptiveTestConfig {
+  strategy: QuestionSelectionStrategy;
+  targetDifficulty?: Difficulty;
+  includeParentNodes: boolean; // Включати питання з батьківських вузлів
+  includeChildNodes: boolean; // Включати питання з дочірніх вузлів
+  questionCount: number;
+  timeLimit?: number; // у секундах
+}
+
+// Типи для мікротренування
+export interface MicroTrainingConfig {
+  targetNodeId: string; // Конкретний TopicNode для мікротренування
+  questionCount: number; // 5-10 питань
+  timeLimit: number; // 3-5 хвилин
+  difficulty?: Difficulty; // Фіксована складність або auto
+}
+
+// Типи для рекомендацій
+export type RecommendationType = 'next-logical' | 'weakness' | 'micro-training' | 'review-scheduled';
+
+export interface Recommendation {
+  id: string;
+  type: RecommendationType;
+  nodeId: string; // TopicNode ID
+  title: string;
+  description: string;
+  priority: number; // 1-10, вище = пріоритетніше
+  estimatedTime?: number; // у хвилинах
+  reason: string; // Чому ця рекомендація
+  masteryBefore?: number; // Поточний рівень знань
+  targetMastery?: number; // Цільовий рівень
 }

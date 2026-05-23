@@ -12,6 +12,8 @@ import type {
   Difficulty,
   GlobalStats,
   PlayerProfile,
+  Recommendation,
+  TopicHierarchyMap,
 } from '../types';
 import { DIFFICULTY_POINTS } from '../types';
 import { loadGlobalStats, loadProfile } from '../lib/storage';
@@ -24,6 +26,8 @@ import { flushTelemetry, trackEvent } from '../lib/telemetry';
 import { studyRepo } from '../repos/studyRepo';
 import { playerRepo } from '../repos/playerRepo';
 import { statsRepo } from '../repos/statsRepo';
+import { generateRecommendations } from '../lib/recommendationEngine';
+import { loadAllTopicHierarchies } from '../data/topicDbLoader';
 
 interface PlayerContextValue {
   profile: PlayerProfile;
@@ -43,7 +47,8 @@ interface PlayerContextValue {
   refreshStats: () => void;
   setAvatar: (avatarId: string) => boolean;
   purchaseAvatar: (avatarId: string, price: number) => { purchased: boolean; reason?: 'owned' | 'coins' };
-  recordAnswerEvent: (params: { themeId: string; isCorrect: boolean; questionId: string; errorTag?: string }) => void;
+  recordAnswerEvent: (params: { themeId: string; isCorrect: boolean; questionId: string; errorTag?: string; nodeId?: string }) => void;
+  getRecommendations: (maxRecommendations?: number) => Promise<Recommendation[]>;
 }
 
 const PlayerContext = createContext<PlayerContextValue | null>(null);
@@ -290,22 +295,24 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   );
 
   const recordAnswerEvent = useCallback(
-    ({ themeId, isCorrect, questionId, errorTag }: { themeId: string; isCorrect: boolean; questionId: string; errorTag?: string }) => {
+    ({ themeId, isCorrect, questionId, errorTag, nodeId }: { themeId: string; isCorrect: boolean; questionId: string; errorTag?: string; nodeId?: string }) => {
       const map = new Map(
         STUDY_THEME_GROUPS.flatMap((g) => g.subthemes.map((s) => [s.themeId, s.id] as const)),
       );
       const subthemeId = map.get(themeId) ?? themeId;
+      // Використовуємо nodeId якщо є, інакше subthemeId
+      const effectiveNodeId = nodeId ?? subthemeId;
 
       void studyRepo.appendAnswer({
         questionId,
-        subthemeId,
+        subthemeId: effectiveNodeId, // Оновлено для ієрархічного контексту
         isCorrect,
         answeredAt: new Date().toISOString(),
         errorTag: errorTag ?? (isCorrect ? undefined : 'knowledge-gap'),
       }, userId);
 
       updateProfile((current) => {
-        const nextMasteryState = updateMastery(current.studyMastery[subthemeId], isCorrect, errorTag ?? 'knowledge-gap');
+        const nextMasteryState = updateMastery(current.studyMastery[effectiveNodeId], isCorrect, errorTag ?? 'knowledge-gap');
         const nextAchievements = [...current.achievements];
         if (nextMasteryState.mastery >= 0.99 && !nextAchievements.includes('mastery-expert')) {
           nextAchievements.push('mastery-expert');
@@ -316,14 +323,33 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
           achievements: nextAchievements,
           studyMastery: {
             ...current.studyMastery,
-            [subthemeId]: nextMasteryState,
+            [effectiveNodeId]: nextMasteryState,
           },
         };
       });
 
-      trackEvent('question_answered', { questionId, subthemeId, isCorrect });
+      trackEvent('question_answered', { questionId, subthemeId: effectiveNodeId, nodeId, isCorrect });
     },
     [updateProfile],
+  );
+
+  const getRecommendations = useCallback(
+    async (maxRecommendations = 5): Promise<Recommendation[]> => {
+      try {
+        const topicHierarchy = await loadAllTopicHierarchies();
+        return generateRecommendations(
+          {
+            profile,
+            topicHierarchy,
+          },
+          maxRecommendations,
+        );
+      } catch (error) {
+        console.error('Failed to generate recommendations:', error);
+        return [];
+      }
+    },
+    [profile],
   );
 
   const value = useMemo(
@@ -341,6 +367,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       setAvatar,
       purchaseAvatar,
       recordAnswerEvent,
+      getRecommendations,
     }),
     [
       profile,
@@ -356,6 +383,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       setAvatar,
       purchaseAvatar,
       recordAnswerEvent,
+      getRecommendations,
     ],
   );
 

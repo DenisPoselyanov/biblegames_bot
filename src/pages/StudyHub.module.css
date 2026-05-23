@@ -104,24 +104,72 @@
   font-family: var(--font-serif);
 }
 
-.recommendationBox p {
-  color: var(--text-muted);
-  font-size: var(--fs-md);
-  line-height: var(--lh-relaxed);
+.recommendationsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
   margin-bottom: var(--space-lg);
+}
+
+.recommendationItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  background: rgba(61, 50, 39, 0.3);
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+
+.recIcon {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(201, 162, 39, 0.2);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+
+.recContent {
+  flex: 1;
+}
+
+.recContent h4 {
+  color: var(--gold);
+  font-size: var(--fs-md);
+  margin: 0 0 0.25rem 0;
+  font-weight: 700;
+}
+
+.recContent p {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  margin: 0;
+  line-height: var(--lh-normal);
+}
+
+.recReason {
+  color: var(--text-dim);
+  font-size: var(--fs-xs);
+  margin-top: 0.25rem;
 }
 
 .btnRec {
   display: inline-block;
   background: linear-gradient(135deg, var(--gold), var(--gold-dark));
   color: #1a1208;
-  padding: var(--space-md) var(--space-xl);
+  padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-lg);
   text-decoration: none;
   font-weight: 700;
-  font-size: var(--fs-md);
+  font-size: var(--fs-sm);
   transition: transform var(--duration-fast) var(--ease-out);
   box-shadow: var(--shadow-gold);
+  white-space: nowrap;
 }
 
 .btnRec:active {

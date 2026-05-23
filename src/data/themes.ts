@@ -1,19 +1,14 @@
 import type { Theme } from '../types';
 
 export const THEMES: Theme[] = [
-  {
-    id: 'geography',
-    title: 'Географія',
-    description: 'Місця, річки та країни Святого Письма',
-    icon: '🗺️',
-    color: '#4a7c59',
-  },
+  // ---- Старий Завіт ----
   {
     id: 'old-testament',
     title: 'Старий Завіт',
     description: 'Події та постаті до приходу Христа',
     icon: '📜',
     color: '#8b6914',
+    categoryId: 'old-testament',
   },
   {
     id: 'mosaic-law',
@@ -21,13 +16,7 @@ export const THEMES: Theme[] = [
     description: 'Заповіді, устави та святині',
     icon: '⚖️',
     color: '#5c4d7a',
-  },
-  {
-    id: 'paul',
-    title: 'Апостол Павло',
-    description: 'Подорожі, листи та служіння',
-    icon: '✉️',
-    color: '#b85c38',
+    categoryId: 'old-testament',
   },
   {
     id: 'judges',
@@ -35,6 +24,7 @@ export const THEMES: Theme[] = [
     description: 'Гедеон, Самсон, Девора та інші',
     icon: '⚔️',
     color: '#6b4423',
+    categoryId: 'old-testament',
   },
   {
     id: 'kings',
@@ -42,20 +32,7 @@ export const THEMES: Theme[] = [
     description: 'Давид, Соломон та царства Ізраїля',
     icon: '👑',
     color: '#c9a227',
-  },
-  {
-    id: 'new-testament',
-    title: 'Новий Завіт',
-    description: 'Церква, апостоли та вчення',
-    icon: '✝️',
-    color: '#2e5a88',
-  },
-  {
-    id: 'gospels',
-    title: 'Євангелія',
-    description: 'Життя, слова та чудеса Ісуса',
-    icon: '📖',
-    color: '#3d6b8e',
+    categoryId: 'old-testament',
   },
   {
     id: 'prophets',
@@ -63,6 +40,7 @@ export const THEMES: Theme[] = [
     description: 'Ісая, Єремія, Ілля та інші',
     icon: '🔥',
     color: '#a04020',
+    categoryId: 'old-testament',
   },
   {
     id: 'psalms',
@@ -70,27 +48,7 @@ export const THEMES: Theme[] = [
     description: 'Псалми Давида та поклоніння',
     icon: '🎵',
     color: '#7a5c8a',
-  },
-  {
-    id: 'parables',
-    title: 'Притчі',
-    description: 'Притчі Ісуса Христа',
-    icon: '🌾',
-    color: '#6b8e4e',
-  },
-  {
-    id: 'commandments',
-    title: 'Десять заповідей',
-    description: 'Божий закон на Синаї',
-    icon: '📋',
-    color: '#4a5568',
-  },
-  {
-    id: 'miracles',
-    title: 'Чудеса Ісуса',
-    description: 'Зцілення, воскресіння та знамення',
-    icon: '✨',
-    color: '#d4a017',
+    categoryId: 'old-testament',
   },
   {
     id: 'patriarchs',
@@ -98,6 +56,64 @@ export const THEMES: Theme[] = [
     description: 'Авраам, Ісак, Яків та Йосиф',
     icon: '🏕️',
     color: '#8b7355',
+    categoryId: 'old-testament',
+  },
+  {
+    id: 'geography',
+    title: 'Географія',
+    description: 'Місця, річки та країни Святого Письма',
+    icon: '🗺️',
+    color: '#4a7c59',
+    categoryId: 'old-testament',
+  },
+  {
+    id: 'commandments',
+    title: 'Десять заповідей',
+    description: 'Божий закон на Синаї',
+    icon: '📋',
+    color: '#4a5568',
+    categoryId: 'old-testament',
+  },
+  // ---- Новий Завіт ----
+  {
+    id: 'new-testament',
+    title: 'Новий Завіт',
+    description: 'Церква, апостоли та вчення',
+    icon: '✝️',
+    color: '#2e5a88',
+    categoryId: 'new-testament',
+  },
+  {
+    id: 'gospels',
+    title: 'Євангелія',
+    description: 'Життя, слова та чудеса Ісуса',
+    icon: '📖',
+    color: '#3d6b8e',
+    categoryId: 'new-testament',
+  },
+  {
+    id: 'paul',
+    title: 'Апостол Павло',
+    description: 'Подорожі, листи та служіння',
+    icon: '✉️',
+    color: '#b85c38',
+    categoryId: 'new-testament',
+  },
+  {
+    id: 'parables',
+    title: 'Притчі',
+    description: 'Притчі Ісуса Христа',
+    icon: '🌾',
+    color: '#6b8e4e',
+    categoryId: 'new-testament',
+  },
+  {
+    id: 'miracles',
+    title: 'Чудеса Ісуса',
+    description: 'Зцілення, воскресіння та знамення',
+    icon: '✨',
+    color: '#d4a017',
+    categoryId: 'new-testament',
   },
   {
     id: 'revelation',
@@ -105,6 +121,7 @@ export const THEMES: Theme[] = [
     description: 'Апокаліпсис та останні події',
     icon: '🌅',
     color: '#9b2335',
+    categoryId: 'new-testament',
   },
 ];
 

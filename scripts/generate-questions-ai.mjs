@@ -5,15 +5,19 @@
  * npm run generate-ai -- --theme geography --count 50
  * npm run generate-ai -- --theme paul --count 30 --difficulty medium
  * npm run generate-ai -- --all --count 20
+ * npm run generate-ai -- --group old-testament --count 100
+ * npm run generate-ai -- --topic geography-sub-1 --count 20
+ * npm run generate-ai -- --topic gospels-sub-2-sub-1 --count 10 --difficulty student
  */
 
-import { DIFFICULTIES, THEME_IDS, getTheme } from './lib/themes-config.mjs';
+import { DIFFICULTIES, THEME_IDS, GROUPS, getTheme, getGroup, getTopicContext, loadTopicHierarchy, findNodeById, flattenTopicNodes } from './lib/themes-config.mjs';
 import { checkOllama, extractJsonArray, queryOllama } from './lib/ollama.mjs';
 import {
   appendQuestions,
   getGlobalStats,
   loadThemeQuestions,
   normalizeAiQuestion,
+  makeQuestionId,
 } from './lib/question-db.mjs';
 
 const DEFAULT_MODEL = process.env.OLLAMA_MODEL || 'mistral';
@@ -23,6 +27,8 @@ function parseArgs() {
   const args = process.argv.slice(2);
   const opts = {
     theme: null,
+    group: null,
+    topic: null,
     all: false,
     count: 30,
     difficulty: 'all',
@@ -31,26 +37,138 @@ function parseArgs() {
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--theme' && args[i + 1]) opts.theme = args[++i];
+    else if (args[i] === '--group' && args[i + 1]) opts.group = args[++i];
+    else if (args[i] === '--topic' && args[i + 1]) opts.topic = args[++i];
     else if (args[i] === '--all') opts.all = true;
     else if (args[i] === '--count' && args[i + 1]) opts.count = parseInt(args[++i], 10);
     else if (args[i] === '--difficulty' && args[i + 1]) opts.difficulty = args[++i];
     else if (args[i] === '--model' && args[i + 1]) opts.model = args[++i];
   }
 
-  if (!opts.all && (!opts.theme || !getTheme(opts.theme))) {
-    console.error('❌ Вкажи --theme <id> або --all');
+  if (!opts.all && !opts.theme && !opts.group && !opts.topic) {
+    console.error('❌ Вкажи один з: --theme <id>, --group <id>, --topic <nodeId> або --all');
     console.error('Теми:', THEME_IDS.join(', '));
+    console.error('Групи:', GROUPS.map(g => g.id).join(', '));
+    process.exit(1);
+  }
+
+  if (opts.topic && opts.theme) {
+    console.error('❌ --topic і --theme несумісні. Використовуй один з них.');
     process.exit(1);
   }
 
   return opts;
 }
 
-function buildPrompt(theme, difficulty, count) {
+/** Визначити themeId на основі опцій */
+function resolveTargetThemeIds(opts) {
+  if (opts.all) {
+    return THEME_IDS;
+  }
+  if (opts.theme) {
+    return [opts.theme];
+  }
+  if (opts.group) {
+    const group = getGroup(opts.group);
+    return group ? group.themeIds : [];
+  }
+  if (opts.topic) {
+    // Спробуємо знайти topic Node в усіх файлах
+    const allNodes = [];
+    for (const file of THEME_IDS) {
+      const root = loadTopicHierarchy(file);
+      if (root) {
+        allNodes.push(...flattenTopicNodes(root));
+      }
+    }
+    // Також шукаємо в об'єднаному файлі
+    const mergedRoot = loadTopicHierarchy('topics-db');
+    if (mergedRoot) {
+      allNodes.push(...flattenTopicNodes(mergedRoot));
+    }
+    const match = allNodes.find(({ node }) => node.id === opts.topic);
+    if (match) {
+      // Якщо є themeId — використовуємо його
+      if (match.node.themeId) {
+        return [match.node.themeId];
+      }
+      // Якщо це aggregateThemeIds — повертаємо всі
+      if (match.node.aggregateThemeIds) {
+        return match.node.aggregateThemeIds.filter(id => THEME_IDS.includes(id));
+      }
+      // Шукаємо в батьках themeId
+      console.error(`  ❌ Topic node "${opts.topic}" не має themeId. Вкажи --theme явно.`);
+      process.exit(1);
+    }
+    console.error(`  ❌ Topic node "${opts.topic}" не знайдено в жодному файлі topics-db.`);
+    process.exit(1);
+  }
+  return [];
+}
+
+/** Отримати контекст для промпту */
+function resolveContext(opts) {
+  if (opts.topic) {
+    // Шукаємо вузол у всіх файлах
+    for (const file of [...THEME_IDS, 'topics-db']) {
+      const root = loadTopicHierarchy(file);
+      if (!root) continue;
+      const node = findNodeById(root, opts.topic);
+      if (node) {
+        // Будуємо шлях
+        const path = buildNodePath(root, opts.topic, []);
+        return {
+          title: node.title,
+          description: node.description || '',
+          path: path || [],
+        };
+      }
+    }
+  }
+  if (opts.theme) {
+    const theme = getTheme(opts.theme);
+    if (theme) {
+      return {
+        title: theme.title,
+        description: theme.context,
+        path: [theme.title],
+      };
+    }
+  }
+  if (opts.group) {
+    const group = getGroup(opts.group);
+    if (group) {
+      return {
+        title: group.title,
+        description: group.description,
+        path: [group.title],
+      };
+    }
+  }
+  return { title: '', description: '', path: [] };
+}
+
+function buildNodePath(node, targetId, path) {
+  const current = [...path, node.title];
+  if (node.id === targetId) return current;
+  if (Array.isArray(node.children)) {
+    for (const child of node.children) {
+      const result = buildNodePath(child, targetId, current);
+      if (result) return result;
+    }
+  }
+  return null;
+}
+
+function buildPrompt(context, difficulty, count) {
+  const pathStr = context.path.length > 1
+    ? `Шлях: ${context.path.join(' > ')}`
+    : `Тема: ${context.title}`;
+
   return `Ти експерт з Біблії. Створи рівно ${count} УНІКАЛЬНИХ вікторинних питань українською.
 
-Тема: ${theme.title}
-Контекст: ${theme.context}
+${pathStr}
+Контекст: ${context.description}
 Складність: ${difficulty}
   - baby (👶 Немовля): дуже прості, базові факти, які знає кожен
   - child (🧒 Дитина): легкі питання, основи віри
@@ -73,29 +191,66 @@ function buildPrompt(theme, difficulty, count) {
 ]`;
 }
 
-function validateBatch(items, themeId, difficulty, startIndex) {
+function normalizeAiQuestionExtended(raw, themeId, difficulty, index, topicPath, topicNodeId) {
+  const options = raw.options.map((o) => String(o).trim()).filter(Boolean);
+  if (options.length !== 4) return null;
+
+  let correctIndex = typeof raw.correct === 'number' ? raw.correct : raw.correctIndex;
+  if (correctIndex == null || correctIndex < 0 || correctIndex > 3) correctIndex = 0;
+
+  const q = {
+    id: makeQuestionId(themeId, difficulty, index),
+    themeId,
+    difficulty,
+    text: String(raw.text).trim(),
+    options,
+    correctIndex,
+    reference: raw.ref || raw.reference || undefined,
+    source: 'ai',
+    createdAt: new Date().toISOString(),
+  };
+
+  if (topicPath && topicPath.length > 0) {
+    q.topicPath = topicPath.join(' > ');
+  }
+  if (topicNodeId) {
+    q.topicNodeId = topicNodeId;
+  }
+
+  return q;
+}
+
+function validateBatch(items, themeId, difficulty, startIndex, topicPath, topicNodeId) {
   const valid = [];
   for (let i = 0; i < items.length; i++) {
-    const q = normalizeAiQuestion(items[i], themeId, difficulty, startIndex + i);
+    const q = normalizeAiQuestionExtended(items[i], themeId, difficulty, startIndex + i, topicPath, topicNodeId);
     if (q) valid.push(q);
   }
   return valid;
 }
 
-async function generateBatch(themeId, difficulty, count, model) {
-  const theme = getTheme(themeId);
+async function generateBatch(themeId, difficulty, count, model, topicPath, topicNodeId, contextOverride) {
   const existing = loadThemeQuestions(themeId);
   const startIndex = existing.length + 1;
 
-  const prompt = buildPrompt(theme, difficulty, Math.min(count, BATCH_SIZE));
+  const context = contextOverride || (() => {
+    const theme = getTheme(themeId);
+    return {
+      title: theme?.title || themeId,
+      description: theme?.context || '',
+      path: [theme?.title || themeId],
+    };
+  })();
+
+  const prompt = buildPrompt(context, difficulty, Math.min(count, BATCH_SIZE));
   console.log(`  ⏳ ${themeId} / ${difficulty}: запит ${Math.min(count, BATCH_SIZE)} питань...`);
 
   const raw = await queryOllama(prompt, model);
   const parsed = extractJsonArray(raw);
-  return validateBatch(parsed, themeId, difficulty, startIndex);
+  return validateBatch(parsed, themeId, difficulty, startIndex, topicPath, topicNodeId);
 }
 
-async function generateForTheme(themeId, totalCount, difficultyFilter, model) {
+async function generateForTheme(themeId, totalCount, difficultyFilter, model, topicPath, topicNodeId, contextOverride) {
   const diffs =
     difficultyFilter === 'all' ? DIFFICULTIES : [difficultyFilter];
 
@@ -109,7 +264,7 @@ async function generateForTheme(themeId, totalCount, difficultyFilter, model) {
     while (remaining > 0 && attempts < 5) {
       const batchCount = Math.min(remaining, BATCH_SIZE);
       try {
-        const batch = await generateBatch(themeId, diff, batchCount, model);
+        const batch = await generateBatch(themeId, diff, batchCount, model, topicPath, topicNodeId, contextOverride);
         if (batch.length === 0) {
           attempts++;
           continue;
@@ -130,10 +285,20 @@ async function generateForTheme(themeId, totalCount, difficultyFilter, model) {
 
 async function main() {
   const opts = parseArgs();
+  const themeIds = resolveTargetThemeIds(opts);
+  const context = resolveContext(opts);
+
+  if (themeIds.length === 0) {
+    console.error('❌ Не вдалося визначити themeId для генерації.');
+    process.exit(1);
+  }
 
   console.log('🤖 Локальна AI — генератор питань (Ollama)');
   console.log('==========================================');
   console.log(`Модель: ${opts.model}`);
+  if (opts.topic) console.log(`Topic node: ${opts.topic}`);
+  if (context.path.length > 0) console.log(`Шлях: ${context.path.join(' > ')}`);
+  console.log(`Цільові теми: ${themeIds.join(', ')}`);
   console.log('');
 
   console.log('🔗 Перевірка Ollama...');
@@ -148,16 +313,18 @@ async function main() {
     process.exit(1);
   }
 
-  const themes = opts.all ? THEME_IDS : [opts.theme];
   let grandTotal = 0;
 
-  for (const themeId of themes) {
+  for (const themeId of themeIds) {
     console.log(`\n📚 ${themeId}`);
     const added = await generateForTheme(
       themeId,
       opts.count,
       opts.difficulty,
       opts.model,
+      context.path,
+      opts.topic,
+      context,
     );
     grandTotal += added;
   }

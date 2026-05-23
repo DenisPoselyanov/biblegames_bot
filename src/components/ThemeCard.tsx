@@ -10,11 +10,28 @@ interface ThemeCardProps {
 }
 
 export function ThemeCard({ theme, points, mastery = 0 }: ThemeCardProps) {
-  const questionsCount = getQuestionCountByTheme(theme.id);
+  const isTopicNode = (theme as any)._isTopicNode;
+  const isAggregateNode = (theme as any)._isAggregateNode;
+  const isThemeNode = (theme as any)._isThemeNode;
+  const baseThemeId = (theme as any)._baseThemeId;
+  const nodeId = (theme as any)._nodeId;
+  const themeId = (theme as any)._themeId;
+  const questionsCount = isTopicNode ? 0 : isAggregateNode ? 0 : isThemeNode ? getQuestionCountByTheme(themeId ?? theme.id) : getQuestionCountByTheme(theme.id);
+
+  let toPath: string;
+  if (isAggregateNode) {
+    toPath = `/play/study/themes/${baseThemeId}/${nodeId}`;
+  } else if (isThemeNode) {
+    toPath = `/play/study/themes/${themeId}`;
+  } else if (isTopicNode) {
+    toPath = `/play/study/themes/${baseThemeId}/${theme.id}`;
+  } else {
+    toPath = `/play/study/themes/${theme.id}`;
+  }
 
   return (
     <Link
-      to={`/play/study/themes/${theme.id}`}
+      to={toPath}
       className={styles.card}
       style={{ '--accent': theme.color } as React.CSSProperties}
     >

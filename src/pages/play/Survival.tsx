@@ -272,7 +272,7 @@ export function Survival() {
           <div className={styles.statItem}>
             <span className={styles.statLabel}>Рівень</span>
             <span className={`${styles.statValue} ${styles.statDifficulty}`}>
-              {DIFFICULTY_LABELS[difficulty].replace(/^[^\s]+\s/, '')}
+              {DIFFICULTY_LABELS[difficulty]}
             </span>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import type { Difficulty, Question } from '../types';
+import type { Difficulty, Question, TopicNode } from '../types';
 import { QUESTIONS_PER_LEVEL } from '../types';
 import { EXTRA_QUESTIONS } from './questions-extra';
 
@@ -365,6 +365,30 @@ export async function getQuestionsForLevelAsync(
   return pickQuestionsFromPool(pool, count);
 }
 
+/**
+ * Отримати питання для категорії (агрегація з усіх тем категорії)
+ */
+export async function getQuestionsForCategoryAsync(
+  categoryId: string,
+  themeIds: string[],
+  difficulty: Difficulty,
+  count = QUESTIONS_PER_LEVEL,
+): Promise<Question[]> {
+  const embedded = ALL_QUESTIONS.filter(
+    (q) => themeIds.includes(q.themeId) && q.difficulty === difficulty,
+  );
+  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+  const aiPromises = themeIds.map((tid) =>
+    loadAiQuestionsForTheme(tid).then((ai) =>
+      ai.filter((q) => q.difficulty === difficulty),
+    ),
+  );
+  const aiResults = await Promise.all(aiPromises);
+  const aiQuestions = aiResults.flat();
+  const pool = [...embedded, ...aiQuestions];
+  return pickQuestionsFromPool(pool, count);
+}
+
 /** Кількість питань з урахуванням AI (для UI) */
 export async function getQuestionCountByDifficultyAsync(
   themeId: string,
@@ -375,6 +399,245 @@ export async function getQuestionCountByDifficultyAsync(
   const ai = await loadAiQuestionsForTheme(themeId);
   const aiCount = ai.filter((q) => q.difficulty === difficulty).length;
   return embedded + aiCount;
+}
+
+/**
+ * Отримати кількість питань для категорії (агрегація з усіх тем категорії)
+ */
+export async function getQuestionCountByCategoryAsync(
+  themeIds: string[],
+  difficulty: Difficulty,
+): Promise<number> {
+  let count = 0;
+  for (const tid of themeIds) {
+    count += getQuestionCountByDifficulty(tid, difficulty);
+    try {
+      const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+      const ai = await loadAiQuestionsForTheme(tid);
+      count += ai.filter((q) => q.difficulty === difficulty).length;
+    } catch {
+      // игнорируем ошибки
+    }
+  }
+  return count;
+}
+
+/**
+ * Фільтрація питань за ієрархією тем (TopicNode)
+ */
+export function filterQuestionsByHierarchy(
+  questions: Question[],
+  targetNodeId: string,
+  topicHierarchy: TopicNode,
+  includeParentNodes = false,
+  includeChildNodes = false,
+): Question[] {
+  const targetNode = findNodeById(topicHierarchy, targetNodeId);
+  if (!targetNode) {
+    return questions;
+  }
+
+  const relevantThemeIds = new Set<string>();
+
+  // Використовуємо themeId кореневого вузла ієрархії для фільтрації
+  const rootThemeId = topicHierarchy.id;
+  relevantThemeIds.add(rootThemeId);
+
+  // Додаємо тему самого вузла (якщо є themeId)
+  if (targetNode.themeId) {
+    relevantThemeIds.add(targetNode.themeId);
+  }
+
+  // Додаємо батьківські вузли
+  if (includeParentNodes) {
+    const parentPath = findParentPath(topicHierarchy, targetNodeId);
+    parentPath.forEach((node) => {
+      if (node.themeId) relevantThemeIds.add(node.themeId);
+    });
+  }
+
+  // Додаємо дочірні вузли
+  if (includeChildNodes) {
+    const childNodes = findAllChildNodes(targetNode);
+    childNodes.forEach((node) => {
+      if (node.themeId) relevantThemeIds.add(node.themeId);
+    });
+  }
+
+  // Фільтруємо за themeId
+  const filtered = questions.filter((q) => relevantThemeIds.has(q.themeId));
+  
+  return filtered;
+}
+
+/**
+ * Отримання питань для конкретного вузла ієрархії
+ */
+export async function getQuestionsForNodeAsync(
+  nodeId: string,
+  topicHierarchy: TopicNode,
+  difficulty?: Difficulty,
+  count = QUESTIONS_PER_LEVEL,
+  includeParentNodes = false,
+  includeChildNodes = false,
+): Promise<Question[]> {
+  const embedded = filterQuestionsByHierarchy(
+    QUESTIONS,
+    nodeId,
+    topicHierarchy,
+    includeParentNodes,
+    includeChildNodes,
+  );
+
+  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+  
+  // Завантажуємо AI питання для всіх релевантних тем
+  const relevantThemeIds = new Set<string>();
+  const targetNode = findNodeById(topicHierarchy, nodeId);
+  
+  if (targetNode) {
+    if (targetNode.themeId) relevantThemeIds.add(targetNode.themeId);
+    
+    if (includeParentNodes) {
+      findParentPath(topicHierarchy, nodeId).forEach((node) => {
+        if (node.themeId) relevantThemeIds.add(node.themeId);
+      });
+    }
+    
+    if (includeChildNodes) {
+      findAllChildNodes(targetNode).forEach((node) => {
+        if (node.themeId) relevantThemeIds.add(node.themeId);
+      });
+    }
+  }
+
+  if (relevantThemeIds.size === 0) {
+    relevantThemeIds.add(nodeId);
+  }
+
+  // Завантажуємо AI питання для кожної теми
+  const aiQuestions: Question[] = [];
+  for (const themeId of relevantThemeIds) {
+    try {
+      const ai = await loadAiQuestionsForTheme(themeId);
+      aiQuestions.push(...ai);
+    } catch (error) {
+      // Игноруємо помилки завантаження для тем без AI питань
+    }
+  }
+
+  // Об'єднуємо вбудовані та AI питання
+  let pool = [...embedded, ...aiQuestions];
+
+  // Фільтруємо за складністю, якщо вказано
+  if (difficulty) {
+    pool = pool.filter((q) => q.difficulty === difficulty);
+  }
+
+  return pickQuestionsFromPool(pool, count);
+}
+
+/**
+ * Отримання кількості питань для вузла ієрархії
+ */
+export async function getQuestionCountForNodeAsync(
+  nodeId: string,
+  topicHierarchy: TopicNode,
+  difficulty?: Difficulty,
+): Promise<number> {
+  const embedded = filterQuestionsByHierarchy(
+    QUESTIONS,
+    nodeId,
+    topicHierarchy,
+    false,
+    false,
+  );
+
+  let count = embedded.length;
+  
+  if (difficulty) {
+    count = embedded.filter((q) => q.difficulty === difficulty).length;
+  }
+
+  // Додаємо AI питання
+  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+  const relevantThemeIds = new Set<string>();
+  const targetNode = findNodeById(topicHierarchy, nodeId);
+  
+  if (targetNode && targetNode.themeId) {
+    relevantThemeIds.add(targetNode.themeId);
+  } else {
+    relevantThemeIds.add(nodeId);
+  }
+
+  for (const themeId of relevantThemeIds) {
+    try {
+      const ai = await loadAiQuestionsForTheme(themeId);
+      if (difficulty) {
+        count += ai.filter((q) => q.difficulty === difficulty).length;
+      } else {
+        count += ai.length;
+      }
+    } catch (error) {
+      // Игноруємо помилки
+    }
+  }
+
+  return count;
+}
+
+// Допоміжні функції для роботи з ієрархією
+
+function findNodeById(node: TopicNode, targetId: string): TopicNode | null {
+  if (node.id === targetId) {
+    return node;
+  }
+  
+  if (node.children && node.children.length > 0) {
+    for (const child of node.children) {
+      const found = findNodeById(child, targetId);
+      if (found) return found;
+    }
+  }
+  
+  return null;
+}
+
+function findParentPath(
+  node: TopicNode,
+  targetId: string,
+  path: TopicNode[] = [],
+): TopicNode[] {
+  if (node.id === targetId) {
+    return path;
+  }
+
+  if (node.children && node.children.length > 0) {
+    for (const child of node.children) {
+      const result = findParentPath(child, targetId, [...path, node]);
+      if (result.length > 0 || child.id === targetId) {
+        if (child.id === targetId) {
+          return [...path, node];
+        }
+        return result;
+      }
+    }
+  }
+
+  return [];
+}
+
+function findAllChildNodes(node: TopicNode): TopicNode[] {
+  const children: TopicNode[] = [];
+  
+  if (node.children && node.children.length > 0) {
+    for (const child of node.children) {
+      children.push(child);
+      children.push(...findAllChildNodes(child));
+    }
+  }
+  
+  return children;
 }
 
 export function isLevelCompleted(

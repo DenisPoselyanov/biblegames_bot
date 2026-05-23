@@ -63,3 +63,9 @@ export function extractJsonArray(text) {
   if (!match) throw new Error('JSON-масив не знайдено у відповіді AI');
   return JSON.parse(match[0]);
 }
+
+export function extractJsonObject(text) {
+  const match = text.match(/\{[\s\S]*\}/);
+  if (!match) throw new Error('JSON-об\'єкт не знайдено у відповіді AI');
+  return JSON.parse(match[0]);
+}

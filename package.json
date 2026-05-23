@@ -14,6 +14,7 @@
     "questions:stats": "node scripts/analyze-questions.mjs",
     "analyze-questions": "node scripts/analyze-questions.mjs",
     "analyze-quality": "tsx scripts/analyzeQuestionQuality.ts",
+    "analyze-topics": "node scripts/analyze-topics.mjs",
     "analyze-pools": "tsx scripts/analyzeQuestionPools.ts",
     "test-classification": "tsx scripts/testQuestionClassification.ts",
     "test-social": "tsx scripts/testSocialFeatures.ts",
@@ -21,7 +22,8 @@
     "bot:install": "npm install --prefix bot",
     "server": "npm run start --prefix server",
     "server:dev": "npm run dev --prefix server",
-    "server:install": "npm install --prefix server"
+    "server:install": "npm install --prefix server",
+    "ai-topic-edit": "node scripts/ai-topic-edit.mjs"
   },
   "dependencies": {
     "@twa-dev/sdk": "^8.0.2",

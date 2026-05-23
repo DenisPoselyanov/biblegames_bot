@@ -2,15 +2,17 @@
 /**
  * AI-генератор ієрархії тем та підтем (Ollama)
  *
- * npm run generate-topics-ai -- --theme geography
- * npm run generate-topics-ai -- --all
+ * npm run generate-topics -- --theme geography
+ * npm run generate-topics -- --all
+ * npm run generate-topics -- --group old-testament
+ * npm run generate-topics -- --group new-testament
  */
 
 import fs from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { THEME_IDS, getTheme } from './lib/themes-config.mjs';
-import { checkOllama, extractJsonArray, queryOllama } from './lib/ollama.mjs';
+import { THEMES, THEME_IDS, getTheme, GROUPS, getGroup, flattenTopicNodes } from './lib/themes-config.mjs';
+import { checkOllama, extractJsonObject, queryOllama } from './lib/ollama.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const TOPICS_DIR = join(__dirname, '..', 'data', 'topics-db');
@@ -41,17 +43,20 @@ function saveTopics(themeId, data) {
   fs.writeFileSync(topicsPath(themeId), JSON.stringify(data, null, 2), 'utf8');
 }
 
-function buildPrompt(theme) {
-  return `Ти експерт з Біблії. Створи ієрархічну структуру тем для категорії "${theme.title}".
+function buildSinglePrompt(theme) {
+  return `Ти експерт з Біблії. Створи ієрархічну структуру підтем для категорії "${theme.title}".
 
 Контекст: ${theme.context}
 
 Правила:
-1. Створи 1 кореневий вузол з назвою теми
-2. Додай 3-5 підтем першого рівня
-3. Кожна підтема може мати 2-4 підпідтеми (другий рівень)
-4. Кожен вузол має: "title" (назва), "description" (короткий опис 1 речення), "icon" (емодзі)
-5. Глибина: максимум 2-3 рівні
+1. Створи 1 кореневий вузол з назвою теми та id "${theme.id}"
+2. Додай 1 вузол-обгортку "Усі питання з цієї теми" (aggregateThemeIds: ["${theme.id}"])
+3. Додай 3-5 підтем першого рівня
+4. Кожна підтема може мати 1-3 підпідтеми (другий рівень)
+5. Кожен вузол має: "id", "title", "description", "icon" (емодзі), "children"
+6. Вузли, що відповідають існуючим темам, мають поле "themeId" (наприклад "${theme.id}")
+7. Максимум 3 рівні глибини
+8. id повинні бути унікальними, формат: "${theme.id}-all", "${theme.id}-sub-1", "${theme.id}-sub-1-sub-1", "${theme.id}-sub-2" і т.д.
 
 Відповідай ТІЛЬКИ JSON:
 
@@ -61,6 +66,15 @@ function buildPrompt(theme) {
   "description": "Опис всієї теми",
   "icon": "📖",
   "children": [
+    {
+      "id": "${theme.id}-all",
+      "title": "Усі питання з цієї теми",
+      "description": "Всі питання з ${theme.title}",
+      "icon": "📚",
+      "themeId": "${theme.id}",
+      "aggregateThemeIds": ["${theme.id}"],
+      "children": []
+    },
     {
       "id": "${theme.id}-sub-1",
       "title": "Назва підтеми 1",
@@ -80,10 +94,84 @@ function buildPrompt(theme) {
 }`;
 }
 
+function buildGroupPrompt(group) {
+  const themeContexts = group.themeIds
+    .map((tid) => {
+      const t = getTheme(tid);
+      return t ? `  - "${tid}": ${t.title} — ${t.context}` : `  - "${tid}"`;
+    })
+    .join('\n');
+
+  return `Ти експерт з Біблії. Створи групову ієрархію для "${group.title}".
+
+Опис: ${group.description}
+
+Теми, які входять до цієї групи:
+${themeContexts}
+
+Правила:
+1. Створи 1 кореневий вузол з назвою "${group.title}" та id "${group.id}"
+2. Додай 1 вузол-обгортку "Усі питання з цієї теми" з aggregateThemeIds: ${JSON.stringify(group.themeIds)}
+3. Для кожної теми зі списку створи дочірній вузол з:
+   - id: як id теми (наприклад "gospels", "geography")
+   - title: назва теми
+   - description: короткий опис (1 речення)
+   - icon: емодзі
+   - themeId: id теми (наприклад "gospels")
+   - children: порожній масив або 2-4 підтеми
+4. Кожен вузол, що маппиться на існуючу тему, повинен мати поле "themeId"
+5. Максимум 2 рівні глибини після кореня
+
+Відповідай ТІЛЬКИ JSON:
+
+{
+  "id": "${group.id}",
+  "title": "${group.title}",
+  "description": "Опис групи",
+  "icon": "${group.icon}",
+  "children": [
+    {
+      "id": "${group.id}-all",
+      "title": "Усі питання з цієї теми",
+      "description": "Всі питання з ${group.title}",
+      "icon": "📚",
+      "themeId": "${group.themeIds[0]}",
+      "aggregateThemeIds": ${JSON.stringify(group.themeIds)},
+      "children": []
+    },
+    {
+      "id": "${group.themeIds[1]}",
+      "title": "Назва теми",
+      "description": "Опис теми",
+      "icon": "✝️",
+      "themeId": "${group.themeIds[1]}",
+      "children": [
+        {
+          "id": "${group.themeIds[1]}-all",
+          "title": "Усі питання з цієї теми",
+          "description": "Всі питання про тему",
+          "icon": "📖",
+          "themeId": "${group.themeIds[1]}",
+          "aggregateThemeIds": ["${group.themeIds[1]}"],
+          "children": []
+        },
+        {
+          "id": "${group.themeIds[1]}-sub-1",
+          "title": "Підтема 1",
+          "description": "Опис",
+          "icon": "📜",
+          "children": []
+        }
+      ]
+    }
+  ]
+}`;
+}
+
 function validateTopicNode(node, parentId) {
   if (!node || typeof node !== 'object') return null;
   const id = node.id || `${parentId || 'root'}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-  return {
+  const validated = {
     id,
     title: String(node.title || 'Без назви').trim(),
     description: String(node.description || '').trim(),
@@ -92,6 +180,9 @@ function validateTopicNode(node, parentId) {
       ? node.children.map(c => validateTopicNode(c, id)).filter(Boolean)
       : [],
   };
+  if (node.themeId) validated.themeId = node.themeId;
+  if (node.aggregateThemeIds) validated.aggregateThemeIds = node.aggregateThemeIds;
+  return validated;
 }
 
 async function generateForTheme(themeId, model) {
@@ -108,22 +199,17 @@ async function generateForTheme(themeId, model) {
   }
 
   console.log(`  ⏳ ${theme.title}: генерую ієрархію...`);
-  const prompt = buildPrompt(theme);
+  const prompt = buildSinglePrompt(theme);
   const raw = await queryOllama(prompt, model);
-  const parsed = extractJsonArray(raw);
-
-  let root;
-  if (parsed && parsed.length > 0) {
-    root = validateTopicNode(parsed[0], themeId);
-  } else {
-    try {
-      const single = JSON.parse(raw);
-      root = validateTopicNode(single, themeId);
-    } catch {
-      console.error(`  ❌ ${theme.title}: не вдалося розпарсити відповідь`);
-      return null;
-    }
+  let parsed;
+  try {
+    parsed = extractJsonObject(raw);
+  } catch {
+    console.error(`  ❌ ${theme.title}: не вдалося розпарсити відповідь`);
+    return null;
   }
+
+  let root = validateTopicNode(parsed, themeId);
 
   if (!root) {
     console.error(`  ❌ ${theme.title}: кореневий вузол не пройшов валідацію`);
@@ -136,7 +222,45 @@ async function generateForTheme(themeId, model) {
   return root;
 }
 
+async function generateForGroup(groupId, model) {
+  const group = getGroup(groupId);
+  if (!group) {
+    console.error(`  ❌ Групу не знайдено: ${groupId}`);
+    return null;
+  }
+
+  const existing = loadExistingTopics(groupId);
+  if (existing) {
+    console.log(`  ⏩ ${group.title}: вже існує, пропускаю`);
+    return existing;
+  }
+
+  console.log(`  ⏳ ${group.title}: генерую групову ієрархію...`);
+  const prompt = buildGroupPrompt(group);
+  const raw = await queryOllama(prompt, model);
+  let parsed;
+  try {
+    parsed = extractJsonObject(raw);
+  } catch {
+    console.error(`  ❌ ${group.title}: не вдалося розпарсити відповідь`);
+    return null;
+  }
+
+  let root = validateTopicNode(parsed, groupId);
+
+  if (!root) {
+    console.error(`  ❌ ${group.title}: кореневий вузол не пройшов валідацію`);
+    return null;
+  }
+
+  saveTopics(groupId, root);
+  const count = countNodes(root);
+  console.log(`  ✅ ${group.title}: збережено (${count} вузлів)`);
+  return root;
+}
+
 function countNodes(node) {
+  if (!node || !node.children) return 1;
   let count = 1;
   for (const child of node.children) {
     count += countNodes(child);
@@ -145,9 +269,16 @@ function countNodes(node) {
 }
 
 function printHierarchy(node, indent = '') {
-  console.log(`${indent}${node.icon} ${node.title} (${node.id})`);
-  for (const child of node.children) {
-    printHierarchy(child, indent + '  ');
+  if (!node) return;
+  const tags = [];
+  if (node.themeId) tags.push(`theme:${node.themeId}`);
+  if (node.aggregateThemeIds) tags.push(`aggregate:${node.aggregateThemeIds.length}ids`);
+  const meta = tags.length ? ` [${tags.join(', ')}]` : '';
+  console.log(`${indent}${node.icon} ${node.title} (${node.id})${meta}`);
+  if (node.children) {
+    for (const child of node.children) {
+      printHierarchy(child, indent + '  ');
+    }
   }
 }
 
@@ -155,19 +286,22 @@ async function main() {
   const args = process.argv.slice(2);
   const opts = {
     theme: null,
+    group: null,
     all: false,
     model: DEFAULT_MODEL,
   };
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--theme' && args[i + 1]) opts.theme = args[++i];
+    else if (args[i] === '--group' && args[i + 1]) opts.group = args[++i];
     else if (args[i] === '--all') opts.all = true;
     else if (args[i] === '--model' && args[i + 1]) opts.model = args[++i];
   }
 
-  if (!opts.all && !opts.theme) {
-    console.error('❌ Вкажи --theme <id> або --all');
+  if (!opts.all && !opts.theme && !opts.group) {
+    console.error('❌ Вкажи --theme <id>, --group <id> або --all');
     console.error('Теми:', THEME_IDS.join(', '));
+    console.error('Групи:', GROUPS.map(g => g.id).join(', '));
     process.exit(1);
   }
 
@@ -188,12 +322,28 @@ async function main() {
     process.exit(1);
   }
 
-  const themes = opts.all ? THEME_IDS : [opts.theme];
+  let targets = [];
+  if (opts.all) {
+    targets = [
+      ...GROUPS.map(g => ({ type: 'group', id: g.id })),
+      ...THEME_IDS.map(t => ({ type: 'theme', id: t })),
+    ];
+  } else if (opts.group) {
+    targets = [{ type: 'group', id: opts.group }];
+  } else if (opts.theme) {
+    targets = [{ type: 'theme', id: opts.theme }];
+  }
+
   let grandTotal = 0;
 
-  for (const themeId of themes) {
-    console.log(`\n📚 ${themeId}`);
-    const result = await generateForTheme(themeId, opts.model);
+  for (const target of targets) {
+    console.log(`\n📚 ${target.id} (${target.type})`);
+    let result;
+    if (target.type === 'group') {
+      result = await generateForGroup(target.id, opts.model);
+    } else {
+      result = await generateForTheme(target.id, opts.model);
+    }
     if (result) {
       console.log('\n   Структура:');
       printHierarchy(result, '   ');

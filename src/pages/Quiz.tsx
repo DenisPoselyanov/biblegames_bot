@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getThemeById } from '../data/themes';
-import { getQuestionsForLevelAsync } from '../data/questions';
+import { getQuestionsForLevelAsync, getQuestionsForNodeAsync, getQuestionsForCategoryAsync } from '../data/questions';
 import { usePlayer } from '../context/PlayerContext';
 import { ExplanationModal } from '../components/ExplanationModal';
 import { haptic } from '../lib/telegram';
@@ -14,17 +14,20 @@ import {
   type StudyMode,
 } from '../types';
 import { studyRepo } from '../repos/studyRepo';
+import { selectAdaptiveQuestions, createDefaultAdaptiveConfig } from '../lib/adaptiveTesting';
+import { loadAllTopicHierarchies, findRootByThemeId } from '../data/topicDbLoader';
 import styles from './Quiz.module.css';
 
 const QUESTION_TIME = 15;
 
 export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
-  const { themeId, difficulty } = useParams<{
+  const { themeId, difficulty, nodeId } = useParams<{
     themeId: string;
     difficulty: string;
+    nodeId?: string;
   }>();
   const navigate = useNavigate();
-  const { completeLevel, recordAnswerEvent } = usePlayer();
+  const { completeLevel, recordAnswerEvent, profile } = usePlayer();
 
   const theme = getThemeById(themeId ?? '');
   const validDiff = difficulty && isValidDifficulty(difficulty) ? difficulty : null;
@@ -33,6 +36,8 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   const [loading, setLoading] = useState(true);
   const [finished, setFinished] = useState(false);
   const [sprintTimeLeft, setSprintTimeLeft] = useState<number>(mode === 'sprint' ? 300 : 0);
+  const [microTimeLeft, setMicroTimeLeft] = useState<number>(mode === 'micro' ? 180 : 0); // 3 хвилини для micro
+  const [adaptiveStrategy, setAdaptiveStrategy] = useState<string>('balanced');
 
   useEffect(() => {
     let cancelled = false;
@@ -47,6 +52,77 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         wrongQuestions.sort(() => Math.random() - 0.5);
         if (!cancelled) {
           setQuestions(wrongQuestions);
+          setLoading(false);
+        }
+        return;
+      }
+
+      if (mode === 'adaptive') {
+        // Adaptive режим: використовує адаптивний підбір питань
+        if (nodeId) {
+          try {
+            const topicHierarchy = await loadAllTopicHierarchies();
+            const rootNode = findRootByThemeId(topicHierarchy, themeId ?? '');
+            if (rootNode) {
+              const { ALL_QUESTIONS } = await import('../data/questions');
+              const config = createDefaultAdaptiveConfig('balanced');
+              const adaptiveQuestions = await selectAdaptiveQuestions(
+                config,
+                {
+                  masteryStates: profile.studyMastery,
+                  targetNodeId: nodeId,
+                  targetDifficulty: validDiff ?? undefined,
+                  answeredQuestionIds: new Set(),
+                },
+                ALL_QUESTIONS,
+                rootNode,
+              );
+              if (!cancelled) {
+                setQuestions(adaptiveQuestions);
+                setLoading(false);
+              }
+              return;
+            }
+          } catch (error) {
+            console.error('Failed to load adaptive questions:', error);
+          }
+        }
+        // Fallback до звичайного режиму
+        if (!cancelled) {
+          setQuestions([]);
+          setLoading(false);
+        }
+        return;
+      }
+
+      if (mode === 'micro') {
+        // Micro режим: короткі сесії по конкретних темах
+        if (nodeId) {
+          try {
+            const topicHierarchy = await loadAllTopicHierarchies();
+            const rootNode = findRootByThemeId(topicHierarchy, themeId ?? '');
+            if (rootNode) {
+              const microQuestions = await getQuestionsForNodeAsync(
+                nodeId,
+                rootNode,
+                validDiff ?? undefined,
+                8, // 8 питань для micro режиму
+                false,
+                false,
+              );
+              if (!cancelled) {
+                setQuestions(microQuestions);
+                setLoading(false);
+              }
+              return;
+            }
+          } catch (error) {
+            console.error('Failed to load micro training questions:', error);
+          }
+        }
+        // Fallback до звичайного режиму
+        if (!cancelled) {
+          setQuestions([]);
           setLoading(false);
         }
         return;
@@ -70,6 +146,65 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         return;
       }
 
+      // Звичайний режим з підтримкою ієрархії
+      if (nodeId) {
+        try {
+          const topicHierarchy = await loadAllTopicHierarchies();
+
+          // Шукаємо вузол у всіх ієрархіях (включаючи групи)
+          let targetNode: import('../types').TopicNode | null = null;
+          for (const h of Object.values(topicHierarchy)) {
+            const findNode = (node: import('../types').TopicNode, targetId: string): import('../types').TopicNode | null => {
+              if (node.id === targetId) return node;
+              if (node.children) {
+                for (const child of node.children) {
+                  const found = findNode(child, targetId);
+                  if (found) return found;
+                }
+              }
+              return null;
+            };
+            targetNode = findNode(h, nodeId);
+            if (targetNode) break;
+          }
+
+          // Якщо це агрегатний вузол ("Всі питання")
+          if (targetNode?.aggregateThemeIds && validDiff) {
+            const aggQuestions = await getQuestionsForCategoryAsync(
+              themeId ?? targetNode.aggregateThemeIds[0],
+              targetNode.aggregateThemeIds,
+              validDiff,
+              mode === 'sprint' ? 100 : QUESTIONS_PER_LEVEL,
+            );
+            if (!cancelled) {
+              setQuestions(aggQuestions);
+              setLoading(false);
+            }
+            return;
+          }
+
+          // Інакше — звичайний вузол ієрархії
+          const rootNode = findRootByThemeId(topicHierarchy, themeId ?? '');
+          if (rootNode) {
+            const nodeQuestions = await getQuestionsForNodeAsync(
+              nodeId,
+              rootNode,
+              validDiff ?? undefined,
+              mode === 'sprint' ? 100 : QUESTIONS_PER_LEVEL,
+              false,
+              false,
+            );
+            if (!cancelled) {
+              setQuestions(nodeQuestions);
+              setLoading(false);
+            }
+            return;
+          }
+        } catch (error) {
+          console.error('Failed to load questions for node:', error);
+        }
+      }
+
       const qs = await getQuestionsForLevelAsync(
         themeId,
         validDiff,
@@ -86,7 +221,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     return () => {
       cancelled = true;
     };
-  }, [themeId, validDiff, mode]);
+  }, [themeId, validDiff, mode, nodeId]);
 
   useEffect(() => {
     if (mode !== 'sprint' || finished || loading) return;
@@ -99,6 +234,18 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     }, 1000);
     return () => clearInterval(timerId);
   }, [mode, sprintTimeLeft, finished, loading]);
+
+useEffect(() => {
+    if (mode !== 'micro' || finished || loading) return;
+    if (microTimeLeft <= 0) {
+      setFinished(true);
+      return;
+    }
+    const timerId = setInterval(() => {
+      setMicroTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timerId);
+  }, [mode, microTimeLeft, finished, loading]);
 
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -145,14 +292,16 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       themeId: themeId ?? '',
       questionId: current.id,
       isCorrect: false,
+      nodeId: nodeId,
     });
     haptic.notification('error');
-  }, [questionTimeLeft]);
+  }, [questionTimeLeft, nodeId]);
 
   const current = questions[index];
   const progress = questions.length
     ? ((index + (showResult ? 1 : 0)) / questions.length) * 100
     : 0;
+  const backToThemeUrl = `/play/study/themes/${themeId}${nodeId ? `/${nodeId}` : ''}`;
 
   const handleSelect = useCallback(
     (optionIndex: number) => {
@@ -164,6 +313,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         themeId: themeId ?? '',
         questionId: current.id,
         isCorrect: optionIndex === current.correctIndex,
+        nodeId: nodeId,
       });
       if (optionIndex === current.correctIndex) {
         setCorrectCount((c) => c + 1);
@@ -172,7 +322,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         haptic.notification('error');
       }
     },
-    [showResult, current, clearQuestionTimer],
+    [showResult, current, clearQuestionTimer, nodeId],
   );
 
   const handleNext = useCallback(() => {
@@ -230,7 +380,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     );
   }
 
-  if (mode === 'practice' && (!theme || !validDiff || questions.length === 0)) {
+  if (mode === 'practice' && (!theme && !nodeId || !validDiff || questions.length === 0)) {
     return (
       <section className={styles.page}>
         <div className={styles.emptyState}>
@@ -240,8 +390,42 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
             Ми активно працюємо над тим, щоб додати сюди нові цікаві запитання.
             Спробуй обрати іншу складність або тему!
           </p>
-          <Link to={`/play/study/themes/${themeId}`} className={styles.emptyBtn}>
+          <Link to={backToThemeUrl} className={styles.emptyBtn}>
             Повернутися до вибору
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  if (mode === 'adaptive' && questions.length === 0) {
+    return (
+      <section className={styles.page}>
+        <div className={styles.emptyState}>
+          <span className={styles.emptyIcon}>🤖</span>
+          <h2 className={styles.emptyTitle}>Адаптивний тест</h2>
+          <p className={styles.emptyDesc}>
+            Не вдалося сформувати адаптивний тест. Спробуй обрати іншу тему або повернись пізніше.
+          </p>
+          <Link to="/play/study" className={styles.emptyBtn}>
+            До меню
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  if (mode === 'micro' && questions.length === 0) {
+    return (
+      <section className={styles.page}>
+        <div className={styles.emptyState}>
+          <span className={styles.emptyIcon}>⚡</span>
+          <h2 className={styles.emptyTitle}>Мікротренування</h2>
+          <p className={styles.emptyDesc}>
+            Не знайдено питань для цієї мікротеми. Спробуй обрати іншу тему.
+          </p>
+          <Link to="/play/study" className={styles.emptyBtn}>
+            До меню
           </Link>
         </div>
       </section>
@@ -277,6 +461,14 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
             <p className={styles.resultTheme}>Спринт · Час вичерпано</p>
           ) : mode === 'review' ? (
             <p className={styles.resultTheme}>Робота над помилками</p>
+          ) : mode === 'adaptive' ? (
+            <p className={styles.resultTheme}>🤖 Адаптивний тест завершено</p>
+          ) : mode === 'micro' ? (
+            <p className={styles.resultTheme}>⚡ Мікротренування завершено</p>
+          ) : nodeId && (nodeId === 'ot-all' || nodeId === 'nt-all') ? (
+            <p className={styles.resultTheme}>
+              📚 Усі питання · {validDiff && DIFFICULTY_LABELS[validDiff]}
+            </p>
           ) : (
             <p className={styles.resultTheme}>
               {theme?.icon} {theme?.title} · {validDiff && DIFFICULTY_LABELS[validDiff]}
@@ -299,7 +491,15 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
           <button
             type="button"
             className={styles.btnPrimary}
-            onClick={() => navigate(mode === 'practice' ? `/play/study/themes/${themeId}` : '/play/study')}
+            onClick={() => {
+              if (mode === 'practice') {
+                navigate(backToThemeUrl);
+              } else if (mode === 'adaptive' || mode === 'micro') {
+                navigate('/play/study');
+              } else {
+                navigate('/play/study');
+              }
+            }}
           >
             {mode === 'practice' ? 'До теми' : 'В меню'}
           </button>
@@ -313,7 +513,13 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       <header className={styles.top}>
         <div className={styles.topRow}>
           <Link
-            to={mode === 'practice' ? `/play/study/themes/${themeId}` : '/play/study'}
+            to={
+              mode === 'practice' 
+                ? backToThemeUrl
+                : mode === 'adaptive' || mode === 'micro'
+                  ? '/play/study'
+                  : '/play/study'
+            }
             className={styles.close}
             aria-label="Закрити"
           >
@@ -331,7 +537,13 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
                 ? '🧠 Робота над помилками'
                 : mode === 'sprint'
                   ? '⏱️ Спринт'
-                  : `${theme?.icon} ${theme?.title}`}
+                  : mode === 'adaptive'
+                    ? '🤖 Адаптивний тест'
+                    : mode === 'micro'
+                      ? '⚡ Мікротренування'
+                      : nodeId && (nodeId === 'ot-all' || nodeId === 'nt-all')
+                        ? '📚 Усі питання'
+                        : `${theme?.icon} ${theme?.title}`}
             </span>
           </div>
         </div>
@@ -348,6 +560,11 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
           {mode === 'sprint' && (
             <div className={styles.sprintTimer}>
               ⏱ {formatTime(sprintTimeLeft)}
+            </div>
+          )}
+          {mode === 'micro' && (
+            <div className={styles.sprintTimer}>
+              ⚡ {formatTime(microTimeLeft)}
             </div>
           )}
         </div>

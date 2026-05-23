@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { THEMES } from '../data/themes';
 import { usePlayer } from '../context/PlayerContext';
@@ -10,7 +10,8 @@ import { haptic, WebApp } from '../lib/telegram';
 import { DIFFICULTY_LABELS } from '../types';
 import { ACHIEVEMENTS } from '../data/achievements';
 import { COSMETIC_THEMES, getAvatarById } from '../data/cosmetics';
-import { STUDY_THEME_GROUPS } from '../data/study_themes';
+import { TopicMap } from '../components/TopicMap';
+import { loadAllTopicHierarchies } from '../data/topicDbLoader';
 import { communityManager } from '../lib/communities';
 import { friendChallengeManager } from '../lib/friendChallenges';
 import styles from './Profile.module.css';
@@ -50,7 +51,17 @@ export function Profile() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [showAllAchievements, setShowAllAchievements] = useState(false);
   const [showId, setShowId] = useState(false);
+  const [topicHierarchies, setTopicHierarchies] = useState<Record<string, any>>({});
+  const [loadingTopicMap, setLoadingTopicMap] = useState(true);
   const settingsRef = useFocusTrap(settingsOpen);
+
+  // Завантаження ієрархій тем
+  useEffect(() => {
+    loadAllTopicHierarchies().then((hierarchies) => {
+      setTopicHierarchies(hierarchies);
+      setLoadingTopicMap(false);
+    });
+  }, []);
 
   const themeProgress = THEMES.map((theme) => ({
     theme,
@@ -304,25 +315,21 @@ export function Profile() {
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>📈 Рівень знань (Mastery)</h2>
-        <div className={styles.heatmapContainer}>
-          <p className={styles.sectionSubtitle} style={{ margin: 0 }}>Чим яскравіше — тим краще засвоєна тема</p>
-          <div className={styles.heatmapGrid}>
-            {STUDY_THEME_GROUPS.flatMap((g) => g.subthemes).map((subtheme) => {
-              const mastery = profile.studyMastery[subtheme.id]?.mastery || 0;
-              return (
-                <div
-                  key={subtheme.id}
-                  className={styles.heatCell}
-                  style={{
-                    background: mastery >= 80 ? '#39d353' : mastery >= 60 ? '#26a641' : mastery >= 40 ? '#006d32' : mastery > 0 ? '#0e4429' : 'rgba(255,255,255,0.04)',
-                    boxShadow: mastery >= 80 ? '0 0 8px rgba(57, 211, 83, 0.5)' : 'none',
-                  }}
-                  title={`${subtheme.title}: ${Math.round(mastery)}%`}
-                />
-              );
-            })}
-          </div>
-        </div>
+        {!loadingTopicMap && (
+          <TopicMap
+            topicHierarchy={topicHierarchies}
+            masteryStates={profile.studyMastery}
+            maxHeight="400px"
+            showQuestionCount={false}
+            onNodeClick={(node) => {
+              if (node.themeId) {
+                haptic.impact('light');
+                // Навігація до деталізації теми
+                // Можливо додати логіку переходу до ThemeDetail
+              }
+            }}
+          />
+        )}
       </section>
 
       <section className={styles.section}>
@@ -336,7 +343,7 @@ export function Profile() {
                 <span className={styles.themeIcon}>{theme.icon}</span>
                 <div className={styles.themeInfo}>
                   <strong>{theme.title}</strong>
-                  <small>{points} очок · {levels.length} рівн.{levels.length > 0 && ` (${levels.map((l) => (DIFFICULTY_LABELS[l.difficulty] ?? l.difficulty)[0]).join(', ')})`}</small>
+                  <small>{points} очок · {levels.length} рівн.{levels.length > 0 && ` (${levels.map((l) => DIFFICULTY_LABELS[l.difficulty] ?? l.difficulty).join(', ')})`}</small>
                 </div>
               </li>
             ))}

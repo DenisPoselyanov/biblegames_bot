@@ -16,15 +16,16 @@
 
 .nav {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 480px;
+  width: 100%;
   display: flex;
   justify-content: space-around;
-  padding: 0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom));
+  padding: 0.5rem 0;
   background: var(--surface);
   border-top: 1px solid var(--border);
-  backdrop-filter: blur(12px);
   z-index: var(--z-dropdown);
 }
 
