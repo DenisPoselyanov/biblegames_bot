@@ -617,6 +617,57 @@
   accent-color: var(--gold);
 }
 
+.settingsSection {
+  margin: 0.75rem 0 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.settingsSubtitle {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  color: var(--gold-light);
+}
+
+.settingsHint {
+  margin: 0 0 0.65rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.translationPicker {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.translationOption {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.translationOption strong {
+  color: var(--gold-light);
+  font-size: 0.85rem;
+}
+
+.translationOption span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.translationOptionActive {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold);
+}
+
 .socialMiniBtn {
   border: 1px solid var(--border);
   background: transparent;

@@ -1,6 +1,7 @@
 import type { Difficulty, GlobalStats, PlayerProfile } from '../types';
 import { THEMES } from '../data/themes';
 import { DEFAULT_COSMETIC_THEME_ID } from '../data/cosmetics';
+import { DEFAULT_BOLLS_TRANSLATION, normalizeBollsTranslation } from './bollsConstants';
 
 const PROFILE_KEY = 'bible-game-profile';
 const GLOBAL_STATS_KEY = 'bible-game-global-stats';
@@ -41,6 +42,7 @@ function normalizeProfile(profile: Partial<PlayerProfile>, userId: string, displ
     streakDays: profile.streakDays ?? 0,
     lastActiveAt: profile.lastActiveAt ?? null,
     studyMastery: profile.studyMastery ?? {},
+    bibleTranslation: normalizeBollsTranslation(profile.bibleTranslation ?? DEFAULT_BOLLS_TRANSLATION),
   };
 }
 

@@ -13,7 +13,9 @@
     "correctIndex": 3,
     "reference": "2Цар. 12:28-30",
     "source": "ai",
-    "createdAt": "2026-05-17T18:59:09.492Z"
+    "createdAt": "2026-05-17T18:59:09.492Z",
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
   },
   {
     "id": "kings-baby-ai-00002",
@@ -29,7 +31,9 @@
     "correctIndex": 2,
     "reference": "1Цар. 8:16",
     "source": "ai",
-    "createdAt": "2026-05-17T18:59:09.492Z"
+    "createdAt": "2026-05-17T18:59:09.492Z",
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
   },
   {
     "id": "kings-baby-ai-00003",
@@ -45,7 +49,9 @@
     "correctIndex": 0,
     "reference": "2Цар. 11:3-4",
     "source": "ai",
-    "createdAt": "2026-05-17T18:59:09.492Z"
+    "createdAt": "2026-05-17T18:59:09.492Z",
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
   },
   {
     "id": "kings-baby-ai-00004",
@@ -61,7 +67,9 @@
     "correctIndex": 1,
     "reference": "2Цар. 15:30",
     "source": "ai",
-    "createdAt": "2026-05-17T18:59:09.492Z"
+    "createdAt": "2026-05-17T18:59:09.492Z",
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
   },
   {
     "id": "kings-child-ai-00005",
@@ -77,7 +85,9 @@
     "correctIndex": 0,
     "reference": "І цар Давид сказав: Хто коханий моєї жінки, хто її гнанець? І він каже: Сам я, йосеф, до того, коли ми були раби в землі Єгипетській",
     "source": "ai",
-    "createdAt": "2026-05-17T19:00:02.138Z"
+    "createdAt": "2026-05-17T19:00:02.138Z",
+    "topicNodeId": "kings-sub-1-sub-1",
+    "topicPath": "Царі > Об'єднане царство > Саул"
   },
   {
     "id": "kings-child-ai-00006",
@@ -93,7 +103,9 @@
     "correctIndex": 0,
     "reference": "І цар Давид каже: Посилайте по чоловікові мій слугу Ахітуфа, з Гароші, і по його рідним братам. І бачив той, що цар написав до Ахітуфа та до його рідних братів, і вони пришли до Давида",
     "source": "ai",
-    "createdAt": "2026-05-17T19:00:02.138Z"
+    "createdAt": "2026-05-17T19:00:02.138Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
   },
   {
     "id": "kings-child-ai-00007",
@@ -109,7 +121,9 @@
     "correctIndex": 1,
     "reference": "І він правив над усім Ізраїлем танадбадлі віці сімдесят. І зробив Соломон прийдецтво в Єрусалимі, що є по центру, й в'єхав до храму Господа, Бога свого, і жертви наділлялася на вічне усвідомлення",
     "source": "ai",
-    "createdAt": "2026-05-17T19:00:02.138Z"
+    "createdAt": "2026-05-17T19:00:02.138Z",
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Царі > Об'єднане царство > Соломон"
   },
   {
     "id": "kings-child-ai-00008",
@@ -125,7 +139,9 @@
     "correctIndex": 3,
     "reference": "Тоді Саул почав битися проти Юдеї та переміг їх; і Саул прийняв до себе їхні корабелі та срібло, велике, й великі здобичі. І каже Саул: Але не віддам їм царя, абсалона, щоб не посмілився над мною. А тоді виголосив Саул покляття: Посланцем ми будемо славлятися в Юдеї: хто виявить мені царя Абсалона, яка награду йому дам?",
     "source": "ai",
-    "createdAt": "2026-05-17T19:00:02.138Z"
+    "createdAt": "2026-05-17T19:00:02.138Z",
+    "topicNodeId": "kings-sub-1-sub-1",
+    "topicPath": "Царі > Об'єднане царство > Саул"
   },
   {
     "id": "kings-youth-ai-00009",
@@ -141,7 +157,9 @@
     "correctIndex": 1,
     "reference": "Бут. 9:8-16",
     "source": "ai",
-    "createdAt": "2026-05-17T19:01:42.188Z"
+    "createdAt": "2026-05-17T19:01:42.188Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
   },
   {
     "id": "kings-youth-ai-00010",
@@ -157,7 +175,9 @@
     "correctIndex": 2,
     "reference": "Цар. 10:1-19",
     "source": "ai",
-    "createdAt": "2026-05-17T19:01:42.188Z"
+    "createdAt": "2026-05-17T19:01:42.188Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
   },
   {
     "id": "kings-youth-ai-00011",
@@ -173,7 +193,9 @@
     "correctIndex": 2,
     "reference": "Бут. 3:17-20",
     "source": "ai",
-    "createdAt": "2026-05-17T19:01:42.188Z"
+    "createdAt": "2026-05-17T19:01:42.188Z",
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Царі > Об'єднане царство > Соломон"
   },
   {
     "id": "kings-youth-ai-00012",
@@ -189,7 +211,9 @@
     "correctIndex": 1,
     "reference": "І царів 12:1-20",
     "source": "ai",
-    "createdAt": "2026-05-17T19:01:42.188Z"
+    "createdAt": "2026-05-17T19:01:42.188Z",
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
   },
   {
     "id": "kings-student-ai-00013",
@@ -205,7 +229,9 @@
     "correctIndex": 0,
     "reference": "Бут. 9:37",
     "source": "ai",
-    "createdAt": "2026-05-17T19:02:13.785Z"
+    "createdAt": "2026-05-17T19:02:13.785Z",
+    "topicNodeId": "kings-sub-1-sub-1",
+    "topicPath": "Царі > Об'єднане царство > Саул"
   },
   {
     "id": "kings-student-ai-00014",
@@ -221,7 +247,9 @@
     "correctIndex": 1,
     "reference": "Цар. 1:5",
     "source": "ai",
-    "createdAt": "2026-05-17T19:02:13.785Z"
+    "createdAt": "2026-05-17T19:02:13.785Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
   },
   {
     "id": "kings-student-ai-00015",
@@ -237,7 +265,9 @@
     "correctIndex": 2,
     "reference": "Цар. 14:20",
     "source": "ai",
-    "createdAt": "2026-05-17T19:02:13.785Z"
+    "createdAt": "2026-05-17T19:02:13.785Z",
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
   },
   {
     "id": "kings-student-ai-00016",
@@ -253,7 +283,9 @@
     "correctIndex": 3,
     "reference": "Цар. 17:1",
     "source": "ai",
-    "createdAt": "2026-05-17T19:02:13.785Z"
+    "createdAt": "2026-05-17T19:02:13.785Z",
+    "topicNodeId": "kings-sub-2-sub-2",
+    "topicPath": "Царі > Царі Юдеї > Єзекія"
   },
   {
     "id": "kings-preacher-ai-00017",
@@ -269,7 +301,9 @@
     "correctIndex": 1,
     "reference": "Бут. 10:32-33",
     "source": "ai",
-    "createdAt": "2026-05-17T19:02:48.390Z"
+    "createdAt": "2026-05-17T19:02:48.390Z",
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
   },
   {
     "id": "kings-preacher-ai-00018",
@@ -285,12 +319,14 @@
     "correctIndex": 2,
     "reference": "Бут. 1Chr 2:9-10",
     "source": "ai",
-    "createdAt": "2026-05-17T19:02:48.390Z"
+    "createdAt": "2026-05-17T19:02:48.390Z",
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
   },
   {
     "id": "kings-preacher-ai-00019",
     "themeId": "kings",
-    "difficulty": "preacher",
+    "difficulty": "student",
     "text": "Скільки років правив Соломон над Ізраїлем?",
     "options": [
       "41 рік",
@@ -301,7 +337,10 @@
     "correctIndex": 2,
     "reference": "Цар. 1Кн 2:11",
     "source": "ai",
-    "createdAt": "2026-05-17T19:02:48.390Z"
+    "createdAt": "2026-05-17T19:02:48.390Z",
+    "quarantined": false,
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Царі > Об'єднане царство > Соломон"
   },
   {
     "id": "kings-preacher-ai-00020",
@@ -317,6 +356,118 @@
     "correctIndex": 0,
     "reference": "Цар. 10:5-6",
     "source": "ai",
-    "createdAt": "2026-05-17T19:02:48.390Z"
+    "createdAt": "2026-05-17T19:02:48.390Z",
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
+  },
+  {
+    "id": "kings-youth-1",
+    "themeId": "kings",
+    "difficulty": "youth",
+    "text": "Хто був першим царем Ізраїля?",
+    "options": [
+      "Єрубоам",
+      "Саул",
+      "Давид",
+      "Соломон"
+    ],
+    "correctIndex": 0,
+    "reference": "1 Цар. 10",
+    "quarantined": false,
+    "sourceQuality": "ai-reviewed",
+    "lastReviewedAt": "2026-05-30T19:55:04.801Z",
+    "explanationShort": "Єрубоам став першим царем Ізраїля після розколу царств ізраїльського та юдейського (1 Цар. 12:20).",
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
+  },
+  {
+    "id": "old-testament-student-ai-00020",
+    "themeId": "kings",
+    "difficulty": "student",
+    "text": "Коли Давид зустрів Голіата у битві, скільки пальців мав останній на руці?",
+    "options": [
+      "Два",
+      "Три",
+      "Чотири",
+      "П'ять"
+    ],
+    "correctIndex": 2,
+    "reference": "1 Самуїл 17:4",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:49:22.760Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
+  },
+  {
+    "id": "old-testament-student-ai-00043",
+    "themeId": "kings",
+    "difficulty": "student",
+    "text": "Кого Бог послал к Давиду словами: \"Давид, мой сын, я избрал тебя для того, чтобы стать царём Израиля\"?",
+    "options": [
+      "Самуил",
+      "Авраам",
+      "Иегова",
+      "Мойсей"
+    ],
+    "correctIndex": 0,
+    "reference": "1Цар. 17:17",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:19:43.423Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
+  },
+  {
+    "id": "old-testament-theologian-ai-00057",
+    "themeId": "kings",
+    "difficulty": "theologian",
+    "text": "Хто був наступником Давида як король Ізраїлю?",
+    "options": [
+      "Йоав",
+      "Адонія",
+      "Соломон",
+      "Еліа"
+    ],
+    "correctIndex": 2,
+    "reference": "Цар. 1:5-6",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:21:02.848Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
+  },
+  {
+    "id": "old-testament-youth-ai-00070",
+    "themeId": "kings",
+    "difficulty": "youth",
+    "text": "Як називається книга Біблії, в якій описана історія царя Давида?",
+    "options": [
+      "А) Книга пророка Єзекіїля",
+      "В) Друга книга Самуїла",
+      "Б) Псалми",
+      "Г) Послання Івана"
+    ],
+    "correctIndex": 1,
+    "reference": "2Сам. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:55:48.062Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
+  },
+  {
+    "id": "old-testament-baby-ai-00118",
+    "themeId": "kings",
+    "difficulty": "baby",
+    "text": "Який пророк записав «Торею Давидова»?",
+    "options": [
+      "Мойсей - Вих. 34:10",
+      "Ісаїя - Іс. 51:7",
+      "Давид - Пс. 19:8",
+      "Йов - Іова 23:12"
+    ],
+    "correctIndex": 2,
+    "reference": "Пс. 19:8",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:17:18.107Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
   }
 ]

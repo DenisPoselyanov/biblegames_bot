@@ -3,13 +3,16 @@ export type TelemetryEventName =
   | 'question_answered'
   | 'quiz_completed'
   | 'study_path_advanced'
-  | 'daily_task_completed';
+  | 'daily_task_completed'
+  | 'bible_translation_changed';
 
 export interface TelemetryEvent {
   name: TelemetryEventName;
   createdAt: string;
   payload?: Record<string, unknown>;
 }
+
+import { getTelegramInitData } from './telegram';
 
 const TELEMETRY_KEY = 'bible-game-telemetry-events';
 const API_BASE = import.meta.env.VITE_API_BASE_URL as string | undefined;
@@ -42,11 +45,13 @@ export async function flushTelemetry(userId: string): Promise<void> {
   const queue = readQueue();
   if (queue.length === 0) return;
   try {
+    const initData = getTelegramInitData();
     const response = await fetch(`${API_BASE}/telemetry/${userId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-user-id': userId,
+        ...(initData ? { 'x-telegram-init-data': initData } : {}),
       },
       body: JSON.stringify({ events: queue }),
     });

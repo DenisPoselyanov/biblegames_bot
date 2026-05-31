@@ -83,12 +83,12 @@ export function Survival() {
   );
 
   const moveToNextQuestion = useCallback(
-    (nextScore: number) => {
+    (nextScore: number, pointsEarned: number) => {
       haptic.impact('light');
       const nextQuestion = pickSurvivalQuestion(nextScore, seenQuestionIds);
 
       if (!nextQuestion) {
-        finishRun(nextScore, points);
+        finishRun(nextScore, pointsEarned);
         return;
       }
 
@@ -100,7 +100,7 @@ export function Survival() {
       setTimeLeft(TIME_PER_QUESTION);
       setStatus('playing');
     },
-    [finishRun, points, seenQuestionIds],
+    [finishRun, seenQuestionIds],
   );
 
   const loseLife = useCallback(() => {
@@ -155,7 +155,7 @@ export function Survival() {
   };
 
   const handleNext = () => {
-    moveToNextQuestion(score);
+    moveToNextQuestion(score, points);
   };
 
   const restart = () => {

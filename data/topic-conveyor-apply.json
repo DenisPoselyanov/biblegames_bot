@@ -1,0 +1,36 @@
+{
+  "nodes": [
+    {
+      "id": "nt-custom-poslannia-do-maibutnikh-pokolin-sub-5",
+      "title": "Стійкість у вірі під час духовних випробувань",
+      "description": "Настанови апостолів щодо збереження вірності Христу в епоху глобальних спокус та відступництва. 🛡️",
+      "icon": "📖",
+      "children": [],
+      "themeId": "new-testament"
+    },
+    {
+      "id": "nt-custom-poslannia-do-maibutnikh-pokolin-sub-6",
+      "title": "Збереження єдності Церкви в часи розколів",
+      "description": "Заклик до плекання любові та міжособистісної злагоди як головного свідчення істинності Христової громади. 🤝",
+      "icon": "📖",
+      "children": [],
+      "themeId": "new-testament"
+    },
+    {
+      "id": "nt-custom-poslannia-do-maibutnikh-pokolin-sub-7",
+      "title": "Пильність та готовність до другого пришестя",
+      "description": "Духовні поради про те, як жити праведно, очікуючи на повернення Господа та завершення земної історії. ⏳",
+      "icon": "📖",
+      "children": [],
+      "themeId": "new-testament"
+    },
+    {
+      "id": "nt-custom-poslannia-do-maibutnikh-pokolin-sub-8",
+      "title": "Передача апостольського вчення без викривлень",
+      "description": "Відповідальність майбутніх поколінь за збереження чистоти євангельської істини перед обличчям лжевчень. 📖",
+      "icon": "📖",
+      "children": [],
+      "themeId": "new-testament"
+    }
+  ]
+}

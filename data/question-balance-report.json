@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-05-31T08:50:37.386Z",
+  "anchorId": "geography",
+  "scope": "siblings",
+  "themeId": "geography",
+  "target": 15,
+  "untaggedCount": 0,
+  "rows": [
+    {
+      "nodeId": "geography-sub-1",
+      "title": "Земля Ізраїльська",
+      "before": 2,
+      "target": 15,
+      "gap": 13,
+      "generated": 0
+    },
+    {
+      "nodeId": "geography-sub-2",
+      "title": "Річки та моря",
+      "before": 3,
+      "target": 15,
+      "gap": 12,
+      "generated": 0
+    },
+    {
+      "nodeId": "geography-sub-3",
+      "title": "Міста та поселення",
+      "before": 15,
+      "target": 15,
+      "gap": 0,
+      "generated": 0
+    },
+    {
+      "nodeId": "geography-sub-4",
+      "title": "Гори та пустелі",
+      "before": 9,
+      "target": 15,
+      "gap": 6,
+      "generated": 0
+    }
+  ],
+  "dryRun": true
+}

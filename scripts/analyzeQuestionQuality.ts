@@ -8,9 +8,42 @@ import { questionQualityValidator } from '../src/lib/questionQuality';
 import { questionQuarantineManager } from '../src/lib/questionQuarantine';
 import fs from 'fs';
 import path from 'path';
-import type { Question } from '../src/types';
+import type { Question, QuestionQualityReport } from '../src/types';
+import { normalizeQuestionReference } from '../src/lib/bibleReference';
 
 const DB_DIR = path.resolve('data/question-db');
+const REPORT_PATH = path.resolve('question-quality-report.json');
+
+function loadPreviousReport(): {
+  rejectedIds: Set<string>;
+  excludedIds: Set<string>;
+  byId: Map<string, QuestionQualityReport>;
+} {
+  const rejectedIds = new Set<string>();
+  const excludedIds = new Set<string>();
+  const byId = new Map<string, QuestionQualityReport>();
+  if (!fs.existsSync(REPORT_PATH)) {
+    return { rejectedIds, excludedIds, byId };
+  }
+  try {
+    const prev = JSON.parse(fs.readFileSync(REPORT_PATH, 'utf-8')) as {
+      reports?: QuestionQualityReport[];
+      excludedQuestionIds?: string[];
+    };
+    for (const id of prev.excludedQuestionIds ?? []) {
+      excludedIds.add(id);
+    }
+    for (const report of prev.reports ?? []) {
+      byId.set(report.questionId, report);
+      if (report.status === 'rejected') {
+        rejectedIds.add(report.questionId);
+      }
+    }
+  } catch {
+    /* ignore broken report */
+  }
+  return { rejectedIds, excludedIds, byId };
+}
 
 // Завантаження AI-питань з JSON
 function loadAiQuestions(): Question[] {
@@ -19,7 +52,10 @@ function loadAiQuestions(): Question[] {
   for (const file of fs.readdirSync(DB_DIR).filter(f => f.endsWith('.json'))) {
     try {
       const data: Question[] = JSON.parse(fs.readFileSync(path.join(DB_DIR, file), 'utf-8'));
-      all.push(...data);
+      all.push(...data.map((q) => ({
+        ...q,
+        reference: normalizeQuestionReference((q as Question & { reference?: unknown }).reference),
+      })));
     } catch { /* skip broken json */ }
   }
   return all;
@@ -27,8 +63,14 @@ function loadAiQuestions(): Question[] {
 
 const AI_QUESTIONS = loadAiQuestions();
 const ALL_QUESTIONS = [...QUESTIONS, ...AI_QUESTIONS];
+const { rejectedIds, excludedIds, byId: previousReportsById } = loadPreviousReport();
+const ACTIVE_QUESTIONS = ALL_QUESTIONS.filter(
+  (q) => !rejectedIds.has(q.id) && !excludedIds.has(q.id),
+);
 
-console.log(`🔍 Початок аналізу якості питань... (вбудовані: ${QUESTIONS.length}, AI: ${AI_QUESTIONS.length}, разом: ${ALL_QUESTIONS.length})\n`);
+console.log(
+  `🔍 Початок аналізу якості питань... (вбудовані: ${QUESTIONS.length}, AI: ${AI_QUESTIONS.length}, разом: ${ALL_QUESTIONS.length}, rejected: ${rejectedIds.size}, excluded: ${excludedIds.size})\n`,
+);
 
 const totalQuestions = ALL_QUESTIONS.length;
 let approvedCount = 0;
@@ -117,18 +159,46 @@ function normalizeText(text: string): string[] {
     .filter(word => word.length > 2);
 }
 
+function stripDuplicateIssues(report: QuestionQualityReport): QuestionQualityReport {
+  return {
+    ...report,
+    duplicateIds: [],
+    issues: report.issues.filter((issue) => issue.type !== 'duplicate'),
+  };
+}
+
 // Аналіз якості питань
 for (const question of ALL_QUESTIONS) {
-  const report = questionQualityValidator.validateQuestion(question, ALL_QUESTIONS);
+  if (excludedIds.has(question.id)) {
+    continue;
+  }
+
+  let report: QuestionQualityReport;
+
+  if (rejectedIds.has(question.id)) {
+    const previous = previousReportsById.get(question.id);
+    report = stripDuplicateIssues({
+      ...(previous ?? {
+        questionId: question.id,
+        ambiguityScore: 0,
+        qualityScore: 0,
+        issues: [],
+        duplicateIds: [],
+      }),
+      status: 'rejected',
+      reviewedAt: new Date().toISOString(),
+    });
+    question.quarantined = true;
+  } else {
+    report = questionQualityValidator.validateQuestion(question, ACTIVE_QUESTIONS);
+    question.quarantined = report.status === 'quarantined';
+    question.qualityScore = report.qualityScore;
+    question.ambiguityScore = report.ambiguityScore;
+    question.duplicateIds = report.duplicateIds;
+    questionQuarantineManager.saveQualityReport(report);
+  }
+
   reports.push(report);
-
-  // Синхронізуємо поле quarantined на об'єкті питання з менеджером карантину
-  question.quarantined = report.status === 'quarantined';
-  question.qualityScore = report.qualityScore;
-  question.ambiguityScore = report.ambiguityScore;
-  question.duplicateIds = report.duplicateIds;
-
-  questionQuarantineManager.saveQualityReport(report);
 
   switch (report.status) {
     case 'approved':
@@ -146,7 +216,7 @@ for (const question of ALL_QUESTIONS) {
   }
 
   // Виводимо інформацію про проблемні питання
-  if (report.status !== 'approved') {
+  if (report.status !== 'approved' && report.status !== 'rejected') {
     console.log(`⚠️  Питання ${question.id}:`);
     console.log(`   Статус: ${report.status}`);
     console.log(`   Оцінка якості: ${report.qualityScore}/100`);
@@ -166,8 +236,8 @@ for (const question of ALL_QUESTIONS) {
   }
 }
 
-// Знаходимо схожі питання
-const similarPairs = findSimilarQuestions(ALL_QUESTIONS, 0.75);
+// Знаходимо схожі питання (без rejected — вони вже зняті з пулу)
+const similarPairs = findSimilarQuestions(ACTIVE_QUESTIONS, 0.75);
 const similarGroups = groupSimilarQuestions(similarPairs);
 
 // Виводимо статистику схожих питань
@@ -247,8 +317,11 @@ issueTypes.forEach((count, type) => {
 // Збереження звіту в файл
 const reportData = {
   generatedAt: new Date().toISOString(),
+  excludedQuestionIds: [...excludedIds].sort(),
   summary: {
-    total: totalQuestions,
+    total: reports.length,
+    poolTotal: totalQuestions,
+    excludedCount: excludedIds.size,
     embeddedCount: QUESTIONS.length,
     aiCount: AI_QUESTIONS.length,
     approved: approvedCount,
@@ -268,11 +341,7 @@ const reportData = {
   reports,
 };
 
-fs.writeFileSync(
-  'question-quality-report.json',
-  JSON.stringify(reportData, null, 2),
-  'utf-8'
-);
+fs.writeFileSync(REPORT_PATH, JSON.stringify(reportData, null, 2), 'utf-8');
 
 console.log('\n📄 Звіт збережено у файл: question-quality-report.json');
 console.log('\n✅ Аналіз якості та схожих питань завершено!');

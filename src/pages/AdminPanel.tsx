@@ -10,6 +10,7 @@ import { DIFFICULTY_LABELS, type Difficulty, type TopicNode, type TopicHierarchy
 import { questionQualityValidator } from '../lib/questionQuality';
 import { questionQuarantineManager } from '../lib/questionQuarantine';
 import { questionPoolManager } from '../lib/questionPools';
+import { ScripturePreview } from './admin/ScripturePreview';
 import styles from './AdminPanel.module.css';
 
 type MainTab = 'topics' | 'questions';
@@ -41,7 +42,7 @@ function TopicTreeNode({ node, depth, questionsByTheme, allQuestions, themeQuest
   themeQuestions: typeof ALL_QUESTIONS;
 }) {
   const [expanded, setExpanded] = useState(depth < 1);
-  const questionCount = countQuestionsForTopicNode(node, themeQuestions, depth === 0);
+  const questionCount = countQuestionsForTopicNode(node, themeQuestions);
 
   return (
     <li style={{ marginLeft: depth * 20 }}>
@@ -164,6 +165,8 @@ export function AdminPanel() {
         <h1 className={styles.title}>Адмін-панель</h1>
         <Link to="/profile" className={styles.backBtn}>← Профіль</Link>
       </div>
+
+      <ScripturePreview />
 
       <div className={styles.tabs}>
         <button

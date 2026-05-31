@@ -14,6 +14,12 @@ import { TopicMap } from '../components/TopicMap';
 import { loadAllTopicHierarchies } from '../data/topicDbLoader';
 import { communityManager } from '../lib/communities';
 import { friendChallengeManager } from '../lib/friendChallenges';
+import {
+  BOLLS_TRANSLATIONS,
+  BOLLS_TRANSLATION_LABELS,
+  normalizeBollsTranslation,
+  type BollsTranslation,
+} from '../lib/bollsConstants';
 import styles from './Profile.module.css';
 
 function CircularProgress({ value, size = 48, stroke = 4 }: { value: number; size?: number; stroke?: number }) {
@@ -44,7 +50,8 @@ function CircularProgress({ value, size = 48, stroke = 4 }: { value: number; siz
 }
 
 export function Profile() {
-  const { profile, setActiveTheme, purchaseTheme } = usePlayer();
+  const { profile, setActiveTheme, purchaseTheme, setBibleTranslation } = usePlayer();
+  const bibleTranslation = normalizeBollsTranslation(profile.bibleTranslation);
   const { displayName, userId } = useTelegram();
   const { showToast } = useToast();
   const [socialVersion, setSocialVersion] = useState(0);
@@ -156,6 +163,26 @@ export function Profile() {
             <Link to="/admin" className={styles.settingsAdminBtn} onClick={() => { haptic.impact('light'); setSettingsOpen(false); }}>
               <Icon name="admin" size={16} /> Адмін-панель
             </Link>
+            <div className={styles.settingsSection}>
+              <h3 className={styles.settingsSubtitle}>Переклад Писання</h3>
+              <p className={styles.settingsHint}>Текст уривків з bolls.life у поясненнях та на головній</p>
+              <div className={styles.translationPicker}>
+                {BOLLS_TRANSLATIONS.map((id) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={`${styles.translationOption} ${bibleTranslation === id ? styles.translationOptionActive : ''}`}
+                    onClick={() => {
+                      haptic.selection();
+                      setBibleTranslation(id as BollsTranslation);
+                    }}
+                  >
+                    <strong>{id}</strong>
+                    <span>{BOLLS_TRANSLATION_LABELS[id]}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className={styles.toggleRow}>
               <label><input type="checkbox" checked={socialProfile.privacySettings.showProfile} onChange={(e) => setPrivacy('showProfile', e.target.checked)} /> Показувати профіль</label>
             </div>

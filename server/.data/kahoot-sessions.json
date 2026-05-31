@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ks_1780139739070_wqly4m",
+    "code": "2KGTXT",
+    "finishedAt": "2026-05-30T11:15:36.166Z",
+    "settings": {
+      "themeIds": [
+        "geography"
+      ],
+      "questionCount": 3,
+      "timePerQuestion": 10,
+      "difficulty": "youth",
+      "flowMode": "auto",
+      "scoringMode": "simple",
+      "thinkTimeSec": 0,
+      "hostParticipates": false
+    },
+    "questionCount": 3,
+    "players": [
+      {
+        "name": "Player1",
+        "score": 0,
+        "rank": 1
+      },
+      {
+        "name": "Host",
+        "score": 0,
+        "rank": 1
+      }
+    ]
+  }
+]

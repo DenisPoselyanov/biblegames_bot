@@ -1,4 +1,5 @@
 import type { Difficulty, QualityIssue, Question, QuestionQualityReport } from '../types';
+import { normalizeQuestionReference } from './bibleReference';
 
 /**
  * Система валідації та оцінки якості питань
@@ -39,7 +40,8 @@ export class QuestionQualityValidator {
     }
 
     // 3. Перевірка посилання
-    if (!question.reference || question.reference.trim().length === 0) {
+    const reference = normalizeQuestionReference(question.reference);
+    if (!reference) {
       issues.push({
         type: 'unclear_reference',
         severity: 'low',
@@ -191,7 +193,7 @@ export class QuestionQualityValidator {
 
     // Перевірка на відсутність конкретних деталей
     if (question.text.length < 20) score += 10;
-    if (!question.reference) score += 5;
+    if (!normalizeQuestionReference(question.reference)) score += 5;
 
     return Math.min(100, score);
   }

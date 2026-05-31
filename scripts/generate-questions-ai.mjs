@@ -10,8 +10,21 @@
  * npm run generate-ai -- --topic gospels-sub-2-sub-1 --count 10 --difficulty student
  */
 
-import { DIFFICULTIES, THEME_IDS, GROUPS, getTheme, getGroup, getTopicContext, loadTopicHierarchy, findNodeById, flattenTopicNodes } from './lib/themes-config.mjs';
-import { checkOllama, extractJsonArray, queryOllama } from './lib/ollama.mjs';
+import { fileURLToPath } from 'url';
+import path from 'path';
+import { DIFFICULTIES, THEME_IDS, GROUPS, getTheme, getGroup, loadTopicHierarchy, findNodeById, flattenTopicNodes, findTopicNodeGlobally, buildNodePath } from './lib/themes-config.mjs';
+import {
+  applyAiCliFlags,
+  checkLLM,
+  defaultAiOpts,
+  extractJsonArray,
+  isRateLimitError,
+  loadProjectEnv,
+  parseRateLimitRetryDelayMs,
+  providerLabel,
+  queryLLM,
+  unavailableHint,
+} from './lib/llm.mjs';
 import {
   appendQuestions,
   loadThemeQuestions,
@@ -19,8 +32,13 @@ import {
   makeQuestionId,
 } from './lib/question-db.mjs';
 
-const DEFAULT_MODEL = process.env.OLLAMA_MODEL || 'mistral';
+loadProjectEnv();
+const { provider: DEFAULT_PROVIDER, model: DEFAULT_MODEL } = defaultAiOpts();
 const BATCH_SIZE = 15;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -31,6 +49,8 @@ function parseArgs() {
     all: false,
     count: 30,
     difficulty: 'all',
+    difficulties: null,
+    provider: DEFAULT_PROVIDER,
     model: DEFAULT_MODEL,
   };
 
@@ -40,9 +60,12 @@ function parseArgs() {
     else if (args[i] === '--topic' && args[i + 1]) opts.topic = args[++i];
     else if (args[i] === '--all') opts.all = true;
     else if (args[i] === '--count' && args[i + 1]) opts.count = parseInt(args[++i], 10);
+    else if (args[i] === '--difficulties' && args[i + 1]) opts.difficulties = args[++i];
     else if (args[i] === '--difficulty' && args[i + 1]) opts.difficulty = args[++i];
+    else if (args[i] === '--provider' && args[i + 1]) opts.provider = args[++i];
     else if (args[i] === '--model' && args[i + 1]) opts.model = args[++i];
   }
+  applyAiCliFlags(opts, args);
 
   if (!opts.all && !opts.theme && !opts.group && !opts.topic) {
     console.error('❌ Вкажи один з: --theme <id>, --group <id>, --topic <nodeId> або --all');
@@ -61,7 +84,20 @@ function parseArgs() {
     process.exit(1);
   }
 
-  if (opts.difficulty !== 'all' && !DIFFICULTIES.includes(opts.difficulty)) {
+  if (opts.difficulties) {
+    const list = opts.difficulties.split(',').map((d) => d.trim()).filter(Boolean);
+    const bad = list.filter((d) => !DIFFICULTIES.includes(d));
+    if (bad.length) {
+      console.error(`❌ Невідомі рівні в --difficulties: ${bad.join(', ')}`);
+      console.error('Допустимі:', DIFFICULTIES.join(', '));
+      process.exit(1);
+    }
+    if (list.length === 0) {
+      console.error('❌ --difficulties потребує хоча б один рівень');
+      process.exit(1);
+    }
+    opts.difficulties = list;
+  } else if (opts.difficulty !== 'all' && !DIFFICULTIES.includes(opts.difficulty)) {
     console.error(`❌ Невідома складність: ${opts.difficulty}`);
     console.error('Допустимі:', ['all', ...DIFFICULTIES].join(', '));
     process.exit(1);
@@ -70,8 +106,15 @@ function parseArgs() {
   return opts;
 }
 
+/** Список рівнів складності для генерації */
+export function resolveDifficultyList(opts) {
+  if (opts.difficulties?.length) return opts.difficulties;
+  if (opts.difficulty === 'all') return [...DIFFICULTIES];
+  return [opts.difficulty];
+}
+
 /** Визначити themeId на основі опцій */
-function resolveTargetThemeIds(opts) {
+export function resolveTargetThemeIds(opts) {
   if (opts.all) {
     return THEME_IDS;
   }
@@ -83,56 +126,37 @@ function resolveTargetThemeIds(opts) {
     return group ? group.themeIds : [];
   }
   if (opts.topic) {
-    // Спробуємо знайти topic Node в усіх файлах
-    const allNodes = [];
-    for (const file of THEME_IDS) {
-      const root = loadTopicHierarchy(file);
-      if (root) {
-        allNodes.push(...flattenTopicNodes(root));
+    const hit = findTopicNodeGlobally(opts.topic);
+    if (hit?.node) {
+      if (hit.node.themeId) {
+        return [hit.node.themeId];
       }
-    }
-    // Також шукаємо в об'єднаному файлі
-    const mergedRoot = loadTopicHierarchy('topics-db');
-    if (mergedRoot) {
-      allNodes.push(...flattenTopicNodes(mergedRoot));
-    }
-    const match = allNodes.find(({ node }) => node.id === opts.topic);
-    if (match) {
-      // Якщо є themeId — використовуємо його
-      if (match.node.themeId) {
-        return [match.node.themeId];
+      if (hit.covenantId) {
+        return [hit.covenantId];
       }
-      // Якщо це aggregateThemeIds — повертаємо всі
-      if (match.node.aggregateThemeIds) {
-        return match.node.aggregateThemeIds.filter(id => THEME_IDS.includes(id));
+      if (hit.node.aggregateThemeIds) {
+        return hit.node.aggregateThemeIds.filter((id) => THEME_IDS.includes(id) || GROUPS.some((g) => g.id === id));
       }
-      // Шукаємо в батьках themeId
-      console.error(`  ❌ Topic node "${opts.topic}" не має themeId. Вкажи --theme явно.`);
+      console.error(`  ❌ Topic node "${opts.topic}" не має themeId.`);
       process.exit(1);
     }
-    console.error(`  ❌ Topic node "${opts.topic}" не знайдено в жодному файлі topics-db.`);
+    console.error(`  ❌ Topic node "${opts.topic}" не знайдено в topics-db.`);
     process.exit(1);
   }
   return [];
 }
 
 /** Отримати контекст для промпту */
-function resolveContext(opts) {
+export function resolveContext(opts) {
   if (opts.topic) {
-    // Шукаємо вузол у всіх файлах
-    for (const file of [...THEME_IDS, 'topics-db']) {
-      const root = loadTopicHierarchy(file);
-      if (!root) continue;
-      const node = findNodeById(root, opts.topic);
-      if (node) {
-        // Будуємо шлях
-        const path = buildNodePath(root, opts.topic, []);
-        return {
-          title: node.title,
-          description: node.description || '',
-          path: path || [],
-        };
-      }
+    const hit = findTopicNodeGlobally(opts.topic);
+    if (hit?.node && hit.root) {
+      const path = buildNodePath(hit.root, opts.topic) || [];
+      return {
+        title: hit.node.title,
+        description: hit.node.description || '',
+        path,
+      };
     }
   }
   if (opts.theme) {
@@ -156,18 +180,6 @@ function resolveContext(opts) {
     }
   }
   return { title: '', description: '', path: [] };
-}
-
-function buildNodePath(node, targetId, path) {
-  const current = [...path, node.title];
-  if (node.id === targetId) return current;
-  if (Array.isArray(node.children)) {
-    for (const child of node.children) {
-      const result = buildNodePath(child, targetId, current);
-      if (result) return result;
-    }
-  }
-  return null;
 }
 
 function buildPrompt(context, difficulty, count) {
@@ -194,10 +206,11 @@ ${pathStr}
 3. Неправильні варіанти мають бути правдоподібними
 4. Додай "ref" з біблійним посиланням (наприклад "Ін. 3:16")
 5. Без повторів, без вигаданих імен
+6. Додай "explanationShort" — 1-2 речення, чому правильна відповідь (українською)
 
 Відповідай ТІЛЬКИ JSON-масивом:
 [
-  {"text":"Питання?","options":["А","Б","В","Г"],"correct":2,"ref":"Бут. 1:1"}
+  {"text":"Питання?","options":["А","Б","В","Г"],"correct":2,"ref":"Бут. 1:1","explanationShort":"..."}
 ]`;
 }
 
@@ -227,6 +240,9 @@ function normalizeAiQuestionExtended(raw, themeId, difficulty, index, topicPath,
     q.topicNodeId = topicNodeId;
   }
 
+  const explShort = String(raw.explanationShort ?? '').trim();
+  if (explShort) q.explanationShort = explShort;
+
   return q;
 }
 
@@ -239,7 +255,7 @@ function validateBatch(items, themeId, difficulty, startIndex, topicPath, topicN
   return valid;
 }
 
-async function generateBatch(themeId, difficulty, count, model, topicPath, topicNodeId, contextOverride) {
+async function generateBatch(themeId, difficulty, count, model, provider, topicPath, topicNodeId, contextOverride) {
   const existing = loadThemeQuestions(themeId);
   const startIndex = existing.length + 1;
 
@@ -255,14 +271,28 @@ async function generateBatch(themeId, difficulty, count, model, topicPath, topic
   const prompt = buildPrompt(context, difficulty, Math.min(count, BATCH_SIZE));
   console.log(`  ⏳ ${themeId} / ${difficulty}: запит ${Math.min(count, BATCH_SIZE)} питань...`);
 
-  const raw = await queryOllama(prompt, model);
+  const raw = await queryLLM(prompt, { model, provider });
   const parsed = extractJsonArray(raw);
   return validateBatch(parsed, themeId, difficulty, startIndex, topicPath, topicNodeId);
 }
 
-async function generateForTheme(themeId, totalCount, difficultyFilter, model, topicPath, topicNodeId, contextOverride) {
+export async function generateForTheme(
+  themeId,
+  totalCount,
+  difficultyFilter,
+  model,
+  provider = DEFAULT_PROVIDER,
+  topicPath,
+  topicNodeId,
+  contextOverride,
+  difficultiesOverride = null,
+) {
   const diffs =
-    difficultyFilter === 'all' ? DIFFICULTIES : [difficultyFilter];
+    difficultiesOverride?.length
+      ? difficultiesOverride
+      : difficultyFilter === 'all'
+        ? DIFFICULTIES
+        : [difficultyFilter];
 
   const perDiff = Math.max(1, Math.ceil(totalCount / diffs.length));
   let addedTotal = 0;
@@ -274,7 +304,7 @@ async function generateForTheme(themeId, totalCount, difficultyFilter, model, to
     while (remaining > 0 && attempts < 5) {
       const batchCount = Math.min(remaining, BATCH_SIZE);
       try {
-        const batch = await generateBatch(themeId, diff, batchCount, model, topicPath, topicNodeId, contextOverride);
+        const batch = await generateBatch(themeId, diff, batchCount, model, provider, topicPath, topicNodeId, contextOverride);
         if (batch.length === 0) {
           attempts++;
           continue;
@@ -286,6 +316,14 @@ async function generateForTheme(themeId, totalCount, difficultyFilter, model, to
         if (result.added === 0) attempts++;
         console.log(`  ✅ ${diff}: +${result.added} (в базі: ${result.after})`);
       } catch (e) {
+        if (isRateLimitError(undefined, e.message)) {
+          const waitMs = parseRateLimitRetryDelayMs(e.message);
+          console.warn(
+            `  ⏳ ${diff}: ліміт Gemini — повтор через ${(waitMs / 1000).toFixed(1)}s…`,
+          );
+          await sleep(waitMs);
+          continue;
+        }
         console.error(`  ❌ ${diff}: ${e.message}`);
         attempts++;
       }
@@ -305,23 +343,22 @@ async function main() {
     process.exit(1);
   }
 
-  console.log('🤖 Локальна AI — генератор питань (Ollama)');
+  console.log('🤖 AI — генератор питань');
   console.log('==========================================');
-  console.log(`Модель: ${opts.model}`);
+  console.log(`Провайдер: ${providerLabel(opts.provider)} • модель: ${opts.model}`);
   if (opts.topic) console.log(`Topic node: ${opts.topic}`);
   if (context.path.length > 0) console.log(`Шлях: ${context.path.join(' > ')}`);
   console.log(`Цільові теми: ${themeIds.join(', ')}`);
   console.log('');
 
-  console.log('🔗 Перевірка Ollama...');
+  console.log(`🔗 Перевірка ${providerLabel(opts.provider)}...`);
   try {
-    const ok = await checkOllama(opts.model);
+    const ok = await checkLLM(opts.model, { provider: opts.provider });
     if (!ok) throw new Error('порожня відповідь');
-    console.log('✅ Ollama працює\n');
+    console.log(`✅ ${providerLabel(opts.provider)} працює\n`);
   } catch (e) {
     console.error('❌', e.message);
-    console.error('\n💡 Запусти: ollama serve');
-    console.error(`💡 Завантаж модель: ollama pull ${opts.model}`);
+    console.error(`\n💡 ${unavailableHint(opts.provider)}`);
     process.exit(1);
   }
 
@@ -329,14 +366,17 @@ async function main() {
 
   for (const themeId of themeIds) {
     console.log(`\n📚 ${themeId}`);
+    const diffList = resolveDifficultyList(opts);
     const added = await generateForTheme(
       themeId,
       opts.count,
       opts.difficulty,
       opts.model,
+      opts.provider,
       context.path,
       opts.topic,
       context,
+      diffList,
     );
     grandTotal += added;
   }
@@ -349,7 +389,11 @@ async function main() {
   console.log('\nАбо через Telegram-бота: /stats, /generate');
 }
 
-main().catch((e) => {
-  console.error('Fatal:', e.message);
-  process.exit(1);
-});
+const __filename = fileURLToPath(import.meta.url);
+
+if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(__filename)) {
+  main().catch((e) => {
+    console.error('Fatal:', e.message);
+    process.exit(1);
+  });
+}

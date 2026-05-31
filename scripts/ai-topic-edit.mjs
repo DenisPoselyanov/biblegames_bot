@@ -13,11 +13,25 @@
 import fs from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { queryOllama, checkOllama, extractJsonArray, extractJsonObject } from './lib/ollama.mjs';
+import {
+  applyAiCliFlags,
+  checkLLM,
+  defaultAiOpts,
+  extractJsonArray,
+  extractJsonObject,
+  loadProjectEnv,
+  providerLabel,
+  queryLLM,
+  unavailableHint,
+} from './lib/llm.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const TOPICS_DIR = join(__dirname, '..', 'data', 'topics-db');
-const DEFAULT_MODEL = process.env.OLLAMA_MODEL || 'mistral';
+loadProjectEnv();
+const { provider: DEFAULT_PROVIDER, model: DEFAULT_MODEL } = defaultAiOpts();
+
+let AI_MODEL = DEFAULT_MODEL;
+let AI_PROVIDER = DEFAULT_PROVIDER;
 
 function loadTree(fileId) {
   const p = join(TOPICS_DIR, `${fileId}.json`);
@@ -68,7 +82,7 @@ async function actionImproveDesc(root, node) {
 - З великої літери, з крапкою в кінці
 
 Відповідай ТІЛЬКИ текстом опису, без додаткових пояснень.`;
-  const raw = (await queryOllama(prompt, DEFAULT_MODEL, { temperature: 0.3 })).trim();
+  const raw = (await queryLLM(prompt, { model: AI_MODEL, provider: AI_PROVIDER, temperature: 0.3 })).trim();
   // Clean up quotes around the response
   const desc = raw.replace(/^["']|["']$/g, '').trim();
   if (desc.length < 5) throw new Error(`Відповідь AI занадто коротка: "${desc}"`);
@@ -86,7 +100,7 @@ async function actionSuggestIcon(root, node) {
 Емодзі має бути тематичним (наприклад: ✝️📖⛪🕊️🔥⚓🌿🌟⭐🌊🏛️🗡️🛡️👑🎺📯📜⚱️🏺🌅🌄🌍).
 
 Відповідай ТІЛЬКИ одним емодзі, без тексту.`;
-  const raw = (await queryOllama(prompt, DEFAULT_MODEL, { temperature: 0.4 })).trim();
+  const raw = (await queryLLM(prompt, { model: AI_MODEL, provider: AI_PROVIDER, temperature: 0.4 })).trim();
   const emojiMatch = raw.match(/(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/u);
   if (emojiMatch) {
     node.icon = emojiMatch[0];
@@ -114,7 +128,7 @@ async function actionAddChildren(root, node, count) {
 [
   {"id":"${node.id}-child-1","title":"Назва","description":"Опис","icon":"✝️","children":[]}
 ]`;
-  const raw = await queryOllama(prompt, DEFAULT_MODEL, { temperature: 0.5 });
+  const raw = await queryLLM(prompt, { model: AI_MODEL, provider: AI_PROVIDER, temperature: 0.5 });
   const newChildren = extractJsonArray(raw);
   if (!Array.isArray(newChildren) || newChildren.length === 0) throw new Error('Порожня відповідь AI');
   // Validate
@@ -179,7 +193,7 @@ ${childrenInfo}
     "childIds": ["${node.id}-sub-1", "${node.id}-sub-2"]
   }
 ]`;
-  const raw = await queryOllama(prompt, DEFAULT_MODEL, { temperature: 0.3 });
+  const raw = await queryLLM(prompt, { model: AI_MODEL, provider: AI_PROVIDER, temperature: 0.3 });
   let groups;
   try {
     groups = extractJsonArray(raw);
@@ -254,12 +268,18 @@ async function main() {
   let nodeId = null;
   let count = 3;
 
+  const cliOpts = { provider: DEFAULT_PROVIDER, model: DEFAULT_MODEL };
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--action' && args[i + 1]) action = args[++i];
     else if (args[i] === '--file' && args[i + 1]) fileId = args[++i];
     else if (args[i] === '--node' && args[i + 1]) nodeId = args[++i];
     else if (args[i] === '--count' && args[i + 1]) count = parseInt(args[++i], 10);
+    else if (args[i] === '--provider' && args[i + 1]) cliOpts.provider = args[++i];
+    else if (args[i] === '--model' && args[i + 1]) cliOpts.model = args[++i];
   }
+  applyAiCliFlags(cliOpts, args);
+  AI_MODEL = cliOpts.model;
+  AI_PROVIDER = cliOpts.provider;
 
   if (!fileId || !nodeId) {
     console.error('❌ Вкажи --file <fileId> та --node <nodeId>');
@@ -286,14 +306,14 @@ async function main() {
   if (node.icon) console.log(`   Іконка: ${node.icon}`);
   console.log('');
 
-  console.log('🔗 Перевірка Ollama...');
+  console.log(`🔗 Перевірка ${providerLabel(AI_PROVIDER)}...`);
   try {
-    const ok = await checkOllama(DEFAULT_MODEL);
+    const ok = await checkLLM(AI_MODEL, { provider: AI_PROVIDER });
     if (!ok) throw new Error('порожня відповідь');
-    console.log('✅ Ollama працює\n');
+    console.log(`✅ ${providerLabel(AI_PROVIDER)} працює\n`);
   } catch (e) {
     console.error('❌', e.message);
-    console.error('\n💡 Запусти: ollama serve');
+    console.error(`\n💡 ${unavailableHint(AI_PROVIDER)}`);
     process.exit(1);
   }
 

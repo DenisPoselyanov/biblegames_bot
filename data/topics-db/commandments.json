@@ -14,22 +14,30 @@
           "id": "commandments-sub-1-sub-1",
           "title": "Перша заповідь",
           "description": "Не май інших богів перед лицем Моїм — єдиний Бог гідний поклоніння.",
-          "icon": "☝️", "children": [] },
+          "icon": "☝️",
+          "children": []
+        },
         {
           "id": "commandments-sub-1-sub-2",
           "title": "Друга заповідь",
           "description": "Не роби собі кумира та не поклоняйся ідолам — Бог є Дух.",
-          "icon": "🚫", "children": [] },
+          "icon": "🚫",
+          "children": []
+        },
         {
           "id": "commandments-sub-1-sub-3",
           "title": "Третя заповідь",
           "description": "Не призивай імені Господа Бога твого намарно — шануй Боже ім'я.",
-          "icon": "📛", "children": [] },
+          "icon": "📛",
+          "children": []
+        },
         {
           "id": "commandments-sub-1-sub-4",
           "title": "Четверта заповідь",
           "description": "Пам'ятай день суботній, щоб святити його — день відпочинку та поклоніння.",
-          "icon": "🕯️", "children": [] }
+          "icon": "🕯️",
+          "children": []
+        }
       ]
     },
     {
@@ -42,17 +50,23 @@
           "id": "commandments-sub-2-sub-1",
           "title": "П'ята заповідь",
           "description": "Шануй батька та матір свою — основа здорових сімейних стосунків.",
-          "icon": "👨‍👩‍👧", "children": [] },
+          "icon": "👨‍👩‍👧",
+          "children": []
+        },
         {
           "id": "commandments-sub-2-sub-2",
           "title": "Шоста заповідь",
           "description": "Не вбивай — життя людини є священним даром від Бога.",
-          "icon": "🕊️", "children": [] },
+          "icon": "🕊️",
+          "children": []
+        },
         {
           "id": "commandments-sub-2-sub-3",
           "title": "Сьома заповідь",
           "description": "Не чини перелюбу — вірність є основою шлюбу.",
-          "icon": "💍", "children": [] }
+          "icon": "💍",
+          "children": []
+        }
       ]
     },
     {
@@ -65,17 +79,23 @@
           "id": "commandments-sub-3-sub-1",
           "title": "Восьма заповідь",
           "description": "Не кради — поважай власність та працю інших людей.",
-          "icon": "👜", "children": [] },
+          "icon": "👜",
+          "children": []
+        },
         {
           "id": "commandments-sub-3-sub-2",
           "title": "Дев'ята заповідь",
           "description": "Не свідчи ложно на ближнього твого — захищай правду та чесність.",
-          "icon": "📢", "children": [] },
+          "icon": "📢",
+          "children": []
+        },
         {
           "id": "commandments-sub-3-sub-3",
           "title": "Десята заповідь",
           "description": "Не пожадай нічого, що належить ближньому твоєму — уникай заздрості.",
-          "icon": "💚", "children": [] }
+          "icon": "💚",
+          "children": []
+        }
       ]
     },
     {
@@ -88,24 +108,31 @@
           "id": "commandments-sub-4-sub-1",
           "title": "Гора Синай",
           "description": "Місце, де Бог явив свою славу та передав Мойсею Десять заповідей.",
-          "icon": "⛰️", "children": [] },
+          "icon": "⛰️",
+          "children": []
+        },
         {
           "id": "commandments-sub-4-sub-2",
           "title": "Перші та другі скрижалі",
           "description": "Мойсей розбив перші скрижалі та отримав другі після покаяння народу.",
-          "icon": "💔", "children": [] },
+          "icon": "💔",
+          "children": []
+        },
         {
           "id": "commandments-sub-4-sub-3",
           "title": "Ковчег Заповіту",
           "description": "Священна скриня, в якій зберігалися кам'яні скрижалі із заповідями.",
-          "icon": "🗄️", "children": [] },
+          "icon": "🗄️",
+          "children": []
+        },
         {
           "id": "commandments-sub-4-sub-4",
           "title": "Ісус про закон",
           "description": "Ісус навчав, що прийшов не порушити закон, а виконати його.",
-          "icon": "✝️", "children": [] }
+          "icon": "✝️",
+          "children": []
+        }
       ]
     }
   ]
 }
-

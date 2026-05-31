@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getThemeById } from '../data/themes';
-import { getQuestionsForLevelAsync, getQuestionsForNodeAsync, getQuestionsForCategoryAsync } from '../data/questions';
+import {
+  getAllQuestionsAsync,
+  getQuestionsForLevelAsync,
+  getQuestionsForNodeAsync,
+  getQuestionsForCategoryAsync,
+} from '../data/questions';
 import { usePlayer } from '../context/PlayerContext';
 import { ExplanationModal } from '../components/ExplanationModal';
 import { haptic } from '../lib/telegram';
@@ -37,9 +42,18 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   const [finished, setFinished] = useState(false);
   const [sprintTimeLeft, setSprintTimeLeft] = useState<number>(mode === 'sprint' ? 300 : 0);
   const [microTimeLeft, setMicroTimeLeft] = useState<number>(mode === 'micro' ? 180 : 0); // 3 хвилини для micro
-  const [adaptiveStrategy, setAdaptiveStrategy] = useState<string>('balanced');
+  const [index, setIndex] = useState(0);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const [earnedPoints, setEarnedPoints] = useState(0);
+  const [explanationOpen, setExplanationOpen] = useState(false);
+  const [questionTimeLeft, setQuestionTimeLeft] = useState(QUESTION_TIME);
+  const questionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const studyMasterySnapshotRef = useRef(profile.studyMastery);
 
   useEffect(() => {
+    studyMasterySnapshotRef.current = profile.studyMastery;
     let cancelled = false;
     setLoading(true);
 
@@ -47,8 +61,8 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       if (mode === 'review') {
         const history = studyRepo.getAnswerHistory();
         const wrongQuestionIds = new Set(history.filter((a) => !a.isCorrect).map((a) => a.questionId));
-        const { ALL_QUESTIONS } = await import('../data/questions');
-        const wrongQuestions = ALL_QUESTIONS.filter((q) => wrongQuestionIds.has(q.id));
+        const allQuestions = await getAllQuestionsAsync();
+        const wrongQuestions = allQuestions.filter((q) => wrongQuestionIds.has(q.id));
         wrongQuestions.sort(() => Math.random() - 0.5);
         if (!cancelled) {
           setQuestions(wrongQuestions);
@@ -64,17 +78,17 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
             const topicHierarchy = await loadAllTopicHierarchies();
             const rootNode = findRootByThemeId(topicHierarchy, themeId ?? '');
             if (rootNode) {
-              const { ALL_QUESTIONS } = await import('../data/questions');
+              const allQuestions = await getAllQuestionsAsync();
               const config = createDefaultAdaptiveConfig('balanced');
               const adaptiveQuestions = await selectAdaptiveQuestions(
                 config,
                 {
-                  masteryStates: profile.studyMastery,
+                  masteryStates: studyMasterySnapshotRef.current,
                   targetNodeId: nodeId,
                   targetDifficulty: validDiff ?? undefined,
                   answeredQuestionIds: new Set(),
                 },
-                ALL_QUESTIONS,
+                allQuestions,
                 rootNode,
               );
               if (!cancelled) {
@@ -130,8 +144,8 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
       if (!themeId || !validDiff) {
         if (mode === 'sprint') {
-          const { ALL_QUESTIONS } = await import('../data/questions');
-          const mixed = [...ALL_QUESTIONS].sort(() => Math.random() - 0.5).slice(0, 200);
+          const allQuestions = await getAllQuestionsAsync();
+          const mixed = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 200);
           if (!cancelled) {
             setQuestions(mixed);
             setLoading(false);
@@ -225,37 +239,31 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
   useEffect(() => {
     if (mode !== 'sprint' || finished || loading) return;
-    if (sprintTimeLeft <= 0) {
-      setFinished(true);
-      return;
-    }
     const timerId = setInterval(() => {
-      setSprintTimeLeft((prev) => prev - 1);
+      setSprintTimeLeft((prev) => {
+        if (prev <= 1) {
+          setFinished(true);
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
     return () => clearInterval(timerId);
-  }, [mode, sprintTimeLeft, finished, loading]);
+  }, [mode, finished, loading]);
 
-useEffect(() => {
+  useEffect(() => {
     if (mode !== 'micro' || finished || loading) return;
-    if (microTimeLeft <= 0) {
-      setFinished(true);
-      return;
-    }
     const timerId = setInterval(() => {
-      setMicroTimeLeft((prev) => prev - 1);
+      setMicroTimeLeft((prev) => {
+        if (prev <= 1) {
+          setFinished(true);
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
     return () => clearInterval(timerId);
-  }, [mode, microTimeLeft, finished, loading]);
-
-  const [index, setIndex] = useState(0);
-  const [selected, setSelected] = useState<number | null>(null);
-  const [correctCount, setCorrectCount] = useState(0);
-  const [showResult, setShowResult] = useState(false);
-  const [earnedPoints, setEarnedPoints] = useState(0);
-  const [explanationOpen, setExplanationOpen] = useState(false);
-
-  const [questionTimeLeft, setQuestionTimeLeft] = useState(QUESTION_TIME);
-  const questionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  }, [mode, finished, loading]);
 
   const clearQuestionTimer = useCallback(() => {
     if (questionTimerRef.current) {
@@ -278,14 +286,21 @@ useEffect(() => {
     }, 1000);
   }, [clearQuestionTimer]);
 
+  const current = questions[index];
+  const progress = questions.length
+    ? ((index + (showResult ? 1 : 0)) / questions.length) * 100
+    : 0;
+  const backToThemeUrl = `/play/study/themes/${themeId}${nodeId ? `/${nodeId}` : ''}`;
+
   useEffect(() => {
     if (!current || showResult || loading || finished) return;
     startQuestionTimer();
     return clearQuestionTimer;
-  }, [index, showResult, loading, finished]);
+  }, [index, showResult, loading, finished, current, startQuestionTimer, clearQuestionTimer]);
 
   useEffect(() => {
-    if (questionTimeLeft > 0 || showResult || !current) return;
+    if (questionTimeLeft > 0 || showResult || !current || loading || finished) return;
+    clearQuestionTimer();
     setSelected(-1);
     setShowResult(true);
     recordAnswerEvent({
@@ -295,13 +310,17 @@ useEffect(() => {
       nodeId: nodeId,
     });
     haptic.notification('error');
-  }, [questionTimeLeft, nodeId]);
-
-  const current = questions[index];
-  const progress = questions.length
-    ? ((index + (showResult ? 1 : 0)) / questions.length) * 100
-    : 0;
-  const backToThemeUrl = `/play/study/themes/${themeId}${nodeId ? `/${nodeId}` : ''}`;
+  }, [
+    questionTimeLeft,
+    showResult,
+    current,
+    loading,
+    finished,
+    nodeId,
+    themeId,
+    clearQuestionTimer,
+    recordAnswerEvent,
+  ]);
 
   const handleSelect = useCallback(
     (optionIndex: number) => {
@@ -322,15 +341,18 @@ useEffect(() => {
         haptic.notification('error');
       }
     },
-    [showResult, current, clearQuestionTimer, nodeId],
+    [showResult, current, clearQuestionTimer, themeId, nodeId, recordAnswerEvent],
   );
 
   const handleNext = useCallback(() => {
-    if (!current || !validDiff || !themeId) return;
+    if (!current) return;
+    if (mode === 'practice' && (!validDiff || !themeId)) return;
 
     haptic.impact('light');
 
     if (index < questions.length - 1) {
+      clearQuestionTimer();
+      setQuestionTimeLeft(QUESTION_TIME);
       setIndex((i) => i + 1);
       setSelected(null);
       setShowResult(false);
@@ -352,6 +374,8 @@ useEffect(() => {
     completeLevel,
     themeId,
     validDiff,
+    mode,
+    clearQuestionTimer,
   ]);
 
   const formatTime = (sec: number) => {

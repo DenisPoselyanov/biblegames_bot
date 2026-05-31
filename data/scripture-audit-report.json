@@ -1,0 +1,1309 @@
+{
+  "summary": {
+    "ok": 300,
+    "unparsed": 207,
+    "empty": 9,
+    "bolls_error": 0,
+    "http_error": 0
+  },
+  "failures": [
+    {
+      "reference": "Ісх. 20:10",
+      "status": "unparsed",
+      "sampleId": "commandments-baby-ai-00002",
+      "file": "commandments.json"
+    },
+    {
+      "reference": "Ісх. 20:13-16, Лев. 19:18",
+      "status": "unparsed",
+      "sampleId": "commandments-baby-ai-00003",
+      "file": "commandments.json"
+    },
+    {
+      "reference": "Ісх. 22:18-19",
+      "status": "unparsed",
+      "sampleId": "commandments-baby-ai-00004",
+      "file": "commandments.json"
+    },
+    {
+      "reference": "Творец. 20:8-11",
+      "status": "unparsed",
+      "sampleId": "commandments-child-ai-00008",
+      "file": "commandments.json"
+    },
+    {
+      "reference": "Бут. 20:22",
+      "status": "empty",
+      "sampleId": "commandments-student-ai-00009",
+      "file": "commandments.json"
+    },
+    {
+      "reference": "Ів. 13:34",
+      "status": "unparsed",
+      "sampleId": "commandments-student-ai-00011",
+      "file": "commandments.json"
+    },
+    {
+      "reference": "Ізд. 9:3",
+      "status": "unparsed",
+      "sampleId": "geography-baby-ai-00002",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Сд. 15:10",
+      "status": "unparsed",
+      "sampleId": "geography-baby-ai-00003",
+      "file": "geography.json"
+    },
+    {
+      "reference": "І Цар. 17:12",
+      "status": "unparsed",
+      "sampleId": "geography-baby-ai-00004",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Нум. 34:11",
+      "status": "unparsed",
+      "sampleId": "geography-baby-ai-00005",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Ів. 5:2",
+      "status": "unparsed",
+      "sampleId": "geography-child-ai-00007",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Цар. 2:1",
+      "status": "unparsed",
+      "sampleId": "geography-child-ai-00011",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Числа 34:11",
+      "status": "unparsed",
+      "sampleId": "geography-preacher-ai-00029",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Деут. 12:5",
+      "status": "unparsed",
+      "sampleId": "geography-youth-ai-00013",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Ап. 1:12",
+      "status": "unparsed",
+      "sampleId": "geography-youth-ai-00016",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Тим. 1:16",
+      "status": "unparsed",
+      "sampleId": "geography-youth-ai-00018",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Ді. 16:6",
+      "status": "unparsed",
+      "sampleId": "geography-student-ai-00024",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Прит. 8:9",
+      "status": "unparsed",
+      "sampleId": "geography-preacher-ai-00026",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Мд. 17:9",
+      "status": "unparsed",
+      "sampleId": "geography-preacher-ai-00027",
+      "file": "geography.json"
+    },
+    {
+      "reference": "2Цар. 8:4",
+      "status": "unparsed",
+      "sampleId": "geography-baby-ai-00032",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Іл. 3:5",
+      "status": "unparsed",
+      "sampleId": "geography-child-ai-00035",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Цар. 2:10",
+      "status": "unparsed",
+      "sampleId": "geography-student-ai-00044",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Іони 1:1",
+      "status": "unparsed",
+      "sampleId": "geography-student-ai-00045",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Дій. 21:3",
+      "status": "unparsed",
+      "sampleId": "geography-student-ai-00047",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Мат. 4:18",
+      "status": "unparsed",
+      "sampleId": "geography-student-ai-00048",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Ісх. 27:11",
+      "status": "unparsed",
+      "sampleId": "geography-preacher-ai-00050",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Ісх. 3:1",
+      "status": "unparsed",
+      "sampleId": "geography-preacher-ai-00051",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Лук. 3:31",
+      "status": "unparsed",
+      "sampleId": "geography-preacher-ai-00052",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Марк 15:22",
+      "status": "unparsed",
+      "sampleId": "geography-baby-ai-00055",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Пс. 14:7",
+      "status": "empty",
+      "sampleId": "geography-baby-ai-00056",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Пов. 60:4",
+      "status": "unparsed",
+      "sampleId": "geography-baby-ai-00058",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Одк. 14:1",
+      "status": "unparsed",
+      "sampleId": "geography-child-ai-00060",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Мат. 2:1",
+      "status": "unparsed",
+      "sampleId": "geography-child-ai-00062",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Йо. 1:43",
+      "status": "unparsed",
+      "sampleId": "geography-youth-ai-00066",
+      "file": "geography.json"
+    },
+    {
+      "reference": "І Цар. 6:1",
+      "status": "unparsed",
+      "sampleId": "geography-youth-ai-00067",
+      "file": "geography.json"
+    },
+    {
+      "reference": "І Цар. 7:1",
+      "status": "unparsed",
+      "sampleId": "geography-youth-ai-00068",
+      "file": "geography.json"
+    },
+    {
+      "reference": "II Цар. 5:9",
+      "status": "unparsed",
+      "sampleId": "geography-student-ai-00071",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Йо. 3:1",
+      "status": "unparsed",
+      "sampleId": "geography-preacher-ai-00077",
+      "file": "geography.json"
+    },
+    {
+      "reference": "3Цар. 1:3",
+      "status": "unparsed",
+      "sampleId": "geography-teacher-ai-00083",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Шм. 8:4",
+      "status": "unparsed",
+      "sampleId": "geography-baby-ai-00090",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Деян. 7:53, Вих. 1:2",
+      "status": "unparsed",
+      "sampleId": "geography-student-ai-00099",
+      "file": "geography.json"
+    },
+    {
+      "reference": "2Цар. 10:29",
+      "status": "unparsed",
+      "sampleId": "geography-student-ai-00100",
+      "file": "geography.json"
+    },
+    {
+      "reference": "2Хр. 4:9",
+      "status": "unparsed",
+      "sampleId": "geography-preacher-ai-00101",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Немає конкретного посилання на це питання в Біблії",
+      "status": "unparsed",
+      "sampleId": "geography-preacher-ai-00106",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Ізд. 34:15",
+      "status": "unparsed",
+      "sampleId": "geography-preacher-ai-00108",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Мк. 16:32-34",
+      "status": "empty",
+      "sampleId": "geography-teacher-ai-00109",
+      "file": "geography.json"
+    },
+    {
+      "reference": "2Цар. 5:17",
+      "status": "unparsed",
+      "sampleId": "geography-teacher-ai-00110",
+      "file": "geography.json"
+    },
+    {
+      "reference": "2 Кр. 5:1",
+      "status": "unparsed",
+      "sampleId": "geography-theologian-ai-00112",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Пр. 3:25",
+      "status": "unparsed",
+      "sampleId": "geography-theologian-ai-00113",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Із. 49:11",
+      "status": "unparsed",
+      "sampleId": "geography-theologian-ai-00114",
+      "file": "geography.json"
+    },
+    {
+      "reference": "Ин. 2:1-11",
+      "status": "unparsed",
+      "sampleId": "gospels-baby-ai-00001",
+      "file": "gospels.json"
+    },
+    {
+      "reference": "Мр. 1:41-45",
+      "status": "unparsed",
+      "sampleId": "gospels-child-ai-00009",
+      "file": "gospels.json"
+    },
+    {
+      "reference": "Акт. 5:12",
+      "status": "unparsed",
+      "sampleId": "gospels-youth-ai-00010",
+      "file": "gospels.json"
+    },
+    {
+      "reference": "Марк 1:14",
+      "status": "unparsed",
+      "sampleId": "gospels-preacher-ai-00016",
+      "file": "gospels.json"
+    },
+    {
+      "reference": "Ів. 11:44",
+      "status": "unparsed",
+      "sampleId": "gospels-preacher-ai-00019",
+      "file": "gospels.json"
+    },
+    {
+      "reference": "Ісус Навин. 16:30-31",
+      "status": "unparsed",
+      "sampleId": "judges-youth-ai-00005",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Книга Суд. 4:4-5",
+      "status": "unparsed",
+      "sampleId": "judges-youth-ai-00006",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Мф. 1:1",
+      "status": "unparsed",
+      "sampleId": "old-testament-youth-ai-00069",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "2Тим. 1:1",
+      "status": "unparsed",
+      "sampleId": "judges-baby-ai-00020",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Ів. 1:2",
+      "status": "unparsed",
+      "sampleId": "judges-baby-ai-00021",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Іо. 1:4-5",
+      "status": "unparsed",
+      "sampleId": "judges-child-ai-00025",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Єз. 16:8",
+      "status": "unparsed",
+      "sampleId": "judges-child-ai-00026",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Книга Ісуса Навина 23:6",
+      "status": "unparsed",
+      "sampleId": "judges-youth-ai-00029",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Ів. 15:4",
+      "status": "unparsed",
+      "sampleId": "judges-youth-ai-00030",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Книга Розпівів 37-50",
+      "status": "unparsed",
+      "sampleId": "judges-youth-ai-00031",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Єзд. 43:5",
+      "status": "unparsed",
+      "sampleId": "judges-student-ai-00036",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Не знайдено відповіді в Біблії",
+      "status": "unparsed",
+      "sampleId": "judges-preacher-ai-00038",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Євангеліє від Матвія 1:1",
+      "status": "unparsed",
+      "sampleId": "judges-preacher-ai-00040",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Тов. 3:16",
+      "status": "unparsed",
+      "sampleId": "judges-teacher-ai-00044",
+      "file": "judges.json"
+    },
+    {
+      "reference": "1 Цар. 1-24",
+      "status": "unparsed",
+      "sampleId": "judges-theologian-ai-00049",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Суд. 8-9",
+      "status": "unparsed",
+      "sampleId": "judges-theologian-ai-00050",
+      "file": "judges.json"
+    },
+    {
+      "reference": "Єр. 1-40",
+      "status": "unparsed",
+      "sampleId": "judges-theologian-ai-00051",
+      "file": "judges.json"
+    },
+    {
+      "reference": "2Цар. 12:28-30",
+      "status": "unparsed",
+      "sampleId": "kings-baby-ai-00001",
+      "file": "kings.json"
+    },
+    {
+      "reference": "1Цар. 8:16",
+      "status": "unparsed",
+      "sampleId": "kings-baby-ai-00002",
+      "file": "kings.json"
+    },
+    {
+      "reference": "2Цар. 11:3-4",
+      "status": "unparsed",
+      "sampleId": "kings-baby-ai-00003",
+      "file": "kings.json"
+    },
+    {
+      "reference": "2Цар. 15:30",
+      "status": "unparsed",
+      "sampleId": "kings-baby-ai-00004",
+      "file": "kings.json"
+    },
+    {
+      "reference": "І цар Давид сказав: Хто коханий моєї жінки, хто її гнанець? І він каже: Сам я, йосеф, до того, коли ми були раби в землі Єгипетській",
+      "status": "unparsed",
+      "sampleId": "kings-child-ai-00005",
+      "file": "kings.json"
+    },
+    {
+      "reference": "І цар Давид каже: Посилайте по чоловікові мій слугу Ахітуфа, з Гароші, і по його рідним братам. І бачив той, що цар написав до Ахітуфа та до його рідних братів, і вони пришли до Давида",
+      "status": "unparsed",
+      "sampleId": "kings-child-ai-00006",
+      "file": "kings.json"
+    },
+    {
+      "reference": "І він правив над усім Ізраїлем танадбадлі віці сімдесят. І зробив Соломон прийдецтво в Єрусалимі, що є по центру, й в'єхав до храму Господа, Бога свого, і жертви наділлялася на вічне усвідомлення",
+      "status": "unparsed",
+      "sampleId": "kings-child-ai-00007",
+      "file": "kings.json"
+    },
+    {
+      "reference": "Тоді Саул почав битися проти Юдеї та переміг їх",
+      "status": "unparsed",
+      "sampleId": "kings-child-ai-00008",
+      "file": "kings.json"
+    },
+    {
+      "reference": "і Саул прийняв до себе їхні корабелі та срібло, велике, й великі здобичі. І каже Саул: Але не віддам їм царя, абсалона, щоб не посмілився над мною. А тоді виголосив Саул покляття: Посланцем ми будемо славлятися в Юдеї: хто виявить мені царя Абсалона, яка награду йому дам?",
+      "status": "unparsed",
+      "sampleId": "kings-child-ai-00008",
+      "file": "kings.json"
+    },
+    {
+      "reference": "Цар. 10:1-19",
+      "status": "unparsed",
+      "sampleId": "kings-youth-ai-00010",
+      "file": "kings.json"
+    },
+    {
+      "reference": "І царів 12:1-20",
+      "status": "unparsed",
+      "sampleId": "kings-youth-ai-00012",
+      "file": "kings.json"
+    },
+    {
+      "reference": "Бут. 9:37",
+      "status": "empty",
+      "sampleId": "kings-student-ai-00013",
+      "file": "kings.json"
+    },
+    {
+      "reference": "Цар. 1:5",
+      "status": "unparsed",
+      "sampleId": "kings-student-ai-00014",
+      "file": "kings.json"
+    },
+    {
+      "reference": "Цар. 14:20",
+      "status": "unparsed",
+      "sampleId": "kings-student-ai-00015",
+      "file": "kings.json"
+    },
+    {
+      "reference": "Цар. 17:1",
+      "status": "unparsed",
+      "sampleId": "kings-student-ai-00016",
+      "file": "kings.json"
+    },
+    {
+      "reference": "Бут. 1Chr 2:9-10",
+      "status": "unparsed",
+      "sampleId": "kings-preacher-ai-00018",
+      "file": "kings.json"
+    },
+    {
+      "reference": "Цар. 1Кн 2:11",
+      "status": "unparsed",
+      "sampleId": "kings-preacher-ai-00019",
+      "file": "kings.json"
+    },
+    {
+      "reference": "Цар. 10:5-6",
+      "status": "unparsed",
+      "sampleId": "kings-preacher-ai-00020",
+      "file": "kings.json"
+    },
+    {
+      "reference": "1 Цар. 10",
+      "status": "unparsed",
+      "sampleId": "kings-youth-1",
+      "file": "kings.json"
+    },
+    {
+      "reference": "Дій. 8:7",
+      "status": "unparsed",
+      "sampleId": "miracles-child-ai-00005",
+      "file": "miracles.json"
+    },
+    {
+      "reference": "Лук. 5:17-26",
+      "status": "unparsed",
+      "sampleId": "miracles-preacher-ai-00014",
+      "file": "miracles.json"
+    },
+    {
+      "reference": "Лук. 8:49-56",
+      "status": "unparsed",
+      "sampleId": "miracles-preacher-ai-00015",
+      "file": "miracles.json"
+    },
+    {
+      "reference": "Йова 9:1-7",
+      "status": "unparsed",
+      "sampleId": "miracles-preacher-ai-00017",
+      "file": "miracles.json"
+    },
+    {
+      "reference": "Лук. 5:1-11",
+      "status": "unparsed",
+      "sampleId": "miracles-preacher-ai-00018",
+      "file": "miracles.json"
+    },
+    {
+      "reference": "Левіт. 11:26",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-baby-ai-00002",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Левіт. 16:34",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-baby-ai-00003",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Екл. 10:5",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-baby-ai-00005",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Числ. 8:24",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-child-ai-00009",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Ек. 25:39",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-youth-ai-00011",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Лв. 23:10",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-preacher-ai-00020",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Лв. 23:5",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-preacher-ai-00022",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Вав. 12:4",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-baby-ai-00023",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Екз. 26:1",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-student-ai-00033",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Лев. 23",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-preacher-ai-00039",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Ів. 1:29",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-baby-ai-00043",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Мойсей 1:1",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-baby-ai-00044",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Перша Хроніка 9:30-12:25",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-child-ai-00049",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "2Тим. 4:11",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-child-ai-00050",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Нум. 24:2",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-youth-ai-00052",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Іса. 6:1",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-student-ai-00059",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Опр. 8:2",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-student-ai-00060",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Із. 8:3",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-preacher-ai-00061",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Ама. 5:18",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-preacher-ai-00062",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Об. 2",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-preacher-ai-00064",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Єс. 2:14",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-preacher-ai-00065",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Іса. 7:14",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-teacher-ai-00068",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Дн. 24",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-teacher-ai-00069",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Ос. 16:34",
+      "status": "empty",
+      "sampleId": "mosaic-law-theologian-ai-00071",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Втор. 12-24",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-theologian-ai-00073",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "II Цар. 15:10",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-theologian-ai-00074",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Мир. 8:1-9",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-theologian-ai-00075",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Цар. 1:1",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-baby-ai-00076",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Бут. 1-3",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-child-ai-00082",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Сол. 9:10",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-child-ai-00083",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Книга про Йона 1:4",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-youth-ai-00086",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "Кн. Притч Соломонових 1:1",
+      "status": "unparsed",
+      "sampleId": "mosaic-law-student-ai-00090",
+      "file": "mosaic-law.json"
+    },
+    {
+      "reference": "2Кор. 13:5",
+      "status": "unparsed",
+      "sampleId": "new-testament-baby-ai-00001",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "1Кор. 1:1",
+      "status": "unparsed",
+      "sampleId": "old-testament-preacher-ai-00081",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Дій. 11:26",
+      "status": "unparsed",
+      "sampleId": "new-testament-baby-ai-00003",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "Дій. 20:17-18",
+      "status": "unparsed",
+      "sampleId": "new-testament-baby-ai-00004",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "Опр. 3:13",
+      "status": "unparsed",
+      "sampleId": "new-testament-youth-ai-00013",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "Колос. 4:19",
+      "status": "unparsed",
+      "sampleId": "new-testament-student-ai-00015",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "Ак. 2:17",
+      "status": "unparsed",
+      "sampleId": "new-testament-student-ai-00017",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "Дія. 15:4",
+      "status": "unparsed",
+      "sampleId": "new-testament-student-ai-00018",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "Актс 2:41",
+      "status": "unparsed",
+      "sampleId": "new-testament-preacher-ai-00019",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "Дій. 4:36",
+      "status": "unparsed",
+      "sampleId": "new-testament-preacher-ai-00020",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "Дій. 23:30",
+      "status": "unparsed",
+      "sampleId": "new-testament-preacher-ai-00021",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "Дій. 18:12",
+      "status": "unparsed",
+      "sampleId": "new-testament-preacher-ai-00022",
+      "file": "new-testament.json"
+    },
+    {
+      "reference": "Пс. 18:32",
+      "status": "empty",
+      "sampleId": "old-testament-baby-ai-00003",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Ісх. 14:27",
+      "status": "unparsed",
+      "sampleId": "old-testament-child-ai-00008",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Пр. 16:8",
+      "status": "unparsed",
+      "sampleId": "old-testament-youth-ai-00013",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Амос 7:1",
+      "status": "unparsed",
+      "sampleId": "old-testament-student-ai-00016",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "1 Самуїл 17:4",
+      "status": "unparsed",
+      "sampleId": "old-testament-student-ai-00020",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "І Цар. 13:25",
+      "status": "unparsed",
+      "sampleId": "old-testament-baby-ai-00023",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Пр. 8:40",
+      "status": "unparsed",
+      "sampleId": "old-testament-baby-ai-00024",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "І Сам. 16:11",
+      "status": "unparsed",
+      "sampleId": "old-testament-child-ai-00031",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "1Цар. 17:54",
+      "status": "unparsed",
+      "sampleId": "old-testament-youth-ai-00034",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Евр. 16:19",
+      "status": "unparsed",
+      "sampleId": "old-testament-student-ai-00040",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "1Цар. 17:17",
+      "status": "unparsed",
+      "sampleId": "old-testament-student-ai-00043",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Цар. 1:26",
+      "status": "unparsed",
+      "sampleId": "old-testament-student-ai-00046",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Цар. 3:1",
+      "status": "unparsed",
+      "sampleId": "old-testament-teacher-ai-00051",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Ез. 28:3",
+      "status": "unparsed",
+      "sampleId": "old-testament-theologian-ai-00054",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Єз. 40:1-5",
+      "status": "unparsed",
+      "sampleId": "old-testament-theologian-ai-00056",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Цар. 1:5-6",
+      "status": "unparsed",
+      "sampleId": "old-testament-theologian-ai-00057",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Ис. 43:16",
+      "status": "unparsed",
+      "sampleId": "old-testament-baby-ai-00059",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Мф. 1:2",
+      "status": "unparsed",
+      "sampleId": "old-testament-baby-ai-00060",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Ієр. 30:29",
+      "status": "unparsed",
+      "sampleId": "old-testament-baby-ai-00061",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "2Цар. 17:1",
+      "status": "unparsed",
+      "sampleId": "old-testament-child-ai-00065",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Хр. 4:15",
+      "status": "unparsed",
+      "sampleId": "old-testament-child-ai-00066",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "2Сам. 1:1",
+      "status": "unparsed",
+      "sampleId": "old-testament-youth-ai-00070",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Йон. 1:1",
+      "status": "unparsed",
+      "sampleId": "old-testament-youth-ai-00072",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Маркове Євангеліє 1:1",
+      "status": "unparsed",
+      "sampleId": "old-testament-student-ai-00074",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Ісаїя 40:3",
+      "status": "unparsed",
+      "sampleId": "old-testament-student-ai-00077",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "1 Цар. 25:1",
+      "status": "empty",
+      "sampleId": "old-testament-preacher-ai-00080",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Ап. 21:18-19",
+      "status": "unparsed",
+      "sampleId": "old-testament-preacher-ai-00082",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "2Пет. 3:15-16",
+      "status": "unparsed",
+      "sampleId": "old-testament-youth-ai-00100",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Іван 1:1",
+      "status": "unparsed",
+      "sampleId": "old-testament-teacher-ai-00085",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "2Кр. 17:32",
+      "status": "unparsed",
+      "sampleId": "old-testament-teacher-ai-00086",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Іоан. 21:24",
+      "status": "unparsed",
+      "sampleId": "old-testament-youth-ai-00101",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Бут. 6-9",
+      "status": "unparsed",
+      "sampleId": "old-testament-student-ai-00103",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Мк. 16:34",
+      "status": "empty",
+      "sampleId": "old-testament-student-ai-00104",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Акт. 6:5",
+      "status": "unparsed",
+      "sampleId": "old-testament-teacher-ai-00113",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Ап. 6:24",
+      "status": "unparsed",
+      "sampleId": "old-testament-theologian-ai-00116",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Дн. 3:23",
+      "status": "unparsed",
+      "sampleId": "old-testament-baby-ai-00119",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Івд. 5:14",
+      "status": "unparsed",
+      "sampleId": "old-testament-child-ai-00121",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Опв. 1:1",
+      "status": "unparsed",
+      "sampleId": "old-testament-child-ai-00122",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Мат. 1:1 - 28:20",
+      "status": "unparsed",
+      "sampleId": "old-testament-child-ai-00128",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Діян. 15:15",
+      "status": "unparsed",
+      "sampleId": "old-testament-theologian-ai-00142",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "1 Цар. 17:49-50",
+      "status": "empty",
+      "sampleId": "old-testament-child-3",
+      "file": "old-testament.json"
+    },
+    {
+      "reference": "Актс. 21:39",
+      "status": "unparsed",
+      "sampleId": "paul-baby-ai-00001",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Актс. 9:11",
+      "status": "unparsed",
+      "sampleId": "paul-baby-ai-00001",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Актс. 13:4",
+      "status": "unparsed",
+      "sampleId": "paul-baby-ai-00002",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 7:58-60",
+      "status": "unparsed",
+      "sampleId": "paul-child-ai-00005",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 16:10",
+      "status": "unparsed",
+      "sampleId": "paul-child-ai-00006",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 21:17-36",
+      "status": "unparsed",
+      "sampleId": "paul-child-ai-00007",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 13:4-52",
+      "status": "unparsed",
+      "sampleId": "paul-child-ai-00008",
+      "file": "paul.json"
+    },
+    {
+      "reference": "14:26-28",
+      "status": "unparsed",
+      "sampleId": "paul-child-ai-00008",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Філ. 1:1",
+      "status": "unparsed",
+      "sampleId": "paul-student-ai-00016",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 19:6",
+      "status": "unparsed",
+      "sampleId": "paul-youth-ai-00010",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 9:24",
+      "status": "unparsed",
+      "sampleId": "paul-youth-ai-00011",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 17:1",
+      "status": "unparsed",
+      "sampleId": "paul-youth-ai-00012",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 13:6-8",
+      "status": "unparsed",
+      "sampleId": "paul-youth-ai-00013",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 13:4",
+      "status": "unparsed",
+      "sampleId": "paul-student-ai-00014",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 16:13-14",
+      "status": "unparsed",
+      "sampleId": "paul-student-ai-00015",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 16:3",
+      "status": "unparsed",
+      "sampleId": "paul-student-ai-00017",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Дій. 28:30-31",
+      "status": "unparsed",
+      "sampleId": "paul-student-ai-00018",
+      "file": "paul.json"
+    },
+    {
+      "reference": "Мф. 3:13-17",
+      "status": "unparsed",
+      "sampleId": "prophets-baby-ai-00003",
+      "file": "prophets.json"
+    },
+    {
+      "reference": "Амос 9:15",
+      "status": "unparsed",
+      "sampleId": "prophets-youth-ai-00009",
+      "file": "prophets.json"
+    },
+    {
+      "reference": "Хол. 5:8",
+      "status": "unparsed",
+      "sampleId": "prophets-youth-ai-00010",
+      "file": "prophets.json"
+    },
+    {
+      "reference": "1Цар. 18:27",
+      "status": "unparsed",
+      "sampleId": "prophets-student-ai-00011",
+      "file": "prophets.json"
+    },
+    {
+      "reference": "1Цар. 11:3",
+      "status": "unparsed",
+      "sampleId": "prophets-student-ai-00013",
+      "file": "prophets.json"
+    },
+    {
+      "reference": "Шмa 15:2",
+      "status": "unparsed",
+      "sampleId": "psalms-student-ai-00007",
+      "file": "psalms.json"
+    },
+    {
+      "reference": "Пс 122 (Халліл 12)",
+      "status": "unparsed",
+      "sampleId": "psalms-preacher-ai-00008",
+      "file": "psalms.json"
+    },
+    {
+      "reference": "Пс 1 (Машія 1)",
+      "status": "unparsed",
+      "sampleId": "psalms-preacher-ai-00009",
+      "file": "psalms.json"
+    },
+    {
+      "reference": "Пс 132 (Решеф 11)",
+      "status": "unparsed",
+      "sampleId": "psalms-preacher-ai-00010",
+      "file": "psalms.json"
+    },
+    {
+      "reference": "Пс 110 (Машія 3)",
+      "status": "unparsed",
+      "sampleId": "psalms-preacher-ai-00011",
+      "file": "psalms.json"
+    },
+    {
+      "reference": "Пс 22 (Елам 5)",
+      "status": "unparsed",
+      "sampleId": "psalms-preacher-ai-00012",
+      "file": "psalms.json"
+    },
+    {
+      "reference": "Одкр. 5:1",
+      "status": "unparsed",
+      "sampleId": "revelation-baby-ai-00001",
+      "file": "revelation.json"
+    },
+    {
+      "reference": "Одкр. 1:10",
+      "status": "unparsed",
+      "sampleId": "revelation-baby-ai-00002",
+      "file": "revelation.json"
+    },
+    {
+      "reference": "Одкр. 19:11-21",
+      "status": "unparsed",
+      "sampleId": "revelation-baby-ai-00003",
+      "file": "revelation.json"
+    },
+    {
+      "reference": "Одкр. 4:1",
+      "status": "unparsed",
+      "sampleId": "revelation-baby-ai-00004",
+      "file": "revelation.json"
+    },
+    {
+      "reference": "Одкр. 14:1",
+      "status": "unparsed",
+      "sampleId": "revelation-child-ai-00005",
+      "file": "revelation.json"
+    },
+    {
+      "reference": "Одкр. 9:17",
+      "status": "unparsed",
+      "sampleId": "revelation-child-ai-00006",
+      "file": "revelation.json"
+    },
+    {
+      "reference": "Одкр. 4:2-8, 6:1-2",
+      "status": "unparsed",
+      "sampleId": "revelation-youth-ai-00007",
+      "file": "revelation.json"
+    }
+  ],
+  "translation": "UTT",
+  "at": "2026-05-31T06:02:35.267Z"
+}

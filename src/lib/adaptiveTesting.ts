@@ -114,35 +114,37 @@ function filterQuestionsByHierarchy(
 
   const targetNode = findNodeById(topicHierarchy, targetNodeId);
   if (!targetNode) {
-    return questions;
+    return [];
+  }
+
+  const relevantNodeIds = new Set<string>([targetNodeId]);
+  if (includeChildNodes) {
+    findAllChildNodes(targetNode).forEach((node) => relevantNodeIds.add(node.id));
+  }
+  if (includeParentNodes) {
+    findParentPath(topicHierarchy, targetNodeId).forEach((node) => relevantNodeIds.add(node.id));
+  }
+
+  const withNodeId = questions.filter(
+    (q) => q.topicNodeId && relevantNodeIds.has(q.topicNodeId),
+  );
+  if (withNodeId.length > 0) {
+    return withNodeId;
   }
 
   const relevantThemeIds = new Set<string>();
-
-  // Додаємо тему самого вузла (якщо є themeId)
-  if (targetNode.themeId) {
-    relevantThemeIds.add(targetNode.themeId);
-  }
-
-  // Додаємо батьківські вузли
+  if (targetNode.themeId) relevantThemeIds.add(targetNode.themeId);
   if (includeParentNodes) {
-    const parentPath = findParentPath(topicHierarchy, targetNodeId);
-    parentPath.forEach((node) => {
+    findParentPath(topicHierarchy, targetNodeId).forEach((node) => {
       if (node.themeId) relevantThemeIds.add(node.themeId);
     });
   }
-
-  // Додаємо дочірні вузли
   if (includeChildNodes) {
-    const childNodes = findAllChildNodes(targetNode);
-    childNodes.forEach((node) => {
+    findAllChildNodes(targetNode).forEach((node) => {
       if (node.themeId) relevantThemeIds.add(node.themeId);
     });
   }
-
-  // Якщо немає themeId, спробуємо маппінг через ідентифікатор
   if (relevantThemeIds.size === 0) {
-    // Простий підхід: використовуємо nodeId як themeId
     relevantThemeIds.add(targetNodeId);
   }
 

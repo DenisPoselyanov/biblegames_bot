@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -13,7 +14,6 @@ import type {
   GlobalStats,
   PlayerProfile,
   Recommendation,
-  TopicHierarchyMap,
 } from '../types';
 import { DIFFICULTY_POINTS } from '../types';
 import { loadGlobalStats, loadProfile } from '../lib/storage';
@@ -28,6 +28,8 @@ import { playerRepo } from '../repos/playerRepo';
 import { statsRepo } from '../repos/statsRepo';
 import { generateRecommendations } from '../lib/recommendationEngine';
 import { loadAllTopicHierarchies } from '../data/topicDbLoader';
+import type { BollsTranslation } from '../lib/bollsConstants';
+import { normalizeBollsTranslation } from '../lib/bollsConstants';
 
 interface PlayerContextValue {
   profile: PlayerProfile;
@@ -49,6 +51,7 @@ interface PlayerContextValue {
   purchaseAvatar: (avatarId: string, price: number) => { purchased: boolean; reason?: 'owned' | 'coins' };
   recordAnswerEvent: (params: { themeId: string; isCorrect: boolean; questionId: string; errorTag?: string; nodeId?: string }) => void;
   getRecommendations: (maxRecommendations?: number) => Promise<Recommendation[]>;
+  setBibleTranslation: (translation: BollsTranslation) => void;
 }
 
 const PlayerContext = createContext<PlayerContextValue | null>(null);
@@ -59,9 +62,18 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     loadProfile(userId, displayName),
   );
   const [globalStats, setGlobalStats] = useState<GlobalStats>(loadGlobalStats);
+  const profileSyncGen = useRef(0);
+  const localDirtyRef = useRef(false);
 
   useEffect(() => {
-    void playerRepo.get(userId, displayName).then(setProfile);
+    const gen = ++profileSyncGen.current;
+    localDirtyRef.current = false;
+    void playerRepo.get(userId, displayName).then((remote) => {
+      if (profileSyncGen.current !== gen) return;
+      if (!localDirtyRef.current) {
+        setProfile(remote);
+      }
+    });
     void statsRepo.get(userId).then(setGlobalStats);
     void studyRepo.syncHistory(userId);
     trackEvent('session_start', { userId });
@@ -115,6 +127,10 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       correctCount: number,
       totalQuestions: number,
     ) => {
+      if (totalQuestions <= 0) {
+        return { points: 0, alreadyCompleted: false };
+      }
+
       const alreadyCompleted = profile.completedLevels.some(
         (l) => l.themeId === themeId && l.difficulty === difficulty,
       );
@@ -136,7 +152,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         updatedAchievements.push('flawless-level');
       }
       if (
-        themeId === 'geography' &&
+        (themeId === 'geography' || themeId === 'geography-nt') &&
         difficulty === 'teacher' &&
         correctCount === totalQuestions &&
         !updatedAchievements.includes('cartographer')
@@ -160,6 +176,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         achievements: updatedAchievements,
       };
 
+      localDirtyRef.current = true;
       setProfile(next);
       void playerRepo.save(next);
       trackEvent('quiz_completed', { themeId, difficulty, points, correctCount, totalQuestions });
@@ -175,6 +192,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const updateProfile = useCallback((updater: (current: PlayerProfile) => PlayerProfile) => {
     setProfile((current) => {
       const next = updater(current);
+      localDirtyRef.current = true;
       void playerRepo.save(next);
       return next;
     });
@@ -330,6 +348,18 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
       trackEvent('question_answered', { questionId, subthemeId: effectiveNodeId, nodeId, isCorrect });
     },
+    [updateProfile, userId],
+  );
+
+  const setBibleTranslation = useCallback(
+    (translation: BollsTranslation) => {
+      const nextTranslation = normalizeBollsTranslation(translation);
+      updateProfile((current) => ({
+        ...current,
+        bibleTranslation: nextTranslation,
+      }));
+      trackEvent('bible_translation_changed', { translation: nextTranslation });
+    },
     [updateProfile],
   );
 
@@ -368,6 +398,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       purchaseAvatar,
       recordAnswerEvent,
       getRecommendations,
+      setBibleTranslation,
     }),
     [
       profile,
@@ -384,6 +415,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       purchaseAvatar,
       recordAnswerEvent,
       getRecommendations,
+      setBibleTranslation,
     ],
   );
 

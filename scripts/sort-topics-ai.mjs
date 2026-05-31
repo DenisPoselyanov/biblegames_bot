@@ -24,17 +24,28 @@ import fs from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { THEME_IDS, getTheme } from './lib/themes-config.mjs';
-import { checkOllama, extractJson, queryOllama } from './lib/ollama.mjs';
+import {
+  applyAiCliFlags,
+  checkLLM,
+  defaultAiOpts,
+  extractJson,
+  loadProjectEnv,
+  providerLabel,
+  queryLLM,
+  unavailableHint,
+} from './lib/llm.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const TOPICS_DIR = join(__dirname, '..', 'data', 'topics-db');
-const DEFAULT_MODEL = process.env.OLLAMA_MODEL || 'mistral';
+loadProjectEnv();
+const { provider: DEFAULT_PROVIDER, model: DEFAULT_MODEL } = defaultAiOpts();
 
 function parseArgs() {
   const args = process.argv.slice(2);
   const opts = {
     theme: null,
     all: false,
+    provider: DEFAULT_PROVIDER,
     model: DEFAULT_MODEL,
     dryRun: false,
     backup: false,
@@ -46,6 +57,7 @@ function parseArgs() {
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--theme' && args[i + 1]) opts.theme = args[++i];
     else if (args[i] === '--all') opts.all = true;
+    else if (args[i] === '--provider' && args[i + 1]) opts.provider = args[++i];
     else if (args[i] === '--model' && args[i + 1]) opts.model = args[++i];
     else if (args[i] === '--dry-run') opts.dryRun = true;
     else if (args[i] === '--backup') opts.backup = true;
@@ -60,6 +72,7 @@ function parseArgs() {
     process.exit(1);
   }
 
+  applyAiCliFlags(opts, args);
   return opts;
 }
 
@@ -133,7 +146,7 @@ function nodePath(tree, targetId) {
 }
 
 /** Просить AI впорядкувати дітей вузла в теологічно та логічно правильному порядку. */
-async function aiReorderChildren(parent, model) {
+async function aiReorderChildren(parent, model, provider = DEFAULT_PROVIDER) {
   normalizeChildren(parent);
   if (parent.children.length < 2) return parent.children.map(c => c.id);
 
@@ -158,7 +171,7 @@ ${childrenList}
 Відповідай ТІЛЬКИ JSON-масивом id:
 ["id1","id2","id3"]`;
 
-  const raw = await queryOllama(prompt, model, { temperature: 0.1 });
+  const raw = await queryLLM(prompt, { model, provider, temperature: 0.1 });
   const parsed = extractJson(raw);
   if (!Array.isArray(parsed)) {
     throw new Error('AI повернула не масив');
@@ -187,7 +200,7 @@ ${childrenList}
  * AI повертає масив { childId, targetParentId, reason }.
  * Корінь не може бути переміщений; цикли не дозволені.
  */
-async function aiReparentingMoves(tree, model) {
+async function aiReparentingMoves(tree, model, provider = DEFAULT_PROVIDER) {
   // Збираємо плоский список усіх вузлів з шляхами
   const flat = [];
   for (const { node, depth, parent } of walkNodes(tree)) {
@@ -222,7 +235,7 @@ ${desc}
 
 Якщо все на місці — поверни порожній масив [].`;
 
-  const raw = await queryOllama(prompt, model, { temperature: 0.1 });
+  const raw = await queryLLM(prompt, { model, provider, temperature: 0.1 });
   let parsed;
   try {
     parsed = extractJson(raw);
@@ -300,7 +313,7 @@ async function processTheme(themeId, opts) {
   if (opts.reparent && !opts.reorderOnly) {
     console.log('   🔀 Аналіз переміщень (reparent)...');
     try {
-      const moves = await aiReparentingMoves(tree, opts.model);
+      const moves = await aiReparentingMoves(tree, opts.model, opts.provider);
       if (moves.length === 0) {
         console.log('   ✓ AI не запропонувала переміщень');
       } else {
@@ -331,7 +344,7 @@ async function processTheme(themeId, opts) {
     normalizeChildren(node);
     if (node.children.length < 2) continue;
     try {
-      const ordered = await aiReorderChildren(node, opts.model);
+      const ordered = await aiReorderChildren(node, opts.model, opts.provider);
       const oldOrder = node.children.map(c => c.id);
       const sameOrder = ordered.every((id, i) => id === oldOrder[i]);
       if (sameOrder) continue;
@@ -362,24 +375,23 @@ async function processTheme(themeId, opts) {
 async function main() {
   const opts = parseArgs();
 
-  console.log('🤖 AI — сортування підгруп у дереві тем (Ollama)');
+  console.log('🤖 AI — сортування підгруп у дереві тем');
   console.log('===============================================');
-  console.log(`Модель: ${opts.model}`);
+  console.log(`Провайдер: ${providerLabel(opts.provider)} • модель: ${opts.model}`);
   if (opts.dryRun) console.log('Режим: DRY-RUN (нічого не зберігається)');
   if (opts.backup) console.log('Створюватиму .bak перед збереженням');
   if (opts.reparent) console.log('Дозволено переміщення між групами (reparent)');
   if (opts.reorderOnly) console.log('Лише сортування (без reparent)');
   console.log('');
 
-  console.log('🔗 Перевірка Ollama...');
+  console.log(`🔗 Перевірка ${providerLabel(opts.provider)}...`);
   try {
-    const ok = await checkOllama(opts.model);
+    const ok = await checkLLM(opts.model, { provider: opts.provider });
     if (!ok) throw new Error('порожня відповідь');
-    console.log('✅ Ollama працює\n');
+    console.log(`✅ ${providerLabel(opts.provider)} працює\n`);
   } catch (e) {
     console.error('❌', e.message);
-    console.error('\n💡 Запусти: ollama serve');
-    console.error(`💡 Завантаж модель: ollama pull ${opts.model}`);
+    console.error(`\n💡 ${unavailableHint(opts.provider)}`);
     process.exit(1);
   }
 

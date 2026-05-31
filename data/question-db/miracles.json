@@ -13,7 +13,9 @@
     "correctIndex": 3,
     "reference": "Мк. 1:9-11",
     "source": "ai",
-    "createdAt": "2026-05-17T19:20:57.096Z"
+    "createdAt": "2026-05-17T19:20:57.096Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-baby-ai-00002",
@@ -29,7 +31,9 @@
     "correctIndex": 0,
     "reference": "Ін. 21:1-14",
     "source": "ai",
-    "createdAt": "2026-05-17T19:20:57.096Z"
+    "createdAt": "2026-05-17T19:20:57.096Z",
+    "topicNodeId": "miracles-sub-1",
+    "topicPath": "Чудеса Ісуса > Зцілення"
   },
   {
     "id": "miracles-child-ai-00003",
@@ -45,7 +49,9 @@
     "correctIndex": 0,
     "reference": "Мар. 1:40",
     "source": "ai",
-    "createdAt": "2026-05-17T19:21:29.538Z"
+    "createdAt": "2026-05-17T19:21:29.538Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-child-ai-00004",
@@ -61,7 +67,9 @@
     "correctIndex": 1,
     "reference": "Ін. 2:9",
     "source": "ai",
-    "createdAt": "2026-05-17T19:21:29.538Z"
+    "createdAt": "2026-05-17T19:21:29.538Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-child-ai-00005",
@@ -77,7 +85,9 @@
     "correctIndex": 2,
     "reference": "Дій. 8:7",
     "source": "ai",
-    "createdAt": "2026-05-17T19:21:29.538Z"
+    "createdAt": "2026-05-17T19:21:29.538Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-child-ai-00006",
@@ -93,7 +103,9 @@
     "correctIndex": 3,
     "reference": "Лк. 7:14",
     "source": "ai",
-    "createdAt": "2026-05-17T19:21:29.538Z"
+    "createdAt": "2026-05-17T19:21:29.538Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-youth-ai-00007",
@@ -109,7 +121,9 @@
     "correctIndex": 0,
     "reference": "Мк. 7:31-37",
     "source": "ai",
-    "createdAt": "2026-05-17T19:21:56.078Z"
+    "createdAt": "2026-05-17T19:21:56.078Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-youth-ai-00008",
@@ -125,7 +139,9 @@
     "correctIndex": 3,
     "reference": "Лк. 13:10-17",
     "source": "ai",
-    "createdAt": "2026-05-17T19:21:56.078Z"
+    "createdAt": "2026-05-17T19:21:56.078Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-student-ai-00009",
@@ -141,7 +157,9 @@
     "correctIndex": 2,
     "reference": "Мк. 5:41",
     "source": "ai",
-    "createdAt": "2026-05-17T19:22:48.550Z"
+    "createdAt": "2026-05-17T19:22:48.550Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-student-ai-00010",
@@ -157,7 +175,9 @@
     "correctIndex": 0,
     "reference": "Іс. 63:11",
     "source": "ai",
-    "createdAt": "2026-05-17T19:22:48.550Z"
+    "createdAt": "2026-05-17T19:22:48.550Z",
+    "topicNodeId": "miracles-sub-4-sub-2",
+    "topicPath": "Чудеса Ісуса > Воскресіння мертвих > Воскресіння сина вдови"
   },
   {
     "id": "miracles-student-ai-00011",
@@ -173,7 +193,9 @@
     "correctIndex": 3,
     "reference": "Мт. 9:25",
     "source": "ai",
-    "createdAt": "2026-05-17T19:22:48.550Z"
+    "createdAt": "2026-05-17T19:22:48.550Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-student-ai-00012",
@@ -189,7 +211,9 @@
     "correctIndex": 1,
     "reference": "Лк. 4:18",
     "source": "ai",
-    "createdAt": "2026-05-17T19:22:48.550Z"
+    "createdAt": "2026-05-17T19:22:48.550Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-student-ai-00013",
@@ -205,7 +229,9 @@
     "correctIndex": 2,
     "reference": "Мт. 9:32",
     "source": "ai",
-    "createdAt": "2026-05-17T19:22:48.550Z"
+    "createdAt": "2026-05-17T19:22:48.550Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-preacher-ai-00014",
@@ -221,7 +247,9 @@
     "correctIndex": 3,
     "reference": "Лук. 5:17-26",
     "source": "ai",
-    "createdAt": "2026-05-17T19:23:45.401Z"
+    "createdAt": "2026-05-17T19:23:45.401Z",
+    "topicNodeId": "miracles-sub-1",
+    "topicPath": "Чудеса Ісуса > Зцілення"
   },
   {
     "id": "miracles-preacher-ai-00015",
@@ -237,7 +265,9 @@
     "correctIndex": 2,
     "reference": "Лук. 8:49-56",
     "source": "ai",
-    "createdAt": "2026-05-17T19:23:45.401Z"
+    "createdAt": "2026-05-17T19:23:45.401Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   },
   {
     "id": "miracles-preacher-ai-00016",
@@ -252,7 +282,9 @@
     ],
     "correctIndex": 2,
     "source": "ai",
-    "createdAt": "2026-05-17T19:23:45.401Z"
+    "createdAt": "2026-05-17T19:23:45.401Z",
+    "topicNodeId": "miracles-sub-1",
+    "topicPath": "Чудеса Ісуса > Зцілення"
   },
   {
     "id": "miracles-preacher-ai-00017",
@@ -268,7 +300,9 @@
     "correctIndex": 3,
     "reference": "Йова 9:1-7",
     "source": "ai",
-    "createdAt": "2026-05-17T19:23:45.401Z"
+    "createdAt": "2026-05-17T19:23:45.401Z",
+    "topicNodeId": "miracles-sub-1-sub-1",
+    "topicPath": "Чудеса Ісуса > Зцілення > Зцілення сліпого"
   },
   {
     "id": "miracles-preacher-ai-00018",
@@ -284,6 +318,8 @@
     "correctIndex": 1,
     "reference": "Лук. 5:1-11",
     "source": "ai",
-    "createdAt": "2026-05-17T19:23:45.401Z"
+    "createdAt": "2026-05-17T19:23:45.401Z",
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
   }
 ]

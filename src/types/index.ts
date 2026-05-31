@@ -1,3 +1,5 @@
+import type { BollsTranslation } from '../lib/bollsConstants';
+
 export type Difficulty = 'baby' | 'child' | 'youth' | 'student' | 'preacher' | 'teacher' | 'theologian';
 
 export interface Category {
@@ -39,6 +41,9 @@ export interface Question {
   lastReviewedAt?: string; // Дата останнього перегляду
   quarantined?: boolean; // Чи в карантині
   quarantineReason?: string; // Причина карантину
+  /** Вузол ієрархії topics-db (для фільтрації підтем) */
+  topicNodeId?: string;
+  topicPath?: string;
 }
 
 export interface CompletedLevel {
@@ -67,6 +72,8 @@ export interface PlayerProfile {
   streakDays: number;
   lastActiveAt: string | null;
   studyMastery: Record<string, MasteryState>;
+  /** Переклад Писання (bolls.life): HOM | UBIO | UTT */
+  bibleTranslation?: BollsTranslation;
 }
 
 export interface MasteryState {
@@ -237,8 +244,47 @@ export interface QuestionQualityReport {
   reviewedBy?: string;
 }
 
+export type ExplanationCoverage = 'missing' | 'short_only' | 'complete' | 'orphan_deep';
+
+export interface ExplanationQualityReport {
+  questionId: string;
+  themeId: string;
+  coverage: ExplanationCoverage;
+  heuristicScore: number;
+  coverageScore?: number;
+  aiScore?: number | null;
+  aiDetails?: {
+    accuracy?: number;
+    clarity?: number;
+    pedagogicalValue?: number;
+    ageAppropriate?: number;
+    summary?: string;
+  } | null;
+  issues: QualityIssue[];
+  explanationShortPreview?: string;
+  reviewedAt?: string | null;
+  text?: string;
+  source?: string;
+}
+
 export interface QualityIssue {
-  type: 'duplicate' | 'ambiguous' | 'unclear_reference' | 'wrong_difficulty' | 'typo' | 'theological_error';
+  type:
+    | 'duplicate'
+    | 'ambiguous'
+    | 'unclear_reference'
+    | 'wrong_difficulty'
+    | 'typo'
+    | 'theological_error'
+    | 'missing_explanation'
+    | 'too_short'
+    | 'too_long_short'
+    | 'repeats_answer'
+    | 'contradicts_answer'
+    | 'duplicates_question'
+    | 'no_scripture_context'
+    | 'theological_red_flag'
+    | 'generic_filler'
+    | 'orphan_deep';
   severity: 'low' | 'medium' | 'high';
   message: string;
   autoFixable?: boolean;

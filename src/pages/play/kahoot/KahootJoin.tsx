@@ -1,16 +1,27 @@
-import { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Icon } from '../../../components/Icon';
 import { useKahootRoom } from '../../../hooks/useKahootRoom';
+import { randomKahootNickname } from '../../../lib/kahootNicknames';
+import { getTelegramStartParam, parseKahootCodeFromStartParam } from '../../../lib/telegram';
 import styles from './Kahoot.module.css';
 
 export function KahootJoin() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { joinRoom, error, connected, setError } = useKahootRoom();
   const [code, setCode] = useState('');
   const [playerName, setPlayerName] = useState('');
+  const [customField, setCustomField] = useState('');
   const [loading, setLoading] = useState(false);
   const hiddenRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const fromQuery = searchParams.get('code');
+    const fromStart = parseKahootCodeFromStartParam(getTelegramStartParam());
+    const preset = fromQuery?.toUpperCase() || fromStart;
+    if (preset) setCode(preset);
+  }, [searchParams]);
 
   const handleJoin = async () => {
     if (!code.trim()) {
@@ -23,9 +34,13 @@ export function KahootJoin() {
     }
 
     setLoading(true);
-    const state = await joinRoom(code.trim(), playerName.trim());
+    const state = await joinRoom(code.trim(), playerName.trim(), customField.trim() || undefined);
     setLoading(false);
     if (state) navigate(`/play/kahoot/room/${state.code}`);
+  };
+
+  const handleRandomNick = () => {
+    setPlayerName(randomKahootNickname());
   };
 
   return (
@@ -59,17 +74,33 @@ export function KahootJoin() {
 
         <label className={styles.field}>
           <span>Твій нікнейм</span>
+          <div className={styles.nickRow}>
+            <input
+              type="text"
+              maxLength={24}
+              placeholder="Будь-яке ім'я"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+            />
+            <button type="button" className={styles.btnSecondary} onClick={handleRandomNick}>
+              🎲
+            </button>
+          </div>
+        </label>
+
+        <label className={styles.field}>
+          <span>Додаткове поле (якщо ведучий увімкнув)</span>
           <input
             type="text"
-            maxLength={24}
-            placeholder="Будь-яке ім'я"
-            value={playerName}
-            onChange={(e) => setPlayerName(e.target.value)}
+            maxLength={48}
+            placeholder="Необов'язково"
+            value={customField}
+            onChange={(e) => setCustomField(e.target.value)}
           />
         </label>
 
         {!connected && (
-          <p className={styles.serverError}>Не вдалося з'єднатися з сервером. Перевірте підключення.</p>
+          <p className={styles.serverError}>Не вдалося з&apos;єднатися з сервером. Перевірте підключення.</p>
         )}
         {error && <p className={styles.error}>{error}</p>}
 

@@ -12,11 +12,12 @@ import {
 } from '../types';
 import type { Difficulty, TopicNode } from '../types';
 import { Icon } from '../components/Icon';
-import { loadTopicHierarchy, loadAllTopicHierarchies } from '../data/topicDbLoader';
+import { loadTopicHierarchy, loadAllTopicHierarchies, findNodeById, findParentNode } from '../data/topicDbLoader';
 import styles from './ThemeDetail.module.css';
 
 export function ThemeDetail() {
   const { themeId, nodeId: urlNodeId } = useParams<{ themeId: string; nodeId?: string }>();
+  const navigate = useNavigate();
   const theme = getThemeById(themeId ?? '');
   const { profile } = usePlayer();
 
@@ -27,7 +28,7 @@ export function ThemeDetail() {
   const [selectedNode, setSelectedNode] = useState<TopicNode | null>(null);
   const [isAggregate, setIsAggregate] = useState(false);
   const [aggregateThemeIds, setAggregateThemeIds] = useState<string[]>([]);
-  const [showHierarchy, setShowHierarchy] = useState(true);
+  const [showHierarchy, setShowHierarchy] = useState(!urlNodeId);
 
   // Визначаємо, чи це агрегатний вузол "Всі питання"
   const loadAggregateCounts = async (themeIds: string[]) => {
@@ -82,24 +83,18 @@ export function ThemeDetail() {
 
       // Інакше — завантажуємо звичайну тему
       const tid = themeId ?? '';
-      if (tid && hierarchies[tid]) {
-        setTopicHierarchy(hierarchies[tid]);
-
-        // Завантажуємо питання
-        if (!cancelled) {
-          const entries = await Promise.all(
-            DIFFICULTIES.map(async (diff) => {
-              const count = await getQuestionCountByDifficultyAsync(tid, diff);
-              return [diff, count] as const;
-            }),
-          );
-          setQuestionCounts(Object.fromEntries(entries));
-        }
-      } else if (tid) {
-        // Спроба завантажити окрему ієрархію
+      if (tid) {
         const hierarchy = await loadTopicHierarchy(tid);
         if (!cancelled && hierarchy) {
           setTopicHierarchy(hierarchy);
+
+          if (urlNodeId) {
+            const node = findNodeById(hierarchy, urlNodeId);
+            if (node && !node.aggregateThemeIds?.length) {
+              setSelectedNode(node);
+              setShowHierarchy(false);
+            }
+          }
         }
 
         const entries = await Promise.all(
@@ -150,12 +145,55 @@ export function ThemeDetail() {
 
   const effectiveNodeId = selectedNode?.id;
 
+  const handleBack = () => {
+    if (isAggregate) {
+      navigate('/play/study/themes');
+      return;
+    }
+
+    const currentId = selectedNode?.id ?? urlNodeId;
+    if (!currentId || !topicHierarchy || currentId === topicHierarchy.id) {
+      navigate(`/play/study/themes?at=${themeId}`);
+      return;
+    }
+
+    const parent = findParentNode(topicHierarchy, currentId);
+    if (parent) {
+      navigate(`/play/study/themes?at=${parent.id}`);
+      return;
+    }
+
+    navigate('/play/study/themes');
+  };
+
+  const handleSelectNode = (id: string | null) => {
+    if (!topicHierarchy) return;
+
+    if (!id) {
+      navigate(`/play/study/themes/${themeId}`);
+      setSelectedNode(null);
+      return;
+    }
+
+    const foundNode = findNodeById(topicHierarchy, id);
+    if (!foundNode) return;
+
+    if (foundNode.id === topicHierarchy.id) {
+      navigate(`/play/study/themes/${themeId}`);
+      setSelectedNode(null);
+    } else {
+      navigate(`/play/study/themes/${themeId}/${id}`);
+      setSelectedNode(foundNode);
+      setShowHierarchy(false);
+    }
+  };
+
   return (
     <section className={styles.page}>
       <div className={styles.topRow}>
-        <Link to="/play/study/themes" className={styles.backBtn} aria-label="Назад">
+        <button type="button" className={styles.backBtn} aria-label="Назад" onClick={handleBack}>
           <Icon name="back" size={20} />
-        </Link>
+        </button>
       </div>
 
       <header className={styles.hero}>
@@ -190,24 +228,7 @@ export function ThemeDetail() {
               <HierarchyTree
                 node={topicHierarchy}
                 selectedNodeId={selectedNode?.id ?? null}
-                onSelectNode={(id) => {
-                  if (id && topicHierarchy) {
-                    const findNode = (node: TopicNode, targetId: string): TopicNode | null => {
-                      if (node.id === targetId) return node;
-                      if (node.children) {
-                        for (const child of node.children) {
-                          const found = findNode(child, targetId);
-                          if (found) return found;
-                        }
-                      }
-                      return null;
-                    };
-                    const foundNode = findNode(topicHierarchy, id);
-                    setSelectedNode(foundNode);
-                  } else {
-                    setSelectedNode(null);
-                  }
-                }}
+                onSelectNode={handleSelectNode}
                 masteryStates={profile.studyMastery}
               />
             </div>

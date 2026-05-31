@@ -14,6 +14,7 @@ interface StoredSession {
   code: string;
   playerId: string;
   isHost: boolean;
+  playerName?: string;
 }
 
 function loadSession(): StoredSession | null {
@@ -44,11 +45,13 @@ function saveRoomState(state: KahootRoomState | null) {
   else sessionStorage.removeItem(ROOM_STATE_KEY);
 }
 
-export function useKahootRoom() {
+export function useKahootRoom(options?: { displayOnly?: boolean }) {
+  const displayOnly = options?.displayOnly ?? false;
   const [room, setRoom] = useState<KahootRoomState | null>(loadRoomState);
   const [error, setError] = useState<string | null>(null);
   const [connected, setConnected] = useState(false);
   const [myId, setMyId] = useState<string | null>(null);
+  const [reconnected, setReconnected] = useState(false);
 
   useEffect(() => {
     const socket = getKahootSocket();
@@ -56,6 +59,40 @@ export function useKahootRoom() {
     const onConnect = () => {
       setConnected(true);
       setMyId(socket.id ?? null);
+
+      const session = loadSession();
+      if (session && !displayOnly && !reconnected) {
+        setReconnected(true);
+        if (session.playerName) {
+          emitWithAck<{ code: string; playerName: string }, KahootRoomState>(
+            'rejoin_room',
+            { code: session.code, playerName: session.playerName },
+          ).then((res) => {
+            if (res.ok) {
+              setRoom(res.state);
+              saveRoomState(res.state);
+              const playerId = getKahootSocket().id;
+              if (playerId) {
+                saveSession({
+                  ...session,
+                  playerId,
+                  isHost: res.state.hostId === playerId,
+                });
+              }
+            } else {
+              setError(res.error);
+              if (
+                res.error.includes('не знайдено') ||
+                res.error.includes('не знайдено в кімнаті')
+              ) {
+                setRoom(null);
+                saveRoomState(null);
+                saveSession(null);
+              }
+            }
+          });
+        }
+      }
     };
     const onDisconnect = () => setConnected(false);
 
@@ -80,15 +117,15 @@ export function useKahootRoom() {
       unsubState();
       unsubClosed();
     };
-  }, []);
+  }, [displayOnly, reconnected]);
 
   const createRoom = useCallback(
-    async (hostName: string, settings: KahootRoomSettings) => {
+    async (hostName: string, settings: KahootRoomSettings, hostTelegramId?: string) => {
       setError(null);
-      const res = await emitWithAck<{ hostName: string; settings: KahootRoomSettings }, KahootRoomState>(
-        'create_room',
-        { hostName, settings },
-      );
+      const res = await emitWithAck<
+        { hostName: string; settings: KahootRoomSettings; hostTelegramId?: string },
+        KahootRoomState
+      >('create_room', { hostName, settings, hostTelegramId });
       if (!res.ok) {
         setError(res.error);
         return null;
@@ -96,30 +133,53 @@ export function useKahootRoom() {
       setRoom(res.state);
       saveRoomState(res.state);
       const socket = getKahootSocket();
-      saveSession({ code: res.state.code, playerId: socket.id!, isHost: true });
+      const playerId = socket.id ?? res.state.hostId;
+      if (playerId) {
+        saveSession({ code: res.state.code, playerId, isHost: true, playerName: hostName });
+      }
       return res.state;
     },
     [],
   );
 
-  const joinRoom = useCallback(async (code: string, playerName: string) => {
+  const joinRoom = useCallback(
+    async (code: string, playerName: string, customField?: string) => {
+      setError(null);
+      const res = await emitWithAck<
+        { code: string; playerName: string; customField?: string },
+        KahootRoomState
+      >('join_room', { code: code.toUpperCase(), playerName, customField });
+      if (!res.ok) {
+        setError(res.error);
+        return null;
+      }
+      setRoom(res.state);
+      saveRoomState(res.state);
+      const socket = getKahootSocket();
+      const playerId = socket.id ?? res.state.players[0]?.id;
+      if (playerId) {
+        saveSession({
+          code: res.state.code,
+          playerId,
+          isHost: res.state.hostId === playerId,
+          playerName,
+        });
+      }
+      return res.state;
+    },
+    [],
+  );
+
+  const joinAsDisplay = useCallback(async (code: string) => {
     setError(null);
-    const res = await emitWithAck<{ code: string; playerName: string }, KahootRoomState>(
-      'join_room',
-      { code: code.toUpperCase(), playerName },
-    );
+    const res = await emitWithAck<{ code: string }, KahootRoomState>('join_as_display', {
+      code: code.toUpperCase(),
+    });
     if (!res.ok) {
       setError(res.error);
       return null;
     }
     setRoom(res.state);
-    saveRoomState(res.state);
-    const socket = getKahootSocket();
-    saveSession({
-      code: res.state.code,
-      playerId: socket.id!,
-      isHost: res.state.hostId === socket.id,
-    });
     return res.state;
   }, []);
 
@@ -158,6 +218,16 @@ export function useKahootRoom() {
     return res.state;
   }, []);
 
+  const advancePhase = useCallback(async () => {
+    const res = await emitWithAck<Record<string, never>, KahootRoomState>('advance_phase', {});
+    if (!res.ok) {
+      setError(res.error);
+      return null;
+    }
+    setRoom(res.state);
+    return res.state;
+  }, []);
+
   const leaveRoom = useCallback(() => {
     getKahootSocket().emit('leave_room');
     setRoom(null);
@@ -177,9 +247,11 @@ export function useKahootRoom() {
     session,
     createRoom,
     joinRoom,
+    joinAsDisplay,
     updateSettings,
     startGame,
     submitAnswer,
+    advancePhase,
     leaveRoom,
     setError,
   };

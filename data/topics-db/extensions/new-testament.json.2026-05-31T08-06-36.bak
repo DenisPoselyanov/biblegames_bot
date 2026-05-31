@@ -1,0 +1,13 @@
+{
+  "covenantId": "new-testament",
+  "branches": [
+    {
+      "id": "nt-custom-poslannia-do-maibutnikh-pokolin",
+      "title": "Послання до майбутніх поколінь",
+      "description": "Збірка пророчих настанов та духовних порад апостолів для вірян, що житимуть у часи великих випробувань перед другим пришестям.",
+      "icon": "📜",
+      "themeId": "new-testament",
+      "children": []
+    }
+  ]
+}

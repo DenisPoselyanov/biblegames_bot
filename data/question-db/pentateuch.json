@@ -1,0 +1,328 @@
+[
+  {
+    "id": "old-testament-baby-ai-00002",
+    "themeId": "pentateuch",
+    "difficulty": "baby",
+    "text": "Скільки братів у Авраама було?",
+    "options": [
+      "Два",
+      "Три",
+      "Чотири",
+      "П'ять"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 12:8",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:47:25.166Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-baby-ai-00004",
+    "themeId": "pentateuch",
+    "difficulty": "baby",
+    "text": "Які закони дав Мойсей Ізраїлю під горою Синай?",
+    "options": [
+      "Закон Соломоновій",
+      "Закон Авраамовський",
+      "Закон Йовавітевський",
+      "Закон Мойсеєвський"
+    ],
+    "correctIndex": 3,
+    "reference": "Вих. 12:49",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:47:25.166Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-youth-ai-00011",
+    "themeId": "pentateuch",
+    "difficulty": "youth",
+    "text": "Який бог дав Авраамові ім'я Бога, якого сьогодні називають Єгови?",
+    "options": [
+      "А) Астарте",
+      "Б) Баал",
+      "В) Молих",
+      "Г) Єгова"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 6:4",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:43.946Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-youth-ai-00013",
+    "themeId": "pentateuch",
+    "difficulty": "youth",
+    "text": "Який пророк відомий тим, що написав книгу про потоп?",
+    "options": [
+      "А) Авраам",
+      "Б) Ісая",
+      "В) Мойсей",
+      "Г) Ної"
+    ],
+    "correctIndex": 0,
+    "reference": "Пр. 16:8",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:43.947Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-student-ai-00018",
+    "themeId": "pentateuch",
+    "difficulty": "student",
+    "text": "Хто був спадкоємцем Авраама як главою ісраельських племен?",
+    "options": [
+      "Йосип",
+      "Давид",
+      "Мойсей",
+      "Соломон"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 13:6",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:49:22.760Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-student-ai-00019",
+    "themeId": "pentateuch",
+    "difficulty": "student",
+    "text": "Який закон був даний Авраамом, попередником Ізраїлю?",
+    "options": [
+      "Тора (П'ятикнижжя Мойсеєвому)",
+      "Зехін (Скрижалі Моря)",
+      "Хук (Скрижалі Сіону)",
+      "Єхезкіл (Книга пророка Єзекіїля)"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 15:6",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:49:22.760Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-baby-ai-00021",
+    "themeId": "pentateuch",
+    "difficulty": "baby",
+    "text": "Хто батько Авраамовий?",
+    "options": [
+      "Ламмах, син Харан",
+      "Терех, син Нахор",
+      "Нефільм, син Серухіма",
+      "Гомер, син Абрамі"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 11:26",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:01:09.547Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-baby-ai-00025",
+    "themeId": "pentateuch",
+    "difficulty": "baby",
+    "text": "Как называется закон Божий, который Моисей получил на горе Синай?",
+    "options": [
+      "Закон Горы",
+      "Закон Моисеев",
+      "Тора",
+      "Закон Господень"
+    ],
+    "correctIndex": 3,
+    "reference": "Втор. 5:22",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:01:09.547Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-baby-ai-00028",
+    "themeId": "pentateuch",
+    "difficulty": "baby",
+    "text": "Кто получил Божественное заповедь на горе Синай?",
+    "options": [
+      "Мойсей",
+      "Авраам",
+      "Исаия",
+      "Давид"
+    ],
+    "correctIndex": 1,
+    "reference": "Втор. 5:22",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:17:23.832Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-child-ai-00030",
+    "themeId": "pentateuch",
+    "difficulty": "child",
+    "text": "Як називають Закон, який отримав Мойсей на горі Синай?",
+    "options": [
+      "А) Закон Мойсея",
+      "Б) Закон Божий",
+      "В) Старий Завіт",
+      "Г) Тора"
+    ],
+    "correctIndex": 3,
+    "reference": "Лев. 27:34",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:17:45.015Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-youth-ai-00032",
+    "themeId": "pentateuch",
+    "difficulty": "youth",
+    "text": "Який бог промовив Аврааму, щоб той вирушив у Сіон?",
+    "options": [
+      "А) Бог єгипетський",
+      "В) Бог ізраїльський",
+      "Б) Бог ассирійський",
+      "Г) Бог грецький"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 13:4",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:18:09.141Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-youth-ai-00033",
+    "themeId": "pentateuch",
+    "difficulty": "youth",
+    "text": "Який закон був даний Мойсеєм на горі Синай?",
+    "options": [
+      "А) Закон греків",
+      "В) Закон римлян",
+      "Б) Закон єгиптян",
+      "Г) Закон ізраїльський"
+    ],
+    "correctIndex": 3,
+    "reference": "Вих. 20:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:18:09.141Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-teacher-ai-00050",
+    "themeId": "pentateuch",
+    "difficulty": "teacher",
+    "text": "Хто був першим на ім'я Авраам у Старому Заповіті?",
+    "options": [
+      "А) Лев",
+      "Б) Мойсей",
+      "В) Давид",
+      "Г) Авраам"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 1:26-27",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:20:26.289Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-theologian-ai-00054",
+    "themeId": "pentateuch",
+    "difficulty": "theologian",
+    "text": "Яким способом прийшов Мойсей до фараона Егіпту?",
+    "options": [
+      "Він був посланий Ісмаелем",
+      "Він був знайдений у корзині на Нілі",
+      "Він втек з Єгипту",
+      "Він був пророк із Медії"
+    ],
+    "correctIndex": 1,
+    "reference": "Ез. 28:3",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:21:02.847Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-theologian-ai-00055",
+    "themeId": "pentateuch",
+    "difficulty": "theologian",
+    "text": "Ктому Мойсей подав Десять Заповідей на Сінаї?",
+    "options": [
+      "Давиду",
+      "Єгове",
+      "Авраамові",
+      "Ізраїлю"
+    ],
+    "correctIndex": 3,
+    "reference": "Втор. 5:2",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:21:02.847Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-child-ai-00063",
+    "themeId": "pentateuch",
+    "difficulty": "child",
+    "text": "Який перший книгою Біблії називається Книга Буття?",
+    "options": [
+      "Книга Адама",
+      "Книга Івана",
+      "Книга Мойсея",
+      "Книга Євангеліє"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:55:12.873Z",
+    "topicNodeId": "pentateuch-sub-1",
+    "topicPath": "Пятикнижжя > Буття"
+  },
+  {
+    "id": "old-testament-preacher-ai-00079",
+    "themeId": "pentateuch",
+    "difficulty": "preacher",
+    "text": "Який пророк згадує про Ісуса як про потопленого та високоповажного?",
+    "options": [
+      "Ісая",
+      "Єремія",
+      "Даниїл",
+      "Михаїл"
+    ],
+    "correctIndex": 0,
+    "reference": "Іс. 9:6",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:56:57.951Z",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  },
+  {
+    "id": "old-testament-student-3",
+    "themeId": "pentateuch",
+    "difficulty": "student",
+    "text": "Хто був «пророком як Мойсей»?",
+    "options": [
+      "Ілля",
+      "Самуїл",
+      "Ісая",
+      "Христос (обіцяння)"
+    ],
+    "correctIndex": 3,
+    "reference": "Втор. 18:18",
+    "quarantined": false,
+    "sourceQuality": "ai-reviewed",
+    "lastReviewedAt": "2026-05-30T19:53:01.674Z",
+    "explanationShort": "Згідно з Второзакономмоємву (Втор. 18:15-22), Бог заповідав Мойсею, щоб він не дозволив жерці, який служить у храмі, покинути свої обов'язки і стати пророком, як це було з Мойсеєм. Але в книзі Ісаїа (Іс. 6:1-8) описується, що Ісая був «пророком як Мойсей», оскільки він бачив Бога і отримав від нього заповідання для народу.",
+    "topicNodeId": "pentateuch",
+    "topicPath": "Пятикнижжя"
+  }
+]

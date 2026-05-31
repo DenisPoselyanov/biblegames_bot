@@ -43,8 +43,9 @@ export const STUDY_THEME_GROUPS: StudyThemeGroup[] = [
     description: 'Місця, поезія і пророчий погляд',
     icon: '🗺️',
     subthemes: [
-      { id: 'bible-geography', title: 'Географія', description: 'Країни, міста та маршрути', icon: '🗺️', themeId: 'geography' },
-      { id: 'psalms-and-worship', title: 'Псалми', description: 'Молитва, поклоніння і серце', icon: '🎵', themeId: 'psalms' },
+      { id: 'bible-geography-ot', title: 'Географія СЗ', description: 'Місця та регіони Старого Завіту', icon: '🗺️', themeId: 'geography' },
+      { id: 'bible-geography-nt', title: 'Географія НЗ', description: 'Місця Ісуса, апостолів і місій', icon: '🧭', themeId: 'geography-nt' },
+      { id: 'psalms-and-worship', title: 'Псалми', description: 'Молитва, поклоніння і серце', icon: '🎵', themeId: 'wisdom-poetry' },
       { id: 'prophets-voice', title: 'Пророки', description: 'Заклик до покаяння і надії', icon: '🔥', themeId: 'prophets' },
     ],
   },

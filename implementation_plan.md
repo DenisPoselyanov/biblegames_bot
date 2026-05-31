@@ -274,17 +274,17 @@
 ---
 
 ## Phase 15 — AI Scripts: Ollama Launcher v2 та інтеграція інструментів (2026-05-24+)
-**Статус: Pending**
+**Статус: Done**
 
-### 15.1. Оновлення AI_SETUP.md
-- Додати документацію нових флагів (`--topic`, `--group`, `npm run analyze-topics`)
-- Додати документацію Ollama Launcher (4 картки)
+### 15.1. Ollama Launcher v2
+- ✅ Вкладки: Питання / Теми / Якість тем / Налаштування
+- ✅ `npm run ai-launcher`, cwd = корінь проєкту, статус Ollama
+- ✅ Інтеграція: analyze-quality, analyze-pools, analyze-topics, sort-questions, scripture:audit, merge-topics-db, ai-topic-edit (add-children)
+- ✅ `balance-questions.mjs` — вирівнювання кількості питань між підтемами
+- ✅ Якість тем з `data/topics-quality-report.json` (без дубльованої Python-логіки)
 
-### 15.2. Подальші покращення
-- **Тематична генерація питань:** використовувати `--topic` для генерації питань конкретно по підтемі
-- **Автоматичний аналіз:** запускати `npm run analyze-topics` після кожної генерації тем
-- **Візуалізація в лаунчері:** додати графік розподілу якості тем
-- **Експорт звіту:** кнопка "Експорт CSV" для звіту аналізу
+### 15.2. Документація
+- ✅ Оновлено `scripts/AI_SETUP.md`, `TOOLS.md`
 
 ---
 

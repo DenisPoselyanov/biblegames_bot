@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { useTelegram } from '../hooks/useTelegram';
 import { Icon } from '../components/Icon';
@@ -7,19 +7,28 @@ import { getAvatarById } from '../data/cosmetics';
 import { studyRepo } from '../repos/studyRepo';
 import { buildLearningInsight, getDailyTasks } from '../lib/learning';
 import { trackEvent } from '../lib/telemetry';
+import { normalizeBollsTranslation } from '../lib/bollsConstants';
+import { fetchDailyScripture } from '../repos/scriptureRepo';
+import type { DailyScripture } from '../types/scripture';
 import styles from './Home.module.css';
+
+const FALLBACK_DAILY = {
+  text: 'Бо так полюбив Бог світ, що віддав Сина Свого Однородженого...',
+  reference: 'Івана 3:16',
+};
 
 export function Home() {
   const { profile } = usePlayer();
   const { displayName } = useTelegram();
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
-  const verses = [
-    { text: 'Бо так полюбив Бог світ, що віддав Сина Свого Однородженого...', reference: 'Івана 3:16' },
-    { text: 'Слово Твоє — світильник нозі моїй і світло стежці моїй.', reference: 'Псалом 119:105' },
-    { text: 'Блаженні голодні та спраглі правди, бо вони наситяться.', reference: 'Матвія 5:6' },
-  ];
-  const dayIndex = Math.floor(Date.now() / 86400000) % verses.length;
-  const dailyVerse = verses[dayIndex];
+  const translation = normalizeBollsTranslation(profile.bibleTranslation);
+  const [dailyVerse, setDailyVerse] = useState<DailyScripture | typeof FALLBACK_DAILY>(FALLBACK_DAILY);
+
+  useEffect(() => {
+    void fetchDailyScripture(translation).then((daily) => {
+      if (daily?.text) setDailyVerse(daily);
+    });
+  }, [translation]);
   const history = studyRepo.getAnswerHistory();
   const dailyTasks = getDailyTasks(profile, history);
   const insight = buildLearningInsight(profile, history);

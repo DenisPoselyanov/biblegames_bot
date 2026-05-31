@@ -15,8 +15,8 @@ TESTAMENTS = {
         'icon': '📜',
         'desc': 'Перша частина Біблії, яка описує створення світу та історію ізраїльського народу.',
         'themeIds': [
-            'mosaic-law', 'judges', 'kings', 'prophets',
-            'psalms', 'patriarchs', 'geography', 'commandments',
+            'pentateuch', 'patriarchs', 'judges', 'kings',
+            'wisdom-poetry', 'prophets', 'mosaic-law', 'commandments', 'geography',
         ],
         'all_id': 'ot-all',
     },
@@ -25,7 +25,8 @@ TESTAMENTS = {
         'icon': '✝️',
         'desc': 'Друга частина Біблії, яка описує життя Ісуса Христа та народження християнської церкви.',
         'themeIds': [
-            'gospels', 'paul', 'parables', 'miracles', 'revelation',
+            'gospels', 'acts', 'paul', 'general-epistles',
+            'revelation', 'geography-nt', 'parables', 'miracles',
         ],
         'all_id': 'nt-all',
     },
@@ -46,6 +47,19 @@ def load_individual(theme_id):
         node = json.load(f)
     add_theme_id(node, theme_id)
     return node
+
+def load_extension_branches(covenant_id):
+    """Custom branches from data/topics-db/extensions/{covenant}.json"""
+    path = os.path.join(DB_DIR, 'extensions', f'{covenant_id}.json')
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, encoding='utf-8') as f:
+            data = json.load(f)
+        return data.get('branches', []) or []
+    except (json.JSONDecodeError, OSError):
+        print(f'WARN: failed to read extensions/{covenant_id}.json')
+        return []
 
 def main():
     root = {
@@ -94,12 +108,16 @@ def main():
         all_node['children'] = all_children
 
         # Build testament node
+        extension_branches = load_extension_branches(test_id)
+        for branch in extension_branches:
+            add_theme_id(branch, test_id)
+
         test_node = {
             'id': test_id,
             'title': test_info['title'],
             'description': test_info['desc'],
             'icon': test_info['icon'],
-            'children': [all_node] + theme_nodes,
+            'children': [all_node] + theme_nodes + extension_branches,
         }
 
         root['children'].append(test_node)

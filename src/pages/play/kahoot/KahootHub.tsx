@@ -47,9 +47,12 @@ export function KahootHub() {
         </ol>
       </article>
 
-      <p className={styles.serverNote}>
-        Потрібен сервер: <code>npm run server</code>
-      </p>
+        <p className={styles.serverNote}>
+          Потрібен сервер: <code>npm run server</code>
+        </p>
+        <p className={styles.mutedSmall}>
+          Авто/ручний темп · екран залу · поділитися через Telegram · CSV після гри
+        </p>
     </section>
   );
 }

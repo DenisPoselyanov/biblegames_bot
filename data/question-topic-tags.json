@@ -1,0 +1,1830 @@
+{
+  "geography-child-1": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія"
+  },
+  "geography-child-2": {
+    "topicNodeId": "geography-sub-3-sub-2",
+    "topicPath": "Географія > Міста > Віфлеєм"
+  },
+  "geography-child-3": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-child-4": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-child-5": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія"
+  },
+  "geography-youth-1": {
+    "topicNodeId": "geography-sub-3-sub-2",
+    "topicPath": "Географія > Міста > Віфлеєм"
+  },
+  "geography-youth-2": {
+    "topicNodeId": "geography-sub-4-sub-2",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Карміл"
+  },
+  "geography-youth-3": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-youth-4": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія"
+  },
+  "geography-youth-5": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія"
+  },
+  "geography-student-1": {
+    "topicNodeId": "geography-sub-3-sub-3",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрихон"
+  },
+  "geography-student-2": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія"
+  },
+  "geography-student-3": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія"
+  },
+  "geography-student-4": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія"
+  },
+  "geography-student-5": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія"
+  },
+  "mosaic-law-child-1": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-child-2": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-child-3": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-child-4": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-child-5": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-youth-2": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-youth-4": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-youth-5": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-student-1": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-student-4": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-student-5": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "paul-child-1": {
+    "topicNodeId": "paul-sub-1-sub-1",
+    "topicPath": "Апостол Павло > Життя Павла > Навернення"
+  },
+  "paul-child-3": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-child-4": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-child-5": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-youth-2": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-youth-3": {
+    "topicNodeId": "paul-sub-4-sub-1",
+    "topicPath": "Апостол Павло > Супутники Павла > Варнава"
+  },
+  "paul-youth-4": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-youth-5": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-student-2": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-student-3": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-student-4": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "judges-child-1": {
+    "topicNodeId": "judges-sub-3",
+    "topicPath": "Судді > Самсон"
+  },
+  "judges-child-2": {
+    "topicNodeId": "judges-sub-2-sub-2",
+    "topicPath": "Судді > Девора та Гедеон > Гедеон"
+  },
+  "judges-child-3": {
+    "topicNodeId": "judges-sub-2-sub-1",
+    "topicPath": "Судді > Девора та Гедеон > Девора"
+  },
+  "judges-child-4": {
+    "topicNodeId": "judges-sub-3",
+    "topicPath": "Судді > Самсон"
+  },
+  "judges-child-5": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "judges-youth-1": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "judges-youth-2": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "judges-youth-3": {
+    "topicNodeId": "judges-sub-3",
+    "topicPath": "Судді > Самсон"
+  },
+  "judges-youth-4": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "judges-youth-5": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "judges-student-2": {
+    "topicNodeId": "judges-sub-3",
+    "topicPath": "Судді > Самсон"
+  },
+  "judges-student-3": {
+    "topicNodeId": "judges-sub-2-sub-1",
+    "topicPath": "Судді > Девора та Гедеон > Девора"
+  },
+  "judges-student-4": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "judges-student-5": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "kings-child-1": {
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
+  },
+  "kings-child-2": {
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Царі > Об'єднане царство > Соломон"
+  },
+  "kings-child-3": {
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Царі > Об'єднане царство > Соломон"
+  },
+  "kings-child-4": {
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
+  },
+  "kings-child-5": {
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
+  },
+  "kings-youth-2": {
+    "topicNodeId": "kings-sub-3-sub-2",
+    "topicPath": "Царі > Царі Ізраїлю > Ахав"
+  },
+  "kings-youth-3": {
+    "topicNodeId": "kings-sub-2-sub-2",
+    "topicPath": "Царі > Царі Юдеї > Єзекія"
+  },
+  "kings-youth-4": {
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
+  },
+  "kings-youth-5": {
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
+  },
+  "kings-student-1": {
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
+  },
+  "kings-student-2": {
+    "topicNodeId": "kings-sub-2-sub-2",
+    "topicPath": "Царі > Царі Юдеї > Єзекія"
+  },
+  "kings-student-3": {
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
+  },
+  "kings-student-4": {
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Царі > Об'єднане царство > Соломон"
+  },
+  "kings-student-5": {
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
+  },
+  "gospels-child-1": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-child-2": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-child-3": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-child-4": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-child-5": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-youth-1": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-youth-2": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-youth-3": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-youth-4": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-youth-5": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-student-1": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-student-2": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-student-3": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-student-4": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-student-5": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "prophets-child-1": {
+    "topicNodeId": "prophets-sub-3-sub-1",
+    "topicPath": "Пророки > Допророчі служителі > Ілля"
+  },
+  "prophets-child-2": {
+    "topicNodeId": "prophets-sub-1-sub-1",
+    "topicPath": "Пророки > Великі пророки > Ісая"
+  },
+  "prophets-child-3": {
+    "topicNodeId": "prophets-sub-1-sub-4",
+    "topicPath": "Пророки > Великі пророки > Даниїл"
+  },
+  "prophets-child-4": {
+    "topicNodeId": "prophets",
+    "topicPath": "Пророки"
+  },
+  "prophets-child-5": {
+    "topicNodeId": "prophets-sub-1-sub-2",
+    "topicPath": "Пророки > Великі пророки > Єремія"
+  },
+  "prophets-youth-1": {
+    "topicNodeId": "prophets-sub-3-sub-1",
+    "topicPath": "Пророки > Допророчі служителі > Ілля"
+  },
+  "prophets-youth-2": {
+    "topicNodeId": "prophets-sub-1-sub-3",
+    "topicPath": "Пророки > Великі пророки > Єзекіїль"
+  },
+  "prophets-youth-3": {
+    "topicNodeId": "prophets-sub-1-sub-2",
+    "topicPath": "Пророки > Великі пророки > Єремія"
+  },
+  "prophets-youth-4": {
+    "topicNodeId": "prophets-sub-1-sub-4",
+    "topicPath": "Пророки > Великі пророки > Даниїл"
+  },
+  "prophets-youth-5": {
+    "topicNodeId": "prophets-sub-1-sub-1",
+    "topicPath": "Пророки > Великі пророки > Ісая"
+  },
+  "prophets-student-1": {
+    "topicNodeId": "prophets",
+    "topicPath": "Пророки"
+  },
+  "prophets-student-2": {
+    "topicNodeId": "prophets-sub-1-sub-1",
+    "topicPath": "Пророки > Великі пророки > Ісая"
+  },
+  "prophets-student-3": {
+    "topicNodeId": "prophets",
+    "topicPath": "Пророки"
+  },
+  "prophets-student-4": {
+    "topicNodeId": "prophets-sub-1-sub-1",
+    "topicPath": "Пророки > Великі пророки > Ісая"
+  },
+  "prophets-student-5": {
+    "topicNodeId": "prophets-sub-2-sub-11",
+    "topicPath": "Пророки > Малі пророки > Малахія"
+  },
+  "psalms-child-1": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-child-2": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-child-3": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-child-4": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-child-5": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-youth-1": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-youth-2": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-youth-3": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-youth-4": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-youth-5": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-student-1": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-student-2": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-student-3": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-student-4": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-student-5": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "parables-child-1": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-child-2": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-child-3": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-child-4": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-child-5": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-youth-1": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-youth-2": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-youth-3": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-youth-4": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-youth-5": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-student-1": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-student-2": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-student-3": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-student-4": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-student-5": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "commandments-child-1": {
+    "topicNodeId": "commandments-sub-1-sub-1",
+    "topicPath": "Десять заповідей > Заповіді щодо Бога > Перша заповідь"
+  },
+  "commandments-child-2": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-child-3": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-child-4": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-child-5": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-youth-1": {
+    "topicNodeId": "commandments-sub-1-sub-2",
+    "topicPath": "Десять заповідей > Заповіді щодо Бога > Друга заповідь"
+  },
+  "commandments-youth-2": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-youth-3": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-youth-4": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-youth-5": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-student-1": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-student-2": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-student-3": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-student-4": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-student-5": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "miracles-child-1": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-child-2": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-child-3": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-child-4": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-child-5": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-youth-1": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-youth-2": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-youth-3": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-youth-4": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-youth-5": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-student-1": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-student-2": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-student-3": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-student-4": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-student-5": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "patriarchs-child-1": {
+    "topicNodeId": "patriarchs-sub-1",
+    "topicPath": "Патріархи > Авраам"
+  },
+  "patriarchs-child-2": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-child-3": {
+    "topicNodeId": "patriarchs-sub-3",
+    "topicPath": "Патріархи > Яків"
+  },
+  "patriarchs-child-4": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-child-5": {
+    "topicNodeId": "patriarchs-sub-1",
+    "topicPath": "Патріархи > Авраам"
+  },
+  "patriarchs-youth-1": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-youth-2": {
+    "topicNodeId": "patriarchs-sub-3",
+    "topicPath": "Патріархи > Яків"
+  },
+  "patriarchs-youth-3": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-youth-4": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-youth-5": {
+    "topicNodeId": "patriarchs-sub-1",
+    "topicPath": "Патріархи > Авраам"
+  },
+  "patriarchs-student-1": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-student-2": {
+    "topicNodeId": "patriarchs-sub-1",
+    "topicPath": "Патріархи > Авраам"
+  },
+  "patriarchs-student-3": {
+    "topicNodeId": "patriarchs-sub-1",
+    "topicPath": "Патріархи > Авраам"
+  },
+  "patriarchs-student-4": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-student-5": {
+    "topicNodeId": "patriarchs-sub-3",
+    "topicPath": "Патріархи > Яків"
+  },
+  "revelation-child-1": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-child-2": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-child-3": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-child-4": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-child-5": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-youth-1": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-youth-2": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-youth-3": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-youth-4": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-youth-5": {
+    "topicNodeId": "revelation-sub-4-sub-1",
+    "topicPath": "Відкриття > Нове творіння > Новий Єрусалим"
+  },
+  "revelation-student-1": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-student-2": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-student-3": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-student-4": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-student-5": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "geography-baby-x1": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-baby-x2": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-baby-x3": {
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
+  },
+  "geography-baby-x4": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-baby-x5": {
+    "topicNodeId": "geography-sub-4-sub-1",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
+  },
+  "geography-preacher-x1": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-preacher-x2": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-preacher-x3": {
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
+  },
+  "geography-preacher-x4": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-preacher-x5": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-child-x6": {
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
+  },
+  "geography-child-x7": {
+    "topicNodeId": "geography-sub-4-sub-1",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
+  },
+  "geography-child-x8": {
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
+  },
+  "geography-child-x9": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-child-x10": {
+    "topicNodeId": "geography-sub-3-sub-3",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрихон"
+  },
+  "geography-youth-x6": {
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
+  },
+  "geography-youth-x7": {
+    "topicNodeId": "geography-sub-3-sub-2",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Віфлеєм"
+  },
+  "geography-youth-x8": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-youth-x9": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-youth-x10": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-student-x6": {
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
+  },
+  "geography-student-x7": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-student-x8": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "geography-student-x9": {
+    "topicNodeId": "geography-sub-3-sub-3",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрихон"
+  },
+  "geography-student-x10": {
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  "mosaic-law-baby-x1": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-baby-x2": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-baby-x3": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-baby-x4": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-baby-x5": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-preacher-x1": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-preacher-x2": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-preacher-x3": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-preacher-x4": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-preacher-x5": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-child-x6": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-child-x7": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-child-x8": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-child-x9": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-child-x10": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-youth-x6": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-youth-x7": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-youth-x8": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-youth-x9": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-youth-x10": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-student-x6": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-student-x7": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-student-x8": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-student-x9": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "mosaic-law-student-x10": {
+    "topicNodeId": "mosaic-law",
+    "topicPath": "Закон Мойсея"
+  },
+  "paul-baby-x6": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-baby-x7": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-baby-x8": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-baby-x9": {
+    "topicNodeId": "paul-sub-4-sub-3",
+    "topicPath": "Апостол Павло > Супутники Павла > Тимофій"
+  },
+  "paul-baby-x10": {
+    "topicNodeId": "paul-sub-1-sub-1",
+    "topicPath": "Апостол Павло > Життя Павла > Навернення"
+  },
+  "paul-preacher-x6": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-preacher-x7": {
+    "topicNodeId": "paul-sub-4-sub-1",
+    "topicPath": "Апостол Павло > Супутники Павла > Варнава"
+  },
+  "paul-preacher-x8": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-preacher-x9": {
+    "topicNodeId": "paul",
+    "topicPath": "Апостол Павло"
+  },
+  "paul-preacher-x10": {
+    "topicNodeId": "paul-sub-4-sub-4",
+    "topicPath": "Апостол Павло > Супутники Павла > Лука"
+  },
+  "judges-baby-x6": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "judges-baby-x7": {
+    "topicNodeId": "judges-sub-3",
+    "topicPath": "Судді > Самсон"
+  },
+  "judges-baby-x8": {
+    "topicNodeId": "judges-sub-2-sub-2",
+    "topicPath": "Судді > Девора та Гедеон > Гедеон"
+  },
+  "judges-baby-x9": {
+    "topicNodeId": "judges-sub-2-sub-1",
+    "topicPath": "Судді > Девора та Гедеон > Девора"
+  },
+  "judges-baby-x10": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "judges-preacher-x6": {
+    "topicNodeId": "judges-sub-4-sub-2",
+    "topicPath": "Судді > Самсон > Авімелех"
+  },
+  "judges-preacher-x7": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "judges-preacher-x8": {
+    "topicNodeId": "judges-sub-2-sub-1",
+    "topicPath": "Судді > Девора та Гедеон > Девора"
+  },
+  "judges-preacher-x9": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "judges-preacher-x10": {
+    "topicNodeId": "judges",
+    "topicPath": "Судді"
+  },
+  "kings-baby-x6": {
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Царі > Об'єднане царство > Соломон"
+  },
+  "kings-baby-x7": {
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
+  },
+  "kings-baby-x8": {
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Царі > Об'єднане царство > Соломон"
+  },
+  "kings-baby-x9": {
+    "topicNodeId": "kings-sub-1-sub-1",
+    "topicPath": "Царі > Об'єднане царство > Саул"
+  },
+  "kings-baby-x10": {
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Царі > Об'єднане царство > Давид"
+  },
+  "kings-preacher-x6": {
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
+  },
+  "kings-preacher-x7": {
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Царі > Об'єднане царство > Соломон"
+  },
+  "kings-preacher-x8": {
+    "topicNodeId": "kings",
+    "topicPath": "Царі"
+  },
+  "kings-preacher-x9": {
+    "topicNodeId": "kings-sub-2-sub-2",
+    "topicPath": "Царі > Царі Юдеї > Єзекія"
+  },
+  "kings-preacher-x10": {
+    "topicNodeId": "kings-sub-3-sub-2",
+    "topicPath": "Царі > Царі Ізраїлю > Ахав"
+  },
+  "gospels-baby-x6": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-baby-x7": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-baby-x8": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-baby-x9": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-baby-x10": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-preacher-x6": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-preacher-x7": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-preacher-x8": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-preacher-x9": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "gospels-preacher-x10": {
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  "prophets-baby-x6": {
+    "topicNodeId": "prophets-sub-3-sub-1",
+    "topicPath": "Пророки > Допророчі служителі > Ілля"
+  },
+  "prophets-baby-x7": {
+    "topicNodeId": "prophets-sub-1-sub-4",
+    "topicPath": "Пророки > Великі пророки > Даниїл"
+  },
+  "prophets-baby-x8": {
+    "topicNodeId": "prophets",
+    "topicPath": "Пророки"
+  },
+  "prophets-baby-x9": {
+    "topicNodeId": "prophets-sub-1-sub-2",
+    "topicPath": "Пророки > Великі пророки > Єремія"
+  },
+  "prophets-baby-x10": {
+    "topicNodeId": "prophets-sub-3-sub-1",
+    "topicPath": "Пророки > Допророчі служителі > Ілля"
+  },
+  "prophets-preacher-x6": {
+    "topicNodeId": "prophets",
+    "topicPath": "Пророки"
+  },
+  "prophets-preacher-x7": {
+    "topicNodeId": "prophets-sub-1-sub-1",
+    "topicPath": "Пророки > Великі пророки > Ісая"
+  },
+  "prophets-preacher-x8": {
+    "topicNodeId": "prophets-sub-2-sub-11",
+    "topicPath": "Пророки > Малі пророки > Малахія"
+  },
+  "prophets-preacher-x9": {
+    "topicNodeId": "prophets-sub-1-sub-3",
+    "topicPath": "Пророки > Великі пророки > Єзекіїль"
+  },
+  "prophets-preacher-x10": {
+    "topicNodeId": "prophets-sub-1-sub-2",
+    "topicPath": "Пророки > Великі пророки > Єремія"
+  },
+  "psalms-baby-x6": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-baby-x7": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-baby-x8": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-baby-x9": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-baby-x10": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-preacher-x6": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-preacher-x7": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-preacher-x8": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-preacher-x9": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "psalms-preacher-x10": {
+    "topicNodeId": "psalms",
+    "topicPath": "Псалми"
+  },
+  "parables-baby-x6": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-baby-x7": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-baby-x8": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-baby-x9": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-baby-x10": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-preacher-x6": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-preacher-x7": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-preacher-x8": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-preacher-x9": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "parables-preacher-x10": {
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  "commandments-baby-x6": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-baby-x7": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-baby-x8": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-baby-x9": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-baby-x10": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-preacher-x6": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-preacher-x7": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-preacher-x8": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-preacher-x9": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "commandments-preacher-x10": {
+    "topicNodeId": "commandments",
+    "topicPath": "Десять заповідей"
+  },
+  "miracles-baby-x6": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-baby-x7": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-baby-x8": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-baby-x9": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-baby-x10": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-preacher-x6": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-preacher-x7": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-preacher-x8": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-preacher-x9": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "miracles-preacher-x10": {
+    "topicNodeId": "miracles",
+    "topicPath": "Чудеса Ісуса"
+  },
+  "patriarchs-baby-x6": {
+    "topicNodeId": "patriarchs-sub-1",
+    "topicPath": "Патріархи > Авраам"
+  },
+  "patriarchs-baby-x7": {
+    "topicNodeId": "patriarchs-sub-3",
+    "topicPath": "Патріархи > Яків"
+  },
+  "patriarchs-baby-x8": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-baby-x9": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-baby-x10": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-preacher-x6": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-preacher-x7": {
+    "topicNodeId": "patriarchs-sub-1",
+    "topicPath": "Патріархи > Авраам"
+  },
+  "patriarchs-preacher-x8": {
+    "topicNodeId": "patriarchs-sub-3",
+    "topicPath": "Патріархи > Яків"
+  },
+  "patriarchs-preacher-x9": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "patriarchs-preacher-x10": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Патріархи"
+  },
+  "revelation-baby-x6": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-baby-x7": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-baby-x8": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-baby-x9": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-baby-x10": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-preacher-x6": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-preacher-x7": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-preacher-x8": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-preacher-x9": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "revelation-preacher-x10": {
+    "topicNodeId": "revelation",
+    "topicPath": "Відкриття"
+  },
+  "old-testament-child-1": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-child-2": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-child-4": {
+    "topicNodeId": "patriarchs-sub-3",
+    "topicPath": "Старий Завіт > Патріархи > Яків"
+  },
+  "old-testament-child-5": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-youth-1": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-youth-2": {
+    "topicNodeId": "patriarchs",
+    "topicPath": "Старий Завіт > Патріархи"
+  },
+  "old-testament-youth-3": {
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Давид"
+  },
+  "old-testament-youth-4": {
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Соломон"
+  },
+  "old-testament-youth-5": {
+    "topicNodeId": "patriarchs-sub-1",
+    "topicPath": "Старий Завіт > Патріархи > Авраам"
+  },
+  "old-testament-student-1": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-student-2": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-student-4": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-student-5": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "new-testament-child-1": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-child-2": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-child-3": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-child-4": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-youth-1": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-youth-2": {
+    "topicNodeId": "general-epistles-sub-2",
+    "topicPath": "Новий Завіт > Загальні послання > Яків"
+  },
+  "new-testament-youth-3": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-youth-4": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-youth-5": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-student-1": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-student-2": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-student-3": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-student-4": {
+    "topicNodeId": "acts",
+    "topicPath": "Новий Завіт > Дії апостолів"
+  },
+  "new-testament-student-5": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "old-testament-baby-x1": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-baby-x2": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-baby-x3": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-baby-x4": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-baby-x5": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-preacher-x1": {
+    "topicNodeId": "patriarchs-sub-2",
+    "topicPath": "Старий Завіт > Патріархи > Ісаак"
+  },
+  "old-testament-preacher-x2": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-preacher-x3": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-preacher-x4": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-preacher-x5": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-child-x6": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-child-x7": {
+    "topicNodeId": "patriarchs-sub-3",
+    "topicPath": "Старий Завіт > Патріархи > Яків"
+  },
+  "old-testament-child-x8": {
+    "topicNodeId": "patriarchs-sub-1",
+    "topicPath": "Старий Завіт > Патріархи > Авраам"
+  },
+  "old-testament-child-x9": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-child-x10": {
+    "topicNodeId": "geography-sub-3-sub-4",
+    "topicPath": "Старий Завіт > Географія Старого Завіту > Міста та поселення > Вавилон"
+  },
+  "old-testament-youth-x6": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-youth-x7": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-youth-x8": {
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Давид"
+  },
+  "old-testament-youth-x9": {
+    "topicNodeId": "pentateuch-sub-1",
+    "topicPath": "Старий Завіт > Пятикнижжя > Буття"
+  },
+  "old-testament-youth-x10": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-student-x6": {
+    "topicNodeId": "kings-sub-1-sub-1",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Саул"
+  },
+  "old-testament-student-x7": {
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  "old-testament-student-x8": {
+    "topicNodeId": "prophets-sub-3-sub-1",
+    "topicPath": "Старий Завіт > Пророки > Допророчі служителі > Ілля"
+  },
+  "old-testament-student-x9": {
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Давид"
+  },
+  "old-testament-student-x10": {
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Давид"
+  },
+  "new-testament-baby-x6": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-baby-x7": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-baby-x8": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-baby-x9": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-baby-x10": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-preacher-x6": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-preacher-x7": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-preacher-x8": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-preacher-x9": {
+    "topicNodeId": "new-testament",
+    "topicPath": "Новий Завіт"
+  },
+  "new-testament-preacher-x10": {
+    "topicNodeId": "general-epistles-sub-2",
+    "topicPath": "Новий Завіт > Загальні послання > Яків"
+  },
+  "wisdom-poetry-child-1": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-child-2": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-child-3": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-child-4": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-child-5": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-youth-1": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-youth-2": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-youth-3": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-youth-4": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-youth-5": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-student-1": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-student-2": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-student-3": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-student-4": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-student-5": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-baby-x6": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-baby-x7": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-baby-x8": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-baby-x9": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-baby-x10": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-preacher-x6": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-preacher-x7": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-preacher-x8": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-preacher-x9": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "wisdom-poetry-preacher-x10": {
+    "topicNodeId": "wisdom-poetry",
+    "topicPath": "Мудрість і поезія"
+  },
+  "geography-nt-child-1": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-child-2": {
+    "topicNodeId": "geography-nt-sub-2-sub-1",
+    "topicPath": "Географія Нового Завіту > Міста та села > Віфлеєм"
+  },
+  "geography-nt-child-5": {
+    "topicNodeId": "geography-nt-sub-5-sub-2",
+    "topicPath": "Географія Нового Завіту > Міста місій апостолів > Афіни"
+  },
+  "geography-nt-youth-4": {
+    "topicNodeId": "geography-nt-sub-5-sub-5",
+    "topicPath": "Географія Нового Завіту > Міста місій апостолів > Патмос"
+  },
+  "geography-nt-youth-5": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-student-2": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-student-3": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-student-4": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-student-5": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-baby-x1": {
+    "topicNodeId": "geography-nt-sub-2-sub-2",
+    "topicPath": "Географія Нового Завіту > Міста та села > Назарет"
+  },
+  "geography-nt-baby-x2": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-preacher-x1": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-preacher-x2": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-preacher-x4": {
+    "topicNodeId": "geography-nt-sub-2-sub-2",
+    "topicPath": "Географія Нового Завіту > Міста та села > Назарет"
+  },
+  "geography-nt-child-x6": {
+    "topicNodeId": "geography-nt-sub-2-sub-4",
+    "topicPath": "Географія Нового Завіту > Міста та села > Єрусалим"
+  },
+  "geography-nt-child-x9": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-child-x10": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-youth-x6": {
+    "topicNodeId": "geography-nt-sub-2-sub-4",
+    "topicPath": "Географія Нового Завіту > Міста та села > Єрусалим"
+  },
+  "geography-nt-youth-x8": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-youth-x9": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-youth-x10": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-student-x6": {
+    "topicNodeId": "geography-nt-sub-2-sub-4",
+    "topicPath": "Географія Нового Завіту > Міста та села > Єрусалим"
+  },
+  "geography-nt-student-x7": {
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  "geography-nt-student-x8": {
+    "topicNodeId": "geography-nt-sub-5-sub-2",
+    "topicPath": "Географія Нового Завіту > Міста місій апостолів > Афіни"
+  },
+  "geography-nt-student-x10": {
+    "topicNodeId": "geography-nt-sub-5-sub-5",
+    "topicPath": "Географія Нового Завіту > Міста місій апостолів > Патмос"
+  }
+}

@@ -36,7 +36,7 @@ function main() {
   console.log('📊 Статистика питань — Біблійна гра');
   console.log('=====================================\n');
 
-  const header = ['Тема', ...DIFFICULTIES.map((d) => d.slice(0, 3)), 'AI', 'Всього'];
+  const header = ['Тема', ...DIFFICULTIES.map((d) => d.slice(0, 3)), 'AI', 'Поясн.', 'Всього'];
   console.log(header.join(' | '));
   console.log('-'.repeat(70));
 
@@ -52,6 +52,9 @@ function main() {
 
     const embedded = countEmbeddedByTheme(themeId);
     const aiTotal = ai.length;
+    const withExpl = ai.filter(
+      (q) => String(q.explanationShort ?? '').trim() || String(q.explanationDeep ?? '').trim(),
+    ).length;
     const total = embedded + aiTotal;
     grandTotal += total;
 
@@ -59,6 +62,7 @@ function main() {
       themeId.padEnd(18),
       ...DIFFICULTIES.map((d) => String(aiByDiff[d]).padStart(3)),
       String(aiTotal).padStart(4),
+      String(withExpl).padStart(6),
       String(total).padStart(6),
     ];
     console.log(row.join(' | '));

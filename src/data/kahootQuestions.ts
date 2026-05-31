@@ -1,5 +1,16 @@
 import type { Difficulty, Question } from '../types';
-import { ALL_QUESTIONS, getQuestionsForLevel } from './questions';
+import { ALL_QUESTIONS, getAllQuestionsAsync, getQuestionsForLevel } from './questions';
+
+let kahootPoolOverride: Question[] | null = null;
+
+/** Викликається сервером при старті для повного пулу (embedded + AI JSON) */
+export function setKahootQuestionPool(questions: Question[]): void {
+  kahootPoolOverride = questions;
+}
+
+function getSyncPool(): Question[] {
+  return kahootPoolOverride ?? ALL_QUESTIONS;
+}
 
 function shuffle<T>(array: T[]): T[] {
   const result = [...array];
@@ -16,16 +27,13 @@ export async function getKahootQuestions(
   count: number,
   difficulty: Difficulty = 'youth',
 ): Promise<Question[]> {
+  const all = await getAllQuestionsAsync();
   const pool: Question[] = [];
 
   for (const themeId of themeIds) {
-    const embedded = ALL_QUESTIONS.filter(
-      (q) => q.themeId === themeId && q.difficulty === difficulty,
+    pool.push(
+      ...all.filter((q) => q.themeId === themeId && q.difficulty === difficulty),
     );
-    const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
-    const ai = await loadAiQuestionsForTheme(themeId);
-    const aiFiltered = ai.filter((q) => q.difficulty === difficulty);
-    pool.push(...embedded, ...aiFiltered);
   }
 
   if (pool.length === 0) {
@@ -48,7 +56,7 @@ export function getKahootQuestionsSync(
   count: number,
   difficulty: Difficulty = 'youth',
 ): Question[] {
-  const pool = ALL_QUESTIONS.filter(
+  const pool = getSyncPool().filter(
     (q) => themeIds.includes(q.themeId) && q.difficulty === difficulty,
   );
 
@@ -68,7 +76,7 @@ export function getKahootQuestionsSync(
 
 export function getKahootQuestionsByIdsSync(questionIds: string[], count?: number): Question[] {
   const map = new Map<string, Question>();
-  for (const q of ALL_QUESTIONS) map.set(q.id, q);
+  for (const q of getSyncPool()) map.set(q.id, q);
 
   const unique: Question[] = [];
   const picked = new Set<string>();

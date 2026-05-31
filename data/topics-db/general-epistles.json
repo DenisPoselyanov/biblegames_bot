@@ -1,0 +1,153 @@
+{
+  "id": "general-epistles",
+  "title": "Загальні послання",
+  "description": "Послання до євреїв та загальні листи апостолів: Яків, Петро, Іван та Юда.",
+  "icon": "📬",
+  "children": [
+    {
+      "id": "general-epistles-sub-1",
+      "title": "Послання до євреїв",
+      "description": "Глибоке богослов'я про первенство Христа та новий завіт.",
+      "icon": "📜",
+      "children": [
+        {
+          "id": "general-epistles-sub-1-sub-1",
+          "title": "Христос вищий за ангелів",
+          "description": "Автор показує, що Син Божий перевершує ангелів і Мойсея.",
+          "icon": "👑",
+          "children": []
+        },
+        {
+          "id": "general-epistles-sub-1-sub-2",
+          "title": "Первосвященник за порядком Мелхіседека",
+          "description": "Ісус — вічний первосвященник, який приніс себе як жертву.",
+          "icon": "🕊️",
+          "children": []
+        },
+        {
+          "id": "general-epistles-sub-1-sub-3",
+          "title": "Новий завіт",
+          "description": "Христос — посередник кращого завіту, заснованого на кращих обітницях.",
+          "icon": "📋",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "general-epistles-sub-2",
+      "title": "Яків",
+      "description": "Практичне вчення про віру, що проявляється в ділах.",
+      "icon": "⚖️",
+      "children": [
+        {
+          "id": "general-epistles-sub-2-sub-1",
+          "title": "Віра та діла",
+          "description": "«Віра без діл мертва» — справжня віра проявляється в діях.",
+          "icon": "🤲",
+          "children": []
+        },
+        {
+          "id": "general-epistles-sub-2-sub-2",
+          "title": "Мудрість згори",
+          "description": "Яків описує мудрість, що походить від Бога, та небезпеку язика.",
+          "icon": "💬",
+          "children": []
+        },
+        {
+          "id": "general-epistles-sub-2-sub-3",
+          "title": "Молитва праведника",
+          "description": "Молитва праведного має велику силу, як молитва Іллі.",
+          "icon": "🙏",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "general-epistles-sub-3",
+      "title": "1–2 Петра",
+      "description": "Послання Петра про надію, страждання та служіння пастирів.",
+      "icon": "🪨",
+      "children": [
+        {
+          "id": "general-epistles-sub-3-sub-1",
+          "title": "Жива надія",
+          "description": "Народження до живої надії через воскресіння Ісуса Христа.",
+          "icon": "✨",
+          "children": []
+        },
+        {
+          "id": "general-epistles-sub-3-sub-2",
+          "title": "Страждання за Христа",
+          "description": "Радуйтеся, коли страждаєте за ім'я Христове — це благословення.",
+          "icon": "✝️",
+          "children": []
+        },
+        {
+          "id": "general-epistles-sub-3-sub-3",
+          "title": "Пастирське служіння",
+          "description": "«Пасіть Боже стадо» — заклик до старшин та вірних.",
+          "icon": "🐑",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "general-epistles-sub-4",
+      "title": "1–3 Івана",
+      "description": "Послання про любов, істину та життя у світлі.",
+      "icon": "❤️",
+      "children": [
+        {
+          "id": "general-epistles-sub-4-sub-1",
+          "title": "Бог є любов",
+          "description": "«Бог є любов, і хто перебуває в любові, той перебуває в Богу».",
+          "icon": "💕",
+          "children": []
+        },
+        {
+          "id": "general-epistles-sub-4-sub-2",
+          "title": "Справжня істина",
+          "description": "Іван попереджає про антихристів і закликає до вірності істині.",
+          "icon": "🔍",
+          "children": []
+        },
+        {
+          "id": "general-epistles-sub-4-sub-3",
+          "title": "Ходімо у світлі",
+          "description": "«Якщо ходимо у світлі, як Він у світлі, маємо єдність один з одним».",
+          "icon": "💡",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "general-epistles-sub-5",
+      "title": "Юда",
+      "description": "Коротке послання про боротьбу за віру та попередження про лжевчителів.",
+      "icon": "⚔️",
+      "children": [
+        {
+          "id": "general-epistles-sub-5-sub-1",
+          "title": "Боротьба за віру",
+          "description": "«Боротьба за віру, яка раз передана святим» — заклик до ревності.",
+          "icon": "🛡️",
+          "children": []
+        },
+        {
+          "id": "general-epistles-sub-5-sub-2",
+          "title": "Приклади осуджених",
+          "description": "Юда нагадує про долю невірних: ангели, Содом, Каїн, Валаам.",
+          "icon": "⚡",
+          "children": []
+        },
+        {
+          "id": "general-epistles-sub-5-sub-3",
+          "title": "Збереження у любові Божій",
+          "description": "«Будуйте себе на святій вірі вашій, моліться у Святому Дусі».",
+          "icon": "🙌",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

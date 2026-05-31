@@ -21,6 +21,51 @@ export function isInsideTelegram(): boolean {
   return Boolean(WebApp.initDataUnsafe?.user?.id);
 }
 
+export function getTelegramInitData(): string {
+  return WebApp.initData ?? '';
+}
+
+export function getTelegramStartParam(): string {
+  try {
+    return WebApp.initDataUnsafe?.start_param ?? '';
+  } catch {
+    return '';
+  }
+}
+
+const BOT_USERNAME = import.meta.env.VITE_BOT_USERNAME || 'biblegames_bot';
+
+export function buildKahootStartLink(code: string): string {
+  const param = `kahoot_${code.toUpperCase()}`;
+  return `https://t.me/${BOT_USERNAME}?startapp=${param}`;
+}
+
+export function parseKahootCodeFromStartParam(startParam: string): string | null {
+  const match = /^kahoot_([A-Z0-9]{6})$/i.exec(startParam.trim());
+  return match ? match[1].toUpperCase() : null;
+}
+
+export function shareKahootRoom(code: string, title?: string): void {
+  const link = buildKahootStartLink(code);
+  const text = title
+    ? `${title}\nКод: ${code}\nПриєднуйся до Kahoot!`
+    : `Код кімнати: ${code}\nПриєднуйся до біблійної гри Kahoot!`;
+  try {
+    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
+    WebApp.openTelegramLink?.(shareUrl);
+  } catch {
+    void navigator.clipboard?.writeText(`${text}\n${link}`);
+  }
+}
+
+export function copyKahootCode(code: string): void {
+  try {
+    void navigator.clipboard?.writeText(code);
+  } catch {
+    /* ignore */
+  }
+}
+
 /** Apply Telegram theme colors to CSS custom properties */
 export function syncTelegramTheme(): void {
   try {
@@ -54,7 +99,7 @@ export function showMainButton(text: string, onClick: () => void): void {
 export function hideMainButton(): void {
   try {
     if (!WebApp.MainButton) return;
-    WebApp.MainButton.offClick();
+    WebApp.MainButton.offClick(() => {});
     WebApp.MainButton.hide();
   } catch (e) {
     console.warn('MainButton hide failed:', e);

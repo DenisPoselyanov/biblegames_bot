@@ -1,68 +1,70 @@
-import { useMemo, useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useMemo, useCallback } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { trackEvent } from '../lib/telemetry';
 import { Icon } from '../components/Icon';
-import { loadAllTopicHierarchies } from '../data/topicDbLoader';
+import { buildBrowseState } from '../data/topicDbLoader';
+import { useTopicHierarchies } from '../context/TopicHierarchyContext';
 import type { TopicNode } from '../types';
 import styles from './Themes.module.css';
 
 export function Themes() {
   const navigate = useNavigate();
-  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
-  const [nodeHistory, setNodeHistory] = useState<string[]>([]);
-  const [topicHierarchies, setTopicHierarchies] = useState<Record<string, TopicNode>>({});
-  const [loading, setLoading] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const browseAt = searchParams.get('at');
+  const { hierarchies, loading: hierarchiesLoading } = useTopicHierarchies();
 
-  useEffect(() => {
-    loadAllTopicHierarchies().then((hierarchies) => {
-      setTopicHierarchies(hierarchies);
-      setLoading(false);
-    }).catch((error) => {
-      console.error('Themes.tsx: Error loading hierarchies:', error);
-      setLoading(false);
-    });
-  }, []);
+  const browseState = useMemo(() => {
+    if (!browseAt || !hierarchies) return null;
+    return buildBrowseState(hierarchies, browseAt);
+  }, [browseAt, hierarchies]);
 
-  const activeNode = useMemo(
-    () => (activeNodeId ? (findNodeInHierarchies(topicHierarchies, activeNodeId) ?? null) : null),
-    [activeNodeId, topicHierarchies],
-  );
+  const nodeHistory = browseState?.history ?? [];
 
-  const children = useMemo(() => {
-    if (!activeNode) return [];
-    return activeNode.children ?? [];
-  }, [activeNode]);
+  const activeNode = useMemo(() => {
+    if (!browseState || !hierarchies) return null;
+    return findNodeInHierarchies(hierarchies, browseState.activeId) ?? null;
+  }, [browseState, hierarchies]);
+
+  const children = useMemo(() => activeNode?.children ?? [], [activeNode]);
+
+  const applyBrowseNode = useCallback((nodeId: string) => {
+    setSearchParams({ at: nodeId }, { replace: true });
+  }, [setSearchParams]);
 
   const handleOpenGroup = useCallback((nextNodeId: string) => {
-    setNodeHistory([]);
-    setActiveNodeId(nextNodeId);
+    applyBrowseNode(nextNodeId);
     trackEvent('study_path_advanced', { groupId: nextNodeId, step: 'open-group' });
-  }, []);
+  }, [applyBrowseNode]);
 
   const handleNodeClick = useCallback((node: TopicNode) => {
     if (node.aggregateThemeIds) {
-      navigate(`/play/study/themes/${activeNodeId}/${node.id}`);
+      navigate(`/play/study/themes/${activeNode?.id}/${node.id}`);
       return;
     }
     if (node.children && node.children.length > 0) {
-      setNodeHistory((prev) => [...prev, activeNodeId!]);
-      setActiveNodeId(node.id);
+      applyBrowseNode(node.id);
       return;
     }
-    // Листовий вузол — переходимо в ThemeDetail
-    const targetThemeId = node.themeId ?? node.id;
-    navigate(`/play/study/themes/${targetThemeId}`);
-  }, [activeNodeId, navigate]);
+    const targetThemeId = node.themeId ?? activeNode?.themeId ?? node.id;
+    navigate(`/play/study/themes/${targetThemeId}/${node.id}`);
+  }, [activeNode, navigate, applyBrowseNode]);
 
   const handleBack = useCallback(() => {
     if (nodeHistory.length > 0) {
-      const prev = nodeHistory[nodeHistory.length - 1];
-      setNodeHistory((prev) => prev.slice(0, -1));
-      setActiveNodeId(prev);
+      applyBrowseNode(nodeHistory[nodeHistory.length - 1]!);
     } else {
-      setActiveNodeId(null);
+      setSearchParams({}, { replace: true });
     }
-  }, [nodeHistory]);
+  }, [nodeHistory, applyBrowseNode, setSearchParams]);
+
+  const waitingForBrowse = !!browseAt && !hierarchiesLoading && !!hierarchies && !activeNode;
+  const showLoading = hierarchiesLoading || waitingForBrowse;
+
+  const displayNode = useMemo(() => {
+    if (activeNode) return activeNode;
+    if (!browseAt || !hierarchies) return null;
+    return findNodeInHierarchies(hierarchies, browseAt) ?? null;
+  }, [activeNode, browseAt, hierarchies]);
 
   return (
     <section className={styles.page}>
@@ -76,16 +78,16 @@ export function Themes() {
       </div>
 
       <header className={styles.header}>
-        <h1>{!activeNode ? 'Обери тематику' : activeNode.title}</h1>
-        <p>{!activeNode ? 'Оберіть Завіт, а потім заглиблюйтесь у теми' : activeNode.description}</p>
+        <h1>{displayNode?.title ?? (showLoading ? 'Завантаження...' : 'Обери тематику')}</h1>
+        <p>{displayNode?.description ?? (showLoading ? '' : 'Оберіть Завіт, а потім заглиблюйтесь у теми')}</p>
       </header>
 
-      {loading ? (
+      {showLoading ? (
         <p className={styles.loading}>Завантаження тем...</p>
       ) : !activeNode ? (
         <ul className={styles.grid}>
           {['old-testament', 'new-testament'].map((gid) => {
-            const rootNode = topicHierarchies[gid];
+            const rootNode = hierarchies?.[gid];
             if (!rootNode) return null;
             return (
               <li key={rootNode.id}>

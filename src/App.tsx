@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import { PlayerProvider } from './context/PlayerContext';
+import { TopicHierarchyProvider } from './context/TopicHierarchyContext';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -20,6 +21,7 @@ import { KahootHub } from './pages/play/kahoot/KahootHub';
 import { KahootCreate } from './pages/play/kahoot/KahootCreate';
 import { KahootJoin } from './pages/play/kahoot/KahootJoin';
 import { KahootRoom } from './pages/play/kahoot/KahootRoom';
+import { KahootDisplay } from './pages/play/kahoot/KahootDisplay';
 import { KahootPlaylists } from './pages/play/kahoot/KahootPlaylists';
 import { KahootPlaylistEditor } from './pages/play/kahoot/KahootPlaylistEditor';
 import { KahootPlaylistDetails } from './pages/play/kahoot/KahootPlaylistDetails';
@@ -41,6 +43,7 @@ function LegacyQuizRedirect() {
 export default function App() {
   return (
     <PlayerProvider>
+      <TopicHierarchyProvider>
       <ToastProvider>
       <BrowserRouter>
           <Routes>
@@ -93,11 +96,13 @@ export default function App() {
             <Route path="play/kahoot/playlists/:playlistId" element={<ErrorBoundary><KahootPlaylistDetails /></ErrorBoundary>} />
             <Route path="play/kahoot/playlists/:playlistId/edit" element={<ErrorBoundary><KahootPlaylistEditor /></ErrorBoundary>} />
             <Route path="play/kahoot/room/:code" element={<ErrorBoundary><KahootRoom /></ErrorBoundary>} />
+            <Route path="play/kahoot/display/:code" element={<ErrorBoundary><KahootDisplay /></ErrorBoundary>} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
       </BrowserRouter>
       </ToastProvider>
+      </TopicHierarchyProvider>
     </PlayerProvider>
   );
 }

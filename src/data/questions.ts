@@ -2,6 +2,31 @@ import type { Difficulty, Question, TopicNode } from '../types';
 import { QUESTIONS_PER_LEVEL } from '../types';
 import { EXTRA_QUESTIONS } from './questions-extra';
 
+type TopicTag = { topicNodeId: string; topicPath?: string };
+
+function loadEmbeddedTopicTags(): Record<string, TopicTag> {
+  if (typeof import.meta.glob === 'function') {
+    const modules = import.meta.glob('../../data/question-topic-tags.json', {
+      eager: true,
+      import: 'default',
+    });
+    return (Object.values(modules)[0] as Record<string, TopicTag> | undefined) ?? {};
+  }
+  return {};
+}
+
+const EMBEDDED_TOPIC_TAGS = loadEmbeddedTopicTags();
+
+function withEmbeddedTopicTags(question: Question): Question {
+  const tag = EMBEDDED_TOPIC_TAGS[question.id];
+  if (!tag?.topicNodeId) return question;
+  return {
+    ...question,
+    topicNodeId: tag.topicNodeId,
+    topicPath: tag.topicPath,
+  };
+}
+
 function shuffle<T>(array: T[]): T[] {
   const result = [...array];
   for (let i = result.length - 1; i > 0; i--) {
@@ -32,22 +57,23 @@ function q(
 }
 
 export const QUESTIONS: Question[] = [
-  // Географія
-  q('geography', 'child', 1, 'У якій річці Іоанн хрестив?', ['Йордан', 'Ніл', 'Євфрат', 'Тигр'], 0, 'Мат. 3:6'),
-  q('geography', 'child', 2, 'Де народився Ісус?', ['Віфлеєм', 'Назарет', 'Єрусалим', 'Капернаум'], 0, 'Лк. 2:4-7'),
+  // Географія Старого Завіту
   q('geography', 'child', 3, 'Яке море розступилось перед Ізраїлем?', ['Червоне', 'Мертве', 'Галилейське', 'Середземне'], 0, 'Вих. 14:21'),
   q('geography', 'child', 4, 'У якій країні був полонений Йосиф?', ['Єгипет', 'Вавилон', 'Ассирія', 'Персія'], 0, 'Бут. 37:28'),
-  q('geography', 'child', 5, 'Де проповідував Павло на Ареопазі?', ['Афіни', 'Рим', 'Коринф', 'Ефес'], 0, 'Дії 17:22'),
-  q('geography', 'youth', 1, 'Яке місто називали «містом Давидовим»?', ['Віфлеєм', 'Хеврон', 'Сихем', 'Беер-Шева'], 0, 'Лк. 2:4'),
   q('geography', 'youth', 2, 'Де Ілля переміг пророків Ваала?', ['Карміл', 'Синай', 'Хорив', 'Сіон'], 0, '3 Цар. 18:19'),
   q('geography', 'youth', 3, 'Яка річка текла через Едем?', ['Євфрат (разом з іншими)', 'Ніл', 'Йордан', 'Кедрон'], 0, 'Бут. 2:10-14'),
-  q('geography', 'youth', 4, 'Куди був вигнаний Іоанн за відкриття?', ['Патмос', 'Крит', 'Кіпр', 'Мальта'], 0, 'Одкр. 1:9'),
-  q('geography', 'youth', 5, 'Де зустрів Ісус самарянку?', ['Сихар', 'Самарія', 'Ієрихон', 'Еммаус'], 0, 'Ін. 4:5'),
   q('geography', 'student', 1, 'Яке місто зруйнував Ісус Навин після сурми?', ['Єрихон', 'Аї', 'Гаваон', 'Лахіс'], 0, 'Нав. 6:20'),
-  q('geography', 'student', 2, 'Де Павло зустрів Лідію?', ['Филипи', 'Троада', 'Ассос', 'Мілет'], 0, 'Дії 16:14'),
-  q('geography', 'student', 3, 'Яка гора — місце вознесіння Ісуса?', ['Олива', 'Синай', 'Сіон', 'Карміл'], 0, 'Дії 1:12'),
-  q('geography', 'student', 4, 'Де був ув’язнений Павло з Силою?', ['Филипи', 'Рим', 'Кесарія', 'Єрусалим'], 0, 'Дії 16:23'),
-  q('geography', 'student', 5, 'Яке озеро називали Геннісаретським?', ['Галилейське', 'Мертве', 'Тіверіадське', 'Солоне'], 0, 'Мат. 14:34'),
+
+  // Географія Нового Завіту
+  q('geography-nt', 'child', 1, 'У якій річці Іоанн хрестив?', ['Йордан', 'Ніл', 'Євфрат', 'Тигр'], 0, 'Мат. 3:6'),
+  q('geography-nt', 'child', 2, 'Де народився Ісус?', ['Віфлеєм', 'Назарет', 'Єрусалим', 'Капернаум'], 0, 'Лк. 2:4-7'),
+  q('geography-nt', 'child', 5, 'Де проповідував Павло на Ареопазі?', ['Афіни', 'Рим', 'Коринф', 'Ефес'], 0, 'Дії 17:22'),
+  q('geography-nt', 'youth', 4, 'Куди був вигнаний Іоанн за відкриття?', ['Патмос', 'Крит', 'Кіпр', 'Мальта'], 0, 'Одкр. 1:9'),
+  q('geography-nt', 'youth', 5, 'Де зустрів Ісус самарянку?', ['Сихар', 'Самарія', 'Ієрихон', 'Еммаус'], 0, 'Ін. 4:5'),
+  q('geography-nt', 'student', 2, 'Де Павло зустрів Лідію?', ['Филипи', 'Троада', 'Ассос', 'Мілет'], 0, 'Дії 16:14'),
+  q('geography-nt', 'student', 3, 'Яка гора — місце вознесіння Ісуса?', ['Олива', 'Синай', 'Сіон', 'Карміл'], 0, 'Дії 1:12'),
+  q('geography-nt', 'student', 4, 'Де був ув’язнений Павло з Силою?', ['Филипи', 'Рим', 'Кесарія', 'Єрусалим'], 0, 'Дії 16:23'),
+  q('geography-nt', 'student', 5, 'Яке озеро називали Геннісаретським?', ['Галилейське', 'Мертве', 'Тіверіадське', 'Солоне'], 0, 'Мат. 14:34'),
 
   // Старий Завіт
   q('old-testament', 'child', 1, 'Хто збудував ковчег?', ['Ной', 'Мойсей', 'Авраам', 'Давид'], 0, 'Бут. 6:14'),
@@ -186,21 +212,21 @@ export const QUESTIONS: Question[] = [
   q('prophets', 'student', 5, 'Хто останній пророк ВЗ?', ['Малахія', 'Захарія', 'Агей', 'Софонія'], 0),
 
   // Псалми
-  q('psalms', 'child', 1, 'Хто написав більшість псалмів?', ['Давид', 'Соломон', 'Мойсей', 'Асаф'], 0),
-  q('psalms', 'child', 2, 'Який псалм — «Господь пастир мій»?', ['23', '1', '51', '119'], 0, 'Пс. 22'),
-  q('psalms', 'child', 3, 'Скільки псалмів у книзі?', ['150', '100', '66', '12'], 0),
-  q('psalms', 'child', 4, 'Який псалм — покаяння Давида?', ['51', '23', '91', '150'], 0, 'Пс. 50'),
-  q('psalms', 'child', 5, 'Що означає «Алілуя»?', ['Хваліть Господа', 'Мир', 'Амінь', 'Слава'], 0),
-  q('psalms', 'youth', 1, 'Який найдовший псалм?', ['119', '23', '1', '150'], 0),
-  q('psalms', 'youth', 2, 'Хто написав псалом 90?', ['Мойсей', 'Давид', 'Соломон', 'Асаф'], 0, 'Пс. 89'),
-  q('psalms', 'youth', 3, 'Який псалм цитував Ісус на хресті?', ['22', '23', '51', '119'], 0, 'Мат. 27:46'),
-  q('psalms', 'youth', 4, 'Що таке «селаг»?', ['Пауза / музична позначка', 'Амінь', 'Кінець', 'Початок'], 0),
-  q('psalms', 'youth', 5, 'Який псалм — «блаженний муж»?', ['1', '23', '91', '150'], 0, 'Пс. 1'),
-  q('psalms', 'student', 1, 'Скільки розділів у псалмі 119 (за літерами)?', ['22', '12', '7', '40'], 0),
-  q('psalms', 'student', 2, 'Хто «співець царя»?', ['Давид', 'Асаф', 'Корех', 'Єфод'], 0),
-  q('psalms', 'student', 3, 'Який псалм — «не відступлю від тебе»?', ['16', '23', '51', '150'], 0, 'Пс. 15'),
-  q('psalms', 'student', 4, 'Що означає «Міхтам»?', ['Золотий / таємниця', 'Хвала', 'Скорбота', 'Перемога'], 0),
-  q('psalms', 'student', 5, 'Який псалм читають на Пасху (християни)?', ['22 / 23', '1', '150', '91'], 0),
+  q('wisdom-poetry', 'child', 1, 'Хто написав більшість псалмів?', ['Давид', 'Соломон', 'Мойсей', 'Асаф'], 0),
+  q('wisdom-poetry', 'child', 2, 'Який псалм — «Господь пастир мій»?', ['23', '1', '51', '119'], 0, 'Пс. 22'),
+  q('wisdom-poetry', 'child', 3, 'Скільки псалмів у книзі?', ['150', '100', '66', '12'], 0),
+  q('wisdom-poetry', 'child', 4, 'Який псалм — покаяння Давида?', ['51', '23', '91', '150'], 0, 'Пс. 50'),
+  q('wisdom-poetry', 'child', 5, 'Що означає «Алілуя»?', ['Хваліть Господа', 'Мир', 'Амінь', 'Слава'], 0),
+  q('wisdom-poetry', 'youth', 1, 'Який найдовший псалм?', ['119', '23', '1', '150'], 0),
+  q('wisdom-poetry', 'youth', 2, 'Хто написав псалом 90?', ['Мойсей', 'Давид', 'Соломон', 'Асаф'], 0, 'Пс. 89'),
+  q('wisdom-poetry', 'youth', 3, 'Який псалм цитував Ісус на хресті?', ['22', '23', '51', '119'], 0, 'Мат. 27:46'),
+  q('wisdom-poetry', 'youth', 4, 'Що таке «селаг»?', ['Пауза / музична позначка', 'Амінь', 'Кінець', 'Початок'], 0),
+  q('wisdom-poetry', 'youth', 5, 'Який псалм — «блаженний муж»?', ['1', '23', '91', '150'], 0, 'Пс. 1'),
+  q('wisdom-poetry', 'student', 1, 'Скільки розділів у псалмі 119 (за літерами)?', ['22', '12', '7', '40'], 0),
+  q('wisdom-poetry', 'student', 2, 'Хто «співець царя»?', ['Давид', 'Асаф', 'Корех', 'Єфод'], 0),
+  q('wisdom-poetry', 'student', 3, 'Який псалм — «не відступлю від тебе»?', ['16', '23', '51', '150'], 0, 'Пс. 15'),
+  q('wisdom-poetry', 'student', 4, 'Що означає «Міхтам»?', ['Золотий / таємниця', 'Хвала', 'Скорбота', 'Перемога'], 0),
+  q('wisdom-poetry', 'student', 5, 'Який псалм читають на Пасху (християни)?', ['22 / 23', '1', '150', '91'], 0),
 
   // Притчі
   q('parables', 'child', 1, 'Хто знайшов скарб у полі?', ['Людина, що продала все', 'Рибалка', 'Цар', 'Слуга'], 0, 'Мат. 13:44'),
@@ -288,7 +314,29 @@ export const QUESTIONS: Question[] = [
   q('revelation', 'student', 5, 'Останні слова книги?', ['Так, гряди, Господи Ісусе', 'Амінь', 'Мир', 'Любов'], 0, 'Одкр. 22:20'),
 ];
 
-export const ALL_QUESTIONS: Question[] = [...QUESTIONS, ...EXTRA_QUESTIONS];
+export const ALL_QUESTIONS: Question[] = [...QUESTIONS, ...EXTRA_QUESTIONS].map(withEmbeddedTopicTags);
+
+let allQuestionsCache: Question[] | null = null;
+let allQuestionsPromise: Promise<Question[]> | null = null;
+
+/** Embedded + усі AI питання (кешується) */
+export async function getAllQuestionsAsync(): Promise<Question[]> {
+  if (allQuestionsCache) return allQuestionsCache;
+  if (!allQuestionsPromise) {
+    allQuestionsPromise = (async () => {
+      const { loadAllAiQuestions } = await import('./questionDbLoader');
+      const ai = await loadAllAiQuestions();
+      const byId = new Map<string, Question>();
+      for (const q of ALL_QUESTIONS) byId.set(q.id, q);
+      for (const q of ai) byId.set(q.id, q);
+      allQuestionsCache = [...byId.values()];
+      return allQuestionsCache;
+    })().finally(() => {
+      allQuestionsPromise = null;
+    });
+  }
+  return allQuestionsPromise;
+}
 
 /**
  * Отримати кількість питань для теми за складністю
@@ -369,7 +417,7 @@ export async function getQuestionsForLevelAsync(
  * Отримати питання для категорії (агрегація з усіх тем категорії)
  */
 export async function getQuestionsForCategoryAsync(
-  categoryId: string,
+  _categoryId: string,
   themeIds: string[],
   difficulty: Difficulty,
   count = QUESTIONS_PER_LEVEL,
@@ -425,6 +473,19 @@ export async function getQuestionCountByCategoryAsync(
 /**
  * Фільтрація питань за ієрархією тем (TopicNode)
  */
+function collectNodeIdsForFilter(
+  node: TopicNode,
+  ids: Set<string>,
+  includeChildren: boolean,
+): void {
+  ids.add(node.id);
+  if (includeChildren) {
+    for (const child of node.children ?? []) {
+      collectNodeIdsForFilter(child, ids, true);
+    }
+  }
+}
+
 export function filterQuestionsByHierarchy(
   questions: Question[],
   targetNodeId: string,
@@ -434,40 +495,45 @@ export function filterQuestionsByHierarchy(
 ): Question[] {
   const targetNode = findNodeById(topicHierarchy, targetNodeId);
   if (!targetNode) {
-    return questions;
+    return [];
+  }
+
+  const relevantNodeIds = new Set<string>();
+  collectNodeIdsForFilter(targetNode, relevantNodeIds, includeChildNodes);
+
+  if (includeParentNodes) {
+    const parentPath = findParentPath(topicHierarchy, targetNodeId);
+    for (const node of parentPath) {
+      relevantNodeIds.add(node.id);
+    }
+  }
+
+  const hasTopicNodeTags = questions.some(
+    (q) => q.topicNodeId && relevantNodeIds.has(q.topicNodeId),
+  );
+  if (hasTopicNodeTags) {
+    return questions.filter(
+      (q) => q.topicNodeId != null && relevantNodeIds.has(q.topicNodeId),
+    );
   }
 
   const relevantThemeIds = new Set<string>();
-
-  // Використовуємо themeId кореневого вузла ієрархії для фільтрації
-  const rootThemeId = topicHierarchy.id;
-  relevantThemeIds.add(rootThemeId);
-
-  // Додаємо тему самого вузла (якщо є themeId)
-  if (targetNode.themeId) {
-    relevantThemeIds.add(targetNode.themeId);
-  }
-
-  // Додаємо батьківські вузли
+  if (targetNode.themeId) relevantThemeIds.add(targetNode.themeId);
   if (includeParentNodes) {
-    const parentPath = findParentPath(topicHierarchy, targetNodeId);
-    parentPath.forEach((node) => {
+    findParentPath(topicHierarchy, targetNodeId).forEach((node) => {
       if (node.themeId) relevantThemeIds.add(node.themeId);
     });
   }
-
-  // Додаємо дочірні вузли
   if (includeChildNodes) {
-    const childNodes = findAllChildNodes(targetNode);
-    childNodes.forEach((node) => {
+    findAllChildNodes(targetNode).forEach((node) => {
       if (node.themeId) relevantThemeIds.add(node.themeId);
     });
   }
+  if (relevantThemeIds.size === 0) {
+    relevantThemeIds.add(targetNodeId);
+  }
 
-  // Фільтруємо за themeId
-  const filtered = questions.filter((q) => relevantThemeIds.has(q.themeId));
-  
-  return filtered;
+  return questions.filter((q) => relevantThemeIds.has(q.themeId));
 }
 
 /**
@@ -482,7 +548,7 @@ export async function getQuestionsForNodeAsync(
   includeChildNodes = false,
 ): Promise<Question[]> {
   const embedded = filterQuestionsByHierarchy(
-    QUESTIONS,
+    ALL_QUESTIONS,
     nodeId,
     topicHierarchy,
     includeParentNodes,
@@ -526,10 +592,14 @@ export async function getQuestionsForNodeAsync(
     }
   }
 
-  // Об'єднуємо вбудовані та AI питання
-  let pool = [...embedded, ...aiQuestions];
+  let pool = filterQuestionsByHierarchy(
+    [...embedded, ...aiQuestions],
+    nodeId,
+    topicHierarchy,
+    includeParentNodes,
+    includeChildNodes,
+  );
 
-  // Фільтруємо за складністю, якщо вказано
   if (difficulty) {
     pool = pool.filter((q) => q.difficulty === difficulty);
   }
@@ -546,7 +616,7 @@ export async function getQuestionCountForNodeAsync(
   difficulty?: Difficulty,
 ): Promise<number> {
   const embedded = filterQuestionsByHierarchy(
-    QUESTIONS,
+    ALL_QUESTIONS,
     nodeId,
     topicHierarchy,
     false,

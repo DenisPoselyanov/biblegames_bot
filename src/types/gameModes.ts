@@ -52,4 +52,8 @@ export const KAHOOT_DEFAULTS = {
   questionCount: 10,
   timePerQuestionSec: 20,
   difficulty: 'youth' as const,
+  flowMode: 'auto' as const,
+  scoringMode: 'classic' as const,
+  thinkTimeSec: 0,
+  hostParticipates: false,
 };

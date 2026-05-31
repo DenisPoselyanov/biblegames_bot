@@ -12,11 +12,22 @@ import fs from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { THEME_IDS, getTheme } from './lib/themes-config.mjs';
-import { checkOllama, extractJsonArray, queryOllama } from './lib/ollama.mjs';
+import {
+  applyAiCliFlags,
+  checkLLM,
+  defaultAiOpts,
+  extractJsonArray,
+  extractJsonObject,
+  loadProjectEnv,
+  providerLabel,
+  queryLLM,
+  unavailableHint,
+} from './lib/llm.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const TOPICS_DIR = join(__dirname, '..', 'data', 'topics-db');
-const DEFAULT_MODEL = process.env.OLLAMA_MODEL || 'mistral';
+loadProjectEnv();
+const { provider: DEFAULT_PROVIDER, model: DEFAULT_MODEL } = defaultAiOpts();
 
 function ensureDir() {
   if (!fs.existsSync(TOPICS_DIR)) {
@@ -185,7 +196,7 @@ function validateTopicNode(node, parentId) {
   return validated;
 }
 
-async function generateForTheme(themeId, model, force = false) {
+async function generateForTheme(themeId, model, provider = DEFAULT_PROVIDER, force = false) {
   const theme = getTheme(themeId);
   if (!theme) {
     console.error(`  ❌ Тему не знайдено: ${themeId}`);
@@ -200,7 +211,7 @@ async function generateForTheme(themeId, model, force = false) {
 
   console.log(`  ⏳ ${theme.title}: генерую ієрархію...`);
   const prompt = buildPrompt(theme);
-  const raw = await queryOllama(prompt, model);
+  const raw = await queryLLM(prompt, { model, provider });
   const parsed = extractJsonArray(raw);
 
   let root;
@@ -230,7 +241,7 @@ async function generateForTheme(themeId, model, force = false) {
   return root;
 }
 
-async function generateForGroup(groupId, model) {
+async function generateForGroup(groupId, model, provider = DEFAULT_PROVIDER) {
   const group = getGroup(groupId);
   if (!group) {
     console.error(`  ❌ Групу не знайдено: ${groupId}`);
@@ -245,7 +256,7 @@ async function generateForGroup(groupId, model) {
 
   console.log(`  ⏳ ${group.title}: генерую групову ієрархію...`);
   const prompt = buildGroupPrompt(group);
-  const raw = await queryOllama(prompt, model);
+  const raw = await queryLLM(prompt, { model, provider });
   let parsed;
   try {
     parsed = extractJsonObject(raw);
@@ -296,6 +307,7 @@ async function main() {
     theme: null,
     group: null,
     all: false,
+    provider: DEFAULT_PROVIDER,
     model: DEFAULT_MODEL,
     force: false,
   };
@@ -305,8 +317,10 @@ async function main() {
     else if (args[i] === '--group' && args[i + 1]) opts.group = args[++i];
     else if (args[i] === '--all') opts.all = true;
     else if (args[i] === '--force') opts.force = true;
+    else if (args[i] === '--provider' && args[i + 1]) opts.provider = args[++i];
     else if (args[i] === '--model' && args[i + 1]) opts.model = args[++i];
   }
+  applyAiCliFlags(opts, args);
 
   if (!opts.all && !opts.theme && !opts.group) {
     console.error('❌ Вкажи --theme <id>, --group <id> або --all');
@@ -315,20 +329,19 @@ async function main() {
     process.exit(1);
   }
 
-  console.log('🤖 AI — генератор ієрархії тем (Ollama)');
+  console.log('🤖 AI — генератор ієрархії тем');
   console.log('========================================');
-  console.log(`Модель: ${opts.model}`);
+  console.log(`Провайдер: ${providerLabel(opts.provider)} • модель: ${opts.model}`);
   console.log('');
 
-  console.log('🔗 Перевірка Ollama...');
+  console.log(`🔗 Перевірка ${providerLabel(opts.provider)}...`);
   try {
-    const ok = await checkOllama(opts.model);
+    const ok = await checkLLM(opts.model, { provider: opts.provider });
     if (!ok) throw new Error('порожня відповідь');
-    console.log('✅ Ollama працює\n');
+    console.log(`✅ ${providerLabel(opts.provider)} працює\n`);
   } catch (e) {
     console.error('❌', e.message);
-    console.error('\n💡 Запусти: ollama serve');
-    console.error(`💡 Завантаж модель: ollama pull ${opts.model}`);
+    console.error(`\n💡 ${unavailableHint(opts.provider)}`);
     process.exit(1);
   }
 
@@ -346,9 +359,12 @@ async function main() {
 
   let grandTotal = 0;
 
-  for (const themeId of themes) {
-    console.log(`\n📚 ${themeId}`);
-    const result = await generateForTheme(themeId, opts.model);
+  for (const t of targets) {
+    console.log(`\n📚 ${t.id} (${t.type})`);
+    const result =
+      t.type === 'group'
+        ? await generateForGroup(t.id, opts.model, opts.provider)
+        : await generateForTheme(t.id, opts.model, opts.provider, opts.force);
     if (result) {
       console.log('\n   Структура:');
       printHierarchy(result, '   ');

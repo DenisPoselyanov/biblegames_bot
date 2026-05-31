@@ -7,13 +7,15 @@ import { useTelegram } from '../../../hooks/useTelegram';
 import { playlistManager } from '../../../lib/playlists';
 import { getQuestionCountByDifficulty } from '../../../data/questions';
 import { KAHOOT_DEFAULTS } from '../../../types/gameModes';
-import type { KahootRoomSettings } from '../../../types/kahoot';
+import type { KahootFlowMode, KahootRoomSettings, KahootScoringMode } from '../../../types/kahoot';
+import { normalizeKahootSettings } from '../../../types/kahoot';
 import { DIFFICULTIES, DIFFICULTY_LABELS, type Difficulty } from '../../../types';
 import styles from './Kahoot.module.css';
 
 type QuestionSource = 'themes' | 'playlist';
 
 const TIME_OPTIONS = [10, 20, 30, 60];
+const THINK_OPTIONS = [0, 5, 10];
 
 function shuffle<T>(array: T[]): T[] {
   const result = [...array];
@@ -36,12 +38,18 @@ export function KahootCreate() {
 
   const [source, setSource] = useState<QuestionSource>('themes');
   const [hostName, setHostName] = useState('');
+  const [roomTitle, setRoomTitle] = useState('');
   const [themeIds, setThemeIds] = useState<string[]>(['geography']);
   const [questionCount, setQuestionCount] = useState(KAHOOT_DEFAULTS.questionCount);
   const [timePerQuestion, setTimePerQuestion] = useState(KAHOOT_DEFAULTS.timePerQuestionSec);
   const [difficulties, setDifficulties] = useState<Difficulty[]>([KAHOOT_DEFAULTS.difficulty]);
   const [playlistId, setPlaylistId] = useState('');
   const [explicitQuestionIds, setExplicitQuestionIds] = useState<string[] | null>(null);
+  const [flowMode, setFlowMode] = useState<KahootFlowMode>(KAHOOT_DEFAULTS.flowMode);
+  const [scoringMode, setScoringMode] = useState<KahootScoringMode>(KAHOOT_DEFAULTS.scoringMode);
+  const [thinkTimeSec, setThinkTimeSec] = useState(KAHOOT_DEFAULTS.thinkTimeSec);
+  const [hostParticipates, setHostParticipates] = useState(KAHOOT_DEFAULTS.hostParticipates);
+  const [customFieldLabel, setCustomFieldLabel] = useState('');
   const [loading, setLoading] = useState(false);
 
   const playlistOptions = useMemo(() => {
@@ -90,7 +98,7 @@ export function KahootCreate() {
       return;
     }
 
-    let settings: KahootRoomSettings;
+    let base: Pick<KahootRoomSettings, 'themeIds' | 'questionCount' | 'timePerQuestion' | 'difficulty' | 'playlistId' | 'questionIds'>;
 
     if (source === 'playlist') {
       if (!playlistId) {
@@ -107,7 +115,7 @@ export function KahootCreate() {
       const count = Math.min(max, Math.max(3, questionCount));
       const picked = explicitQuestionIds?.length ? explicitQuestionIds : shuffle(pool).slice(0, count);
 
-      settings = {
+      base = {
         themeIds: selectedPlaylist.themes,
         questionCount: Math.max(3, picked.length),
         timePerQuestion,
@@ -121,7 +129,7 @@ export function KahootCreate() {
         return;
       }
 
-      settings = {
+      base = {
         themeIds,
         questionCount,
         timePerQuestion,
@@ -129,8 +137,19 @@ export function KahootCreate() {
       };
     }
 
+    const settings = normalizeKahootSettings({
+      ...base,
+      flowMode,
+      scoringMode,
+      thinkTimeSec,
+      hostParticipates,
+      roomTitle: roomTitle.trim() || undefined,
+      customFieldLabel: customFieldLabel.trim() || undefined,
+    });
+
     setLoading(true);
-    const state = await createRoom(hostName.trim(), settings);
+    const hostTelegramId = userId !== 'guest' ? userId : undefined;
+    const state = await createRoom(hostName.trim(), settings, hostTelegramId);
     setLoading(false);
     if (state) navigate(`/play/kahoot/room/${state.code}`);
   };
@@ -146,7 +165,7 @@ export function KahootCreate() {
       <h1 className={styles.pageTitle}>Створити кімнату</h1>
 
       {!connected && (
-        <p className={styles.serverError}>Не вдалося з'єднатися з сервером. Перевірте підключення.</p>
+        <p className={styles.serverError}>Не вдалося з&apos;єднатися з сервером. Перевірте підключення.</p>
       )}
 
       <div className={styles.sectionCard}>
@@ -158,6 +177,17 @@ export function KahootCreate() {
             placeholder="Наприклад: Олександр"
             value={hostName}
             onChange={(e) => setHostName(e.target.value)}
+          />
+        </label>
+
+        <label className={styles.field}>
+          <span>Назва кімнати (необов&apos;язково)</span>
+          <input
+            type="text"
+            maxLength={40}
+            placeholder="Недільна школа"
+            value={roomTitle}
+            onChange={(e) => setRoomTitle(e.target.value)}
           />
         </label>
 
@@ -253,6 +283,84 @@ export function KahootCreate() {
             ))}
           </div>
         </div>
+
+        <div className={styles.field}>
+          <span>Час на обдумування (think)</span>
+          <div className={styles.chipGroup}>
+            {THINK_OPTIONS.map((t) => (
+              <button
+                key={t}
+                type="button"
+                className={`${styles.chip} ${thinkTimeSec === t ? styles.chipActive : ''}`}
+                onClick={() => setThinkTimeSec(t)}
+              >
+                {t === 0 ? 'Вимк.' : `${t}с`}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.sectionCard}>
+        <div className={styles.field}>
+          <span>Темп гри</span>
+          <div className={styles.chipGroup}>
+            <button
+              type="button"
+              className={`${styles.chip} ${flowMode === 'auto' ? styles.chipActive : ''}`}
+              onClick={() => setFlowMode('auto')}
+            >
+              Авто
+            </button>
+            <button
+              type="button"
+              className={`${styles.chip} ${flowMode === 'manual' ? styles.chipActive : ''}`}
+              onClick={() => setFlowMode('manual')}
+            >
+              Вручну
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.field}>
+          <span>Очки</span>
+          <div className={styles.chipGroup}>
+            <button
+              type="button"
+              className={`${styles.chip} ${scoringMode === 'classic' ? styles.chipActive : ''}`}
+              onClick={() => setScoringMode('classic')}
+            >
+              Класичні
+            </button>
+            <button
+              type="button"
+              className={`${styles.chip} ${scoringMode === 'simple' ? styles.chipActive : ''}`}
+              onClick={() => setScoringMode('simple')}
+            >
+              5–30
+            </button>
+          </div>
+        </div>
+
+        <label className={styles.checkboxRow}>
+          <input
+            type="checkbox"
+            checked={hostParticipates}
+            onChange={(e) => setHostParticipates(e.target.checked)}
+          />
+          <span>Ведучий теж відповідає</span>
+        </label>
+
+        <label className={styles.field}>
+          <span>Додаткове поле при join (напр. повне ім&apos;я)</span>
+          <input
+            type="text"
+            maxLength={32}
+            placeholder="Залиште порожнім, щоб вимкнути"
+            value={customFieldLabel}
+            onChange={(e) => setCustomFieldLabel(e.target.value)}
+          />
+        </label>
       </div>
 
       {error && <p className={styles.error}>{error}</p>}

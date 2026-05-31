@@ -25,26 +25,16 @@ import {
   flattenTopicNodes,
   findNodeById,
 } from './lib/themes-config.mjs';
+import { normalizeTopicWords, jaccardSimilarity } from './lib/topic-similarity.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const TOPICS_DIR = join(__dirname, '..', 'data', 'topics-db');
 const REPORT_FILE = join(__dirname, '..', 'data', 'topics-quality-report.json');
 
-// ===== NORMALIZATION =====
+// ===== NORMALIZATION (shared with topic-similarity) =====
 
 function normalizeText(text) {
-  return String(text || '')
-    .toLowerCase()
-    .replace(/[^\w\sа-яґєії]/g, '')
-    .split(/\s+/)
-    .filter((word) => word.length > 2);
-}
-
-function jaccardSimilarity(words1, words2) {
-  if (words1.length === 0 || words2.length === 0) return 0;
-  const intersection = words1.filter((w) => words2.includes(w));
-  const union = [...new Set([...words1, ...words2])];
-  return intersection.length / union.length;
+  return normalizeTopicWords(text);
 }
 
 // ===== КАНОНІЧНА ВАЖЛИВІСТЬ =====
@@ -345,14 +335,16 @@ function main() {
   const allTopicNodes = [];
 
   for (const [fileId, root] of Object.entries(allHierarchies)) {
-    const nodes = flattenTopicNodes(root);
-    for (const entry of nodes) {
-      allNodes.push(entry);
-      // Тільки тематичні вузли (не кореневі файли)
-      if (entry.depth > 0) {
-        allTopicNodes.push(entry);
+    function walkTopic(node, depth, parentId) {
+      allNodes.push({ node, depth, fileId, parentId });
+      if (depth > 0) {
+        allTopicNodes.push({ node, depth, fileId, parentId });
+      }
+      for (const child of node.children || []) {
+        walkTopic(child, depth + 1, node.id);
       }
     }
+    walkTopic(root, 0, null);
   }
 
   // Валідація ID
@@ -432,15 +424,23 @@ function main() {
   console.log('📏 Аналіз ширини тем (потенціал для питань)...');
   const breadthResults = [];
 
-  for (const { node, depth } of allTopicNodes) {
+  for (const { node, depth, fileId, parentId } of allTopicNodes) {
     const score = calculateBreadth(node);
     breadthResults.push({
       id: node.id,
       title: node.title,
       depth,
+      fileId,
+      parentId,
+      icon: node.icon || '📖',
+      description: node.description || '',
+      themeId: node.themeId || null,
       breadthScore: score,
+      breadth: score,
       childCount: (node.children || []).length,
       totalDescendants: flattenTopicNodes(node).length,
+      children: (node.children || []).length,
+      issues: score < 30 ? ['Вузька тема'] : [],
     });
   }
 

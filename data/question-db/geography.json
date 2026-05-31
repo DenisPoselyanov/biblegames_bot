@@ -13,7 +13,9 @@
     "correctIndex": 0,
     "reference": "Вих. 3:12",
     "source": "ai",
-    "createdAt": "2026-05-17T18:36:05.099Z"
+    "createdAt": "2026-05-17T18:36:05.099Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-baby-ai-00002",
@@ -29,7 +31,9 @@
     "correctIndex": 1,
     "reference": "Ізд. 9:3",
     "source": "ai",
-    "createdAt": "2026-05-17T18:36:05.100Z"
+    "createdAt": "2026-05-17T18:36:05.100Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-baby-ai-00003",
@@ -45,7 +49,9 @@
     "correctIndex": 2,
     "reference": "Сд. 15:10",
     "source": "ai",
-    "createdAt": "2026-05-17T18:36:05.100Z"
+    "createdAt": "2026-05-17T18:36:05.100Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-baby-ai-00004",
@@ -61,7 +67,9 @@
     "correctIndex": 1,
     "reference": "І Цар. 17:12",
     "source": "ai",
-    "createdAt": "2026-05-17T18:36:05.100Z"
+    "createdAt": "2026-05-17T18:36:05.100Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-baby-ai-00005",
@@ -77,7 +85,9 @@
     "correctIndex": 2,
     "reference": "Нум. 34:11",
     "source": "ai",
-    "createdAt": "2026-05-17T18:36:05.100Z"
+    "createdAt": "2026-05-17T18:36:05.100Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-baby-ai-00006",
@@ -93,23 +103,9 @@
     "correctIndex": 3,
     "reference": "Іс. 52:1",
     "source": "ai",
-    "createdAt": "2026-05-17T18:36:05.100Z"
-  },
-  {
-    "id": "geography-child-ai-00007",
-    "themeId": "geography",
-    "difficulty": "child",
-    "text": "Чесне місто, де проповідував Ісус Христос (Іван 5:2):",
-    "options": [
-      "Йерусалим",
-      "Назарет",
-      "Каперея-Кафі",
-      "Тарсіс"
-    ],
-    "correctIndex": 1,
-    "reference": "Ів. 5:2",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:36:45.288Z"
+    "createdAt": "2026-05-17T18:36:05.100Z",
+    "topicNodeId": "geography-sub-3-sub-4",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Вавилон"
   },
   {
     "id": "geography-child-ai-00008",
@@ -125,7 +121,9 @@
     "correctIndex": 2,
     "reference": "Іс. 43:2",
     "source": "ai",
-    "createdAt": "2026-05-17T18:36:45.288Z"
+    "createdAt": "2026-05-17T18:36:45.288Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-child-ai-00009",
@@ -141,7 +139,9 @@
     "correctIndex": 0,
     "reference": "Дії 16:9",
     "source": "ai",
-    "createdAt": "2026-05-17T18:36:45.288Z"
+    "createdAt": "2026-05-17T18:36:45.288Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-child-ai-00010",
@@ -157,7 +157,9 @@
     "correctIndex": 1,
     "reference": "Втор. 5:1",
     "source": "ai",
-    "createdAt": "2026-05-17T18:36:45.288Z"
+    "createdAt": "2026-05-17T18:36:45.288Z",
+    "topicNodeId": "geography-sub-4-sub-1",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
   },
   {
     "id": "geography-child-ai-00011",
@@ -173,23 +175,9 @@
     "correctIndex": 0,
     "reference": "Цар. 2:1",
     "source": "ai",
-    "createdAt": "2026-05-17T18:36:45.289Z"
-  },
-  {
-    "id": "geography-child-ai-00012",
-    "themeId": "geography",
-    "difficulty": "child",
-    "text": "Країна, у якій жив Ісус Навино (Числа 34:11):",
-    "options": [
-      "Галад",
-      "Моав",
-      "Амонон",
-      "Філістимляни"
-    ],
-    "correctIndex": 1,
-    "reference": "Числа 34:11",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:36:45.289Z"
+    "createdAt": "2026-05-17T18:36:45.289Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-youth-ai-00013",
@@ -205,7 +193,9 @@
     "correctIndex": 0,
     "reference": "Деут. 12:5",
     "source": "ai",
-    "createdAt": "2026-05-17T18:37:43.848Z"
+    "createdAt": "2026-05-17T18:37:43.848Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-youth-ai-00014",
@@ -221,23 +211,9 @@
     "correctIndex": 0,
     "reference": "Іс. 1:1",
     "source": "ai",
-    "createdAt": "2026-05-17T18:37:43.848Z"
-  },
-  {
-    "id": "geography-youth-ai-00015",
-    "themeId": "geography",
-    "difficulty": "youth",
-    "text": "Яку річку намагався перетнути Ісус Христос, але не зміг через величезне число людей (Мар. 6:33)?",
-    "options": [
-      "Тигр (Мар. 7:24)",
-      "Євфрат (Лк. 3:3)",
-      "Іордан (Йол. 4:15)",
-      "Ніл (Дії 10:1)"
-    ],
-    "correctIndex": 2,
-    "reference": "Мар. 6:33",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:37:43.848Z"
+    "createdAt": "2026-05-17T18:37:43.848Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00016",
@@ -253,7 +229,9 @@
     "correctIndex": 1,
     "reference": "Ап. 1:12",
     "source": "ai",
-    "createdAt": "2026-05-17T18:37:43.848Z"
+    "createdAt": "2026-05-17T18:37:43.848Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00017",
@@ -269,7 +247,9 @@
     "correctIndex": 3,
     "reference": "Дії 17:15",
     "source": "ai",
-    "createdAt": "2026-05-17T18:37:43.848Z"
+    "createdAt": "2026-05-17T18:37:43.848Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00018",
@@ -285,7 +265,9 @@
     "correctIndex": 3,
     "reference": "Тим. 1:16",
     "source": "ai",
-    "createdAt": "2026-05-17T18:37:43.848Z"
+    "createdAt": "2026-05-17T18:37:43.848Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00019",
@@ -301,7 +283,9 @@
     "correctIndex": 0,
     "reference": "Вих. 24:1",
     "source": "ai",
-    "createdAt": "2026-05-17T18:38:28.140Z"
+    "createdAt": "2026-05-17T18:38:28.140Z",
+    "topicNodeId": "geography-sub-4-sub-1",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
   },
   {
     "id": "geography-student-ai-00020",
@@ -317,39 +301,9 @@
     "correctIndex": 3,
     "reference": "Бут. 9:1",
     "source": "ai",
-    "createdAt": "2026-05-17T18:38:28.140Z"
-  },
-  {
-    "id": "geography-student-ai-00021",
-    "themeId": "geography",
-    "difficulty": "student",
-    "text": "Річка, яку через неї перетнув Ісус Христос, щоб дійти до Єрусалима, це?",
-    "options": [
-      "Жиронда",
-      "Іордан",
-      "Дунай",
-      "Ніл"
-    ],
-    "correctIndex": 1,
-    "reference": "Мк. 10:1",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:38:28.140Z"
-  },
-  {
-    "id": "geography-student-ai-00022",
-    "themeId": "geography",
-    "difficulty": "student",
-    "text": "У якому місті Йосип зустрів Марію Магдаліну після рескресії Ісуса Христа?",
-    "options": [
-      "Єрусалим",
-      "Антіохія",
-      "Тевес",
-      "Магнезія"
-    ],
-    "correctIndex": 1,
-    "reference": "Мк. 16:9",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:38:28.140Z"
+    "createdAt": "2026-05-17T18:38:28.140Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00023",
@@ -365,7 +319,9 @@
     "correctIndex": 2,
     "reference": "Вих. 15:2",
     "source": "ai",
-    "createdAt": "2026-05-17T18:38:28.140Z"
+    "createdAt": "2026-05-17T18:38:28.140Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00024",
@@ -381,7 +337,9 @@
     "correctIndex": 2,
     "reference": "Ді. 16:6",
     "source": "ai",
-    "createdAt": "2026-05-17T18:38:28.140Z"
+    "createdAt": "2026-05-17T18:38:28.140Z",
+    "topicNodeId": "geography-sub-4-sub-3",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Сіон"
   },
   {
     "id": "geography-preacher-ai-00025",
@@ -397,7 +355,9 @@
     "correctIndex": 2,
     "reference": "Бут. 11:31",
     "source": "ai",
-    "createdAt": "2026-05-17T18:40:12.190Z"
+    "createdAt": "2026-05-17T18:40:12.190Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00026",
@@ -413,7 +373,9 @@
     "correctIndex": 3,
     "reference": "Прит. 8:9",
     "source": "ai",
-    "createdAt": "2026-05-17T18:40:12.190Z"
+    "createdAt": "2026-05-17T18:40:12.190Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00027",
@@ -429,7 +391,9 @@
     "correctIndex": 3,
     "reference": "Мд. 17:9",
     "source": "ai",
-    "createdAt": "2026-05-17T18:40:12.190Z"
+    "createdAt": "2026-05-17T18:40:12.190Z",
+    "topicNodeId": "geography-sub-2-sub-4",
+    "topicPath": "Географія Старого Завіту > Річки та моря > Червоне море"
   },
   {
     "id": "geography-preacher-ai-00028",
@@ -445,7 +409,9 @@
     "correctIndex": 0,
     "reference": "Втор. 1:7",
     "source": "ai",
-    "createdAt": "2026-05-17T18:40:12.190Z"
+    "createdAt": "2026-05-17T18:40:12.190Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00029",
@@ -461,7 +427,9 @@
     "correctIndex": 2,
     "reference": "Числа 34:11",
     "source": "ai",
-    "createdAt": "2026-05-17T18:40:12.190Z"
+    "createdAt": "2026-05-17T18:40:12.190Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00030",
@@ -477,23 +445,9 @@
     "correctIndex": 3,
     "reference": "Дії 9:32",
     "source": "ai",
-    "createdAt": "2026-05-17T18:40:12.190Z"
-  },
-  {
-    "id": "geography-baby-ai-00031",
-    "themeId": "geography",
-    "difficulty": "baby",
-    "text": "У якому місті Ісус був хрещений Йоанном Хрестителем?",
-    "options": [
-      "Єрусалим",
-      "Назарет",
-      "Іерусалим Самоюн",
-      "Бет-Хаґайарім"
-    ],
-    "correctIndex": 3,
-    "reference": "Мк. 1:9",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:44:34.190Z"
+    "createdAt": "2026-05-17T18:40:12.190Z",
+    "topicNodeId": "geography-sub-1-sub-3",
+    "topicPath": "Географія Старого Завіту > Земля Ізраїльська > Самарія"
   },
   {
     "id": "geography-baby-ai-00032",
@@ -509,39 +463,9 @@
     "correctIndex": 2,
     "reference": "2Цар. 8:4",
     "source": "ai",
-    "createdAt": "2026-05-17T18:44:34.191Z"
-  },
-  {
-    "id": "geography-baby-ai-00033",
-    "themeId": "geography",
-    "difficulty": "baby",
-    "text": "Річка, в якій Ісус відпочив після чотирьох днів путівлі, називається",
-    "options": [
-      "Йордан",
-      "Нил",
-      "Тигр",
-      "Євфрат"
-    ],
-    "correctIndex": 0,
-    "reference": "Мк. 6:31",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:44:34.191Z"
-  },
-  {
-    "id": "geography-baby-ai-00034",
-    "themeId": "geography",
-    "difficulty": "baby",
-    "text": "У якій горі Ісус надихнувся для проголошення Своїх слів?",
-    "options": [
-      "Гора Набору",
-      "Гора Тавор",
-      "Гора Синай",
-      "Гора Тabor"
-    ],
-    "correctIndex": 3,
-    "reference": "Лк. 21:37",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:44:34.191Z"
+    "createdAt": "2026-05-17T18:44:34.191Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-child-ai-00035",
@@ -557,7 +481,9 @@
     "correctIndex": 0,
     "reference": "Іл. 3:5",
     "source": "ai",
-    "createdAt": "2026-05-17T18:45:01.780Z"
+    "createdAt": "2026-05-17T18:45:01.780Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-child-ai-00036",
@@ -573,7 +499,9 @@
     "correctIndex": 1,
     "reference": "Ос. 2:8",
     "source": "ai",
-    "createdAt": "2026-05-17T18:45:01.780Z"
+    "createdAt": "2026-05-17T18:45:01.780Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-child-ai-00037",
@@ -589,7 +517,9 @@
     "correctIndex": 2,
     "reference": "Йоіл. 1:6",
     "source": "ai",
-    "createdAt": "2026-05-17T18:45:01.780Z"
+    "createdAt": "2026-05-17T18:45:01.780Z",
+    "topicNodeId": "geography-sub-3-sub-4",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Вавилон"
   },
   {
     "id": "geography-child-ai-00038",
@@ -605,7 +535,9 @@
     "correctIndex": 3,
     "reference": "Чис. 26:2",
     "source": "ai",
-    "createdAt": "2026-05-17T18:45:01.780Z"
+    "createdAt": "2026-05-17T18:45:01.780Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00039",
@@ -621,7 +553,9 @@
     "correctIndex": 1,
     "reference": "Іс. 17:1",
     "source": "ai",
-    "createdAt": "2026-05-17T18:45:35.230Z"
+    "createdAt": "2026-05-17T18:45:35.230Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00040",
@@ -637,7 +571,9 @@
     "correctIndex": 3,
     "reference": "Іс. 8:7",
     "source": "ai",
-    "createdAt": "2026-05-17T18:45:35.230Z"
+    "createdAt": "2026-05-17T18:45:35.230Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00041",
@@ -653,7 +589,9 @@
     "correctIndex": 1,
     "reference": "Пс. 48:3",
     "source": "ai",
-    "createdAt": "2026-05-17T18:45:35.230Z"
+    "createdAt": "2026-05-17T18:45:35.230Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00042",
@@ -669,7 +607,9 @@
     "correctIndex": 2,
     "reference": "Дан. 1:5",
     "source": "ai",
-    "createdAt": "2026-05-17T18:45:35.230Z"
+    "createdAt": "2026-05-17T18:45:35.230Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00043",
@@ -685,7 +625,9 @@
     "correctIndex": 1,
     "reference": "Исх. 11:2",
     "source": "ai",
-    "createdAt": "2026-05-17T18:45:35.230Z"
+    "createdAt": "2026-05-17T18:45:35.230Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00044",
@@ -701,7 +643,9 @@
     "correctIndex": 1,
     "reference": "Цар. 2:10",
     "source": "ai",
-    "createdAt": "2026-05-17T18:46:03.844Z"
+    "createdAt": "2026-05-17T18:46:03.844Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00045",
@@ -717,7 +661,9 @@
     "correctIndex": 0,
     "reference": "Іони 1:1",
     "source": "ai",
-    "createdAt": "2026-05-17T18:46:03.844Z"
+    "createdAt": "2026-05-17T18:46:03.844Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00046",
@@ -733,7 +679,9 @@
     "correctIndex": 0,
     "reference": "Лев. 25:1",
     "source": "ai",
-    "createdAt": "2026-05-17T18:46:03.844Z"
+    "createdAt": "2026-05-17T18:46:03.844Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00047",
@@ -749,7 +697,9 @@
     "correctIndex": 1,
     "reference": "Дій. 21:3",
     "source": "ai",
-    "createdAt": "2026-05-17T18:46:03.844Z"
+    "createdAt": "2026-05-17T18:46:03.844Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00048",
@@ -765,7 +715,9 @@
     "correctIndex": 3,
     "reference": "Мат. 4:18",
     "source": "ai",
-    "createdAt": "2026-05-17T18:46:03.844Z"
+    "createdAt": "2026-05-17T18:46:03.844Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00049",
@@ -781,7 +733,9 @@
     "correctIndex": 1,
     "reference": "Вих. 19:20",
     "source": "ai",
-    "createdAt": "2026-05-17T18:46:54.499Z"
+    "createdAt": "2026-05-17T18:46:54.499Z",
+    "topicNodeId": "geography-sub-4-sub-1",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
   },
   {
     "id": "geography-preacher-ai-00050",
@@ -797,7 +751,9 @@
     "correctIndex": 0,
     "reference": "Ісх. 27:11",
     "source": "ai",
-    "createdAt": "2026-05-17T18:46:54.499Z"
+    "createdAt": "2026-05-17T18:46:54.499Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00051",
@@ -813,7 +769,9 @@
     "correctIndex": 1,
     "reference": "Ісх. 3:1",
     "source": "ai",
-    "createdAt": "2026-05-17T18:46:54.499Z"
+    "createdAt": "2026-05-17T18:46:54.499Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00052",
@@ -829,7 +787,9 @@
     "correctIndex": 0,
     "reference": "Лук. 3:31",
     "source": "ai",
-    "createdAt": "2026-05-17T18:46:54.499Z"
+    "createdAt": "2026-05-17T18:46:54.499Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00053",
@@ -845,7 +805,9 @@
     "correctIndex": 0,
     "reference": "Бут. 2:8",
     "source": "ai",
-    "createdAt": "2026-05-17T18:46:54.499Z"
+    "createdAt": "2026-05-17T18:46:54.499Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-baby-ai-00054",
@@ -861,23 +823,9 @@
     "correctIndex": 2,
     "reference": "Іс. 2:3",
     "source": "ai",
-    "createdAt": "2026-05-23T09:56:30.130Z"
-  },
-  {
-    "id": "geography-baby-ai-00055",
-    "themeId": "geography",
-    "difficulty": "baby",
-    "text": "Де розташоване Голгофа?",
-    "options": [
-      "А) Гора Грізда",
-      "В) Гора Синайська",
-      "Б) Гора Тиберіадська",
-      "Г) Гора Оліветова"
-    ],
-    "correctIndex": 1,
-    "reference": "Марк 15:22",
-    "source": "ai",
-    "createdAt": "2026-05-23T09:56:30.132Z"
+    "createdAt": "2026-05-23T09:56:30.130Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-baby-ai-00056",
@@ -893,7 +841,9 @@
     "correctIndex": 3,
     "reference": "Пс. 14:7",
     "source": "ai",
-    "createdAt": "2026-05-23T09:56:30.132Z"
+    "createdAt": "2026-05-23T09:56:30.132Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-baby-ai-00057",
@@ -909,7 +859,9 @@
     "correctIndex": 1,
     "reference": "Ос. 2:8",
     "source": "ai",
-    "createdAt": "2026-05-23T09:56:30.132Z"
+    "createdAt": "2026-05-23T09:56:30.132Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-baby-ai-00058",
@@ -925,7 +877,9 @@
     "correctIndex": 2,
     "reference": "Пов. 60:4",
     "source": "ai",
-    "createdAt": "2026-05-23T09:56:30.132Z"
+    "createdAt": "2026-05-23T09:56:30.132Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-child-ai-00059",
@@ -941,7 +895,9 @@
     "correctIndex": 2,
     "reference": "Бут. 1:1",
     "source": "ai",
-    "createdAt": "2026-05-23T09:57:42.117Z"
+    "createdAt": "2026-05-23T09:57:42.117Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-child-ai-00060",
@@ -957,7 +913,9 @@
     "correctIndex": 3,
     "reference": "Одк. 14:1",
     "source": "ai",
-    "createdAt": "2026-05-23T09:57:42.117Z"
+    "createdAt": "2026-05-23T09:57:42.117Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-child-ai-00061",
@@ -973,23 +931,9 @@
     "correctIndex": 3,
     "reference": "Іс. 2:1",
     "source": "ai",
-    "createdAt": "2026-05-23T09:57:42.117Z"
-  },
-  {
-    "id": "geography-child-ai-00062",
-    "themeId": "geography",
-    "difficulty": "child",
-    "text": "У якій країні народився Ісус?",
-    "options": [
-      "А) Китай",
-      "Б) Єгипет",
-      "В) Греція",
-      "Г) Галілея"
-    ],
-    "correctIndex": 3,
-    "reference": "Мат. 2:1",
-    "source": "ai",
-    "createdAt": "2026-05-23T09:57:42.117Z"
+    "createdAt": "2026-05-23T09:57:42.117Z",
+    "topicNodeId": "geography-sub-4-sub-3",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Сіон"
   },
   {
     "id": "geography-child-ai-00063",
@@ -1005,7 +949,9 @@
     "correctIndex": 1,
     "reference": "Вих. 17:1",
     "source": "ai",
-    "createdAt": "2026-05-23T09:57:42.117Z"
+    "createdAt": "2026-05-23T09:57:42.117Z",
+    "topicNodeId": "geography-sub-4-sub-1",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
   },
   {
     "id": "geography-youth-ai-00064",
@@ -1021,39 +967,9 @@
     "correctIndex": 0,
     "reference": "Пс. 48:2",
     "source": "ai",
-    "createdAt": "2026-05-23T09:58:20.600Z"
-  },
-  {
-    "id": "geography-youth-ai-00065",
-    "themeId": "geography",
-    "difficulty": "youth",
-    "text": "У яку країну потрапив Ісус Христос зробивши згоду з Самарітянами?",
-    "options": [
-      "Єгипет",
-      "Рим",
-      "Ізраїль",
-      "Греція"
-    ],
-    "correctIndex": 3,
-    "reference": "Мк. 10:46",
-    "source": "ai",
-    "createdAt": "2026-05-23T09:58:20.600Z"
-  },
-  {
-    "id": "geography-youth-ai-00066",
-    "themeId": "geography",
-    "difficulty": "youth",
-    "text": "Яку річку перетнув Ісус Христос, щоб провісити перші уроки згідно Євангелію від Івана?",
-    "options": [
-      "Тигрес",
-      "Іордан",
-      "Ніл",
-      "Фірсодон"
-    ],
-    "correctIndex": 2,
-    "reference": "Йо. 1:43",
-    "source": "ai",
-    "createdAt": "2026-05-23T09:58:20.600Z"
+    "createdAt": "2026-05-23T09:58:20.600Z",
+    "topicNodeId": "geography-sub-4-sub-3",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Сіон"
   },
   {
     "id": "geography-youth-ai-00067",
@@ -1069,7 +985,9 @@
     "correctIndex": 0,
     "reference": "І Цар. 6:1",
     "source": "ai",
-    "createdAt": "2026-05-23T09:58:20.600Z"
+    "createdAt": "2026-05-23T09:58:20.600Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-youth-ai-00068",
@@ -1085,7 +1003,9 @@
     "correctIndex": 2,
     "reference": "І Цар. 7:1",
     "source": "ai",
-    "createdAt": "2026-05-23T09:58:20.600Z"
+    "createdAt": "2026-05-23T09:58:20.600Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00069",
@@ -1101,7 +1021,9 @@
     "correctIndex": 2,
     "reference": "Втор. 15:4",
     "source": "ai",
-    "createdAt": "2026-05-23T09:58:56.773Z"
+    "createdAt": "2026-05-23T09:58:56.773Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-student-ai-00070",
@@ -1117,7 +1039,9 @@
     "correctIndex": 1,
     "reference": "Бут. 2:10",
     "source": "ai",
-    "createdAt": "2026-05-23T09:58:56.773Z"
+    "createdAt": "2026-05-23T09:58:56.773Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00071",
@@ -1133,7 +1057,9 @@
     "correctIndex": 0,
     "reference": "II Цар. 5:9",
     "source": "ai",
-    "createdAt": "2026-05-23T09:58:56.773Z"
+    "createdAt": "2026-05-23T09:58:56.773Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-student-ai-00072",
@@ -1149,7 +1075,9 @@
     "correctIndex": 1,
     "reference": "Іс. 63:9",
     "source": "ai",
-    "createdAt": "2026-05-23T09:58:56.774Z"
+    "createdAt": "2026-05-23T09:58:56.774Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00073",
@@ -1165,23 +1093,9 @@
     "correctIndex": 3,
     "reference": "Іс. 11:8",
     "source": "ai",
-    "createdAt": "2026-05-23T09:58:56.774Z"
-  },
-  {
-    "id": "geography-preacher-ai-00074",
-    "themeId": "geography",
-    "difficulty": "preacher",
-    "text": "До якої країни Ісус Христос прийшов, щоб почати свою проповідь?",
-    "options": [
-      "Египет",
-      "Рим",
-      "Сирія",
-      "Ізраїль"
-    ],
-    "correctIndex": 3,
-    "reference": "Мк. 1:15",
-    "source": "ai",
-    "createdAt": "2026-05-23T09:59:30.690Z"
+    "createdAt": "2026-05-23T09:58:56.774Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00075",
@@ -1197,7 +1111,9 @@
     "correctIndex": 1,
     "reference": "Вих. 14:22",
     "source": "ai",
-    "createdAt": "2026-05-23T09:59:30.690Z"
+    "createdAt": "2026-05-23T09:59:30.690Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00076",
@@ -1213,7 +1129,9 @@
     "correctIndex": 0,
     "reference": "Вих. 24:15",
     "source": "ai",
-    "createdAt": "2026-05-23T09:59:30.690Z"
+    "createdAt": "2026-05-23T09:59:30.690Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00077",
@@ -1229,7 +1147,9 @@
     "correctIndex": 3,
     "reference": "Йо. 3:1",
     "source": "ai",
-    "createdAt": "2026-05-23T09:59:30.690Z"
+    "createdAt": "2026-05-23T09:59:30.690Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00078",
@@ -1245,7 +1165,9 @@
     "correctIndex": 3,
     "reference": "Бут. 1:15",
     "source": "ai",
-    "createdAt": "2026-05-23T09:59:30.690Z"
+    "createdAt": "2026-05-23T09:59:30.690Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-teacher-ai-00079",
@@ -1261,7 +1183,9 @@
     "correctIndex": 0,
     "reference": "Мк. 6:34",
     "source": "ai",
-    "createdAt": "2026-05-23T10:00:01.670Z"
+    "createdAt": "2026-05-23T10:00:01.670Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-teacher-ai-00080",
@@ -1277,7 +1201,9 @@
     "correctIndex": 1,
     "reference": "Іс. 7:3",
     "source": "ai",
-    "createdAt": "2026-05-23T10:00:01.670Z"
+    "createdAt": "2026-05-23T10:00:01.670Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-teacher-ai-00081",
@@ -1293,7 +1219,9 @@
     "correctIndex": 0,
     "reference": "Вих. 19:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:00:01.670Z"
+    "createdAt": "2026-05-23T10:00:01.670Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-teacher-ai-00082",
@@ -1309,7 +1237,9 @@
     "correctIndex": 1,
     "reference": "Іс. 2:3",
     "source": "ai",
-    "createdAt": "2026-05-23T10:00:01.670Z"
+    "createdAt": "2026-05-23T10:00:01.670Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-teacher-ai-00083",
@@ -1325,7 +1255,9 @@
     "correctIndex": 2,
     "reference": "3Цар. 1:3",
     "source": "ai",
-    "createdAt": "2026-05-23T10:00:01.670Z"
+    "createdAt": "2026-05-23T10:00:01.670Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-theologian-ai-00084",
@@ -1341,39 +1273,9 @@
     "correctIndex": 3,
     "reference": "Вих. 12:16",
     "source": "ai",
-    "createdAt": "2026-05-23T10:00:37.295Z"
-  },
-  {
-    "id": "geography-theologian-ai-00085",
-    "themeId": "geography",
-    "difficulty": "theologian",
-    "text": "Місто, де жив Ісус і де проводив свою активну діяльність (Євангеліє від Луки)",
-    "options": [
-      "Назарет",
-      "Іерусалим",
-      "Капернаум",
-      "Бетфіня"
-    ],
-    "correctIndex": 0,
-    "reference": "Лк. 2:4,5",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:00:37.295Z"
-  },
-  {
-    "id": "geography-theologian-ai-00086",
-    "themeId": "geography",
-    "difficulty": "theologian",
-    "text": "Місто у Філістимії, яке відіграло важливу роль під час походу Ісуса Навина (Книга Суддів)",
-    "options": [
-      "Ашдод",
-      "Газа",
-      "Суккот",
-      "Ашкелон"
-    ],
-    "correctIndex": 2,
-    "reference": "Суд. 13:3",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:00:37.295Z"
+    "createdAt": "2026-05-23T10:00:37.295Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-theologian-ai-00087",
@@ -1389,7 +1291,9 @@
     "correctIndex": 3,
     "reference": "Пс. 48:8",
     "source": "ai",
-    "createdAt": "2026-05-23T10:00:37.295Z"
+    "createdAt": "2026-05-23T10:00:37.295Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-theologian-ai-00088",
@@ -1405,7 +1309,9 @@
     "correctIndex": 3,
     "reference": "Іс. 1:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:00:37.295Z"
+    "createdAt": "2026-05-23T10:00:37.295Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-baby-ai-00089",
@@ -1421,7 +1327,9 @@
     "correctIndex": 0,
     "reference": "Бут. 3:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:13:52.361Z"
+    "createdAt": "2026-05-23T10:13:52.361Z",
+    "topicNodeId": "geography-sub-4-sub-1",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
   },
   {
     "id": "geography-baby-ai-00090",
@@ -1437,7 +1345,9 @@
     "correctIndex": 1,
     "reference": "Шм. 8:4",
     "source": "ai",
-    "createdAt": "2026-05-23T10:13:52.361Z"
+    "createdAt": "2026-05-23T10:13:52.361Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-baby-ai-00091",
@@ -1453,23 +1363,9 @@
     "correctIndex": 3,
     "reference": "Неем. 8:5",
     "source": "ai",
-    "createdAt": "2026-05-23T10:13:52.361Z"
-  },
-  {
-    "id": "geography-child-ai-00092",
-    "themeId": "geography",
-    "difficulty": "child",
-    "text": "Де розташоване місто, де народився Ісус Христос?",
-    "options": [
-      "Єрусалим",
-      "Бетлехем",
-      "Галілей",
-      "Назарет"
-    ],
-    "correctIndex": 2,
-    "reference": "Мк. 1:9",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:14:14.757Z"
+    "createdAt": "2026-05-23T10:13:52.361Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-child-ai-00093",
@@ -1485,7 +1381,9 @@
     "correctIndex": 3,
     "reference": "Бут. 8:6",
     "source": "ai",
-    "createdAt": "2026-05-23T10:14:14.757Z"
+    "createdAt": "2026-05-23T10:14:14.757Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-child-ai-00094",
@@ -1501,7 +1399,9 @@
     "correctIndex": 1,
     "reference": "Мк. 5:27",
     "source": "ai",
-    "createdAt": "2026-05-23T10:14:14.757Z"
+    "createdAt": "2026-05-23T10:14:14.757Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00095",
@@ -1517,7 +1417,9 @@
     "correctIndex": 2,
     "reference": "Об. 5:3",
     "source": "ai",
-    "createdAt": "2026-05-23T10:14:32.589Z"
+    "createdAt": "2026-05-23T10:14:32.589Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00096",
@@ -1533,7 +1435,9 @@
     "correctIndex": 2,
     "reference": "Іс. 17:3",
     "source": "ai",
-    "createdAt": "2026-05-23T10:14:32.589Z"
+    "createdAt": "2026-05-23T10:14:32.589Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-youth-ai-00097",
@@ -1549,7 +1453,9 @@
     "correctIndex": 0,
     "reference": "Втор. 1:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:14:32.589Z"
+    "createdAt": "2026-05-23T10:14:32.589Z",
+    "topicNodeId": "geography-sub-4-sub-1",
+    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
   },
   {
     "id": "geography-student-ai-00098",
@@ -1565,7 +1471,9 @@
     "correctIndex": 2,
     "reference": "Іс. 13:19",
     "source": "ai",
-    "createdAt": "2026-05-23T10:14:53.988Z"
+    "createdAt": "2026-05-23T10:14:53.988Z",
+    "topicNodeId": "geography-sub-3-sub-4",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Вавилон"
   },
   {
     "id": "geography-student-ai-00099",
@@ -1581,7 +1489,9 @@
     "correctIndex": 0,
     "reference": "Деян. 7:53, Вих. 1:2",
     "source": "ai",
-    "createdAt": "2026-05-23T10:14:53.988Z"
+    "createdAt": "2026-05-23T10:14:53.988Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-student-ai-00100",
@@ -1597,7 +1507,9 @@
     "correctIndex": 3,
     "reference": "2Цар. 10:29",
     "source": "ai",
-    "createdAt": "2026-05-23T10:14:53.988Z"
+    "createdAt": "2026-05-23T10:14:53.988Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00101",
@@ -1613,7 +1525,9 @@
     "correctIndex": 1,
     "reference": "2Хр. 4:9",
     "source": "ai",
-    "createdAt": "2026-05-23T10:15:16.101Z"
+    "createdAt": "2026-05-23T10:15:16.101Z",
+    "topicNodeId": "geography-sub-1-sub-3",
+    "topicPath": "Географія Старого Завіту > Земля Ізраїльська > Самарія"
   },
   {
     "id": "geography-preacher-ai-00102",
@@ -1629,7 +1543,9 @@
     "correctIndex": 0,
     "reference": "Втор. 3:17",
     "source": "ai",
-    "createdAt": "2026-05-23T10:15:16.101Z"
+    "createdAt": "2026-05-23T10:15:16.101Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00103",
@@ -1645,7 +1561,9 @@
     "correctIndex": 1,
     "reference": "Пс. 48:2",
     "source": "ai",
-    "createdAt": "2026-05-23T10:16:06.986Z"
+    "createdAt": "2026-05-23T10:16:06.986Z",
+    "topicNodeId": "geography-sub-3-sub-1",
+    "topicPath": "Географія Старого Завіту > Міста та поселення > Єрусалим"
   },
   {
     "id": "geography-preacher-ai-00104",
@@ -1661,23 +1579,9 @@
     "correctIndex": 3,
     "reference": "Втор. 34:11",
     "source": "ai",
-    "createdAt": "2026-05-23T10:16:06.986Z"
-  },
-  {
-    "id": "geography-preacher-ai-00105",
-    "themeId": "geography",
-    "difficulty": "preacher",
-    "text": "У яких горах розташовані міста Дамаск та Галілея (Хрестова Гора)?",
-    "options": [
-      "А) Атлаські",
-      "Б) Каракамський масив",
-      "В) Апенніни",
-      "Г) Тибетська гори"
-    ],
-    "correctIndex": 0,
-    "reference": "Одк. 1:2",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:16:06.986Z"
+    "createdAt": "2026-05-23T10:16:06.986Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-preacher-ai-00106",
@@ -1693,39 +1597,9 @@
     "correctIndex": 3,
     "reference": "Немає конкретного посилання на це питання в Біблії",
     "source": "ai",
-    "createdAt": "2026-05-23T10:16:06.986Z"
-  },
-  {
-    "id": "geography-preacher-ai-00107",
-    "themeId": "geography",
-    "difficulty": "preacher",
-    "text": "На якій річці розташоване місто Дамаск?",
-    "options": [
-      "А) Тігр",
-      "Б) Євфрат",
-      "В) Ніл",
-      "Г) Єзерце"
-    ],
-    "correctIndex": 1,
-    "reference": "Ізд. 37:46",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:16:06.986Z"
-  },
-  {
-    "id": "geography-preacher-ai-00108",
-    "themeId": "geography",
-    "difficulty": "preacher",
-    "text": "У яких горах розташовані міста Галілея (Хрестова Гора) та Нефтода (Олімп)?",
-    "options": [
-      "А) Атлаські",
-      "Б) Каракамський масив",
-      "В) Апенніни",
-      "Г) Тибетська гори"
-    ],
-    "correctIndex": 0,
-    "reference": "Ізд. 34:15",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:16:06.986Z"
+    "createdAt": "2026-05-23T10:16:06.986Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-teacher-ai-00109",
@@ -1741,7 +1615,9 @@
     "correctIndex": 3,
     "reference": "Мк. 16:32-34",
     "source": "ai",
-    "createdAt": "2026-05-23T10:16:38.171Z"
+    "createdAt": "2026-05-23T10:16:38.171Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-teacher-ai-00110",
@@ -1757,23 +1633,10 @@
     "correctIndex": 0,
     "reference": "2Цар. 5:17",
     "source": "ai",
-    "createdAt": "2026-05-23T10:16:38.171Z"
-  },
-  {
-    "id": "geography-teacher-ai-00111",
-    "themeId": "geography",
-    "difficulty": "teacher",
-    "text": "На якій горі знаходиться місце, де пророки Моїсей та Ілля з'являлися до Ісуса Христа?",
-    "options": [
-      "Гора Оліветова, Єрусалим",
-      "Таворська гора, Північна Месопотамія",
-      "Вершина Синай, Аравійський півострів",
-      "Пустеля Сафір, Едмонтон, Канада"
-    ],
-    "correctIndex": 0,
-    "reference": "Мк. 9:2-8",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:16:38.171Z"
+    "createdAt": "2026-05-23T10:16:38.171Z",
+    "quarantined": false,
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-theologian-ai-00112",
@@ -1789,7 +1652,9 @@
     "correctIndex": 3,
     "reference": "2 Кр. 5:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:17:04.761Z"
+    "createdAt": "2026-05-23T10:17:04.761Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   },
   {
     "id": "geography-theologian-ai-00113",
@@ -1805,7 +1670,9 @@
     "correctIndex": 1,
     "reference": "Пр. 3:25",
     "source": "ai",
-    "createdAt": "2026-05-23T10:17:04.761Z"
+    "createdAt": "2026-05-23T10:17:04.761Z",
+    "topicNodeId": "geography-sub-2-sub-1",
+    "topicPath": "Географія Старого Завіту > Річки та моря > Річка Йордан"
   },
   {
     "id": "geography-theologian-ai-00114",
@@ -1821,6 +1688,80 @@
     "correctIndex": 0,
     "reference": "Із. 49:11",
     "source": "ai",
-    "createdAt": "2026-05-23T10:17:04.761Z"
+    "createdAt": "2026-05-23T10:17:04.761Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  {
+    "id": "old-testament-child-ai-00008",
+    "themeId": "geography",
+    "difficulty": "child",
+    "text": "Хто привів народ ізраїльський через Червоне море?",
+    "options": [
+      "Ангел Божий (Ісх. 14:19)",
+      "Мойсей (Ісх. 14:27)",
+      "Гавріїл (Втор. 3:2)",
+      "Самсон (Суд. 15:16)"
+    ],
+    "correctIndex": 1,
+    "reference": "Ісх. 14:27",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:10.835Z",
+    "topicNodeId": "geography-sub-2-sub-4",
+    "topicPath": "Географія Старого Завіту > Річки та моря > Червоне море"
+  },
+  {
+    "id": "old-testament-youth-ai-00014",
+    "themeId": "geography",
+    "difficulty": "youth",
+    "text": "Кто утримав море, щоб дати Ізраїлю перемогти фараона в битві при Червоному морі?",
+    "options": [
+      "А) Мойсей",
+      "Б) Давид",
+      "В) Самсон",
+      "Г) Єзекіїль"
+    ],
+    "correctIndex": 1,
+    "reference": "Втор. 14:26",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:48:43.947Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  {
+    "id": "old-testament-student-ai-00076",
+    "themeId": "geography",
+    "difficulty": "student",
+    "text": "Який установив Заповіт Божий Мойсеєві на Гори Сінайські (Вих. 32:16)?",
+    "options": [
+      "Табурет",
+      "Арка",
+      "Стол",
+      "Чотирикутник"
+    ],
+    "correctIndex": 2,
+    "reference": "Вих. 32:16",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:56:22.394Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
+  },
+  {
+    "id": "old-testament-preacher-ai-00081",
+    "themeId": "geography",
+    "difficulty": "preacher",
+    "text": "Які дві книги Нового Заповіту є написані апостолом Павлом і стосуються одного міста?",
+    "options": [
+      "Дії Апостолів",
+      "Послання до Коринфян",
+      "Послання до Галиматійців",
+      "Католицьке Послання Тимофію"
+    ],
+    "correctIndex": 2,
+    "reference": "1Кор. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:56:57.951Z",
+    "topicNodeId": "geography",
+    "topicPath": "Географія Старого Завіту"
   }
 ]

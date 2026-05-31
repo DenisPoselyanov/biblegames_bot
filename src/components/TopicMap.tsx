@@ -10,10 +10,10 @@ interface TopicMapProps {
   onNodeExpand?: (nodeId: string) => void;
   maxHeight?: string;
   showQuestionCount?: boolean;
-  filterMode?: 'all' | 'weak' | 'strong' | 'incomplete';
 }
 
 type ViewMode = 'tree' | 'heatmap' | 'list';
+type FilterMode = 'all' | 'weak' | 'strong' | 'incomplete';
 
 export function TopicMap({
   topicHierarchy,
@@ -22,9 +22,9 @@ export function TopicMap({
   onNodeExpand,
   maxHeight = '600px',
   showQuestionCount = true,
-  filterMode = 'all',
 }: TopicMapProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('tree');
+  const [filterMode, setFilterMode] = useState<FilterMode>('all');
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
 

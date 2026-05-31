@@ -1,9 +1,43 @@
-import type { PlayerProfile } from '../types';
+import type { CompletedLevel, PlayerProfile } from '../types';
 import { loadProfile, saveProfile } from '../lib/storage';
+import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { apiFetch, hasApi } from './apiClient';
 
 function isRemoteEnabled(): boolean {
   return hasApi();
+}
+
+function levelKey(level: CompletedLevel): string {
+  return `${level.themeId}:${level.difficulty}`;
+}
+
+function mergeCompletedLevels(
+  local: CompletedLevel[],
+  remote: CompletedLevel[],
+): CompletedLevel[] {
+  const map = new Map<string, CompletedLevel>();
+  for (const level of remote) {
+    map.set(levelKey(level), level);
+  }
+  for (const level of local) {
+    const key = levelKey(level);
+    const existing = map.get(key);
+    if (!existing) {
+      map.set(key, level);
+      continue;
+    }
+    const existingScore = existing.score / Math.max(1, existing.maxScore);
+    const levelScore = level.score / Math.max(1, level.maxScore);
+    const existingTime = new Date(existing.completedAt).getTime();
+    const levelTime = new Date(level.completedAt).getTime();
+    if (
+      levelScore > existingScore ||
+      (levelScore === existingScore && levelTime > existingTime)
+    ) {
+      map.set(key, level);
+    }
+  }
+  return [...map.values()];
 }
 
 function mergeProfiles(local: PlayerProfile, remote: PlayerProfile): PlayerProfile {
@@ -44,10 +78,7 @@ function mergeProfiles(local: PlayerProfile, remote: PlayerProfile): PlayerProfi
     millionaireMaxLevel: Math.max(local.millionaireMaxLevel, remote.millionaireMaxLevel),
     streakDays: Math.max(local.streakDays, remote.streakDays),
     themePoints,
-    completedLevels:
-      local.completedLevels.length >= remote.completedLevels.length
-        ? local.completedLevels
-        : remote.completedLevels,
+    completedLevels: mergeCompletedLevels(local.completedLevels, remote.completedLevels),
     unlockedThemes: Array.from(new Set([...remote.unlockedThemes, ...local.unlockedThemes])),
     unlockedAvatars: Array.from(new Set([...remote.unlockedAvatars, ...local.unlockedAvatars])),
     achievements: Array.from(new Set([...remote.achievements, ...local.achievements])),
@@ -57,7 +88,14 @@ function mergeProfiles(local: PlayerProfile, remote: PlayerProfile): PlayerProfi
       : local.lastActiveAt ?? remote.lastActiveAt,
     activeTheme: local.activeTheme || remote.activeTheme,
     avatar: local.avatar || remote.avatar,
+    bibleTranslation: normalizeBollsTranslation(
+      local.bibleTranslation ?? remote.bibleTranslation,
+    ),
   };
+}
+
+function profilesEqual(a: PlayerProfile, b: PlayerProfile): boolean {
+  return JSON.stringify(a) === JSON.stringify(b);
 }
 
 export const playerRepo = {
@@ -70,10 +108,12 @@ export const playerRepo = {
       const remote = (await response.json()) as PlayerProfile;
       const merged = mergeProfiles(local, remote);
       saveProfile(merged);
-      await apiFetch(`/profile/${merged.userId}`, userId, {
-        method: 'PUT',
-        body: JSON.stringify(merged),
-      });
+      if (!profilesEqual(merged, remote)) {
+        await apiFetch(`/profile/${merged.userId}`, userId, {
+          method: 'PUT',
+          body: JSON.stringify(merged),
+        });
+      }
       return merged;
     } catch {
       return local;

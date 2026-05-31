@@ -13,7 +13,9 @@
     "correctIndex": 1,
     "reference": "Лк. 15:11-32",
     "source": "ai",
-    "createdAt": "2026-05-17T19:14:37.254Z"
+    "createdAt": "2026-05-17T19:14:37.254Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-baby-ai-00002",
@@ -29,7 +31,9 @@
     "correctIndex": 2,
     "reference": "Мт. 13:3-9",
     "source": "ai",
-    "createdAt": "2026-05-17T19:14:37.254Z"
+    "createdAt": "2026-05-17T19:14:37.254Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-child-ai-00003",
@@ -45,7 +49,9 @@
     "correctIndex": 3,
     "reference": "Лк. 15:11-32",
     "source": "ai",
-    "createdAt": "2026-05-17T19:14:54.414Z"
+    "createdAt": "2026-05-17T19:14:54.414Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-child-ai-00004",
@@ -61,7 +67,9 @@
     "correctIndex": 0,
     "reference": "Мк. 6:47-52",
     "source": "ai",
-    "createdAt": "2026-05-17T19:14:54.414Z"
+    "createdAt": "2026-05-17T19:14:54.414Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-youth-ai-00005",
@@ -77,7 +85,9 @@
     "correctIndex": 0,
     "reference": "Мк. 12:38-40",
     "source": "ai",
-    "createdAt": "2026-05-17T19:15:23.079Z"
+    "createdAt": "2026-05-17T19:15:23.079Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-youth-ai-00006",
@@ -93,7 +103,9 @@
     "correctIndex": 3,
     "reference": "Лк. 18:12-14",
     "source": "ai",
-    "createdAt": "2026-05-17T19:15:23.079Z"
+    "createdAt": "2026-05-17T19:15:23.079Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-student-ai-00007",
@@ -109,7 +121,9 @@
     "correctIndex": 0,
     "reference": "Мар. 13:28-30",
     "source": "ai",
-    "createdAt": "2026-05-17T19:15:54.085Z"
+    "createdAt": "2026-05-17T19:15:54.085Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-student-ai-00008",
@@ -125,7 +139,9 @@
     "correctIndex": 2,
     "reference": "Мар. 7:24-30",
     "source": "ai",
-    "createdAt": "2026-05-17T19:15:54.085Z"
+    "createdAt": "2026-05-17T19:15:54.085Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-preacher-ai-00009",
@@ -141,7 +157,9 @@
     "correctIndex": 0,
     "reference": "Мт. 13:47",
     "source": "ai",
-    "createdAt": "2026-05-17T19:16:43.035Z"
+    "createdAt": "2026-05-17T19:16:43.035Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-preacher-ai-00010",
@@ -157,7 +175,9 @@
     "correctIndex": 2,
     "reference": "Ін. 2:9",
     "source": "ai",
-    "createdAt": "2026-05-17T19:16:43.035Z"
+    "createdAt": "2026-05-17T19:16:43.035Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-preacher-ai-00011",
@@ -173,7 +193,9 @@
     "correctIndex": 1,
     "reference": "Мт. 22:2",
     "source": "ai",
-    "createdAt": "2026-05-17T19:16:43.035Z"
+    "createdAt": "2026-05-17T19:16:43.035Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-preacher-ai-00012",
@@ -189,7 +211,9 @@
     "correctIndex": 0,
     "reference": "Мт. 21:41",
     "source": "ai",
-    "createdAt": "2026-05-17T19:16:43.035Z"
+    "createdAt": "2026-05-17T19:16:43.035Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   },
   {
     "id": "parables-preacher-ai-00013",
@@ -205,6 +229,27 @@
     "correctIndex": 0,
     "reference": "Лк. 15:11-32",
     "source": "ai",
-    "createdAt": "2026-05-17T19:16:43.035Z"
+    "createdAt": "2026-05-17T19:16:43.035Z",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
+  },
+  {
+    "id": "new-testament-child-ai-00054",
+    "themeId": "parables",
+    "difficulty": "child",
+    "text": "У притчі про десятьох дів, чому п'ять із них не змогли ввійти на весілля до Нареченого?",
+    "options": [
+      "Вони запізнилися через сон",
+      "У них закінчилася олія в світильниках",
+      "Вони забули свої святкові вбрання",
+      "Вони не знали дороги до дому"
+    ],
+    "correctIndex": 1,
+    "reference": "Мт. 25:8-10",
+    "source": "ai",
+    "createdAt": "2026-05-31T08:20:15.509Z",
+    "explanationShort": "П'ять нерозумних дів не взяли із собою запасу олії, тому їхні світильники згасли, і вони не були готові до приходу Нареченого.",
+    "topicNodeId": "parables",
+    "topicPath": "Притчі"
   }
 ]

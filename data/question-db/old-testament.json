@@ -1,85 +1,5 @@
 [
   {
-    "id": "old-testament-baby-ai-00001",
-    "themeId": "old-testament",
-    "difficulty": "baby",
-    "text": "Який пророк відомий тим, що написав книгу Пророків?",
-    "options": [
-      "Мойсей",
-      "Ісаїя",
-      "Давид",
-      "Єремія"
-    ],
-    "correctIndex": 2,
-    "reference": "От. 11:1",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:47:25.166Z"
-  },
-  {
-    "id": "old-testament-baby-ai-00002",
-    "themeId": "old-testament",
-    "difficulty": "baby",
-    "text": "Скільки братів у Авраама було?",
-    "options": [
-      "Два",
-      "Три",
-      "Чотири",
-      "П'ять"
-    ],
-    "correctIndex": 3,
-    "reference": "Бут. 12:8",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:47:25.166Z"
-  },
-  {
-    "id": "old-testament-baby-ai-00003",
-    "themeId": "old-testament",
-    "difficulty": "baby",
-    "text": "Який із королів Ізраїлю славився своєю музикою та був багато питаний у книзі Псалми?",
-    "options": [
-      "Соломон",
-      "Авраам",
-      "Мойсей",
-      "Давид"
-    ],
-    "correctIndex": 3,
-    "reference": "Пс. 18:32",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:47:25.166Z"
-  },
-  {
-    "id": "old-testament-baby-ai-00004",
-    "themeId": "old-testament",
-    "difficulty": "baby",
-    "text": "Які закони дав Мойсей Ізраїлю під горою Синай?",
-    "options": [
-      "Закон Соломоновій",
-      "Закон Авраамовський",
-      "Закон Йовавітевський",
-      "Закон Мойсеєвський"
-    ],
-    "correctIndex": 3,
-    "reference": "Вих. 12:49",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:47:25.166Z"
-  },
-  {
-    "id": "old-testament-baby-ai-00005",
-    "themeId": "old-testament",
-    "difficulty": "baby",
-    "text": "Книги Святого Письма, які приписують автором пророка Ісаїю?",
-    "options": [
-      "Ісайя",
-      "Ієзекіїль",
-      "Йова",
-      "Єремія"
-    ],
-    "correctIndex": 0,
-    "reference": "Іс. 1:1",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:47:25.166Z"
-  },
-  {
     "id": "old-testament-child-ai-00006",
     "themeId": "old-testament",
     "difficulty": "child",
@@ -93,55 +13,9 @@
     "correctIndex": 0,
     "reference": "Исх. 4:16",
     "source": "ai",
-    "createdAt": "2026-05-17T18:48:10.834Z"
-  },
-  {
-    "id": "old-testament-child-ai-00007",
-    "themeId": "old-testament",
-    "difficulty": "child",
-    "text": "Який закон можна назвати «Торі»?",
-    "options": [
-      "Закон Мойсея (Лев. 25:1)",
-      "Закон Авраама (Бут. 26:5)",
-      "Закон Давида (Пс. 89:3)",
-      "Закон пророка Ісаї (Іс. 1:18)"
-    ],
-    "correctIndex": 0,
-    "reference": "Лев. 25:1",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:48:10.835Z"
-  },
-  {
-    "id": "old-testament-child-ai-00008",
-    "themeId": "old-testament",
-    "difficulty": "child",
-    "text": "Хто привів народ ізраїльський через Червоне море?",
-    "options": [
-      "Ангел Божий (Ісх. 14:19)",
-      "Мойсей (Ісх. 14:27)",
-      "Гавріїл (Втор. 3:2)",
-      "Самсон (Суд. 15:16)"
-    ],
-    "correctIndex": 1,
-    "reference": "Ісх. 14:27",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:48:10.835Z"
-  },
-  {
-    "id": "old-testament-child-ai-00009",
-    "themeId": "old-testament",
-    "difficulty": "child",
-    "text": "Який пророк оголосив про прийдешнього Месію?",
-    "options": [
-      "Єзекіїль (Єзд. 34:23)",
-      "Ісая (Іс. 7:14)",
-      "Даниїл (Дан. 9:25)",
-      "Йова (Йов 38:6)"
-    ],
-    "correctIndex": 1,
-    "reference": "Іс. 7:14",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:48:10.835Z"
+    "createdAt": "2026-05-17T18:48:10.834Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-child-ai-00010",
@@ -157,23 +31,9 @@
     "correctIndex": 2,
     "reference": "Лев. 25:23",
     "source": "ai",
-    "createdAt": "2026-05-17T18:48:10.835Z"
-  },
-  {
-    "id": "old-testament-youth-ai-00011",
-    "themeId": "old-testament",
-    "difficulty": "youth",
-    "text": "Який бог дав Авраамові ім'я Бога, якого сьогодні називають Єгови?",
-    "options": [
-      "А) Астарте",
-      "Б) Баал",
-      "В) Молих",
-      "Г) Єгова"
-    ],
-    "correctIndex": 3,
-    "reference": "Бут. 6:4",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:48:43.946Z"
+    "createdAt": "2026-05-17T18:48:10.835Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Давид"
   },
   {
     "id": "old-testament-youth-ai-00012",
@@ -189,71 +49,9 @@
     "correctIndex": 2,
     "reference": "Дан. 10:21",
     "source": "ai",
-    "createdAt": "2026-05-17T18:48:43.947Z"
-  },
-  {
-    "id": "old-testament-youth-ai-00013",
-    "themeId": "old-testament",
-    "difficulty": "youth",
-    "text": "Який пророк відомий тим, що написав книгу про потоп?",
-    "options": [
-      "А) Авраам",
-      "Б) Ісая",
-      "В) Мойсей",
-      "Г) Ної"
-    ],
-    "correctIndex": 0,
-    "reference": "Пр. 16:8",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:48:43.947Z"
-  },
-  {
-    "id": "old-testament-youth-ai-00014",
-    "themeId": "old-testament",
-    "difficulty": "youth",
-    "text": "Кто утримав море, щоб дати Ізраїлю перемогти фараона в битві при Червоному морі?",
-    "options": [
-      "А) Мойсей",
-      "Б) Давид",
-      "В) Самсон",
-      "Г) Єзекіїль"
-    ],
-    "correctIndex": 1,
-    "reference": "Втор. 14:26",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:48:43.947Z"
-  },
-  {
-    "id": "old-testament-youth-ai-00015",
-    "themeId": "old-testament",
-    "difficulty": "youth",
-    "text": "У Старому Завіті, який закон дав Бог Ізраїлю на горі Сінай?",
-    "options": [
-      "А) Закон Мойсея",
-      "Б) Закон Давида",
-      "В) Закон Самсона",
-      "Г) Закон Аарона"
-    ],
-    "correctIndex": 0,
-    "reference": "Втор. 5:1",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:48:43.947Z"
-  },
-  {
-    "id": "old-testament-student-ai-00016",
-    "themeId": "old-testament",
-    "difficulty": "student",
-    "text": "Який пророк записав книгу, яка містить вісімдесят віршів по скіпетру та мечі?",
-    "options": [
-      "Ісаїя",
-      "Йоїла",
-      "Аггеїв",
-      "Озеас"
-    ],
-    "correctIndex": 1,
-    "reference": "Амос 7:1",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:49:22.760Z"
+    "createdAt": "2026-05-17T18:48:43.947Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Давид"
   },
   {
     "id": "old-testament-student-ai-00017",
@@ -269,87 +67,9 @@
     "correctIndex": 0,
     "reference": "Бут. 7:23",
     "source": "ai",
-    "createdAt": "2026-05-17T18:49:22.760Z"
-  },
-  {
-    "id": "old-testament-student-ai-00018",
-    "themeId": "old-testament",
-    "difficulty": "student",
-    "text": "Хто був спадкоємцем Авраама як главою ісраельських племен?",
-    "options": [
-      "Йосип",
-      "Давид",
-      "Мойсей",
-      "Соломон"
-    ],
-    "correctIndex": 2,
-    "reference": "Бут. 13:6",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:49:22.760Z"
-  },
-  {
-    "id": "old-testament-student-ai-00019",
-    "themeId": "old-testament",
-    "difficulty": "student",
-    "text": "Який закон був даний Авраамом, попередником Ізраїлю?",
-    "options": [
-      "Тора (П'ятикнижжя Мойсеєвому)",
-      "Зехін (Скрижалі Моря)",
-      "Хук (Скрижалі Сіону)",
-      "Єхезкіл (Книга пророка Єзекіїля)"
-    ],
-    "correctIndex": 1,
-    "reference": "Бут. 15:6",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:49:22.760Z"
-  },
-  {
-    "id": "old-testament-student-ai-00020",
-    "themeId": "old-testament",
-    "difficulty": "student",
-    "text": "Коли Давид зустрів Голіата у битві, скільки пальців мав останній на руці?",
-    "options": [
-      "Два",
-      "Три",
-      "Чотири",
-      "П'ять"
-    ],
-    "correctIndex": 2,
-    "reference": "1 Самуїл 17:4",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:49:22.760Z"
-  },
-  {
-    "id": "old-testament-baby-ai-00021",
-    "themeId": "old-testament",
-    "difficulty": "baby",
-    "text": "Хто батько Авраамовий?",
-    "options": [
-      "Ламмах, син Харан",
-      "Терех, син Нахор",
-      "Нефільм, син Серухіма",
-      "Гомер, син Абрамі"
-    ],
-    "correctIndex": 1,
-    "reference": "Бут. 11:26",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:01:09.547Z"
-  },
-  {
-    "id": "old-testament-baby-ai-00022",
-    "themeId": "old-testament",
-    "difficulty": "baby",
-    "text": "Кто был первым введенным Моисеем в закон?",
-    "options": [
-      "Ной",
-      "Авраам",
-      "Исаак",
-      "Иосиф"
-    ],
-    "correctIndex": 0,
-    "reference": "Втор. 5:2",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:01:09.547Z"
+    "createdAt": "2026-05-17T18:49:22.760Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-baby-ai-00023",
@@ -365,39 +85,9 @@
     "correctIndex": 1,
     "reference": "І Цар. 13:25",
     "source": "ai",
-    "createdAt": "2026-05-23T10:01:09.547Z"
-  },
-  {
-    "id": "old-testament-baby-ai-00024",
-    "themeId": "old-testament",
-    "difficulty": "baby",
-    "text": "Кто был первым из пророков, упоминаемых в Священном Писании?",
-    "options": [
-      "Иезекииль",
-      "Исайя",
-      "Иоил",
-      "Осэа"
-    ],
-    "correctIndex": 3,
-    "reference": "Пр. 8:40",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:01:09.547Z"
-  },
-  {
-    "id": "old-testament-baby-ai-00025",
-    "themeId": "old-testament",
-    "difficulty": "baby",
-    "text": "Как называется закон Божий, который Моисей получил на горе Синай?",
-    "options": [
-      "Закон Горы",
-      "Закон Моисеев",
-      "Тора",
-      "Закон Господень"
-    ],
-    "correctIndex": 3,
-    "reference": "Втор. 5:22",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:01:09.547Z"
+    "createdAt": "2026-05-23T10:01:09.547Z",
+    "topicNodeId": "kings-sub-1-sub-1",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Саул"
   },
   {
     "id": "old-testament-baby-ai-00026",
@@ -413,7 +103,9 @@
     "correctIndex": 3,
     "reference": "Лк. 1:27",
     "source": "ai",
-    "createdAt": "2026-05-23T10:17:23.832Z"
+    "createdAt": "2026-05-23T10:17:23.832Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-baby-ai-00027",
@@ -429,55 +121,9 @@
     "correctIndex": 2,
     "reference": "Втор. 31:9, Мк. 1:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:17:23.832Z"
-  },
-  {
-    "id": "old-testament-baby-ai-00028",
-    "themeId": "old-testament",
-    "difficulty": "baby",
-    "text": "Кто получил Божественное заповедь на горе Синай?",
-    "options": [
-      "Мойсей",
-      "Авраам",
-      "Исаия",
-      "Давид"
-    ],
-    "correctIndex": 1,
-    "reference": "Втор. 5:22",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:17:23.832Z"
-  },
-  {
-    "id": "old-testament-child-ai-00029",
-    "themeId": "old-testament",
-    "difficulty": "child",
-    "text": "Який пророк написав Книгу Ісаїя?",
-    "options": [
-      "А) Авраам",
-      "Б) Мойсей",
-      "В) Давид",
-      "Г) Пророк Ісаїя"
-    ],
-    "correctIndex": 3,
-    "reference": "Іс. 1:1",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:17:45.015Z"
-  },
-  {
-    "id": "old-testament-child-ai-00030",
-    "themeId": "old-testament",
-    "difficulty": "child",
-    "text": "Як називають Закон, який отримав Мойсей на горі Синай?",
-    "options": [
-      "А) Закон Мойсея",
-      "Б) Закон Божий",
-      "В) Старий Завіт",
-      "Г) Тора"
-    ],
-    "correctIndex": 3,
-    "reference": "Лев. 27:34",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:17:45.015Z"
+    "createdAt": "2026-05-23T10:17:23.832Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-child-ai-00031",
@@ -493,39 +139,9 @@
     "correctIndex": 2,
     "reference": "І Сам. 16:11",
     "source": "ai",
-    "createdAt": "2026-05-23T10:17:45.015Z"
-  },
-  {
-    "id": "old-testament-youth-ai-00032",
-    "themeId": "old-testament",
-    "difficulty": "youth",
-    "text": "Який бог промовив Аврааму, щоб той вирушив у Сіон?",
-    "options": [
-      "А) Бог єгипетський",
-      "В) Бог ізраїльський",
-      "Б) Бог ассирійський",
-      "Г) Бог грецький"
-    ],
-    "correctIndex": 2,
-    "reference": "Бут. 13:4",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:18:09.141Z"
-  },
-  {
-    "id": "old-testament-youth-ai-00033",
-    "themeId": "old-testament",
-    "difficulty": "youth",
-    "text": "Який закон був даний Мойсеєм на горі Синай?",
-    "options": [
-      "А) Закон греків",
-      "В) Закон римлян",
-      "Б) Закон єгиптян",
-      "Г) Закон ізраїльський"
-    ],
-    "correctIndex": 3,
-    "reference": "Вих. 20:1",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:18:09.141Z"
+    "createdAt": "2026-05-23T10:17:45.015Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Давид"
   },
   {
     "id": "old-testament-youth-ai-00034",
@@ -541,23 +157,9 @@
     "correctIndex": 2,
     "reference": "1Цар. 17:54",
     "source": "ai",
-    "createdAt": "2026-05-23T10:18:09.141Z"
-  },
-  {
-    "id": "old-testament-student-ai-00035",
-    "themeId": "old-testament",
-    "difficulty": "student",
-    "text": "Який був перший патріарх, який з'явився перед Богом у Мамре?",
-    "options": [
-      "Авраам",
-      "Ісаак",
-      "Єсау",
-      "Ієзекіїль"
-    ],
-    "correctIndex": 0,
-    "reference": "Бут. 18:1",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:18:29.847Z"
+    "createdAt": "2026-05-23T10:18:09.141Z",
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Соломон"
   },
   {
     "id": "old-testament-student-ai-00036",
@@ -573,7 +175,9 @@
     "correctIndex": 1,
     "reference": "Вих. 27:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:18:29.847Z"
+    "createdAt": "2026-05-23T10:18:29.847Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-student-ai-00037",
@@ -589,7 +193,9 @@
     "correctIndex": 0,
     "reference": "Бут. 1:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:19:43.423Z"
+    "createdAt": "2026-05-23T10:19:43.423Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-student-ai-00038",
@@ -605,7 +211,9 @@
     "correctIndex": 0,
     "reference": "Бут. 17:4",
     "source": "ai",
-    "createdAt": "2026-05-23T10:19:43.423Z"
+    "createdAt": "2026-05-23T10:19:43.423Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-student-ai-00039",
@@ -621,7 +229,9 @@
     "correctIndex": 3,
     "reference": "Втор. 28:5",
     "source": "ai",
-    "createdAt": "2026-05-23T10:19:43.423Z"
+    "createdAt": "2026-05-23T10:19:43.423Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-student-ai-00040",
@@ -637,23 +247,9 @@
     "correctIndex": 1,
     "reference": "Евр. 16:19",
     "source": "ai",
-    "createdAt": "2026-05-23T10:19:43.423Z"
-  },
-  {
-    "id": "old-testament-student-ai-00041",
-    "themeId": "old-testament",
-    "difficulty": "student",
-    "text": "Каково наименование скрижалей с десятью заповедями Бога?",
-    "options": [
-      "Закон Мойсея",
-      "Закон Господний",
-      "Закон Соломонов",
-      "Закон Абрахама"
-    ],
-    "correctIndex": 0,
-    "reference": "Втор. 5:22",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:19:43.423Z"
+    "createdAt": "2026-05-23T10:19:43.423Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-student-ai-00042",
@@ -669,23 +265,9 @@
     "correctIndex": 3,
     "reference": "Суд. 17:2-8",
     "source": "ai",
-    "createdAt": "2026-05-23T10:19:43.423Z"
-  },
-  {
-    "id": "old-testament-student-ai-00043",
-    "themeId": "old-testament",
-    "difficulty": "student",
-    "text": "Кого Бог послал к Давиду словами: \"Давид, мой сын, я избрал тебя для того, чтобы стать царём Израиля\"?",
-    "options": [
-      "Самуил",
-      "Авраам",
-      "Иегова",
-      "Мойсей"
-    ],
-    "correctIndex": 0,
-    "reference": "1Цар. 17:17",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:19:43.423Z"
+    "createdAt": "2026-05-23T10:19:43.423Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-student-ai-00044",
@@ -701,7 +283,9 @@
     "correctIndex": 1,
     "reference": "Откр. 14:3",
     "source": "ai",
-    "createdAt": "2026-05-23T10:19:43.423Z"
+    "createdAt": "2026-05-23T10:19:43.423Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-student-ai-00045",
@@ -717,7 +301,9 @@
     "correctIndex": 3,
     "reference": "Чис. 24:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:19:43.423Z"
+    "createdAt": "2026-05-23T10:19:43.423Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-student-ai-00046",
@@ -733,7 +319,9 @@
     "correctIndex": 3,
     "reference": "Цар. 1:26",
     "source": "ai",
-    "createdAt": "2026-05-23T10:19:43.423Z"
+    "createdAt": "2026-05-23T10:19:43.423Z",
+    "topicNodeId": "kings-sub-1-sub-3",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Соломон"
   },
   {
     "id": "old-testament-preacher-ai-00047",
@@ -749,55 +337,9 @@
     "correctIndex": 0,
     "reference": "Бут. 15:5",
     "source": "ai",
-    "createdAt": "2026-05-23T10:20:04.814Z"
-  },
-  {
-    "id": "old-testament-preacher-ai-00048",
-    "themeId": "old-testament",
-    "difficulty": "preacher",
-    "text": "Який пророк відомий своїм описом знищення Нубії (Ос. 9:6)?",
-    "options": [
-      "Ісая",
-      "Єремія",
-      "Наум",
-      "Амос"
-    ],
-    "correctIndex": 3,
-    "reference": "Ос. 9:1",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:20:04.814Z"
-  },
-  {
-    "id": "old-testament-preacher-ai-00049",
-    "themeId": "old-testament",
-    "difficulty": "preacher",
-    "text": "Хто склав Мойсеєві десять заповідей (Дії 7:53)?",
-    "options": [
-      "Мойсей",
-      "Авраам",
-      "Соломон",
-      "Господь"
-    ],
-    "correctIndex": 2,
-    "reference": "Вих. 20:18-19",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:20:04.814Z"
-  },
-  {
-    "id": "old-testament-teacher-ai-00050",
-    "themeId": "old-testament",
-    "difficulty": "teacher",
-    "text": "Хто був першим на ім'я Авраам у Старому Заповіті?",
-    "options": [
-      "А) Лев",
-      "Б) Мойсей",
-      "В) Давид",
-      "Г) Авраам"
-    ],
-    "correctIndex": 3,
-    "reference": "Бут. 1:26-27",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:20:26.289Z"
+    "createdAt": "2026-05-23T10:20:04.814Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
   },
   {
     "id": "old-testament-teacher-ai-00051",
@@ -813,102 +355,1200 @@
     "correctIndex": 3,
     "reference": "Цар. 3:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:20:26.289Z"
+    "createdAt": "2026-05-23T10:20:26.289Z",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Давид"
   },
   {
-    "id": "old-testament-teacher-ai-00052",
+    "id": "old-testament-baby-ai-00058",
     "themeId": "old-testament",
-    "difficulty": "teacher",
-    "text": "Який пророк описав бачення про відновлення зруйнованого храму в Иерусалиме?",
+    "difficulty": "baby",
+    "text": "Що створив Бог на початку світу?",
     "options": [
-      "А) Ісаїя",
-      "Б) Єремія",
-      "В) Захарія",
-      "Г) Осея"
-    ],
-    "correctIndex": 1,
-    "reference": "Єр. 1:1",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:20:26.289Z"
-  },
-  {
-    "id": "old-testament-theologian-ai-00053",
-    "themeId": "old-testament",
-    "difficulty": "theologian",
-    "text": "Хто був першим патріархом у роду ізраїльтян за Біблією?",
-    "options": [
-      "Ламех",
-      "Енох",
-      "Адам",
-      "Сета"
-    ],
-    "correctIndex": 3,
-    "reference": "Бут. 5:1-4",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:21:02.847Z"
-  },
-  {
-    "id": "old-testament-theologian-ai-00054",
-    "themeId": "old-testament",
-    "difficulty": "theologian",
-    "text": "Яким способом прийшов Мойсей до фараона Егіпту?",
-    "options": [
-      "Він був посланий Ісмаелем",
-      "Він був знайдений у корзині на Нілі",
-      "Він втек з Єгипту",
-      "Він був пророк із Медії"
-    ],
-    "correctIndex": 1,
-    "reference": "Ез. 28:3",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:21:02.847Z"
-  },
-  {
-    "id": "old-testament-theologian-ai-00055",
-    "themeId": "old-testament",
-    "difficulty": "theologian",
-    "text": "Ктому Мойсей подав Десять Заповідей на Сінаї?",
-    "options": [
-      "Давиду",
-      "Єгове",
-      "Авраамові",
-      "Ізраїлю"
-    ],
-    "correctIndex": 3,
-    "reference": "Втор. 5:2",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:21:02.847Z"
-  },
-  {
-    "id": "old-testament-theologian-ai-00056",
-    "themeId": "old-testament",
-    "difficulty": "theologian",
-    "text": "Який пророк описав Новий Єрусалим?",
-    "options": [
-      "Осія",
-      "Ієремія",
-      "Єзекіїль",
-      "Ісайя"
-    ],
-    "correctIndex": 3,
-    "reference": "Єз. 40:1-5",
-    "source": "ai",
-    "createdAt": "2026-05-23T10:21:02.848Z"
-  },
-  {
-    "id": "old-testament-theologian-ai-00057",
-    "themeId": "old-testament",
-    "difficulty": "theologian",
-    "text": "Хто був наступником Давида як король Ізраїлю?",
-    "options": [
-      "Йоав",
-      "Адонія",
-      "Соломон",
-      "Еліа"
+      "Сонце",
+      "Землю",
+      "Небо",
+      "Річку"
     ],
     "correctIndex": 2,
-    "reference": "Цар. 1:5-6",
+    "reference": "Бут. 1:1",
     "source": "ai",
-    "createdAt": "2026-05-23T10:21:02.848Z"
+    "createdAt": "2026-05-23T21:54:35.073Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-baby-ai-00059",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Який персонаж у Біблії народився в печері?",
+    "options": [
+      "Єсау",
+      "Йосиф",
+      "Ісая",
+      "Йона"
+    ],
+    "correctIndex": 3,
+    "reference": "Ис. 43:16",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:54:35.074Z",
+    "topicNodeId": "prophets-sub-2-sub-4",
+    "topicPath": "Старий Завіт > Пророки > Малі пророки > Йона"
+  },
+  {
+    "id": "old-testament-baby-ai-00060",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Кто є старший брат Ісуса Христа?",
+    "options": [
+      "Євангеліст Марк",
+      "Йоан Богослов",
+      "Ієзекіїль",
+      "Єсау"
+    ],
+    "correctIndex": 0,
+    "reference": "Мф. 1:2",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:54:35.074Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-baby-ai-00061",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Що замінило первісне заповітне угоду Бога з народженням Ісуса Христа?",
+    "options": [
+      "Заповіт Ноя",
+      "Заповіт Мойсея",
+      "Заповіт Давида",
+      "Заповіт Аарона"
+    ],
+    "correctIndex": 1,
+    "reference": "Ієр. 30:29",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:54:35.074Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-child-ai-00064",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Скільки братів у Якова (в Нью-Тесті - Ісуса Христа)?",
+    "options": [
+      "Два",
+      "Шість",
+      "Дев'ять",
+      "Одинадцять"
+    ],
+    "correctIndex": 3,
+    "reference": "Мк. 6:3",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:55:12.873Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-child-ai-00065",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Яка книга описує життя царів Ізраїлю після розділу на північне та південне царства?",
+    "options": [
+      "Іс. 1-44",
+      "Із. 53-66",
+      "2Цар. 17-2 Хр.",
+      "Ес. 1-10"
+    ],
+    "correctIndex": 2,
+    "reference": "2Цар. 17:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:55:12.873Z",
+    "topicNodeId": "kings",
+    "topicPath": "Старий Завіт > Царі"
+  },
+  {
+    "id": "old-testament-child-ai-00067",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Кому Бог дав ім'я Ісус у Старому Завіті?",
+    "options": [
+      "Ієзекіїль",
+      "Йосип",
+      "Саваот",
+      "Ісайя"
+    ],
+    "correctIndex": 1,
+    "reference": "Мт. 1:21",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:55:12.873Z",
+    "topicNodeId": "patriarchs-sub-4",
+    "topicPath": "Старий Завіт > Патріархи > Йосип"
+  },
+  {
+    "id": "old-testament-youth-ai-00069",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Яка книга Біблії описує історію Ісуса Христа від його народження до смерті?",
+    "options": [
+      "А) Євангелія від Матвія",
+      "В) Книга пророка Осії",
+      "Б) Книга Правд",
+      "Г) Другий Закон"
+    ],
+    "correctIndex": 0,
+    "reference": "Мф. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:55:48.062Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-youth-ai-00071",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Який апостол не був у числі дванадцяти учнів Христа?",
+    "options": [
+      "А) Павло",
+      "В) Тимофій",
+      "Б) Філіп",
+      "Г) Матфей"
+    ],
+    "correctIndex": 2,
+    "reference": "Мк. 3:14",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:55:48.062Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-student-ai-00073",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Яке ім'я Бога змінив Абрахаму (Бут. 17:5)?",
+    "options": [
+      "Єгова",
+      "Ієхова",
+      "Адінай",
+      "Тевель"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 17:5",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:56:22.394Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-student-ai-00074",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Як називається книга, де розповідається історія Ісуса Христа (Марково Євангеліє)?",
+    "options": [
+      "Євангеліє від Марка",
+      "Євангеліє від Матвія",
+      "Євангеліє від Луки",
+      "Євангеліє від Йоана"
+    ],
+    "correctIndex": 0,
+    "reference": "Маркове Євангеліє 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:56:22.394Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-student-ai-00075",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Скільки днів утворив Бог небо та землю (Бут. 2:4)?",
+    "options": [
+      "6 днів",
+      "7 днів",
+      "5 днів",
+      "8 днів"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 2:4",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:56:22.394Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-preacher-ai-00078",
+    "themeId": "old-testament",
+    "difficulty": "preacher",
+    "text": "Який архангел був посланий до Марії, щоб сказати їй, що вона народить Сина Божого?",
+    "options": [
+      "Міхаїл",
+      "Гавриїл",
+      "Урієль",
+      "Рафаїл"
+    ],
+    "correctIndex": 1,
+    "reference": "Лк. 1:26-38",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:56:57.951Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-preacher-ai-00080",
+    "themeId": "old-testament",
+    "difficulty": "preacher",
+    "text": "Які дві книги Танаху є взаємозв'язані і описують історії одного народу?",
+    "options": [
+      "Книга Руфи",
+      "Книга Юдифі",
+      "Книга Есфірін",
+      "Перша книга Самуїла"
+    ],
+    "correctIndex": 3,
+    "reference": "1 Цар. 25:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:56:57.951Z",
+    "topicNodeId": "prophets-sub-3-sub-3",
+    "topicPath": "Старий Завіт > Пророки > Допророчі служителі > Самуїл"
+  },
+  {
+    "id": "old-testament-preacher-ai-00082",
+    "themeId": "old-testament",
+    "difficulty": "preacher",
+    "text": "Який апостол помер сам накрившись шкурою з лисака?",
+    "options": [
+      "Петро",
+      "Павло",
+      "Федір",
+      "Йоан"
+    ],
+    "correctIndex": 3,
+    "reference": "Ап. 21:18-19",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:56:57.951Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-teacher-ai-00084",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Який із Нового Заповіту не є однією з епістерінг (Послання) апостола Павла?",
+    "options": [
+      "А) Друге Послання Тимофію",
+      "Б) Друге Послання Коринтянам",
+      "В) Друге Послання Титу",
+      "Г) Друге Послання Івана"
+    ],
+    "correctIndex": 3,
+    "reference": "2Пет. 3:15-16",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:57:42.450Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-teacher-ai-00085",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Яка книга Нового Заповіту починається словами «Іван, син Зебоїди, якого також звали Богослов»?",
+    "options": [
+      "А) Друге Послання Івана",
+      "Б) Третє Послання Івана",
+      "В) Перше Послання Івана",
+      "Г) Четверте Послання Івана"
+    ],
+    "correctIndex": 2,
+    "reference": "Іван 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:57:42.450Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-teacher-ai-00086",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Які книги Старого Заповіту є кореневими для іудейської секти Самаритян?",
+    "options": [
+      "А) Книга Осії, Книга Ісаїя",
+      "Б) Книга Йоеля, Книга Єзекіїля",
+      "В) Книга Малахії, Книга Соломона",
+      "Г) Книга Пров. 31, Книга 2Хр. 15"
+    ],
+    "correctIndex": 0,
+    "reference": "2Кр. 17:32",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:57:42.450Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-theologian-ai-00088",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Яка книга Старого Завіту розповідає про створення світу?",
+    "options": [
+      "Левіт (Лев. 1:1)",
+      "Військо (Вій. 1:1)",
+      "Буття (Бут. 1:1)",
+      "Псалми (Пс. 1:1)"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:58:31.104Z",
+    "topicNodeId": "pentateuch-sub-1-sub-1",
+    "topicPath": "Старий Завіт > Пятикнижжя > Буття > Створення світу"
+  },
+  {
+    "id": "old-testament-theologian-ai-00090",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Який паслок з Нового Завіту розповідає про добру новину?",
+    "options": [
+      "Писання Івана (Ін. 3:16)",
+      "Писання Павла до Римлян (Рим. 10:9)",
+      "Писання Павла до Коринтян (Корин. 15:3)",
+      "Писання Євангелія від Марка (Мк. 16:15)"
+    ],
+    "correctIndex": 0,
+    "reference": "Ін. 3:16",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:58:31.104Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-theologian-ai-00091",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Хто написав Евангеліє від Луки?",
+    "options": [
+      "Люка (Євр. 12:4)",
+      "Лука (Євр. 12:4)",
+      "Лев (Лев. 1:1)",
+      "Давид (Пс. 34:1)"
+    ],
+    "correctIndex": 1,
+    "reference": "Лк. 1:1-4",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:58:31.104Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-theologian-ai-00092",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Яке євангеліє розповідає про воскресіння Лазаря?",
+    "options": [
+      "Євангеліє від Матвія (Мт. 20:19)",
+      "Євангеліє від Марка (Мк. 14:3-9)",
+      "Євангеліє від Луки (Лк. 11:44)",
+      "Євангеліє від Івана (Ін. 11:1-44)"
+    ],
+    "correctIndex": 3,
+    "reference": "Ін. 11:1-44",
+    "source": "ai",
+    "createdAt": "2026-05-23T21:58:31.104Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-baby-ai-00093",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Кого Бог створив на першому дні?",
+    "options": [
+      "Сонячну систему",
+      "Землю і небо",
+      "Річку",
+      "Людину"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:11:28.187Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-baby-ai-00094",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Що сказав Бог про Адама після створення?",
+    "options": [
+      "Він добрий",
+      "Він потворний",
+      "Він чудова робота",
+      "Він дуже сильний"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 1:31",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:11:28.188Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-child-ai-00096",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Яке перше повідомлення Бога в Біблії?",
+    "options": [
+      "А) Господь створив небо і землю.",
+      "Б) Ісус Христос є Словом, який став плоттю.",
+      "В) Отець, син і Святий Дух є одне Божество.",
+      "Г) Адам і Єва були першими людьми, створеними Богом."
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:11:51.238Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-child-ai-00097",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Хто був першим людиною?",
+    "options": [
+      "А) Єва.",
+      "Б) Адам.",
+      "В) Бог.",
+      "Г) Святий Дух."
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 2:7",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:11:51.238Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-child-ai-00098",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Кто покликав Абрахама і дав йому нове ім'я?",
+    "options": [
+      "А) Бог.",
+      "Б) Янкель.",
+      "В) Святий Дух.",
+      "Г) Ісус Христос."
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 17:5",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:11:51.238Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-youth-ai-00099",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Який є перший книга Старого Заповіту Біблії?",
+    "options": [
+      "Другозаконня Бога, або Двадцять джерел",
+      "Писання Григорія",
+      "Книга Генезіс",
+      "Війна Господа"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:12:31.345Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-youth-ai-00100",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Скільки книг є в Новому Заповіті?",
+    "options": [
+      "78",
+      "40",
+      "27",
+      "4"
+    ],
+    "correctIndex": 3,
+    "reference": "2Пет. 3:15-16",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:12:31.345Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-youth-ai-00101",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Хто написав книгу «Іоань» (Діяння Івана)?",
+    "options": [
+      "Апостол Петро",
+      "Євангеліст Лука",
+      "Святий Панкратій",
+      "Апостол Іван"
+    ],
+    "correctIndex": 3,
+    "reference": "Іоан. 21:24",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:12:31.345Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-student-ai-00102",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Чому Бог створив світ?",
+    "options": [
+      "А) Для того, щоб люди зробили собі ім'я",
+      "Б) Для того, щоб люди жили весело",
+      "В) Для того, щоб люди зайнялись землеробством",
+      "Г) Для того, щоб люди не були самими першими створіннями"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 1:27",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:13:17.406Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-student-ai-00104",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Яким чином Ісус Христос повернувся з мертвих після свого розп'яття та загробного перебування?",
+    "options": [
+      "А) Він піднявся до небес у тілі",
+      "Б) Він піднявся до небес духом",
+      "В) Він вийшов із могили як з воріт",
+      "Г) Він був відвезений ангелами на небо"
+    ],
+    "correctIndex": 2,
+    "reference": "Мк. 16:34",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:13:17.406Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-preacher-ai-00105",
+    "themeId": "old-testament",
+    "difficulty": "preacher",
+    "text": "Який є перший упорядкований текст Старого Завіту згідно з сучасною науковою думкою?",
+    "options": [
+      "Псалтир",
+      "Книга Буття",
+      "Книга Ісуса Навина",
+      "Книга Есdras"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:13:38.592Z",
+    "topicNodeId": "pentateuch-sub-1",
+    "topicPath": "Старий Завіт > Пятикнижжя > Буття"
+  },
+  {
+    "id": "old-testament-preacher-ai-00107",
+    "themeId": "old-testament",
+    "difficulty": "preacher",
+    "text": "Кому Бог дав пророцтво про народження Ісуса Христа?",
+    "options": [
+      "Ісаї",
+      "Даніїлу",
+      "Єзекіїля",
+      "Йоeli"
+    ],
+    "correctIndex": 0,
+    "reference": "Іс. 7:14",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:13:38.592Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-teacher-ai-00108",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "У якому книзі Біблії описується створення світу?",
+    "options": [
+      "Ісх. (Еккл.)",
+      "Втор. (Деу.)",
+      "Бут.",
+      "Пов. (Єсд.)"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:14:19.443Z",
+    "topicNodeId": "pentateuch-sub-1-sub-1",
+    "topicPath": "Старий Завіт > Пятикнижжя > Буття > Створення світу"
+  },
+  {
+    "id": "old-testament-teacher-ai-00110",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Яка книга описує життя Ісуса Христа від його хрещення до смерті?",
+    "options": [
+      "Євангеліє від Матвія",
+      "Євангеліє від Марка",
+      "Євангеліє від Луки",
+      "Євангеліє від Івана"
+    ],
+    "correctIndex": 2,
+    "reference": "Лк. 1:3",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:14:19.443Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-teacher-ai-00111",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Який апостол написав лист до Галатів?",
+    "options": [
+      "Павло",
+      "Петро",
+      "Іван",
+      "Яків"
+    ],
+    "correctIndex": 0,
+    "reference": "Гал. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:14:19.443Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-teacher-ai-00112",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Чи є Ісус Христос Богом або людиною?",
+    "options": [
+      "Тільки людина",
+      "Тільки Бог",
+      "Обидва одночасно",
+      "Ніхто з попередніх не відповідає"
+    ],
+    "correctIndex": 2,
+    "reference": "Ін. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:14:19.443Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-teacher-ai-00113",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Який віруючий став першим єпископом в Антіохії?",
+    "options": [
+      "Петро",
+      "Йосип Арматіанський",
+      "Варфоломій",
+      "Іван Богослов"
+    ],
+    "correctIndex": 1,
+    "reference": "Акт. 6:5",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:14:19.443Z",
+    "topicNodeId": "patriarchs-sub-4",
+    "topicPath": "Старий Завіт > Патріархи > Йосип"
+  },
+  {
+    "id": "old-testament-theologian-ai-00114",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Які імена отримали первісні люди, яких Бог створив?",
+    "options": [
+      "Адам та Єва",
+      "Кайн та Авель",
+      "Сетан та Херув",
+      "Хайл та Лемрак"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 3:20",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:14:40.480Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-theologian-ai-00115",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Як називається істота, яку Бог створив з землі і дав життя?",
+    "options": [
+      "Адам",
+      "Мехенія",
+      "Лев",
+      "Сиф"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 3:20",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:14:40.480Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-theologian-ai-00116",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Колишній імператор Римської імперії, який був убитий поштою в м. Лаодицея, згідно з Писаннями?",
+    "options": [
+      "Клавдій II",
+      "Траяян",
+      "Нерон",
+      "Діоклетіан"
+    ],
+    "correctIndex": 2,
+    "reference": "Ап. 6:24",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:14:40.480Z",
+    "topicNodeId": "judges-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Судді > Перші судді > Аод"
+  },
+  {
+    "id": "old-testament-baby-ai-00117",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Яка книга Біблії починається словами: «В начьях божествах Божиих»?",
+    "options": [
+      "Буття - Бут. 1:1",
+      "Левіт - Лев. 10:2",
+      "Ісус Навину - Іс. 14:12",
+      "Псалми Давида - Пс. 96:5"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:17:18.107Z",
+    "topicNodeId": "pentateuch-sub-1",
+    "topicPath": "Старий Завіт > Пятикнижжя > Буття"
+  },
+  {
+    "id": "old-testament-baby-ai-00119",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Яка книга Біблії розповідає про чотирьох юнаків у печі вогненній?",
+    "options": [
+      "Одкровення - Откр. 14:9",
+      "Мешарім - Меш. 6:5",
+      "Даниїл - Дн. 3:23",
+      "Єремія - Єр. 28:1"
+    ],
+    "correctIndex": 3,
+    "reference": "Дн. 3:23",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:17:18.108Z",
+    "topicNodeId": "prophets-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Пророки > Великі пророки > Єремія"
+  },
+  {
+    "id": "old-testament-child-ai-00120",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Яке перше слово Біблії?",
+    "options": [
+      "Море",
+      "Вітер",
+      "Земля",
+      "Світ"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:17:45.531Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-child-ai-00121",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Хто сказав: «Я прийшов, щоб збудити»?",
+    "options": [
+      "Ісус Христос",
+      "Йоан Кріст",
+      "Давид",
+      "Мойсей"
+    ],
+    "correctIndex": 0,
+    "reference": "Івд. 5:14",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:17:45.531Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-child-ai-00122",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Яке євангеліє починається словами «Апокаліпсис, що явився Ісусу»?",
+    "options": [
+      "Матвія",
+      "Луки",
+      "Марка",
+      "Йоана"
+    ],
+    "correctIndex": 2,
+    "reference": "Опв. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:17:45.531Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-baby-ai-00123",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Яке перше Слово Боже?",
+    "options": [
+      "Ісус",
+      "Єгова",
+      "Св. Письмо",
+      "Ангел"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:23:46.826Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-baby-ai-00124",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Яке біблійне ім'я Бога?",
+    "options": [
+      "Єгова",
+      "Адонай",
+      "Господь",
+      "Св. Дух"
+    ],
+    "correctIndex": 0,
+    "reference": "Іс. 42:8",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:23:46.827Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-baby-ai-00125",
+    "themeId": "old-testament",
+    "difficulty": "baby",
+    "text": "Яка книга Біблії починається з пророцтва про народження Ісуса Христа?",
+    "options": [
+      "Лука",
+      "Матвій",
+      "Йоан",
+      "Марк"
+    ],
+    "correctIndex": 2,
+    "reference": "Іс. 9:6",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:23:46.827Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-child-ai-00126",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Який саме перший слова в Біблії?",
+    "options": [
+      "A) Він",
+      "B) Бог",
+      "C) Створив",
+      "D) Небо і земля"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:24:05.837Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-child-ai-00128",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Яка книга Біблії оповідає про життя Ісуса Христа від Його народження до смерті?",
+    "options": [
+      "A) Буття",
+      "B) Діяння Апостолів",
+      "C) Євангеліє від Матвія",
+      "D) Псалми"
+    ],
+    "correctIndex": 3,
+    "reference": "Мат. 1:1 - 28:20",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:24:05.837Z",
+    "topicNodeId": "wisdom-poetry-sub-2",
+    "topicPath": "Старий Завіт > Мудрість і поезія > Псалми"
+  },
+  {
+    "id": "old-testament-youth-ai-00129",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Який є перший книга Біблії?",
+    "options": [
+      "Буття (Бут. 1:1)",
+      "Відкриття (Откр. 1:1)",
+      "Людина (Лб. 1:1)",
+      "Діяння Апостолів (Дій. 1:1)"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:24:26.950Z",
+    "quarantined": false,
+    "topicNodeId": "pentateuch-sub-1",
+    "topicPath": "Старий Завіт > Пятикнижжя > Буття"
+  },
+  {
+    "id": "old-testament-youth-ai-00130",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Скільки братів є у Якові?",
+    "options": [
+      "Два (Буд. 49:3)",
+      "Сім (Вис. 49:10)",
+      "Дев'ять (Ісх. 6:13)",
+      "Одинадцять (Муж. 46:8)"
+    ],
+    "correctIndex": 2,
+    "reference": "Бут. 49:3",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:24:26.950Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-youth-ai-00131",
+    "themeId": "old-testament",
+    "difficulty": "youth",
+    "text": "Кому Бог дає пророцтво про народження Спасителя?",
+    "options": [
+      "Іоанну (Лк. 1:13)",
+      "Ананію (Лк. 1:11)",
+      "Єлизаветі (Лк. 1:26)",
+      "Сараї (Іс. 7:14)"
+    ],
+    "correctIndex": 0,
+    "reference": "Лк. 1:13",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:24:26.950Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-student-ai-00132",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Хто створив небо та землю?",
+    "options": [
+      "Яхве (Бог)",
+      "Адам",
+      "Єва",
+      "Ангел"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:24:41.671Z",
+    "quarantined": false,
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-student-ai-00133",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Скільки братів мав Йосиф?",
+    "options": [
+      "6",
+      "7",
+      "12",
+      "10"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 37:3",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:24:41.671Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-student-ai-00134",
+    "themeId": "old-testament",
+    "difficulty": "student",
+    "text": "Чий голос говорить до Мойсея з вогняного куща?",
+    "options": [
+      "Ангел Божий",
+      "Яхве (Бог)",
+      "Мойсеїв брат",
+      "Єгипетський цар"
+    ],
+    "correctIndex": 1,
+    "reference": "Вих. 3:4",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:24:41.671Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-preacher-ai-00136",
+    "themeId": "old-testament",
+    "difficulty": "preacher",
+    "text": "Як називається друга книга Мойсея?",
+    "options": [
+      "Книга Левітська",
+      "Книга Числа",
+      "Книга Вихід",
+      "Книга Витоків"
+    ],
+    "correctIndex": 2,
+    "reference": "Вих. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:24:57.928Z",
+    "topicNodeId": "pentateuch-sub-2",
+    "topicPath": "Старий Завіт > Пятикнижжя > Вихід"
+  },
+  {
+    "id": "old-testament-preacher-ai-00137",
+    "themeId": "old-testament",
+    "difficulty": "preacher",
+    "text": "Який апостол був з Кана Галилейського?",
+    "options": [
+      "Самсон",
+      "Петро",
+      "Матвій",
+      "Іоанн"
+    ],
+    "correctIndex": 1,
+    "reference": "Мк. 3:18",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:24:57.928Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-teacher-ai-00138",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Який є перший згадка про створення світу в Біблії?",
+    "options": [
+      "Буття 0:1",
+      "Лев. 1:1",
+      "Іс. 40:26",
+      "Жудит 5:1"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:25:14.498Z",
+    "topicNodeId": "pentateuch-sub-1-sub-1",
+    "topicPath": "Старий Завіт > Пятикнижжя > Буття > Створення світу"
+  },
+  {
+    "id": "old-testament-teacher-ai-00139",
+    "themeId": "old-testament",
+    "difficulty": "teacher",
+    "text": "Кто був первым человеком по роду Адама?",
+    "options": [
+      "Авель",
+      "Каин",
+      "Адам",
+      "Сет"
+    ],
+    "correctIndex": 3,
+    "reference": "Бут. 5:4",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:25:14.498Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-theologian-ai-00141",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Який перший книгою Святого Письма є Біблія?",
+    "options": [
+      "Ісаїя",
+      "Писання Мойсеєві",
+      "Діяння Апостолів",
+      "Йова"
+    ],
+    "correctIndex": 1,
+    "reference": "Бут. 1:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:25:30.521Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-theologian-ai-00142",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Скільки книг є в Старому Завіті?",
+    "options": [
+      "39",
+      "40",
+      "42",
+      "46"
+    ],
+    "correctIndex": 3,
+    "reference": "Діян. 15:15",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:25:30.521Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-theologian-ai-00143",
+    "themeId": "old-testament",
+    "difficulty": "theologian",
+    "text": "Який персонаж у Біблії вперше згадується як людина?",
+    "options": [
+      "Адам",
+      "Єва",
+      "Сатана",
+      "Господь"
+    ],
+    "correctIndex": 0,
+    "reference": "Бут. 2:7",
+    "source": "ai",
+    "createdAt": "2026-05-23T22:25:30.521Z",
+    "topicNodeId": "old-testament",
+    "topicPath": "Старий Завіт"
+  },
+  {
+    "id": "old-testament-child-3",
+    "themeId": "old-testament",
+    "difficulty": "child",
+    "text": "Хто вбив Голіафа?",
+    "options": [
+      "Саул",
+      "Давид",
+      "Гедеон",
+      "Самсон"
+    ],
+    "correctIndex": 1,
+    "reference": "1 Цар. 17:49-50",
+    "quarantined": false,
+    "sourceQuality": "ai-reviewed",
+    "lastReviewedAt": "2026-05-30T19:52:25.739Z",
+    "explanationShort": "Цар Саул взяв Голіафа в облогу, але не зміг його перемогти. Тоді він надав Давиду шанс битися з Голіафом і той переміг.",
+    "topicNodeId": "kings-sub-1-sub-2",
+    "topicPath": "Старий Завіт > Царі > Об'єднане царство > Давид"
   }
 ]

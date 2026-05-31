@@ -1,5 +1,8 @@
 import type { Question } from '../types';
 import { useFocusTrap } from '../hooks/useFocusTrap';
+import { usePlayer } from '../context/PlayerContext';
+import { normalizeBollsTranslation } from '../lib/bollsConstants';
+import { ScripturePanel } from './ScripturePanel';
 import styles from './ExplanationModal.module.css';
 
 interface ExplanationModalProps {
@@ -9,11 +12,17 @@ interface ExplanationModalProps {
 }
 
 export function ExplanationModal({ question, open, onClose }: ExplanationModalProps) {
+  const { profile } = usePlayer();
+  const translation = normalizeBollsTranslation(profile.bibleTranslation);
   const focusTrapRef = useFocusTrap(open);
 
   if (!open) return null;
 
   const answer = question.options[question.correctIndex];
+  const explanationText =
+    question.explanationShort?.trim() ||
+    question.explanationDeep?.trim() ||
+    null;
 
   return (
     <div className={styles.backdrop} role="presentation" onClick={onClose}>
@@ -48,11 +57,18 @@ export function ExplanationModal({ question, open, onClose }: ExplanationModalPr
           )}
         </dl>
 
-        <p className={styles.explanation}>
-          Це питання прив&rsquo;язане до біблійного факту або події. Зверни увагу на
-          правильну відповідь і посилання: вони допомагають закріпити контекст,
-          а не просто запам&rsquo;ятати варіант.
-        </p>
+        {open && question.reference && (
+          <ScripturePanel reference={question.reference} translation={translation} />
+        )}
+
+        {explanationText ? (
+          <p className={styles.explanation}>{explanationText}</p>
+        ) : (
+          <p className={styles.explanation}>
+            Пояснення для цього питання ще готується. Зверни увагу на правильну відповідь
+            {question.reference ? ' і посилання на Писання' : ''} — вони допомагають закріпити контекст.
+          </p>
+        )}
 
         <button type="button" className={styles.primaryButton} onClick={onClose}>
           Зрозуміло

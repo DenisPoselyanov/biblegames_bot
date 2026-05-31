@@ -13,7 +13,9 @@
     "correctIndex": 2,
     "reference": "Ин. 2:1-11",
     "source": "ai",
-    "createdAt": "2026-05-17T19:06:20.440Z"
+    "createdAt": "2026-05-17T19:06:20.440Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-baby-ai-00002",
@@ -29,7 +31,9 @@
     "correctIndex": 1,
     "reference": "Мк. 2:23-28",
     "source": "ai",
-    "createdAt": "2026-05-17T19:06:20.440Z"
+    "createdAt": "2026-05-17T19:06:20.440Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-baby-ai-00003",
@@ -45,7 +49,9 @@
     "correctIndex": 1,
     "reference": "Лк. 7:11-17",
     "source": "ai",
-    "createdAt": "2026-05-17T19:06:20.440Z"
+    "createdAt": "2026-05-17T19:06:20.440Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-baby-ai-00004",
@@ -61,7 +67,9 @@
     "correctIndex": 3,
     "reference": "Ін. 3:29",
     "source": "ai",
-    "createdAt": "2026-05-17T19:06:20.440Z"
+    "createdAt": "2026-05-17T19:06:20.440Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-baby-ai-00005",
@@ -77,7 +85,9 @@
     "correctIndex": 1,
     "reference": "Мк. 7:24-30",
     "source": "ai",
-    "createdAt": "2026-05-17T19:06:20.440Z"
+    "createdAt": "2026-05-17T19:06:20.440Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-child-ai-00006",
@@ -93,7 +103,9 @@
     "correctIndex": 2,
     "reference": "Мк. 2:14",
     "source": "ai",
-    "createdAt": "2026-05-17T19:06:59.636Z"
+    "createdAt": "2026-05-17T19:06:59.636Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-child-ai-00007",
@@ -109,7 +121,9 @@
     "correctIndex": 1,
     "reference": "Ін. 19:28-29",
     "source": "ai",
-    "createdAt": "2026-05-17T19:06:59.636Z"
+    "createdAt": "2026-05-17T19:06:59.636Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-child-ai-00008",
@@ -125,7 +139,9 @@
     "correctIndex": 3,
     "reference": "Мт. 20:19",
     "source": "ai",
-    "createdAt": "2026-05-17T19:06:59.636Z"
+    "createdAt": "2026-05-17T19:06:59.636Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-child-ai-00009",
@@ -141,7 +157,9 @@
     "correctIndex": 2,
     "reference": "Мр. 1:41-45",
     "source": "ai",
-    "createdAt": "2026-05-17T19:06:59.636Z"
+    "createdAt": "2026-05-17T19:06:59.636Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-youth-ai-00010",
@@ -157,7 +175,9 @@
     "correctIndex": 3,
     "reference": "Акт. 5:12",
     "source": "ai",
-    "createdAt": "2026-05-17T19:07:29.308Z"
+    "createdAt": "2026-05-17T19:07:29.308Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-youth-ai-00011",
@@ -173,7 +193,9 @@
     "correctIndex": 1,
     "reference": "Лк. 22:14-30",
     "source": "ai",
-    "createdAt": "2026-05-17T19:07:29.308Z"
+    "createdAt": "2026-05-17T19:07:29.308Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-youth-ai-00012",
@@ -189,7 +211,9 @@
     "correctIndex": 0,
     "reference": "Мк. 1:16-20",
     "source": "ai",
-    "createdAt": "2026-05-17T19:07:29.308Z"
+    "createdAt": "2026-05-17T19:07:29.308Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-youth-ai-00013",
@@ -205,7 +229,9 @@
     "correctIndex": 2,
     "reference": "Лк. 4:31-37",
     "source": "ai",
-    "createdAt": "2026-05-17T19:07:29.308Z"
+    "createdAt": "2026-05-17T19:07:29.308Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-student-ai-00014",
@@ -220,7 +246,9 @@
     ],
     "correctIndex": 1,
     "source": "ai",
-    "createdAt": "2026-05-17T19:08:01.010Z"
+    "createdAt": "2026-05-17T19:08:01.010Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-student-ai-00015",
@@ -235,7 +263,9 @@
     ],
     "correctIndex": 0,
     "source": "ai",
-    "createdAt": "2026-05-17T19:08:01.010Z"
+    "createdAt": "2026-05-17T19:08:01.010Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-preacher-ai-00016",
@@ -251,7 +281,9 @@
     "correctIndex": 2,
     "reference": "Марк 1:14",
     "source": "ai",
-    "createdAt": "2026-05-17T19:08:34.487Z"
+    "createdAt": "2026-05-17T19:08:34.487Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-preacher-ai-00017",
@@ -267,7 +299,9 @@
     "correctIndex": 3,
     "reference": "Лк. 22:14",
     "source": "ai",
-    "createdAt": "2026-05-17T19:08:34.487Z"
+    "createdAt": "2026-05-17T19:08:34.487Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-preacher-ai-00018",
@@ -283,7 +317,9 @@
     "correctIndex": 1,
     "reference": "Мк. 6:53",
     "source": "ai",
-    "createdAt": "2026-05-17T19:08:34.487Z"
+    "createdAt": "2026-05-17T19:08:34.487Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   },
   {
     "id": "gospels-preacher-ai-00019",
@@ -299,7 +335,9 @@
     "correctIndex": 3,
     "reference": "Ів. 11:44",
     "source": "ai",
-    "createdAt": "2026-05-17T19:08:34.487Z"
+    "createdAt": "2026-05-17T19:08:34.487Z",
+    "topicNodeId": "gospels-sub-4",
+    "topicPath": "Євангелія > Воскресіння"
   },
   {
     "id": "gospels-preacher-ai-00020",
@@ -315,6 +353,232 @@
     "correctIndex": 3,
     "reference": "Мт. 26:75",
     "source": "ai",
-    "createdAt": "2026-05-17T19:08:34.487Z"
+    "createdAt": "2026-05-17T19:08:34.487Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-child-ai-00005",
+    "themeId": "gospels",
+    "difficulty": "child",
+    "text": "Який із апостолів не був присутній під час останньої вечері Господа Ісуса Христа?",
+    "options": [
+      "Святий Петро",
+      "Святий Павло",
+      "Святий Андрій Первозваний",
+      "Святий Матвій"
+    ],
+    "correctIndex": 1,
+    "reference": "Мк. 14:17",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:03:44.389Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-youth-ai-00009",
+    "themeId": "gospels",
+    "difficulty": "youth",
+    "text": "Який апостол був братом Ісуса Христа?",
+    "options": [
+      "Петар (Мк. 3:17)",
+      "Фаддей (Ін. 18:15)",
+      "Яків Зботовник (Дії 15:9)",
+      "Тома (Лк. 6:14)"
+    ],
+    "correctIndex": 1,
+    "reference": "Ін. 18:15",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:04:29.153Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-youth-ai-00012",
+    "themeId": "gospels",
+    "difficulty": "youth",
+    "text": "Яку книгу Нового Заповіту написав Лука Сіругін?",
+    "options": [
+      "Лукиву Євангеліє (Лк. 1:1-4)",
+      "Діяння Апостолів (Дії 1:1)",
+      "Послання до Коринтян (Кол. 1:1)",
+      "Каталог Титуса (Тит. 1:1)"
+    ],
+    "correctIndex": 1,
+    "reference": "Лк. 1:1-4",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:04:29.153Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-preacher-ai-00019",
+    "themeId": "gospels",
+    "difficulty": "preacher",
+    "text": "Хто заснував Церкву в Єрусалимі після смерті Ісуса Христа?",
+    "options": [
+      "Святий Пётр (Актс 2:41)",
+      "Іоанн Богослов (Овц. 10:16)",
+      "Філіп (Дій. 8:5)",
+      "Тимótїй (Пол. 1 Тим. 1:1)"
+    ],
+    "correctIndex": 0,
+    "reference": "Актс 2:41",
+    "source": "ai",
+    "createdAt": "2026-05-17T19:05:39.702Z",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-preacher-ai-00032",
+    "themeId": "gospels",
+    "difficulty": "preacher",
+    "text": "У Другому посланні до Тимофія апостол Павло, готуючись до свого відходу, використовує метафору військової служби та змагань, щоб закликати до стійкості. Яка саме «зброя» чи спорядження, згідно з Павлом, дозволяє віруючому переносити страждання, як добрий воїн Христа Ісуса?",
+    "options": [
+      "Обладунок праведності та шолом спасіння",
+      "Слово Боже, яке не зв'язане кайданами",
+      "Дар розрізнення духів та пророче слово",
+      "Вірність церковній ієрархії та апостольському переданню"
+    ],
+    "correctIndex": 1,
+    "reference": "2 Тим. 2:3-9",
+    "source": "ai",
+    "createdAt": "2026-05-31T08:19:13.541Z",
+    "explanationShort": "Павло наголошує, що хоча він сам перебуває в кайданах, Слово Боже не зв'язане, і саме вірність цьому Слову є основою стійкості в часи випробувань.",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-baby-ai-00038",
+    "themeId": "gospels",
+    "difficulty": "baby",
+    "text": "Яку головну ознаку Ісус назвав доказом того, що ми є Його учнями, яка допомагає зберігати єдність?",
+    "options": [
+      "Якщо ми знаємо напам'ять увесь Старий Заповіт",
+      "Якщо ми маємо любов один до одного",
+      "Якщо ми будуємо великі храми",
+      "Якщо ми ніколи не помиляємося"
+    ],
+    "correctIndex": 1,
+    "reference": "Ів. 13:35",
+    "source": "ai",
+    "createdAt": "2026-05-31T08:19:37.354Z",
+    "explanationShort": "Ісус чітко вказав, що саме щира любов між віруючими є головним свідченням їхньої приналежності до Нього.",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-child-ai-00040",
+    "themeId": "gospels",
+    "difficulty": "child",
+    "text": "Як Ісус сказав впізнати Його учнів серед інших людей?",
+    "options": [
+      "За тим, як голосно вони співають",
+      "За тим, що вони мають любов між собою",
+      "За тим, як часто вони ходять до храму",
+      "За тим, як багато вони знають на пам'ять віршів"
+    ],
+    "correctIndex": 1,
+    "reference": "Ів. 13:35",
+    "source": "ai",
+    "createdAt": "2026-05-31T08:19:40.607Z",
+    "explanationShort": "Ісус навчав, що щира любов одне до одного є головним доказом того, що ми є Його учнями.",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-youth-ai-00043",
+    "themeId": "gospels",
+    "difficulty": "youth",
+    "text": "Ісус Христос у Своїй первосвященицькій молитві просив Отця про єдність Своїх учнів. Яка головна мета цієї єдності, згідно зі словами Спасителя?",
+    "options": [
+      "Щоб Церква мала політичний вплив у світі",
+      "Щоб віряни могли уникнути будь-яких страждань",
+      "Щоб світ увірував, що Отець послав Ісуса",
+      "Щоб створити єдину адміністративну структуру"
+    ],
+    "correctIndex": 2,
+    "reference": "Ів. 17:21",
+    "source": "ai",
+    "createdAt": "2026-05-31T08:19:52.997Z",
+    "explanationShort": "Ісус вказує, що єдність віруючих є головним доказом для світу, який засвідчує божественне походження Його місії.",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-teacher-ai-00049",
+    "themeId": "gospels",
+    "difficulty": "teacher",
+    "text": "В аналізі розколів у коринфській громаді, Павло протиставляє людську мудрість «слову хреста». Який критерій він висуває в 1 Кор. 1:10 як головну умову подолання поділів, щоб уникнути «розбрату» (schismata)?",
+    "options": [
+      "Щоб ви всі говорили одне й те саме і були з'єднані в однім розумінні та в одній думці",
+      "Щоб ви обрали одного найбільш авторитетного вчителя, за яким підете",
+      "Щоб ви розділили громаду на групи за соціальним статусом для порядку",
+      "Щоб ви припинили будь-які дискусії про догматичне вчення"
+    ],
+    "correctIndex": 0,
+    "reference": "1 Кор. 1:10",
+    "source": "ai",
+    "createdAt": "2026-05-31T08:20:01.174Z",
+    "explanationShort": "Апостол закликає до єдності не через одноманітність, а через спільне розуміння істини в Христі, що виключає фракційність та партійність.",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-baby-ai-00053",
+    "themeId": "gospels",
+    "difficulty": "baby",
+    "text": "Що ми повинні робити, очікуючи на повернення Ісуса Христа?",
+    "options": [
+      "Тільки спати і відпочивати",
+      "Забути про всі справи",
+      "Пильнувати та молитися",
+      "Тільки читати новини"
+    ],
+    "correctIndex": 2,
+    "reference": "Мк. 13:33",
+    "source": "ai",
+    "createdAt": "2026-05-31T08:20:13.640Z",
+    "explanationShort": "Ісус закликав Своїх учнів пильнувати та молитися, оскільки ніхто не знає точного часу Його повернення.",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-child-ai-00055",
+    "themeId": "gospels",
+    "difficulty": "child",
+    "text": "Як Ісус описує час Свого другого пришестя, щоб підкреслити, що ми завжди маємо бути готові?",
+    "options": [
+      "Як сонячне затемнення",
+      "Як зміну пір року",
+      "Як злодія, що приходить уночі",
+      "Як різдвяне свято"
+    ],
+    "correctIndex": 2,
+    "reference": "1 Сол. 5:2",
+    "source": "ai",
+    "createdAt": "2026-05-31T08:20:15.509Z",
+    "explanationShort": "Господь прийде несподівано, тому віруючі повинні завжди жити праведно та бути пильними, наче варта вночі.",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
+  },
+  {
+    "id": "new-testament-youth-ai-00057",
+    "themeId": "gospels",
+    "difficulty": "youth",
+    "text": "Що, згідно з повчанням Ісуса, має робити вірний раб, щоб бути готовим до повернення пана, навіть якщо той забариться?",
+    "options": [
+      "Постійно слідкувати за знаменнями часу в небі",
+      "Відкласти всі справи і чекати лише в молитві",
+      "Виконувати свою роботу і дбати про інших слуг",
+      "Зібрати якомога більше майна для звіту"
+    ],
+    "correctIndex": 2,
+    "reference": "Мт. 24:45-46",
+    "source": "ai",
+    "createdAt": "2026-05-31T08:20:17.614Z",
+    "explanationShort": "Готовність до приходу Господа полягає не в пасивному очікуванні, а у вірному виконанні своїх обов'язків та любові до ближніх.",
+    "topicNodeId": "gospels",
+    "topicPath": "Євангелія"
   }
 ]

@@ -3,8 +3,70 @@ import http from 'http';
 const DEFAULT_HOST = process.env.OLLAMA_HOST || 'localhost';
 const DEFAULT_PORT = Number(process.env.OLLAMA_PORT || 11434);
 
-export async function checkOllama(model) {
-  const response = await queryOllama('Відповідай одним словом: OK', model, { temperature: 0 });
+function httpGetJson(path, timeoutMs = 8000) {
+  return new Promise((resolve, reject) => {
+    const req = http.request(
+      {
+        hostname: DEFAULT_HOST,
+        port: DEFAULT_PORT,
+        path,
+        method: 'GET',
+        timeout: timeoutMs,
+      },
+      (res) => {
+        let data = '';
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            reject(new Error(`Помилка парсингу Ollama: ${e.message}`));
+          }
+        });
+      },
+    );
+    req.on('error', (e) => reject(new Error(`Ollama недоступна (${DEFAULT_HOST}:${DEFAULT_PORT}): ${e.message}`)));
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error(`Таймаут Ollama (${timeoutMs / 1000}s)`));
+    });
+    req.end();
+  });
+}
+
+export async function listOllamaModels() {
+  const data = await httpGetJson('/api/tags');
+  return (data?.models ?? []).map((m) => m.name).filter(Boolean);
+}
+
+export function modelMatches(requested, available) {
+  const wanted = String(requested || '').trim().toLowerCase();
+  if (!wanted) return false;
+  return available.some((name) => {
+    const n = String(name).toLowerCase();
+    return n === wanted || n.startsWith(`${wanted}:`) || wanted.startsWith(`${n.split(':')[0]}:`);
+  });
+}
+
+/** Текст відповіді з /api/generate (Qwen3 інколи кладе JSON у thinking, а response лишає порожнім). */
+export function coalesceOllamaText(parsed) {
+  const response = String(parsed?.response ?? '').trim();
+  if (response) return response;
+  return String(parsed?.thinking ?? '').trim();
+}
+
+/** Швидка перевірка: Ollama online + модель у списку (без пробного generate). */
+export async function checkOllama(model, options = {}) {
+  const { quick = false, timeoutMs = 120000 } = options;
+  const models = await listOllamaModels();
+  if (!modelMatches(model, models)) {
+    const preview = models.slice(0, 5).join(', ') || 'немає';
+    throw new Error(`Модель "${model}" не знайдена. Доступні: ${preview}`);
+  }
+  if (quick) return true;
+  const response = await queryOllama('Відповідай одним словом: OK', model, { temperature: 0, timeoutMs });
   return Boolean(response?.trim());
 }
 
@@ -14,6 +76,7 @@ export function queryOllama(prompt, model = 'mistral', options = {}) {
     timeoutMs = 180000,
     format,
     numCtx,
+    numPredict,
     seed,
   } = options;
 
@@ -21,6 +84,7 @@ export function queryOllama(prompt, model = 'mistral', options = {}) {
     // Ollama /api/generate expects model-tuning params under `options`, not top-level.
     const ollamaOptions = { temperature };
     if (typeof numCtx === 'number') ollamaOptions.num_ctx = numCtx;
+    if (typeof numPredict === 'number') ollamaOptions.num_predict = numPredict;
     if (typeof seed === 'number') ollamaOptions.seed = seed;
 
     const payload = {
@@ -57,7 +121,7 @@ export function queryOllama(prompt, model = 'mistral', options = {}) {
               reject(new Error(`Ollama API error: ${parsed.error}`));
               return;
             }
-            resolve(parsed.response || '');
+            resolve(coalesceOllamaText(parsed));
           } catch (e) {
             reject(new Error(`Помилка парсингу Ollama: ${e.message}`));
           }
@@ -170,10 +234,4 @@ export function extractJson(text) {
   } catch {
     return arrayFirst ? extractJsonObject(text) : extractJsonArray(text);
   }
-}
-
-export function extractJsonObject(text) {
-  const match = text.match(/\{[\s\S]*\}/);
-  if (!match) throw new Error('JSON-об\'єкт не знайдено у відповіді AI');
-  return JSON.parse(match[0]);
 }

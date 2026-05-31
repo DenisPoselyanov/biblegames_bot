@@ -1,0 +1,327 @@
+[
+  {
+    "id": "geography-nt-child-ai-00007",
+    "themeId": "geography-nt",
+    "difficulty": "child",
+    "text": "Чесне місто, де проповідував Ісус Христос (Іван 5:2):",
+    "options": [
+      "Йерусалим",
+      "Назарет",
+      "Каперея-Кафі",
+      "Тарсіс"
+    ],
+    "correctIndex": 1,
+    "reference": "Ів. 5:2",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:45.288Z",
+    "topicNodeId": "geography-nt-sub-2-sub-2",
+    "topicPath": "Географія Нового Завіту > Міста та села > Назарет"
+  },
+  {
+    "id": "geography-nt-child-ai-00012",
+    "themeId": "geography-nt",
+    "difficulty": "child",
+    "text": "Країна, у якій жив Ісус Навино (Числа 34:11):",
+    "options": [
+      "Галад",
+      "Моав",
+      "Амонон",
+      "Філістимляни"
+    ],
+    "correctIndex": 1,
+    "reference": "Числа 34:11",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:36:45.289Z",
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  {
+    "id": "geography-nt-youth-ai-00015",
+    "themeId": "geography-nt",
+    "difficulty": "youth",
+    "text": "Яку річку намагався перетнути Ісус Христос, але не зміг через величезне число людей (Мар. 6:33)?",
+    "options": [
+      "Тигр (Мар. 7:24)",
+      "Євфрат (Лк. 3:3)",
+      "Іордан (Йол. 4:15)",
+      "Ніл (Дії 10:1)"
+    ],
+    "correctIndex": 2,
+    "reference": "Мар. 6:33",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:37:43.848Z",
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  {
+    "id": "geography-nt-student-ai-00021",
+    "themeId": "geography-nt",
+    "difficulty": "student",
+    "text": "Річка, яку через неї перетнув Ісус Христос, щоб дійти до Єрусалима, це?",
+    "options": [
+      "Жиронда",
+      "Іордан",
+      "Дунай",
+      "Ніл"
+    ],
+    "correctIndex": 1,
+    "reference": "Мк. 10:1",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:38:28.140Z",
+    "topicNodeId": "geography-nt-sub-2-sub-4",
+    "topicPath": "Географія Нового Завіту > Міста та села > Єрусалим"
+  },
+  {
+    "id": "geography-nt-student-ai-00022",
+    "themeId": "geography-nt",
+    "difficulty": "student",
+    "text": "У якому місті Йосип зустрів Марію Магдаліну після рескресії Ісуса Христа?",
+    "options": [
+      "Єрусалим",
+      "Антіохія",
+      "Тевес",
+      "Магнезія"
+    ],
+    "correctIndex": 1,
+    "reference": "Мк. 16:9",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:38:28.140Z",
+    "topicNodeId": "geography-nt-sub-5-sub-1",
+    "topicPath": "Географія Нового Завіту > Міста місій апостолів > Антіохія"
+  },
+  {
+    "id": "geography-nt-baby-ai-00031",
+    "themeId": "geography-nt",
+    "difficulty": "baby",
+    "text": "У якому місті Ісус був хрещений Йоанном Хрестителем?",
+    "options": [
+      "Єрусалим",
+      "Назарет",
+      "Іерусалим Самоюн",
+      "Бет-Хаґайарім"
+    ],
+    "correctIndex": 3,
+    "reference": "Мк. 1:9",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:44:34.190Z",
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  {
+    "id": "geography-nt-baby-ai-00033",
+    "themeId": "geography-nt",
+    "difficulty": "baby",
+    "text": "Річка, в якій Ісус відпочив після чотирьох днів путівлі, називається",
+    "options": [
+      "Йордан",
+      "Нил",
+      "Тигр",
+      "Євфрат"
+    ],
+    "correctIndex": 0,
+    "reference": "Мк. 6:31",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:44:34.191Z",
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  {
+    "id": "geography-nt-baby-ai-00034",
+    "themeId": "geography-nt",
+    "difficulty": "baby",
+    "text": "У якій горі Ісус надихнувся для проголошення Своїх слів?",
+    "options": [
+      "Гора Набору",
+      "Гора Тавор",
+      "Гора Синай",
+      "Гора Тabor"
+    ],
+    "correctIndex": 3,
+    "reference": "Лк. 21:37",
+    "source": "ai",
+    "createdAt": "2026-05-17T18:44:34.191Z",
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  {
+    "id": "geography-nt-baby-ai-00055",
+    "themeId": "geography-nt",
+    "difficulty": "baby",
+    "text": "Де розташоване Голгофа?",
+    "options": [
+      "А) Гора Грізда",
+      "В) Гора Синайська",
+      "Б) Гора Тиберіадська",
+      "Г) Гора Оліветова"
+    ],
+    "correctIndex": 1,
+    "reference": "Марк 15:22",
+    "source": "ai",
+    "createdAt": "2026-05-23T09:56:30.132Z",
+    "topicNodeId": "geography-nt-sub-4-sub-1",
+    "topicPath": "Географія Нового Завіту > Гори та священні місця > Голгофа"
+  },
+  {
+    "id": "geography-nt-child-ai-00062",
+    "themeId": "geography-nt",
+    "difficulty": "child",
+    "text": "У якій країні народився Ісус?",
+    "options": [
+      "А) Китай",
+      "Б) Єгипет",
+      "В) Греція",
+      "Г) Галілея"
+    ],
+    "correctIndex": 3,
+    "reference": "Мат. 2:1",
+    "source": "ai",
+    "createdAt": "2026-05-23T09:57:42.117Z",
+    "topicNodeId": "geography-nt-sub-1-sub-1",
+    "topicPath": "Географія Нового Завіту > Свята земля Ісуса > Галілея"
+  },
+  {
+    "id": "geography-nt-youth-ai-00065",
+    "themeId": "geography-nt",
+    "difficulty": "youth",
+    "text": "У яку країну потрапив Ісус Христос зробивши згоду з Самарітянами?",
+    "options": [
+      "Єгипет",
+      "Рим",
+      "Ізраїль",
+      "Греція"
+    ],
+    "correctIndex": 3,
+    "reference": "Мк. 10:46",
+    "source": "ai",
+    "createdAt": "2026-05-23T09:58:20.600Z",
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  {
+    "id": "geography-nt-youth-ai-00066",
+    "themeId": "geography-nt",
+    "difficulty": "youth",
+    "text": "Яку річку перетнув Ісус Христос, щоб провісити перші уроки згідно Євангелію від Івана?",
+    "options": [
+      "Тигрес",
+      "Іордан",
+      "Ніл",
+      "Фірсодон"
+    ],
+    "correctIndex": 2,
+    "reference": "Йо. 1:43",
+    "source": "ai",
+    "createdAt": "2026-05-23T09:58:20.600Z",
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  {
+    "id": "geography-nt-preacher-ai-00074",
+    "themeId": "geography-nt",
+    "difficulty": "preacher",
+    "text": "До якої країни Ісус Христос прийшов, щоб почати свою проповідь?",
+    "options": [
+      "Египет",
+      "Рим",
+      "Сирія",
+      "Ізраїль"
+    ],
+    "correctIndex": 3,
+    "reference": "Мк. 1:15",
+    "source": "ai",
+    "createdAt": "2026-05-23T09:59:30.690Z",
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  {
+    "id": "geography-nt-theologian-ai-00085",
+    "themeId": "geography-nt",
+    "difficulty": "theologian",
+    "text": "Місто, де жив Ісус і де проводив свою активну діяльність (Євангеліє від Луки)",
+    "options": [
+      "Назарет",
+      "Іерусалим",
+      "Капернаум",
+      "Бетфіня"
+    ],
+    "correctIndex": 0,
+    "reference": "Лк. 2:4,5",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:00:37.295Z",
+    "topicNodeId": "geography-nt-sub-2-sub-2",
+    "topicPath": "Географія Нового Завіту > Міста та села > Назарет"
+  },
+  {
+    "id": "geography-nt-theologian-ai-00086",
+    "themeId": "geography-nt",
+    "difficulty": "theologian",
+    "text": "Місто у Філістимії, яке відіграло важливу роль під час походу Ісуса Навина (Книга Суддів)",
+    "options": [
+      "Ашдод",
+      "Газа",
+      "Суккот",
+      "Ашкелон"
+    ],
+    "correctIndex": 2,
+    "reference": "Суд. 13:3",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:00:37.295Z",
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  {
+    "id": "geography-nt-child-ai-00092",
+    "themeId": "geography-nt",
+    "difficulty": "child",
+    "text": "Де розташоване місто, де народився Ісус Христос?",
+    "options": [
+      "Єрусалим",
+      "Бетлехем",
+      "Галілей",
+      "Назарет"
+    ],
+    "correctIndex": 2,
+    "reference": "Мк. 1:9",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:14:14.757Z",
+    "topicNodeId": "geography-nt",
+    "topicPath": "Географія Нового Завіту"
+  },
+  {
+    "id": "geography-nt-preacher-ai-00108",
+    "themeId": "geography-nt",
+    "difficulty": "preacher",
+    "text": "У яких горах розташовані міста Галілея (Хрестова Гора) та Нефтода (Олімп)?",
+    "options": [
+      "А) Атлаські",
+      "Б) Каракамський масив",
+      "В) Апенніни",
+      "Г) Тибетська гори"
+    ],
+    "correctIndex": 0,
+    "reference": "Ізд. 34:15",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:16:06.986Z",
+    "quarantined": false,
+    "topicNodeId": "geography-nt-sub-1-sub-1",
+    "topicPath": "Географія Нового Завіту > Свята земля Ісуса > Галілея"
+  },
+  {
+    "id": "geography-nt-teacher-ai-00111",
+    "themeId": "geography-nt",
+    "difficulty": "teacher",
+    "text": "На якій горі знаходиться місце, де пророки Моїсей та Ілля з'являлися до Ісуса Христа?",
+    "options": [
+      "Гора Оліветова, Єрусалим",
+      "Таворська гора, Північна Месопотамія",
+      "Вершина Синай, Аравійський півострів",
+      "Пустеля Сафір, Едмонтон, Канада"
+    ],
+    "correctIndex": 0,
+    "reference": "Мк. 9:2-8",
+    "source": "ai",
+    "createdAt": "2026-05-23T10:16:38.171Z",
+    "topicNodeId": "geography-nt-sub-2-sub-4",
+    "topicPath": "Географія Нового Завіту > Міста та села > Єрусалим"
+  }
+]
