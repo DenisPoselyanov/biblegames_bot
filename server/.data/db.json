@@ -3,7 +3,6 @@
     "guest": {
       "userId": "guest",
       "displayName": "Гість",
-      "totalPoints": 1941,
       "themePoints": {
         "geography": 159,
         "judges": 57,
@@ -72,7 +71,7 @@
         "biblical-millionaire"
       ],
       "avatar": "sword",
-      "coins": 24949,
+      "coins": 67651,
       "unlockedAvatars": [
         "fish",
         "sword",
@@ -204,7 +203,7 @@
           "totalAnswers": 2
         }
       },
-      "updatedAt": "2026-06-02T15:45:45.326Z",
+      "updatedAt": "2026-06-02T16:12:00.427Z",
       "bibleTranslation": "UTT",
       "practiceTracks": [
         {
@@ -356,7 +355,7 @@
           "playersCount": 0
         }
       },
-      "lastUpdated": "2026-06-02T15:45:45.313Z"
+      "lastUpdated": "2026-06-02T16:12:00.406Z"
     }
   },
   "studyAnswers": {
@@ -911,6 +910,629 @@
   },
   "telemetry": {
     "guest": [
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:12:00.306Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:12:00.304Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:59.920Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:59.918Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:12:00.304Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:59.920Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:59.918Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:59.920Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:59.918Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:59.918Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:59.600Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:59.597Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:58.873Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:58.872Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.590Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.586Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:59.597Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:58.873Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:58.872Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.590Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.586Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:58.873Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:58.872Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.590Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.586Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:58.872Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.590Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.586Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.590Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.586Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:11:56.586Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:06:57.348Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:06:57.346Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:06:57.346Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:06:24.813Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:06:24.811Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:06:24.811Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:05:00.545Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:05:00.543Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:05:00.543Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:37.606Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:37.602Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:37.602Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:32.353Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:32.345Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:32.345Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:31.517Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:31.509Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:30.614Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:30.609Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.790Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.784Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.319Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.311Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:31.509Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:30.614Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:30.609Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.790Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.784Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.319Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.311Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:30.614Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:30.609Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.790Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.784Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.319Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.311Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:30.609Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.790Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.784Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.319Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.311Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.790Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.784Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.319Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.311Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:29.784Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.319Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.311Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.319Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.311Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:04:28.311Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:03:36.352Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:03:36.349Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:03:36.349Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "daily_task_completed",
+        "createdAt": "2026-06-02T15:56:48.299Z",
+        "payload": {
+          "taskId": "daily-correct"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T15:56:31.796Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T15:56:31.793Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T15:56:31.793Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
       {
         "name": "session_start",
         "createdAt": "2026-06-02T15:45:44.816Z",

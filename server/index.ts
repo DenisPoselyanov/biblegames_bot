@@ -16,6 +16,7 @@ import {
   sanitizeStudyAnswers,
   sanitizeTelemetryEvents,
 } from './middleware/validateBody';
+import { migrateProfileWallet, type ProfileWithLegacyWallet } from '../src/lib/storage';
 import { loadFullQuestionPool } from './questionPool';
 import { scriptureRouter } from './routes/scripture';
 import { questionsAdminRouter } from './routes/questionsAdmin';
@@ -133,7 +134,7 @@ protectedRouter.get('/profile/:userId', ...withTelegramAuth, asyncHandler(async 
     });
     return;
   }
-  res.json(profile);
+  res.json(migrateProfileWallet(profile as ProfileWithLegacyWallet));
 }));
 
 protectedRouter.put('/profile/:userId', ...withTelegramAuth, asyncHandler(async (req, res) => {
@@ -144,10 +145,13 @@ protectedRouter.put('/profile/:userId', ...withTelegramAuth, asyncHandler(async 
   }
   const existing = (await dbStore.getProfile(userId)) ?? {};
   const sanitized = sanitizeProfileBody(userId, req.body);
-  await dbStore.setProfile(userId, {
+  const merged = migrateProfileWallet({
     ...existing,
     ...sanitized,
     userId,
+  });
+  await dbStore.setProfile(userId, {
+    ...merged,
     updatedAt: new Date().toISOString(),
   });
   res.json({ ok: true });

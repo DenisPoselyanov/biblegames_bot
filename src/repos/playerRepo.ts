@@ -1,5 +1,5 @@
 import type { CompletedLevel, PlayerProfile, PracticeTrackProgress, PlayerRank } from '../types';
-import { loadProfile, saveProfile, walletCoins, type ProfileWithLegacyWallet } from '../lib/storage';
+import { loadProfile, migrateProfileWallet, saveProfile, type ProfileWithLegacyWallet } from '../lib/storage';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { getDefaultPlayerRank, getTrackKey } from '../lib/practiceProgression';
 import { DIFFICULTY_ORDER } from '../types';
@@ -88,7 +88,9 @@ function mergePracticeTracks(
   return [...map.values()];
 }
 
-function mergeProfiles(local: PlayerProfile, remote: PlayerProfile): PlayerProfile {
+function mergeProfiles(local: PlayerProfile, remote: PlayerProfile & ProfileWithLegacyWallet): PlayerProfile {
+  const localWallet = migrateProfileWallet(local);
+  const remoteWallet = migrateProfileWallet(remote);
   const themePoints: Record<string, number> = { ...remote.themePoints };
   for (const [key, value] of Object.entries(local.themePoints)) {
     themePoints[key] = Math.max(themePoints[key] ?? 0, value);
@@ -117,12 +119,9 @@ function mergeProfiles(local: PlayerProfile, remote: PlayerProfile): PlayerProfi
   }
 
   return {
-    ...remote,
+    ...remoteWallet,
     displayName: local.displayName || remote.displayName,
-    coins: Math.max(
-      walletCoins(local as ProfileWithLegacyWallet),
-      walletCoins(remote as ProfileWithLegacyWallet),
-    ),
+    coins: Math.max(localWallet.coins, remoteWallet.coins),
     survivalHighScore: Math.max(local.survivalHighScore, remote.survivalHighScore),
     millionaireWins: Math.max(local.millionaireWins, remote.millionaireWins),
     millionaireMaxLevel: Math.max(local.millionaireMaxLevel, remote.millionaireMaxLevel),

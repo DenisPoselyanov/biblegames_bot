@@ -22,8 +22,18 @@ function migrateDifficulty(old: string): Difficulty {
 /** Legacy profile JSON may still include totalPoints before migration. */
 export type ProfileWithLegacyWallet = Partial<PlayerProfile> & { totalPoints?: number };
 
+/** @deprecated Use migrateProfileWallet — kept for call sites migrating off walletCoins */
 export function walletCoins(profile: ProfileWithLegacyWallet): number {
   return (profile.coins ?? 0) + (profile.totalPoints ?? 0);
+}
+
+/** One-time legacy wallet: sum coins + totalPoints, drop totalPoints from persisted data. */
+export function migrateProfileWallet<T extends ProfileWithLegacyWallet>(
+  profile: T,
+): Omit<T, 'totalPoints'> & { coins: number } {
+  const coins = walletCoins(profile);
+  const { totalPoints: _legacy, ...rest } = profile;
+  return { ...rest, coins };
 }
 
 function normalizeProfile(
@@ -31,7 +41,8 @@ function normalizeProfile(
   userId: string,
   displayName: string,
 ): PlayerProfile {
-  return {
+  return migrateProfileWallet({
+    totalPoints: profile.totalPoints,
     userId,
     displayName: profile.displayName ?? displayName,
     themePoints: profile.themePoints ?? {},
@@ -48,7 +59,7 @@ function normalizeProfile(
     activeTheme: profile.activeTheme ?? DEFAULT_COSMETIC_THEME_ID,
     achievements: profile.achievements ?? [],
     avatar: profile.avatar ?? '',
-    coins: walletCoins(profile),
+    coins: profile.coins ?? 0,
     unlockedAvatars: profile.unlockedAvatars ?? [],
     streakDays: profile.streakDays ?? 0,
     lastActiveAt: profile.lastActiveAt ?? null,
@@ -56,7 +67,7 @@ function normalizeProfile(
     bibleTranslation: normalizeBollsTranslation(profile.bibleTranslation ?? DEFAULT_BOLLS_TRANSLATION),
     practiceTracks: profile.practiceTracks ?? [],
     playerRank: profile.playerRank ?? getDefaultPlayerRank(),
-  };
+  });
 }
 
 function emptyGlobalStats(): GlobalStats {

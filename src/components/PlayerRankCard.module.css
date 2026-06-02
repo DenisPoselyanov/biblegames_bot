@@ -98,8 +98,8 @@
   color: var(--success-text, #6dbf7e);
 }
 
-.roadStepLocked {
-  opacity: 0.4;
+.roadStepUpcoming {
+  opacity: 0.72;
 }
 
 .roadEmoji {

@@ -4,7 +4,6 @@ import {
   computeWisdomProgress,
   formatRankLabel,
   isGlobalRankAchieved,
-  isGlobalRankUnlocked,
 } from '../lib/practiceProgression';
 import styles from './PlayerRankCard.module.css';
 
@@ -52,19 +51,16 @@ export function PlayerRankCard({ playerRank }: PlayerRankCardProps) {
 
       <div className={styles.roadmap} aria-label="Дорожня карта рангів">
         {DIFFICULTIES.map((tier) => {
-          const unlocked = isGlobalRankUnlocked(playerRank, tier);
           const achieved = isGlobalRankAchieved(playerRank, tier);
           const isCurrent = playerRank.tier === tier;
           let stepClass = styles.roadStep;
-          if (!unlocked) stepClass += ` ${styles.roadStepLocked}`;
-          else if (achieved) stepClass += ` ${styles.roadStepDone}`;
+          if (achieved) stepClass += ` ${styles.roadStepDone}`;
           else if (isCurrent) stepClass += ` ${styles.roadStepCurrent}`;
+          else stepClass += ` ${styles.roadStepUpcoming}`;
 
           return (
             <div key={tier} className={stepClass}>
-              <span className={styles.roadEmoji}>
-                {!unlocked ? '🔒' : RANK_EMOJIS[tier]}
-              </span>
+              <span className={styles.roadEmoji}>{RANK_EMOJIS[tier]}</span>
               <span className={styles.roadName}>{DIFFICULTY_LABELS[tier]}</span>
               {isCurrent && (
                 <span className={styles.roadName}>{DIFFICULTY_ORDER[tier] + 1}/7</span>
