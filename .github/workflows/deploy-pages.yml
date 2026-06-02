@@ -19,7 +19,7 @@ jobs:
           cache: npm
 
       - name: Install and build
-        run: npm ci && npm run build
+        run: npm ci && npm run build && node scripts/copy-github-pages-404.mjs
         env:
           VITE_BASE_PATH: /biblegames_bot/
 

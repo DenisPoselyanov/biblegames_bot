@@ -32,7 +32,8 @@ npm run build
 - **Правильний URL для BotFather:** `https://denisposelyanov.github.io/biblegames_bot/` (обовʼязково з `/biblegames_bot/`).
 - Корінь `https://denisposelyanov.github.io/` дає 404 — це не Mini App.
 - Після `git push` у `main` workflow [deploy-pages.yml](.github/workflows/deploy-pages.yml) збирає `dist/` і публікує на гілку `gh-pages` (1–3 хв).
-- Локальна збірка для Pages: `set VITE_BASE_PATH=/biblegames_bot/` (Windows) або `VITE_BASE_PATH=/biblegames_bot/ npm run build`.
+- Локальна збірка для Pages: `npm run build:pages` (base path + `404.html` для перезавантаження в Telegram).
+- **Перезавантаження** на вкладці «Профіль» / «Гра» без `404.html` давало GitHub 404 — після деплою з `copy-github-pages-404.mjs` має відкриватися знову.
 
 ### Підключення до бота
 

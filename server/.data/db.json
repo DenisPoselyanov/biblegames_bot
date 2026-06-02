@@ -150,15 +150,15 @@
           "totalAnswers": 10
         },
         "pentateuch-sub-1-sub-1": {
-          "mastery": 83,
-          "confidence": 68,
-          "lastReviewedAt": "2026-06-02T15:37:26.150Z",
+          "mastery": 100,
+          "confidence": 71,
+          "lastReviewedAt": "2026-06-02T16:16:17.601Z",
           "errorTags": [
             "knowledge-gap"
           ],
-          "correctStreak": 7,
+          "correctStreak": 9,
           "wrongCount": 7,
-          "totalAnswers": 22
+          "totalAnswers": 24
         },
         "mosaic-law-sub-1-sub-1": {
           "mastery": 0,
@@ -203,7 +203,7 @@
           "totalAnswers": 2
         }
       },
-      "updatedAt": "2026-06-02T16:12:00.427Z",
+      "updatedAt": "2026-06-02T16:16:17.634Z",
       "bibleTranslation": "UTT",
       "practiceTracks": [
         {
@@ -355,7 +355,7 @@
           "playersCount": 0
         }
       },
-      "lastUpdated": "2026-06-02T16:12:00.406Z"
+      "lastUpdated": "2026-06-02T16:16:24.023Z"
     }
   },
   "studyAnswers": {
@@ -905,11 +905,143 @@
         "subthemeId": "pentateuch-sub-1-sub-1",
         "isCorrect": true,
         "answeredAt": "2026-06-02T15:37:26.148Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00303",
+        "subthemeId": "pentateuch-sub-1-sub-1",
+        "isCorrect": true,
+        "answeredAt": "2026-06-02T16:16:07.762Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00304",
+        "subthemeId": "pentateuch-sub-1-sub-1",
+        "isCorrect": true,
+        "answeredAt": "2026-06-02T16:16:17.600Z"
       }
     ]
   },
   "telemetry": {
     "guest": [
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:16:23.841Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:16:23.837Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:16:23.837Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-02T16:16:17.601Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00304",
+          "subthemeId": "pentateuch-sub-1-sub-1",
+          "nodeId": "pentateuch-sub-1-sub-1",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-02T16:16:07.764Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00303",
+          "subthemeId": "pentateuch-sub-1-sub-1",
+          "nodeId": "pentateuch-sub-1-sub-1",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-02T16:16:00.276Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-02T16:15:57.677Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:15:33.974Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:15:33.972Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:15:33.972Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:15:33.247Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:15:33.246Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:15:33.246Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:15:29.766Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:15:29.763Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T16:15:29.763Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
       {
         "name": "session_start",
         "createdAt": "2026-06-02T16:12:00.306Z",

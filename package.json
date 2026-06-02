@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node scripts/run-vite.mjs dev",
     "build": "tsc -b && node scripts/run-vite.mjs build",
+    "build:pages": "node scripts/build-pages.mjs",
     "lint": "eslint .",
     "preview": "node scripts/run-vite.mjs preview",
     "fix-questions-ai": "tsx scripts/fix-questions-ai.mjs",
