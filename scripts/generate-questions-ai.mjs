@@ -2,12 +2,10 @@
 /**
  * Локальна AI (Ollama) — генерує питання в data/question-db/{theme}.json
  *
- * npm run generate-ai -- --theme geography --count 50
- * npm run generate-ai -- --theme paul --count 30 --difficulty medium
- * npm run generate-ai -- --all --count 20
- * npm run generate-ai -- --group old-testament --count 100
- * npm run generate-ai -- --topic geography-sub-1 --count 20
- * npm run generate-ai -- --topic gospels-sub-2-sub-1 --count 10 --difficulty student
+ * npm run generate-ai -- --topic pentateuch-sub-1-sub-1 --count 50 --difficulty baby
+ * npm run fill-practice-nodes -- --theme pentateuch
+ *
+ * Генерація лише по конкретних підтемах (--topic). Для масового заповнення: fill-practice-nodes.
  */
 
 import { fileURLToPath } from 'url';
@@ -31,6 +29,17 @@ import {
   normalizeAiQuestion,
   makeQuestionId,
 } from './lib/question-db.mjs';
+import {
+  PRACTICE_QUESTIONS_PER_STAGE,
+  STAGE_COUNT_BY_DIFFICULTY,
+} from './lib/practice-config.mjs';
+import {
+  assertSubtopicNodeId,
+  buildSubtopicPromptBlock,
+  isSpecificSubtopicNodeId,
+  resolveStorageThemeId,
+  resolveSubtopicContext,
+} from './lib/topic-context.mjs';
 
 loadProjectEnv();
 const { provider: DEFAULT_PROVIDER, model: DEFAULT_MODEL } = defaultAiOpts();
@@ -52,6 +61,7 @@ function parseArgs() {
     difficulties: null,
     provider: DEFAULT_PROVIDER,
     model: DEFAULT_MODEL,
+    allowThemeOnly: false,
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -60,17 +70,33 @@ function parseArgs() {
     else if (args[i] === '--topic' && args[i + 1]) opts.topic = args[++i];
     else if (args[i] === '--all') opts.all = true;
     else if (args[i] === '--count' && args[i + 1]) opts.count = parseInt(args[++i], 10);
-    else if (args[i] === '--difficulties' && args[i + 1]) opts.difficulties = args[++i];
+    else if (args[i] === '--stages' && args[i + 1]) {
+      const stages = parseInt(args[++i], 10);
+      if (!Number.isFinite(stages) || stages <= 0) {
+        console.error('❌ --stages має бути додатним числом');
+        process.exit(1);
+      }
+      opts.count = stages * PRACTICE_QUESTIONS_PER_STAGE;
+    } else if (args[i] === '--difficulties' && args[i + 1]) opts.difficulties = args[++i];
     else if (args[i] === '--difficulty' && args[i + 1]) opts.difficulty = args[++i];
     else if (args[i] === '--provider' && args[i + 1]) opts.provider = args[++i];
     else if (args[i] === '--model' && args[i + 1]) opts.model = args[++i];
+    else if (args[i] === '--allow-theme-only') opts.allowThemeOnly = true;
   }
   applyAiCliFlags(opts, args);
 
+  if (!opts.topic && !opts.allowThemeOnly) {
+    if (opts.all || opts.theme || opts.group) {
+      console.error('❌ Генерація лише по підтемах (--topic <nodeId>).');
+      console.error('   Масове заповнення: npm run fill-practice-nodes -- --theme <id>');
+      console.error('   Legacy без підтем: додай --allow-theme-only (не для практики в грі)');
+      process.exit(1);
+    }
+  }
+
   if (!opts.all && !opts.theme && !opts.group && !opts.topic) {
-    console.error('❌ Вкажи один з: --theme <id>, --group <id>, --topic <nodeId> або --all');
+    console.error('❌ Вкажи --topic <nodeId> (рекомендовано) або --theme з --allow-theme-only');
     console.error('Теми:', THEME_IDS.join(', '));
-    console.error('Групи:', GROUPS.map(g => g.id).join(', '));
     process.exit(1);
   }
 
@@ -103,6 +129,10 @@ function parseArgs() {
     process.exit(1);
   }
 
+  if (opts.topic) {
+    assertSubtopicNodeId(opts.topic, '--topic');
+  }
+
   return opts;
 }
 
@@ -115,6 +145,14 @@ export function resolveDifficultyList(opts) {
 
 /** Визначити themeId на основі опцій */
 export function resolveTargetThemeIds(opts) {
+  if (opts.topic) {
+    const storageId = resolveStorageThemeId(opts.topic);
+    if (storageId) return [storageId];
+    const hit = findTopicNodeGlobally(opts.topic);
+    if (hit?.node?.themeId) return [hit.node.themeId];
+    console.error(`  ❌ Не вдалося визначити themeId для "${opts.topic}"`);
+    process.exit(1);
+  }
   if (opts.all) {
     return THEME_IDS;
   }
@@ -125,37 +163,19 @@ export function resolveTargetThemeIds(opts) {
     const group = getGroup(opts.group);
     return group ? group.themeIds : [];
   }
-  if (opts.topic) {
-    const hit = findTopicNodeGlobally(opts.topic);
-    if (hit?.node) {
-      if (hit.node.themeId) {
-        return [hit.node.themeId];
-      }
-      if (hit.covenantId) {
-        return [hit.covenantId];
-      }
-      if (hit.node.aggregateThemeIds) {
-        return hit.node.aggregateThemeIds.filter((id) => THEME_IDS.includes(id) || GROUPS.some((g) => g.id === id));
-      }
-      console.error(`  ❌ Topic node "${opts.topic}" не має themeId.`);
-      process.exit(1);
-    }
-    console.error(`  ❌ Topic node "${opts.topic}" не знайдено в topics-db.`);
-    process.exit(1);
-  }
   return [];
 }
 
 /** Отримати контекст для промпту */
 export function resolveContext(opts) {
   if (opts.topic) {
-    const hit = findTopicNodeGlobally(opts.topic);
-    if (hit?.node && hit.root) {
-      const path = buildNodePath(hit.root, opts.topic) || [];
+    const ctx = resolveSubtopicContext(opts.topic);
+    if (ctx) {
       return {
-        title: hit.node.title,
-        description: hit.node.description || '',
-        path,
+        title: ctx.title,
+        description: ctx.description,
+        path: ctx.path,
+        nodeId: ctx.nodeId,
       };
     }
   }
@@ -183,35 +203,28 @@ export function resolveContext(opts) {
 }
 
 function buildPrompt(context, difficulty, count) {
-  const pathStr = context.path.length > 1
-    ? `Шлях: ${context.path.join(' > ')}`
-    : `Тема: ${context.title}`;
+  const subtopicBlock = buildSubtopicPromptBlock(context, difficulty);
+  const stageCount = STAGE_COUNT_BY_DIFFICULTY[difficulty] ?? 5;
+  const perStage = PRACTICE_QUESTIONS_PER_STAGE;
 
   return `Ти експерт з Біблії. Створи рівно ${count} УНІКАЛЬНИХ вікторинних питань українською.
 
-${pathStr}
-Контекст: ${context.description}
-Складність: ${difficulty}
-  - baby (👶 Немовля): дуже прості, базові факти, які знає кожен
-  - child (🧒 Дитина): легкі питання, основи віри
-  - youth (🧑 Юнак): середні, потребують розуміння
-  - student (🎓 Учень): складні, детальні знання
-  - preacher (📖 Проповідник): експертні, глибокі знання Писання
-  - teacher (👨‍🏫 Учитель): дуже складні, рідкісні факти, аналіз
-  - theologian (⛪ Богослов): найскладніші, богословські нюанси
+${subtopicBlock}
+
+КОНТЕКСТ ПРАКТИКИ:
+- Питання йдуть блоками по ${perStage} (етап 1: 1–${perStage}, …).
+- Для рівня ${difficulty} потрібно ${stageCount} етапів (разом ${stageCount * perStage} питань на підтему).
+- Уникай дублікатів у межах цієї підтеми та складності.
 
 ПРАВИЛА:
 1. Кожне питання — 4 варіанти відповіді
-2. Поле "correct" — індекс правильної відповіді (0, 1, 2 або 3), НЕ завжди 0
-3. Неправильні варіанти мають бути правдоподібними
-4. Додай "ref" з біблійним посиланням (наприклад "Ін. 3:16")
-5. Без повторів, без вигаданих імен
-6. Додай "explanationShort" — 1-2 речення, чому правильна відповідь (українською)
+2. Поле "correct" — індекс 0–3, НЕ завжди 0
+3. Неправильні варіанти правдоподібні, але з цієї підтеми
+4. "ref" — біблійне посилання
+5. "explanationShort" — 1-2 речення українською
 
 Відповідай ТІЛЬКИ JSON-масивом:
-[
-  {"text":"Питання?","options":["А","Б","В","Г"],"correct":2,"ref":"Бут. 1:1","explanationShort":"..."}
-]`;
+[{"text":"...","options":["А","Б","В","Г"],"correct":2,"ref":"Бут. 1:1","explanationShort":"..."}]`;
 }
 
 function normalizeAiQuestionExtended(raw, themeId, difficulty, index, topicPath, topicNodeId) {
@@ -250,7 +263,7 @@ function validateBatch(items, themeId, difficulty, startIndex, topicPath, topicN
   const valid = [];
   for (let i = 0; i < items.length; i++) {
     const q = normalizeAiQuestionExtended(items[i], themeId, difficulty, startIndex + i, topicPath, topicNodeId);
-    if (q) valid.push(q);
+    if (q && isSpecificSubtopicNodeId(q.topicNodeId)) valid.push(q);
   }
   return valid;
 }
@@ -286,7 +299,14 @@ export async function generateForTheme(
   topicNodeId,
   contextOverride,
   difficultiesOverride = null,
+  options = {},
 ) {
+  const maxAttempts = options.maxAttempts ?? 5;
+  const requireSubtopic = options.requireSubtopic !== false;
+
+  if (requireSubtopic && !isSpecificSubtopicNodeId(topicNodeId)) {
+    throw new Error('generateForTheme: потрібен topicNodeId конкретної підтеми');
+  }
   const diffs =
     difficultiesOverride?.length
       ? difficultiesOverride
@@ -301,7 +321,7 @@ export async function generateForTheme(
     let remaining = perDiff;
     let attempts = 0;
 
-    while (remaining > 0 && attempts < 5) {
+    while (remaining > 0 && attempts < maxAttempts) {
       const batchCount = Math.min(remaining, BATCH_SIZE);
       try {
         const batch = await generateBatch(themeId, diff, batchCount, model, provider, topicPath, topicNodeId, contextOverride);
@@ -309,7 +329,7 @@ export async function generateForTheme(
           attempts++;
           continue;
         }
-        const result = appendQuestions(themeId, batch);
+        const result = appendQuestions(themeId, batch, { requireSubtopic });
         addedTotal += result.added;
         // лічимо лише унікальні (не дублікати), щоб не зупинитись передчасно
         remaining -= Math.max(result.added, 1);
@@ -384,9 +404,8 @@ async function main() {
   console.log('\n==========================================');
   console.log(`✅ Додано нових питань: ${grandTotal}`);
   console.log('\nДалі:');
-  console.log('  npm run questions:stats   — статистика');
-  console.log('  npm run dev               — гра підхопить JSON автоматично');
-  console.log('\nАбо через Telegram-бота: /stats, /generate');
+  console.log('  npm run fill-practice-nodes -- --dry-run');
+  console.log('  npm run questions:stats');
 }
 
 const __filename = fileURLToPath(import.meta.url);

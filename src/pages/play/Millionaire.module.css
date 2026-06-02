@@ -9,54 +9,123 @@
 
 .top {
   flex-shrink: 0;
-  padding: 0.75rem 1rem 0.5rem;
+  width: 100%;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   padding-top: max(0.75rem, env(safe-area-inset-top));
+  overflow: hidden;
+}
+
+.topInner {
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
+  padding: 0 1rem 0.75rem;
 }
 
 .topRow {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
-.topTitle {
-  font-size: 1.15rem;
-  font-family: var(--font-serif);
-  color: var(--gold-light);
-  margin: 0;
-  text-align: center;
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.backBtn:active {
+  background: var(--surface-hover);
+  transform: scale(0.92);
+}
+
+.statusCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   width: 100%;
 }
 
-.ladder {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+.progressTrack {
+  display: flex;
   gap: 0.35rem;
-  padding: 0.5rem;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
+  width: 100%;
 }
 
-.ladderStep {
-  padding: 0.3rem 0.2rem;
-  border-radius: 8px;
+.progressSegment {
+  flex: 1;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--border);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.progressSegmentDone {
+  background: color-mix(in srgb, var(--gold) 35%, var(--border));
+}
+
+.progressSegmentActive {
+  background: var(--gold);
+  box-shadow: 0 0 12px var(--gold-glow);
+}
+
+.progressSegmentSafe {
+  box-shadow: inset 0 0 0 1px var(--accent-border-strong);
+}
+
+.progressSegmentSafe.progressSegmentActive {
+  box-shadow:
+    0 0 12px var(--gold-glow),
+    inset 0 0 0 1px var(--accent-border-strong);
+}
+
+.statusRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.statusBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.statusBlockEnd {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.statusLabel {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--text-muted);
-  font-size: 0.68rem;
+}
+
+.statusValue {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
   font-weight: 700;
-  text-align: center;
-}
-
-.activeStep {
-  background: rgba(201, 162, 39, 0.22);
-  color: var(--gold-light);
-}
-
-.safeStep {
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  line-height: 1.15;
+  color: var(--gold);
 }
 
 .spacer {
@@ -88,13 +157,6 @@
   letter-spacing: 0.05em;
 }
 
-.prizeTitle {
-  margin: 0;
-  color: var(--gold);
-  font-family: var(--font-serif);
-  font-size: 1.55rem;
-}
-
 .lifelines {
   display: flex;
   gap: 0.5rem;
@@ -105,14 +167,19 @@
   flex: 1;
   min-height: 2.5rem;
   padding: 0 0.5rem;
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  border: 1px solid var(--accent-border-strong);
   border-radius: 12px;
-  background: rgba(201, 162, 39, 0.08);
+  background: var(--accent-bg);
   color: var(--gold-light);
   font-weight: 700;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
 }
 
 .lifelines button:active:not(:disabled) {
@@ -127,9 +194,9 @@
 .notice {
   margin: 0 0 0.85rem;
   padding: 0.65rem 0.75rem;
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  border: 1px solid var(--accent-border-strong);
   border-radius: 10px;
-  background: rgba(201, 162, 39, 0.1);
+  background: var(--accent-bg-strong);
   color: var(--gold-light);
   font-size: 0.9rem;
   font-weight: 700;
@@ -175,7 +242,7 @@
 
 .option.selected {
   border-color: var(--gold);
-  background: rgba(201, 162, 39, 0.12);
+  background: var(--accent-bg-strong);
 }
 
 .option.correct {
@@ -196,34 +263,68 @@
   margin-top: 0.85rem;
 }
 
-.btnExit {
-  flex: 0 0 auto;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--bg);
-  color: var(--text-muted);
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btnExit:active {
-  transform: scale(0.95);
-}
-
 .btnTake {
   flex: 1;
   padding: 0.85rem 1rem;
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  border: 1px solid var(--accent-border-strong);
   border-radius: 14px;
-  background: rgba(201, 162, 39, 0.1);
+  background: var(--accent-bg-strong);
   color: var(--gold-light);
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
+}
+
+.feedback {
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.feedbackBadge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.feedbackCorrect {
+  color: var(--success-text);
+  background: var(--success-bg);
+  border: 1px solid color-mix(in srgb, var(--success) 45%, transparent);
+}
+
+.explanationButton {
+  width: fit-content;
+  max-width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.explanationButton:active {
+  transform: scale(0.985);
 }
 
 .btnTake:active:not(:disabled) {
@@ -236,10 +337,13 @@
 }
 
 .btnPrimary {
+  width: 100%;
   flex: 1;
   padding: 1rem;
-  background: linear-gradient(135deg, var(--gold), #a67c00);
-  color: #1a1208;
+  background: var(--cta-bg);
+  color: var(--on-primary);
+  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
   border: none;
   border-radius: 14px;
   font-weight: 700;
@@ -299,7 +403,7 @@
 }
 
 @media (max-width: 360px) {
-  .ladder {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .statusValue {
+    font-size: 1.15rem;
   }
 }

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, type ReactElement } from 'react';
 import type { TopicNode, TopicHierarchyMap, MasteryState } from '../types';
 import { flattenTopicNodes } from '../data/topicDbLoader';
 import styles from './TopicMap.module.css';
@@ -88,7 +88,7 @@ export function TopicMap({
   };
 
   // Рендеринг вузла залежно від режиму
-  const renderNode = (node: TopicNode, depth: number = 0): JSX.Element => {
+  const renderNode = (node: TopicNode, depth: number = 0): ReactElement => {
     const mastery = masteryStates[node.id];
     const isExpanded = expandedNodes.has(node.id);
     const hasChildren = node.children && node.children.length > 0;

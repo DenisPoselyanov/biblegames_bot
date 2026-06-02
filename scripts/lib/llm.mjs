@@ -82,7 +82,7 @@ export function resolveModel(provider, opts = {}) {
 
   switch (provider) {
     case 'gemini':
-      return process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+      return process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
     case 'omniroute':
       return process.env.OMNIROUTE_MODEL || 'google/gemini-2.0-flash';
     default:

@@ -1,21 +1,40 @@
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getThemeById } from '../data/themes';
-import { getQuestionCountByDifficulty, getQuestionCountByDifficultyAsync, getQuestionCountByCategoryAsync } from '../data/questions';
-import { CATEGORIES } from '../data/categories';
+import {
+  getQuestionCountByDifficultyAsync,
+  getQuestionCountByCategoryAsync,
+  getQuestionCountForNodeAsync,
+} from '../data/questions';
 import { usePlayer } from '../context/PlayerContext';
 import {
   DIFFICULTIES,
   DIFFICULTY_LABELS,
   DIFFICULTY_ORDER,
-  DIFFICULTY_POINTS,
 } from '../types';
-import type { Difficulty, TopicNode } from '../types';
+import type { Difficulty, PracticeTrackProgress, TopicNode } from '../types';
 import { Icon } from '../components/Icon';
+import { InfoTooltip } from '../components/InfoTooltip';
+import { STAGE_POINTS_TOOLTIP, THEME_POINTS_TOOLTIP } from '../lib/practiceScoringHelp';
+import { PracticeStageStepper } from '../components/PracticeStageStepper';
+import { MotionStagger, MotionStaggerItem } from '../components/motion';
+import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import { loadTopicHierarchy, loadAllTopicHierarchies, findNodeById, findParentNode } from '../data/topicDbLoader';
+import {
+  canPlayDifficulty,
+  computeNodePracticeProgressPercent,
+  countPassedStages,
+  findPracticeTrack,
+  getDifficultyUnlockRankLabel,
+  getDifficultyUnlockRequirement,
+  getStageQuizPath,
+  STAGE_COUNT_BY_DIFFICULTY,
+} from '../lib/practiceProgression';
 import styles from './ThemeDetail.module.css';
 
 export function ThemeDetail() {
+  const { shouldEnter } = useMotionEntrance('theme-detail');
   const { themeId, nodeId: urlNodeId } = useParams<{ themeId: string; nodeId?: string }>();
   const navigate = useNavigate();
   const theme = getThemeById(themeId ?? '');
@@ -99,7 +118,9 @@ export function ThemeDetail() {
 
         const entries = await Promise.all(
           DIFFICULTIES.map(async (diff) => {
-            const count = await getQuestionCountByDifficultyAsync(tid, diff);
+            const count = urlNodeId && hierarchy
+              ? await getQuestionCountForNodeAsync(urlNodeId, hierarchy, diff)
+              : await getQuestionCountByDifficultyAsync(tid, diff);
             return [diff, count] as const;
           }),
         );
@@ -143,7 +164,14 @@ export function ThemeDetail() {
     ? themeId ?? (aggregateThemeIds.length > 0 ? aggregateThemeIds[0] : '')
     : (theme?.id ?? '');
 
-  const effectiveNodeId = selectedNode?.id;
+  const effectiveNodeId = selectedNode?.id ?? urlNodeId ?? null;
+  const trackNodeId = isAggregate ? (selectedNode?.id ?? urlNodeId ?? null) : effectiveNodeId;
+  const parentBranchChips =
+    selectedNode && topicHierarchy
+      ? (findNodePath(topicHierarchy, selectedNode.id) ?? [])
+          .slice(0, -1)
+          .map((node) => node.title)
+      : [];
 
   const handleBack = () => {
     if (isAggregate) {
@@ -201,12 +229,15 @@ export function ThemeDetail() {
         <h1>{selectedNode ? selectedNode.title : theme?.title}</h1>
         <p>{selectedNode ? selectedNode.description : theme?.description}</p>
         <div className={styles.heroChips}>
-          <span className={styles.heroChip}>
-            {selectedNode ? selectedNode.title : theme?.title}
-          </span>
-          {themePoints > 0 && (
+          {parentBranchChips.map((title) => (
+            <span key={title} className={styles.heroChip}>
+              {title}
+            </span>
+          ))}
+          {!isAggregate && (
             <span className={styles.heroChipPoints}>
-              <Icon name="star" size={12} /> {themePoints} очок
+              <Icon name="star" size={12} /> {themePoints} монет теми
+              <InfoTooltip label="Як рахуються монети теми" text={THEME_POINTS_TOOLTIP} />
             </span>
           )}
         </div>
@@ -219,7 +250,13 @@ export function ThemeDetail() {
             className={styles.hierarchyToggle}
             onClick={() => setShowHierarchy(!showHierarchy)}
           >
-            <Icon name="back" size={16} style={{ transform: showHierarchy ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+            <motion.span
+              animate={{ rotate: showHierarchy ? 90 : 0 }}
+              transition={{ duration: 0.2 }}
+              style={{ display: 'inline-flex' }}
+            >
+              <Icon name="back" size={16} />
+            </motion.span>
             {showHierarchy ? 'Сховати деталі' : 'Показати деталі теми'}
           </button>
 
@@ -227,9 +264,10 @@ export function ThemeDetail() {
             <div className={styles.hierarchyTree}>
               <HierarchyTree
                 node={topicHierarchy}
+                themeId={theme?.id ?? ''}
+                practiceTracks={profile.practiceTracks ?? []}
                 selectedNodeId={selectedNode?.id ?? null}
                 onSelectNode={handleSelectNode}
-                masteryStates={profile.studyMastery}
               />
             </div>
           )}
@@ -237,78 +275,102 @@ export function ThemeDetail() {
       )}
 
       <h2 className={styles.subtitle}>
-        Обери рівень складності{selectedNode && !isAggregate ? ` для ${selectedNode.title}` : ''}
+        <span>
+          Обери рівень складності{selectedNode && !isAggregate ? ` для ${selectedNode.title}` : ''}
+        </span>
+        {!isAggregate && (
+          <InfoTooltip label="Як рахуються монети за етап" text={STAGE_POINTS_TOOLTIP} />
+        )}
       </h2>
 
-      <ul className={styles.levels}>
+      <MotionStagger as="ul" className={styles.levels} enter={shouldEnter}>
         {sortedDifficulties.map((diff) => {
-          const done = isAggregate
-            ? false
-            : profile.completedLevels.some(
-                (l) => l.themeId === theme?.id && l.difficulty === diff,
-              );
-          const completedLevel = isAggregate
-            ? null
-            : profile.completedLevels.find(
-                (l) => l.themeId === theme?.id && l.difficulty === diff,
-              );
           const availableQuestions = questionCounts[diff] ?? 0;
           const diffIndex = DIFFICULTY_ORDER[diff];
           const emojis = ['👶', '🧒', '🧑', '🎓', '📖', '👨‍🏫', '⛪'];
-          const points = DIFFICULTY_POINTS[diff];
-
-          // Формуємо URL
-          let toPath: string;
-          if (isAggregate && effectiveNodeId) {
-            toPath = `/play/study/quiz/${effectiveThemeId}/${diff}/${effectiveNodeId}`;
-          } else if (effectiveNodeId) {
-            toPath = `/play/study/quiz/${effectiveThemeId}/${diff}/${effectiveNodeId}`;
-          } else {
-            toPath = `/play/study/quiz/${effectiveThemeId}/${diff}`;
-          }
+          const stageCount = STAGE_COUNT_BY_DIFFICULTY[diff];
+          const difficultyUnlocked = canPlayDifficulty(profile.playerRank, diff);
+          const track = findPracticeTrack(
+            profile.practiceTracks ?? [],
+            effectiveThemeId,
+            trackNodeId,
+            diff,
+          );
+          const passedStages = track ? countPassedStages(track) : 0;
+          const progressPct = stageCount > 0 ? Math.round((passedStages / stageCount) * 100) : 0;
+          const unlockHint = getDifficultyUnlockRequirement(diff);
+          const unlockRankLabel = getDifficultyUnlockRankLabel(diff);
+          const nextStageIndex =
+            passedStages === stageCount ? 0 : (track?.highestUnlockedStage ?? 0);
+          const nextStagePath = difficultyUnlocked && availableQuestions > 0
+            ? getStageQuizPath(effectiveThemeId, diff, nextStageIndex, trackNodeId)
+            : null;
 
           return (
-            <li key={diff}>
-              <Link
-                to={toPath}
-                className={`${styles.level} ${done ? styles.levelDone : ''} ${availableQuestions === 0 ? styles.levelDisabled : ''}`}
-                style={{ pointerEvents: availableQuestions === 0 ? 'none' : 'auto' }}
+            <MotionStaggerItem as="li" key={diff}>
+              <div
+                className={`${styles.level} ${passedStages === stageCount ? styles.levelDone : ''} ${!difficultyUnlocked || availableQuestions === 0 ? styles.levelLocked : ''}`}
               >
                 <div className={styles.levelTop}>
                   <div className={styles.levelInfo}>
                     <span className={styles.levelEmoji}>{emojis[diffIndex]}</span>
                     <div>
-                      <span className={styles.levelLabel}>{DIFFICULTY_LABELS[diff]}</span>
+                      <span className={styles.levelLabel}>
+                        {!difficultyUnlocked && '🔒 '}
+                        {DIFFICULTY_LABELS[diff]}
+                      </span>
                       <span className={styles.levelMeta}>
-                        {availableQuestions} питань · {points} очок
+                        {stageCount} етапів · {availableQuestions} питань
                       </span>
                     </div>
                   </div>
-                  <span
-                    className={`${styles.levelStatus} ${done ? styles.levelStatusDone : styles.levelStatusNew}`}
-                  >
-                    {done ? '✅' : availableQuestions === 0 ? 'Немає питань' : 'Почати'}
-                  </span>
+                  {difficultyUnlocked && nextStagePath && availableQuestions > 0 ? (
+                    <Link to={nextStagePath} className={`${styles.levelStatus} ${styles.levelStatusNew}`}>
+                      {passedStages === stageCount ? 'Повторити' : `Етап ${nextStageIndex + 1}`}
+                    </Link>
+                  ) : !difficultyUnlocked && unlockHint ? (
+                    <span
+                      className={`${styles.levelStatus} ${styles.levelStatusLocked}`}
+                      title={unlockHint}
+                      aria-label={unlockHint}
+                    >
+                      <span className={styles.unlockBadgePrefix}>Ранг</span>
+                      <span className={styles.unlockBadgeRank}>{unlockRankLabel}</span>
+                    </span>
+                  ) : (
+                    <span className={`${styles.levelStatus} ${styles.levelStatusLocked}`}>
+                      {availableQuestions === 0 ? 'Немає питань' : '—'}
+                    </span>
+                  )}
                 </div>
 
-                {done && !isAggregate && (
-                  <div className={styles.progressArea}>
-                    <div className={styles.progressRow}>
-                      <span className={styles.progressLabel}>Результат</span>
-                      <span className={styles.progressValue}>
-                        {completedLevel?.score ?? 0}/{completedLevel?.maxScore ?? 0}
-                      </span>
+                {difficultyUnlocked && (
+                  <>
+                    <PracticeStageStepper
+                      themeId={effectiveThemeId}
+                      difficulty={diff}
+                      nodeId={trackNodeId}
+                      questionPoolSize={availableQuestions}
+                      track={track}
+                    />
+                    <div className={styles.progressArea}>
+                      <div className={styles.progressRow}>
+                        <span className={styles.progressLabel}>Прогрес</span>
+                        <span className={styles.progressValue}>
+                          {passedStages}/{stageCount} етапів
+                        </span>
+                      </div>
+                      <div className={styles.progressBar} role="progressbar" aria-valuenow={progressPct}>
+                        <span style={{ width: `${progressPct}%` }} />
+                      </div>
                     </div>
-                    <div className={styles.progressBar} role="progressbar" aria-valuenow={completedLevel ? (completedLevel.score / completedLevel.maxScore) * 100 : 0}>
-                      <span style={{ width: `${completedLevel ? (completedLevel.score / completedLevel.maxScore) * 100 : 0}%` }} />
-                    </div>
-                  </div>
+                  </>
                 )}
-              </Link>
-            </li>
+              </div>
+            </MotionStaggerItem>
           );
         })}
-      </ul>
+      </MotionStagger>
     </section>
   );
 }
@@ -323,16 +385,36 @@ function getAllNodes(node: TopicNode, depth = 0): Array<{ node: TopicNode; depth
   return result;
 }
 
+function findNodePath(node: TopicNode, targetId: string): TopicNode[] | null {
+  if (node.id === targetId) return [node];
+  if (!node.children?.length) return null;
+  for (const child of node.children) {
+    const childPath = findNodePath(child, targetId);
+    if (childPath) return [node, ...childPath];
+  }
+  return null;
+}
+
+function progressBorderColor(percent: number): string {
+  if (percent >= 80) return '#39d353';
+  if (percent >= 60) return '#26a641';
+  if (percent >= 40) return '#006d32';
+  if (percent > 0) return '#0e4429';
+  return 'rgba(255,255,255,0.2)';
+}
+
 function HierarchyTree({
   node,
+  themeId,
+  practiceTracks,
   selectedNodeId,
   onSelectNode,
-  masteryStates
 }: {
   node: TopicNode;
+  themeId: string;
+  practiceTracks: PracticeTrackProgress[];
   selectedNodeId: string | null;
   onSelectNode: (id: string | null) => void;
-  masteryStates: Record<string, any>;
 }) {
   const allNodes = getAllNodes(node, 0);
 
@@ -341,7 +423,11 @@ function HierarchyTree({
       {allNodes.map(({ node: currentNode, depth }) => {
         // Пропускаємо агрегатні вузли в ієрархії
         if (currentNode.aggregateThemeIds) return null;
-        const mastery = masteryStates[currentNode.id]?.mastery ?? 0;
+        const progress = computeNodePracticeProgressPercent(
+          practiceTracks,
+          themeId,
+          currentNode.id,
+        );
         const isSelected = selectedNodeId === currentNode.id;
         const hasChildren = currentNode.children && currentNode.children.length > 0;
 
@@ -351,14 +437,14 @@ function HierarchyTree({
               type="button"
               className={`${styles.hierarchyNodeBtn} ${isSelected ? styles.hierarchyNodeSelected : ''}`}
               onClick={() => onSelectNode(isSelected ? null : currentNode.id)}
-              style={{ borderLeft: `3px solid ${mastery >= 80 ? '#39d353' : mastery >= 60 ? '#26a641' : mastery >= 40 ? '#006d32' : mastery > 0 ? '#0e4429' : 'rgba(255,255,255,0.2)'}` }}
+              style={{ borderLeft: `3px solid ${progressBorderColor(progress)}` }}
             >
               <span className={styles.hierarchyNodeIcon}>{currentNode.icon}</span>
               <span className={styles.hierarchyNodeTitle}>{currentNode.title}</span>
               {hasChildren && (
                 <span className={styles.hierarchyExpandIcon}>▶</span>
               )}
-              <span className={styles.hierarchyMastery}>{Math.round(mastery)}%</span>
+              <span className={styles.hierarchyMastery}>{progress}%</span>
             </button>
           </div>
         );

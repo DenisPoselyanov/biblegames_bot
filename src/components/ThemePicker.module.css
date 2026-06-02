@@ -71,7 +71,7 @@
 
 .chip.active {
   border-color: var(--gold);
-  background: rgba(201, 162, 39, 0.12);
+  background: var(--accent-bg-strong);
   box-shadow: 0 0 0 1px var(--gold);
 }
 

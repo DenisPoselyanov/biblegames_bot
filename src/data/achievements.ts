@@ -19,7 +19,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'biblical-millionaire',
     title: 'Біблійний мільйонер',
-    description: 'Пройти всі 15 питань у режимі «Мільйонер».',
+    description: 'Пройти всі питання в одному забігу режиму «Мільйонер».',
     icon: '🏆',
   },
   {

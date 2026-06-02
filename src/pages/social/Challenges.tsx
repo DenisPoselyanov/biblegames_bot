@@ -6,6 +6,8 @@ import { useTelegram } from '../../hooks/useTelegram';
 import { friendChallengeManager } from '../../lib/friendChallenges';
 import { type Difficulty } from '../../types';
 import { Icon } from '../../components/Icon';
+import { MotionStagger, MotionStaggerItem } from '../../components/motion';
+import { useMotionEntrance } from '../../hooks/useMotionEntrance';
 import styles from './Social.module.css';
 
 const CHALLENGE_DIFFICULTIES = [
@@ -19,6 +21,7 @@ function getThemeTitle(id: string) {
 }
 
 export function Challenges() {
+  const { shouldEnter } = useMotionEntrance('challenges');
   const { userId, displayName } = useTelegram();
   const { profile } = usePlayer();
   const [version, setVersion] = useState(0);
@@ -52,7 +55,7 @@ export function Challenges() {
     friendChallengeManager.createChallenge(
       userId,
       displayName,
-      profile.totalPoints,
+      profile.coins,
       friendId.trim(),
       friendName.trim(),
       themeId ? { themeId, difficulty } : { difficulty },
@@ -184,9 +187,9 @@ export function Challenges() {
             </p>
           </div>
         ) : (
-          <ul className={styles.list}>
+          <MotionStagger as="ul" className={styles.list} enter={shouldEnter}>
             {data.pending.map((c) => (
-              <li key={c.id} className={styles.pendingItem}>
+              <MotionStaggerItem as="li" key={c.id} className={styles.pendingItem}>
                 <div className={styles.pendingAvatar}>
                   {c.challengerName.charAt(0).toUpperCase()}
                 </div>
@@ -212,9 +215,9 @@ export function Challenges() {
                     Відхилити
                   </button>
                 </div>
-              </li>
+              </MotionStaggerItem>
             ))}
-          </ul>
+          </MotionStagger>
         )}
       </section>
 
@@ -228,7 +231,7 @@ export function Challenges() {
             <p className={styles.emptyText}>Поки що порожньо</p>
           </div>
         ) : (
-          <ul className={styles.list}>
+          <MotionStagger as="ul" className={styles.list} enter={shouldEnter}>
             {data.history.map((c) => {
               const isChallenger = c.challengerId === userId;
               const userWon =
@@ -241,7 +244,7 @@ export function Challenges() {
                 : Math.abs((c.challengedScore || 0) - (c.challengerScore || 0));
 
               return (
-                <li key={c.id} className={styles.historyItem}>
+                <MotionStaggerItem as="li" key={c.id} className={styles.historyItem}>
                   <div
                     className={`${styles.historyIcon} ${
                       c.status === 'completed'
@@ -262,7 +265,7 @@ export function Challenges() {
                     <p className={styles.historyMeta}>
                       {c.themeId ? getThemeTitle(c.themeId) : 'Будь-яка тема'}
                       {c.status === 'completed' && pointDiff > 0
-                        ? ` · +${pointDiff} балів`
+                        ? ` · +${pointDiff} монет`
                         : ''}
                     </p>
                   </div>
@@ -273,10 +276,10 @@ export function Challenges() {
                         ? 'ВІДХИЛЕНО'
                         : c.status.toUpperCase()}
                   </span>
-                </li>
+                </MotionStaggerItem>
               );
             })}
-          </ul>
+          </MotionStagger>
         )}
       </section>
     </section>

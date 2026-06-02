@@ -2,6 +2,7 @@ export type TelemetryEventName =
   | 'session_start'
   | 'question_answered'
   | 'quiz_completed'
+  | 'practice_stage_completed'
   | 'study_path_advanced'
   | 'daily_task_completed'
   | 'bible_translation_changed';

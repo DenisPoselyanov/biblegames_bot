@@ -57,8 +57,8 @@
   color: var(--gold-light);
   padding: 0.15rem 0.45rem;
   border-radius: var(--radius-full);
-  background: rgba(201, 162, 39, 0.12);
-  border: 1px solid rgba(201, 162, 39, 0.25);
+  background: var(--accent-bg-strong);
+  border: 1px solid var(--accent-border);
 }
 
 .points {

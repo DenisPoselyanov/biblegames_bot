@@ -93,6 +93,37 @@ export interface BollsRandomVerse {
   text: string;
 }
 
+export interface BollsBook {
+  bookid: number;
+  name: string;
+  chronorder: number;
+  chapters: number;
+}
+
+export async function fetchBollsBooks(translation: BollsTranslation): Promise<BollsBook[]> {
+  const res = await bollsFetch(`/get-books/${translation}/`);
+  if (!res.ok) {
+    throw new Error(`bolls_get_books_${res.status}`);
+  }
+  const data = (await res.json()) as BollsBook[];
+  return data.filter((book) => Number.isFinite(book.bookid) && typeof book.name === 'string');
+}
+
+const CANONICAL_BOOK_ID_MAX = 66;
+const CANONICAL_RANDOM_MAX_ATTEMPTS = 24;
+
+export function isCanonicalBollsBook(bookId: number): boolean {
+  return Number.isInteger(bookId) && bookId >= 1 && bookId <= CANONICAL_BOOK_ID_MAX;
+}
+
+export async function fetchCanonicalRandomVerse(translation: BollsTranslation): Promise<BollsRandomVerse> {
+  for (let attempt = 0; attempt < CANONICAL_RANDOM_MAX_ATTEMPTS; attempt += 1) {
+    const row = await fetchBollsRandomVerse(translation);
+    if (isCanonicalBollsBook(row.book) && row.text.length > 0) return row;
+  }
+  throw new Error('bolls_random_canonical_exhausted');
+}
+
 export async function fetchBollsRandomVerse(translation: BollsTranslation): Promise<BollsRandomVerse> {
   const res = await bollsFetch(`/get-random-verse/${translation}/`);
   if (!res.ok) {

@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
+import { MotionDialog } from './motion';
 import styles from './ConfirmModal.module.css';
 import { haptic } from '../lib/telegram';
 
@@ -22,34 +23,21 @@ export function ConfirmModal({
   onConfirm,
   onCancel,
 }: ConfirmModalProps) {
-  const [render, setRender] = useState(open);
-  const [animateIn, setAnimateIn] = useState(false);
-  const focusTrapRef = useFocusTrap(open && render);
+  const focusTrapRef = useFocusTrap(open);
 
   useEffect(() => {
-    if (open) {
-      setRender(true);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setAnimateIn(true));
-      });
-      haptic.impact('light');
-    } else {
-      setAnimateIn(false);
-      const timer = setTimeout(() => setRender(false), 300);
-      return () => clearTimeout(timer);
-    }
+    if (open) haptic.impact('light');
   }, [open]);
 
-  if (!render) return null;
-
   return (
-    <div
-      className={`${styles.overlay} ${animateIn ? styles.visible : ''}`}
-      role="dialog"
-      aria-modal="true"
+    <MotionDialog
+      open={open}
+      onClose={onCancel}
+      overlayClassName={styles.overlay}
+      modalClassName={styles.modal}
       aria-labelledby="confirm-title"
     >
-      <div className={styles.modal} ref={focusTrapRef}>
+      <div ref={focusTrapRef}>
         <h2 id="confirm-title" className={styles.title}>{title}</h2>
         <p className={styles.message}>{message}</p>
         <div className={styles.actions}>
@@ -75,6 +63,6 @@ export function ConfirmModal({
           </button>
         </div>
       </div>
-    </div>
+    </MotionDialog>
   );
 }

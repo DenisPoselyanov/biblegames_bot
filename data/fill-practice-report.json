@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-06-01T17:59:44.190Z",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "summary": {
+    "totalGap": 3,
+    "jobCount": 2,
+    "byTheme": {},
+    "plannedQuestions": 3,
+    "after": {
+      "totalGap": 0,
+      "jobCount": 0,
+      "byTheme": {}
+    }
+  },
+  "results": [
+    {
+      "themeId": "gospels",
+      "difficulty": "baby",
+      "requestedGap": 2,
+      "added": 2,
+      "remainingGap": 0,
+      "ready": true
+    },
+    {
+      "themeId": "geography-nt",
+      "difficulty": "child",
+      "requestedGap": 1,
+      "added": 1,
+      "remainingGap": 0,
+      "ready": true
+    }
+  ],
+  "totalAdded": 3,
+  "readyCount": 2
+}

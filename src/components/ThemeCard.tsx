@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { tapSpring } from '../lib/motion';
 import type { Theme } from '../types';
 import { getQuestionCountByTheme } from '../data/questions';
 import styles from './ThemeCard.module.css';
@@ -29,11 +31,16 @@ export function ThemeCard({ theme, points, mastery = 0 }: ThemeCardProps) {
     toPath = `/play/study/themes/${theme.id}`;
   }
 
+  const MotionLink = motion.create(Link);
+
   return (
-    <Link
+    <MotionLink
       to={toPath}
       className={styles.card}
       style={{ '--accent': theme.color } as React.CSSProperties}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.985 }}
+      transition={tapSpring}
     >
       <div className={styles.cardLeft}>
         <div className={styles.cardLeftContent}>
@@ -46,7 +53,7 @@ export function ThemeCard({ theme, points, mastery = 0 }: ThemeCardProps) {
             )}
           </div>
           {points !== undefined && points > 0 && (
-            <span className={styles.points}>⭐ {points} очок</span>
+            <span className={styles.points}>⭐ {points} монет</span>
           )}
         </div>
       </div>
@@ -56,6 +63,6 @@ export function ThemeCard({ theme, points, mastery = 0 }: ThemeCardProps) {
       >
         <span className={styles.cardIcon}>{theme.icon}</span>
       </div>
-    </Link>
+    </MotionLink>
   );
 }

@@ -379,66 +379,6 @@
     "topicNodeId": "prophets-sub-2-sub-11",
     "topicPath": "Пророки > Малі пророки > Малахія"
   },
-  "psalms-child-1": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-child-2": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-child-3": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-child-4": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-child-5": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-youth-1": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-youth-2": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-youth-3": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-youth-4": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-youth-5": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-student-1": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-student-2": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-student-3": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-student-4": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-student-5": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
   "parables-child-1": {
     "topicNodeId": "parables",
     "topicPath": "Притчі"
@@ -1139,46 +1079,6 @@
     "topicNodeId": "prophets-sub-1-sub-2",
     "topicPath": "Пророки > Великі пророки > Єремія"
   },
-  "psalms-baby-x6": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-baby-x7": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-baby-x8": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-baby-x9": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-baby-x10": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-preacher-x6": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-preacher-x7": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-preacher-x8": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-preacher-x9": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
-  "psalms-preacher-x10": {
-    "topicNodeId": "psalms",
-    "topicPath": "Псалми"
-  },
   "parables-baby-x6": {
     "topicNodeId": "parables",
     "topicPath": "Притчі"
@@ -1379,25 +1279,9 @@
     "topicNodeId": "revelation",
     "topicPath": "Відкриття"
   },
-  "old-testament-child-1": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-child-2": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
   "old-testament-child-4": {
     "topicNodeId": "patriarchs-sub-3",
     "topicPath": "Старий Завіт > Патріархи > Яків"
-  },
-  "old-testament-child-5": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-youth-1": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
   },
   "old-testament-youth-2": {
     "topicNodeId": "patriarchs",
@@ -1415,121 +1299,17 @@
     "topicNodeId": "patriarchs-sub-1",
     "topicPath": "Старий Завіт > Патріархи > Авраам"
   },
-  "old-testament-student-1": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-student-2": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-student-4": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-student-5": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "new-testament-child-1": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-child-2": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-child-3": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-child-4": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-youth-1": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
   "new-testament-youth-2": {
     "topicNodeId": "general-epistles-sub-2",
     "topicPath": "Новий Завіт > Загальні послання > Яків"
-  },
-  "new-testament-youth-3": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-youth-4": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-youth-5": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-student-1": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-student-2": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-student-3": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
   },
   "new-testament-student-4": {
     "topicNodeId": "acts",
     "topicPath": "Новий Завіт > Дії апостолів"
   },
-  "new-testament-student-5": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "old-testament-baby-x1": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-baby-x2": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-baby-x3": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-baby-x4": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-baby-x5": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
   "old-testament-preacher-x1": {
     "topicNodeId": "patriarchs-sub-2",
     "topicPath": "Старий Завіт > Патріархи > Ісаак"
-  },
-  "old-testament-preacher-x2": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-preacher-x3": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-preacher-x4": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-preacher-x5": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-child-x6": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
   },
   "old-testament-child-x7": {
     "topicNodeId": "patriarchs-sub-3",
@@ -1539,21 +1319,9 @@
     "topicNodeId": "patriarchs-sub-1",
     "topicPath": "Старий Завіт > Патріархи > Авраам"
   },
-  "old-testament-child-x9": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
   "old-testament-child-x10": {
     "topicNodeId": "geography-sub-3-sub-4",
     "topicPath": "Старий Завіт > Географія Старого Завіту > Міста та поселення > Вавилон"
-  },
-  "old-testament-youth-x6": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
-  "old-testament-youth-x7": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
   },
   "old-testament-youth-x8": {
     "topicNodeId": "kings-sub-1-sub-2",
@@ -1563,17 +1331,9 @@
     "topicNodeId": "pentateuch-sub-1",
     "topicPath": "Старий Завіт > Пятикнижжя > Буття"
   },
-  "old-testament-youth-x10": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
-  },
   "old-testament-student-x6": {
     "topicNodeId": "kings-sub-1-sub-1",
     "topicPath": "Старий Завіт > Царі > Об'єднане царство > Саул"
-  },
-  "old-testament-student-x7": {
-    "topicNodeId": "old-testament",
-    "topicPath": "Старий Завіт"
   },
   "old-testament-student-x8": {
     "topicNodeId": "prophets-sub-3-sub-1",
@@ -1586,42 +1346,6 @@
   "old-testament-student-x10": {
     "topicNodeId": "kings-sub-1-sub-2",
     "topicPath": "Старий Завіт > Царі > Об'єднане царство > Давид"
-  },
-  "new-testament-baby-x6": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-baby-x7": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-baby-x8": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-baby-x9": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-baby-x10": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-preacher-x6": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-preacher-x7": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-preacher-x8": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
-  },
-  "new-testament-preacher-x9": {
-    "topicNodeId": "new-testament",
-    "topicPath": "Новий Завіт"
   },
   "new-testament-preacher-x10": {
     "topicNodeId": "general-epistles-sub-2",

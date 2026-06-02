@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import type { Question } from '../src/types/index';
 import { ALL_QUESTIONS } from '../src/data/questions';
 import { setKahootQuestionPool } from '../src/data/kahootQuestions';
+import { applyDiskMutations, registerQuestionPoolInvalidator } from './questionMutations';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_DIR = join(__dirname, '../data/question-db');
@@ -16,6 +17,12 @@ function normalizeCorrectIndex(value: unknown): number {
   }
   return 0;
 }
+
+export function invalidateQuestionPoolCache(): void {
+  pool = null;
+}
+
+registerQuestionPoolInvalidator(invalidateQuestionPoolCache);
 
 export function loadFullQuestionPool(): Question[] {
   if (pool) return pool;
@@ -46,7 +53,7 @@ export function loadFullQuestionPool(): Question[] {
     }
   }
 
-  pool = [...byId.values()];
+  pool = applyDiskMutations([...byId.values()]);
   setKahootQuestionPool(pool);
   return pool;
 }

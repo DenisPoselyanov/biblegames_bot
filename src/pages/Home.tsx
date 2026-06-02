@@ -5,11 +5,14 @@ import { useTelegram } from '../hooks/useTelegram';
 import { Icon } from '../components/Icon';
 import { getAvatarById } from '../data/cosmetics';
 import { studyRepo } from '../repos/studyRepo';
-import { buildLearningInsight, getDailyTasks } from '../lib/learning';
+import { formatRankLabel } from '../lib/practiceProgression';
+import { buildLearningInsight, countTotalPassedStages, getDailyTasks } from '../lib/learning';
 import { trackEvent } from '../lib/telemetry';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { fetchDailyScripture } from '../repos/scriptureRepo';
 import type { DailyScripture } from '../types/scripture';
+import { MotionStagger, MotionStaggerItem } from '../components/motion';
+import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import styles from './Home.module.css';
 
 const FALLBACK_DAILY = {
@@ -18,6 +21,7 @@ const FALLBACK_DAILY = {
 };
 
 export function Home() {
+  const { shouldEnter } = useMotionEntrance('home');
   const { profile } = usePlayer();
   const { displayName } = useTelegram();
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
@@ -32,6 +36,7 @@ export function Home() {
   const history = studyRepo.getAnswerHistory();
   const dailyTasks = getDailyTasks(profile, history);
   const insight = buildLearningInsight(profile, history);
+  const passedStages = countTotalPassedStages(profile);
   const completedTaskIds = useMemo(
     () => dailyTasks.filter((task) => task.completed).map((task) => task.id),
     [dailyTasks],
@@ -63,7 +68,12 @@ export function Home() {
         <div className={styles.greeting}>
           <div className={styles.greetingRow}>
             <span className={styles.avatarBadge}>{avatarEmoji}</span>
-            Мир тобі, {displayName}!
+            <span>
+              Мир тобі, {displayName}!
+              <span className={styles.rankChip}>
+                {formatRankLabel(profile.playerRank.tier, profile.playerRank.plaque)}
+              </span>
+            </span>
           </div>
           <cite className={styles.verseInline}>
             "{dailyVerse.text}"
@@ -72,29 +82,29 @@ export function Home() {
         </div>
       </header>
 
-      <ul className={styles.statsGrid}>
-        <li className={styles.stat}>
+      <MotionStagger as="ul" className={styles.statsGrid} enter={shouldEnter}>
+        <MotionStaggerItem className={styles.stat}>
           <span className={styles.statIconWrap}>
             <Icon name="coins" size={30} />
           </span>
           <span className={styles.statValue}>{profile.coins}</span>
           <span className={styles.statLabel}>монет</span>
-        </li>
-        <li className={styles.stat}>
+        </MotionStaggerItem>
+        <MotionStaggerItem className={styles.stat}>
           <span className={styles.statIconWrap}>
             <Icon name="trophy" size={30} />
           </span>
-          <span className={styles.statValue}>{profile.completedLevels.length}</span>
-          <span className={styles.statLabel}>рівнів</span>
-        </li>
-        <li className={styles.stat}>
+          <span className={styles.statValue}>{passedStages}</span>
+          <span className={styles.statLabel}>етапів</span>
+        </MotionStaggerItem>
+        <MotionStaggerItem className={styles.stat}>
           <span className={`${styles.statIconWrap} ${styles.statIconWrapEmoji}`}>
             {streakFire || '📅'}
           </span>
           <span className={styles.statValue}>{profile.streakDays}</span>
-          <span className={styles.statLabel}>streak</span>
-        </li>
-        <li className={styles.stat}>
+          <span className={styles.statLabel}>серія</span>
+        </MotionStaggerItem>
+        <MotionStaggerItem className={styles.stat}>
           <span className={styles.statIconWrap}>
             <Icon name="book" size={30} />
           </span>
@@ -102,8 +112,8 @@ export function Home() {
             {Object.keys(profile.themePoints).filter((k) => profile.themePoints[k] > 0).length}
           </span>
           <span className={styles.statLabel}>тем</span>
-        </li>
-      </ul>
+        </MotionStaggerItem>
+      </MotionStagger>
 
       <Link to="/play" className={styles.cta}>
         <Icon name="play" size={24} />
@@ -113,12 +123,12 @@ export function Home() {
 
       <section className={styles.tasksSection}>
         <h2>Щоденні завдання</h2>
-        <ul className={styles.taskList}>
+        <MotionStagger as="ul" className={styles.taskList} enter={shouldEnter}>
           {dailyTasks.map((task) => {
             const pct = task.goal > 0 ? Math.min((task.progress / task.goal) * 100, 100) : 0;
             const done = pct >= 100;
             return (
-              <li
+              <MotionStaggerItem
                 key={task.id}
                 className={`${styles.taskCard} ${done ? styles.taskCardCompleted : ''}`}
               >
@@ -140,14 +150,14 @@ export function Home() {
                     {task.progress}/{task.goal}
                   </span>
                 )}
-              </li>
+              </MotionStaggerItem>
             );
           })}
-        </ul>
+        </MotionStagger>
       </section>
 
-      <section className={styles.tasksSection}>
-        <h2>Learning KPI</h2>
+      <section className={styles.kpiSection}>
+        <h2>Навчальні показники</h2>
         <div className={styles.kpiGrid}>
           <div className={styles.kpiCard}>
             <Icon name="brain" size={20} />

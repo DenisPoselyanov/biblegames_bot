@@ -7,21 +7,30 @@ import {
 import { parseBibleReference } from '../src/lib/bibleReference';
 import { bollsReaderUrl } from '../src/lib/bollsText';
 import type { DailyScripture, ScripturePassage } from '../src/types/scripture';
-import { fetchBollsChapter, fetchBollsRandomVerse, fetchBollsVerses } from './bollsClient';
+import { fetchBollsBooks, fetchBollsChapter, fetchBollsVerses, fetchCanonicalRandomVerse } from './bollsClient';
 import { cacheGet, cacheSet, dailyCacheKey } from './scriptureCache';
 
-const BOOK_NAMES_UK: Record<number, string> = {
-  1: 'Буття',
-  19: 'Псалом',
-  40: 'Матвія',
-  41: 'Марка',
-  42: 'Луки',
-  43: 'Івана',
-  66: 'Об’явлення',
-};
+const BOOK_NAMES_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
-function formatReference(bookId: number, chapter: number, verses: number[]): string {
-  const book = BOOK_NAMES_UK[bookId] ?? `Книга ${bookId}`;
+function booksCacheKey(translation: BollsTranslation): string {
+  return `books:${translation}`;
+}
+
+async function resolveBookName(translation: BollsTranslation, bookId: number): Promise<string> {
+  let names = cacheGet<Record<number, string>>(booksCacheKey(translation));
+  if (!names) {
+    try {
+      const books = await fetchBollsBooks(translation);
+      names = Object.fromEntries(books.map((book) => [book.bookid, book.name.trim()]));
+      cacheSet(booksCacheKey(translation), names, BOOK_NAMES_CACHE_TTL_MS);
+    } catch {
+      names = {};
+    }
+  }
+  return names[bookId] ?? `Книга ${bookId}`;
+}
+
+function formatReference(book: string, chapter: number, verses: number[]): string {
   if (verses.length === 0) return `${book} ${chapter}`;
   const first = verses[0];
   const last = verses[verses.length - 1];
@@ -105,14 +114,15 @@ export async function getDailyScripture(translationInput?: string): Promise<Dail
   if (cached) return cached;
 
   try {
-    const row = await fetchBollsRandomVerse(translation);
+    const row = await fetchCanonicalRandomVerse(translation);
+    const bookName = await resolveBookName(translation, row.book);
     const daily: DailyScripture = {
       translation,
       translationLabel: BOLLS_TRANSLATION_LABELS[translation],
       bookId: row.book,
       chapter: row.chapter,
       verse: row.verse,
-      reference: formatReference(row.book, row.chapter, [row.verse]),
+      reference: formatReference(bookName, row.chapter, [row.verse]),
       text: row.text,
       readerUrl: bollsReaderUrl(translation, row.book, row.chapter, row.verse),
       date,

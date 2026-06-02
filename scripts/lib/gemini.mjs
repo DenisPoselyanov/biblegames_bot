@@ -30,6 +30,8 @@ export function parseGeminiRetryDelayMs(message, fallbackMs = 5000) {
 }
 
 export const GEMINI_MODEL_PRESETS = [
+  'gemini-3.1-flash-lite',
+  'gemini-2.5-flash',
   'gemini-2.0-flash',
   'gemini-2.0-flash-lite',
   'gemini-1.5-pro',
@@ -45,7 +47,7 @@ function getApiKey() {
 }
 
 function defaultModel() {
-  return process.env.GEMINI_MODEL || process.env.AI_MODEL || 'gemini-2.0-flash';
+  return process.env.GEMINI_MODEL || process.env.AI_MODEL || 'gemini-3.1-flash-lite';
 }
 
 async function fetchJson(url, options = {}, timeoutMs = 60000, retryState = {}) {

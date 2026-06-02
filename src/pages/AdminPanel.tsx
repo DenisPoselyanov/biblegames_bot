@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { Link } from 'react-router-dom';
-import { ALL_QUESTIONS } from '../data/questions';
-import { loadAllAiQuestions } from '../data/questionDbLoader';
+import { ALL_QUESTIONS, getAllQuestionsAsync } from '../data/questions';
 import { loadAllTopicHierarchies, flattenTopicNodes, countQuestionsForTopicNode } from '../data/topicDbLoader';
 import { THEMES } from '../data/themes';
-import { CATEGORIES } from '../data/categories';
-import { DIFFICULTY_LABELS, type Difficulty, type TopicNode, type TopicHierarchyMap } from '../types';
+import { CATEGORIES, getCategoryById } from '../data/categories';
+import { DIFFICULTY_LABELS, type Difficulty, type Question, type TopicNode, type TopicHierarchyMap } from '../types';
 import { questionQualityValidator } from '../lib/questionQuality';
 import { questionQuarantineManager } from '../lib/questionQuarantine';
 import { questionPoolManager } from '../lib/questionPools';
@@ -34,12 +33,10 @@ function difficultyColor(d: Difficulty): string {
   return map[d] || '#888';
 }
 
-function TopicTreeNode({ node, depth, questionsByTheme, allQuestions, themeQuestions }: {
+function TopicTreeNode({ node, depth, themeQuestions }: {
   node: TopicNode;
   depth: number;
-  questionsByTheme: Record<string, number>;
-  allQuestions: typeof ALL_QUESTIONS;
-  themeQuestions: typeof ALL_QUESTIONS;
+  themeQuestions: Question[];
 }) {
   const [expanded, setExpanded] = useState(depth < 1);
   const questionCount = countQuestionsForTopicNode(node, themeQuestions);
@@ -62,8 +59,6 @@ function TopicTreeNode({ node, depth, questionsByTheme, allQuestions, themeQuest
               key={child.id}
               node={child}
               depth={depth + 1}
-              questionsByTheme={questionsByTheme}
-              allQuestions={allQuestions}
               themeQuestions={themeQuestions}
             />
           ))}
@@ -81,11 +76,12 @@ export function AdminPanel() {
   const [severityFilter, setSeverityFilter] = useState<SeverityFilter>('all');
   const [topicHierarchies, setTopicHierarchies] = useState<TopicHierarchyMap>({});
   const [selectedThemeId, setSelectedThemeId] = useState<string | null>(null);
+  const [allQuestions, setAllQuestions] = useState<Question[]>(ALL_QUESTIONS);
 
   useEffect(() => {
-    loadAllAiQuestions().then((aiQuestions) => {
-      const all = [...ALL_QUESTIONS, ...aiQuestions];
-      questionPoolManager.initializePools(all);
+    getAllQuestionsAsync().then((merged) => {
+      setAllQuestions(merged);
+      questionPoolManager.initializePools(merged);
       setPoolVersion((v) => v + 1);
     });
     loadAllTopicHierarchies().then(setTopicHierarchies);
@@ -99,11 +95,21 @@ export function AdminPanel() {
 
   const questionsByTheme = useMemo(() => {
     const counts: Record<string, number> = {};
-    for (const q of ALL_QUESTIONS) {
+    for (const q of allQuestions) {
       counts[q.themeId] = (counts[q.themeId] || 0) + 1;
     }
     return counts;
-  }, []);
+  }, [allQuestions]);
+
+  const hierarchyQuestionPool = useMemo(() => {
+    if (!selectedThemeId) return allQuestions;
+    const category = getCategoryById(selectedThemeId);
+    if (category) {
+      const themeIds = new Set(category.themeIds);
+      return allQuestions.filter((q) => themeIds.has(q.themeId));
+    }
+    return allQuestions.filter((q) => q.themeId === selectedThemeId);
+  }, [selectedThemeId, allQuestions]);
 
   const quarantineList = useMemo(
     () => questionQuarantineManager.getAllQuarantined(),
@@ -189,7 +195,7 @@ export function AdminPanel() {
         <div className={styles.tabContent}>
           <div className={styles.statsRow}>
             <span className={styles.stat}>Тем: {topicsThemes.length}</span>
-            <span className={styles.stat}>Всього питань: {ALL_QUESTIONS.length}</span>
+            <span className={styles.stat}>Всього питань: {allQuestions.length}</span>
           </div>
 
           <div className={styles.filterRow}>
@@ -218,9 +224,7 @@ export function AdminPanel() {
               <TopicTreeNode
                 node={selectedTopic}
                 depth={0}
-                questionsByTheme={questionsByTheme}
-                allQuestions={ALL_QUESTIONS}
-                themeQuestions={ALL_QUESTIONS.filter(q => q.themeId === selectedThemeId)}
+                themeQuestions={hierarchyQuestionPool}
               />
             </ul>
           ) : (

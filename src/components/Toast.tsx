@@ -1,4 +1,6 @@
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { createContext, useContext, useCallback, useState, type ReactNode } from 'react';
+import { fadeUpVariants, reducedTransition, transitionUi } from '../lib/motion';
 import { Icon, type IconName } from './Icon';
 
 type ToastVariant = 'success' | 'error' | 'info' | 'warning';
@@ -26,6 +28,7 @@ const VARIANT_CONFIG: Record<ToastVariant, { icon: IconName; bg: string; border:
 
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const reduced = useReducedMotion();
 
   const showToast = useCallback((message: string, variant: ToastVariant = 'info') => {
     const id = nextId++;
@@ -59,48 +62,55 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         role="region"
         aria-label="Сповіщення"
       >
-        {toasts.map((toast) => {
-          const cfg = VARIANT_CONFIG[toast.variant];
-          return (
-            <div
-              key={toast.id}
-              role="alert"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.6rem',
-                padding: '0.75rem 1rem',
-                background: cfg.bg,
-                border: `1px solid ${cfg.border}`,
-                borderRadius: 'var(--radius-lg)',
-                color: cfg.color,
-                fontSize: '0.9rem',
-                fontWeight: 600,
-                pointerEvents: 'auto',
-                animation: 'fadeInUp 0.25s var(--ease-out)',
-                backdropFilter: 'blur(8px)',
-              }}
-            >
-              <Icon name={cfg.icon} size={20} />
-              <span style={{ flex: 1 }}>{toast.message}</span>
-              <button
-                onClick={() => removeToast(toast.id)}
-                aria-label="Закрити сповіщення"
+        <AnimatePresence mode="popLayout" initial={false}>
+          {toasts.map((toast) => {
+            const cfg = VARIANT_CONFIG[toast.variant];
+            return (
+              <motion.div
+                key={toast.id}
+                role="alert"
+                layout
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={fadeUpVariants}
+                transition={reducedTransition(transitionUi, !!reduced)}
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  padding: '0.2rem',
-                  opacity: 0.7,
                   display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.6rem',
+                  padding: '0.75rem 1rem',
+                  background: cfg.bg,
+                  border: `1px solid ${cfg.border}`,
+                  borderRadius: 'var(--radius-lg)',
+                  color: cfg.color,
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  pointerEvents: 'auto',
+                  backdropFilter: 'blur(8px)',
                 }}
               >
-                <Icon name="close" size={16} />
-              </button>
-            </div>
-          );
-        })}
+                <Icon name={cfg.icon} size={20} />
+                <span style={{ flex: 1 }}>{toast.message}</span>
+                <button
+                  onClick={() => removeToast(toast.id)}
+                  aria-label="Закрити сповіщення"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    padding: '0.2rem',
+                    opacity: 0.7,
+                    display: 'flex',
+                  }}
+                >
+                  <Icon name="close" size={16} />
+                </button>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
     </ToastContext.Provider>
   );

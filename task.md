@@ -108,7 +108,7 @@
 ## H. Phase 7 — Practice Mode 2.0 з ієрархією (Completed)
 
 - [x] **H1–H13. 18 нових/оновлених файлів**
-  - Типи, адаптивні тести, рекомендації, TopicMap, Quiz, Themes, StudyHub, Profile, ThemeDetail, MicroTraining, App.tsx, PlayerContext
+  - Типи, етапи практики (practiceProgression), рекомендації, TopicMap, Quiz, Themes, StudyHub, Profile, ThemeDetail, App.tsx, PlayerContext
 
 ## I. Phase 8 — Profile Redesign (Completed)
 

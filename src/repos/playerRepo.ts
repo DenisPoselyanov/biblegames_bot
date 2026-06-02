@@ -1,6 +1,8 @@
-import type { CompletedLevel, PlayerProfile } from '../types';
-import { loadProfile, saveProfile } from '../lib/storage';
+import type { CompletedLevel, PlayerProfile, PracticeTrackProgress, PlayerRank } from '../types';
+import { loadProfile, saveProfile, walletCoins, type ProfileWithLegacyWallet } from '../lib/storage';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
+import { getDefaultPlayerRank, getTrackKey } from '../lib/practiceProgression';
+import { DIFFICULTY_ORDER } from '../types';
 import { apiFetch, hasApi } from './apiClient';
 
 function isRemoteEnabled(): boolean {
@@ -40,6 +42,52 @@ function mergeCompletedLevels(
   return [...map.values()];
 }
 
+function mergePlayerRank(local: PlayerRank, remote: PlayerRank): PlayerRank {
+  const localScore = DIFFICULTY_ORDER[local.tier] * 10 + (8 - local.plaque);
+  const remoteScore = DIFFICULTY_ORDER[remote.tier] * 10 + (8 - remote.plaque);
+  const better = localScore >= remoteScore ? local : remote;
+  const worse = localScore >= remoteScore ? remote : local;
+  return {
+    tier: better.tier,
+    plaque: better.plaque,
+    wisdomPoints: Math.max(local.wisdomPoints, remote.wisdomPoints),
+    unlockedTier:
+      DIFFICULTY_ORDER[better.unlockedTier] >= DIFFICULTY_ORDER[worse.unlockedTier]
+        ? better.unlockedTier
+        : worse.unlockedTier,
+  };
+}
+
+function mergePracticeTracks(
+  local: PracticeTrackProgress[],
+  remote: PracticeTrackProgress[],
+): PracticeTrackProgress[] {
+  const map = new Map<string, PracticeTrackProgress>();
+  for (const track of [...remote, ...local]) {
+    const key = getTrackKey(track.themeId, track.nodeId, track.difficulty);
+    const existing = map.get(key);
+    if (!existing) {
+      map.set(key, { ...track, stageResults: [...track.stageResults] });
+      continue;
+    }
+    const resultsByStage = new Map<number, PracticeTrackProgress['stageResults'][0]>();
+    for (const r of [...existing.stageResults, ...track.stageResults]) {
+      const prev = resultsByStage.get(r.stageIndex);
+      if (!prev || (r.passed && !prev.passed) || new Date(r.completedAt) > new Date(prev.completedAt)) {
+        resultsByStage.set(r.stageIndex, r);
+      }
+    }
+    map.set(key, {
+      themeId: track.themeId,
+      nodeId: track.nodeId,
+      difficulty: track.difficulty,
+      highestUnlockedStage: Math.max(existing.highestUnlockedStage, track.highestUnlockedStage),
+      stageResults: [...resultsByStage.values()].sort((a, b) => a.stageIndex - b.stageIndex),
+    });
+  }
+  return [...map.values()];
+}
+
 function mergeProfiles(local: PlayerProfile, remote: PlayerProfile): PlayerProfile {
   const themePoints: Record<string, number> = { ...remote.themePoints };
   for (const [key, value] of Object.entries(local.themePoints)) {
@@ -71,8 +119,10 @@ function mergeProfiles(local: PlayerProfile, remote: PlayerProfile): PlayerProfi
   return {
     ...remote,
     displayName: local.displayName || remote.displayName,
-    totalPoints: Math.max(local.totalPoints, remote.totalPoints),
-    coins: Math.max(local.coins, remote.coins),
+    coins: Math.max(
+      walletCoins(local as ProfileWithLegacyWallet),
+      walletCoins(remote as ProfileWithLegacyWallet),
+    ),
     survivalHighScore: Math.max(local.survivalHighScore, remote.survivalHighScore),
     millionaireWins: Math.max(local.millionaireWins, remote.millionaireWins),
     millionaireMaxLevel: Math.max(local.millionaireMaxLevel, remote.millionaireMaxLevel),
@@ -91,6 +141,14 @@ function mergeProfiles(local: PlayerProfile, remote: PlayerProfile): PlayerProfi
     bibleTranslation: normalizeBollsTranslation(
       local.bibleTranslation ?? remote.bibleTranslation,
     ),
+    practiceTracks: mergePracticeTracks(
+      local.practiceTracks ?? [],
+      remote.practiceTracks ?? [],
+    ),
+    playerRank: mergePlayerRank(
+      local.playerRank ?? getDefaultPlayerRank(),
+      remote.playerRank ?? getDefaultPlayerRank(),
+    ),
   };
 }
 
@@ -105,7 +163,7 @@ export const playerRepo = {
     try {
       const response = await apiFetch(`/profile/${userId}`, userId);
       if (!response.ok) return local;
-      const remote = (await response.json()) as PlayerProfile;
+      const remote = (await response.json()) as ProfileWithLegacyWallet & PlayerProfile;
       const merged = mergeProfiles(local, remote);
       saveProfile(merged);
       if (!profilesEqual(merged, remote)) {

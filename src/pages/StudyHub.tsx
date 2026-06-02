@@ -1,34 +1,30 @@
 import { Link } from 'react-router-dom';
-import { useMemo, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { loadAllTopicHierarchies } from '../data/topicDbLoader';
-import { generateRecommendations, formatRecommendation } from '../lib/recommendationEngine';
-import type { Recommendation, TopicHierarchyMap } from '../types';
+import { generateRecommendations, formatRecommendation, getRecommendationLink } from '../lib/recommendationEngine';
+import type { Recommendation } from '../types';
+import { MotionStagger, MotionStaggerItem } from '../components/motion';
+import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import styles from './StudyHub.module.css';
 
 export function StudyHub() {
+  const { shouldEnter } = useMotionEntrance('study-hub');
   const { profile } = usePlayer();
-  const [topicHierarchies, setTopicHierarchies] = useState<TopicHierarchyMap>({});
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Завантаження ієрархій тем та генерація рекомендацій
   useEffect(() => {
     loadAllTopicHierarchies().then((hierarchies) => {
-      setTopicHierarchies(hierarchies);
-      
-      // Генерація рекомендацій
       const recs = generateRecommendations({
         profile,
         topicHierarchy: hierarchies,
       }, 3);
-      
+
       setRecommendations(recs);
       setLoading(false);
     });
   }, [profile]);
-
-  const recommendation = recommendations[0]; // Головна рекомендація
 
   return (
     <section className={styles.page}>
@@ -38,8 +34,8 @@ export function StudyHub() {
       </header>
 
       {!loading && (
-        <ul className={styles.modesList}>
-          <li>
+        <MotionStagger as="ul" className={styles.modesList} enter={shouldEnter}>
+          <MotionStaggerItem as="li">
             <Link to="/play/study/themes" className={styles.card}>
               <div className={styles.icon}>📚</div>
               <div className={styles.cardInfo}>
@@ -48,48 +44,18 @@ export function StudyHub() {
               </div>
               <div className={styles.arrow}>→</div>
             </Link>
-          </li>
-          <li>
+          </MotionStaggerItem>
+          <MotionStaggerItem as="li">
             <Link to="/play/study/review" className={styles.card}>
               <div className={styles.icon}>🧠</div>
               <div className={styles.cardInfo}>
-                <h2>Review Mistakes</h2>
+                <h2>Робота над помилками</h2>
                 <p>Повтори питання, в яких ти раніше робив помилки (всі одразу).</p>
               </div>
               <div className={styles.arrow}>→</div>
             </Link>
-          </li>
-          <li>
-            <Link to="/play/study/sprint" className={styles.card}>
-              <div className={styles.icon}>⏱️</div>
-              <div className={styles.cardInfo}>
-                <h2>Sprint (5 хв)</h2>
-                <p>Відповідай на максимальну кількість питань за 5 хвилин.</p>
-              </div>
-              <div className={styles.arrow}>→</div>
-            </Link>
-          </li>
-          <li>
-            <Link to="/play/study/adaptive" className={styles.card}>
-              <div className={styles.icon}>🤖</div>
-              <div className={styles.cardInfo}>
-                <h2>Adaptive Test</h2>
-                <p>Інтелектуальний тест, який адаптується під твій рівень знань.</p>
-              </div>
-              <div className={styles.arrow}>→</div>
-            </Link>
-          </li>
-          <li>
-            <Link to="/play/study/micro" className={styles.card}>
-              <div className={styles.icon}>⚡</div>
-              <div className={styles.cardInfo}>
-                <h2>Micro Training</h2>
-                <p>Виберіть мікротему для короткої сфокусованої сесії.</p>
-              </div>
-              <div className={styles.arrow}>→</div>
-            </Link>
-          </li>
-        </ul>
+          </MotionStaggerItem>
+        </MotionStagger>
       )}
 
       {!loading && recommendations.length > 0 && (
@@ -106,8 +72,8 @@ export function StudyHub() {
                     <p>{formatted.description}</p>
                     <small className={styles.recReason}>{formatted.subtitle}</small>
                   </div>
-                  <Link 
-                    to={rec.nodeId ? `/play/study/themes/${rec.nodeId}` : '/play/study'} 
+                  <Link
+                    to={getRecommendationLink(rec)}
                     className={styles.btnRec}
                   >
                     Почати

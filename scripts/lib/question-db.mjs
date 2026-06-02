@@ -2,6 +2,7 @@ import fs from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { DIFFICULTIES } from './themes-config.mjs';
+import { isSpecificSubtopicNodeId } from './topic-context.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const DB_DIR = join(__dirname, '../../data/question-db');
@@ -96,9 +97,19 @@ export function normalizeAiQuestion(raw, themeId, difficulty, index) {
   return q;
 }
 
-export function appendQuestions(themeId, newQuestions) {
+export function appendQuestions(themeId, newQuestions, options = {}) {
+  const requireSubtopic = options.requireSubtopic !== false;
+  const incoming = requireSubtopic
+    ? newQuestions.filter((q) => isSpecificSubtopicNodeId(q.topicNodeId))
+    : newQuestions;
+
+  if (requireSubtopic && incoming.length < newQuestions.length) {
+    const skipped = newQuestions.length - incoming.length;
+    console.warn(`  ⚠️ Пропущено ${skipped} питань без topicNodeId підтеми`);
+  }
+
   const existing = loadThemeQuestions(themeId);
-  const merged = dedupeQuestions([...existing, ...newQuestions]);
+  const merged = dedupeQuestions([...existing, ...incoming]);
   saveThemeQuestions(themeId, merged);
   return {
     before: existing.length,

@@ -8,7 +8,14 @@ import { questionPoolManager } from '../src/lib/questionPools';
 import { questionQuarantineManager } from '../src/lib/questionQuarantine';
 import fs from 'fs';
 import path from 'path';
-import type { Question } from '../src/types';
+import type { Difficulty, Question } from '../src/types';
+import {
+  PRACTICE_QUESTIONS_PER_STAGE,
+  STAGE_COUNT_BY_DIFFICULTY,
+  requiredQuestionsForDifficulty,
+  isPracticeReady,
+  practiceGap,
+} from '../src/lib/practiceProgression';
 
 const DB_DIR = path.resolve('data/question-db');
 
@@ -125,6 +132,77 @@ if (excludedFromStudy.length > 10) {
   console.log(`   ... та ще ${excludedFromStudy.length - 10} питань`);
 }
 
+console.log('\n🎯 Готовність підтем до практики (лист × складність):');
+const taggedQuestions = ALL_QUESTIONS.filter(
+  (q) => q.topicNodeId && q.topicNodeId !== q.themeId,
+);
+const byNodeDiff = new Map<string, number>();
+for (const q of taggedQuestions) {
+  const key = `${q.topicNodeId}::${q.difficulty}`;
+  byNodeDiff.set(key, (byNodeDiff.get(key) ?? 0) + 1);
+}
+const nodePracticeGaps: {
+  nodeId: string;
+  themeId: string;
+  difficulty: Difficulty;
+  pool: number;
+  gap: number;
+}[] = [];
+for (const [key, pool] of byNodeDiff) {
+  const [nodeId, difficulty] = key.split('::') as [string, Difficulty];
+  if (!isPracticeReady(pool, difficulty)) {
+    const themeId = taggedQuestions.find((q) => q.topicNodeId === nodeId)?.themeId ?? nodeId;
+    nodePracticeGaps.push({
+      nodeId,
+      themeId,
+      difficulty,
+      pool,
+      gap: practiceGap(pool, difficulty),
+    });
+  }
+}
+nodePracticeGaps.sort((a, b) => b.gap - a.gap);
+if (nodePracticeGaps.length === 0) {
+  console.log('   Усі наявні підтеми×складність покривають повний шлях практики.');
+} else {
+  nodePracticeGaps.slice(0, 15).forEach((g) => {
+    const required = requiredQuestionsForDifficulty(g.difficulty);
+    console.log(
+      `   ${g.nodeId} / ${g.difficulty}: ${g.pool}/${required} → +${g.gap}`,
+    );
+  });
+  if (nodePracticeGaps.length > 15) {
+    console.log(`   ... ще ${nodePracticeGaps.length - 15} комбінацій`);
+  }
+}
+console.log(`   (норма: ${PRACTICE_QUESTIONS_PER_STAGE} питань на етап)`);
+console.log('   Заповнення: npm run fill-practice-nodes -- --dry-run');
+
+// Legacy theme-level (без topicNodeId) — лише довідково
+console.log('\n📎 Рівень теми (без привʼязки до підтем — не для практики в UI):');
+const byThemeDiff = new Map<string, number>();
+for (const q of ALL_QUESTIONS) {
+  const key = `${q.themeId}::${q.difficulty}`;
+  byThemeDiff.set(key, (byThemeDiff.get(key) ?? 0) + 1);
+}
+const practiceGaps: { themeId: string; difficulty: Difficulty; pool: number; gap: number }[] = [];
+for (const [key, pool] of byThemeDiff) {
+  const [themeId, difficulty] = key.split('::') as [string, Difficulty];
+  if (!isPracticeReady(pool, difficulty)) {
+    practiceGaps.push({ themeId, difficulty, pool, gap: practiceGap(pool, difficulty) });
+  }
+}
+practiceGaps.sort((a, b) => b.gap - a.gap);
+if (practiceGaps.length === 0) {
+  console.log('   Усі комбінації тема+складність покривають повний шлях.');
+} else {
+  practiceGaps.slice(0, 5).forEach((g) => {
+    const required = requiredQuestionsForDifficulty(g.difficulty);
+    console.log(`   ${g.themeId} / ${g.difficulty}: ${g.pool}/${required} → +${g.gap}`);
+  });
+  if (practiceGaps.length > 5) console.log(`   ... ще ${practiceGaps.length - 5}`);
+}
+
 // Збереження звіту в файл
   const reportData = {
   generatedAt: new Date().toISOString(),
@@ -138,6 +216,8 @@ if (excludedFromStudy.length > 10) {
   },
   stats,
   excludedFromStudyCount: excludedFromStudy.length,
+  nodePracticeGaps: nodePracticeGaps.slice(0, 50),
+  practiceGaps: practiceGaps.slice(0, 50),
 };
 
 fs.writeFileSync(

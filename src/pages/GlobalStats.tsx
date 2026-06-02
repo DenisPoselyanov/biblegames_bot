@@ -3,15 +3,21 @@ import { PlayerProfileModal } from '../components/PlayerProfileModal';
 import { THEMES } from '../data/themes';
 import { usePlayer } from '../context/PlayerContext';
 import type { PlayerProfile } from '../types';
+import { MotionStagger, MotionStaggerItem } from '../components/motion';
+import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import styles from './GlobalStats.module.css';
 
 type RankingTab = 'total' | 'survival' | 'millionaire';
+
+import { getDefaultPlayerRank } from '../lib/practiceProgression';
+
+const DEFAULT_VIRTUAL_RANK = getDefaultPlayerRank();
 
 const VIRTUAL_PLAYERS: PlayerProfile[] = [
   {
     userId: 'virtual-apollos',
     displayName: 'Аполлос',
-    totalPoints: 2420,
+    coins: 2420,
     themePoints: { paul: 760, 'new-testament': 520, gospels: 430, psalms: 220 },
     completedLevels: [],
     survivalHighScore: 42,
@@ -21,16 +27,17 @@ const VIRTUAL_PLAYERS: PlayerProfile[] = [
     activeTheme: 'heavenly-jerusalem',
     achievements: ['biblical-millionaire', 'iron-shield', 'aesthete'],
     avatar: 'default',
-    coins: 1800,
     unlockedAvatars: ['default'],
     streakDays: 4,
     lastActiveAt: new Date().toISOString(),
     studyMastery: {},
+    practiceTracks: [],
+    playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
   },
   {
     userId: 'virtual-moses',
     displayName: 'Мойсей',
-    totalPoints: 2180,
+    coins: 2180,
     themePoints: { 'mosaic-law': 920, commandments: 540, geography: 310 },
     completedLevels: [],
     survivalHighScore: 35,
@@ -40,16 +47,17 @@ const VIRTUAL_PLAYERS: PlayerProfile[] = [
     activeTheme: 'sinai-revelation',
     achievements: ['iron-shield', 'cartographer'],
     avatar: 'default',
-    coins: 1450,
     unlockedAvatars: ['default'],
     streakDays: 6,
     lastActiveAt: new Date().toISOString(),
     studyMastery: {},
+    practiceTracks: [],
+    playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
   },
   {
     userId: 'virtual-miriam',
     displayName: 'Маріам',
-    totalPoints: 1740,
+    coins: 1740,
     themePoints: { psalms: 610, 'old-testament': 420, patriarchs: 260 },
     completedLevels: [],
     survivalHighScore: 28,
@@ -59,16 +67,17 @@ const VIRTUAL_PLAYERS: PlayerProfile[] = [
     activeTheme: 'eden-garden',
     achievements: ['aesthete'],
     avatar: 'default',
-    coins: 960,
     unlockedAvatars: ['default'],
     streakDays: 2,
     lastActiveAt: new Date().toISOString(),
     studyMastery: {},
+    practiceTracks: [],
+    playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
   },
   {
     userId: 'virtual-luke',
     displayName: 'Лука',
-    totalPoints: 1510,
+    coins: 1510,
     themePoints: { gospels: 700, miracles: 480, 'new-testament': 190 },
     completedLevels: [],
     survivalHighScore: 24,
@@ -78,18 +87,19 @@ const VIRTUAL_PLAYERS: PlayerProfile[] = [
     activeTheme: 'gennesaret-sea',
     achievements: ['biblical-millionaire'],
     avatar: 'default',
-    coins: 1100,
     unlockedAvatars: ['default'],
     streakDays: 7,
     lastActiveAt: new Date().toISOString(),
     studyMastery: {},
+    practiceTracks: [],
+    playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
   },
 ];
 
 function getRankValue(profile: PlayerProfile, tab: RankingTab): number {
   if (tab === 'survival') return profile.survivalHighScore;
   if (tab === 'millionaire') return profile.millionaireWins * 100 + profile.millionaireMaxLevel;
-  return profile.totalPoints;
+  return profile.coins;
 }
 
 function getRankMeta(profile: PlayerProfile, tab: RankingTab): string {
@@ -101,6 +111,7 @@ function getRankMeta(profile: PlayerProfile, tab: RankingTab): string {
 }
 
 export function GlobalStats() {
+  const { shouldEnter } = useMotionEntrance('global-stats');
   const { profile, globalStats, refreshStats } = usePlayer();
   const [activeTab, setActiveTab] = useState<RankingTab>('total');
   const [selectedProfile, setSelectedProfile] = useState<PlayerProfile | null>(null);
@@ -111,7 +122,7 @@ export function GlobalStats() {
       [...players].sort(
         (a, b) =>
           getRankValue(b, activeTab) - getRankValue(a, activeTab) ||
-          b.totalPoints - a.totalPoints,
+          b.coins - a.coins,
       ),
     [activeTab, players],
   );
@@ -160,7 +171,7 @@ export function GlobalStats() {
         </button>
       </div>
 
-      <ul className={styles.list}>
+      <MotionStagger as="ul" className={styles.list} enter={shouldEnter}>
         {rankedPlayers.map((item, rank) => {
           const maxValue = getRankValue(rankedPlayers[0], activeTab) || 1;
           const value = getRankValue(item, activeTab);
@@ -168,7 +179,7 @@ export function GlobalStats() {
           const isCurrentPlayer = item.userId === profile.userId;
 
           return (
-            <li key={item.userId}>
+            <MotionStaggerItem as="li" key={item.userId}>
               <button
                 type="button"
                 className={`${styles.item} ${isCurrentPlayer ? styles.currentPlayer : ''}`}
@@ -185,10 +196,10 @@ export function GlobalStats() {
                 </span>
                 <span className={styles.points}>{value}</span>
               </button>
-            </li>
+            </MotionStaggerItem>
           );
         })}
-      </ul>
+      </MotionStagger>
 
       <p className={styles.note}>
         Це локальна демонстрація рейтингу. Пізніше її можна під’єднати до backend API

@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { GAME_MODES } from '../../types/gameModes';
 import { Icon } from '../../components/Icon';
 import type { IconName } from '../../components/Icon';
+import { MotionStagger, MotionStaggerItem } from '../../components/motion';
+import { useMotionEntrance } from '../../hooks/useMotionEntrance';
 import styles from './PlayHub.module.css';
 
 interface ModeArt {
@@ -36,6 +38,7 @@ function badgeClass(badge?: string) {
 }
 
 export function PlayHub() {
+  const { shouldEnter } = useMotionEntrance('play-hub');
   return (
     <section className={styles.page}>
       <header className={styles.header}>
@@ -43,13 +46,13 @@ export function PlayHub() {
         <p>Обери, як хочеш грати сьогодні</p>
       </header>
 
-      <ul className={styles.modes}>
+      <MotionStagger as="ul" className={styles.modes} enter={shouldEnter}>
         {GAME_MODES.map((mode) => {
           const art = MODE_ART[mode.id];
           const featured = mode.id === 'study';
 
           return (
-            <li key={mode.id}>
+            <MotionStaggerItem as="li" key={mode.id}>
               {mode.available ? (
                 <Link
                   to={mode.path}
@@ -88,10 +91,10 @@ export function PlayHub() {
                   </div>
                 </div>
               )}
-            </li>
+            </MotionStaggerItem>
           );
         })}
-      </ul>
+      </MotionStagger>
     </section>
   );
 }

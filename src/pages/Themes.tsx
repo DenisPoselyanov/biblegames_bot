@@ -5,9 +5,12 @@ import { Icon } from '../components/Icon';
 import { buildBrowseState } from '../data/topicDbLoader';
 import { useTopicHierarchies } from '../context/TopicHierarchyContext';
 import type { TopicNode } from '../types';
+import { MotionStagger, MotionStaggerItem } from '../components/motion';
+import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import styles from './Themes.module.css';
 
 export function Themes() {
+  const { shouldEnter } = useMotionEntrance('themes');
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const browseAt = searchParams.get('at');
@@ -85,12 +88,12 @@ export function Themes() {
       {showLoading ? (
         <p className={styles.loading}>Завантаження тем...</p>
       ) : !activeNode ? (
-        <ul className={styles.grid}>
+        <MotionStagger as="ul" className={styles.grid} enter={shouldEnter}>
           {['old-testament', 'new-testament'].map((gid) => {
             const rootNode = hierarchies?.[gid];
             if (!rootNode) return null;
             return (
-              <li key={rootNode.id}>
+              <MotionStaggerItem as="li" key={rootNode.id}>
                 <button type="button" className={styles.groupCard} onClick={() => handleOpenGroup(rootNode.id)}>
                   <span className={styles.groupIcon}>{rootNode.icon}</span>
                   <div className={styles.groupBody}>
@@ -102,10 +105,10 @@ export function Themes() {
                   </div>
                   <span className={styles.groupArrow}>→</span>
                 </button>
-              </li>
+              </MotionStaggerItem>
             );
           })}
-        </ul>
+        </MotionStagger>
       ) : (
         <>
           <div className={styles.groupHeader}>
@@ -114,18 +117,18 @@ export function Themes() {
               {nodeHistory.length > 0 ? 'Назад' : 'До загальних тем'}
             </button>
           </div>
-          <ul className={styles.grid}>
+          <MotionStagger as="ul" className={styles.grid} enter={shouldEnter}>
             {children.flatMap((node, idx) => {
               const hasChildren = node.children && node.children.length > 0;
               const isAllQuestions = !!node.aggregateThemeIds;
               const showDivider = isAllQuestions && idx === 0 && children.length > 1;
               return [
-                <li key={node.id}>
+                <MotionStaggerItem as="li" key={node.id}>
                   <button
                     type="button"
                     className={styles.subThemeCard}
                     onClick={() => handleNodeClick(node)}
-                    style={{ '--accent': isAllQuestions ? '#a67c00' : '#4a7c59' } as React.CSSProperties}
+                    style={{ '--accent': isAllQuestions ? 'var(--gold-dark)' : '#4a7c59' } as React.CSSProperties}
                   >
                     <div className={styles.cardLeft}>
                       <div className={styles.cardLeftContent}>
@@ -142,16 +145,16 @@ export function Themes() {
                     </div>
                     <div
                       className={styles.cardRight}
-                      style={{ background: isAllQuestions ? '#a67c00' : '#4a7c59' }}
+                      style={{ background: isAllQuestions ? 'var(--gold-dark)' : '#4a7c59' }}
                     >
                       <span className={styles.cardIcon}>{node.icon}</span>
                     </div>
                   </button>
-                </li>,
+                </MotionStaggerItem>,
                 ...(showDivider ? [<div key={`div-${node.id}`} className={styles.divider} />] : []),
               ];
             })}
-          </ul>
+          </MotionStagger>
         </>
       )}
     </section>

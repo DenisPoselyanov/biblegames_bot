@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { fadeUpVariants, reducedTransition, transitionUi } from '../lib/motion';
 import { type IconName, Icon } from './Icon';
 
 interface EmptyStateProps {
@@ -9,8 +11,14 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ icon = 'info', title, description, action }: EmptyStateProps) {
+  const reduced = useReducedMotion();
+
   return (
-    <div
+    <motion.div
+      initial="initial"
+      animate="animate"
+      variants={fadeUpVariants}
+      transition={reducedTransition(transitionUi, !!reduced)}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -19,7 +27,6 @@ export function EmptyState({ icon = 'info', title, description, action }: EmptyS
         padding: '3rem 1.5rem',
         textAlign: 'center',
         gap: '0.75rem',
-        animation: 'fadeIn 0.4s var(--ease-out)',
       }}
     >
       <div
@@ -37,13 +44,13 @@ export function EmptyState({ icon = 'info', title, description, action }: EmptyS
       >
         <Icon name={icon} size={28} />
       </div>
-      <h3 style={{ fontSize: 'var(--fs-lg)', color: 'var(--text)' }}>{title}</h3>
+      <h3 style={{ fontSize: 'var(--fs-lg)', color: 'var(--text)', margin: 0 }}>{title}</h3>
       {description && (
         <p style={{ margin: 0, fontSize: 'var(--fs-md)', color: 'var(--text-muted)', maxWidth: 280, lineHeight: 'var(--lh-relaxed)' }}>
           {description}
         </p>
       )}
       {action && <div style={{ marginTop: '0.5rem' }}>{action}</div>}
-    </div>
+    </motion.div>
   );
 }

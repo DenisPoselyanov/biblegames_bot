@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import { Icon } from '../../../components/Icon';
+import { FullscreenMotion, MotionStagger, MotionStaggerItem } from '../../../components/motion';
 import styles from './Kahoot.module.css';
 
 const STEP_COLORS = ['#e88d2e', '#d4454a', '#3b82cc'];
 
 export function KahootHub() {
   return (
+    <FullscreenMotion motionKey="kahoot-hub">
     <section className={styles.page}>
       <div className={styles.topRow}>
         <Link to="/play" className={styles.backBtn} aria-label="Назад">
@@ -35,16 +37,16 @@ export function KahootHub() {
 
       <article className={styles.hint}>
         <h3>Як це працює</h3>
-        <ol className={styles.steps}>
+        <MotionStagger as="ol" className={styles.steps}>
           {['Ведучий обирає теми або плейлист', 'Гравці вводять код кімнати та нікнейм', 'Відповіді на час — більше очок за швидкість'].map((text, i) => (
-            <li key={i}>
+            <MotionStaggerItem as="li" key={i}>
               <span className={styles.stepBadge} style={{ background: STEP_COLORS[i] }}>
                 {i + 1}
               </span>
               {text}
-            </li>
+            </MotionStaggerItem>
           ))}
-        </ol>
+        </MotionStagger>
       </article>
 
         <p className={styles.serverNote}>
@@ -54,5 +56,6 @@ export function KahootHub() {
           Авто/ручний темп · екран залу · поділитися через Telegram · CSV після гри
         </p>
     </section>
+    </FullscreenMotion>
   );
 }

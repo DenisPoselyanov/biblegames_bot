@@ -1,63 +1,202 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getThemeById } from '../data/themes';
 import {
   getAllQuestionsAsync,
+  getQuestionsByIdsOrdered,
   getQuestionsForLevelAsync,
   getQuestionsForNodeAsync,
   getQuestionsForCategoryAsync,
+  getQuestionsForStageAsync,
+  getQuestionsForNodeStageAsync,
+  getQuestionsForCategoryStageAsync,
+  invalidateAllQuestionsCache,
 } from '../data/questions';
 import { usePlayer } from '../context/PlayerContext';
 import { ExplanationModal } from '../components/ExplanationModal';
+import { QuestionEditModal } from '../components/QuestionEditModal';
+import { clearQuestionDbCache } from '../data/questionDbLoader';
+import {
+  deleteQuestionOnServer,
+  updateQuestionOnServer,
+} from '../repos/questionAdminRepo';
 import { haptic } from '../lib/telegram';
 import type { Question } from '../types';
 import {
   DIFFICULTY_LABELS,
-  DIFFICULTY_POINTS,
   QUESTIONS_PER_LEVEL,
   isValidDifficulty,
   type StudyMode,
 } from '../types';
+import {
+  getStageQuizPath,
+  isStageUnlocked,
+  PASS_MIN_CORRECT,
+  PRACTICE_QUESTIONS_PER_STAGE,
+  findPracticeTrack,
+  getOrCreatePracticeTrack,
+  canPlayDifficulty,
+} from '../lib/practiceProgression';
 import { studyRepo } from '../repos/studyRepo';
-import { selectAdaptiveQuestions, createDefaultAdaptiveConfig } from '../lib/adaptiveTesting';
 import { loadAllTopicHierarchies, findRootByThemeId } from '../data/topicDbLoader';
+import { InfoTooltip } from '../components/InfoTooltip';
+import { STAGE_POINTS_TOOLTIP } from '../lib/practiceScoringHelp';
+import {
+  AnswerOptionButton,
+  type AnswerOptionVisualState,
+  MotionStagger,
+  MotionStaggerItem,
+} from '../components/motion';
+import { usePersistedRun } from '../hooks/usePersistedRun';
+import {
+  buildQuizSessionKey,
+  loadGameSession,
+  type QuizRunSession,
+} from '../lib/gameSession';
+import {
+  answerFeedbackVariants,
+  answerRevealFlashVariants,
+  questionVariants,
+  reducedTransition,
+  transitionPage,
+  transitionUi,
+} from '../lib/motion';
 import styles from './Quiz.module.css';
 
 const QUESTION_TIME = 15;
 
 export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
-  const { themeId, difficulty, nodeId } = useParams<{
+  const { themeId, difficulty, stageIndex: stageIndexParam, nodeId } = useParams<{
     themeId: string;
     difficulty: string;
+    stageIndex?: string;
     nodeId?: string;
   }>();
   const navigate = useNavigate();
-  const { completeLevel, recordAnswerEvent, profile } = usePlayer();
+  const { completePracticeStage, recordAnswerEvent, profile } = usePlayer();
 
   const theme = getThemeById(themeId ?? '');
   const validDiff = difficulty && isValidDifficulty(difficulty) ? difficulty : null;
+  const stageIndex = stageIndexParam != null ? Number(stageIndexParam) : 0;
+  const effectiveNodeId = nodeId ?? null;
+  const isStageRoute = stageIndexParam != null;
 
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [finished, setFinished] = useState(false);
-  const [sprintTimeLeft, setSprintTimeLeft] = useState<number>(mode === 'sprint' ? 300 : 0);
-  const [microTimeLeft, setMicroTimeLeft] = useState<number>(mode === 'micro' ? 180 : 0); // 3 хвилини для micro
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [earnedPoints, setEarnedPoints] = useState(0);
+  const [earnedWisdom, setEarnedWisdom] = useState(0);
+  const [stagePassed, setStagePassed] = useState(false);
+  const [stagePerfect, setStagePerfect] = useState(false);
+  const [nextStageUnlocked, setNextStageUnlocked] = useState(false);
+  const [rankPromoted, setRankPromoted] = useState(false);
+  const [newRankLabel, setNewRankLabel] = useState('');
   const [explanationOpen, setExplanationOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
+  const [editSaving, setEditSaving] = useState(false);
   const [questionTimeLeft, setQuestionTimeLeft] = useState(QUESTION_TIME);
   const questionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const studyMasterySnapshotRef = useRef(profile.studyMastery);
+  const sessionRestoredRef = useRef(false);
+
+  const sessionKey = useMemo(
+    () =>
+      buildQuizSessionKey(
+        mode,
+        themeId,
+        validDiff ?? undefined,
+        effectiveNodeId,
+        isStageRoute ? stageIndex : undefined,
+      ),
+    [mode, themeId, validDiff, effectiveNodeId, isStageRoute, stageIndex],
+  );
+
+  const applyQuizSession = useCallback((saved: QuizRunSession, restoredQuestions: Question[]) => {
+    sessionRestoredRef.current = true;
+    setQuestions(restoredQuestions);
+    setIndex(saved.index);
+    setCorrectCount(saved.correctCount);
+    setFinished(saved.finished);
+    setShowResult(saved.showResult);
+    setSelected(saved.selected);
+    setQuestionTimeLeft(saved.questionTimeLeft);
+    if (saved.earnedPoints != null) setEarnedPoints(saved.earnedPoints);
+    if (saved.earnedWisdom != null) setEarnedWisdom(saved.earnedWisdom);
+    if (saved.stagePassed != null) setStagePassed(saved.stagePassed);
+    if (saved.stagePerfect != null) setStagePerfect(saved.stagePerfect);
+    if (saved.nextStageUnlocked != null) setNextStageUnlocked(saved.nextStageUnlocked);
+    if (saved.rankPromoted != null) setRankPromoted(saved.rankPromoted);
+    if (saved.newRankLabel != null) setNewRankLabel(saved.newRankLabel);
+    setLoading(false);
+  }, []);
+
+  const quizSnapshot = useMemo(
+    (): QuizRunSession => ({
+      questionIds: questions.map((q) => q.id),
+      index,
+      correctCount,
+      finished,
+      showResult,
+      selected,
+      questionTimeLeft,
+      earnedPoints,
+      earnedWisdom,
+      stagePassed,
+      stagePerfect,
+      nextStageUnlocked,
+      rankPromoted,
+      newRankLabel,
+    }),
+    [
+      questions,
+      index,
+      correctCount,
+      finished,
+      showResult,
+      selected,
+      questionTimeLeft,
+      earnedPoints,
+      earnedWisdom,
+      stagePassed,
+      stagePerfect,
+      nextStageUnlocked,
+      rankPromoted,
+      newRankLabel,
+    ],
+  );
+
+  const { clear: clearQuizSession } = usePersistedRun({
+    sessionKey,
+    snapshot: quizSnapshot,
+    enabled: questions.length > 0 && !loading,
+  });
+
+  const exitQuiz = useCallback(() => {
+    clearQuizSession();
+  }, [clearQuizSession]);
 
   useEffect(() => {
-    studyMasterySnapshotRef.current = profile.studyMastery;
     let cancelled = false;
     setLoading(true);
+    sessionRestoredRef.current = false;
+
+    const tryRestore = async (): Promise<boolean> => {
+      const saved = loadGameSession<QuizRunSession>(sessionKey);
+      if (!saved?.questionIds.length) return false;
+      const restored = await getQuestionsByIdsOrdered(saved.questionIds);
+      if (restored.length !== saved.questionIds.length) return false;
+      if (!cancelled) applyQuizSession(saved, restored);
+      return true;
+    };
 
     const loadQuestions = async () => {
+      if (await tryRestore()) return;
+
       if (mode === 'review') {
         const history = studyRepo.getAnswerHistory();
         const wrongQuestionIds = new Set(history.filter((a) => !a.isCorrect).map((a) => a.questionId));
@@ -71,88 +210,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         return;
       }
 
-      if (mode === 'adaptive') {
-        // Adaptive режим: використовує адаптивний підбір питань
-        if (nodeId) {
-          try {
-            const topicHierarchy = await loadAllTopicHierarchies();
-            const rootNode = findRootByThemeId(topicHierarchy, themeId ?? '');
-            if (rootNode) {
-              const allQuestions = await getAllQuestionsAsync();
-              const config = createDefaultAdaptiveConfig('balanced');
-              const adaptiveQuestions = await selectAdaptiveQuestions(
-                config,
-                {
-                  masteryStates: studyMasterySnapshotRef.current,
-                  targetNodeId: nodeId,
-                  targetDifficulty: validDiff ?? undefined,
-                  answeredQuestionIds: new Set(),
-                },
-                allQuestions,
-                rootNode,
-              );
-              if (!cancelled) {
-                setQuestions(adaptiveQuestions);
-                setLoading(false);
-              }
-              return;
-            }
-          } catch (error) {
-            console.error('Failed to load adaptive questions:', error);
-          }
-        }
-        // Fallback до звичайного режиму
-        if (!cancelled) {
-          setQuestions([]);
-          setLoading(false);
-        }
-        return;
-      }
-
-      if (mode === 'micro') {
-        // Micro режим: короткі сесії по конкретних темах
-        if (nodeId) {
-          try {
-            const topicHierarchy = await loadAllTopicHierarchies();
-            const rootNode = findRootByThemeId(topicHierarchy, themeId ?? '');
-            if (rootNode) {
-              const microQuestions = await getQuestionsForNodeAsync(
-                nodeId,
-                rootNode,
-                validDiff ?? undefined,
-                8, // 8 питань для micro режиму
-                false,
-                false,
-              );
-              if (!cancelled) {
-                setQuestions(microQuestions);
-                setLoading(false);
-              }
-              return;
-            }
-          } catch (error) {
-            console.error('Failed to load micro training questions:', error);
-          }
-        }
-        // Fallback до звичайного режиму
-        if (!cancelled) {
-          setQuestions([]);
-          setLoading(false);
-        }
-        return;
-      }
-
       if (!themeId || !validDiff) {
-        if (mode === 'sprint') {
-          const allQuestions = await getAllQuestionsAsync();
-          const mixed = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 200);
-          if (!cancelled) {
-            setQuestions(mixed);
-            setLoading(false);
-          }
-          return;
-        }
-
         if (!cancelled) {
           setQuestions([]);
           setLoading(false);
@@ -160,12 +218,13 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         return;
       }
 
-      // Звичайний режим з підтримкою ієрархії
-      if (nodeId) {
+      const practiceStageIndex = Number.isFinite(stageIndex) && stageIndex >= 0 ? stageIndex : 0;
+      const questionCount = isStageRoute ? PRACTICE_QUESTIONS_PER_STAGE : QUESTIONS_PER_LEVEL;
+
+      if (effectiveNodeId) {
         try {
           const topicHierarchy = await loadAllTopicHierarchies();
 
-          // Шукаємо вузол у всіх ієрархіях (включаючи групи)
           let targetNode: import('../types').TopicNode | null = null;
           for (const h of Object.values(topicHierarchy)) {
             const findNode = (node: import('../types').TopicNode, targetId: string): import('../types').TopicNode | null => {
@@ -178,18 +237,24 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
               }
               return null;
             };
-            targetNode = findNode(h, nodeId);
+            targetNode = findNode(h, effectiveNodeId);
             if (targetNode) break;
           }
 
-          // Якщо це агрегатний вузол ("Всі питання")
           if (targetNode?.aggregateThemeIds && validDiff) {
-            const aggQuestions = await getQuestionsForCategoryAsync(
-              themeId ?? targetNode.aggregateThemeIds[0],
-              targetNode.aggregateThemeIds,
-              validDiff,
-              mode === 'sprint' ? 100 : QUESTIONS_PER_LEVEL,
-            );
+            const aggQuestions = isStageRoute
+              ? await getQuestionsForCategoryStageAsync(
+                  targetNode.aggregateThemeIds,
+                  validDiff,
+                  practiceStageIndex,
+                  questionCount,
+                )
+              : await getQuestionsForCategoryAsync(
+                  themeId ?? targetNode.aggregateThemeIds[0],
+                  targetNode.aggregateThemeIds,
+                  validDiff,
+                  questionCount,
+                );
             if (!cancelled) {
               setQuestions(aggQuestions);
               setLoading(false);
@@ -197,17 +262,26 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
             return;
           }
 
-          // Інакше — звичайний вузол ієрархії
           const rootNode = findRootByThemeId(topicHierarchy, themeId ?? '');
           if (rootNode) {
-            const nodeQuestions = await getQuestionsForNodeAsync(
-              nodeId,
-              rootNode,
-              validDiff ?? undefined,
-              mode === 'sprint' ? 100 : QUESTIONS_PER_LEVEL,
-              false,
-              false,
-            );
+            const nodeQuestions = isStageRoute
+              ? await getQuestionsForNodeStageAsync(
+                  effectiveNodeId,
+                  rootNode,
+                  validDiff,
+                  practiceStageIndex,
+                  questionCount,
+                  false,
+                  false,
+                )
+              : await getQuestionsForNodeAsync(
+                  effectiveNodeId,
+                  rootNode,
+                  validDiff ?? undefined,
+                  questionCount,
+                  false,
+                  false,
+                );
             if (!cancelled) {
               setQuestions(nodeQuestions);
               setLoading(false);
@@ -219,11 +293,9 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         }
       }
 
-      const qs = await getQuestionsForLevelAsync(
-        themeId,
-        validDiff,
-        mode === 'sprint' ? 100 : QUESTIONS_PER_LEVEL,
-      );
+      const qs = isStageRoute
+        ? await getQuestionsForStageAsync(themeId, validDiff, practiceStageIndex, questionCount)
+        : await getQuestionsForLevelAsync(themeId, validDiff, questionCount);
       if (!cancelled) {
         setQuestions(qs);
         setLoading(false);
@@ -235,35 +307,17 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     return () => {
       cancelled = true;
     };
-  }, [themeId, validDiff, mode, nodeId]);
+  }, [themeId, validDiff, mode, effectiveNodeId, stageIndex, isStageRoute, sessionKey, applyQuizSession]);
 
-  useEffect(() => {
-    if (mode !== 'sprint' || finished || loading) return;
-    const timerId = setInterval(() => {
-      setSprintTimeLeft((prev) => {
-        if (prev <= 1) {
-          setFinished(true);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timerId);
-  }, [mode, finished, loading]);
+  const backToThemeUrl = `/play/study/themes/${themeId}${effectiveNodeId ? `/${effectiveNodeId}` : ''}`;
 
-  useEffect(() => {
-    if (mode !== 'micro' || finished || loading) return;
-    const timerId = setInterval(() => {
-      setMicroTimeLeft((prev) => {
-        if (prev <= 1) {
-          setFinished(true);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timerId);
-  }, [mode, finished, loading]);
+  const stageAccessBlocked = useMemo(() => {
+    if (mode !== 'practice' || !isStageRoute || !validDiff || !themeId) return false;
+    if (!canPlayDifficulty(profile.playerRank, validDiff)) return true;
+    const track = findPracticeTrack(profile.practiceTracks ?? [], themeId, effectiveNodeId, validDiff)
+      ?? getOrCreatePracticeTrack([], themeId, effectiveNodeId, validDiff);
+    return !isStageUnlocked(track, stageIndex);
+  }, [mode, isStageRoute, validDiff, themeId, profile, effectiveNodeId, stageIndex]);
 
   const clearQuestionTimer = useCallback(() => {
     if (questionTimerRef.current) {
@@ -287,10 +341,10 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   }, [clearQuestionTimer]);
 
   const current = questions[index];
+  const reduced = useReducedMotion();
   const progress = questions.length
     ? ((index + (showResult ? 1 : 0)) / questions.length) * 100
     : 0;
-  const backToThemeUrl = `/play/study/themes/${themeId}${nodeId ? `/${nodeId}` : ''}`;
 
   useEffect(() => {
     if (!current || showResult || loading || finished) return;
@@ -307,7 +361,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       themeId: themeId ?? '',
       questionId: current.id,
       isCorrect: false,
-      nodeId: nodeId,
+      nodeId: effectiveNodeId ?? undefined,
     });
     haptic.notification('error');
   }, [
@@ -316,7 +370,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     current,
     loading,
     finished,
-    nodeId,
+    effectiveNodeId,
     themeId,
     clearQuestionTimer,
     recordAnswerEvent,
@@ -332,7 +386,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         themeId: themeId ?? '',
         questionId: current.id,
         isCorrect: optionIndex === current.correctIndex,
-        nodeId: nodeId,
+        nodeId: effectiveNodeId ?? undefined,
       });
       if (optionIndex === current.correctIndex) {
         setCorrectCount((c) => c + 1);
@@ -341,7 +395,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         haptic.notification('error');
       }
     },
-    [showResult, current, clearQuestionTimer, themeId, nodeId, recordAnswerEvent],
+    [showResult, current, clearQuestionTimer, themeId, effectiveNodeId, recordAnswerEvent],
   );
 
   const handleNext = useCallback(() => {
@@ -361,28 +415,99 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     }
 
     if (mode === 'practice' && themeId && validDiff) {
-      const result = completeLevel(themeId, validDiff, correctCount, questions.length);
+      const practiceStageIndex = isStageRoute ? stageIndex : 0;
+      const result = completePracticeStage(
+        themeId,
+        validDiff,
+        practiceStageIndex,
+        correctCount,
+        questions.length,
+        effectiveNodeId,
+      );
       setEarnedPoints(result.points);
+      setEarnedWisdom(result.wisdomEarned);
+      setStagePassed(result.passed);
+      setStagePerfect(result.stagePerfect);
+      setNextStageUnlocked(result.nextStageUnlocked);
+      setRankPromoted(result.rankPromoted);
+      setNewRankLabel(result.newRankLabel);
+      haptic.notification(result.passed ? 'success' : 'error');
+    } else {
+      haptic.notification('success');
     }
     setFinished(true);
-    haptic.notification('success');
   }, [
     index,
     questions.length,
     current,
     correctCount,
-    completeLevel,
+    completePracticeStage,
     themeId,
     validDiff,
     mode,
     clearQuestionTimer,
+    isStageRoute,
+    stageIndex,
+    effectiveNodeId,
   ]);
 
-  const formatTime = (sec: number) => {
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return `${m}:${s.toString().padStart(2, '0')}`;
-  };
+  const handleSaveQuestion = useCallback(async (updated: Question) => {
+    setEditSaving(true);
+    setEditError(null);
+    try {
+      const saved = await updateQuestionOnServer(updated);
+      invalidateAllQuestionsCache();
+      clearQuestionDbCache();
+      setQuestions((prev) => prev.map((q, i) => (i === index ? { ...q, ...saved } : q)));
+      setEditOpen(false);
+      setShowResult(false);
+      setSelected(null);
+      setExplanationOpen(false);
+      clearQuestionTimer();
+      setQuestionTimeLeft(QUESTION_TIME);
+    } catch (error) {
+      setEditError(
+        error instanceof Error
+          ? `${error.message}. Запусти сервер: npm run server:dev`
+          : 'Не вдалось зберегти',
+      );
+    } finally {
+      setEditSaving(false);
+    }
+  }, [index, clearQuestionTimer]);
+
+  const handleDeleteQuestion = useCallback(async (questionId: string) => {
+    setEditSaving(true);
+    setEditError(null);
+    try {
+      await deleteQuestionOnServer(questionId);
+      invalidateAllQuestionsCache();
+      clearQuestionDbCache();
+      setQuestions((prev) => {
+        const next = prev.filter((q) => q.id !== questionId);
+        if (next.length === 0) {
+          setFinished(true);
+        } else if (index >= next.length) {
+          setIndex(next.length - 1);
+        }
+        return next;
+      });
+      setEditOpen(false);
+      setShowResult(false);
+      setSelected(null);
+      setExplanationOpen(false);
+      clearQuestionTimer();
+      setQuestionTimeLeft(QUESTION_TIME);
+    } catch (error) {
+      setEditError(
+        error instanceof Error
+          ? `${error.message}. Запусти сервер: npm run server:dev`
+          : 'Не вдалось видалити',
+      );
+    } finally {
+      setEditSaving(false);
+    }
+  }, [index, clearQuestionTimer]);
 
   const timerProgress = questionTimeLeft / QUESTION_TIME;
   const timerColor =
@@ -404,7 +529,24 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     );
   }
 
-  if (mode === 'practice' && (!theme && !nodeId || !validDiff || questions.length === 0)) {
+  if (stageAccessBlocked) {
+    return (
+      <section className={styles.page}>
+        <div className={styles.emptyState}>
+          <span className={styles.emptyIcon}>🔒</span>
+          <h2 className={styles.emptyTitle}>Етап ще недоступний</h2>
+          <p className={styles.emptyDesc}>
+            Спочатку пройди попередні етапи або підвищ свій ранг у практиці.
+          </p>
+          <Link to={backToThemeUrl} className={styles.emptyBtn}>
+            Повернутися до вибору
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  if (mode === 'practice' && (!theme && !effectiveNodeId || !validDiff || questions.length === 0)) {
     return (
       <section className={styles.page}>
         <div className={styles.emptyState}>
@@ -416,40 +558,6 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
           </p>
           <Link to={backToThemeUrl} className={styles.emptyBtn}>
             Повернутися до вибору
-          </Link>
-        </div>
-      </section>
-    );
-  }
-
-  if (mode === 'adaptive' && questions.length === 0) {
-    return (
-      <section className={styles.page}>
-        <div className={styles.emptyState}>
-          <span className={styles.emptyIcon}>🤖</span>
-          <h2 className={styles.emptyTitle}>Адаптивний тест</h2>
-          <p className={styles.emptyDesc}>
-            Не вдалося сформувати адаптивний тест. Спробуй обрати іншу тему або повернись пізніше.
-          </p>
-          <Link to="/play/study" className={styles.emptyBtn}>
-            До меню
-          </Link>
-        </div>
-      </section>
-    );
-  }
-
-  if (mode === 'micro' && questions.length === 0) {
-    return (
-      <section className={styles.page}>
-        <div className={styles.emptyState}>
-          <span className={styles.emptyIcon}>⚡</span>
-          <h2 className={styles.emptyTitle}>Мікротренування</h2>
-          <p className={styles.emptyDesc}>
-            Не знайдено питань для цієї мікротеми. Спробуй обрати іншу тему.
-          </p>
-          <Link to="/play/study" className={styles.emptyBtn}>
-            До меню
           </Link>
         </div>
       </section>
@@ -474,59 +582,106 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   }
 
   if (finished) {
-    const pct = Math.round((correctCount / (index + 1)) * 100) || 0;
+    const totalAnswered = questions.length;
+    const pct = Math.round((correctCount / totalAnswered) * 100) || 0;
+    const nextStagePath =
+      mode === 'practice' && themeId && validDiff && nextStageUnlocked
+        ? getStageQuizPath(themeId, validDiff, stageIndex + 1, effectiveNodeId)
+        : null;
+
     return (
       <section className={styles.page}>
-        <article className={styles.resultCard}>
-          <span className={styles.resultIcon}>🎉</span>
-          <h1>Рівень завершено!</h1>
+        <article className={`${styles.resultCard} ${stagePassed ? styles.resultCardSuccess : styles.resultCardFail}`}>
+          <span className={styles.resultIcon}>{stagePassed ? '🎉' : '📖'}</span>
+          <h1>{stagePassed ? (correctCount === totalAnswered ? 'Етап пройдено без помилок!' : 'Етап пройдено!') : 'Спробуй ще раз'}</h1>
 
-          {mode === 'sprint' ? (
-            <p className={styles.resultTheme}>Спринт · Час вичерпано</p>
-          ) : mode === 'review' ? (
+          {mode === 'review' ? (
             <p className={styles.resultTheme}>Робота над помилками</p>
-          ) : mode === 'adaptive' ? (
-            <p className={styles.resultTheme}>🤖 Адаптивний тест завершено</p>
-          ) : mode === 'micro' ? (
-            <p className={styles.resultTheme}>⚡ Мікротренування завершено</p>
-          ) : nodeId && (nodeId === 'ot-all' || nodeId === 'nt-all') ? (
+          ) : effectiveNodeId && (effectiveNodeId === 'ot-all' || effectiveNodeId === 'nt-all') ? (
             <p className={styles.resultTheme}>
               📚 Усі питання · {validDiff && DIFFICULTY_LABELS[validDiff]}
+              {isStageRoute ? ` · Етап ${stageIndex + 1}` : ''}
             </p>
           ) : (
             <p className={styles.resultTheme}>
               {theme?.icon} {theme?.title} · {validDiff && DIFFICULTY_LABELS[validDiff]}
+              {isStageRoute ? ` · Етап ${stageIndex + 1}` : ''}
             </p>
           )}
 
           <p className={styles.resultScore}>
-            {correctCount} / {mode === 'practice' ? questions.length : index + (showResult ? 1 : 0)} правильних ({pct}%)
+            {correctCount} / {totalAnswered} правильних ({pct}%)
           </p>
 
           {mode === 'practice' && (
             <>
-              <p className={styles.resultPoints}>+{earnedPoints} очок</p>
-              <p className={styles.resultHint}>
-                Максимум за рівень: {validDiff ? DIFFICULTY_POINTS[validDiff] : 0} очок при 100% відповідей
-              </p>
+              {!stagePassed && (
+                <p className={styles.resultHint}>
+                  Для проходження потрібно щонайменше {PASS_MIN_CORRECT} з {PRACTICE_QUESTIONS_PER_STAGE} правильних відповідей.
+                </p>
+              )}
+              {stagePassed && earnedWisdom > 0 && (
+                <p className={styles.resultWisdom}>+{earnedWisdom} очок мудрості</p>
+              )}
+              {stagePassed && (
+                <p className={styles.resultPointsRow}>
+                  <span className={styles.resultPoints}>
+                    {earnedPoints > 0
+                      ? `+${earnedPoints} донараховано монет за етап`
+                      : 'Максимум монет за цей етап вже отримано'}
+                  </span>
+                  <InfoTooltip label="Як рахуються монети за етап" text={STAGE_POINTS_TOOLTIP} />
+                </p>
+              )}
+              {rankPromoted && (
+                <p className={styles.resultRank}>Новий ранг: {newRankLabel}</p>
+              )}
+              {nextStageUnlocked && (
+                <p className={styles.resultHint}>Наступний етап розблоковано!</p>
+              )}
             </>
           )}
 
-          <button
-            type="button"
-            className={styles.btnPrimary}
-            onClick={() => {
-              if (mode === 'practice') {
-                navigate(backToThemeUrl);
-              } else if (mode === 'adaptive' || mode === 'micro') {
-                navigate('/play/study');
-              } else {
-                navigate('/play/study');
-              }
-            }}
-          >
-            {mode === 'practice' ? 'До теми' : 'В меню'}
-          </button>
+          <div className={styles.resultActions}>
+            {nextStagePath && (
+              <button
+                type="button"
+                className={styles.btnPrimary}
+                onClick={() => {
+                  clearQuizSession();
+                  navigate(nextStagePath);
+                }}
+              >
+                Етап {stageIndex + 2} →
+              </button>
+            )}
+            <button
+              type="button"
+              className={nextStagePath ? styles.btnSecondary : styles.btnPrimary}
+              onClick={() => {
+                clearQuizSession();
+                if (mode === 'practice') {
+                  navigate(backToThemeUrl);
+                } else {
+                  navigate('/play/study');
+                }
+              }}
+            >
+              {mode === 'practice' ? 'До теми' : 'В меню'}
+            </button>
+            {mode === 'practice' && !stagePassed && themeId && validDiff && (
+              <button
+                type="button"
+                className={styles.btnSecondary}
+                onClick={() => {
+                  clearQuizSession();
+                  navigate(getStageQuizPath(themeId, validDiff, stageIndex, effectiveNodeId));
+                }}
+              >
+                Повторити етап
+              </button>
+            )}
+          </div>
         </article>
       </section>
     );
@@ -537,15 +692,10 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       <header className={styles.top}>
         <div className={styles.topRow}>
           <Link
-            to={
-              mode === 'practice' 
-                ? backToThemeUrl
-                : mode === 'adaptive' || mode === 'micro'
-                  ? '/play/study'
-                  : '/play/study'
-            }
+            to={mode === 'practice' ? backToThemeUrl : '/play/study'}
             className={styles.close}
             aria-label="Закрити"
+            onClick={exitQuiz}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 6L6 18M6 6l12 12" />
@@ -553,44 +703,29 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
           </Link>
 
           <div className={styles.topBadges}>
+            {mode === 'practice' && validDiff && isStageRoute && (
+              <span className={styles.diffBadge}>Етап {stageIndex + 1}</span>
+            )}
             {mode === 'practice' && validDiff && (
               <span className={styles.diffBadge}>{DIFFICULTY_LABELS[validDiff]}</span>
             )}
             <span className={styles.themeBadge}>
               {mode === 'review'
                 ? '🧠 Робота над помилками'
-                : mode === 'sprint'
-                  ? '⏱️ Спринт'
-                  : mode === 'adaptive'
-                    ? '🤖 Адаптивний тест'
-                    : mode === 'micro'
-                      ? '⚡ Мікротренування'
-                      : nodeId && (nodeId === 'ot-all' || nodeId === 'nt-all')
-                        ? '📚 Усі питання'
-                        : `${theme?.icon} ${theme?.title}`}
+                : effectiveNodeId && (effectiveNodeId === 'ot-all' || effectiveNodeId === 'nt-all')
+                  ? '📚 Усі питання'
+                  : `${theme?.icon} ${theme?.title}`}
             </span>
           </div>
         </div>
 
         <div className={styles.progressArea}>
           <span className={styles.counter}>
-            {index + 1} / {mode === 'sprint' ? '∞' : questions.length}
+            {index + 1} / {questions.length}
           </span>
-          {mode !== 'sprint' && (
-            <div className={styles.progressBar} role="progressbar" aria-valuenow={progress}>
-              <span style={{ width: `${progress}%` }} />
-            </div>
-          )}
-          {mode === 'sprint' && (
-            <div className={styles.sprintTimer}>
-              ⏱ {formatTime(sprintTimeLeft)}
-            </div>
-          )}
-          {mode === 'micro' && (
-            <div className={styles.sprintTimer}>
-              ⚡ {formatTime(microTimeLeft)}
-            </div>
-          )}
+          <div className={styles.progressBar} role="progressbar" aria-valuenow={progress}>
+            <span style={{ width: `${progress}%` }} />
+          </div>
         </div>
       </header>
 
@@ -612,7 +747,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
               strokeDasharray={timerCircumference}
               strokeDashoffset={timerOffset}
               transform="rotate(-90 70 70)"
-              style={{ transition: 'stroke-dashoffset 1s linear, stroke 0.3s ease' }}
+              style={{ transition: 'stroke-dashoffset 1s linear, stroke var(--duration-normal) var(--ease-out)' }}
             />
           </svg>
           <span className={styles.timerText}>{questionTimeLeft}</span>
@@ -620,49 +755,106 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       </div>
 
       <footer className={styles.bottomPanel}>
-        <div className={styles.questionCard}>
-          <p className={styles.questionText}>{current.text}</p>
-        </div>
-
-        <ul className={styles.options}>
-          {current.options.map((opt, i) => {
-            let state = '';
-            if (showResult) {
-              if (i === current.correctIndex) state = styles.correct;
-              else if (i === selected) state = styles.wrong;
-            } else if (i === selected) {
-              state = styles.selected;
-            }
-            return (
-              <li key={i}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current.id}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={questionVariants}
+            transition={reducedTransition(transitionPage, !!reduced)}
+          >
+            <div className={styles.questionCard}>
+              {showResult && (
+                <motion.div
+                  className={styles.answerFlash}
+                  variants={answerRevealFlashVariants}
+                  initial="idle"
+                  animate="flash"
+                  aria-hidden
+                />
+              )}
+              {mode === 'practice' && (
                 <button
                   type="button"
-                  className={`${styles.option} ${state}`}
-                  onClick={() => handleSelect(i)}
-                  disabled={showResult}
+                  className={styles.editBtn}
+                  onClick={() => setEditOpen(true)}
+                  aria-label="Редагувати питання"
                 >
-                  {opt}
+                  ✏️
                 </button>
-              </li>
-            );
-          })}
-        </ul>
+              )}
+              <p className={styles.questionText}>{current.text}</p>
+            </div>
 
-        {showResult && (
-          <button
-            type="button"
-            className={styles.referenceButton}
-            onClick={() => setExplanationOpen(true)}
-          >
-            Пояснення {current.reference ? `· ${current.reference}` : ''}
-          </button>
-        )}
+            <MotionStagger as="ul" className={styles.options}>
+              {current.options.map((opt, i) => {
+                let state = '';
+                let visual: AnswerOptionVisualState = 'idle';
+                if (showResult) {
+                  if (i === current.correctIndex) {
+                    state = styles.correct;
+                    visual = 'correct';
+                  } else if (i === selected) {
+                    state = styles.wrong;
+                    visual = 'wrong';
+                  }
+                } else if (i === selected) {
+                  state = styles.selected;
+                  visual = 'selected';
+                }
+                return (
+                  <MotionStaggerItem as="li" key={i}>
+                    <AnswerOptionButton
+                      className={`${styles.option} ${state}`}
+                      visualState={visual}
+                      onClick={() => handleSelect(i)}
+                      disabled={showResult}
+                    >
+                      {opt}
+                    </AnswerOptionButton>
+                  </MotionStaggerItem>
+                );
+              })}
+            </MotionStagger>
 
-        {showResult && (
-          <button type="button" className={styles.btnPrimary} onClick={handleNext}>
-            {index < questions.length - 1 ? 'Далі →' : 'Завершити рівень'}
-          </button>
-        )}
+            <AnimatePresence mode="wait" initial={false}>
+              {showResult && (
+                <motion.div
+                  key={`quiz-feedback-${current.id}`}
+                  variants={answerFeedbackVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  transition={reducedTransition(transitionUi, !!reduced)}
+                  style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}
+                >
+                  <motion.button
+                    type="button"
+                    className={styles.referenceButton}
+                    onClick={() => setExplanationOpen(true)}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={reducedTransition(transitionUi, !!reduced)}
+                  >
+                    Пояснення {current.reference ? `· ${current.reference}` : ''}
+                  </motion.button>
+
+                  <motion.button
+                    type="button"
+                    className={styles.btnPrimary}
+                    onClick={handleNext}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={reducedTransition(transitionUi, !!reduced)}
+                  >
+                    {index < questions.length - 1 ? 'Далі →' : 'Завершити етап'}
+                  </motion.button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </AnimatePresence>
       </footer>
 
       <ExplanationModal
@@ -670,6 +862,21 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         open={explanationOpen}
         onClose={() => setExplanationOpen(false)}
       />
+
+      {mode === 'practice' && (
+        <QuestionEditModal
+          question={current}
+          open={editOpen}
+          saving={editSaving}
+          error={editError}
+          onClose={() => {
+            setEditOpen(false);
+            setEditError(null);
+          }}
+          onSave={handleSaveQuestion}
+          onDelete={handleDeleteQuestion}
+        />
+      )}
     </section>
   );
 }

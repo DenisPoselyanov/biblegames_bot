@@ -26,7 +26,7 @@ export const POOL_CONFIGS: Record<QuestionPoolType, PoolSelectionRules> = {
   study: {
     minQualityScore: 60,
     maxAmbiguityScore: 50,
-    allowedDifficulties: ['baby', 'child', 'youth', 'student', 'preacher'],
+    allowedDifficulties: ['baby', 'child', 'youth', 'student', 'preacher', 'teacher', 'theologian'],
     requireReference: true,
     requireExplanation: false,
     allowQuarantined: false,

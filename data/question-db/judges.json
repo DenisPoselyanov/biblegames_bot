@@ -551,7 +551,7 @@
       "Г) Книга Буття"
     ],
     "correctIndex": 3,
-    "reference": "Книга Розпівів 37-50",
+    "reference": "Бут. 37:1",
     "source": "ai",
     "createdAt": "2026-05-23T22:04:50.692Z",
     "topicNodeId": "judges",
@@ -677,7 +677,6 @@
       "66"
     ],
     "correctIndex": 2,
-    "reference": "Не знайдено відповіді в Біблії",
     "source": "ai",
     "createdAt": "2026-05-23T22:06:40.864Z",
     "topicNodeId": "judges",
@@ -785,7 +784,7 @@
       "Рефаїл"
     ],
     "correctIndex": 2,
-    "reference": "Тов. 3:16",
+    "reference": "Юд. 1:9",
     "source": "ai",
     "createdAt": "2026-05-23T22:07:11.576Z",
     "topicNodeId": "judges",
@@ -875,7 +874,7 @@
       "Йова"
     ],
     "correctIndex": 1,
-    "reference": "1 Цар. 1-24",
+    "reference": "1 Сам. 16:13",
     "source": "ai",
     "createdAt": "2026-05-23T22:07:43.063Z",
     "topicNodeId": "judges",
@@ -893,7 +892,7 @@
       "Суджа"
     ],
     "correctIndex": 3,
-    "reference": "Суд. 8-9",
+    "reference": "Суд. 1:34",
     "source": "ai",
     "createdAt": "2026-05-23T22:07:43.063Z",
     "topicNodeId": "judges",
@@ -911,7 +910,7 @@
       "Єремія"
     ],
     "correctIndex": 3,
-    "reference": "Єр. 1-40",
+    "reference": "Єр. 52:1",
     "source": "ai",
     "createdAt": "2026-05-23T22:07:43.063Z",
     "topicNodeId": "judges",

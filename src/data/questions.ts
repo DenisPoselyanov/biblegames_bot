@@ -1,6 +1,9 @@
 import type { Difficulty, Question, TopicNode } from '../types';
 import { QUESTIONS_PER_LEVEL } from '../types';
+import { PRACTICE_QUESTIONS_PER_STAGE } from '../lib/practiceProgression';
 import { EXTRA_QUESTIONS } from './questions-extra';
+import exclusionsJson from '../../data/question-exclusions.json';
+import overridesJson from '../../data/question-overrides.json';
 
 type TopicTag = { topicNodeId: string; topicPath?: string };
 
@@ -16,6 +19,20 @@ function loadEmbeddedTopicTags(): Record<string, TopicTag> {
 }
 
 const EMBEDDED_TOPIC_TAGS = loadEmbeddedTopicTags();
+const EXCLUDED_QUESTION_IDS = new Set<string>(
+  Array.isArray(exclusionsJson) ? exclusionsJson : [],
+);
+const QUESTION_OVERRIDES = (overridesJson ?? {}) as Record<string, Partial<Question>>;
+
+function applyDiskMutations(questions: Question[]): Question[] {
+  return questions
+    .filter((q) => !EXCLUDED_QUESTION_IDS.has(q.id))
+    .map((q) => {
+      const patch = QUESTION_OVERRIDES[q.id];
+      if (!patch) return q;
+      return { ...q, ...patch, id: q.id };
+    });
+}
 
 function withEmbeddedTopicTags(question: Question): Question {
   const tag = EMBEDDED_TOPIC_TAGS[question.id];
@@ -76,21 +93,11 @@ export const QUESTIONS: Question[] = [
   q('geography-nt', 'student', 5, 'Яке озеро називали Геннісаретським?', ['Галилейське', 'Мертве', 'Тіверіадське', 'Солоне'], 0, 'Мат. 14:34'),
 
   // Старий Завіт
-  q('old-testament', 'child', 1, 'Хто збудував ковчег?', ['Ной', 'Мойсей', 'Авраам', 'Давид'], 0, 'Бут. 6:14'),
-  q('old-testament', 'child', 2, 'Скільки днів і ночей дощу під час потопу?', ['40', '7', '12', '100'], 0, 'Бут. 7:12'),
-  q('old-testament', 'child', 3, 'Хто вбив Голіафа?', ['Давид', 'Саул', 'Самсон', 'Гедеон'], 0, '1 Цар. 17:49'),
   q('old-testament', 'child', 4, 'Яке ім’я отримав Яків після боротьби з Богом?', ['Ізраїль', 'Авраам', 'Ісав', 'Валаам'], 0, 'Бут. 32:28'),
-  q('old-testament', 'child', 5, 'Хто був першою жінкою?', ['Єва', 'Сара', 'Ревека', 'Рахіль'], 0, 'Бут. 3:20'),
-  q('old-testament', 'youth', 1, 'Хто приніс жертву, яку Бог прийняв?', ['Авель', 'Каїн', 'Ной', 'Сет'], 0, 'Бут. 4:4'),
   q('old-testament', 'youth', 2, 'Скільки років жили патріархи до потопу (орієнтовно)?', ['Сотні років', '70 років', '50 років', '30 років'], 0, 'Бут. 5'),
   q('old-testament', 'youth', 3, 'Хто був «людиною за серцем Божим»?', ['Давид', 'Соломон', 'Саул', 'Езекія'], 0, 'Дії 13:22'),
   q('old-testament', 'youth', 4, 'Яку книгу написав Соломон про мудрість?', ['Притчі', 'Псалми', 'Вихід', 'Суддів'], 0, 'Прит. 1:1'),
   q('old-testament', 'youth', 5, 'Хто був «батьком багатьох народів»?', ['Авраам', 'Ной', 'Мойсей', 'Ісав'], 0, 'Бут. 17:5'),
-  q('old-testament', 'student', 1, 'Хто був першим первосвящеником Ізраїля?', ['Аарон', 'Мойсей', 'Елеазар', 'Финеес'], 0, 'Вих. 28:1'),
-  q('old-testament', 'student', 2, 'Яке місто знищив вогонь з неба за гріхи Содому?', ['Содом і Гоморру', 'Єрихон', 'Ніневію', 'Вавилон'], 0, 'Бут. 19:24'),
-  q('old-testament', 'student', 3, 'Хто був «пророком як Мойсей»?', ['Христос (обіцяння)', 'Ілля', 'Самуїл', 'Ісая'], 0, 'Втор. 18:18'),
-  q('old-testament', 'student', 4, 'Скільки років Ізраїль ходив пустелею?', ['40', '7', '12', '70'], 0, 'Чис. 14:33'),
-  q('old-testament', 'student', 5, 'Хто був «типом Христа» у ВЗ?', ['Адам / Мелхиседек / жертви', 'Саул', 'Ахав', 'Валаам'], 0),
 
   // Закон Мойсея
   q('mosaic-law', 'child', 1, 'Скільки заповідей на кам’яних скрижалях?', ['10', '7', '12', '613'], 0, 'Вих. 20'),
@@ -98,33 +105,25 @@ export const QUESTIONS: Question[] = [
   q('mosaic-law', 'child', 3, 'Хто отримав Закон на горі?', ['Мойсей', 'Аарон', 'Ісус Навин', 'Самуїл'], 0, 'Вих. 19:20'),
   q('mosaic-law', 'child', 4, 'Що не можна робити в суботу?', ['Працювати', 'Молитися', 'Читати', 'Їсти'], 0, 'Вих. 20:10'),
   q('mosaic-law', 'child', 5, 'Яка скотина була «жертвою за гріх»?', ['Козел / ягня', 'Голуб', 'Риба', 'Хліб'], 0, 'Лев. 4'),
-  q('mosaic-law', 'youth', 1, 'Що означає «око за око»?', ['Справедлива відплата', 'Места', 'Прощення', 'Золото'], 0, 'Вих. 21:24'),
   q('mosaic-law', 'youth', 2, 'Який рік — прощення боргів?', ['Ювілейний', 'Суботній', 'Святковий', 'Врожайний'], 0, 'Лев. 25'),
-  q('mosaic-law', 'youth', 3, 'Де стояла скинія?', ['У таборі Ізраїля', 'В храмі', 'У Вавилоні', 'На Сіоні'], 0, 'Вих. 40'),
   q('mosaic-law', 'youth', 4, 'Що було на ковчезі завіту?', ['Херувими', 'Агнці', 'Зірки', 'Хрест'], 0, 'Вих. 25:18'),
   q('mosaic-law', 'youth', 5, 'Яке місто — «місто притулку»?', ['Города-втечі', 'Єрусалим', 'Сихем', 'Віфлеєм'], 0, 'Чис. 35'),
   q('mosaic-law', 'student', 1, 'Скільки книг у Торі (Пентатеух)?', ['5', '4', '12', '39'], 0),
-  q('mosaic-law', 'student', 2, 'Що означає «шабат»?', ['Спочинок', 'Свято', 'Молитва', 'Жертва'], 0),
-  q('mosaic-law', 'student', 3, 'Хто ніс ковчег через Йордан?', ['Священики', 'Воїни', 'Цар', 'Пророки'], 0, 'Нав. 3:13'),
   q('mosaic-law', 'student', 4, 'Яка жертва — «цілопалення»?', ['Ольта', 'Хліб', 'Пити', 'Мир'], 0, 'Лев. 1'),
   q('mosaic-law', 'student', 5, 'Що забороняла третя заповідь?', ['Легкомовність імені Бога', 'Крадіжку', 'Брехню', 'Зависть'], 0, 'Вих. 20:7'),
 
   // Апостол Павло
   q('paul', 'child', 1, 'Як звали Павла до навернення?', ['Савл', 'Симон', 'Варнава', 'Тимофій'], 0, 'Дії 13:9'),
-  q('paul', 'child', 2, 'Де навернувся Павло?', ['Дамаск', 'Рим', 'Афіни', 'Коринф'], 0, 'Дії 9:3'),
   q('paul', 'child', 3, 'Хто був учителем Павла?', ['Гамаліїл', 'Петро', 'Іоанн', 'Андрій'], 0, 'Дії 22:3'),
   q('paul', 'child', 4, 'Скільки листів Павла в Новому Завіті (традиційно)?', ['13', '7', '21', '4'], 0),
   q('paul', 'child', 5, 'Кого Павло називав «улюбленим сином»?', ['Тимофія', 'Тита', 'Луку', 'Марка'], 0, '1 Тим. 1:2'),
-  q('paul', 'youth', 1, 'Що Павло робив до навернення?', ['Гонив церкву', 'Рибалив', 'Був митарем', 'Був царем'], 0, 'Дії 8:3'),
   q('paul', 'youth', 2, 'Де Павло написав про «любов — терпить»?', ['1 Кор. 13', 'Рим. 8', 'Гал. 5', 'Еф. 6'], 0),
   q('paul', 'youth', 3, 'Хто супроводжував Павла в першій подорожі?', ['Варнава', 'Петро', 'Іоанн', 'Яків'], 0, 'Дії 13:2'),
   q('paul', 'youth', 4, 'У якій в’язниці писав листи до филип’ян?', ['Рим', 'Єрусалим', 'Кесарія', 'Коринф'], 0, 'Флп. 1:7'),
   q('paul', 'youth', 5, 'Що Павло називав «шоломом спасіння»?', ['Слово Боже / віра', 'Меч', 'Щит', 'Пояс'], 0, 'Еф. 6:17'),
-  q('paul', 'student', 1, 'Скільки разів Павло був побитий «сорока без однієї»?', ['Три', 'Один', 'Сім', 'Десять'], 0, '2 Кор. 11:24'),
   q('paul', 'student', 2, 'Хто відрізав вухо слузі первосвященика?', ['Петро', 'Павло', 'Іоанн', 'Андрій'], 0, 'Ін. 18:10'),
   q('paul', 'student', 3, 'Яке місто — «ворота до Європи» для Павла?', ['Филипи', 'Афіни', 'Рим', 'Коринф'], 0, 'Дії 16:12'),
   q('paul', 'student', 4, 'Про що сперечалися в Антіохії?', ['Обрізання язичників', 'Храм', 'Пост', 'Десятина'], 0, 'Дії 15'),
-  q('paul', 'student', 5, 'Хто написав Дії апостолів (традиційно)?', ['Лука', 'Павло', 'Петро', 'Марк'], 0),
 
   // Судді
   q('judges', 'child', 1, 'Хто вбив тисячу филистимлян ослиною щелепою?', ['Самсон', 'Гедеон', 'Єфта', 'Девора'], 0, 'Суд. 15:15'),
@@ -137,7 +136,6 @@ export const QUESTIONS: Question[] = [
   q('judges', 'youth', 3, 'Яка жінка зрадила Самсона?', ['Даліла', 'Рут', 'Саскі', 'Агар'], 0, 'Суд. 16:4'),
   q('judges', 'youth', 4, 'Хто був першим суддею Ізраїля?', ['Офніїл', 'Гедеон', 'Самуїл', 'Самсон'], 0, 'Суд. 3:9'),
   q('judges', 'youth', 5, 'Що означає «кожен робив, що праве в очах його»?', ['Анархія без царя', 'Мир', 'Закон', 'Храм'], 0, 'Суд. 21:25'),
-  q('judges', 'student', 1, 'Хто знищив Шехем?', ['Авімелех', 'Самсон', 'Єфта', 'Гедеон'], 0, 'Суд. 9:49'),
   q('judges', 'student', 2, 'Скільки років поневолення перед Самсоном (одне з)?', ['40', '7', '12', '20'], 0, 'Суд. 13:1'),
   q('judges', 'student', 3, 'Хто написав пісню про перемогу над Сісерою?', ['Девора', 'Рут', 'Міріам', 'Анна'], 0, 'Суд. 5'),
   q('judges', 'student', 4, 'Яке плем’я дало перших суддів?', ['Юда / Веніамін', 'Єфрем', 'Дан', 'Нефталим'], 0),
@@ -149,7 +147,6 @@ export const QUESTIONS: Question[] = [
   q('kings', 'child', 3, 'Хто був «наймудрішим» царем?', ['Соломон', 'Саул', 'Ахав', 'Озія'], 0, '3 Цар. 4:30'),
   q('kings', 'child', 4, 'Хто був батьком Соломона?', ['Давид', 'Саул', 'Єссей', 'Самуїл'], 0, '2 Цар. 12:24'),
   q('kings', 'child', 5, 'Скільки племен мало Ізраїль після розколу?', ['12 північ / 2 південь', '10 / 2', '7 / 5', '1 / 11'], 0),
-  q('kings', 'youth', 1, 'Хто був першим царем Ізраїля?', ['Саул', 'Давид', 'Соломон', 'Єрубоам'], 0, '1 Цар. 10'),
   q('kings', 'youth', 2, 'Який цар поклонявся Ваалу з Ієзавеллю?', ['Ахав', 'Озія', 'Манасія', 'Саул'], 0, '3 Цар. 16:31'),
   q('kings', 'youth', 3, 'Хто відновив храм і святкував Пасху?', ['Єзекія / Йосія', 'Ахаз', 'Манасія', 'Саул'], 0),
   q('kings', 'youth', 4, 'Скільки років правив Давид?', ['40', '7', '12', '70'], 0, '2 Цар. 5:4'),
@@ -161,21 +158,8 @@ export const QUESTIONS: Question[] = [
   q('kings', 'student', 5, 'Хто був останнім царем Юдеї перед вигнанням?', ['Седекія', 'Йоахаз', 'Єгояким', 'Манасія'], 0, '4 Цар. 25'),
 
   // Новий Завіт
-  q('new-testament', 'child', 1, 'Скільки книг у Новому Завіті?', ['27', '39', '66', '12'], 0),
-  q('new-testament', 'child', 2, 'Хто написав більшість листів?', ['Павло', 'Петро', 'Іоанн', 'Яків'], 0),
-  q('new-testament', 'child', 3, 'Яка перша книга НЗ?', ['Матфея', 'Марка', 'Луки', 'Дії'], 0),
-  q('new-testament', 'child', 4, 'Хто був «каменем відкиденим»?', ['Христос', 'Петро', 'Павло', 'Іоанн'], 0, '1 Пет. 2:7'),
-  q('new-testament', 'child', 5, 'Де народилася Церква?', ['П’ятдесятниця', 'Різдво', 'Пасха', 'Хрещення'], 0, 'Дії 2'),
-  q('new-testament', 'youth', 1, 'Хто написав Євреїв (традиційно спірно)?', ['Павло / невідомий', 'Петро', 'Лука', 'Іаків'], 0),
   q('new-testament', 'youth', 2, 'Яка книга — «католичні листи»?', ['Яків, 1-2 Петра, Іуда', 'Римлянам', 'Дії', 'Одкровення'], 0),
-  q('new-testament', 'youth', 3, 'Хто був «апостолом із 12» замість Іуди?', ['Матфій', 'Павло', 'Варнава', 'Тимофій'], 0, 'Дії 1:26'),
-  q('new-testament', 'youth', 4, 'Що означає «євангеліє»?', ['Блага вість', 'Закон', 'Пророцтво', 'Мудрість'], 0),
-  q('new-testament', 'youth', 5, 'Хто написав Одкровення?', ['Іоанн', 'Павло', 'Петро', 'Лука'], 0, 'Одкр. 1:1'),
-  q('new-testament', 'student', 1, 'Яка єдина книга-лист до особи?', ['Филимону', 'Титу', 'Тимофію', 'Диякону'], 0),
-  q('new-testament', 'student', 2, 'Скільки «синоптичних» євангелій?', ['3', '4', '1', '2'], 0),
-  q('new-testament', 'student', 3, 'Хто «син Божий» в початку Івана?', ['Слово / Логос', 'Ангел', 'Мойсей', 'Давид'], 0, 'Ін. 1:1'),
   q('new-testament', 'student', 4, 'Яка книга описує подорожі Павла?', ['Дії апостолів', 'Римлянам', 'Галатам', 'Коринфянам'], 0),
-  q('new-testament', 'student', 5, 'Що таке «діатесарон» (історично)?', ['Злиття євангелій', 'Псалтир', 'Літургія', 'Канон'], 0),
 
   // Євангелія
   q('gospels', 'child', 1, 'Скільки апостолів обрав Ісус?', ['12', '7', '70', '3'], 0, 'Мат. 10:2'),
@@ -329,13 +313,31 @@ export async function getAllQuestionsAsync(): Promise<Question[]> {
       const byId = new Map<string, Question>();
       for (const q of ALL_QUESTIONS) byId.set(q.id, q);
       for (const q of ai) byId.set(q.id, q);
-      allQuestionsCache = [...byId.values()];
+      allQuestionsCache = applyDiskMutations([...byId.values()]);
       return allQuestionsCache;
     })().finally(() => {
       allQuestionsPromise = null;
     });
   }
   return allQuestionsPromise;
+}
+
+export function invalidateAllQuestionsCache(): void {
+  allQuestionsCache = null;
+  allQuestionsPromise = null;
+}
+
+/** Restore a saved run — preserves order, no shuffle */
+export async function getQuestionsByIdsOrdered(ids: string[]): Promise<Question[]> {
+  if (ids.length === 0) return [];
+  const all = await getAllQuestionsAsync();
+  const byId = new Map(all.map((q) => [q.id, q]));
+  const ordered: Question[] = [];
+  for (const id of ids) {
+    const q = byId.get(id);
+    if (q) ordered.push(q);
+  }
+  return ordered;
 }
 
 /**
@@ -371,6 +373,123 @@ function pickQuestionsFromPool(
   count = QUESTIONS_PER_LEVEL,
 ): Question[] {
   return shuffle(pool).slice(0, Math.min(count, pool.length));
+}
+
+function orderQuestionsStable(pool: Question[]): Question[] {
+  return [...pool].sort((a, b) => a.id.localeCompare(b.id));
+}
+
+function pickQuestionsForStage(
+  pool: Question[],
+  stageIndex: number,
+  count = PRACTICE_QUESTIONS_PER_STAGE,
+): Question[] {
+  const ordered = orderQuestionsStable(pool);
+  const start = stageIndex * count;
+  return ordered.slice(start, start + count);
+}
+
+export function getStageQuestionCount(poolSize: number, stageIndex: number, count = PRACTICE_QUESTIONS_PER_STAGE): number {
+  const start = stageIndex * count;
+  if (start >= poolSize) return 0;
+  return Math.min(count, poolSize - start);
+}
+
+export async function getQuestionsForStageAsync(
+  themeId: string,
+  difficulty: Difficulty,
+  stageIndex: number,
+  count = PRACTICE_QUESTIONS_PER_STAGE,
+): Promise<Question[]> {
+  const embedded = ALL_QUESTIONS.filter(
+    (q) => q.themeId === themeId && q.difficulty === difficulty,
+  );
+  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+  const ai = await loadAiQuestionsForTheme(themeId);
+  const aiFiltered = ai.filter((q) => q.difficulty === difficulty);
+  const pool = [...embedded, ...aiFiltered];
+  return pickQuestionsForStage(pool, stageIndex, count);
+}
+
+export async function getQuestionsForCategoryStageAsync(
+  themeIds: string[],
+  difficulty: Difficulty,
+  stageIndex: number,
+  count = PRACTICE_QUESTIONS_PER_STAGE,
+): Promise<Question[]> {
+  const embedded = ALL_QUESTIONS.filter(
+    (q) => themeIds.includes(q.themeId) && q.difficulty === difficulty,
+  );
+  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+  const aiPromises = themeIds.map((tid) =>
+    loadAiQuestionsForTheme(tid).then((ai) =>
+      ai.filter((q) => q.difficulty === difficulty),
+    ),
+  );
+  const aiResults = await Promise.all(aiPromises);
+  const aiQuestions = aiResults.flat();
+  const pool = [...embedded, ...aiQuestions];
+  return pickQuestionsForStage(pool, stageIndex, count);
+}
+
+export async function getQuestionsForNodeStageAsync(
+  nodeId: string,
+  topicHierarchy: TopicNode,
+  difficulty: Difficulty,
+  stageIndex: number,
+  count = PRACTICE_QUESTIONS_PER_STAGE,
+  includeParentNodes = false,
+  includeChildNodes = false,
+): Promise<Question[]> {
+  const embedded = filterQuestionsByHierarchy(
+    ALL_QUESTIONS,
+    nodeId,
+    topicHierarchy,
+    includeParentNodes,
+    includeChildNodes,
+  );
+
+  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+  const relevantThemeIds = new Set<string>();
+  const targetNode = findNodeById(topicHierarchy, nodeId);
+
+  if (targetNode) {
+    if (targetNode.themeId) relevantThemeIds.add(targetNode.themeId);
+    if (includeParentNodes) {
+      findParentPath(topicHierarchy, nodeId).forEach((node) => {
+        if (node.themeId) relevantThemeIds.add(node.themeId);
+      });
+    }
+    if (includeChildNodes) {
+      findAllChildNodes(targetNode).forEach((node) => {
+        if (node.themeId) relevantThemeIds.add(node.themeId);
+      });
+    }
+  }
+
+  if (relevantThemeIds.size === 0) {
+    relevantThemeIds.add(nodeId);
+  }
+
+  const aiQuestions: Question[] = [];
+  for (const themeId of relevantThemeIds) {
+    try {
+      const ai = await loadAiQuestionsForTheme(themeId);
+      aiQuestions.push(...ai);
+    } catch {
+      /* theme may have no AI file */
+    }
+  }
+
+  let pool = filterQuestionsByHierarchy(
+    [...embedded, ...aiQuestions],
+    nodeId,
+    topicHierarchy,
+    includeParentNodes,
+    includeChildNodes,
+  );
+  pool = pool.filter((q) => q.difficulty === difficulty);
+  return pickQuestionsForStage(pool, stageIndex, count);
 }
 
 /** Синхронно — лише вбудована база (TS-файли) */
@@ -508,10 +627,11 @@ export function filterQuestionsByHierarchy(
     }
   }
 
-  const hasTopicNodeTags = questions.some(
-    (q) => q.topicNodeId && relevantNodeIds.has(q.topicNodeId),
+  const rootThemeId = targetNode.themeId ?? targetNodeId;
+  const themeUsesNodeTags = questions.some(
+    (q) => q.themeId === rootThemeId && q.topicNodeId != null,
   );
-  if (hasTopicNodeTags) {
+  if (themeUsesNodeTags) {
     return questions.filter(
       (q) => q.topicNodeId != null && relevantNodeIds.has(q.topicNodeId),
     );
@@ -615,45 +735,29 @@ export async function getQuestionCountForNodeAsync(
   topicHierarchy: TopicNode,
   difficulty?: Difficulty,
 ): Promise<number> {
-  const embedded = filterQuestionsByHierarchy(
-    ALL_QUESTIONS,
+  const targetNode = findNodeById(topicHierarchy, nodeId);
+  const themeId = targetNode?.themeId ?? nodeId;
+
+  let aiQuestions: Question[] = [];
+  try {
+    const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+    aiQuestions = await loadAiQuestionsForTheme(themeId);
+  } catch {
+    // тема може не мати AI-файлу
+  }
+
+  const pool = filterQuestionsByHierarchy(
+    [...ALL_QUESTIONS, ...aiQuestions],
     nodeId,
     topicHierarchy,
     false,
     false,
   );
 
-  let count = embedded.length;
-  
   if (difficulty) {
-    count = embedded.filter((q) => q.difficulty === difficulty).length;
+    return pool.filter((q) => q.difficulty === difficulty).length;
   }
-
-  // Додаємо AI питання
-  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
-  const relevantThemeIds = new Set<string>();
-  const targetNode = findNodeById(topicHierarchy, nodeId);
-  
-  if (targetNode && targetNode.themeId) {
-    relevantThemeIds.add(targetNode.themeId);
-  } else {
-    relevantThemeIds.add(nodeId);
-  }
-
-  for (const themeId of relevantThemeIds) {
-    try {
-      const ai = await loadAiQuestionsForTheme(themeId);
-      if (difficulty) {
-        count += ai.filter((q) => q.difficulty === difficulty).length;
-      } else {
-        count += ai.length;
-      }
-    } catch (error) {
-      // Игноруємо помилки
-    }
-  }
-
-  return count;
+  return pool.length;
 }
 
 // Допоміжні функції для роботи з ієрархією

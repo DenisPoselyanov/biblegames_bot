@@ -32,7 +32,7 @@
 | `OLLAMA_HOST` | Хост Ollama | `localhost` |
 | `OLLAMA_PORT` | Порт Ollama | `11434` |
 | `GEMINI_API_KEY` | Ключ Google AI Studio | – |
-| `GEMINI_MODEL` | Модель Gemini | `gemini-2.0-flash` |
+| `GEMINI_MODEL` | Модель Gemini | `gemini-3.1-flash-lite` |
 | `OMNIROUTE_BASE_URL` | База API OmniRoute | `http://localhost:20128/v1` |
 | `OMNIROUTE_API_KEY` | Ключ з дашборду OmniRoute | – |
 | `OMNIROUTE_MODEL` | ID моделі в OmniRoute | `google/gemini-2.0-flash` |
@@ -67,43 +67,54 @@ npm run ai-launcher
 
 ## 4. Генерація питань з терміналу
 
+**Модель практики:** кожне питання має `topicNodeId` — id **листової підтеми** з `data/topics-db/`. Без цього тега питання не з’являються на екрані підтеми в грі.
+
 ```bash
-# 50 питань для географії (коренева тема)
-npm run generate-ai -- --theme geography --count 50
+# Статистика прогалин по підтемах
+npm run questions:stats
 
-# одна складність
-npm run generate-ai -- --theme paul --count 30 --difficulty youth
+# Заповнити всі підтеми однієї теми до 100% (рекомендовано)
+npm run fill-practice-nodes -- --theme pentateuch --provider gemini --model gemini-3.1-flash-lite
 
-# по групі Завіту (9 тем Старого Завіту)
-npm run generate-ai -- --group old-testament --count 30
+# Одна підтема × одна складність
+npm run fill-practice-nodes -- --node pentateuch-sub-1-sub-1 --difficulty baby
 
-# по конкретній підтемі
-npm run generate-ai -- --topic geography-sub-1-sub-1 --count 10
+# Група Старого Завіту
+npm run fill-practice-nodes -- --group old-testament --dry-run
 
-# кілька рівнів складності (count ділиться між обраними)
+# Точкова генерація (50 питань для однієї підтеми)
+npm run generate-ai -- --topic pentateuch-sub-1-sub-1 --count 50 --difficulty baby
+
+# Кілька рівнів складності
 npm run generate-ai -- --topic judges-sub-1-sub-1 --count 12 --difficulties baby,child,youth
 
-# вирівнювання підтем (догенерувати до max)
-npm run balance-questions -- --theme geography --dry-run
-npm run balance-questions -- --node geography-sub-1
+# Вирівнювання підтем
+npm run balance-questions -- --theme geography --scope leaves --practice-ready --dry-run
+npm run balance-questions -- --node geography-sub-1-sub-1 --practice-ready
 
-# статистика
-npm run questions:stats
+# Видалити питання без topicNodeId (не граються в підтемах)
+npm run prune-untagged -- --dry-run
+npm run prune-untagged
 ```
 
-Файли з'являться тут: `data/question-db/{theme}.json`
+Файли: `data/question-db/{theme}.json` — поле `topicNodeId` обов’язкове для нових AI-питань.
+
+**Цілі на підтему × складність:** baby–youth **50**, student–preacher **40**, teacher–theologian **30** (10 питань/етап).
 
 **Параметри generate-ai:**
-- `--theme <id>` — тема (див. список нижче)
-- `--group <groupId>` — `old-testament` (9 тем ВЗ) або `new-testament` (6 тем НЗ)
-- `--topic <nodeId>` — конкретна підтема
-- `--all` — всі теми
+- `--topic <nodeId>` — **обов’язково** для точкової генерації (листова підтема)
+- `--theme` / `--all` / `--group` — лише з `--allow-theme-only` (legacy, не для практики в UI)
 - `--count <N>` — кількість (батч по 15)
-- `--difficulty <level>` — baby/child/youth/student/preacher/teacher/theologian (або `all`)
-- `--difficulties baby,child,youth` — підмножина рівнів (пріоритет над `--difficulty`)
-- `--provider ollama|gemini|omniroute` — AI-провайдер (або `AI_PROVIDER` у `.env`)
-- `--model <name>` — модель
+- `--stages <N>` — еквівалент `--count (N×10)` для одного рівня
+- `--difficulty` / `--difficulties` — рівні складності
+- `--provider` / `--model` — AI-провайдер
 
+**Параметри fill-practice-nodes:**
+- `--theme`, `--group`, `--node`, `--difficulty` — фільтри
+- `--dry-run` — план без генерації
+- `--max-questions`, `--max-jobs` — ліміти сесії
+
+> ⚠️ `npm run fill-practice` (рівень теми без `topicNodeId`) **застаріло** — використовуй `fill-practice-nodes`.
 ## 4b. Конвеєр ієрархії тем (GUI + CLI)
 
 **GUI — вкладка «Конвеєр»:**
@@ -143,15 +154,14 @@ npm run bot
 ## 6. Аналіз якості
 
 ```bash
-npm run analyze-quality      # якість + дублікати питань
-npm run analyze-pools        # пули study/game
+npm run analyze-quality      # якість + дублікати (--node / --topic для однієї підтеми)
+npm run analyze-explanations # пояснення (--node, --theme)
+npm run analyze-pools        # пули study/game + прогалини підтем
 npm run analyze-topics       # ієрархія тем → data/topics-quality-report.json
-npm run sort-questions -- --ai --limit 50   # класифікація по підтемах
-npm run sort-topics-ai -- --all --reparent # AI-сортування підгруп тем
-npm run scripture:audit      # перевірка reference (потрібен server :3001)
-npm run ai-topic-edit -- --action improve-desc --file gospels --node gospels-sub-1
+npm run sort-questions -- --ai --limit 50   # topicNodeId для старих питань
+npm run fix-questions-ai -- --node <id> --limit 10
+npm run fix-explanations-ai -- --node <id> --coverage missing
 ```
-
 Звіти:
 - `question-quality-report.json` — якість питань
 - `question-pools-report.json` — пули
@@ -185,7 +195,9 @@ npm run ai-topic-edit -- --action improve-desc --file gospels --node gospels-sub
 | Команда | Опис |
 |---------|------|
 | `npm run ai-launcher` | GUI (Python/Tk) |
-| `npm run generate-ai` | Генерація питань |
+| `npm run generate-ai` | Генерація для однієї підтеми (`--topic`) |
+| `npm run fill-practice-nodes` | Заповнення всіх підтем до 100% |
+| `npm run prune-untagged` | Видалення питань без topicNodeId |
 | `npm run balance-questions` | Вирівнювання підтем |
 | `npm run generate-topics` | Ієрархія тем |
 | `npm run sort-topics-ai` | AI-сортування тем |
@@ -201,4 +213,5 @@ npm run ai-topic-edit -- --action improve-desc --file gospels --node gospels-sub
 - **Gemini** — перевір `GEMINI_API_KEY` у `.env`; ключ: [Google AI Studio](https://aistudio.google.com/apikey)
 - **OmniRoute** — запусти `npx omniroute`, відкрий http://localhost:20128, створи API key у Endpoints
 - **Порожня відповідь** — зменши `--count`, зміни `--model` або провайдера
-- **Неточний баланс підтем** — `npm run sort-questions -- --ai`, потім повтори balance
+- **Неточний баланс підтем** — `npm run sort-questions -- --ai`, потім `fill-practice-nodes` або `balance-questions --practice-ready`
+- **Підтема показує 0 питань** — перевір `topicNodeId`; запусти `fill-practice-nodes -- --node <id>`

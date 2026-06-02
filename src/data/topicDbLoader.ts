@@ -206,6 +206,15 @@ export function countQuestionsForTopicNode(
   node: TopicNode,
   questions: Array<{ id: string; themeId: string; topicNodeId?: string }>,
 ): number {
+  if (node.aggregateThemeIds && node.aggregateThemeIds.length > 0) {
+    const themeIds = new Set(node.aggregateThemeIds);
+    const seen = new Set<string>();
+    for (const q of questions) {
+      if (themeIds.has(q.themeId)) seen.add(q.id);
+    }
+    return seen.size;
+  }
+
   const subtreeIds = new Set<string>();
   collectSubtreeNodeIds(node, subtreeIds);
 

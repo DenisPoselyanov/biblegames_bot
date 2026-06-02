@@ -1,28 +1,27 @@
-import type {
-  Recommendation,
-  RecommendationType,
-  TopicNode,
-  TopicHierarchyMap,
-  MasteryState,
-  PlayerProfile,
+import {
+  DIFFICULTY_LABELS,
+  type Recommendation,
+  type RecommendationType,
+  type TopicNode,
+  type TopicHierarchyMap,
+  type MasteryState,
+  type PlayerProfile,
 } from '../types';
+import {
+  STAGE_COUNT_BY_DIFFICULTY,
+  PRACTICE_QUESTIONS_PER_STAGE,
+  canPlayDifficulty,
+  isStagePassed,
+  getStageQuizPath,
+} from './practiceProgression';
 
-/**
- * Recommendation Engine
- * 
- * Генерує персоналізовані рекомендації для навчання на основі:
- * - Логічного шляху по ієрархії тем
- * - Слабких місць користувача (низький mastery)
- * - Часу від останнього повторення (spaced repetition)
- * - Пріоритетів користувача
- */
+const PRACTICE_SESSION_MINUTES = Math.ceil((PRACTICE_QUESTIONS_PER_STAGE * 30) / 60);
 
 interface RecommendationContext {
   profile: PlayerProfile;
   topicHierarchy: TopicHierarchyMap;
   currentThemeId?: string;
-  recentRecommendations?: string[]; // Щоб уникнути дублікатів
-  availableTime?: number; // у хвилинах
+  recentRecommendations?: string[];
 }
 
 interface NodeMasteryInfo {
@@ -30,12 +29,8 @@ interface NodeMasteryInfo {
   mastery: MasteryState;
   pathFromRoot: TopicNode[];
   depth: number;
-  parentMastery?: number;
 }
 
-/**
- * Головна функція для генерації рекомендацій
- */
 export function generateRecommendations(
   context: RecommendationContext,
   maxRecommendations: number = 5,
@@ -45,12 +40,17 @@ export function generateRecommendations(
     topicHierarchy,
     currentThemeId,
     recentRecommendations = [],
-    availableTime,
   } = context;
 
   const allRecommendations: Recommendation[] = [];
 
-  // 1. Рекомендації за слабкими місцями (пріоритетні)
+  const continueRecommendations = generateContinuePracticeRecommendations(
+    profile,
+    topicHierarchy,
+    recentRecommendations,
+  );
+  allRecommendations.push(...continueRecommendations);
+
   const weaknessRecommendations = generateWeaknessRecommendations(
     profile,
     topicHierarchy,
@@ -58,7 +58,6 @@ export function generateRecommendations(
   );
   allRecommendations.push(...weaknessRecommendations);
 
-  // 2. Логічні рекомендації за ієрархією
   const logicalRecommendations = generateLogicalRecommendations(
     profile,
     topicHierarchy,
@@ -67,7 +66,6 @@ export function generateRecommendations(
   );
   allRecommendations.push(...logicalRecommendations);
 
-  // 3. Рекомендації для повторення (spaced repetition)
   const reviewRecommendations = generateReviewRecommendations(
     profile,
     topicHierarchy,
@@ -75,62 +73,116 @@ export function generateRecommendations(
   );
   allRecommendations.push(...reviewRecommendations);
 
-  // 4. Рекомендації для мікротренування
-  const microRecommendations = generateMicroTrainingRecommendations(
-    profile,
-    topicHierarchy,
-    recentRecommendations,
-    availableTime,
-  );
-  allRecommendations.push(...microRecommendations);
-
-  // Сортуємо за пріоритетом і уникаємо дублікатів
   const uniqueRecommendations = deduplicateRecommendations(allRecommendations);
   uniqueRecommendations.sort((a, b) => b.priority - a.priority);
 
   return uniqueRecommendations.slice(0, maxRecommendations);
 }
 
-/**
- * Генерація рекомендацій за слабкими місцями
- */
+function generateContinuePracticeRecommendations(
+  profile: PlayerProfile,
+  topicHierarchy: TopicHierarchyMap,
+  recentRecommendations: string[],
+): Recommendation[] {
+  const recommendations: Recommendation[] = [];
+  const rank = profile.playerRank;
+  const tracks = profile.practiceTracks ?? [];
+
+  for (const track of tracks) {
+    if (!canPlayDifficulty(rank, track.difficulty)) continue;
+
+    const stageCount = STAGE_COUNT_BY_DIFFICULTY[track.difficulty];
+    let nextStage: number | null = null;
+
+    for (let stageIndex = 0; stageIndex < stageCount; stageIndex++) {
+      if (stageIndex > track.highestUnlockedStage) break;
+      if (!isStagePassed(track, stageIndex)) {
+        nextStage = stageIndex;
+        break;
+      }
+    }
+
+    if (nextStage == null) continue;
+
+    const dedupeKey = `continue-${track.themeId}-${track.nodeId ?? '_root'}-${track.difficulty}-${nextStage}`;
+    if (recentRecommendations.includes(dedupeKey)) continue;
+
+    const nodeTitle = track.nodeId
+      ? findNodeInHierarchy(topicHierarchy, track.nodeId)?.title
+      : null;
+    const diffLabel = DIFFICULTY_LABELS[track.difficulty];
+
+    recommendations.push({
+      id: `${dedupeKey}-${Date.now()}`,
+      type: 'continue-practice',
+      themeId: track.themeId,
+      nodeId: track.nodeId ?? track.themeId,
+      difficulty: track.difficulty,
+      stageIndex: nextStage,
+      title: nodeTitle
+        ? `Етап ${nextStage + 1}: ${nodeTitle}`
+        : `Етап ${nextStage + 1} · ${diffLabel}`,
+      description: `Продовж практику — ${PRACTICE_QUESTIONS_PER_STAGE} питань, потрібно 7+ правильних.`,
+      priority: 12,
+      estimatedTime: PRACTICE_SESSION_MINUTES,
+      reason: 'Незавершений етап практики',
+    });
+  }
+
+  return recommendations;
+}
+
+function resolveThemeIdForNode(
+  nodeId: string,
+  topicHierarchy: TopicHierarchyMap,
+): string | null {
+  for (const [themeKey, root] of Object.entries(topicHierarchy)) {
+    if (root.id === nodeId) {
+      return root.themeId ?? themeKey;
+    }
+    const found = findNodeById(root, nodeId);
+    if (found) {
+      return found.themeId ?? themeKey;
+    }
+  }
+  return null;
+}
+
 function generateWeaknessRecommendations(
   profile: PlayerProfile,
   topicHierarchy: TopicHierarchyMap,
   recentRecommendations: string[],
 ): Recommendation[] {
   const recommendations: Recommendation[] = [];
-  
-  // Знаходимо вузли з низьким mastery
   const weakNodes = findWeakNodes(profile, topicHierarchy);
-  
-  // Сортуємо за важливістю (нижче mastery + більше відповідей)
+
   weakNodes.sort((a, b) => {
-    const aPriority = (100 - a.mastery.mastery) + (a.mastery.wrongCount * 5);
-    const bPriority = (100 - b.mastery.mastery) + (b.mastery.wrongCount * 5);
+    const aPriority = (100 - a.mastery.mastery) + a.mastery.wrongCount * 5;
+    const bPriority = (100 - b.mastery.mastery) + b.mastery.wrongCount * 5;
     return bPriority - aPriority;
   });
 
-  // Беремо топ-3 слабкі місця
   weakNodes.slice(0, 3).forEach((nodeInfo, index) => {
     if (recentRecommendations.includes(nodeInfo.node.id)) return;
 
     const mastery = nodeInfo.mastery.mastery;
-    let priority = 10 - index; // 10, 9, 8
-    
-    // Додаткові бали за часті помилки
+    let priority = 10 - index;
+
     if (nodeInfo.mastery.wrongCount > nodeInfo.mastery.totalAnswers * 0.6) {
       priority += 2;
     }
 
+    const themeId = resolveThemeIdForNode(nodeInfo.node.id, topicHierarchy) ?? undefined;
+
     recommendations.push({
       id: `weakness-${nodeInfo.node.id}-${Date.now()}`,
       type: 'weakness',
+      themeId,
       nodeId: nodeInfo.node.id,
       title: `Повторити: ${nodeInfo.node.title}`,
       description: `Твій рівень знань тут лише ${Math.round(mastery)}%. Час закріпити матеріал!`,
       priority,
-      estimatedTime: nodeInfo.node.estimatedTime || 15,
+      estimatedTime: PRACTICE_SESSION_MINUTES,
       reason: `Низький рівень знань (${Math.round(mastery)}%), ${nodeInfo.mastery.wrongCount} помилок з ${nodeInfo.mastery.totalAnswers} відповідей`,
       masteryBefore: mastery,
       targetMastery: Math.min(mastery + 20, 90),
@@ -140,9 +192,6 @@ function generateWeaknessRecommendations(
   return recommendations;
 }
 
-/**
- * Генерація логічних рекомендацій за ієрархією
- */
 function generateLogicalRecommendations(
   profile: PlayerProfile,
   topicHierarchy: TopicHierarchyMap,
@@ -152,22 +201,23 @@ function generateLogicalRecommendations(
   const recommendations: Recommendation[] = [];
 
   if (!currentThemeId) {
-    // Якщо немає активної теми, рекомендуємо початок найбільшого розділу
     const rootNodes = Object.values(topicHierarchy);
     rootNodes.forEach((rootNode) => {
       if (recentRecommendations.includes(rootNode.id)) return;
 
       const mastery = profile.studyMastery[rootNode.id]?.mastery || 0;
-      
+      const themeId = rootNode.themeId ?? resolveThemeIdForNode(rootNode.id, topicHierarchy) ?? rootNode.id;
+
       if (mastery < 50) {
         recommendations.push({
           id: `logical-start-${rootNode.id}-${Date.now()}`,
           type: 'next-logical',
+          themeId,
           nodeId: rootNode.id,
           title: `Почати вивчення: ${rootNode.title}`,
-          description: `Це фундаментальний розділ. Почни з нього, щоб побудувати міцну базу знань.`,
+          description: 'Це фундаментальний розділ. Почни з нього, щоб побудувати міцну базу знань.',
           priority: 7,
-          estimatedTime: rootNode.estimatedTime || 30,
+          estimatedTime: PRACTICE_SESSION_MINUTES * 2,
           reason: 'Початок логічного шляху вивчення',
           masteryBefore: mastery,
           targetMastery: 50,
@@ -175,24 +225,26 @@ function generateLogicalRecommendations(
       }
     });
   } else {
-    // Рекомендуємо наступні теми в ієрархії
     const currentHierarchy = topicHierarchy[currentThemeId];
     if (currentHierarchy) {
       const nextNodes = findNextLogicalNodes(currentHierarchy, profile.studyMastery);
-      
+
       nextNodes.forEach((node, index) => {
         if (recentRecommendations.includes(node.id)) return;
 
         const mastery = profile.studyMastery[node.id]?.mastery || 0;
-        
+        const themeId =
+          node.themeId ?? resolveThemeIdForNode(node.id, topicHierarchy) ?? currentThemeId;
+
         recommendations.push({
           id: `logical-next-${node.id}-${Date.now()}`,
           type: 'next-logical',
+          themeId,
           nodeId: node.id,
           title: `Наступна тема: ${node.title}`,
-          description: `Логічне продовження твоєго навчання. Ця тема базується на вже вивченому матеріалі.`,
-          priority: 8 - index, // 8, 7, 6...
-          estimatedTime: node.estimatedTime || 20,
+          description: 'Логічне продовження твоєго навчання. Ця тема базується на вже вивченому матеріалі.',
+          priority: 8 - index,
+          estimatedTime: PRACTICE_SESSION_MINUTES,
           reason: 'Наступний крок у логічному поряді навчання',
           masteryBefore: mastery,
           targetMastery: Math.min(mastery + 15, 85),
@@ -204,9 +256,6 @@ function generateLogicalRecommendations(
   return recommendations;
 }
 
-/**
- * Генерація рекомендацій для повторення (spaced repetition)
- */
 function generateReviewRecommendations(
   profile: PlayerProfile,
   topicHierarchy: TopicHierarchyMap,
@@ -215,28 +264,28 @@ function generateReviewRecommendations(
   const recommendations: Recommendation[] = [];
   const now = Date.now();
   const oneDayMs = 24 * 60 * 60 * 1000;
-  const threeDaysMs = 3 * oneDayMs;
 
-  // Знаходимо теми, які потрібно повторити
   Object.entries(profile.studyMastery).forEach(([nodeId, mastery]) => {
     if (recentRecommendations.includes(nodeId)) return;
 
     const lastReviewed = mastery.lastReviewedAt ? new Date(mastery.lastReviewedAt).getTime() : 0;
     const daysSinceReview = (now - lastReviewed) / oneDayMs;
 
-    // Якщо пройшло достатньо часу і mastery в середині (не занадто низький, не занадто високий)
     if (daysSinceReview >= 3 && mastery.mastery >= 50 && mastery.mastery <= 80) {
       const node = findNodeInHierarchy(topicHierarchy, nodeId);
       if (!node) return;
 
+      const themeId = resolveThemeIdForNode(nodeId, topicHierarchy) ?? undefined;
+
       recommendations.push({
         id: `review-${nodeId}-${Date.now()}`,
         type: 'review-scheduled',
+        themeId,
         nodeId,
         title: `Повторити: ${node.title}`,
         description: `Ти не повторював цю тему ${Math.round(daysSinceReview)} днів. Час освіжити знання!`,
         priority: 5,
-        estimatedTime: 10,
+        estimatedTime: PRACTICE_SESSION_MINUTES,
         reason: `Повторення через ${Math.round(daysSinceReview)} днів (spaced repetition)`,
         masteryBefore: mastery.mastery,
         targetMastery: Math.min(mastery.mastery + 10, 95),
@@ -244,80 +293,24 @@ function generateReviewRecommendations(
     }
   });
 
-  // Сортуємо за часом з останнього повторення
   recommendations.sort((a, b) => {
     const aMastery = profile.studyMastery[a.nodeId];
     const bMastery = profile.studyMastery[b.nodeId];
     const aTime = aMastery?.lastReviewedAt ? new Date(aMastery.lastReviewedAt).getTime() : 0;
     const bTime = bMastery?.lastReviewedAt ? new Date(bMastery.lastReviewedAt).getTime() : 0;
-    return aTime - bTime; // Найстаріші спочатку
+    return aTime - bTime;
   });
 
   return recommendations.slice(0, 2);
 }
 
-/**
- * Генерація рекомендацій для мікротренування
- */
-function generateMicroTrainingRecommendations(
-  profile: PlayerProfile,
-  topicHierarchy: TopicHierarchyMap,
-  recentRecommendations: string[] = [],
-  availableTime?: number,
-): Recommendation[] {
-  const recommendations: Recommendation[] = [];
-
-  // Знаходимо дрібні підтеми для швидкого тренування
-  Object.entries(topicHierarchy).forEach(([themeId, rootNode]) => {
-    const microNodes = findMicroNodes(rootNode); // Вузли з малою кількістю питань
-    
-    microNodes.forEach((node) => {
-      if (recentRecommendations.includes(node.id)) return;
-
-      const mastery = profile.studyMastery[node.id]?.mastery || 0;
-      
-      // Рекомендуємо для швидкого покращення або підтримки
-      if (mastery < 70) {
-        const timeNeeded = 5; // 5 хвилин на мікротренування
-        
-        if (!availableTime || timeNeeded <= availableTime) {
-          recommendations.push({
-            id: `micro-${node.id}-${Date.now()}`,
-            type: 'micro-training',
-            nodeId: node.id,
-            title: `Швидке тренування: ${node.title}`,
-            description: `Коротка сесія (5 хв) для закріплення конкретної теми.`,
-            priority: 4,
-            estimatedTime: timeNeeded,
-            reason: 'Мікротренування для швидкого покращення',
-            masteryBefore: mastery,
-            targetMastery: Math.min(mastery + 15, 85),
-          });
-        }
-      }
-    });
-  });
-
-  // Сортуємо за потенційним покращенням
-  recommendations.sort((a, b) => {
-    const aImprovement = (a.targetMastery || 0) - (a.masteryBefore || 0);
-    const bImprovement = (b.targetMastery || 0) - (b.masteryBefore || 0);
-    return bImprovement - aImprovement;
-  });
-
-  return recommendations.slice(0, 2);
-}
-
-/**
- * Знаходження слабких вузлів
- */
 function findWeakNodes(
   profile: PlayerProfile,
   topicHierarchy: TopicHierarchyMap,
 ): NodeMasteryInfo[] {
   const weakNodes: NodeMasteryInfo[] = [];
 
-  Object.entries(topicHierarchy).forEach(([themeId, rootNode]) => {
+  Object.values(topicHierarchy).forEach((rootNode) => {
     collectWeakNodes(rootNode, profile.studyMastery, [], 0, weakNodes);
   });
 
@@ -332,7 +325,7 @@ function collectWeakNodes(
   result: NodeMasteryInfo[],
 ): void {
   const mastery = masteryStates[node.id];
-  
+
   if (mastery && mastery.totalAnswers > 0 && mastery.mastery < 70) {
     result.push({
       node,
@@ -342,16 +335,13 @@ function collectWeakNodes(
     });
   }
 
-  if (node.children && node.children.length > 0) {
+  if (node.children?.length) {
     node.children.forEach((child) => {
       collectWeakNodes(child, masteryStates, [...path, node], depth + 1, result);
     });
   }
 }
 
-/**
- * Знаходження наступних логічних вузлів
- */
 function findNextLogicalNodes(
   rootNode: TopicNode,
   masteryStates: Record<string, MasteryState>,
@@ -360,17 +350,15 @@ function findNextLogicalNodes(
 
   function traverse(node: TopicNode): void {
     const mastery = masteryStates[node.id]?.mastery || 0;
-    
-    // Якщо добре засвоєно, дивись дочірні вузли
+
     if (mastery >= 70) {
-      if (node.children && node.children.length > 0) {
+      if (node.children?.length) {
         node.children.forEach((child) => {
           const childMastery = masteryStates[child.id]?.mastery || 0;
-          // Рекомендуємо, якщо ще не засвоєно
           if (childMastery < 60) {
             nextNodes.push(child);
           } else {
-            traverse(child); // Рекурсивно шукаємо далі
+            traverse(child);
           }
         });
       }
@@ -381,28 +369,6 @@ function findNextLogicalNodes(
   return nextNodes;
 }
 
-/**
- * Знаходження мікровузлів (для швидкого тренування)
- */
-function findMicroNodes(rootNode: TopicNode): TopicNode[] {
-  const microNodes: TopicNode[] = [];
-
-  function traverse(node: TopicNode): void {
-    // Вузли без дітей або з малою кількістю питань - кандидати для мікротренування
-    if (!node.children || node.children.length === 0) {
-      microNodes.push(node);
-    } else {
-      node.children.forEach(traverse);
-    }
-  }
-
-  traverse(rootNode);
-  return microNodes;
-}
-
-/**
- * Пошук вузла в ієрархії
- */
 function findNodeInHierarchy(
   topicHierarchy: TopicHierarchyMap,
   nodeId: string,
@@ -416,18 +382,15 @@ function findNodeInHierarchy(
 
 function findNodeById(node: TopicNode, targetId: string): TopicNode | null {
   if (node.id === targetId) return node;
-  
-  for (const child of node.children) {
+
+  for (const child of node.children ?? []) {
     const found = findNodeById(child, targetId);
     if (found) return found;
   }
-  
+
   return null;
 }
 
-/**
- * Видалення дублікатів рекомендацій
- */
 function deduplicateRecommendations(
   recommendations: Recommendation[],
 ): Recommendation[] {
@@ -435,7 +398,10 @@ function deduplicateRecommendations(
   const unique: Recommendation[] = [];
 
   recommendations.forEach((rec) => {
-    const key = `${rec.type}-${rec.nodeId}`;
+    const key =
+      rec.type === 'continue-practice' && rec.themeId && rec.difficulty != null && rec.stageIndex != null
+        ? `continue-${rec.themeId}-${rec.nodeId}-${rec.difficulty}-${rec.stageIndex}`
+        : `${rec.type}-${rec.nodeId}`;
     if (!seen.has(key)) {
       seen.add(key);
       unique.push(rec);
@@ -445,9 +411,6 @@ function deduplicateRecommendations(
   return unique;
 }
 
-/**
- * Оновлення списку нещодавніх рекомендацій
- */
 export function updateRecentRecommendations(
   current: string[],
   newRecommendationId: string,
@@ -457,19 +420,32 @@ export function updateRecentRecommendations(
   return [newRecommendationId, ...filtered].slice(0, maxCount);
 }
 
-/**
- * Форматування рекомендації для відображення
- */
+/** Navigation path for a recommendation card */
+export function getRecommendationLink(rec: Recommendation): string {
+  if (rec.themeId && rec.difficulty != null && rec.stageIndex != null) {
+    const nodeIdForPath = rec.nodeId !== rec.themeId ? rec.nodeId : null;
+    return getStageQuizPath(rec.themeId, rec.difficulty, rec.stageIndex, nodeIdForPath);
+  }
+  if (rec.themeId && rec.nodeId && rec.nodeId !== rec.themeId) {
+    return `/play/study/themes/${rec.themeId}/${rec.nodeId}`;
+  }
+  if (rec.themeId) {
+    return `/play/study/themes/${rec.themeId}`;
+  }
+  return '/play/study/themes';
+}
+
 export function formatRecommendation(rec: Recommendation): {
   title: string;
   description: string;
   subtitle: string;
   icon: string;
 } {
-  const node = rec; // In real implementation, would fetch from hierarchy
-  
   let icon = '📚';
-  switch (rec.type) {
+  switch (rec.type as RecommendationType) {
+    case 'continue-practice':
+      icon = '▶️';
+      break;
     case 'weakness':
       icon = '⚠️';
       break;
@@ -478,9 +454,6 @@ export function formatRecommendation(rec: Recommendation): {
       break;
     case 'review-scheduled':
       icon = '🔄';
-      break;
-    case 'micro-training':
-      icon = '⚡';
       break;
   }
 

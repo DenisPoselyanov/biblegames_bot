@@ -3,14 +3,16 @@
  * Вирівнювання кількості питань між підтемами одного рівня.
  *
  * npm run balance-questions -- --node geography-sub-1 --dry-run
- * npm run balance-questions -- --theme geography --target 10
- * npm run balance-questions -- --node geography --scope leaves
+ * npm run balance-questions -- --theme geography --scope leaves --practice-ready
+ * npm run balance-questions -- --node geography-sub-1 --scope leaves --difficulty youth
+ *
+ * practice-ready: ціль на підтему × складність (як fill-practice-nodes).
  */
 
 import fs from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { THEME_IDS, loadTopicHierarchy, findNodeById } from './lib/themes-config.mjs';
+import { DIFFICULTIES, THEME_IDS, loadTopicHierarchy, findNodeById } from './lib/themes-config.mjs';
 import {
   applyAiCliFlags,
   checkLLM,
@@ -22,8 +24,16 @@ import {
 import { loadThemeQuestions } from './lib/question-db.mjs';
 import { countQuestionsForScope } from './lib/topic-question-counts.mjs';
 import {
+  PRACTICE_QUESTIONS_PER_STAGE,
+  STAGE_COUNT_BY_DIFFICULTY,
+  requiredQuestionsForDifficulty,
+  stagesPossibleFromPool,
+} from './lib/practice-config.mjs';
+import {
   generateForTheme,
 } from './generate-questions-ai.mjs';
+import { countNodePool } from './lib/topic-node-pool-stats.mjs';
+import { assertSubtopicNodeId } from './lib/topic-context.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -39,6 +49,7 @@ function parseArgs() {
     scope: 'siblings',
     target: 0,
     difficulty: 'all',
+    practiceReady: false,
     dryRun: false,
     provider: DEFAULT_PROVIDER,
     model: DEFAULT_MODEL,
@@ -50,6 +61,7 @@ function parseArgs() {
     else if (args[i] === '--scope' && args[i + 1]) opts.scope = args[++i];
     else if (args[i] === '--target' && args[i + 1]) opts.target = parseInt(args[++i], 10);
     else if (args[i] === '--difficulty' && args[i + 1]) opts.difficulty = args[++i];
+    else if (args[i] === '--practice-ready') opts.practiceReady = true;
     else if (args[i] === '--provider' && args[i + 1]) opts.provider = args[++i];
     else if (args[i] === '--model' && args[i + 1]) opts.model = args[++i];
     else if (args[i] === '--dry-run') opts.dryRun = true;
@@ -168,36 +180,77 @@ async function main() {
     themeId,
     questions,
   );
-  const currentValues = scopeNodes.map((n) => counts[n.id] || 0);
-  const autoTarget = Math.max(...currentValues, 0);
-  const target = opts.target > 0 ? opts.target : autoTarget;
+  const autoTarget = Math.max(...scopeNodes.map((n) => counts[n.id] || 0), 0);
 
   if (untagged > 0 && totalQuestions > 0 && untagged / totalQuestions > 0.3) {
-    console.warn(`⚠️  ${untagged} питань без topicNodeId — рекомендуємо npm run sort-questions -- --ai`);
+    console.warn(`⚠️  ${untagged} питань без topicNodeId — npm run prune-untagged`);
     console.warn('');
   }
 
-  const rows = scopeNodes.map((n) => {
-    const before = counts[n.id] || 0;
-    const gap = Math.max(0, target - before);
-    return {
-      nodeId: n.id,
-      title: n.title,
-      before,
-      target,
-      gap,
-      generated: 0,
-    };
-  });
+  const difficulties =
+    opts.practiceReady && opts.difficulty === 'all'
+      ? [...DIFFICULTIES]
+      : opts.difficulty !== 'all' && DIFFICULTIES.includes(opts.difficulty)
+        ? [opts.difficulty]
+        : opts.practiceReady
+          ? ['youth']
+          : [null];
 
-  console.log('Підтема'.padEnd(36), 'Зараз'.padStart(6), 'Ціль'.padStart(6), '+'.padStart(6));
-  console.log('-'.repeat(58));
-  for (const r of rows) {
+  const rows = [];
+  for (const node of scopeNodes) {
+    for (const diff of difficulties) {
+      const before = diff
+        ? countNodePool(node.id, root, themeId, diff)
+        : (countQuestionsForScope([node], root, themeId, questions).counts[node.id] || 0);
+
+      let target = opts.target > 0 ? opts.target : autoTarget;
+      if (opts.practiceReady && diff) {
+        target = requiredQuestionsForDifficulty(diff);
+      }
+
+      const gap = Math.max(0, target - before);
+      rows.push({
+        nodeId: node.id,
+        title: node.title,
+        difficulty: diff,
+        before,
+        target,
+        gap,
+        generated: 0,
+      });
+    }
+  }
+
+  let practiceTarget = autoTarget;
+  if (opts.practiceReady) {
+    const diff = difficulties[0] ?? 'youth';
+    practiceTarget = requiredQuestionsForDifficulty(diff);
     console.log(
-      r.title.slice(0, 34).padEnd(36),
+      `Режим practice-ready: ціль ${practiceTarget} на підтему × складність (${difficulties.length} рівнів)\n`,
+    );
+  }
+
+  const stageCol = opts.practiceReady ? 'Етапи'.padStart(6) : null;
+  console.log(
+    'Підтема'.padEnd(28),
+    'Складн.'.padEnd(10),
+    'Зараз'.padStart(6),
+    'Ціль'.padStart(6),
+    '+'.padStart(6),
+    ...(stageCol ? [stageCol] : []),
+  );
+  console.log('-'.repeat(opts.practiceReady ? 70 : 58));
+  for (const r of rows) {
+    const stagesHint = opts.practiceReady
+      ? String(stagesPossibleFromPool(r.before)).padStart(6)
+      : null;
+    console.log(
+      r.title.slice(0, 26).padEnd(28),
+      String(r.difficulty ?? '—').padEnd(10),
       String(r.before).padStart(6),
       String(r.target).padStart(6),
       String(r.gap).padStart(6),
+      ...(stagesHint != null ? [stagesHint] : []),
     );
   }
   console.log('');
@@ -207,7 +260,7 @@ async function main() {
     anchorId: anchorNode.id,
     scope: opts.scope,
     themeId,
-    target,
+    target: practiceTarget,
     untaggedCount: untagged,
     rows,
     dryRun: opts.dryRun,
@@ -251,16 +304,20 @@ async function main() {
       path,
     };
 
-    console.log(`\n📝 ${node.title}: +${row.gap} питань`);
+    assertSubtopicNodeId(row.nodeId);
+
+    const diff = row.difficulty ?? (opts.difficulty !== 'all' ? opts.difficulty : 'youth');
+    console.log(`\n📝 ${node.title} / ${diff}: +${row.gap} питань`);
     const generated = await generateForTheme(
       themeId,
       row.gap,
-      opts.difficulty,
+      diff,
       opts.model,
       opts.provider,
       path,
       row.nodeId,
       context,
+      [diff],
     );
     row.generated = generated;
     totalGenerated += generated;

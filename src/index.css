@@ -18,6 +18,17 @@
   --gold-light: #e8d48b;
   --gold-dark: #a67c00;
   --gold-glow: rgba(201, 162, 39, 0.35);
+  --on-primary: #1a1208;
+  --accent-bg: rgba(201, 162, 39, 0.08);
+  --accent-bg-strong: rgba(201, 162, 39, 0.15);
+  --accent-border: rgba(201, 162, 39, 0.25);
+  --accent-border-strong: rgba(201, 162, 39, 0.38);
+  --heading: var(--gold-light);
+  --nested-surface: rgba(42, 34, 24, 0.35);
+  --overlay-bg: rgba(255, 255, 255, 0.06);
+  --overlay-bg-strong: rgba(255, 255, 255, 0.1);
+  --cta-bg: linear-gradient(135deg, #e8d48b 0%, #c9a227 52%, #b08a1f 100%);
+  --cta-shadow: 0 8px 28px rgba(201, 162, 39, 0.32), 0 2px 8px rgba(201, 162, 39, 0.12);
 
   /* ─── Semantic colors ─── */
   --success: #4a9c5d;
@@ -27,7 +38,7 @@
   --danger-bg: rgba(156, 74, 74, 0.18);
   --danger-text: #e8b0b0;
   --warning: #c9a227;
-  --warning-bg: rgba(201, 162, 39, 0.15);
+  --warning-bg: var(--accent-bg-strong);
   --info: #5b8fc9;
   --info-bg: rgba(91, 143, 201, 0.15);
 
@@ -72,9 +83,12 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in: cubic-bezier(0.4, 0, 0.68, 0.06);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 400ms;
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-micro: 100ms;
+  --duration-fast: 160ms;
+  --duration-normal: 240ms;
+  --duration-page: 280ms;
+  --duration-slow: 440ms;
 
   /* ─── Glassmorphism ─── */
   --glass-bg: linear-gradient(145deg, rgba(42, 34, 24, 0.85), rgba(42, 34, 24, 0.6));
@@ -126,6 +140,19 @@ body {
 .gold-text {
   color: var(--gold);
   text-shadow: 0 0 12px var(--gold-glow);
+}
+
+/* Primary action buttons (global token; use background: var(--cta-bg)) */
+.btn-cta {
+  background: var(--cta-bg);
+  color: var(--on-primary);
+  border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent);
+  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-cta:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--gold) 22%, transparent);
 }
 
 /* ─── Typography utilities ─── */
@@ -221,6 +248,18 @@ input:focus, select:focus, textarea:focus {
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+.pressable {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.pressable:active {
+  transform: scale(0.96);
+}
+
+.progress-fill {
+  transition: width var(--duration-slow) var(--ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {

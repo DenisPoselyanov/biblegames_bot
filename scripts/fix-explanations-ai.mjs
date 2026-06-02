@@ -9,8 +9,12 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ALL_QUESTIONS } from '../src/data/questions.ts';
 import { getTheme } from './lib/themes-config.mjs';
+import {
+  buildSubtopicPromptBlock,
+  loadAllQuestionsMerged,
+  resolveSubtopicContextFromQuestion,
+} from './lib/topic-context.mjs';
 import {
   applyAiCliFlags,
   checkLLM,
@@ -38,6 +42,7 @@ function parseArgs() {
   const args = process.argv.slice(2);
   const opts = {
     theme: null,
+    node: null,
     coverage: 'all',
     issue: null,
     minScore: 0,
@@ -55,6 +60,8 @@ function parseArgs() {
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
     if (a === '--theme' && args[i + 1]) opts.theme = args[++i];
+    else if (a === '--node' && args[i + 1]) opts.node = args[++i];
+    else if (a === '--topic' && args[i + 1]) opts.node = args[++i];
     else if (a === '--coverage' && args[i + 1]) opts.coverage = args[++i];
     else if (a === '--issue' && args[i + 1]) opts.issue = args[++i];
     else if (a === '--min-score' && args[i + 1]) opts.minScore = Number(args[++i]);
@@ -81,11 +88,8 @@ function sleep(ms) {
 
 function buildQuestionIndex() {
   const byId = new Map();
-  for (const q of ALL_QUESTIONS) {
-    byId.set(q.id, { ...q, _source: 'embedded' });
-  }
-  for (const q of loadAllDbQuestions()) {
-    byId.set(q.id, { ...q, _source: 'db' });
+  for (const q of loadAllQuestionsMerged()) {
+    byId.set(q.id, q);
   }
   return byId;
 }
@@ -103,6 +107,10 @@ function filterReports(reports, opts, byId) {
   return reports.filter((r) => {
     if (opts.ids && !opts.ids.includes(r.questionId)) return false;
     if (opts.theme && r.themeId !== opts.theme) return false;
+    if (opts.node) {
+      const q = byId.get(r.questionId);
+      if (q?.topicNodeId !== opts.node) return false;
+    }
     if (opts.coverage && opts.coverage !== 'all' && r.coverage !== opts.coverage) return false;
     if (r.heuristicScore < opts.minScore || r.heuristicScore > opts.maxScore) return false;
     if (opts.issue && !r.issues?.some((i) => i.type === opts.issue)) return false;
@@ -137,7 +145,10 @@ function resolveMode(question, report, opts) {
 }
 
 function buildFixPrompt(question, report, scriptureText, mode) {
-  const theme = getTheme(question.themeId);
+  const subtopic = resolveSubtopicContextFromQuestion(question);
+  const subtopicBlock = subtopic
+    ? buildSubtopicPromptBlock(subtopic, question.difficulty)
+    : `Тема: ${getTheme(question.themeId)?.title ?? question.themeId}`;
   const correct = question.options?.[question.correctIndex ?? 0] ?? '';
   const issueLines = (report?.issues ?? []).map(
     (i) => `- [${i.severity}] ${i.type}: ${i.message}`,
@@ -152,8 +163,7 @@ function buildFixPrompt(question, report, scriptureText, mode) {
 
   return `Ти біблійний експерт. ${modeHint} НЕ змінюй текст питання та варіанти відповіді.
 
-Тема: ${theme?.title ?? question.themeId}
-Складність: ${question.difficulty} (тон відповідай рівню: baby/child — прості слова, theologian — можна терміни)
+${subtopicBlock}
 
 Питання: ${question.text}
 Варіанти: ${JSON.stringify(question.options)}
@@ -201,6 +211,8 @@ function applyExplanationFix(original, raw, mode) {
 
   fixed.sourceQuality = 'ai-reviewed';
   fixed.lastReviewedAt = new Date().toISOString();
+  fixed.topicNodeId = original.topicNodeId;
+  fixed.topicPath = original.topicPath;
 
   return fixed;
 }

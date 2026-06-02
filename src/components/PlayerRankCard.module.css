@@ -1,0 +1,115 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.25rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.rankBadge {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--gold-light);
+}
+
+.wisdom {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0 0 0.65rem;
+}
+
+.wisdom strong {
+  color: var(--gold);
+}
+
+.progressLabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.progressBar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progressBar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+  border-radius: 3px;
+  transition: width 0.4s var(--ease-out);
+}
+
+.roadmap {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: none;
+}
+
+.roadmap::-webkit-scrollbar {
+  display: none;
+}
+
+.roadStep {
+  flex: 0 0 auto;
+  min-width: 72px;
+  padding: 0.5rem 0.4rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.roadStepCurrent {
+  border-color: var(--accent-border-strong);
+  color: var(--gold-light);
+  background: var(--accent-bg-strong);
+}
+
+.roadStepDone {
+  border-color: rgba(74, 156, 93, 0.3);
+  color: var(--success-text, #6dbf7e);
+}
+
+.roadStepLocked {
+  opacity: 0.4;
+}
+
+.roadEmoji {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.roadName {
+  display: block;
+  font-weight: 700;
+  line-height: 1.2;
+}

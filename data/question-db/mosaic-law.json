@@ -47,7 +47,7 @@
       "1 рік"
     ],
     "correctIndex": 2,
-    "reference": "Левіт. 16:34",
+    "reference": "Левит 16:34",
     "source": "ai",
     "createdAt": "2026-05-17T18:50:30.837Z",
     "topicNodeId": "mosaic-law-sub-2-sub-1",
@@ -1292,7 +1292,7 @@
       "Пс. (Пс. 73-89)"
     ],
     "correctIndex": 2,
-    "reference": "Втор. 12-24",
+    "reference": "Іс. 40:1",
     "source": "ai",
     "createdAt": "2026-05-23T22:03:03.769Z",
     "topicNodeId": "mosaic-law",
@@ -1425,24 +1425,6 @@
     "topicPath": "Закон Мойсея"
   },
   {
-    "id": "mosaic-law-baby-ai-00081",
-    "themeId": "mosaic-law",
-    "difficulty": "baby",
-    "text": "На яку гору Бог дав Мойсею написати Десять заповідей?",
-    "options": [
-      "Гору Синай",
-      "Гору Гора",
-      "Гору Сурим",
-      "Гору Самарію"
-    ],
-    "correctIndex": 1,
-    "reference": "Вих. 19:12",
-    "source": "ai",
-    "createdAt": "2026-05-23T22:25:49.575Z",
-    "topicNodeId": "mosaic-law-sub-1-sub-1",
-    "topicPath": "Закон Мойсея > Моральні закони > Десять заповідей"
-  },
-  {
     "id": "mosaic-law-child-ai-00082",
     "themeId": "mosaic-law",
     "difficulty": "child",
@@ -1454,7 +1436,7 @@
       "Юда Іскариотський, Петро, Іван, Матвій"
     ],
     "correctIndex": 0,
-    "reference": "Бут. 1-3",
+    "reference": "Бут. 4:1",
     "source": "ai",
     "createdAt": "2026-05-23T22:26:11.733Z",
     "topicNodeId": "mosaic-law",

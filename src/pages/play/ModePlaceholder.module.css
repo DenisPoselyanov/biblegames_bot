@@ -5,8 +5,18 @@
   flex-direction: column;
   gap: 1rem;
   background:
-    radial-gradient(circle at top left, rgba(201, 162, 39, 0.16), transparent 32rem),
+    radial-gradient(circle at top left, var(--accent-bg-strong), transparent 32rem),
     var(--bg);
+  animation: fadeInUp var(--duration-slow) var(--ease-out);
+}
+
+@keyframes pageFloat {
+  0%, 100% { opacity: 0.85; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-4px); }
+}
+
+.page .kicker {
+  animation: pageFloat 3s var(--ease-in-out) infinite;
 }
 
 .header {
@@ -18,7 +28,7 @@
 .kicker {
   width: fit-content;
   padding: 0.2rem 0.55rem;
-  border: 1px solid rgba(201, 162, 39, 0.4);
+  border: 1px solid var(--accent-border-strong);
   border-radius: 999px;
   color: var(--gold-light);
   font-size: 0.72rem;

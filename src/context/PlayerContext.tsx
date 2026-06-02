@@ -15,11 +15,13 @@ import type {
   PlayerProfile,
   Recommendation,
 } from '../types';
-import { DIFFICULTY_POINTS } from '../types';
+import { DIFFICULTY_POINTS, DIFFICULTY_ORDER } from '../types';
+import { formatRankLabel } from '../lib/practiceProgression';
 import { loadGlobalStats, loadProfile } from '../lib/storage';
 import { useTelegram } from '../hooks/useTelegram';
 import { getAchievementById } from '../data/achievements';
 import { getCosmeticThemeById } from '../data/cosmetics';
+import { applyCosmeticThemeById } from '../lib/cosmeticTheme';
 import { STUDY_THEME_GROUPS } from '../data/study_themes';
 import { updateMastery, updateStreak } from '../lib/learning';
 import { flushTelemetry, trackEvent } from '../lib/telemetry';
@@ -27,6 +29,14 @@ import { studyRepo } from '../repos/studyRepo';
 import { playerRepo } from '../repos/playerRepo';
 import { statsRepo } from '../repos/statsRepo';
 import { generateRecommendations } from '../lib/recommendationEngine';
+import {
+  advancePlayerRank,
+  computeStageWisdom,
+  getDefaultPlayerRank,
+  getOrCreatePracticeTrack,
+  PASS_MIN_CORRECT,
+  STAGE_COUNT_BY_DIFFICULTY,
+} from '../lib/practiceProgression';
 import { loadAllTopicHierarchies } from '../data/topicDbLoader';
 import type { BollsTranslation } from '../lib/bollsConstants';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
@@ -40,11 +50,28 @@ interface PlayerContextValue {
     correctCount: number,
     totalQuestions: number,
   ) => { points: number; alreadyCompleted: boolean };
+  completePracticeStage: (
+    themeId: string,
+    difficulty: Difficulty,
+    stageIndex: number,
+    correctCount: number,
+    totalQuestions: number,
+    nodeId: string | null,
+  ) => {
+    passed: boolean;
+    points: number;
+    wisdomEarned: number;
+    stagePerfect: boolean;
+    nextStageUnlocked: boolean;
+    rankPromoted: boolean;
+    previousRankLabel: string;
+    newRankLabel: string;
+  };
   isLevelDone: (themeId: string, difficulty: Difficulty) => boolean;
   saveSurvivalRun: (score: number, pointsEarned: number) => void;
-  saveMillionaireRun: (reachedLevel: number, pointsEarned: number) => void;
+  saveMillionaireRun: (reachedLevel: number, pointsEarned: number, runLength: number) => void;
   unlockAchievement: (achievementId: string) => boolean;
-  purchaseTheme: (themeId: string) => { purchased: boolean; reason?: 'missing' | 'owned' | 'points' };
+  purchaseTheme: (themeId: string) => { purchased: boolean; reason?: 'missing' | 'owned' | 'coins' };
   setActiveTheme: (themeId: string) => boolean;
   refreshStats: () => void;
   setAvatar: (avatarId: string) => boolean;
@@ -88,24 +115,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
   // Глобальне застосування активної косметичної теми
   useEffect(() => {
-    const theme = getCosmeticThemeById(profile.activeTheme);
-    if (!theme) return;
-
-    const root = document.documentElement;
-    root.style.setProperty('--bg', theme.preview.background);
-    root.style.setProperty('--surface', theme.preview.surface);
-    root.style.setProperty('--gold', theme.preview.primary);
-    root.style.setProperty('--gold-light', theme.preview.accent);
-    root.style.setProperty('--text', theme.preview.text);
-
-    // Встановлення відповідної рамки та приглушеного тексту в залежності від теми
-    if (theme.id === 'heavenly-jerusalem') {
-      root.style.setProperty('--border', 'rgba(0, 0, 0, 0.08)');
-      root.style.setProperty('--text-muted', 'rgba(0, 0, 0, 0.55)');
-    } else {
-      root.style.setProperty('--border', 'rgba(255, 255, 255, 0.08)');
-      root.style.setProperty('--text-muted', 'rgba(255, 255, 255, 0.55)');
-    }
+    applyCosmeticThemeById(profile.activeTheme);
   }, [profile.activeTheme]);
 
   const refreshStats = useCallback(() => {
@@ -162,7 +172,6 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
       const next: PlayerProfile = {
         ...updateStreak(profile),
-        totalPoints: profile.totalPoints + points,
         coins: profile.coins + points,
         themePoints: {
           ...profile.themePoints,
@@ -189,6 +198,153 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     [profile],
   );
 
+  const completePracticeStage = useCallback(
+    (
+      themeId: string,
+      difficulty: Difficulty,
+      stageIndex: number,
+      correctCount: number,
+      totalQuestions: number,
+      nodeId: string | null,
+    ) => {
+      const passed = correctCount >= PASS_MIN_CORRECT;
+      const total = totalQuestions > 0 ? totalQuestions : 1;
+      const basePoints = DIFFICULTY_POINTS[difficulty];
+      const accuracy = correctCount / total;
+      const currentStagePoints = passed ? Math.round(basePoints * accuracy) : 0;
+      const currentStageWisdom = passed ? computeStageWisdom(difficulty, correctCount, total) : 0;
+      const stagePerfectNow = totalQuestions > 0 && correctCount === totalQuestions;
+
+      const previousRank = profile.playerRank ?? getDefaultPlayerRank();
+      const previousRankLabel = formatRankLabel(previousRank.tier, previousRank.plaque);
+
+      const tracks = [...(profile.practiceTracks ?? [])];
+      const trackTemplate = getOrCreatePracticeTrack(tracks, themeId, nodeId, difficulty);
+      const trackIndex = tracks.findIndex(
+        (t) => t.themeId === themeId && t.nodeId === nodeId && t.difficulty === difficulty,
+      );
+      const existingTrack = trackIndex >= 0 ? tracks[trackIndex] : trackTemplate;
+      const existingStageResult = existingTrack.stageResults.find((r) => r.stageIndex === stageIndex);
+      const bestCorrectBefore = existingStageResult?.bestCorrect ?? existingStageResult?.correct ?? 0;
+      const bestPointsBefore = existingStageResult?.bestPointsAwarded
+        ?? (existingStageResult?.passed
+          ? Math.round(basePoints * (bestCorrectBefore / Math.max(1, existingStageResult.total ?? 1)))
+          : 0);
+      const bestWisdomBefore = existingStageResult?.bestWisdomAwarded
+        ?? (existingStageResult?.passed
+          ? computeStageWisdom(
+              difficulty,
+              bestCorrectBefore,
+              Math.max(1, existingStageResult.total ?? 1),
+            )
+          : 0);
+      const points = Math.max(0, currentStagePoints - bestPointsBefore);
+      const wisdomEarned = Math.max(0, currentStageWisdom - bestWisdomBefore);
+      const historicalPerfect = (existingStageResult?.bestCorrect ?? existingStageResult?.correct ?? 0)
+        >= Math.max(1, existingStageResult?.total ?? 1);
+      const stagePerfect = Boolean(existingStageResult?.perfect) || historicalPerfect || stagePerfectNow;
+      const stagePassed = Boolean(existingStageResult?.passed) || passed;
+
+      const stageResult = {
+        stageIndex,
+        correct: correctCount,
+        total: totalQuestions,
+        bestCorrect: Math.max(bestCorrectBefore, correctCount),
+        bestPointsAwarded: Math.max(bestPointsBefore, currentStagePoints),
+        bestWisdomAwarded: Math.max(bestWisdomBefore, currentStageWisdom),
+        perfect: stagePerfect,
+        perfectCompletedAt: existingStageResult?.perfectCompletedAt
+          ?? (stagePerfectNow ? new Date().toISOString() : undefined),
+        passed: stagePassed,
+        completedAt: new Date().toISOString(),
+      };
+
+      const filteredResults = existingTrack.stageResults.filter((r) => r.stageIndex !== stageIndex);
+      const nextHighestUnlocked = passed
+        ? Math.max(
+            existingTrack.highestUnlockedStage,
+            Math.min(stageIndex + 1, STAGE_COUNT_BY_DIFFICULTY[difficulty] - 1),
+          )
+        : existingTrack.highestUnlockedStage;
+
+      const updatedTrack = {
+        ...existingTrack,
+        highestUnlockedStage: passed
+          ? Math.max(existingTrack.highestUnlockedStage, nextHighestUnlocked)
+          : existingTrack.highestUnlockedStage,
+        stageResults: [...filteredResults, stageResult].sort((a, b) => a.stageIndex - b.stageIndex),
+      };
+
+      if (trackIndex >= 0) {
+        tracks[trackIndex] = updatedTrack;
+      } else {
+        tracks.push(updatedTrack);
+      }
+
+      const newRank = passed
+        ? advancePlayerRank(previousRank, wisdomEarned)
+        : previousRank;
+      const rankPromoted =
+        wisdomEarned > 0 &&
+        (DIFFICULTY_ORDER[newRank.tier] > DIFFICULTY_ORDER[previousRank.tier] ||
+          newRank.plaque < previousRank.plaque);
+
+      const updatedAchievements = [...profile.achievements];
+      if (stagePerfectNow && !updatedAchievements.includes('flawless-level')) {
+        updatedAchievements.push('flawless-level');
+      }
+
+      const next: PlayerProfile = {
+        ...updateStreak(profile),
+        coins: profile.coins + points,
+        themePoints: {
+          ...profile.themePoints,
+          [themeId]: (profile.themePoints[themeId] ?? 0) + points,
+        },
+        practiceTracks: tracks,
+        playerRank: newRank,
+        achievements: updatedAchievements,
+      };
+
+      localDirtyRef.current = true;
+      setProfile(next);
+      void playerRepo.save(next);
+      trackEvent('practice_stage_completed', {
+        themeId,
+        difficulty,
+        stageIndex,
+        nodeId,
+        passed,
+        wisdomEarned,
+        points,
+        correctCount,
+        totalQuestions,
+      });
+
+      if (points > 0) {
+        const hadThemePoints = (profile.themePoints[themeId] ?? 0) > 0;
+        void statsRepo.recordPlay(themeId, points, !hadThemePoints, userId).then(setGlobalStats);
+      }
+
+      const nextStageUnlocked =
+        passed &&
+        stageIndex < STAGE_COUNT_BY_DIFFICULTY[difficulty] - 1 &&
+        updatedTrack.highestUnlockedStage >= stageIndex + 1;
+
+      return {
+        passed,
+        points,
+        wisdomEarned,
+        stagePerfect,
+        nextStageUnlocked,
+        rankPromoted,
+        previousRankLabel,
+        newRankLabel: formatRankLabel(newRank.tier, newRank.plaque),
+      };
+    },
+    [profile, userId],
+  );
+
   const updateProfile = useCallback((updater: (current: PlayerProfile) => PlayerProfile) => {
     setProfile((current) => {
       const next = updater(current);
@@ -202,7 +358,6 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     (score: number, pointsEarned: number) => {
       updateProfile((current) => ({
         ...current,
-        totalPoints: current.totalPoints + pointsEarned,
         coins: current.coins + pointsEarned,
         survivalHighScore: Math.max(current.survivalHighScore, score),
       }));
@@ -211,13 +366,12 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   );
 
   const saveMillionaireRun = useCallback(
-    (reachedLevel: number, pointsEarned: number) => {
+    (reachedLevel: number, pointsEarned: number, runLength: number) => {
+      const completedRun = runLength > 0 && reachedLevel >= runLength;
       updateProfile((current) => ({
         ...current,
-        totalPoints: current.totalPoints + pointsEarned,
         coins: current.coins + pointsEarned,
-        millionaireWins:
-          reachedLevel >= 15 ? current.millionaireWins + 1 : current.millionaireWins,
+        millionaireWins: completedRun ? current.millionaireWins + 1 : current.millionaireWins,
         millionaireMaxLevel: Math.max(current.millionaireMaxLevel, reachedLevel),
       }));
     },
@@ -246,15 +400,15 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       if (profile.unlockedThemes.includes(themeId)) {
         return { purchased: false, reason: 'owned' as const };
       }
-      if (profile.totalPoints < theme.price) {
-        return { purchased: false, reason: 'points' as const };
+      if (profile.coins < theme.price) {
+        return { purchased: false, reason: 'coins' as const };
       }
 
       updateProfile((current) => {
         if (current.unlockedThemes.includes(themeId)) return current;
         return {
           ...current,
-          totalPoints: current.totalPoints - theme.price,
+          coins: current.coins - theme.price,
           unlockedThemes: [...current.unlockedThemes, themeId],
           activeTheme: themeId,
           achievements: current.achievements.includes('aesthete')
@@ -265,7 +419,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
       return { purchased: true };
     },
-    [profile.totalPoints, profile.unlockedThemes, updateProfile],
+    [profile.coins, profile.unlockedThemes, updateProfile],
   );
 
   const setActiveTheme = useCallback(
@@ -387,6 +541,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       profile,
       globalStats,
       completeLevel,
+      completePracticeStage,
       isLevelDone,
       saveSurvivalRun,
       saveMillionaireRun,
@@ -404,6 +559,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       profile,
       globalStats,
       completeLevel,
+      completePracticeStage,
       isLevelDone,
       saveSurvivalRun,
       saveMillionaireRun,

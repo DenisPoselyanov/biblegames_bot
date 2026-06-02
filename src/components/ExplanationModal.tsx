@@ -2,6 +2,7 @@ import type { Question } from '../types';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { usePlayer } from '../context/PlayerContext';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
+import { MotionSheet } from './motion';
 import { ScripturePanel } from './ScripturePanel';
 import styles from './ExplanationModal.module.css';
 
@@ -9,14 +10,19 @@ interface ExplanationModalProps {
   question: Question;
   open: boolean;
   onClose: () => void;
+  /** У швидких режимах (Виживання, Мільйонер) не відкривати bolls.life */
+  showReaderLink?: boolean;
 }
 
-export function ExplanationModal({ question, open, onClose }: ExplanationModalProps) {
+export function ExplanationModal({
+  question,
+  open,
+  onClose,
+  showReaderLink = true,
+}: ExplanationModalProps) {
   const { profile } = usePlayer();
   const translation = normalizeBollsTranslation(profile.bibleTranslation);
   const focusTrapRef = useFocusTrap(open);
-
-  if (!open) return null;
 
   const answer = question.options[question.correctIndex];
   const explanationText =
@@ -25,15 +31,14 @@ export function ExplanationModal({ question, open, onClose }: ExplanationModalPr
     null;
 
   return (
-    <div className={styles.backdrop} role="presentation" onClick={onClose}>
-      <article
-        className={styles.modal}
-        ref={focusTrapRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="explanation-title"
-        onClick={(event) => event.stopPropagation()}
-      >
+    <MotionSheet
+      open={open}
+      onClose={onClose}
+      backdropClassName={styles.backdrop}
+      className={styles.modal}
+      aria-labelledby="explanation-title"
+    >
+      <article ref={focusTrapRef}>
         <header className={styles.header}>
           <span className={styles.kicker}>Пояснення</span>
           <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Закрити">
@@ -51,29 +56,22 @@ export function ExplanationModal({ question, open, onClose }: ExplanationModalPr
 
           {question.reference && (
             <div>
-              <dt>Посилання</dt>
+              <dt>Біблійне місце</dt>
               <dd>{question.reference}</dd>
             </div>
           )}
         </dl>
 
-        {open && question.reference && (
-          <ScripturePanel reference={question.reference} translation={translation} />
-        )}
+        {explanationText && <p className={styles.explanation}>{explanationText}</p>}
 
-        {explanationText ? (
-          <p className={styles.explanation}>{explanationText}</p>
-        ) : (
-          <p className={styles.explanation}>
-            Пояснення для цього питання ще готується. Зверни увагу на правильну відповідь
-            {question.reference ? ' і посилання на Писання' : ''} — вони допомагають закріпити контекст.
-          </p>
+        {question.reference && (
+          <ScripturePanel
+            reference={question.reference}
+            translation={translation}
+            showReaderLink={showReaderLink}
+          />
         )}
-
-        <button type="button" className={styles.primaryButton} onClick={onClose}>
-          Зрозуміло
-        </button>
       </article>
-    </div>
+    </MotionSheet>
   );
 }

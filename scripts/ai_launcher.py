@@ -17,6 +17,8 @@ from urllib.request import Request, urlopen
 AI_PROVIDERS = ("ollama", "gemini", "omniroute")
 AI_PROVIDER_LABELS = {"ollama": "Ollama", "gemini": "Gemini", "omniroute": "OmniRoute"}
 GEMINI_MODEL_PRESETS = (
+    "gemini-3.1-flash-lite",
+    "gemini-2.5-flash",
     "gemini-2.0-flash",
     "gemini-2.0-flash-lite",
     "gemini-1.5-pro",
@@ -90,27 +92,27 @@ SCRIPT_HELP = {
         "Потрібен запущений сервер на localhost:3001 (npm run server:dev)."
     ),
     "generate-ai-theme": (
-        "Генерація: одна тема\n\n"
-        "Створює нові питання через Ollama для обраної теми (напр. geography). "
-        "Кількість і складність — з полів вище. Додає у question-db.\n\n"
-        "Перевірте Ollama і модель у «Налаштування»."
+        "Fill підтем: одна тема\n\n"
+        "Заповнює всі листові підтеми обраної теми до 100% практики "
+        "(кожна підтема × кожна складність, з topicNodeId).\n\n"
+        "CLI: npm run fill-practice-nodes -- --theme geography\n\n"
+        "Поле «Кількість» = --max-questions (0 = без ліміту)."
     ),
     "generate-ai-all": (
-        "Генерація: усі теми\n\n"
-        "Послідовно генерує питання для кожної теми зі списку THEME_IDS. "
-        "Тривала операція — краще запускати, коли база сильно не вистачає.\n\n"
-        "Використовує count і difficulty з форми."
+        "Fill підтем: усі теми\n\n"
+        "Послідовно заповнює прогалини для всіх тем з topics-db. "
+        "Тривала операція — краще з --max-questions.\n\n"
+        "CLI: npm run fill-practice-nodes"
     ),
     "generate-ai-group_ot": (
-        "Генерація: група СЗ\n\n"
-        "Генерує питання для групи «Старий Завіт» — усі теми, що входять до OT-групи "
-        "в ієрархії topics-db.\n\n"
-        "Зручно наповнити одразу кілька пов’язаних тем."
+        "Fill підтем: група СЗ\n\n"
+        "Заповнює листові підтеми всіх тем Старого Завіту.\n\n"
+        "CLI: npm run fill-practice-nodes -- --group old-testament"
     ),
     "generate-ai-topic": (
-        "Генерація: Topic ID\n\n"
-        "Генерує питання для конкретного вузла ієрархії (поле Topic ID), "
-        "наприклад judges_samson. Точкове наповнення підтеми.\n\n"
+        "Генерація: одна підтема\n\n"
+        "Генерує питання для конкретного вузла (Topic ID), "
+        "наприклад pentateuch-sub-1-sub-1. Кожне питання отримує topicNodeId.\n\n"
         "ID можна скопіювати з вкладки «Якість тем»."
     ),
     "balance-preview": (
@@ -826,7 +828,7 @@ class AiLauncherV3(ctk.CTk):
         self.ollama_host = self.env.get("OLLAMA_HOST", "localhost")
         self.ollama_port = self.env.get("OLLAMA_PORT", "11434")
         self.gemini_api_key = self.env.get("GEMINI_API_KEY", "")
-        self.gemini_model = self.env.get("GEMINI_MODEL", "gemini-2.0-flash")
+        self.gemini_model = self.env.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
         self.omniroute_base = self.env.get("OMNIROUTE_BASE_URL", "http://localhost:20128/v1").rstrip("/")
         self.omniroute_api_key = self.env.get("OMNIROUTE_API_KEY", "")
         self.omniroute_model = self.env.get("OMNIROUTE_MODEL", "google/gemini-2.0-flash")
@@ -1512,10 +1514,10 @@ class AiLauncherV3(ctk.CTk):
         bf = ctk.CTkFrame(gf, fg_color="transparent")
         bf.grid(row=3, column=0, columnspan=2, sticky="ew", pady=(8, 0))
         for txt, mode, help_key in [
-            ("Тема", "theme", "generate-ai-theme"),
-            ("Усі теми", "all", "generate-ai-all"),
-            ("СЗ група", "group_ot", "generate-ai-group_ot"),
-            ("Topic", "topic", "generate-ai-topic"),
+            ("Fill тема", "theme", "generate-ai-theme"),
+            ("Fill усі", "all", "generate-ai-all"),
+            ("Fill СЗ", "group_ot", "generate-ai-group_ot"),
+            ("Підтема", "topic", "generate-ai-topic"),
         ]:
             cell = ctk.CTkFrame(bf, fg_color="transparent")
             cell.pack(side="left", padx=(0, 6))
@@ -1581,20 +1583,26 @@ class AiLauncherV3(ctk.CTk):
         count = self.gen_count.get().strip() or "30"
         diff = self.gen_diff.get().strip() or "all"
         topic = self.gen_topic.get().strip()
-        parts = ["--count", count, "--difficulty", diff]
-        parts.extend(self._ai_args())
+        parts = [] + self._ai_args()
+        if mode == "topic":
+            nid = topic or ctk.CTkInputDialog(text="Вкажи node id підтеми:", title="Topic ID").get_input()
+            if not nid:
+                return
+            parts = ["--topic", nid.strip(), "--count", count, "--difficulty", diff] + parts
+            self._run_npm("generate-ai", " ".join(parts), "✨ Генерація для підтеми")
+            return
+        if diff and diff != "all":
+            parts.extend(["--difficulty", diff])
+        max_q = count.strip()
+        if max_q and max_q != "0":
+            parts.extend(["--max-questions", max_q])
         if mode == "theme":
             parts = ["--theme", theme] + parts
         elif mode == "all":
-            parts = ["--all"] + parts
+            pass
         elif mode == "group_ot":
             parts = ["--group", "old-testament"] + parts
-        elif mode == "topic":
-            nid = topic or ctk.CTkInputDialog(text="Вкажи node id:", title="Topic ID").get_input()
-            if not nid:
-                return
-            parts = ["--topic", nid.strip()] + parts
-        self._run_npm("generate-ai", " ".join(parts), "✨ Генерація AI-питань")
+        self._run_npm("fill-practice-nodes", " ".join(parts), "🌿 Fill підтем (практика)")
 
     def _run_balance(self, dry_run):
         raw = self.bal_node.get().strip()

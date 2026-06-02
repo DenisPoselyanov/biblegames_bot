@@ -1,6 +1,7 @@
 import { ACHIEVEMENTS } from '../data/achievements';
 import { THEMES } from '../data/themes';
 import type { PlayerProfile } from '../types';
+import { MotionSheet } from './motion';
 import styles from './PlayerProfileModal.module.css';
 
 interface PlayerProfileModalProps {
@@ -9,13 +10,11 @@ interface PlayerProfileModalProps {
   onClose: () => void;
 }
 
-function getLevel(totalPoints: number): number {
-  return Math.max(1, Math.floor(totalPoints / 250) + 1);
+function getLevel(coins: number): number {
+  return Math.max(1, Math.floor(coins / 250) + 1);
 }
 
 export function PlayerProfileModal({ profile, open, onClose }: PlayerProfileModalProps) {
-  if (!open) return null;
-
   const unlockedAchievements = ACHIEVEMENTS.filter((achievement) =>
     profile.achievements.includes(achievement.id),
   );
@@ -29,19 +28,19 @@ export function PlayerProfileModal({ profile, open, onClose }: PlayerProfileModa
     .slice(0, 5);
 
   return (
-    <div className={styles.backdrop} role="presentation" onClick={onClose}>
-      <article
-        className={styles.modal}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="player-profile-title"
-        onClick={(event) => event.stopPropagation()}
-      >
+    <MotionSheet
+      open={open}
+      onClose={onClose}
+      backdropClassName={styles.backdrop}
+      className={styles.modal}
+      aria-labelledby="player-profile-title"
+    >
+      <article>
         <header className={styles.header}>
           <span className={styles.avatar}>📖</span>
           <div>
             <h2 id="player-profile-title">{profile.displayName}</h2>
-            <p>Рівень {getLevel(profile.totalPoints)} · {profile.totalPoints} очок</p>
+            <p>Рівень {getLevel(profile.coins)} · {profile.coins} монет</p>
           </div>
           <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Закрити">
             ×
@@ -95,6 +94,6 @@ export function PlayerProfileModal({ profile, open, onClose }: PlayerProfileModa
           )}
         </section>
       </article>
-    </div>
+    </MotionSheet>
   );
 }

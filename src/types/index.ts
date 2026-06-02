@@ -54,10 +54,45 @@ export interface CompletedLevel {
   completedAt: string;
 }
 
+export interface PracticeStageResult {
+  stageIndex: number;
+  correct: number;
+  total: number;
+  /** Best correct answers reached for this stage across all attempts */
+  bestCorrect?: number;
+  /** Highest awarded theme points for this stage across all attempts */
+  bestPointsAwarded?: number;
+  /** Highest awarded wisdom for this stage across all attempts */
+  bestWisdomAwarded?: number;
+  /** True once the stage has been solved with all answers correct */
+  perfect?: boolean;
+  /** Timestamp of the first perfect completion */
+  perfectCompletedAt?: string;
+  passed: boolean;
+  completedAt: string;
+}
+
+export interface PracticeTrackProgress {
+  themeId: string;
+  nodeId: string | null;
+  difficulty: Difficulty;
+  /** 0-based index of the highest unlocked stage */
+  highestUnlockedStage: number;
+  stageResults: PracticeStageResult[];
+}
+
+export interface PlayerRank {
+  tier: Difficulty;
+  /** Sub-level badge 7 (lowest) … 1 (highest within tier) */
+  plaque: number;
+  wisdomPoints: number;
+  /** Highest global rank visible in the progression roadmap */
+  unlockedTier: Difficulty;
+}
+
 export interface PlayerProfile {
   userId: string;
   displayName: string;
-  totalPoints: number;
   themePoints: Record<string, number>;
   completedLevels: CompletedLevel[];
   survivalHighScore: number;
@@ -67,6 +102,7 @@ export interface PlayerProfile {
   activeTheme: string;
   achievements: string[];
   avatar: string;
+  /** Єдина економічна валюта: заробіток, крамниця, бонуси */
   coins: number;
   unlockedAvatars: string[];
   streakDays: number;
@@ -74,6 +110,8 @@ export interface PlayerProfile {
   studyMastery: Record<string, MasteryState>;
   /** Переклад Писання (bolls.life): HOM | UBIO | UTT */
   bibleTranslation?: BollsTranslation;
+  practiceTracks: PracticeTrackProgress[];
+  playerRank: PlayerRank;
 }
 
 export interface MasteryState {
@@ -102,7 +140,7 @@ export interface StudyPath {
   nodes: StudyPathNode[];
 }
 
-export type StudyMode = 'practice' | 'review' | 'sprint' | 'adaptive' | 'micro';
+export type StudyMode = 'practice' | 'review';
 
 export interface StudySession {
   id: string;
@@ -113,10 +151,6 @@ export interface StudySession {
   selectedNodeId?: string; // Обраний TopicNode для практики
   hierarchyPath?: string[]; // Шлях до обраного вузла (батьківські IDs)
   hierarchyDepth?: number; // Глибина в ієрархії
-  // Поля для адаптивних тестів
-  adaptiveConfig?: AdaptiveTestConfig;
-  // Поля для мікротренування
-  microConfig?: MicroTrainingConfig;
   startedAt: string;
   finishedAt?: string;
   answers: AnswerEvent[];
@@ -371,33 +405,22 @@ export interface SocialProfile {
   };
 }
 
-// Типи для адаптивних тестів
-export type QuestionSelectionStrategy = 'balanced' | 'weakness-focused' | 'progressive' | 'random';
-
-export interface AdaptiveTestConfig {
-  strategy: QuestionSelectionStrategy;
-  targetDifficulty?: Difficulty;
-  includeParentNodes: boolean; // Включати питання з батьківських вузлів
-  includeChildNodes: boolean; // Включати питання з дочірніх вузлів
-  questionCount: number;
-  timeLimit?: number; // у секундах
-}
-
-// Типи для мікротренування
-export interface MicroTrainingConfig {
-  targetNodeId: string; // Конкретний TopicNode для мікротренування
-  questionCount: number; // 5-10 питань
-  timeLimit: number; // 3-5 хвилин
-  difficulty?: Difficulty; // Фіксована складність або auto
-}
-
 // Типи для рекомендацій
-export type RecommendationType = 'next-logical' | 'weakness' | 'micro-training' | 'review-scheduled';
+export type RecommendationType =
+  | 'continue-practice'
+  | 'next-logical'
+  | 'weakness'
+  | 'review-scheduled';
 
 export interface Recommendation {
   id: string;
   type: RecommendationType;
-  nodeId: string; // TopicNode ID
+  /** Theme id for navigation (practice tracks, theme pages) */
+  themeId?: string;
+  nodeId: string; // TopicNode ID or theme root id
+  difficulty?: Difficulty;
+  /** 0-based practice stage index */
+  stageIndex?: number;
   title: string;
   description: string;
   priority: number; // 1-10, вище = пріоритетніше

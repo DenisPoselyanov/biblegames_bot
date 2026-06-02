@@ -2,6 +2,7 @@ import type { Difficulty, GlobalStats, PlayerProfile } from '../types';
 import { THEMES } from '../data/themes';
 import { DEFAULT_COSMETIC_THEME_ID } from '../data/cosmetics';
 import { DEFAULT_BOLLS_TRANSLATION, normalizeBollsTranslation } from './bollsConstants';
+import { getDefaultPlayerRank } from './practiceProgression';
 
 const PROFILE_KEY = 'bible-game-profile';
 const GLOBAL_STATS_KEY = 'bible-game-global-stats';
@@ -18,11 +19,21 @@ function migrateDifficulty(old: string): Difficulty {
   return OLD_DIFFICULTY_MAP[old] ?? (old as Difficulty);
 }
 
-function normalizeProfile(profile: Partial<PlayerProfile>, userId: string, displayName: string): PlayerProfile {
+/** Legacy profile JSON may still include totalPoints before migration. */
+export type ProfileWithLegacyWallet = Partial<PlayerProfile> & { totalPoints?: number };
+
+export function walletCoins(profile: ProfileWithLegacyWallet): number {
+  return (profile.coins ?? 0) + (profile.totalPoints ?? 0);
+}
+
+function normalizeProfile(
+  profile: ProfileWithLegacyWallet,
+  userId: string,
+  displayName: string,
+): PlayerProfile {
   return {
     userId,
     displayName: profile.displayName ?? displayName,
-    totalPoints: profile.totalPoints ?? 0,
     themePoints: profile.themePoints ?? {},
     completedLevels: (profile.completedLevels ?? []).map((l) => ({
       ...l,
@@ -37,12 +48,14 @@ function normalizeProfile(profile: Partial<PlayerProfile>, userId: string, displ
     activeTheme: profile.activeTheme ?? DEFAULT_COSMETIC_THEME_ID,
     achievements: profile.achievements ?? [],
     avatar: profile.avatar ?? '',
-    coins: profile.coins ?? 0,
+    coins: walletCoins(profile),
     unlockedAvatars: profile.unlockedAvatars ?? [],
     streakDays: profile.streakDays ?? 0,
     lastActiveAt: profile.lastActiveAt ?? null,
     studyMastery: profile.studyMastery ?? {},
     bibleTranslation: normalizeBollsTranslation(profile.bibleTranslation ?? DEFAULT_BOLLS_TRANSLATION),
+    practiceTracks: profile.practiceTracks ?? [],
+    playerRank: profile.playerRank ?? getDefaultPlayerRank(),
   };
 }
 
@@ -63,7 +76,7 @@ export function loadProfile(userId: string, displayName: string): PlayerProfile 
   try {
     const raw = localStorage.getItem(PROFILE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw) as PlayerProfile;
+      const parsed = JSON.parse(raw) as ProfileWithLegacyWallet & PlayerProfile;
       if (parsed.userId === userId) return normalizeProfile(parsed, userId, displayName);
     }
   } catch {

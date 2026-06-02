@@ -1281,71 +1281,34 @@ export type TopicHierarchyMap = Record<string, TopicNode>;
 
 **Practice 2.0** — це розширення режиму навчання з інтеграцією ієрархічної системи тем та новими інтелектуальними функціями.
 
-#### Нові режими в StudyHub:
+#### Режими в StudyHub:
 
-1. **Practice (Практика)** — класичний режим вибору теми та складності
+1. **Practice (Практика)** — тема → складність → етапи (10 питань, 7+ для проходження)
 2. **Review Mistakes** — повторення питань, де були помилки
-3. **Sprint (Спринт)** — гра на час (5 хвилин)
-4. **Adaptive Test** — інтелектуальний тест, що адаптується під твій рівень знань 🆕
-5. **Micro Training** — короткі сфокусовані сесії по конкретних мікротемах 🆕
 
-### 20.2 Адаптивні тести
+### 20.2 Етапи та ранг гравця
 
-**Що це:** Тести, які автоматично підбирають питання на основі твого прогресу.
+**Етапи:** питання йдуть послідовними блоками по 10 (етап 1: 1–10, етап 2: 11–20, …). Кількість етапів залежить від складності (5 для baby–youth, 4 для student–preacher, 3 для teacher–theologian).
 
-**4 стратегії підбору питань:**
-- **Balanced** — збалансована суміш нових питань, закріплення та трохи складніших
-- **Weakness-focused** — фокус на темах з низьким mastery (<50%)
-- **Progressive** — поступове підвищення складності від простого до складного
-- **Random** — випадковий вибір (для різноманітності)
+**Ранг:** `playerRank` (tier + плашка VII→I), очки мудрості, розблокування складностей. Логіка в `src/lib/practiceProgression.ts`.
 
-**Як працює:**
-- Аналізує твій mastery по всіх темах
-- Пріоритет дає темам, які потребують уваги
-- Може включати питання з батьківських тем для контексту
-- Адаптує складність на основі твої історії відповідей
+**Прогрес:** `practiceTracks` — по кожній темі/вузлу/складності зберігаються пройдені етапи.
 
-**Запуск:**
+**URL етапу:**
 ```
-/play/study/adaptive/:themeId/:nodeId
+/play/study/quiz/:themeId/:difficulty/stage/:stageIndex
+/play/study/quiz/:themeId/:difficulty/stage/:stageIndex/:nodeId
 ```
 
-### 20.3 Мікротренування
-
-**Що це:** Короткі сесії (3 хвилини, 5-8 питань) по конкретних мікротемах.
-
-**Ідеально підходить для:**
-- Заповнення прогалин у знаннях
-- Швидкого повторення перед важливими подіями
-- Підтримки матеріалу, який почав забуватися
-
-**Сторінка вибору:** `/play/study/micro`
-
-**Фільтри:**
-- **Швидкі** — теми з mastery до 80% (швидко покращити)
-- **Слабкі місця** — теми з mastery 30-60% (потребують уваги)
-- **Всі** — всі доступні мікротеми
-
-**Кожна картка показує:**
-- 📊 Поточний mastery (кольорове кодування)
-- 📝 Кількість відповідей
-- ⏱️ Оцінка часу (3 хвилини)
-
-### 20.4 Система рекомендацій
+### 20.3 Система рекомендацій
 
 **Що це:** Інтелектуальні рекомендації тем для навчання на основі твого прогресу.
 
-**Змішаний підхід поєднує:**
-- **Логічний шлях** — наступна тема в ієрархії (наприклад, після "Буття" → "Вихід")
-- **Слабкі місця** — теми з низьким mastery та частими помилками
-- **Spaced repetition** — теми, які треба повторити через певний час
-- **Мікротренування** — швидкі сесії для конкретних потреб
-
-**Типи рекомендацій:**
-1. **Next-logical** → (➡️) Наступна логічна тема
-2. **Weakness** → (⚠️) Треба повторити
-3. **Review-scheduled** → (🔄) Час повторення
-4. **Micro-training** → (⚡) Швидка сесія
+**Пріоритет:**
+1. **Continue-practice** (▶️) — незавершений етап з `practiceTracks`
+2. **Weakness** (⚠️) — низький mastery
+3. **Next-logical** (➡️) — наступна тема в ієрархії
+4. **Review-scheduled** (🔄) — spaced repetition
 
 **Кожна рекомендація містить:**
 - Пріоритет (1-10, вище = важливіше)
@@ -1427,41 +1390,20 @@ export type TopicHierarchyMap = Record<string, TopicNode>;
 
 ### 20.7 Оновлені типи та функції
 
-**Нові типи в `src/types/index.ts`:**
+**Ключові типи в `src/types/index.ts`:**
 ```typescript
-export type StudyMode = 'practice' | 'review' | 'sprint' | 'adaptive' | 'micro';
+export type StudyMode = 'practice' | 'review';
 
-export interface AdaptiveTestConfig {
-  strategy: QuestionSelectionStrategy;
-  includeParentNodes: boolean;
-  includeChildNodes: boolean;
-  questionCount: number;
-  timeLimit?: number;
-}
+export interface PracticeTrackProgress { themeId; nodeId; difficulty; stageResults; ... }
+export interface PlayerRank { tier; plaque; wisdomPoints; unlockedTier; }
 
-export interface MicroTrainingConfig {
-  targetNodeId: string;
-  questionCount: number;
-  timeLimit: number;
-  difficulty?: Difficulty;
-}
-
-export interface Recommendation {
-  id: string;
-  type: RecommendationType;
-  nodeId: string;
-  title: string;
-  description: string;
-  priority: number;
-  reason: string;
-  masteryBefore?: number;
-  targetMastery?: number;
-}
+export type RecommendationType =
+  | 'continue-practice' | 'next-logical' | 'weakness' | 'review-scheduled';
 ```
 
-**Нові бібліотеки:**
-- `src/lib/adaptiveTesting.ts` — адаптивні тести
-- `src/lib/recommendationEngine.ts` — система рекомендацій
+**Бібліотеки:**
+- `src/lib/practiceProgression.ts` — етапи, ранг, мудрість
+- `src/lib/recommendationEngine.ts` — рекомендації + `getRecommendationLink()`
 - `src/components/TopicMap.tsx` — інтерактивна карта
 - `src/data/topicDbLoader.ts` — завантаження ієрархій тем
 
@@ -1472,18 +1414,10 @@ export interface Recommendation {
 
 ### 20.8 Як користуватися новими функціями
 
-#### Запуск адаптивного тесту:
+#### Продовжити практику:
 ```bash
-# В StudyHub обери "Adaptive Test"
-# Або перейди за URL:
-/play/study/adaptive/old-testament/old-testament-sub-1
-```
-
-#### Запуск мікротренування:
-```bash
-# В StudyHub обери "Micro Training"
-# Обери мікротему з фільтрами
-# Натисни "Почати (3 хв)"
+# StudyHub → рекомендація «Етап N» → прямий лінк на квіз
+/play/study/quiz/geography/youth/stage/0
 ```
 
 #### Перегляд рекомендацій:
@@ -1504,21 +1438,20 @@ const recs = await getRecommendations(3); // топ-3 рекомендації
 
 ### 20.9 Поради для максимальної ефективності
 
-1. **Почни з рекомендацій** — StudyHub пропонує оптимальні теми для твого рівня
-2. **Використовуй мікротренування** — для заповнення конкретних прогалин
-3. **Адаптивні тести** — для комплексної перевірки знань
-4. **Періодично повторюй** — система рекомендацій підкаже коли
-5. **Заглиблюйся в ієрархії** — почни з загальних тем, переходь до конкретних
+1. **Почни з рекомендацій** — StudyHub показує незавершені етапи
+2. **Проходь етапи послідовно** — кожен блок з 10 питань
+3. **Заробляй мудрість** — підвищуй ранг для нових складностей
+4. **Періодично повторюй** — review + рекомендації spaced repetition
+5. **Генеруй контент** — `npm run questions:stats` показує прогалини по етапах
 
-### 20.10 Нові сторінки та маршрути
+### 20.10 Маршрути практики
 
 | Маршрут | Призначення |
 |--------|-------------|
-| `/play/study/micro` | Сторінка вибору мікротем |
-| `/play/study/adaptive` | Адаптивний тест (за замовчуванням) |
-| `/play/study/adaptive/:themeId/:nodeId` | Адаптивний тест для конкретної теми |
-| `/play/study/micro/:themeId/:nodeId` | Мікротренування для конкретної теми |
-| `/play/study/quiz/:themeId/:difficulty/:nodeId` | Практика з конкретним вузлом ієрархії |
+| `/play/study/themes/:themeId` | Тема + степпер етапів |
+| `/play/study/themes/:themeId/:nodeId` | Підтема |
+| `/play/study/quiz/:themeId/:difficulty/stage/:stageIndex` | Квіз етапу |
+| `/play/study/quiz/:themeId/:difficulty/stage/:stageIndex/:nodeId` | Етап для вузла |
 
 ---
 

@@ -1,3 +1,6 @@
+import { motion, useReducedMotion } from 'framer-motion';
+import { fadeOnlyVariants, reducedTransition, transitionUi } from '../lib/motion';
+
 interface SkeletonProps {
   width?: string | number;
   height?: string | number;
@@ -7,10 +10,19 @@ interface SkeletonProps {
 }
 
 export function Skeleton({ width = '100%', height = 16, borderRadius = 'var(--radius-sm)', count = 1, gap = '0.75rem' }: SkeletonProps) {
+  const reduced = useReducedMotion();
   const items = Array.from({ length: count }, (_, i) => i);
 
   return (
-    <div role="status" aria-label="Завантаження" style={{ display: 'flex', flexDirection: 'column', gap }}>
+    <motion.div
+      role="status"
+      aria-label="Завантаження"
+      initial="initial"
+      animate="animate"
+      variants={fadeOnlyVariants}
+      transition={reducedTransition(transitionUi, !!reduced)}
+      style={{ display: 'flex', flexDirection: 'column', gap }}
+    >
       {items.map((i) => (
         <div
           key={i}
@@ -20,12 +32,12 @@ export function Skeleton({ width = '100%', height = 16, borderRadius = 'var(--ra
             borderRadius: typeof borderRadius === 'number' ? `${borderRadius}px` : borderRadius,
             background: 'linear-gradient(90deg, var(--surface) 25%, var(--surface-hover) 50%, var(--surface) 75%)',
             backgroundSize: '200% 100%',
-            animation: 'shimmer 1.5s ease-in-out infinite',
+            animation: reduced ? 'none' : 'shimmer 1.5s var(--ease-in-out) infinite',
             opacity: 1 - i * 0.08,
           }}
         />
       ))}
-    </div>
+    </motion.div>
   );
 }
 

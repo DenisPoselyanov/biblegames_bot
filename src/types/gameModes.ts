@@ -14,7 +14,7 @@ export const GAME_MODES: GameMode[] = [
   {
     id: 'study',
     title: 'Дослідження',
-    description: 'Теми, рівні складності, особистий прогрес і очки',
+    description: 'Теми, рівні складності, особистий прогрес і монети',
     icon: '📖',
     available: true,
     path: '/play/study',
@@ -22,7 +22,7 @@ export const GAME_MODES: GameMode[] = [
   {
     id: 'millionaire',
     title: 'Мільйонер',
-    description: '15 біблійних питань із підказками, незгораними рівнями та великим фінальним виграшем',
+    description: 'До 15 біблійних питань із підказками, незгораними рівнями та великим фінальним виграшем',
     icon: '💎',
     badge: 'NEW',
     available: true,

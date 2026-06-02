@@ -1,5 +1,4 @@
 .page {
-  animation: fadeIn 0.35s ease;
 }
 
 .header {
@@ -69,8 +68,8 @@
 }
 
 .tabs .activeTab {
-  border-color: rgba(201, 162, 39, 0.5);
-  background: rgba(201, 162, 39, 0.14);
+  border-color: var(--accent-border-strong);
+  background: var(--accent-bg-strong);
   color: var(--gold-light);
 }
 
@@ -97,7 +96,7 @@
 }
 
 .currentPlayer {
-  border-color: rgba(201, 162, 39, 0.5);
+  border-color: var(--accent-border-strong);
 }
 
 .rank {
@@ -154,7 +153,7 @@
   text-align: center;
   line-height: 1.5;
   padding: 0.75rem;
-  background: rgba(201, 162, 39, 0.06);
+  background: var(--accent-bg);
   border-radius: 10px;
 }
 
@@ -165,14 +164,5 @@
 
   .icon {
     display: none;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }

@@ -4,7 +4,6 @@
   padding: 1rem;
   gap: 1rem;
   padding-bottom: 5rem;
-  animation: fadeIn 0.35s ease;
 }
 
 .topRow {
@@ -36,6 +35,9 @@
 }
 
 .hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   padding: 1.5rem 1rem;
   background: var(--surface);
@@ -51,46 +53,53 @@
 }
 
 .hero h1 {
+  width: 100%;
   margin: 0 0 0.35rem;
   font-family: var(--font-serif);
   color: var(--text);
 }
 
 .hero > p {
+  width: 100%;
   margin: 0;
   color: var(--text-muted);
   font-size: 0.9rem;
 }
 
 .heroChips {
-  display: flex;
-  justify-content: center;
-  gap: 0.45rem;
+  width: 100%;
   margin-top: 0.85rem;
-  flex-wrap: wrap;
+  text-align: center;
+  line-height: 1.6;
 }
 
 .heroChip,
 .heroChipPoints {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin: 0.2rem 0.225rem;
   font-size: 0.75rem;
   padding: 0.3rem 0.7rem;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--nested-surface);
   border: 1px solid var(--border);
   color: var(--text-muted);
   white-space: nowrap;
 }
 
 .heroChipPoints {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  background: rgba(201, 162, 39, 0.12);
-  border-color: rgba(201, 162, 39, 0.25);
-  color: var(--gold-light);
+  gap: 0.25rem;
+  background: var(--accent-bg-strong);
+  border-color: var(--accent-border);
+  color: var(--gold);
 }
 
 .subtitle {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -139,8 +148,8 @@
 .hierarchyNodeBtn {
   width: 100%;
   padding: 0.5rem 0.75rem;
-  background: rgba(61, 50, 39, 0.2);
-  border: none;
+  background: var(--nested-surface);
+  border: 1px solid transparent;
   border-radius: 8px;
   color: var(--text);
   font-size: var(--fs-sm);
@@ -148,17 +157,26 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: all var(--duration-fast) var(--ease-out);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
   text-align: left;
 }
 
 .hierarchyNodeBtn:hover {
-  background: rgba(61, 50, 39, 0.3);
+  background: var(--surface-hover);
 }
 
 .hierarchyNodeSelected {
-  background: rgba(201, 162, 39, 0.2) !important;
-  border: 1px solid rgba(201, 162, 39, 0.3) !important;
+  background: var(--accent-bg-strong) !important;
+  border: 1px solid var(--accent-border-strong) !important;
+  color: var(--text);
+}
+
+.hierarchyNodeSelected .hierarchyMastery {
+  color: var(--gold);
 }
 
 .hierarchyNodeIcon {
@@ -167,7 +185,11 @@
 
 .hierarchyNodeTitle {
   flex: 1;
+  min-width: 0;
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .hierarchyExpandIcon {
@@ -176,15 +198,54 @@
 }
 
 .hierarchyMastery {
+  flex-shrink: 0;
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--gold);
+  font-variant-numeric: tabular-nums;
 }
 
 .hierarchyChildren {
   margin-left: 0.5rem;
   padding-left: 0.5rem;
   border-left: 1px solid var(--border);
+}
+
+.levelLocked {
+  opacity: 0.72;
+}
+
+.levelStatusLocked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.05rem;
+  box-sizing: border-box;
+  width: 6.25rem;
+  flex: 0 0 6.25rem;
+  padding: 0.35rem 0.35rem;
+  background: var(--nested-surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.15;
+}
+
+.unlockBadgePrefix {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.unlockBadgeRank {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+  line-height: 1;
 }
 
 .levelDisabled {
@@ -244,7 +305,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--nested-surface);
   border-radius: 12px;
 }
 
@@ -271,10 +332,14 @@
   white-space: nowrap;
 }
 
+.levelTop .levelStatusLocked {
+  border-radius: 10px;
+}
+
 .levelStatusNew {
-  background: rgba(201, 162, 39, 0.12);
-  border: 1px solid rgba(201, 162, 39, 0.3);
-  color: var(--gold-light);
+  background: var(--accent-bg-strong);
+  border: 1px solid var(--accent-border-strong);
+  color: var(--gold);
 }
 
 .levelStatusDone {
@@ -290,7 +355,7 @@
   flex-direction: column;
   gap: 0.3rem;
   padding-top: 0.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: 1px solid var(--border);
 }
 
 .progressRow {
@@ -312,7 +377,7 @@
 
 .progressBar {
   height: 4px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--overlay-bg);
   border-radius: 2px;
   overflow: hidden;
 }
@@ -322,14 +387,5 @@
   height: 100%;
   background: linear-gradient(90deg, #4a9c5d, #6dbf7e);
   border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  transition: width var(--duration-normal) var(--ease-out);
 }

@@ -1,4 +1,5 @@
 import type { AnswerEvent, DailyTask, LearningInsight, MasteryState, PlayerProfile } from '../types';
+import { countPassedStages } from './practiceProgression';
 
 export function updateStreak(profile: PlayerProfile): PlayerProfile {
   const today = new Date();
@@ -41,15 +42,52 @@ export function updateMastery(state: MasteryState | undefined, isCorrect: boolea
   };
 }
 
-export function getDailyTasks(_profile: PlayerProfile, answerHistory: AnswerEvent[]): DailyTask[] {
+export function countStagesPassedToday(profile: PlayerProfile): number {
+  const today = new Date().toISOString().slice(0, 10);
+  let count = 0;
+  for (const track of profile.practiceTracks ?? []) {
+    for (const result of track.stageResults) {
+      if (result.passed && result.completedAt.startsWith(today)) {
+        count += 1;
+      }
+    }
+  }
+  return count;
+}
+
+export function countTotalPassedStages(profile: PlayerProfile): number {
+  return (profile.practiceTracks ?? []).reduce((sum, track) => sum + countPassedStages(track), 0);
+}
+
+export function getDailyTasks(profile: PlayerProfile, answerHistory: AnswerEvent[]): DailyTask[] {
   const today = new Date().toISOString().slice(0, 10);
   const todayAnswers = answerHistory.filter((a) => a.answeredAt.startsWith(today));
   const correctToday = todayAnswers.filter((a) => a.isCorrect).length;
   const reviewedToday = new Set(todayAnswers.map((a) => a.subthemeId)).size;
+  const stagesToday = countStagesPassedToday(profile);
+
   return [
-    { id: 'daily-levels', title: 'Пройти 2 рівні в Дослідженні', goal: 2, progress: Math.min(2, Math.floor(todayAnswers.length / 7)), completed: Math.floor(todayAnswers.length / 7) >= 2 },
-    { id: 'daily-correct', title: 'Дати 10 правильних відповідей', goal: 10, progress: Math.min(10, correctToday), completed: correctToday >= 10 },
-    { id: 'daily-review', title: 'Повторити 3 підтеми', goal: 3, progress: Math.min(3, reviewedToday), completed: reviewedToday >= 3 },
+    {
+      id: 'daily-stages',
+      title: 'Пройти 2 етапи практики',
+      goal: 2,
+      progress: Math.min(2, stagesToday),
+      completed: stagesToday >= 2,
+    },
+    {
+      id: 'daily-correct',
+      title: 'Дати 10 правильних відповідей',
+      goal: 10,
+      progress: Math.min(10, correctToday),
+      completed: correctToday >= 10,
+    },
+    {
+      id: 'daily-review',
+      title: 'Повторити 3 підтеми',
+      goal: 3,
+      progress: Math.min(3, reviewedToday),
+      completed: reviewedToday >= 3,
+    },
   ];
 }
 

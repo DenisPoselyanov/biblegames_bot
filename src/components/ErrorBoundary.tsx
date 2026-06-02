@@ -68,8 +68,8 @@ export class ErrorBoundary extends Component<Props, State> {
             style={{
               marginTop: '0.5rem',
               padding: '0.65rem 1.5rem',
-              background: 'linear-gradient(135deg, var(--gold), var(--gold-dark))',
-              color: '#1a1208',
+              background: 'var(--cta-bg)',
+              color: 'var(--on-primary)',
               fontWeight: 700,
               borderRadius: 'var(--radius-lg)',
               cursor: 'pointer',

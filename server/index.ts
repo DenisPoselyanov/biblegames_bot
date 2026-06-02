@@ -18,6 +18,7 @@ import {
 } from './middleware/validateBody';
 import { loadFullQuestionPool } from './questionPool';
 import { scriptureRouter } from './routes/scripture';
+import { questionsAdminRouter } from './routes/questionsAdmin';
 
 const PORT = Number(process.env.PORT || 3001);
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
@@ -33,6 +34,7 @@ app.use(cors({ origin: [CLIENT_ORIGIN, 'http://127.0.0.1:5173'], credentials: tr
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
 app.use('/api/scripture', scriptureRouter);
+app.use('/api/admin/questions', questionsAdminRouter);
 
 app.get(
   '/health/storage',
@@ -106,7 +108,6 @@ protectedRouter.get('/profile/:userId', ...withTelegramAuth, asyncHandler(async 
     res.json({
       userId,
       displayName: '',
-      totalPoints: 0,
       themePoints: {},
       completedLevels: [],
       survivalHighScore: 0,
@@ -122,6 +123,13 @@ protectedRouter.get('/profile/:userId', ...withTelegramAuth, asyncHandler(async 
       lastActiveAt: null,
       studyMastery: {},
       bibleTranslation: 'UTT',
+      practiceTracks: [],
+      playerRank: {
+        tier: 'baby',
+        plaque: 7,
+        wisdomPoints: 0,
+        unlockedTier: 'child',
+      },
     });
     return;
   }

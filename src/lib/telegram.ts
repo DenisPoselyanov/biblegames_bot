@@ -8,10 +8,10 @@ export function initTelegramWebApp(): void {
     WebApp.expand();
   }
   if (typeof WebApp.setHeaderColor === 'function') {
-    WebApp.setHeaderColor('#1a1208');
+    WebApp.setHeaderColor('#101820');
   }
   if (typeof WebApp.setBackgroundColor === 'function') {
-    WebApp.setBackgroundColor('#1a1208');
+    WebApp.setBackgroundColor('#101820');
   }
 
   syncTelegramTheme();
@@ -19,6 +19,26 @@ export function initTelegramWebApp(): void {
 
 export function isInsideTelegram(): boolean {
   return Boolean(WebApp.initDataUnsafe?.user?.id);
+}
+
+/** Відкрити зовнішнє посилання (браузер / Telegram in-app browser). */
+export function openExternalLink(url: string): void {
+  const target = url.trim();
+  if (!target) return;
+
+  if (isInsideTelegram()) {
+    try {
+      WebApp.openLink(target, { try_instant_view: false });
+      return;
+    } catch (e) {
+      console.warn('openLink failed:', e);
+    }
+  }
+
+  const opened = window.open(target, '_blank', 'noopener,noreferrer');
+  if (!opened) {
+    window.location.assign(target);
+  }
 }
 
 export function getTelegramInitData(): string {
@@ -63,6 +83,21 @@ export function copyKahootCode(code: string): void {
     void navigator.clipboard?.writeText(code);
   } catch {
     /* ignore */
+  }
+}
+
+/** Sync Telegram header/background with active cosmetic theme */
+export function syncTelegramChromeColors(backgroundColor: string): void {
+  try {
+    const color = backgroundColor as `#${string}`;
+    if (typeof WebApp.setHeaderColor === 'function') {
+      WebApp.setHeaderColor(color);
+    }
+    if (typeof WebApp.setBackgroundColor === 'function') {
+      WebApp.setBackgroundColor(color);
+    }
+  } catch (e) {
+    console.warn('Telegram chrome color sync failed:', e);
   }
 }
 

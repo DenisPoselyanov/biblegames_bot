@@ -7,7 +7,7 @@
 Telegram Mini App «Біблійна гра» — інтерактивна платформа для вивчення Біблії:
 - 15 тем (ВЗ/НЗ, географія, заповіді, притчі…)
 - 7 рівнів складності (Немовля → Богослов)
-- Режими: Practice, Review, Sprint, Adaptive, Micro Training, Millionaire, Survival, Kahoot
+- Режими: Practice (етапи × 10), Review, Millionaire, Survival, Kahoot
 - Гейміфікація: монети, streak, achievements, shop (аватари/теми)
 - Соціальне: challenges, communities, Kahoot multiplayer (Socket.io)
 
@@ -29,7 +29,8 @@ biblegames_bot/
 - **Backend:** dual storage json/sql; study answers API є, але frontend частково на localStorage
 - **Auth:** `x-user-id` header — placeholder, потрібен Telegram WebApp initData validation
 - **Питання:** 888 total; слабкі теми: psalms (27), revelation (22), kings (35)
-- **Adaptive/recommendations:** `adaptiveTesting.ts`, `recommendationEngine.ts` — реалізовано на клієнті
+- **Практика:** `practiceProgression.ts` — етапи, `playerRank`, `practiceTracks`; `recommendationEngine.ts` — рекомендації (continue-practice + mastery)
+- **AI-скрипти:** `scripts/lib/practice-config.mjs` — константи етапів для `questions:stats`, `balance-questions --practice-ready`, `generate-ai --stages`
 
 ## Відкриті проблеми (пріоритет)
 

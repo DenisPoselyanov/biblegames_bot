@@ -12,14 +12,6 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.overlay.visible {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 .modal {
@@ -30,12 +22,6 @@
   width: 100%;
   max-width: 360px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-  transform: translateY(20px) scale(0.95);
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.overlay.visible .modal {
-  transform: translateY(0) scale(1);
 }
 
 .title {
@@ -67,7 +53,7 @@
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s, filter 0.2s;
+  transition: transform var(--duration-fast) var(--ease-out), filter var(--duration-fast) var(--ease-out);
   border: none;
 }
 
@@ -83,6 +69,8 @@
 }
 
 .btnConfirm {
-  background: linear-gradient(135deg, var(--gold), #a67c00);
-  color: #1a1208;
+  background: var(--cta-bg);
+  color: var(--on-primary);
+  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
 }

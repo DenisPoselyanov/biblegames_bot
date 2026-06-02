@@ -38,10 +38,14 @@
     "topic-conveyor": "node scripts/topic-conveyor.mjs",
     "topic-preview-index": "node scripts/topic-preview-index.mjs",
     "ai-launcher": "node scripts/run-launcher.mjs",
-    "balance-questions": "node scripts/balance-questions.mjs"
+    "balance-questions": "node scripts/balance-questions.mjs",
+    "fill-practice": "node scripts/fill-practice-pools.mjs",
+    "fill-practice-nodes": "node scripts/fill-practice-nodes.mjs",
+    "prune-untagged": "node scripts/prune-untagged-questions.mjs"
   },
   "dependencies": {
     "@twa-dev/sdk": "^8.0.2",
+    "framer-motion": "^12.40.0",
     "pg": "^8.21.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

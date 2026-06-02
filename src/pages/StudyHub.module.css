@@ -11,7 +11,7 @@
 
 .header h1 {
   font-size: var(--fs-xl);
-  color: var(--gold-light);
+  color: var(--heading);
   font-family: var(--font-serif);
   margin-bottom: var(--space-xs);
 }
@@ -47,7 +47,7 @@
 
 .card:active {
   transform: scale(0.98);
-  border-color: rgba(201, 162, 39, 0.3);
+  border-color: var(--accent-border-strong);
 }
 
 .icon {
@@ -57,7 +57,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(61, 50, 39, 0.5);
+  background: var(--nested-surface);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   flex-shrink: 0;
@@ -98,7 +98,7 @@
 }
 
 .recommendationBox h3 {
-  color: var(--gold-light);
+  color: var(--heading);
   font-size: var(--fs-lg);
   margin-bottom: var(--space-sm);
   font-family: var(--font-serif);
@@ -115,7 +115,8 @@
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  background: rgba(61, 50, 39, 0.3);
+  background: var(--nested-surface);
+  border: 1px solid var(--border);
   padding: var(--space-md);
   border-radius: var(--radius-lg);
   text-align: left;
@@ -128,8 +129,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(201, 162, 39, 0.2);
-  border: 1px solid rgba(201, 162, 39, 0.3);
+  background: var(--accent-bg-strong);
+  border: 1px solid var(--accent-border-strong);
   border-radius: var(--radius-lg);
   flex-shrink: 0;
 }
@@ -153,15 +154,17 @@
 }
 
 .recReason {
-  color: var(--text-dim);
+  color: var(--text-muted);
   font-size: var(--fs-xs);
   margin-top: 0.25rem;
 }
 
 .btnRec {
   display: inline-block;
-  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-  color: #1a1208;
+  background: var(--cta-bg);
+  color: var(--on-primary);
+  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-lg);
   text-decoration: none;

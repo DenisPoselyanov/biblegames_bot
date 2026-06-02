@@ -61,6 +61,11 @@ export function preloadThemeQuestions(themeId: string): void {
   void loadAiQuestionsForTheme(themeId);
 }
 
+export function clearQuestionDbCache(): void {
+  cache.clear();
+  loadPromises.clear();
+}
+
 /** Завантажити всі AI питання з усіх тем */
 export async function loadAllAiQuestions(): Promise<Question[]> {
   const entries = await Promise.all(

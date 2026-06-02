@@ -13,7 +13,6 @@ import { Profile } from './pages/Profile';
 import { GlobalStats } from './pages/GlobalStats';
 import { Shop } from './pages/Shop';
 import { AdminPanel } from './pages/AdminPanel';
-import { MicroTraining } from './pages/MicroTraining';
 import { PlayHub } from './pages/play/PlayHub';
 import { Millionaire } from './pages/play/Millionaire';
 import { Survival } from './pages/play/Survival';
@@ -55,7 +54,6 @@ export default function App() {
               <Route path="play/study/themes/:themeId" element={<ErrorBoundary><ThemeDetail /></ErrorBoundary>} />
               <Route path="play/study/themes/:themeId/:nodeId" element={<ErrorBoundary><ThemeDetail /></ErrorBoundary>} />
               <Route path="play/study/theme/:themeId" element={<ErrorBoundary><ThemeDetail /></ErrorBoundary>} />
-              <Route path="play/study/micro" element={<ErrorBoundary><MicroTraining /></ErrorBoundary>} />
               <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
               <Route path="admin" element={<ErrorBoundary><AdminPanel /></ErrorBoundary>} />
               <Route path="shop" element={<ErrorBoundary><Shop /></ErrorBoundary>} />
@@ -73,14 +71,16 @@ export default function App() {
             </Route>
 
             {/* Повноекранні ігрові екрани без нижнього меню */}
+            <Route path="play/study/quiz/:themeId/:difficulty/stage/:stageIndex" element={<ErrorBoundary><Quiz mode="practice" /></ErrorBoundary>} />
+            <Route path="play/study/quiz/:themeId/:difficulty/stage/:stageIndex/:nodeId" element={<ErrorBoundary><Quiz mode="practice" /></ErrorBoundary>} />
             <Route path="play/study/quiz/:themeId/:difficulty" element={<ErrorBoundary><Quiz mode="practice" /></ErrorBoundary>} />
             <Route path="play/study/quiz/:themeId/:difficulty/:nodeId" element={<ErrorBoundary><Quiz mode="practice" /></ErrorBoundary>} />
             <Route path="play/study/review" element={<ErrorBoundary><Quiz mode="review" /></ErrorBoundary>} />
-            <Route path="play/study/sprint" element={<ErrorBoundary><Quiz mode="sprint" /></ErrorBoundary>} />
-            <Route path="play/study/adaptive/:themeId/:nodeId" element={<ErrorBoundary><Quiz mode="adaptive" /></ErrorBoundary>} />
-            <Route path="play/study/adaptive" element={<ErrorBoundary><Quiz mode="adaptive" /></ErrorBoundary>} />
-            <Route path="play/study/micro/:themeId/:nodeId" element={<ErrorBoundary><Quiz mode="micro" /></ErrorBoundary>} />
-            <Route path="play/study/micro" element={<ErrorBoundary><Quiz mode="micro" /></ErrorBoundary>} />
+            <Route path="play/study/sprint" element={<Navigate to="/play/study" replace />} />
+            <Route path="play/study/adaptive/:themeId/:nodeId" element={<Navigate to="/play/study" replace />} />
+            <Route path="play/study/adaptive" element={<Navigate to="/play/study" replace />} />
+            <Route path="play/study/micro/:themeId/:nodeId" element={<Navigate to="/play/study" replace />} />
+            <Route path="play/study/micro" element={<Navigate to="/play/study" replace />} />
             <Route path="play/study/millionaire" element={<ErrorBoundary><Millionaire /></ErrorBoundary>} />
             <Route path="play/study/survival" element={<ErrorBoundary><Survival /></ErrorBoundary>} />
             <Route path="play/solo/quiz/:themeId/:difficulty" element={<LegacyQuizRedirect />} />

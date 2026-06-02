@@ -225,9 +225,14 @@ export function analyzeExplanation(question) {
  */
 export function buildExplanationReport(question, prev = {}) {
   const analysis = analyzeExplanation(question);
+  const subtopic = question.topicNodeId
+    ? { topicNodeId: question.topicNodeId, topicPath: question.topicPath }
+    : {};
   return {
     questionId: question.id,
     themeId: question.themeId,
+    topicNodeId: question.topicNodeId ?? null,
+    topicPath: question.topicPath ?? null,
     text: String(question.text ?? '').slice(0, 200),
     source: question._source ?? question.source ?? 'unknown',
     coverage: analysis.coverage,

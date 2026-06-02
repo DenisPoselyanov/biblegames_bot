@@ -144,24 +144,6 @@
     "topicPath": "Географія Старого Завіту"
   },
   {
-    "id": "geography-child-ai-00010",
-    "themeId": "geography",
-    "difficulty": "child",
-    "text": "Гора, на якій Бог дав Мойсеєві Десять заповідей (Втор. 5:1):",
-    "options": [
-      "Зіон",
-      "Гора Синай",
-      "Гора Орієн",
-      "Гелікон"
-    ],
-    "correctIndex": 1,
-    "reference": "Втор. 5:1",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:36:45.288Z",
-    "topicNodeId": "geography-sub-4-sub-1",
-    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
-  },
-  {
     "id": "geography-child-ai-00011",
     "themeId": "geography",
     "difficulty": "child",
@@ -270,24 +252,6 @@
     "topicPath": "Географія Старого Завіту"
   },
   {
-    "id": "geography-student-ai-00019",
-    "themeId": "geography",
-    "difficulty": "student",
-    "text": "Яка гора, на якій Бог сказав Мойсеєві: \"Спустися на Африку?\"",
-    "options": [
-      "Гора Синай",
-      "Гора Тімор",
-      "Гора Сіон",
-      "Гора Гілбоа"
-    ],
-    "correctIndex": 0,
-    "reference": "Вих. 24:1",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:38:28.140Z",
-    "topicNodeId": "geography-sub-4-sub-1",
-    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
-  },
-  {
     "id": "geography-student-ai-00020",
     "themeId": "geography",
     "difficulty": "student",
@@ -322,24 +286,6 @@
     "createdAt": "2026-05-17T18:38:28.140Z",
     "topicNodeId": "geography",
     "topicPath": "Географія Старого Завіту"
-  },
-  {
-    "id": "geography-student-ai-00024",
-    "themeId": "geography",
-    "difficulty": "student",
-    "text": "У якій країні жив апостол Павло перед тим, як стати місіонером?",
-    "options": [
-      "Сирія",
-      "Єгипет",
-      "Македонія",
-      "Туреччина"
-    ],
-    "correctIndex": 2,
-    "reference": "Ді. 16:6",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:38:28.140Z",
-    "topicNodeId": "geography-sub-4-sub-3",
-    "topicPath": "Географія Старого Завіту > Гори та пустелі > Сіон"
   },
   {
     "id": "geography-preacher-ai-00025",
@@ -720,24 +666,6 @@
     "topicPath": "Географія Старого Завіту"
   },
   {
-    "id": "geography-preacher-ai-00049",
-    "themeId": "geography",
-    "difficulty": "preacher",
-    "text": "Дove знаходиться гора, де Бог дав Закони Мойсеєві (Мойсеєві набулося 60 років)?",
-    "options": [
-      "Горіш-Буван (Ісх. 19:2)",
-      "Гори Синай (Вих. 3:12)",
-      "Гора Герізім (Дв. 5:2)",
-      "Харан (Лев. 26:40)"
-    ],
-    "correctIndex": 1,
-    "reference": "Вих. 19:20",
-    "source": "ai",
-    "createdAt": "2026-05-17T18:46:54.499Z",
-    "topicNodeId": "geography-sub-4-sub-1",
-    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
-  },
-  {
     "id": "geography-preacher-ai-00050",
     "themeId": "geography",
     "difficulty": "preacher",
@@ -916,60 +844,6 @@
     "createdAt": "2026-05-23T09:57:42.117Z",
     "topicNodeId": "geography",
     "topicPath": "Географія Старого Завіту"
-  },
-  {
-    "id": "geography-child-ai-00061",
-    "themeId": "geography",
-    "difficulty": "child",
-    "text": "На якому гірському масиві розташовано Сіон?",
-    "options": [
-      "А) Масив Захарії",
-      "Б) Масив Гола",
-      "В) Масив Оливий",
-      "Г) Масив Сині"
-    ],
-    "correctIndex": 3,
-    "reference": "Іс. 2:1",
-    "source": "ai",
-    "createdAt": "2026-05-23T09:57:42.117Z",
-    "topicNodeId": "geography-sub-4-sub-3",
-    "topicPath": "Географія Старого Завіту > Гори та пустелі > Сіон"
-  },
-  {
-    "id": "geography-child-ai-00063",
-    "themeId": "geography",
-    "difficulty": "child",
-    "text": "У якому місті Ізраїлю розташована Синайська пустеля?",
-    "options": [
-      "А) Єрусалим",
-      "Б) Тивериада",
-      "В) Хеврон",
-      "Г) Ціфта"
-    ],
-    "correctIndex": 1,
-    "reference": "Вих. 17:1",
-    "source": "ai",
-    "createdAt": "2026-05-23T09:57:42.117Z",
-    "topicNodeId": "geography-sub-4-sub-1",
-    "topicPath": "Географія Старого Завіту > Гори та пустелі > Синай"
-  },
-  {
-    "id": "geography-youth-ai-00064",
-    "themeId": "geography",
-    "difficulty": "youth",
-    "text": "На якій горі проішов сходження Господа на Сіон?",
-    "options": [
-      "Синаї",
-      "Зафон",
-      "Гори Ієрихон",
-      "Зеффа"
-    ],
-    "correctIndex": 0,
-    "reference": "Пс. 48:2",
-    "source": "ai",
-    "createdAt": "2026-05-23T09:58:20.600Z",
-    "topicNodeId": "geography-sub-4-sub-3",
-    "topicPath": "Географія Старого Завіту > Гори та пустелі > Сіон"
   },
   {
     "id": "geography-youth-ai-00067",
@@ -1317,7 +1191,7 @@
     "id": "geography-baby-ai-00089",
     "themeId": "geography",
     "difficulty": "baby",
-    "text": "У якої країні розташований гора Синай, де Бог дав Закони Мойсеєві?",
+    "text": "У якої країні розташована гора Синай, де Бог дав Закони Мойсеєві?",
     "options": [
       "Єгипет",
       "Ізраїль",
@@ -1595,7 +1469,6 @@
       "Г) Ватикан"
     ],
     "correctIndex": 3,
-    "reference": "Немає конкретного посилання на це питання в Біблії",
     "source": "ai",
     "createdAt": "2026-05-23T10:16:06.986Z",
     "topicNodeId": "geography",

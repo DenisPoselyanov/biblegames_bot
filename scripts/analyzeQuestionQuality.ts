@@ -62,14 +62,32 @@ function loadAiQuestions(): Question[] {
 }
 
 const AI_QUESTIONS = loadAiQuestions();
-const ALL_QUESTIONS = [...QUESTIONS, ...AI_QUESTIONS];
+
+function parseCliFilter(): { node?: string; theme?: string } {
+  const args = process.argv.slice(2);
+  const filter: { node?: string; theme?: string } = {};
+  for (let i = 0; i < args.length; i++) {
+    if ((args[i] === '--node' || args[i] === '--topic') && args[i + 1]) filter.node = args[++i];
+    else if (args[i] === '--theme' && args[i + 1]) filter.theme = args[++i];
+  }
+  return filter;
+}
+
+const CLI_FILTER = parseCliFilter();
+function matchesCliFilter(q: Question): boolean {
+  if (CLI_FILTER.node && q.topicNodeId !== CLI_FILTER.node) return false;
+  if (CLI_FILTER.theme && q.themeId !== CLI_FILTER.theme) return false;
+  return true;
+}
+
+const ALL_QUESTIONS = [...QUESTIONS, ...AI_QUESTIONS].filter(matchesCliFilter);
 const { rejectedIds, excludedIds, byId: previousReportsById } = loadPreviousReport();
 const ACTIVE_QUESTIONS = ALL_QUESTIONS.filter(
   (q) => !rejectedIds.has(q.id) && !excludedIds.has(q.id),
 );
 
 console.log(
-  `🔍 Початок аналізу якості питань... (вбудовані: ${QUESTIONS.length}, AI: ${AI_QUESTIONS.length}, разом: ${ALL_QUESTIONS.length}, rejected: ${rejectedIds.size}, excluded: ${excludedIds.size})\n`,
+  `🔍 Початок аналізу якості питань... (вбудовані: ${QUESTIONS.length}, AI: ${AI_QUESTIONS.length}, у фільтрі: ${ALL_QUESTIONS.length}, rejected: ${rejectedIds.size}, excluded: ${excludedIds.size})\n`,
 );
 
 const totalQuestions = ALL_QUESTIONS.length;
@@ -117,7 +135,7 @@ function groupSimilarQuestions(pairs: Array<{
   }>>();
 
   for (const pair of pairs) {
-    const groupKey = `${pair.question1.themeId}-${pair.question1.difficulty}`;
+    const groupKey = `${pair.question1.topicNodeId ?? pair.question1.themeId}-${pair.question1.difficulty}`;
     
     if (!groups.has(groupKey)) {
       groups.set(groupKey, []);
@@ -198,7 +216,11 @@ for (const question of ALL_QUESTIONS) {
     questionQuarantineManager.saveQualityReport(report);
   }
 
-  reports.push(report);
+  reports.push({
+    ...report,
+    topicNodeId: question.topicNodeId ?? null,
+    topicPath: question.topicPath ?? null,
+  } as QuestionQualityReport & { topicNodeId?: string | null; topicPath?: string | null });
 
   switch (report.status) {
     case 'approved':

@@ -3,6 +3,8 @@ export interface CosmeticTheme {
   title: string;
   description: string;
   price: number;
+  isLight: boolean;
+  onPrimary?: string;
   preview: {
     background: string;
     surface: string;
@@ -20,6 +22,7 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
     title: 'Класичний стиль',
     description: 'Строгі золоті акценти на спокійному темному фоні.',
     price: 0,
+    isLight: false,
     preview: {
       background: '#101820',
       surface: '#182430',
@@ -33,6 +36,8 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
     title: 'Генісаретське море',
     description: 'Глибокий синій колір води й теплі піщані береги Галилеї.',
     price: 300,
+    isLight: false,
+    onPrimary: '#0f2f3f',
     preview: {
       background: '#0f2f3f',
       surface: '#174b61',
@@ -46,6 +51,8 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
     title: 'Едемський сад',
     description: 'Оливково-зелені відтінки із золотавими квітковими акцентами.',
     price: 500,
+    isLight: false,
+    onPrimary: '#18251a',
     preview: {
       background: '#18251a',
       surface: '#2c432e',
@@ -59,6 +66,8 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
     title: 'Синайське одкровення',
     description: 'Вечірні фіолетово-багряні тони з вогненними акцентами.',
     price: 700,
+    isLight: false,
+    onPrimary: '#fff6ef',
     preview: {
       background: '#21162f',
       surface: '#3a244a',
@@ -72,6 +81,8 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
     title: 'Небесний Єрусалим',
     description: 'Перлинно-біла основа та яскраве королівське золото.',
     price: 1000,
+    isLight: true,
+    onPrimary: '#1a1208',
     preview: {
       background: '#f7f4ea',
       surface: '#ffffff',

@@ -48,7 +48,7 @@
 }
 
 .heart {
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: transform var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
 }
 
 .heartActive {
@@ -130,7 +130,7 @@
   height: 100%;
   background: linear-gradient(90deg, #4a9c5d, #c9a227, #ef6f6c);
   border-radius: 14px;
-  transition: width 0.3s ease;
+  transition: width var(--duration-normal) var(--ease-out);
 }
 
 .timerCenter {
@@ -143,7 +143,7 @@
 }
 
 .timerLow {
-  animation: pulseDanger 0.5s ease-in-out infinite;
+  animation: pulseDanger 2s var(--ease-in-out) infinite;
 }
 
 .timerCenterLow {
@@ -217,7 +217,7 @@
 
 .option.selected {
   border-color: var(--gold);
-  background: rgba(201, 162, 39, 0.1);
+  background: var(--accent-bg-strong);
   box-shadow: 0 0 0 1px var(--gold);
 }
 
@@ -266,7 +266,7 @@
   width: 100%;
   margin: 0;
   padding: 0.75rem;
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  border: 1px solid var(--accent-border-strong);
   border-radius: 12px;
   background: transparent;
   color: var(--gold);
@@ -278,7 +278,7 @@
 }
 
 .explanationButton:active {
-  background: rgba(201, 162, 39, 0.06);
+  background: var(--accent-bg);
 }
 
 .actionRow {
@@ -290,8 +290,10 @@
 .btnPrimary {
   flex: 1;
   padding: 1rem;
-  background: linear-gradient(135deg, var(--gold), #a67c00);
-  color: #1a1208;
+  background: var(--cta-bg);
+  color: var(--on-primary);
+  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
   border: none;
   border-radius: 14px;
   font-weight: 700;
@@ -378,17 +380,17 @@
   margin: 0;
   padding: 0.35rem 0.85rem;
   border-radius: var(--radius-full);
-  background: rgba(201, 162, 39, 0.12);
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  background: var(--accent-bg-strong);
+  border: 1px solid var(--accent-border-strong);
   color: var(--gold-light);
   font-size: 0.8rem;
   font-weight: 700;
-  animation: pulseRecord 1.5s ease-in-out infinite;
+  animation: pulseRecord 2s var(--ease-in-out) infinite;
 }
 
 @keyframes pulseRecord {
-  0%, 100% { box-shadow: 0 0 4px rgba(201, 162, 39, 0.15); }
-  50% { box-shadow: 0 0 16px rgba(201, 162, 39, 0.35); }
+  0%, 100% { box-shadow: 0 0 4px var(--accent-bg-strong); }
+  50% { box-shadow: 0 0 16px var(--accent-border-strong); }
 }
 
 .primaryAction,
@@ -414,8 +416,10 @@
 
 .primaryAction {
   border: 0;
-  background: linear-gradient(135deg, var(--gold), #a67c00);
-  color: #1a1208;
+  background: var(--cta-bg);
+  color: var(--on-primary);
+  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
 }
 
 .secondaryAction {

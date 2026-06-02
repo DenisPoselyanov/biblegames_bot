@@ -1,5 +1,4 @@
 .page {
-  animation: fadeIn 0.3s ease;
   padding: 1.5rem 0 3rem;
 }
 
@@ -14,9 +13,17 @@
 
 .header h1 {
   font-family: var(--font-serif);
-  color: var(--gold-light);
+  color: var(--heading);
   margin: 0;
   font-size: var(--fs-xl);
+}
+
+.balanceRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .balancePill {
@@ -25,8 +32,8 @@
   gap: 0.35rem;
   padding: 0.35rem 0.75rem 0.35rem 0.6rem;
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(201, 162, 39, 0.18), rgba(201, 162, 39, 0.06));
-  border: 1px solid rgba(201, 162, 39, 0.25);
+  background: linear-gradient(135deg, var(--accent-bg-strong), var(--accent-bg));
+  border: 1px solid var(--accent-border);
   color: var(--gold);
   font-weight: 800;
   font-size: var(--fs-md);
@@ -42,9 +49,15 @@
 
 .section h2 {
   font-size: 1rem;
-  color: var(--gold-light);
-  margin: 0 0 1rem;
+  color: var(--heading);
+  margin: 0 0 0.35rem;
   font-family: var(--font-serif);
+}
+
+.sectionHint {
+  margin: 0 0 1rem;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
 }
 
 /* ── Avatar Grid ── */
@@ -74,7 +87,7 @@
 
 .activeCard {
   border-color: var(--gold);
-  box-shadow: 0 0 20px rgba(201, 162, 39, 0.12);
+  box-shadow: 0 0 20px var(--accent-bg-strong);
 }
 
 /* ── Visual area with glow ── */
@@ -133,9 +146,9 @@
   border-radius: 999px;
   font-weight: 800;
   font-size: 0.75rem;
-  color: var(--gold-light);
-  background: transparent;
-  border: 1.5px solid rgba(201, 162, 39, 0.4);
+  color: var(--gold);
+  background: var(--accent-bg);
+  border: 1.5px solid var(--accent-border-strong);
   letter-spacing: 0.03em;
 }
 
@@ -167,13 +180,8 @@
 }
 
 .btnBuy {
-  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
-  color: #1a1208;
-}
-
-/* ── Animation ── */
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  background: var(--cta-bg);
+  color: var(--on-primary);
+  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
 }

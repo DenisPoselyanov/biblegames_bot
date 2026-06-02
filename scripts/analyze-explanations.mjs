@@ -10,8 +10,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ALL_QUESTIONS } from '../src/data/questions.ts';
-import { loadAllDbQuestions } from './lib/question-db.mjs';
+import { loadAllQuestionsMerged, resolveSubtopicContextFromQuestion } from './lib/topic-context.mjs';
 import { analyzeAllQuestions, summarizeReport } from './lib/explanationQuality.mjs';
 import {
   applyAiCliFlags,
@@ -36,6 +35,7 @@ function parseArgs() {
   const args = process.argv.slice(2);
   const opts = {
     theme: null,
+    node: null,
     coverage: null,
     issue: null,
     minScore: 0,
@@ -54,6 +54,8 @@ function parseArgs() {
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
     if (a === '--theme' && args[i + 1]) opts.theme = args[++i];
+    else if (a === '--node' && args[i + 1]) opts.node = args[++i];
+    else if (a === '--topic' && args[i + 1]) opts.node = args[++i];
     else if (a === '--coverage' && args[i + 1]) opts.coverage = args[++i];
     else if (a === '--issue' && args[i + 1]) opts.issue = args[++i];
     else if (a === '--min-score' && args[i + 1]) opts.minScore = Number(args[++i]);
@@ -80,14 +82,7 @@ function sleep(ms) {
 }
 
 function loadAllQuestions() {
-  const byId = new Map();
-  for (const q of ALL_QUESTIONS) {
-    byId.set(q.id, { ...q, _source: 'embedded' });
-  }
-  for (const q of loadAllDbQuestions()) {
-    byId.set(q.id, { ...q, _source: 'db' });
-  }
-  return [...byId.values()];
+  return loadAllQuestionsMerged();
 }
 
 function loadPreviousById() {
@@ -104,9 +99,13 @@ function loadPreviousById() {
   return map;
 }
 
-function filterReports(reports, opts) {
+function filterReports(reports, opts, byId = null) {
   return reports.filter((r) => {
     if (opts.theme && r.themeId !== opts.theme) return false;
+    if (opts.node) {
+      const q = byId?.get(r.questionId);
+      if (q?.topicNodeId !== opts.node) return false;
+    }
     if (opts.coverage && r.coverage !== opts.coverage) return false;
     if (r.heuristicScore < opts.minScore || r.heuristicScore > opts.maxScore) return false;
     if (opts.issue && !r.issues?.some((i) => i.type === opts.issue)) return false;
@@ -119,9 +118,12 @@ function hasAiScore(report) {
 }
 
 function buildAiScorePrompt(question, report) {
+  const subtopic = resolveSubtopicContextFromQuestion(question);
+  const subtopicLine = subtopic ? `Підтема: ${subtopic.pathStr}` : '';
   const correct = question.options?.[question.correctIndex ?? 0] ?? '';
   const issueLines = (report.issues || []).map((i) => `- [${i.severity}] ${i.type}: ${i.message}`);
   return `Ти біблійний експерт. Оціни якість пояснення до вікторинного питання українською.
+${subtopicLine ? `\n${subtopicLine}` : ''}
 
 Питання: ${question.text}
 Правильна відповідь: ${correct}
@@ -197,7 +199,7 @@ async function main() {
       console.log(`⏭ Пропущено вже оцінених: ${before - candidates.length}`);
     }
 
-    candidates = filterReports(candidates, opts);
+    candidates = filterReports(candidates, opts, byId);
 
     const aiLimit = opts.aiLimit > 0 ? opts.aiLimit : opts.limit > 0 ? opts.limit : 50;
     const toScore = candidates.slice(0, aiLimit);
@@ -248,8 +250,8 @@ async function main() {
     }
 
     allReports = [...reportById.values()];
-  } else if (opts.theme || opts.coverage || opts.issue || opts.minScore > 0 || opts.maxScore < 100) {
-    allReports = filterReports(allReports, opts);
+  } else if (opts.theme || opts.node || opts.coverage || opts.issue || opts.minScore > 0 || opts.maxScore < 100) {
+    allReports = filterReports(allReports, opts, byId);
     if (opts.limit > 0) allReports = allReports.slice(0, opts.limit);
   } else if (opts.limit > 0) {
     allReports = allReports.slice(0, opts.limit);

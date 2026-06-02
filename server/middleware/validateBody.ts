@@ -22,6 +22,8 @@ export function sanitizeProfileBody(
   if (!isRecord(body)) {
     return { userId };
   }
+  const legacyTotalPoints = typeof body.totalPoints === 'number' ? Math.max(0, body.totalPoints) : 0;
+  const coins = typeof body.coins === 'number' ? Math.max(0, body.coins) : 0;
 
   const completedLevels = Array.isArray(body.completedLevels)
     ? body.completedLevels
@@ -42,8 +44,7 @@ export function sanitizeProfileBody(
   return {
     userId,
     displayName: typeof body.displayName === 'string' ? body.displayName.slice(0, 120) : undefined,
-    totalPoints: typeof body.totalPoints === 'number' ? Math.max(0, body.totalPoints) : undefined,
-    coins: typeof body.coins === 'number' ? Math.max(0, body.coins) : undefined,
+    coins: coins + legacyTotalPoints,
     survivalHighScore:
       typeof body.survivalHighScore === 'number' ? Math.max(0, body.survivalHighScore) : undefined,
     millionaireWins:
@@ -79,6 +80,47 @@ export function sanitizeProfileBody(
       typeof body.bibleTranslation === 'string' && isBollsTranslation(body.bibleTranslation)
         ? body.bibleTranslation
         : undefined,
+    practiceTracks: Array.isArray(body.practiceTracks)
+      ? body.practiceTracks
+          .filter(isRecord)
+          .slice(0, 500)
+          .map((track) => ({
+            themeId: String(track.themeId ?? '').slice(0, 64),
+            nodeId:
+              track.nodeId === null || track.nodeId === undefined
+                ? null
+                : String(track.nodeId).slice(0, 64),
+            difficulty: DIFFICULTIES.has(String(track.difficulty))
+              ? (track.difficulty as PlayerProfile['practiceTracks'][0]['difficulty'])
+              : 'baby',
+            highestUnlockedStage: Math.max(0, Math.min(10, Number(track.highestUnlockedStage) || 0)),
+            stageResults: Array.isArray(track.stageResults)
+              ? track.stageResults
+                  .filter(isRecord)
+                  .slice(0, 20)
+                  .map((result) => ({
+                    stageIndex: Math.max(0, Math.min(10, Number(result.stageIndex) || 0)),
+                    correct: Math.max(0, Number(result.correct) || 0),
+                    total: Math.max(1, Number(result.total) || 1),
+                    passed: Boolean(result.passed),
+                    completedAt: String(result.completedAt ?? new Date().toISOString()),
+                  }))
+              : [],
+          }))
+          .filter((t) => t.themeId)
+      : undefined,
+    playerRank: isRecord(body.playerRank)
+      ? {
+          tier: DIFFICULTIES.has(String(body.playerRank.tier))
+            ? (body.playerRank.tier as PlayerProfile['playerRank']['tier'])
+            : 'baby',
+          plaque: Math.max(1, Math.min(7, Number(body.playerRank.plaque) || 7)),
+          wisdomPoints: Math.max(0, Number(body.playerRank.wisdomPoints) || 0),
+          unlockedTier: DIFFICULTIES.has(String(body.playerRank.unlockedTier))
+            ? (body.playerRank.unlockedTier as PlayerProfile['playerRank']['unlockedTier'])
+            : 'child',
+        }
+      : undefined,
   };
 }
 

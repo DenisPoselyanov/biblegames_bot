@@ -33,7 +33,7 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 12px;
-  background: rgba(201, 162, 39, 0.16);
+  background: var(--accent-bg-strong);
   font-size: 1.5rem;
 }
 

@@ -1,0 +1,65 @@
+.stepper {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding: 0.25rem 0;
+  scrollbar-width: none;
+}
+
+.stepper::-webkit-scrollbar {
+  display: none;
+}
+
+.stage {
+  flex: 0 0 auto;
+  min-width: 52px;
+  padding: 0.45rem 0.55rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.stage:active {
+  transform: scale(0.96);
+}
+
+.stageCurrent {
+  border-color: var(--accent-border-strong);
+  color: var(--gold-light);
+  background: var(--accent-bg-strong);
+}
+
+.stagePassed {
+  border-color: rgba(74, 156, 93, 0.35);
+  color: var(--success-text, #6dbf7e);
+  background: rgba(74, 156, 93, 0.08);
+}
+
+.stagePerfect {
+  border-color: color-mix(in srgb, var(--gold) 55%, var(--accent-border-strong));
+  color: var(--gold-light);
+  background: color-mix(in srgb, var(--gold) 14%, var(--accent-bg-strong));
+}
+
+.stageLocked {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.stageDisabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.stageLabel {
+  display: block;
+  font-size: 0.65rem;
+  margin-top: 0.15rem;
+  font-weight: 600;
+}

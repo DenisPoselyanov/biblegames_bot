@@ -4,14 +4,19 @@
  *
  * npm run fix-questions-ai
  * npm run fix-questions-ai -- --status quarantined --issue duplicate --limit 10
- * npm run fix-questions-ai -- --theme geography --dry-run
+ * npm run fix-questions-ai -- --node pentateuch-sub-1-sub-1 --dry-run
  */
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ALL_QUESTIONS } from '../src/data/questions.ts';
 import { getTheme } from './lib/themes-config.mjs';
+import {
+  buildSubtopicPromptBlock,
+  loadAllQuestionsMerged,
+  resolveSubtopicContextFromQuestion,
+} from './lib/topic-context.mjs';
+import { loadThemeQuestions, saveThemeQuestions } from './lib/question-db.mjs';
 import {
   applyAiCliFlags,
   checkLLM,
@@ -24,7 +29,6 @@ import {
   queryLLM,
   unavailableHint,
 } from './lib/llm.mjs';
-import { loadAllDbQuestions, loadThemeQuestions, saveThemeQuestions } from './lib/question-db.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -37,6 +41,7 @@ function parseArgs() {
   const opts = {
     status: 'quarantined',
     theme: null,
+    node: null,
     issue: null,
     minScore: 0,
     maxScore: 100,
@@ -53,6 +58,8 @@ function parseArgs() {
     const a = args[i];
     if (a === '--status' && args[i + 1]) opts.status = args[++i];
     else if (a === '--theme' && args[i + 1]) opts.theme = args[++i];
+    else if (a === '--node' && args[i + 1]) opts.node = args[++i];
+    else if (a === '--topic' && args[i + 1]) opts.node = args[++i];
     else if (a === '--issue' && args[i + 1]) opts.issue = args[++i];
     else if (a === '--min-score' && args[i + 1]) opts.minScore = Number(args[++i]);
     else if (a === '--max-score' && args[i + 1]) opts.maxScore = Number(args[++i]);
@@ -85,11 +92,8 @@ function loadReport() {
 
 function buildQuestionIndex() {
   const byId = new Map();
-  for (const q of ALL_QUESTIONS) {
-    byId.set(q.id, { ...q, _source: 'embedded' });
-  }
-  for (const q of loadAllDbQuestions()) {
-    byId.set(q.id, { ...q, _source: 'db' });
+  for (const q of loadAllQuestionsMerged()) {
+    byId.set(q.id, q);
   }
   return byId;
 }
@@ -109,7 +113,10 @@ function themeForReport(report, byId) {
 }
 
 function buildFixPrompt(question, report, byId) {
-  const theme = getTheme(question.themeId);
+  const subtopic = resolveSubtopicContextFromQuestion(question);
+  const subtopicBlock = subtopic
+    ? buildSubtopicPromptBlock(subtopic, question.difficulty)
+    : `Тема: ${getTheme(question.themeId)?.title ?? question.themeId}\n⚠️ Питання без topicNodeId — додай прив’язку до підтеми вручну після правки.`;
   const issueLines = (report.issues || []).map(
     (i) => `- [${i.severity}] ${i.type}: ${i.message}`,
   );
@@ -134,9 +141,7 @@ function buildFixPrompt(question, report, byId) {
 
   return `Ти біблійний експерт. Виправ або доповни вікторинне питання українською.
 
-Тема: ${theme?.title ?? question.themeId}
-Складність: ${question.difficulty}
-${theme?.context ? `Контекст теми: ${theme.context}` : ''}
+${subtopicBlock}
 
 Поточне питання:
 ${JSON.stringify(payload, null, 2)}
@@ -145,14 +150,13 @@ ${JSON.stringify(payload, null, 2)}
 ${issueLines.join('\n') || '- загальне покращення формулювання'}
 ${dupBlock}
 ВИМОГИ:
-1. Збережи тему та рівень складності (не спрощуй/ускладнюй без потреби)
-2. Рівно 4 унікальні варіанти відповіді; неправильні — правдоподібні
-3. "correct" — індекс 0–3 (не завжди 0)
-4. Обовʼязково додай або виправ "ref" (біблійне посилання, напр. "Ін. 3:16")
-5. Якщо duplicate — суттєво зміни формулювання або кут питання
-6. Якщо unclear_reference — додай точне посилання
-7. Якщо wrong_difficulty — піджени довжину тексту під рівень
-8. Без вигаданих фактів; лише Писання
+1. Збережи підтему та рівень складності ${question.difficulty}
+2. Рівно 4 унікальні варіанти; неправильні — правдоподібні з цієї підтеми
+3. "correct" — індекс 0–3
+4. Обовʼязково "ref" (біблійне посилання)
+5. Якщо duplicate — зміни кут питання в межах цієї підтеми
+6. Без вигаданих фактів
+7. Блоки по 10 питань (етапи) — унікальне формулювання
 
 Відповідай ТІЛЬКИ JSON-обʼєктом:
 {"text":"...","options":["A","B","V","G"],"correct":1,"ref":"Бут. 1:1","explanationShort":"..."}`;
@@ -177,6 +181,8 @@ function applyFix(original, raw) {
     options,
     correctIndex,
     reference: ref || original.reference || undefined,
+    topicNodeId: original.topicNodeId,
+    topicPath: original.topicPath,
     quarantined: false,
     sourceQuality: 'ai-reviewed',
     lastReviewedAt: new Date().toISOString(),
@@ -234,6 +240,10 @@ async function main() {
 
   if (opts.theme) {
     targets = targets.filter((r) => themeForReport(r, byId) === opts.theme);
+  }
+
+  if (opts.node) {
+    targets = targets.filter((r) => byId.get(r.questionId)?.topicNodeId === opts.node);
   }
 
   if (opts.ids?.length) {

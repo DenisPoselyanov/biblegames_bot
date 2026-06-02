@@ -1,7 +1,7 @@
 import type { BollsTranslation } from '../lib/bollsConstants';
 import { useScripture } from '../hooks/useScripture';
 import { scriptureAvailable } from '../repos/scriptureRepo';
-import { WebApp } from '../lib/telegram';
+import { openExternalLink } from '../lib/telegram';
 import styles from './ScripturePanel.module.css';
 
 interface ScripturePanelProps {
@@ -10,14 +10,8 @@ interface ScripturePanelProps {
   compact?: boolean;
   /** Показувати блок одразу (наприклад у модалці) */
   autoLoad?: boolean;
-}
-
-function openExternal(url: string) {
-  try {
-    WebApp?.openLink?.(url);
-  } catch {
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }
+  /** Кнопка «Читати на bolls.life» (вимкнено в швидких ігрових режимах) */
+  showReaderLink?: boolean;
 }
 
 export function ScripturePanel({
@@ -25,6 +19,7 @@ export function ScripturePanel({
   translation,
   compact = false,
   autoLoad = true,
+  showReaderLink = true,
 }: ScripturePanelProps) {
   const ref = autoLoad ? reference : undefined;
   const { state, passage } = useScripture(ref, translation);
@@ -56,7 +51,9 @@ export function ScripturePanel({
         <p className={styles.muted}>
           {passage?.parseError === 'unparsed_reference'
             ? 'Не вдалося розпізнати посилання.'
-            : 'Текст тимчасово недоступний. Спробуй пізніше або відкрий на bolls.life.'}
+            : showReaderLink
+              ? 'Текст тимчасово недоступний. Спробуй пізніше або відкрий на bolls.life.'
+              : 'Текст тимчасово недоступний. Спробуй пізніше.'}
         </p>
       )}
 
@@ -71,9 +68,13 @@ export function ScripturePanel({
         </ul>
       )}
 
-      {passage?.readerUrl && (
+      {showReaderLink && passage?.readerUrl && (
         <div className={styles.actions}>
-          <button type="button" className={styles.linkBtn} onClick={() => openExternal(passage.readerUrl)}>
+          <button
+            type="button"
+            className={styles.linkBtn}
+            onClick={() => openExternalLink(passage.readerUrl)}
+          >
             Читати на bolls.life
           </button>
         </div>
