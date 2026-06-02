@@ -72,7 +72,7 @@
         "biblical-millionaire"
       ],
       "avatar": "sword",
-      "coins": 21067,
+      "coins": 24949,
       "unlockedAvatars": [
         "fish",
         "sword",
@@ -204,7 +204,7 @@
           "totalAnswers": 2
         }
       },
-      "updatedAt": "2026-06-02T15:37:28.465Z",
+      "updatedAt": "2026-06-02T15:45:45.326Z",
       "bibleTranslation": "UTT",
       "practiceTracks": [
         {
@@ -356,7 +356,7 @@
           "playersCount": 0
         }
       },
-      "lastUpdated": "2026-06-02T15:25:46.321Z"
+      "lastUpdated": "2026-06-02T15:45:45.313Z"
     }
   },
   "studyAnswers": {
@@ -900,11 +900,38 @@
         "subthemeId": "pentateuch-sub-1-sub-1",
         "isCorrect": true,
         "answeredAt": "2026-06-02T14:06:58.964Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00303",
+        "subthemeId": "pentateuch-sub-1-sub-1",
+        "isCorrect": true,
+        "answeredAt": "2026-06-02T15:37:26.148Z"
       }
     ]
   },
   "telemetry": {
     "guest": [
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T15:45:44.816Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T15:45:44.796Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-02T15:45:44.796Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
       {
         "name": "question_answered",
         "createdAt": "2026-06-02T15:37:26.150Z",

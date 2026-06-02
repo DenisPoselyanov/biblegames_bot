@@ -44,7 +44,9 @@ export default function App() {
     <PlayerProvider>
       <TopicHierarchyProvider>
       <ToastProvider>
-      <BrowserRouter>
+      <BrowserRouter
+        basename={import.meta.env.BASE_URL.replace(/\/$/, '') || undefined}
+      >
           <Routes>
             <Route element={<Layout />}>
               <Route index element={<ErrorBoundary><Home /></ErrorBoundary>} />
