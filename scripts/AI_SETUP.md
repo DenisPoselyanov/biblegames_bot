@@ -110,7 +110,7 @@ npm run prune-untagged
 - `--provider` / `--model` — AI-провайдер
 
 **Параметри fill-practice-nodes:**
-- `--theme`, `--group`, `--node`, `--difficulty` — фільтри
+- `--theme`, `--group`, `--covenant`, `--node`, `--difficulty` — фільтри (`--covenant` = лише гілки з `extensions/`)
 - `--dry-run` — план без генерації
 - `--max-questions`, `--max-jobs` — ліміти сесії
 

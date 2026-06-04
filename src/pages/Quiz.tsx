@@ -14,6 +14,7 @@ import {
   invalidateAllQuestionsCache,
 } from '../data/questions';
 import { usePlayer } from '../context/PlayerContext';
+import { useToast } from '../components/Toast';
 import { ExplanationModal } from '../components/ExplanationModal';
 import { QuestionEditModal } from '../components/QuestionEditModal';
 import { clearQuestionDbCache } from '../data/questionDbLoader';
@@ -75,6 +76,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   }>();
   const navigate = useNavigate();
   const { completePracticeStage, recordAnswerEvent, profile } = usePlayer();
+  const { showToast } = useToast();
 
   const theme = getThemeById(themeId ?? '');
   const validDiff = difficulty && isValidDifficulty(difficulty) ? difficulty : null;
@@ -431,6 +433,18 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       setNextStageUnlocked(result.nextStageUnlocked);
       setRankPromoted(result.rankPromoted);
       setNewRankLabel(result.newRankLabel);
+      if (result.points > 0) {
+        showToast(`+${result.points} монет`, 'success');
+      }
+      if (result.wisdomEarned > 0) {
+        showToast(`+${result.wisdomEarned} мудрості`, 'success');
+      }
+      if (result.rankPromoted) {
+        showToast(`Новий ранг: ${result.newRankLabel}`, 'success');
+      }
+      if (result.streakDays > 1 && result.passed) {
+        showToast(`Серія ${result.streakDays} дн.!`, 'info');
+      }
       haptic.notification(result.passed ? 'success' : 'error');
     } else {
       haptic.notification('success');
@@ -449,6 +463,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     isStageRoute,
     stageIndex,
     effectiveNodeId,
+    showToast,
   ]);
 
   const handleSaveQuestion = useCallback(async (updated: Question) => {

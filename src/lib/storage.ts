@@ -3,9 +3,11 @@ import { THEMES } from '../data/themes';
 import { DEFAULT_COSMETIC_THEME_ID } from '../data/cosmetics';
 import { DEFAULT_BOLLS_TRANSLATION, normalizeBollsTranslation } from './bollsConstants';
 import { getDefaultPlayerRank } from './practiceProgression';
+import { GLOBAL_STATS_STORAGE_KEY, PROFILE_STORAGE_KEY } from './storageKeys';
+import { useGlobalStatsStore } from '../stores/globalStatsStore';
+import { usePlayerProfileStore } from '../stores/playerProfileStore';
 
-const PROFILE_KEY = 'bible-game-profile';
-const GLOBAL_STATS_KEY = 'bible-game-global-stats';
+export { GLOBAL_STATS_STORAGE_KEY, PROFILE_STORAGE_KEY } from './storageKeys';
 
 const OLD_DIFFICULTY_MAP: Record<string, Difficulty> = {
   beginner: 'baby',
@@ -83,45 +85,63 @@ function emptyGlobalStats(): GlobalStats {
   return { themes, lastUpdated: new Date().toISOString() };
 }
 
-export function loadProfile(userId: string, displayName: string): PlayerProfile {
+function readProfileFromLocalStorage(userId: string, displayName: string): PlayerProfile | null {
   try {
-    const raw = localStorage.getItem(PROFILE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw) as ProfileWithLegacyWallet & PlayerProfile;
-      if (parsed.userId === userId) return normalizeProfile(parsed, userId, displayName);
-    }
+    const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as ProfileWithLegacyWallet & PlayerProfile;
+    if (parsed.userId === userId) return normalizeProfile(parsed, userId, displayName);
   } catch {
     /* ignore */
   }
-  return normalizeProfile({}, userId, displayName);
+  return null;
+}
+
+function readGlobalStatsFromLocalStorage(): GlobalStats | null {
+  try {
+    const raw = localStorage.getItem(GLOBAL_STATS_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as GlobalStats;
+    const base = emptyGlobalStats();
+    return {
+      themes: { ...base.themes, ...parsed.themes },
+      lastUpdated: parsed.lastUpdated,
+    };
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
+export function loadProfile(userId: string, displayName: string): PlayerProfile {
+  const fromStore = usePlayerProfileStore.getState().profile;
+  if (fromStore?.userId === userId) return fromStore;
+
+  const fromDisk = readProfileFromLocalStorage(userId, displayName);
+  const profile = fromDisk ?? normalizeProfile({}, userId, displayName);
+  usePlayerProfileStore.getState().setProfile(profile);
+  return profile;
 }
 
 export function saveProfile(profile: PlayerProfile): void {
-  localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+  usePlayerProfileStore.getState().setProfile(profile);
 }
 
 export function loadGlobalStats(): GlobalStats {
-  try {
-    const raw = localStorage.getItem(GLOBAL_STATS_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw) as GlobalStats;
-      const base = emptyGlobalStats();
-      return {
-        themes: { ...base.themes, ...parsed.themes },
-        lastUpdated: parsed.lastUpdated,
-      };
-    }
-  } catch {
-    /* ignore */
-  }
-  return emptyGlobalStats();
+  const fromStore = useGlobalStatsStore.getState().globalStats;
+  if (fromStore) return fromStore;
+
+  const fromDisk = readGlobalStatsFromLocalStorage();
+  const stats = fromDisk ?? emptyGlobalStats();
+  useGlobalStatsStore.getState().setGlobalStats(stats);
+  return stats;
 }
 
 export function saveGlobalStats(stats: GlobalStats): void {
-  localStorage.setItem(
-    GLOBAL_STATS_KEY,
-    JSON.stringify({ ...stats, lastUpdated: new Date().toISOString() }),
-  );
+  useGlobalStatsStore.getState().setGlobalStats({
+    ...stats,
+    lastUpdated: new Date().toISOString(),
+  });
 }
 
 export function recordGlobalPlay(

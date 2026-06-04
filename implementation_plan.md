@@ -42,6 +42,8 @@
 Залишилось у Phase 1:
 - Проведено інтеграційний прогін з реальним Postgres/Supabase. Етап закрито!
 
+**Remote persistence (2026):** Supabase Postgres через Express BFF (`STORAGE_PROVIDER=sql`, `pg` + `DATABASE_URL`). Клієнт: zustand persist + TanStack Query; без direct `@supabase/supabase-js`. Інструкція: `docs/SUPABASE_SETUP.md`.
+
 ---
 
 ## Phase 2 (2-4 міс) — StudySession + adaptive learning

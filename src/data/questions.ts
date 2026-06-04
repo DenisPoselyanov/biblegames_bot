@@ -368,11 +368,21 @@ export function getQuestionDistribution(themeId: string): Record<Difficulty, num
   return dist;
 }
 
+/** One entry per id (first wins — embedded rows precede AI in merged pools). */
+export function dedupePoolByQuestionId(pool: Question[]): Question[] {
+  const byId = new Map<string, Question>();
+  for (const q of pool) {
+    if (q?.id && !byId.has(q.id)) byId.set(q.id, q);
+  }
+  return [...byId.values()];
+}
+
 function pickQuestionsFromPool(
   pool: Question[],
   count = QUESTIONS_PER_LEVEL,
 ): Question[] {
-  return shuffle(pool).slice(0, Math.min(count, pool.length));
+  const unique = dedupePoolByQuestionId(pool);
+  return shuffle(unique).slice(0, Math.min(count, unique.length));
 }
 
 function orderQuestionsStable(pool: Question[]): Question[] {
@@ -384,7 +394,7 @@ function pickQuestionsForStage(
   stageIndex: number,
   count = PRACTICE_QUESTIONS_PER_STAGE,
 ): Question[] {
-  const ordered = orderQuestionsStable(pool);
+  const ordered = orderQuestionsStable(dedupePoolByQuestionId(pool));
   const start = stageIndex * count;
   return ordered.slice(start, start + count);
 }
@@ -754,10 +764,11 @@ export async function getQuestionCountForNodeAsync(
     false,
   );
 
+  const unique = dedupePoolByQuestionId(pool);
   if (difficulty) {
-    return pool.filter((q) => q.difficulty === difficulty).length;
+    return unique.filter((q) => q.difficulty === difficulty).length;
   }
-  return pool.length;
+  return unique.length;
 }
 
 // Допоміжні функції для роботи з ієрархією

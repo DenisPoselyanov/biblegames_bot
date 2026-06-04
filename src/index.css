@@ -271,3 +271,43 @@ input:focus, select:focus, textarea:focus {
     transition-duration: 0.01ms !important;
   }
 }
+
+.hot-toast-container {
+  z-index: var(--z-toast) !important;
+  top: max(0.75rem, env(safe-area-inset-top, 0px)) !important;
+}
+
+.hot-toast {
+  font-family: var(--font-sans) !important;
+  font-size: var(--fs-base) !important;
+  color: var(--text) !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-md) !important;
+  max-width: min(22rem, calc(100vw - 2rem)) !important;
+}
+
+.hot-toast--success {
+  border-color: var(--success) !important;
+  background: var(--success-bg) !important;
+  color: var(--success-text) !important;
+}
+
+.hot-toast--error {
+  border-color: var(--danger) !important;
+  background: var(--danger-bg) !important;
+  color: var(--danger-text) !important;
+}
+
+.hot-toast--warning {
+  border-color: var(--warning) !important;
+  background: var(--warning-bg) !important;
+  color: var(--gold-light) !important;
+}
+
+.hot-toast--info {
+  border-color: var(--info) !important;
+  background: var(--info-bg) !important;
+  color: var(--text) !important;
+}

@@ -41,11 +41,22 @@ function normalizeText(text) {
     .trim();
 }
 
+/** Keep first row per id (stable for re-runs). */
+export function dedupeQuestionsById(questions) {
+  const byId = new Map();
+  for (const q of questions) {
+    if (!q?.id) continue;
+    if (!byId.has(q.id)) byId.set(q.id, q);
+  }
+  return [...byId.values()];
+}
+
 export function dedupeQuestions(questions) {
+  const byId = dedupeQuestionsById(questions);
   const seen = new Set();
   const result = [];
 
-  for (const q of questions) {
+  for (const q of byId) {
     const key = `${q.themeId}|${q.difficulty}|${normalizeText(q.text)}`;
     if (seen.has(key)) continue;
     seen.add(key);

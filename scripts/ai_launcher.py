@@ -1656,8 +1656,10 @@ class AiLauncherV3(ctk.CTk):
                       lambda a: self._run_npm("sort-topics-ai", a, "🔄 AI-сортування тем"),
                       lambda: self._themes_args_default("--all --reparent"),
                       help_key="sort-topics-ai")
-        self._cmd_row(inner, "Merge topics-db", "python merge-topics-db.py",
-                      lambda a: self._execute("python merge-topics-db.py", "📦 Merge topics-db"),
+        merge_py = os.path.join(self.script_dir, "merge-topics-db.py")
+        merge_cmd = 'python "{0}"'.format(merge_py)
+        self._cmd_row(inner, "Merge topics-db", merge_cmd,
+                      lambda a: self._execute(merge_cmd, "📦 Merge topics-db"),
                       help_key="merge-topics-db")
 
         self._section(inner, "Підказка", colspan=1)

@@ -1,5 +1,32 @@
 [
   {
+    "id": "ks_1780561332911_zy1wpc",
+    "code": "JPCQTG",
+    "finishedAt": "2026-06-04T08:22:12.911Z",
+    "settings": {
+      "themeIds": [
+        "geography",
+        "kings"
+      ],
+      "questionCount": 7,
+      "timePerQuestion": 20,
+      "difficulty": "preacher",
+      "flowMode": "manual",
+      "scoringMode": "classic",
+      "thinkTimeSec": 5,
+      "hostParticipates": true,
+      "roomTitle": "Мале зібрання"
+    },
+    "questionCount": 7,
+    "players": [
+      {
+        "name": "Саша",
+        "score": 6731,
+        "rank": 1
+      }
+    ]
+  },
+  {
     "id": "ks_1780139739070_wqly4m",
     "code": "2KGTXT",
     "finishedAt": "2026-05-30T11:15:36.166Z",

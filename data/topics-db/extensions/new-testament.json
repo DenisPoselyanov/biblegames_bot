@@ -1,4 +1,38 @@
 {
   "covenantId": "new-testament",
-  "branches": []
+  "branches": [
+    {
+      "id": "nt-custom-poslannia-do-maibutnikh-pokolin",
+      "title": "Послання до майбутніх поколінь",
+      "description": "Збірка пророчих настанов та духовних порад апостолів для вірян, що житимуть у часи великих випробувань перед другим пришестям.",
+      "icon": "📜",
+      "themeId": "new-testament",
+      "children": [
+        {
+          "id": "nt-custom-poslannia-do-maibutnikh-pokolin-sub-1",
+          "title": "Стійкість у вірі під час духовних випробувань",
+          "description": "Настанови апостолів щодо збереження вірності Христу в умовах глобального відступництва та морального занепаду.",
+          "icon": "🛡️",
+          "children": [],
+          "themeId": "new-testament"
+        },
+        {
+          "id": "nt-custom-poslannia-do-maibutnikh-pokolin-sub-3",
+          "title": "Єдність церкви як притулок у часи потрясінь",
+          "description": "Поради щодо побудови міцної духовної спільноти, яка стає опорою для вірян перед обличчям великих соціальних та есхатологічних криз.",
+          "icon": "🤝",
+          "children": [],
+          "themeId": "new-testament"
+        },
+        {
+          "id": "nt-custom-poslannia-do-maibutnikh-pokolin-sub-4",
+          "title": "Пильність та очікування Другого Пришестя",
+          "description": "Духовні настанови щодо підготовки серця та активного очікування повернення Ісуса Христа як завершального етапу історії.",
+          "icon": "✨",
+          "children": [],
+          "themeId": "new-testament"
+        }
+      ]
+    }
+  ]
 }

@@ -208,6 +208,16 @@ export function findNodeInCovenantExtensions(topicId) {
   return null;
 }
 
+/** Корінь дерева для підрахунку пулу питань (файл теми або гілка extensions). */
+export function resolveHierarchyForNode(nodeId, themeId) {
+  const extHit = findNodeInCovenantExtensions(nodeId);
+  if (extHit) {
+    const storageThemeId = extHit.node.themeId || themeId;
+    return { hierarchy: extHit.root, themeId: storageThemeId, source: 'extensions' };
+  }
+  return { hierarchy: loadTopicHierarchy(themeId), themeId, source: 'file' };
+}
+
 /** Пошук вузла topic у file / merged / extensions */
 export function findTopicNodeGlobally(topicId) {
   const extHit = findNodeInCovenantExtensions(topicId);

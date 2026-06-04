@@ -5,7 +5,6 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
   type ReactNode,
 } from 'react';
 import type {
@@ -26,8 +25,6 @@ import { STUDY_THEME_GROUPS } from '../data/study_themes';
 import { updateMastery, updateStreak } from '../lib/learning';
 import { flushTelemetry, trackEvent } from '../lib/telemetry';
 import { studyRepo } from '../repos/studyRepo';
-import { playerRepo } from '../repos/playerRepo';
-import { statsRepo } from '../repos/statsRepo';
 import { generateRecommendations } from '../lib/recommendationEngine';
 import {
   advancePlayerRank,
@@ -40,6 +37,17 @@ import {
 import { loadAllTopicHierarchies } from '../data/topicDbLoader';
 import type { BollsTranslation } from '../lib/bollsConstants';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
+import { usePlayerProfileStore } from '../stores/playerProfileStore';
+import { useGlobalStatsStore } from '../stores/globalStatsStore';
+import {
+  usePlayerProfileSync,
+  useSavePlayerProfileMutation,
+} from '../queries/usePlayerProfile';
+import {
+  useGlobalStatsSync,
+  useRecordGlobalPlayMutation,
+  useRefreshGlobalStats,
+} from '../queries/useGlobalStats';
 
 interface PlayerContextValue {
   profile: PlayerProfile;
@@ -66,6 +74,7 @@ interface PlayerContextValue {
     rankPromoted: boolean;
     previousRankLabel: string;
     newRankLabel: string;
+    streakDays: number;
   };
   isLevelDone: (themeId: string, difficulty: Difficulty) => boolean;
   saveSurvivalRun: (score: number, pointsEarned: number) => void;
@@ -85,23 +94,30 @@ const PlayerContext = createContext<PlayerContextValue | null>(null);
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
   const { userId, displayName } = useTelegram();
-  const [profile, setProfile] = useState<PlayerProfile>(() =>
-    loadProfile(userId, displayName),
-  );
-  const [globalStats, setGlobalStats] = useState<GlobalStats>(loadGlobalStats);
-  const profileSyncGen = useRef(0);
+  const storedProfile = usePlayerProfileStore((s) => s.profile);
+  const storedGlobalStats = useGlobalStatsStore((s) => s.globalStats);
+  const setProfileInStore = usePlayerProfileStore((s) => s.setProfile);
+
+  const profile =
+    storedProfile?.userId === userId
+      ? storedProfile
+      : loadProfile(userId, displayName);
+  const globalStats = storedGlobalStats ?? loadGlobalStats();
+
   const localDirtyRef = useRef(false);
+  const profileSyncGen = useRef(0);
+
+  usePlayerProfileSync(userId, displayName, localDirtyRef);
+  useGlobalStatsSync(userId);
+  const saveProfileMutation = useSavePlayerProfileMutation(userId);
+  const recordPlayMutation = useRecordGlobalPlayMutation(userId);
+  const refreshStats = useRefreshGlobalStats(userId);
 
   useEffect(() => {
     const gen = ++profileSyncGen.current;
     localDirtyRef.current = false;
-    void playerRepo.get(userId, displayName).then((remote) => {
-      if (profileSyncGen.current !== gen) return;
-      if (!localDirtyRef.current) {
-        setProfile(remote);
-      }
-    });
-    void statsRepo.get(userId).then(setGlobalStats);
+    loadProfile(userId, displayName);
+
     void studyRepo.syncHistory(userId);
     trackEvent('session_start', { userId });
     void flushTelemetry(userId);
@@ -110,17 +126,26 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       void flushTelemetry(userId);
     }, 15000);
 
-    return () => window.clearInterval(timer);
+    return () => {
+      if (profileSyncGen.current === gen) {
+        localDirtyRef.current = false;
+      }
+      window.clearInterval(timer);
+    };
   }, [userId, displayName]);
 
-  // Глобальне застосування активної косметичної теми
   useEffect(() => {
     applyCosmeticThemeById(profile.activeTheme);
   }, [profile.activeTheme]);
 
-  const refreshStats = useCallback(() => {
-    void statsRepo.get(userId).then(setGlobalStats);
-  }, [userId]);
+  const persistProfile = useCallback(
+    (next: PlayerProfile) => {
+      localDirtyRef.current = true;
+      setProfileInStore(next);
+      saveProfileMutation.mutate(next);
+    },
+    [setProfileInStore, saveProfileMutation],
+  );
 
   const isLevelDone = useCallback(
     (themeId: string, difficulty: Difficulty) =>
@@ -156,7 +181,6 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         completedAt: new Date().toISOString(),
       };
 
-      // Перевірка та автоматичне розблокування досягнень
       const updatedAchievements = [...profile.achievements];
       if (correctCount === totalQuestions && !updatedAchievements.includes('flawless-level')) {
         updatedAchievements.push('flawless-level');
@@ -185,17 +209,17 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         achievements: updatedAchievements,
       };
 
-      localDirtyRef.current = true;
-      setProfile(next);
-      void playerRepo.save(next);
+      persistProfile(next);
       trackEvent('quiz_completed', { themeId, difficulty, points, correctCount, totalQuestions });
 
       const hadThemePoints = (profile.themePoints[themeId] ?? 0) > 0;
-      void statsRepo.recordPlay(themeId, points, !hadThemePoints, userId).then(setGlobalStats);
+      if (points > 0) {
+        recordPlayMutation.mutate({ themeId, points, isNewPlayerForTheme: !hadThemePoints });
+      }
 
       return { points, alreadyCompleted };
     },
-    [profile],
+    [profile, persistProfile, recordPlayMutation],
   );
 
   const completePracticeStage = useCallback(
@@ -294,8 +318,9 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         updatedAchievements.push('flawless-level');
       }
 
+      const streaked = updateStreak(profile);
       const next: PlayerProfile = {
-        ...updateStreak(profile),
+        ...streaked,
         coins: profile.coins + points,
         themePoints: {
           ...profile.themePoints,
@@ -306,9 +331,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         achievements: updatedAchievements,
       };
 
-      localDirtyRef.current = true;
-      setProfile(next);
-      void playerRepo.save(next);
+      persistProfile(next);
       trackEvent('practice_stage_completed', {
         themeId,
         difficulty,
@@ -323,7 +346,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
       if (points > 0) {
         const hadThemePoints = (profile.themePoints[themeId] ?? 0) > 0;
-        void statsRepo.recordPlay(themeId, points, !hadThemePoints, userId).then(setGlobalStats);
+        recordPlayMutation.mutate({ themeId, points, isNewPlayerForTheme: !hadThemePoints });
       }
 
       const nextStageUnlocked =
@@ -340,19 +363,18 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         rankPromoted,
         previousRankLabel,
         newRankLabel: formatRankLabel(newRank.tier, newRank.plaque),
+        streakDays: streaked.streakDays,
       };
     },
-    [profile, userId],
+    [profile, userId, persistProfile, recordPlayMutation],
   );
 
-  const updateProfile = useCallback((updater: (current: PlayerProfile) => PlayerProfile) => {
-    setProfile((current) => {
-      const next = updater(current);
-      localDirtyRef.current = true;
-      void playerRepo.save(next);
-      return next;
-    });
-  }, []);
+  const updateProfile = useCallback(
+    (updater: (current: PlayerProfile) => PlayerProfile) => {
+      persistProfile(updater(profile));
+    },
+    [profile, persistProfile],
+  );
 
   const saveSurvivalRun = useCallback(
     (score: number, pointsEarned: number) => {
@@ -472,12 +494,11 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         STUDY_THEME_GROUPS.flatMap((g) => g.subthemes.map((s) => [s.themeId, s.id] as const)),
       );
       const subthemeId = map.get(themeId) ?? themeId;
-      // Використовуємо nodeId якщо є, інакше subthemeId
       const effectiveNodeId = nodeId ?? subthemeId;
 
       void studyRepo.appendAnswer({
         questionId,
-        subthemeId: effectiveNodeId, // Оновлено для ієрархічного контексту
+        subthemeId: effectiveNodeId,
         isCorrect,
         answeredAt: new Date().toISOString(),
         errorTag: errorTag ?? (isCorrect ? undefined : 'knowledge-gap'),

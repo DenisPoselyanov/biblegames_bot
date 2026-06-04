@@ -10,7 +10,7 @@
 import fs from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { DIFFICULTIES, getGroup } from './lib/themes-config.mjs';
+import { DIFFICULTIES, getGroup, resolveHierarchyForNode } from './lib/themes-config.mjs';
 import {
   applyAiCliFlags,
   checkLLM,
@@ -24,7 +24,6 @@ import {
   summarizeNodeGaps,
   countNodePool,
 } from './lib/topic-node-pool-stats.mjs';
-import { loadTopicHierarchy } from './lib/themes-config.mjs';
 import { generateForTheme } from './generate-questions-ai.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -39,6 +38,7 @@ function parseArgs() {
   const opts = {
     theme: null,
     group: null,
+    covenant: null,
     node: null,
     difficulty: null,
     dryRun: false,
@@ -54,6 +54,9 @@ function parseArgs() {
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--theme' && args[i + 1]) opts.theme = args[++i];
     else if (args[i] === '--group' && args[i + 1]) opts.group = args[++i];
+    else if ((args[i] === '--covenant' || args[i] === '--extensions') && args[i + 1]) {
+      opts.covenant = args[++i];
+    }
     else if (args[i] === '--node' && args[i + 1]) opts.node = args[++i];
     else if (args[i] === '--difficulty' && args[i + 1]) opts.difficulty = args[++i];
     else if (args[i] === '--min-gap' && args[i + 1]) opts.minGap = parseInt(args[++i], 10);
@@ -75,6 +78,14 @@ function parseArgs() {
     console.error('❌ --theme і --group несумісні');
     process.exit(1);
   }
+  if (opts.covenant && (opts.theme || opts.group)) {
+    console.error('❌ --covenant несумісний з --theme та --group');
+    process.exit(1);
+  }
+  if (opts.covenant && !getGroup(opts.covenant)) {
+    console.error(`❌ Невідомий завіт: ${opts.covenant} (old-testament | new-testament)`);
+    process.exit(1);
+  }
   if (opts.group && !getGroup(opts.group)) {
     console.error(`❌ Невідома група: ${opts.group}`);
     process.exit(1);
@@ -84,6 +95,14 @@ function parseArgs() {
 }
 
 function collectGapsForOpts(opts) {
+  if (opts.covenant) {
+    return collectNodePracticeGaps({
+      covenant: opts.covenant,
+      node: opts.node ?? undefined,
+      difficulty: opts.difficulty ?? undefined,
+      minGap: opts.minGap,
+    });
+  }
   if (opts.group) {
     const group = getGroup(opts.group);
     const merged = [];
@@ -108,7 +127,7 @@ function collectGapsForOpts(opts) {
 }
 
 async function fillJob(job, opts, questionBudget = Infinity) {
-  const hierarchy = loadTopicHierarchy(job.themeId);
+  const { hierarchy, themeId: storageThemeId } = resolveHierarchyForNode(job.nodeId, job.themeId);
   const context = {
     title: job.title,
     description: '',
@@ -119,7 +138,7 @@ async function fillJob(job, opts, questionBudget = Infinity) {
 
   while (rounds < opts.maxRoundsPerJob && totalAdded < questionBudget) {
     const pool = hierarchy
-      ? countNodePool(job.nodeId, hierarchy, job.themeId, job.difficulty)
+      ? countNodePool(job.nodeId, hierarchy, storageThemeId, job.difficulty)
       : 0;
     const gap = Math.max(0, job.required - pool);
     if (gap <= 0) {
@@ -136,7 +155,7 @@ async function fillJob(job, opts, questionBudget = Infinity) {
     );
 
     const added = await generateForTheme(
-      job.themeId,
+      storageThemeId,
       batch,
       job.difficulty,
       opts.model,
@@ -156,9 +175,12 @@ async function fillJob(job, opts, questionBudget = Infinity) {
     }
   }
 
-  const hierarchyAfter = loadTopicHierarchy(job.themeId);
+  const { hierarchy: hierarchyAfter, themeId: themeAfter } = resolveHierarchyForNode(
+    job.nodeId,
+    job.themeId,
+  );
   const poolAfter = hierarchyAfter
-    ? countNodePool(job.nodeId, hierarchyAfter, job.themeId, job.difficulty)
+    ? countNodePool(job.nodeId, hierarchyAfter, themeAfter, job.difficulty)
     : 0;
 
   return {
@@ -182,6 +204,7 @@ async function main() {
   console.log(`Завдань: ${summary.jobCount} · підтем: ${summary.leafCount} · ~${summary.totalGap} питань`);
   if (opts.theme) console.log(`Фільтр теми: ${opts.theme}`);
   if (opts.group) console.log(`Фільтр групи: ${opts.group}`);
+  if (opts.covenant) console.log(`Фільтр гілок завіту: ${opts.covenant}`);
   if (opts.node) console.log(`Фільтр вузла: ${opts.node}`);
   console.log('');
 

@@ -1,2027 +1,362 @@
 {
-  "generatedAt": "2026-06-01T18:34:38.575Z",
-  "dryRun": true,
+  "generatedAt": "2026-06-04T07:43:13.611Z",
+  "provider": "omniroute",
+  "model": "Poselyanov",
   "summary": {
-    "totalGap": 5017,
-    "jobCount": 126,
-    "leafCount": 19
-  },
-  "jobs": [
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-4",
-      "title": "Покликання Авраама",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Покликання Авраама"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-4",
-      "title": "Покликання Авраама",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Покликання Авраама"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-1",
-      "title": "Мойсей і десять казнів",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Мойсей і десять казнів"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-1",
-      "title": "Мойсей і десять казнів",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Мойсей і десять казнів"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-1",
-      "title": "Мойсей і десять казнів",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Мойсей і десять казнів"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-2",
-      "title": "Перехід через Червоне море",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Перехід через Червоне море"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-2",
-      "title": "Перехід через Червоне море",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Перехід через Червоне море"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-2",
-      "title": "Перехід через Червоне море",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Перехід через Червоне море"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-3",
-      "title": "Десять заповідей на Синаї",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Десять заповідей на Синаї"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-3",
-      "title": "Десять заповідей на Синаї",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Десять заповідей на Синаї"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-3",
-      "title": "Десять заповідей на Синаї",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Десять заповідей на Синаї"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-4",
-      "title": "Золотий тельець",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Золотий тельець"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-4",
-      "title": "Золотий тельець",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Золотий тельець"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-4",
-      "title": "Золотий тельець",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Золотий тельець"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-1",
-      "title": "Священство Аарона",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Священство Аарона"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-1",
-      "title": "Священство Аарона",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Священство Аарона"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-1",
-      "title": "Священство Аарона",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Священство Аарона"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-2",
-      "title": "Види жертв",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Види жертв"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-2",
-      "title": "Види жертв",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Види жертв"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-2",
-      "title": "Види жертв",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Види жертв"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-3",
-      "title": "Святі дні",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Святі дні"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-3",
-      "title": "Святі дні",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Святі дні"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-3",
-      "title": "Святі дні",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Святі дні"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-1",
-      "title": "Перепис народу",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Перепис народу"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-1",
-      "title": "Перепис народу",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Перепис народу"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-1",
-      "title": "Перепис народу",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Перепис народу"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-2",
-      "title": "12 розвідників",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "12 розвідників"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-2",
-      "title": "12 розвідників",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "12 розвідників"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-2",
-      "title": "12 розвідників",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "12 розвідників"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-3",
-      "title": "Мідний змій",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Мідний змій"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-3",
-      "title": "Мідний змій",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Мідний змій"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-3",
-      "title": "Мідний змій",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Мідний змій"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-4",
-      "title": "Валам і Балак",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Валам і Балак"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-4",
-      "title": "Валам і Балак",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Валам і Балак"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-4",
-      "title": "Валам і Балак",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Валам і Балак"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-1",
-      "title": "Нагадування про вихід",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Нагадування про вихід"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-1",
-      "title": "Нагадування про вихід",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Нагадування про вихід"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-1",
-      "title": "Нагадування про вихід",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Нагадування про вихід"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-2",
-      "title": "Шма — любов до Бога",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Шма — любов до Бога"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-2",
-      "title": "Шма — любов до Бога",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Шма — любов до Бога"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-2",
-      "title": "Шма — любов до Бога",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Шма — любов до Бога"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-3",
-      "title": "Благословення і прокляття",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Благословення і прокляття"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-3",
-      "title": "Благословення і прокляття",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Благословення і прокляття"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-3",
-      "title": "Благословення і прокляття",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Благословення і прокляття"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-4",
-      "title": "Смерть Мойсея",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Смерть Мойсея"
-      ],
-      "difficulty": "baby",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-4",
-      "title": "Смерть Мойсея",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Смерть Мойсея"
-      ],
-      "difficulty": "child",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-4",
-      "title": "Смерть Мойсея",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Смерть Мойсея"
-      ],
-      "difficulty": "youth",
-      "pool": 0,
-      "required": 50,
-      "stages": 5,
-      "possible": 0,
-      "gap": 50
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-1",
-      "title": "Створення світу",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Створення світу"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-1",
-      "title": "Створення світу",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Створення світу"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-2",
-      "title": "Падіння та потоп",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Падіння та потоп"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-2",
-      "title": "Падіння та потоп",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Падіння та потоп"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-3",
-      "title": "Вавилонська вежа",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Вавилонська вежа"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-3",
-      "title": "Вавилонська вежа",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Вавилонська вежа"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-4",
-      "title": "Покликання Авраама",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Покликання Авраама"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-4",
-      "title": "Покликання Авраама",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Покликання Авраама"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-1",
-      "title": "Мойсей і десять казнів",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Мойсей і десять казнів"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-1",
-      "title": "Мойсей і десять казнів",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Мойсей і десять казнів"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-2",
-      "title": "Перехід через Червоне море",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Перехід через Червоне море"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-2",
-      "title": "Перехід через Червоне море",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Перехід через Червоне море"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-3",
-      "title": "Десять заповідей на Синаї",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Десять заповідей на Синаї"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-3",
-      "title": "Десять заповідей на Синаї",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Десять заповідей на Синаї"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-4",
-      "title": "Золотий тельець",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Золотий тельець"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-4",
-      "title": "Золотий тельець",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Золотий тельець"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-1",
-      "title": "Священство Аарона",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Священство Аарона"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-1",
-      "title": "Священство Аарона",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Священство Аарона"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-2",
-      "title": "Види жертв",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Види жертв"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-2",
-      "title": "Види жертв",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Види жертв"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-3",
-      "title": "Святі дні",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Святі дні"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-3",
-      "title": "Святі дні",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Святі дні"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-1",
-      "title": "Перепис народу",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Перепис народу"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-1",
-      "title": "Перепис народу",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Перепис народу"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-2",
-      "title": "12 розвідників",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "12 розвідників"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-2",
-      "title": "12 розвідників",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "12 розвідників"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-3",
-      "title": "Мідний змій",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Мідний змій"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-3",
-      "title": "Мідний змій",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Мідний змій"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-4",
-      "title": "Валам і Балак",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Валам і Балак"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-4",
-      "title": "Валам і Балак",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Валам і Балак"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-1",
-      "title": "Нагадування про вихід",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Нагадування про вихід"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-1",
-      "title": "Нагадування про вихід",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Нагадування про вихід"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-2",
-      "title": "Шма — любов до Бога",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Шма — любов до Бога"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-2",
-      "title": "Шма — любов до Бога",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Шма — любов до Бога"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-3",
-      "title": "Благословення і прокляття",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Благословення і прокляття"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-3",
-      "title": "Благословення і прокляття",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Благословення і прокляття"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-4",
-      "title": "Смерть Мойсея",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Смерть Мойсея"
-      ],
-      "difficulty": "student",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-4",
-      "title": "Смерть Мойсея",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Смерть Мойсея"
-      ],
-      "difficulty": "preacher",
-      "pool": 0,
-      "required": 40,
-      "stages": 4,
-      "possible": 0,
-      "gap": 40
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-1",
-      "title": "Створення світу",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Створення світу"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-1",
-      "title": "Створення світу",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Створення світу"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-2",
-      "title": "Падіння та потоп",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Падіння та потоп"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-2",
-      "title": "Падіння та потоп",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Падіння та потоп"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-3",
-      "title": "Вавилонська вежа",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Вавилонська вежа"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-3",
-      "title": "Вавилонська вежа",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Вавилонська вежа"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-4",
-      "title": "Покликання Авраама",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Покликання Авраама"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-4",
-      "title": "Покликання Авраама",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Покликання Авраама"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-1",
-      "title": "Мойсей і десять казнів",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Мойсей і десять казнів"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-1",
-      "title": "Мойсей і десять казнів",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Мойсей і десять казнів"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-2",
-      "title": "Перехід через Червоне море",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Перехід через Червоне море"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-2",
-      "title": "Перехід через Червоне море",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Перехід через Червоне море"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-3",
-      "title": "Десять заповідей на Синаї",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Десять заповідей на Синаї"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-3",
-      "title": "Десять заповідей на Синаї",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Десять заповідей на Синаї"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-4",
-      "title": "Золотий тельець",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Золотий тельець"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-2-sub-4",
-      "title": "Золотий тельець",
-      "path": [
-        "Пятикнижжя",
-        "Вихід",
-        "Золотий тельець"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-1",
-      "title": "Священство Аарона",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Священство Аарона"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-1",
-      "title": "Священство Аарона",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Священство Аарона"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-2",
-      "title": "Види жертв",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Види жертв"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-2",
-      "title": "Види жертв",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Види жертв"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-3",
-      "title": "Святі дні",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Святі дні"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-3-sub-3",
-      "title": "Святі дні",
-      "path": [
-        "Пятикнижжя",
-        "Левит",
-        "Святі дні"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-1",
-      "title": "Перепис народу",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Перепис народу"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-1",
-      "title": "Перепис народу",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Перепис народу"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-2",
-      "title": "12 розвідників",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "12 розвідників"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-2",
-      "title": "12 розвідників",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "12 розвідників"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-3",
-      "title": "Мідний змій",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Мідний змій"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-3",
-      "title": "Мідний змій",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Мідний змій"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-4",
-      "title": "Валам і Балак",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Валам і Балак"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-4-sub-4",
-      "title": "Валам і Балак",
-      "path": [
-        "Пятикнижжя",
-        "Числа",
-        "Валам і Балак"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-1",
-      "title": "Нагадування про вихід",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Нагадування про вихід"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-1",
-      "title": "Нагадування про вихід",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Нагадування про вихід"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-2",
-      "title": "Шма — любов до Бога",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Шма — любов до Бога"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-2",
-      "title": "Шма — любов до Бога",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Шма — любов до Бога"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-3",
-      "title": "Благословення і прокляття",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Благословення і прокляття"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-3",
-      "title": "Благословення і прокляття",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Благословення і прокляття"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-4",
-      "title": "Смерть Мойсея",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Смерть Мойсея"
-      ],
-      "difficulty": "teacher",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-5-sub-4",
-      "title": "Смерть Мойсея",
-      "path": [
-        "Пятикнижжя",
-        "Повторення Закону",
-        "Смерть Мойсея"
-      ],
-      "difficulty": "theologian",
-      "pool": 0,
-      "required": 30,
-      "stages": 3,
-      "possible": 0,
-      "gap": 30
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-4",
-      "title": "Покликання Авраама",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Покликання Авраама"
-      ],
-      "difficulty": "baby",
-      "pool": 45,
-      "required": 50,
-      "stages": 5,
-      "possible": 4,
-      "gap": 5
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-1",
-      "title": "Створення світу",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Створення світу"
-      ],
-      "difficulty": "child",
-      "pool": 49,
-      "required": 50,
-      "stages": 5,
-      "possible": 4,
-      "gap": 1
-    },
-    {
-      "themeId": "pentateuch",
-      "nodeId": "pentateuch-sub-1-sub-3",
-      "title": "Вавилонська вежа",
-      "path": [
-        "Пятикнижжя",
-        "Буття",
-        "Вавилонська вежа"
-      ],
-      "difficulty": "child",
-      "pool": 49,
-      "required": 50,
-      "stages": 5,
-      "possible": 4,
-      "gap": 1
+    "totalGap": 19,
+    "jobCount": 18,
+    "leafCount": 15,
+    "plannedQuestions": 19,
+    "after": {
+      "totalGap": 13,
+      "jobCount": 12,
+      "leafCount": 9
     }
-  ]
+  },
+  "results": [
+    {
+      "themeId": "patriarchs",
+      "nodeId": "patriarchs-sub-1-sub-3",
+      "title": "Народження Ісаака",
+      "path": [
+        "Патріархи",
+        "Авраам",
+        "Народження Ісаака"
+      ],
+      "difficulty": "baby",
+      "pool": 48,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 2,
+      "added": 1,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "patriarchs",
+      "nodeId": "patriarchs-sub-3-sub-3",
+      "title": "Боротьба з Богом",
+      "path": [
+        "Патріархи",
+        "Яків",
+        "Боротьба з Богом"
+      ],
+      "difficulty": "baby",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 1,
+      "poolAfter": 50,
+      "ready": true
+    },
+    {
+      "themeId": "judges",
+      "nodeId": "judges-sub-0-sub-1",
+      "title": "Перехід через Йордан",
+      "path": [
+        "Судді",
+        "Йошуа та Рут",
+        "Перехід через Йордан"
+      ],
+      "difficulty": "baby",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "judges",
+      "nodeId": "judges-sub-0-sub-3",
+      "title": "Рут і Наomi",
+      "path": [
+        "Судді",
+        "Йошуа та Рут",
+        "Рут і Наomi"
+      ],
+      "difficulty": "baby",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "judges",
+      "nodeId": "judges-sub-4-sub-1",
+      "title": "Їфтах",
+      "path": [
+        "Судді",
+        "Девора та Гедеон",
+        "Їфтах"
+      ],
+      "difficulty": "baby",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 1,
+      "poolAfter": 50,
+      "ready": true
+    },
+    {
+      "themeId": "kings",
+      "nodeId": "kings-sub-2-sub-3",
+      "title": "Йосія",
+      "path": [
+        "Царі",
+        "Царі Юдеї",
+        "Йосія"
+      ],
+      "difficulty": "baby",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "kings",
+      "nodeId": "kings-sub-2-sub-3",
+      "title": "Йосія",
+      "path": [
+        "Царі",
+        "Царі Юдеї",
+        "Йосія"
+      ],
+      "difficulty": "child",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "kings",
+      "nodeId": "kings-sub-2-sub-4",
+      "title": "Манасія",
+      "path": [
+        "Царі",
+        "Царі Юдеї",
+        "Манасія"
+      ],
+      "difficulty": "child",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 1,
+      "poolAfter": 50,
+      "ready": true
+    },
+    {
+      "themeId": "kings",
+      "nodeId": "kings-sub-4-sub-2",
+      "title": "Вірсавія",
+      "path": [
+        "Царі",
+        "Цариці",
+        "Вірсавія"
+      ],
+      "difficulty": "baby",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "kings",
+      "nodeId": "kings-sub-4-sub-2",
+      "title": "Вірсавія",
+      "path": [
+        "Царі",
+        "Цариці",
+        "Вірсавія"
+      ],
+      "difficulty": "youth",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "wisdom-poetry",
+      "nodeId": "wisdom-poetry-sub-3-sub-1",
+      "title": "Мудрість Соломона",
+      "path": [
+        "Мудрість і поезія",
+        "Приповісті",
+        "Мудрість Соломона"
+      ],
+      "difficulty": "teacher",
+      "pool": 29,
+      "required": 30,
+      "stages": 3,
+      "possible": 2,
+      "gap": 1,
+      "added": 1,
+      "poolAfter": 30,
+      "ready": true
+    },
+    {
+      "themeId": "wisdom-poetry",
+      "nodeId": "wisdom-poetry-sub-4-sub-3",
+      "title": "Бійся Бога",
+      "path": [
+        "Мудрість і поезія",
+        "Еклesiаст",
+        "Бійся Бога"
+      ],
+      "difficulty": "baby",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "wisdom-poetry",
+      "nodeId": "wisdom-poetry-sub-4-sub-3",
+      "title": "Бійся Бога",
+      "path": [
+        "Мудрість і поезія",
+        "Еклesiаст",
+        "Бійся Бога"
+      ],
+      "difficulty": "child",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "prophets",
+      "nodeId": "prophets-sub-2-sub-3",
+      "title": "Амос",
+      "path": [
+        "Пророки",
+        "Малі пророки",
+        "Амос"
+      ],
+      "difficulty": "youth",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "prophets",
+      "nodeId": "prophets-sub-2-sub-4",
+      "title": "Йона",
+      "path": [
+        "Пророки",
+        "Малі пророки",
+        "Йона"
+      ],
+      "difficulty": "child",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "prophets",
+      "nodeId": "prophets-sub-3-sub-4",
+      "title": "Натан",
+      "path": [
+        "Пророки",
+        "Допророчі служителі",
+        "Натан"
+      ],
+      "difficulty": "youth",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 0,
+      "poolAfter": 49,
+      "ready": false
+    },
+    {
+      "themeId": "mosaic-law",
+      "nodeId": "mosaic-law-sub-1-sub-1",
+      "title": "Десять заповідей",
+      "path": [
+        "Закон Мойсея",
+        "Моральні закони",
+        "Десять заповідей"
+      ],
+      "difficulty": "baby",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 1,
+      "poolAfter": 50,
+      "ready": true
+    },
+    {
+      "themeId": "geography",
+      "nodeId": "geography-sub-3-sub-1",
+      "title": "Єрусалим",
+      "path": [
+        "Географія Старого Завіту",
+        "Міста та поселення",
+        "Єрусалим"
+      ],
+      "difficulty": "youth",
+      "pool": 49,
+      "required": 50,
+      "stages": 5,
+      "possible": 4,
+      "gap": 1,
+      "added": 1,
+      "poolAfter": 50,
+      "ready": true
+    }
+  ],
+  "totalAdded": 7,
+  "readyCount": 6
 }
