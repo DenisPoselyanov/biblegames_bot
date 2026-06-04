@@ -104,6 +104,7 @@ export function sanitizeProfileBody(
                     total: Math.max(1, Number(result.total) || 1),
                     passed: Boolean(result.passed),
                     completedAt: String(result.completedAt ?? new Date().toISOString()),
+                    attempts: Math.max(0, Math.min(99, Number(result.attempts) || 0)) || undefined,
                   }))
               : [],
           }))

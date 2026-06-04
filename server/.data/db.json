@@ -409,7 +409,7 @@
           "playersCount": 0
         }
       },
-      "lastUpdated": "2026-06-04T08:19:01.240Z"
+      "lastUpdated": "2026-06-04T10:30:58.525Z"
     }
   },
   "studyAnswers": {
@@ -1214,11 +1214,144 @@
         "subthemeId": "pentateuch-sub-1-sub-1",
         "isCorrect": true,
         "answeredAt": "2026-06-04T08:10:49.298Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00452",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:24:51.847Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00453",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:24:58.470Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00454",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T10:25:15.771Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00455",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:25:39.843Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00456",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:25:50.301Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00457",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:25:57.396Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00458",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:26:05.874Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00459",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T10:26:16.563Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00461",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:26:44.049Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00462",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:26:51.726Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00463",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:27:21.842Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00464",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:27:28.178Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00465",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:27:33.129Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00466",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:27:40.403Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00468",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:27:47.137Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00469",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:27:54.627Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00471",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:28:02.273Z"
       }
     ]
   },
   "telemetry": {
     "guest": [
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T10:36:22.574Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:36:16.457Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:36:16.448Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:36:16.448Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
       {
         "name": "question_answered",
         "createdAt": "2026-06-04T10:28:02.274Z",

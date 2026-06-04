@@ -70,6 +70,8 @@ export interface PracticeStageResult {
   perfectCompletedAt?: string;
   passed: boolean;
   completedAt: string;
+  /** Number of finished runs for this stage (drives question rotation on replay) */
+  attempts?: number;
 }
 
 export interface PracticeTrackProgress {
@@ -159,6 +161,8 @@ export interface StudySession {
 export interface AnswerEvent {
   questionId: string;
   subthemeId: string;
+  /** Theme file id (e.g. pentateuch) — used to scope practice exclusions */
+  themeId?: string;
   isCorrect: boolean;
   answeredAt: string;
   responseMs?: number;

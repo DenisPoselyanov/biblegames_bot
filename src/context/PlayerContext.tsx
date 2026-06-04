@@ -273,6 +273,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         stageIndex,
         correct: correctCount,
         total: totalQuestions,
+        attempts: (existingStageResult?.attempts ?? 0) + 1,
         bestCorrect: Math.max(bestCorrectBefore, correctCount),
         bestPointsAwarded: Math.max(bestPointsBefore, currentStagePoints),
         bestWisdomAwarded: Math.max(bestWisdomBefore, currentStageWisdom),
@@ -499,6 +500,8 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       void studyRepo.appendAnswer({
         questionId,
         subthemeId: effectiveNodeId,
+        themeId,
+        nodeId: nodeId ?? undefined,
         isCorrect,
         answeredAt: new Date().toISOString(),
         errorTag: errorTag ?? (isCorrect ? undefined : 'knowledge-gap'),

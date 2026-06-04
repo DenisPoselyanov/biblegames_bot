@@ -13,6 +13,7 @@ import {
   getQuestionsForCategoryStageAsync,
   invalidateAllQuestionsCache,
 } from '../data/questions';
+import { buildPracticePickOptions } from '../lib/practiceQuestionPick';
 import { usePlayer } from '../context/PlayerContext';
 import { useToast } from '../components/Toast';
 import { ExplanationModal } from '../components/ExplanationModal';
@@ -23,7 +24,7 @@ import {
   updateQuestionOnServer,
 } from '../repos/questionAdminRepo';
 import { haptic } from '../lib/telegram';
-import type { Question } from '../types';
+import type { Question, TopicNode } from '../types';
 import {
   DIFFICULTY_LABELS,
   QUESTIONS_PER_LEVEL,
@@ -66,6 +67,25 @@ import {
 import styles from './Quiz.module.css';
 
 const QUESTION_TIME = 15;
+
+function findNodeInHierarchies(
+  hierarchies: Record<string, TopicNode>,
+  targetId: string,
+): TopicNode | null {
+  const findNode = (node: TopicNode, id: string): TopicNode | null => {
+    if (node.id === id) return node;
+    for (const child of node.children ?? []) {
+      const found = findNode(child, id);
+      if (found) return found;
+    }
+    return null;
+  };
+  for (const root of Object.values(hierarchies)) {
+    const found = findNode(root, targetId);
+    if (found) return found;
+  }
+  return null;
+}
 
 export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   const { themeId, difficulty, stageIndex: stageIndexParam, nodeId } = useParams<{
@@ -197,7 +217,35 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     };
 
     const loadQuestions = async () => {
-      if (await tryRestore()) return;
+      const restored = await tryRestore();
+      if (restored) return;
+
+      let aggregateThemeIds: string[] | undefined;
+      let topicHierarchy: Record<string, TopicNode> | null = null;
+      if (effectiveNodeId) {
+        try {
+          topicHierarchy = await loadAllTopicHierarchies();
+          const targetNode = findNodeInHierarchies(topicHierarchy, effectiveNodeId);
+          if (targetNode?.aggregateThemeIds?.length) {
+            aggregateThemeIds = targetNode.aggregateThemeIds;
+          }
+        } catch {
+          /* hierarchy optional */
+        }
+      }
+
+      const pickOptions =
+        mode === 'practice' && themeId && validDiff
+          ? buildPracticePickOptions({
+              themeId,
+              difficulty: validDiff,
+              nodeId: effectiveNodeId,
+              practiceTracks: profile.practiceTracks ?? [],
+              sessionKey,
+              freshRun: true,
+              aggregateThemeIds,
+            })
+          : undefined;
 
       if (mode === 'review') {
         const history = studyRepo.getAnswerHistory();
@@ -225,23 +273,10 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
       if (effectiveNodeId) {
         try {
-          const topicHierarchy = await loadAllTopicHierarchies();
-
-          let targetNode: import('../types').TopicNode | null = null;
-          for (const h of Object.values(topicHierarchy)) {
-            const findNode = (node: import('../types').TopicNode, targetId: string): import('../types').TopicNode | null => {
-              if (node.id === targetId) return node;
-              if (node.children) {
-                for (const child of node.children) {
-                  const found = findNode(child, targetId);
-                  if (found) return found;
-                }
-              }
-              return null;
-            };
-            targetNode = findNode(h, effectiveNodeId);
-            if (targetNode) break;
+          if (!topicHierarchy) {
+            topicHierarchy = await loadAllTopicHierarchies();
           }
+          const targetNode = findNodeInHierarchies(topicHierarchy, effectiveNodeId);
 
           if (targetNode?.aggregateThemeIds && validDiff) {
             const aggQuestions = isStageRoute
@@ -250,12 +285,14 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
                   validDiff,
                   practiceStageIndex,
                   questionCount,
+                  pickOptions,
                 )
               : await getQuestionsForCategoryAsync(
                   themeId ?? targetNode.aggregateThemeIds[0],
                   targetNode.aggregateThemeIds,
                   validDiff,
                   questionCount,
+                  pickOptions,
                 );
             if (!cancelled) {
               setQuestions(aggQuestions);
@@ -275,6 +312,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
                   questionCount,
                   false,
                   false,
+                  pickOptions,
                 )
               : await getQuestionsForNodeAsync(
                   effectiveNodeId,
@@ -283,6 +321,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
                   questionCount,
                   false,
                   false,
+                  pickOptions,
                 );
             if (!cancelled) {
               setQuestions(nodeQuestions);
@@ -296,8 +335,8 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       }
 
       const qs = isStageRoute
-        ? await getQuestionsForStageAsync(themeId, validDiff, practiceStageIndex, questionCount)
-        : await getQuestionsForLevelAsync(themeId, validDiff, questionCount);
+        ? await getQuestionsForStageAsync(themeId, validDiff, practiceStageIndex, questionCount, pickOptions)
+        : await getQuestionsForLevelAsync(themeId, validDiff, questionCount, pickOptions);
       if (!cancelled) {
         setQuestions(qs);
         setLoading(false);
@@ -309,7 +348,17 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     return () => {
       cancelled = true;
     };
-  }, [themeId, validDiff, mode, effectiveNodeId, stageIndex, isStageRoute, sessionKey, applyQuizSession]);
+  }, [
+    themeId,
+    validDiff,
+    mode,
+    effectiveNodeId,
+    stageIndex,
+    isStageRoute,
+    sessionKey,
+    applyQuizSession,
+    profile.practiceTracks,
+  ]);
 
   const backToThemeUrl = `/play/study/themes/${themeId}${effectiveNodeId ? `/${effectiveNodeId}` : ''}`;
 

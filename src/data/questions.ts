@@ -1,4 +1,4 @@
-import type { Difficulty, Question, TopicNode } from '../types';
+import type { Difficulty, PracticeTrackProgress, Question, TopicNode } from '../types';
 import { QUESTIONS_PER_LEVEL } from '../types';
 import { PRACTICE_QUESTIONS_PER_STAGE } from '../lib/practiceProgression';
 import { EXTRA_QUESTIONS } from './questions-extra';
@@ -333,9 +333,13 @@ export async function getQuestionsByIdsOrdered(ids: string[]): Promise<Question[
   const all = await getAllQuestionsAsync();
   const byId = new Map(all.map((q) => [q.id, q]));
   const ordered: Question[] = [];
+  const seen = new Set<string>();
   for (const id of ids) {
+    if (seen.has(id)) continue;
     const q = byId.get(id);
-    if (q) ordered.push(q);
+    if (!q) continue;
+    seen.add(id);
+    ordered.push(q);
   }
   return ordered;
 }
@@ -377,12 +381,91 @@ export function dedupePoolByQuestionId(pool: Question[]): Question[] {
   return [...byId.values()];
 }
 
+export function normalizeQuestionText(text: string): string {
+  return text.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+/** Drop questions with identical wording (different ids) so stages do not repeat the same prompt. */
+export function dedupePoolByQuestionText(pool: Question[]): Question[] {
+  const byText = new Map<string, Question>();
+  for (const q of pool) {
+    if (!q?.text) continue;
+    const key = normalizeQuestionText(q.text);
+    if (!byText.has(key)) byText.set(key, q);
+  }
+  return [...byText.values()];
+}
+
+export function dedupePracticePool(pool: Question[]): Question[] {
+  return dedupePoolByQuestionText(dedupePoolByQuestionId(pool));
+}
+
+export type PracticePickOptions = {
+  practiceTrack?: PracticeTrackProgress;
+  excludeIds?: string[];
+  /** Per-quiz nonce so a fresh run shuffles differently before the stage is saved */
+  runNonce?: string;
+};
+
+/** Stable shuffle seed from practice attempts — changes when any stage is replayed. */
+export function buildPracticeRotationKey(track?: PracticeTrackProgress): string {
+  if (!track?.stageResults?.length) return 'initial';
+  return [...track.stageResults]
+    .sort((a, b) => a.stageIndex - b.stageIndex)
+    .map((r) => `${r.stageIndex}:${r.attempts ?? 1}`)
+    .join('|');
+}
+
+function hashSeed(parts: string[]): number {
+  let h = 2166136261;
+  for (const part of parts) {
+    for (let i = 0; i < part.length; i++) {
+      h ^= part.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+  }
+  return h >>> 0;
+}
+
+function seededShuffle<T>(array: T[], seed: number): T[] {
+  const result = [...array];
+  let state = seed || 1;
+  for (let i = result.length - 1; i > 0; i--) {
+    state = (Math.imul(state, 1103515245) + 12345) >>> 0;
+    const j = state % (i + 1);
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function applyExcludeIds(pool: Question[], excludeIds: string[] | undefined, minKeep: number): Question[] {
+  if (!excludeIds?.length) return pool;
+  const excluded = new Set(excludeIds);
+  const filtered = pool.filter((q) => !excluded.has(q.id));
+  return filtered.length >= minKeep ? filtered : pool;
+}
+
 function pickQuestionsFromPool(
   pool: Question[],
   count = QUESTIONS_PER_LEVEL,
+  options?: PracticePickOptions,
 ): Question[] {
-  const unique = dedupePoolByQuestionId(pool);
-  return shuffle(unique).slice(0, Math.min(count, unique.length));
+  const unique = applyExcludeIds(
+    dedupePracticePool(pool),
+    options?.excludeIds,
+    count,
+  );
+  const shuffled = options?.practiceTrack || options?.runNonce
+    ? seededShuffle(
+        unique,
+        hashSeed([
+          'practice-pool',
+          buildPracticeRotationKey(options?.practiceTrack),
+          options?.runNonce ?? '',
+        ]),
+      )
+    : shuffle(unique);
+  return shuffled.slice(0, Math.min(count, shuffled.length));
 }
 
 function orderQuestionsStable(pool: Question[]): Question[] {
@@ -393,10 +476,32 @@ function pickQuestionsForStage(
   pool: Question[],
   stageIndex: number,
   count = PRACTICE_QUESTIONS_PER_STAGE,
+  options?: PracticePickOptions,
 ): Question[] {
-  const ordered = orderQuestionsStable(dedupePoolByQuestionId(pool));
+  const unique = applyExcludeIds(
+    dedupePracticePool(pool),
+    options?.excludeIds,
+    count,
+  );
+  const rotationKey = buildPracticeRotationKey(options?.practiceTrack);
+  const shuffled = seededShuffle(
+    orderQuestionsStable(unique),
+    hashSeed(['practice-stage', rotationKey, options?.runNonce ?? '']),
+  );
   const start = stageIndex * count;
-  return ordered.slice(start, start + count);
+  const slice = shuffled.slice(start, start + count);
+  if (slice.length >= count || shuffled.length === 0) {
+    return slice;
+  }
+  const picked = new Set(slice.map((q) => q.id));
+  for (const q of shuffled) {
+    if (slice.length >= count) break;
+    if (!picked.has(q.id)) {
+      slice.push(q);
+      picked.add(q.id);
+    }
+  }
+  return slice;
 }
 
 export function getStageQuestionCount(poolSize: number, stageIndex: number, count = PRACTICE_QUESTIONS_PER_STAGE): number {
@@ -405,20 +510,52 @@ export function getStageQuestionCount(poolSize: number, stageIndex: number, coun
   return Math.min(count, poolSize - start);
 }
 
+async function loadAiQuestionsForThemes(themeIds: Iterable<string>): Promise<Question[]> {
+  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+  const merged: Question[] = [];
+  for (const themeId of themeIds) {
+    try {
+      merged.push(...(await loadAiQuestionsForTheme(themeId)));
+    } catch {
+      /* theme may have no AI file */
+    }
+  }
+  return merged;
+}
+
+/** Embedded + AI pool for a theme and difficulty (deduped by id and text). */
+export async function buildThemeDifficultyPool(
+  themeId: string,
+  difficulty: Difficulty,
+): Promise<Question[]> {
+  const embedded = ALL_QUESTIONS.filter(
+    (q) => q.themeId === themeId && q.difficulty === difficulty,
+  );
+  const ai = (await loadAiQuestionsForThemes([themeId])).filter((q) => q.difficulty === difficulty);
+  return dedupePracticePool([...embedded, ...ai]);
+}
+
+/** Embedded + AI pool for aggregate category nodes (all themes, one difficulty). */
+export async function buildCategoryDifficultyPool(
+  themeIds: string[],
+  difficulty: Difficulty,
+): Promise<Question[]> {
+  const embedded = ALL_QUESTIONS.filter(
+    (q) => themeIds.includes(q.themeId) && q.difficulty === difficulty,
+  );
+  const ai = (await loadAiQuestionsForThemes(themeIds)).filter((q) => q.difficulty === difficulty);
+  return dedupePracticePool([...embedded, ...ai]);
+}
+
 export async function getQuestionsForStageAsync(
   themeId: string,
   difficulty: Difficulty,
   stageIndex: number,
   count = PRACTICE_QUESTIONS_PER_STAGE,
+  pickOptions?: PracticePickOptions,
 ): Promise<Question[]> {
-  const embedded = ALL_QUESTIONS.filter(
-    (q) => q.themeId === themeId && q.difficulty === difficulty,
-  );
-  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
-  const ai = await loadAiQuestionsForTheme(themeId);
-  const aiFiltered = ai.filter((q) => q.difficulty === difficulty);
-  const pool = [...embedded, ...aiFiltered];
-  return pickQuestionsForStage(pool, stageIndex, count);
+  const pool = await buildThemeDifficultyPool(themeId, difficulty);
+  return pickQuestionsForStage(pool, stageIndex, count, pickOptions);
 }
 
 export async function getQuestionsForCategoryStageAsync(
@@ -426,40 +563,18 @@ export async function getQuestionsForCategoryStageAsync(
   difficulty: Difficulty,
   stageIndex: number,
   count = PRACTICE_QUESTIONS_PER_STAGE,
+  pickOptions?: PracticePickOptions,
 ): Promise<Question[]> {
-  const embedded = ALL_QUESTIONS.filter(
-    (q) => themeIds.includes(q.themeId) && q.difficulty === difficulty,
-  );
-  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
-  const aiPromises = themeIds.map((tid) =>
-    loadAiQuestionsForTheme(tid).then((ai) =>
-      ai.filter((q) => q.difficulty === difficulty),
-    ),
-  );
-  const aiResults = await Promise.all(aiPromises);
-  const aiQuestions = aiResults.flat();
-  const pool = [...embedded, ...aiQuestions];
-  return pickQuestionsForStage(pool, stageIndex, count);
+  const pool = await buildCategoryDifficultyPool(themeIds, difficulty);
+  return pickQuestionsForStage(pool, stageIndex, count, pickOptions);
 }
 
-export async function getQuestionsForNodeStageAsync(
+function collectRelevantThemeIds(
   nodeId: string,
   topicHierarchy: TopicNode,
-  difficulty: Difficulty,
-  stageIndex: number,
-  count = PRACTICE_QUESTIONS_PER_STAGE,
-  includeParentNodes = false,
-  includeChildNodes = false,
-): Promise<Question[]> {
-  const embedded = filterQuestionsByHierarchy(
-    ALL_QUESTIONS,
-    nodeId,
-    topicHierarchy,
-    includeParentNodes,
-    includeChildNodes,
-  );
-
-  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+  includeParentNodes: boolean,
+  includeChildNodes: boolean,
+): Set<string> {
   const relevantThemeIds = new Set<string>();
   const targetNode = findNodeById(topicHierarchy, nodeId);
 
@@ -480,17 +595,31 @@ export async function getQuestionsForNodeStageAsync(
   if (relevantThemeIds.size === 0) {
     relevantThemeIds.add(nodeId);
   }
+  return relevantThemeIds;
+}
 
-  const aiQuestions: Question[] = [];
-  for (const themeId of relevantThemeIds) {
-    try {
-      const ai = await loadAiQuestionsForTheme(themeId);
-      aiQuestions.push(...ai);
-    } catch {
-      /* theme may have no AI file */
-    }
-  }
-
+/** Embedded + AI pool for a topic node (deduped by id and text). */
+export async function buildNodePracticePool(
+  nodeId: string,
+  topicHierarchy: TopicNode,
+  difficulty?: Difficulty,
+  includeParentNodes = false,
+  includeChildNodes = false,
+): Promise<Question[]> {
+  const embedded = filterQuestionsByHierarchy(
+    ALL_QUESTIONS,
+    nodeId,
+    topicHierarchy,
+    includeParentNodes,
+    includeChildNodes,
+  );
+  const themeIds = collectRelevantThemeIds(
+    nodeId,
+    topicHierarchy,
+    includeParentNodes,
+    includeChildNodes,
+  );
+  const aiQuestions = await loadAiQuestionsForThemes(themeIds);
   let pool = filterQuestionsByHierarchy(
     [...embedded, ...aiQuestions],
     nodeId,
@@ -498,8 +627,30 @@ export async function getQuestionsForNodeStageAsync(
     includeParentNodes,
     includeChildNodes,
   );
-  pool = pool.filter((q) => q.difficulty === difficulty);
-  return pickQuestionsForStage(pool, stageIndex, count);
+  if (difficulty) {
+    pool = pool.filter((q) => q.difficulty === difficulty);
+  }
+  return dedupePracticePool(pool);
+}
+
+export async function getQuestionsForNodeStageAsync(
+  nodeId: string,
+  topicHierarchy: TopicNode,
+  difficulty: Difficulty,
+  stageIndex: number,
+  count = PRACTICE_QUESTIONS_PER_STAGE,
+  includeParentNodes = false,
+  includeChildNodes = false,
+  pickOptions?: PracticePickOptions,
+): Promise<Question[]> {
+  const pool = await buildNodePracticePool(
+    nodeId,
+    topicHierarchy,
+    difficulty,
+    includeParentNodes,
+    includeChildNodes,
+  );
+  return pickQuestionsForStage(pool, stageIndex, count, pickOptions);
 }
 
 /** Синхронно — лише вбудована база (TS-файли) */
@@ -511,7 +662,7 @@ export function getQuestionsForLevel(
   const pool = ALL_QUESTIONS.filter(
     (question) => question.themeId === themeId && question.difficulty === difficulty,
   );
-  return pickQuestionsFromPool(pool, count);
+  return pickQuestionsFromPool(dedupePracticePool(pool), count);
 }
 
 export function getMixedQuestionsByDifficulty(
@@ -519,11 +670,8 @@ export function getMixedQuestionsByDifficulty(
   count: number,
   excludeIds: string[] = [],
 ): Question[] {
-  const excluded = new Set(excludeIds);
-  const pool = ALL_QUESTIONS.filter(
-    (question) => question.difficulty === difficulty && !excluded.has(question.id),
-  );
-  return pickQuestionsFromPool(pool, count);
+  const pool = ALL_QUESTIONS.filter((question) => question.difficulty === difficulty);
+  return pickQuestionsFromPool(pool, count, { excludeIds });
 }
 
 /** Вбудована база + AI JSON з data/question-db */
@@ -531,15 +679,10 @@ export async function getQuestionsForLevelAsync(
   themeId: string,
   difficulty: Difficulty,
   count = QUESTIONS_PER_LEVEL,
+  pickOptions?: PracticePickOptions,
 ): Promise<Question[]> {
-  const embedded = ALL_QUESTIONS.filter(
-    (q) => q.themeId === themeId && q.difficulty === difficulty,
-  );
-  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
-  const ai = await loadAiQuestionsForTheme(themeId);
-  const aiFiltered = ai.filter((q) => q.difficulty === difficulty);
-  const pool = [...embedded, ...aiFiltered];
-  return pickQuestionsFromPool(pool, count);
+  const pool = await buildThemeDifficultyPool(themeId, difficulty);
+  return pickQuestionsFromPool(pool, count, pickOptions);
 }
 
 /**
@@ -550,20 +693,10 @@ export async function getQuestionsForCategoryAsync(
   themeIds: string[],
   difficulty: Difficulty,
   count = QUESTIONS_PER_LEVEL,
+  pickOptions?: PracticePickOptions,
 ): Promise<Question[]> {
-  const embedded = ALL_QUESTIONS.filter(
-    (q) => themeIds.includes(q.themeId) && q.difficulty === difficulty,
-  );
-  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
-  const aiPromises = themeIds.map((tid) =>
-    loadAiQuestionsForTheme(tid).then((ai) =>
-      ai.filter((q) => q.difficulty === difficulty),
-    ),
-  );
-  const aiResults = await Promise.all(aiPromises);
-  const aiQuestions = aiResults.flat();
-  const pool = [...embedded, ...aiQuestions];
-  return pickQuestionsFromPool(pool, count);
+  const pool = await buildCategoryDifficultyPool(themeIds, difficulty);
+  return pickQuestionsFromPool(pool, count, pickOptions);
 }
 
 /** Кількість питань з урахуванням AI (для UI) */
@@ -571,11 +704,7 @@ export async function getQuestionCountByDifficultyAsync(
   themeId: string,
   difficulty: Difficulty,
 ): Promise<number> {
-  const embedded = getQuestionCountByDifficulty(themeId, difficulty);
-  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
-  const ai = await loadAiQuestionsForTheme(themeId);
-  const aiCount = ai.filter((q) => q.difficulty === difficulty).length;
-  return embedded + aiCount;
+  return (await buildThemeDifficultyPool(themeId, difficulty)).length;
 }
 
 /**
@@ -585,18 +714,7 @@ export async function getQuestionCountByCategoryAsync(
   themeIds: string[],
   difficulty: Difficulty,
 ): Promise<number> {
-  let count = 0;
-  for (const tid of themeIds) {
-    count += getQuestionCountByDifficulty(tid, difficulty);
-    try {
-      const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
-      const ai = await loadAiQuestionsForTheme(tid);
-      count += ai.filter((q) => q.difficulty === difficulty).length;
-    } catch {
-      // игнорируем ошибки
-    }
-  }
-  return count;
+  return (await buildCategoryDifficultyPool(themeIds, difficulty)).length;
 }
 
 /**
@@ -676,65 +794,16 @@ export async function getQuestionsForNodeAsync(
   count = QUESTIONS_PER_LEVEL,
   includeParentNodes = false,
   includeChildNodes = false,
+  pickOptions?: PracticePickOptions,
 ): Promise<Question[]> {
-  const embedded = filterQuestionsByHierarchy(
-    ALL_QUESTIONS,
+  const pool = await buildNodePracticePool(
     nodeId,
     topicHierarchy,
+    difficulty,
     includeParentNodes,
     includeChildNodes,
   );
-
-  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
-  
-  // Завантажуємо AI питання для всіх релевантних тем
-  const relevantThemeIds = new Set<string>();
-  const targetNode = findNodeById(topicHierarchy, nodeId);
-  
-  if (targetNode) {
-    if (targetNode.themeId) relevantThemeIds.add(targetNode.themeId);
-    
-    if (includeParentNodes) {
-      findParentPath(topicHierarchy, nodeId).forEach((node) => {
-        if (node.themeId) relevantThemeIds.add(node.themeId);
-      });
-    }
-    
-    if (includeChildNodes) {
-      findAllChildNodes(targetNode).forEach((node) => {
-        if (node.themeId) relevantThemeIds.add(node.themeId);
-      });
-    }
-  }
-
-  if (relevantThemeIds.size === 0) {
-    relevantThemeIds.add(nodeId);
-  }
-
-  // Завантажуємо AI питання для кожної теми
-  const aiQuestions: Question[] = [];
-  for (const themeId of relevantThemeIds) {
-    try {
-      const ai = await loadAiQuestionsForTheme(themeId);
-      aiQuestions.push(...ai);
-    } catch (error) {
-      // Игноруємо помилки завантаження для тем без AI питань
-    }
-  }
-
-  let pool = filterQuestionsByHierarchy(
-    [...embedded, ...aiQuestions],
-    nodeId,
-    topicHierarchy,
-    includeParentNodes,
-    includeChildNodes,
-  );
-
-  if (difficulty) {
-    pool = pool.filter((q) => q.difficulty === difficulty);
-  }
-
-  return pickQuestionsFromPool(pool, count);
+  return pickQuestionsFromPool(pool, count, pickOptions);
 }
 
 /**
@@ -745,30 +814,7 @@ export async function getQuestionCountForNodeAsync(
   topicHierarchy: TopicNode,
   difficulty?: Difficulty,
 ): Promise<number> {
-  const targetNode = findNodeById(topicHierarchy, nodeId);
-  const themeId = targetNode?.themeId ?? nodeId;
-
-  let aiQuestions: Question[] = [];
-  try {
-    const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
-    aiQuestions = await loadAiQuestionsForTheme(themeId);
-  } catch {
-    // тема може не мати AI-файлу
-  }
-
-  const pool = filterQuestionsByHierarchy(
-    [...ALL_QUESTIONS, ...aiQuestions],
-    nodeId,
-    topicHierarchy,
-    false,
-    false,
-  );
-
-  const unique = dedupePoolByQuestionId(pool);
-  if (difficulty) {
-    return unique.filter((q) => q.difficulty === difficulty).length;
-  }
-  return unique.length;
+  return (await buildNodePracticePool(nodeId, topicHierarchy, difficulty, false, false)).length;
 }
 
 // Допоміжні функції для роботи з ієрархією
