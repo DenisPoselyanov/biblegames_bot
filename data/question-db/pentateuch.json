@@ -4012,25 +4012,6 @@
     "explanationShort": "Бог наказав Ною збудувати ковчег з дерева ґофер, щоб зберегти життя його сім'ї та тваринам."
   },
   {
-    "id": "pentateuch-baby-ai-00506",
-    "themeId": "pentateuch",
-    "difficulty": "baby",
-    "text": "Скільки днів і ночей ішов дощ під час великого потопу?",
-    "options": [
-      "7 днів",
-      "40 днів",
-      "100 днів",
-      "3 дні"
-    ],
-    "correctIndex": 1,
-    "reference": "Бут. 7:12",
-    "source": "ai",
-    "createdAt": "2026-06-01T18:22:43.106Z",
-    "topicPath": "Пятикнижжя > Буття > Падіння та потоп",
-    "topicNodeId": "pentateuch-sub-1-sub-2",
-    "explanationShort": "Дощ лив на землю сорок днів і сорок ночей, затопивши все живе, що було на суходолі."
-  },
-  {
     "id": "pentateuch-baby-ai-00507",
     "themeId": "pentateuch",
     "difficulty": "baby",

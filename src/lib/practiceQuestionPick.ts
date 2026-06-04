@@ -16,6 +16,8 @@ export type PracticePickContext = {
   sessionKey: string;
   freshRun: boolean;
   aggregateThemeIds?: string[];
+  /** When set, pick a stable question set for this stage (not global history shuffle) */
+  stageIndex?: number;
 };
 
 /** Match answer history rows to the current practice track (theme, subtopic, or aggregate). */
@@ -50,17 +52,28 @@ export function isAnswerForPracticeContext(
 }
 
 export function buildPracticePickOptions(context: PracticePickContext): PracticePickOptions {
-  const { themeId, difficulty, nodeId, practiceTracks, sessionKey, freshRun } = context;
+  const { themeId, difficulty, nodeId, practiceTracks, sessionKey, freshRun, stageIndex } = context;
   const track =
     findPracticeTrack(practiceTracks, themeId, nodeId, difficulty)
     ?? getOrCreatePracticeTrack([], themeId, nodeId, difficulty);
-  const nonceKey = `${QUIZ_RUN_NONCE_PREFIX}${sessionKey}`;
-  if (freshRun) {
-    sessionStorage.setItem(nonceKey, String(Date.now()));
+  const isStageRun = stageIndex != null;
+
+  let runNonce: string | undefined;
+  if (!isStageRun) {
+    const nonceKey = `${QUIZ_RUN_NONCE_PREFIX}${sessionKey}`;
+    if (freshRun) {
+      sessionStorage.setItem(nonceKey, String(Date.now()));
+    }
+    runNonce = sessionStorage.getItem(nonceKey) ?? String(Date.now());
   }
+
   return {
     practiceTrack: track,
-    excludeIds: collectExcludeQuestionIds(context),
-    runNonce: sessionStorage.getItem(nonceKey) ?? String(Date.now()),
+    excludeIds: isStageRun ? undefined : collectExcludeQuestionIds(context),
+    runNonce,
+    themeId,
+    nodeId,
+    difficulty,
+    stageIndex,
   };
 }

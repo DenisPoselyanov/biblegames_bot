@@ -403,18 +403,13 @@ export function dedupePracticePool(pool: Question[]): Question[] {
 export type PracticePickOptions = {
   practiceTrack?: PracticeTrackProgress;
   excludeIds?: string[];
-  /** Per-quiz nonce so a fresh run shuffles differently before the stage is saved */
+  /** Non-stage runs only — rotates free-play question sets */
   runNonce?: string;
+  themeId?: string;
+  nodeId?: string | null;
+  difficulty?: Difficulty;
+  stageIndex?: number;
 };
-
-/** Stable shuffle seed from practice attempts — changes when any stage is replayed. */
-export function buildPracticeRotationKey(track?: PracticeTrackProgress): string {
-  if (!track?.stageResults?.length) return 'initial';
-  return [...track.stageResults]
-    .sort((a, b) => a.stageIndex - b.stageIndex)
-    .map((r) => `${r.stageIndex}:${r.attempts ?? 1}`)
-    .join('|');
-}
 
 function hashSeed(parts: string[]): number {
   let h = 2166136261;
@@ -455,15 +450,8 @@ function pickQuestionsFromPool(
     options?.excludeIds,
     count,
   );
-  const shuffled = options?.practiceTrack || options?.runNonce
-    ? seededShuffle(
-        unique,
-        hashSeed([
-          'practice-pool',
-          buildPracticeRotationKey(options?.practiceTrack),
-          options?.runNonce ?? '',
-        ]),
-      )
+  const shuffled = options?.runNonce
+    ? seededShuffle(unique, hashSeed(['practice-pool', options.runNonce]))
     : shuffle(unique);
   return shuffled.slice(0, Math.min(count, shuffled.length));
 }
@@ -472,36 +460,65 @@ function orderQuestionsStable(pool: Question[]): Question[] {
   return [...pool].sort((a, b) => a.id.localeCompare(b.id));
 }
 
+/** Stable question set for a stage (saved in progress or deterministic from pool). */
+function resolveStageQuestionIds(
+  pool: Question[],
+  stageIndex: number,
+  count: number,
+  options?: PracticePickOptions,
+): string[] {
+  const unique = dedupePracticePool(pool);
+  const track = options?.practiceTrack;
+  const saved = track?.stageResults.find((r) => r.stageIndex === stageIndex)?.questionIds;
+  if (saved?.length) {
+    return saved.slice(0, count);
+  }
+
+  const usedBefore = new Set<string>();
+  for (let i = 0; i < stageIndex; i++) {
+    for (const id of resolveStageQuestionIds(unique, i, count, options)) {
+      usedBefore.add(id);
+    }
+  }
+
+  const available = unique.filter((q) => !usedBefore.has(q.id));
+  const themeId = options?.themeId ?? '';
+  const nodeId = options?.nodeId ?? null;
+  const difficulty = options?.difficulty ?? 'baby';
+  const shuffled = seededShuffle(
+    orderQuestionsStable(available),
+    hashSeed(['practice-stage-assign', themeId, nodeId ?? '_', difficulty, String(stageIndex)]),
+  );
+  return shuffled.slice(0, Math.min(count, shuffled.length)).map((q) => q.id);
+}
+
 function pickQuestionsForStage(
   pool: Question[],
   stageIndex: number,
   count = PRACTICE_QUESTIONS_PER_STAGE,
   options?: PracticePickOptions,
 ): Question[] {
-  const unique = applyExcludeIds(
-    dedupePracticePool(pool),
-    options?.excludeIds,
-    count,
-  );
-  const rotationKey = buildPracticeRotationKey(options?.practiceTrack);
-  const shuffled = seededShuffle(
-    orderQuestionsStable(unique),
-    hashSeed(['practice-stage', rotationKey, options?.runNonce ?? '']),
-  );
-  const start = stageIndex * count;
-  const slice = shuffled.slice(start, start + count);
-  if (slice.length >= count || shuffled.length === 0) {
-    return slice;
+  const unique = dedupePracticePool(pool);
+  const byId = new Map(unique.map((q) => [q.id, q]));
+  const themeId = options?.themeId ?? '';
+  const nodeId = options?.nodeId ?? null;
+  const difficulty = options?.difficulty ?? 'baby';
+  const stageResult = options?.practiceTrack?.stageResults.find((r) => r.stageIndex === stageIndex);
+  const attempt = stageResult?.attempts ?? 0;
+
+  const ids = resolveStageQuestionIds(unique, stageIndex, count, options);
+  let questions = ids
+    .map((id) => byId.get(id))
+    .filter((q): q is Question => q != null);
+
+  if (attempt > 0 && questions.length > 1) {
+    questions = seededShuffle(
+      questions,
+      hashSeed(['practice-stage-order', themeId, nodeId ?? '_', difficulty, String(stageIndex), String(attempt)]),
+    );
   }
-  const picked = new Set(slice.map((q) => q.id));
-  for (const q of shuffled) {
-    if (slice.length >= count) break;
-    if (!picked.has(q.id)) {
-      slice.push(q);
-      picked.add(q.id);
-    }
-  }
-  return slice;
+
+  return questions;
 }
 
 export function getStageQuestionCount(poolSize: number, stageIndex: number, count = PRACTICE_QUESTIONS_PER_STAGE): number {

@@ -72,6 +72,8 @@ export interface PracticeStageResult {
   completedAt: string;
   /** Number of finished runs for this stage (drives question rotation on replay) */
   attempts?: number;
+  /** Question ids from the last finished run — used to rotate pool on replay */
+  questionIds?: string[];
 }
 
 export interface PracticeTrackProgress {

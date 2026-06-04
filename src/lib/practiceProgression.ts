@@ -131,11 +131,11 @@ export function formatRankLabel(tier: Difficulty, plaque: number): string {
 }
 
 export function computeStageWisdom(difficulty: Difficulty, correct: number, total: number): number {
-  if (total <= 0) return 0;
+  if (total <= 0 || correct <= 0) return 0;
   const base = WISDOM_PER_STAGE_BASE[difficulty];
   const accuracy = correct / total;
   let wisdom = Math.round(base * accuracy);
-  if (accuracy >= 0.9) {
+  if (correct === total) {
     wisdom = Math.round(wisdom * 1.5);
   }
   return Math.max(0, wisdom);

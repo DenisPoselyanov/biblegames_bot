@@ -65,6 +65,7 @@ interface PlayerContextValue {
     correctCount: number,
     totalQuestions: number,
     nodeId: string | null,
+    questionIds?: string[],
   ) => {
     passed: boolean;
     points: number;
@@ -230,6 +231,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       correctCount: number,
       totalQuestions: number,
       nodeId: string | null,
+      questionIds?: string[],
     ) => {
       const passed = correctCount >= PASS_MIN_CORRECT;
       const total = totalQuestions > 0 ? totalQuestions : 1;
@@ -254,19 +256,20 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         ?? (existingStageResult?.passed
           ? Math.round(basePoints * (bestCorrectBefore / Math.max(1, existingStageResult.total ?? 1)))
           : 0);
-      const bestWisdomBefore = existingStageResult?.bestWisdomAwarded
-        ?? (existingStageResult?.passed
-          ? computeStageWisdom(
-              difficulty,
-              bestCorrectBefore,
-              Math.max(1, existingStageResult.total ?? 1),
-            )
-          : 0);
+      const bestWisdomBefore = existingStageResult?.passed
+        ? computeStageWisdom(
+            difficulty,
+            bestCorrectBefore,
+            Math.max(1, existingStageResult.total ?? totalQuestions),
+          )
+        : 0;
       const points = Math.max(0, currentStagePoints - bestPointsBefore);
       const wisdomEarned = Math.max(0, currentStageWisdom - bestWisdomBefore);
-      const historicalPerfect = (existingStageResult?.bestCorrect ?? existingStageResult?.correct ?? 0)
-        >= Math.max(1, existingStageResult?.total ?? 1);
-      const stagePerfect = Boolean(existingStageResult?.perfect) || historicalPerfect || stagePerfectNow;
+      const priorTotal = Math.max(1, existingStageResult?.total ?? totalQuestions);
+      const historicalPerfect =
+        Boolean(existingStageResult?.perfect)
+        || (bestCorrectBefore === priorTotal && bestCorrectBefore === totalQuestions);
+      const stagePerfect = historicalPerfect || stagePerfectNow;
       const stagePassed = Boolean(existingStageResult?.passed) || passed;
 
       const stageResult = {
@@ -274,6 +277,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         correct: correctCount,
         total: totalQuestions,
         attempts: (existingStageResult?.attempts ?? 0) + 1,
+        questionIds: questionIds?.length ? questionIds : existingStageResult?.questionIds,
         bestCorrect: Math.max(bestCorrectBefore, correctCount),
         bestPointsAwarded: Math.max(bestPointsBefore, currentStagePoints),
         bestWisdomAwarded: Math.max(bestWisdomBefore, currentStageWisdom),

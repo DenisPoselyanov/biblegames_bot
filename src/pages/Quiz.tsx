@@ -125,6 +125,9 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   const [questionTimeLeft, setQuestionTimeLeft] = useState(QUESTION_TIME);
   const questionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const sessionRestoredRef = useRef(false);
+  const questionsLoadedSessionRef = useRef<string | null>(null);
+  const practiceTracksRef = useRef(profile.practiceTracks);
+  practiceTracksRef.current = profile.practiceTracks;
 
   const sessionKey = useMemo(
     () =>
@@ -200,9 +203,14 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
   const exitQuiz = useCallback(() => {
     clearQuizSession();
+    questionsLoadedSessionRef.current = null;
   }, [clearQuizSession]);
 
   useEffect(() => {
+    if (questionsLoadedSessionRef.current === sessionKey) {
+      return;
+    }
+
     let cancelled = false;
     setLoading(true);
     sessionRestoredRef.current = false;
@@ -218,7 +226,10 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
     const loadQuestions = async () => {
       const restored = await tryRestore();
-      if (restored) return;
+      if (restored) {
+        questionsLoadedSessionRef.current = sessionKey;
+        return;
+      }
 
       let aggregateThemeIds: string[] | undefined;
       let topicHierarchy: Record<string, TopicNode> | null = null;
@@ -234,16 +245,18 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         }
       }
 
+      const practiceStageIndex = Number.isFinite(stageIndex) && stageIndex >= 0 ? stageIndex : 0;
       const pickOptions =
         mode === 'practice' && themeId && validDiff
           ? buildPracticePickOptions({
               themeId,
               difficulty: validDiff,
               nodeId: effectiveNodeId,
-              practiceTracks: profile.practiceTracks ?? [],
+              practiceTracks: practiceTracksRef.current ?? [],
               sessionKey,
               freshRun: true,
               aggregateThemeIds,
+              stageIndex: isStageRoute ? practiceStageIndex : undefined,
             })
           : undefined;
 
@@ -256,6 +269,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         if (!cancelled) {
           setQuestions(wrongQuestions);
           setLoading(false);
+          questionsLoadedSessionRef.current = sessionKey;
         }
         return;
       }
@@ -264,11 +278,11 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         if (!cancelled) {
           setQuestions([]);
           setLoading(false);
+          questionsLoadedSessionRef.current = sessionKey;
         }
         return;
       }
 
-      const practiceStageIndex = Number.isFinite(stageIndex) && stageIndex >= 0 ? stageIndex : 0;
       const questionCount = isStageRoute ? PRACTICE_QUESTIONS_PER_STAGE : QUESTIONS_PER_LEVEL;
 
       if (effectiveNodeId) {
@@ -297,6 +311,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
             if (!cancelled) {
               setQuestions(aggQuestions);
               setLoading(false);
+              questionsLoadedSessionRef.current = sessionKey;
             }
             return;
           }
@@ -326,6 +341,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
             if (!cancelled) {
               setQuestions(nodeQuestions);
               setLoading(false);
+              questionsLoadedSessionRef.current = sessionKey;
             }
             return;
           }
@@ -340,6 +356,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       if (!cancelled) {
         setQuestions(qs);
         setLoading(false);
+        questionsLoadedSessionRef.current = sessionKey;
       }
     };
 
@@ -357,7 +374,6 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     isStageRoute,
     sessionKey,
     applyQuizSession,
-    profile.practiceTracks,
   ]);
 
   const backToThemeUrl = `/play/study/themes/${themeId}${effectiveNodeId ? `/${effectiveNodeId}` : ''}`;
@@ -431,6 +447,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     (optionIndex: number) => {
       if (showResult || !current) return;
       clearQuestionTimer();
+      setQuestionTimeLeft(QUESTION_TIME);
       setSelected(optionIndex);
       setShowResult(true);
       recordAnswerEvent({
@@ -474,6 +491,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         correctCount,
         questions.length,
         effectiveNodeId,
+        questions.map((q) => q.id),
       );
       setEarnedPoints(result.points);
       setEarnedWisdom(result.wisdomEarned);
@@ -687,6 +705,14 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
               {stagePassed && earnedWisdom > 0 && (
                 <p className={styles.resultWisdom}>+{earnedWisdom} очок мудрості</p>
               )}
+              {stagePassed && earnedWisdom === 0 && correctCount === totalAnswered && totalAnswered > 0 && (
+                <p className={styles.resultHint}>Мудрість за цей етап уже отримана раніше</p>
+              )}
+              {stagePassed && correctCount < totalAnswered && (
+                <p className={styles.resultHint}>
+                  Бонус мудрості (+50%) лише за {totalAnswered} з {totalAnswered} без помилок
+                </p>
+              )}
               {stagePassed && (
                 <p className={styles.resultPointsRow}>
                   <span className={styles.resultPoints}>
@@ -713,6 +739,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
                 className={styles.btnPrimary}
                 onClick={() => {
                   clearQuizSession();
+                  questionsLoadedSessionRef.current = null;
                   navigate(nextStagePath);
                 }}
               >
@@ -739,6 +766,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
                 className={styles.btnSecondary}
                 onClick={() => {
                   clearQuizSession();
+                  questionsLoadedSessionRef.current = null;
                   navigate(getStageQuizPath(themeId, validDiff, stageIndex, effectiveNodeId));
                 }}
               >

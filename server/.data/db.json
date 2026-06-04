@@ -6,7 +6,7 @@
       "themePoints": {
         "geography": 159,
         "judges": 57,
-        "pentateuch": 28
+        "pentateuch": 44
       },
       "completedLevels": [
         {
@@ -71,7 +71,7 @@
         "biblical-millionaire"
       ],
       "avatar": "lion",
-      "coins": 67794,
+      "coins": 67810,
       "unlockedAvatars": [
         "fish",
         "sword",
@@ -151,14 +151,14 @@
         },
         "pentateuch-sub-1-sub-1": {
           "mastery": 100,
-          "confidence": 84,
-          "lastReviewedAt": "2026-06-04T08:10:49.299Z",
+          "confidence": 85,
+          "lastReviewedAt": "2026-06-04T11:46:20.639Z",
           "errorTags": [
             "knowledge-gap"
           ],
-          "correctStreak": 16,
+          "correctStreak": 19,
           "wrongCount": 10,
-          "totalAnswers": 64
+          "totalAnswers": 67
         },
         "mosaic-law-sub-1-sub-1": {
           "mastery": 0,
@@ -204,17 +204,17 @@
         },
         "pentateuch-sub-1-sub-2": {
           "mastery": 100,
-          "confidence": 88,
-          "lastReviewedAt": "2026-06-04T10:28:02.274Z",
+          "confidence": 89,
+          "lastReviewedAt": "2026-06-04T11:47:27.920Z",
           "errorTags": [
             "knowledge-gap"
           ],
-          "correctStreak": 9,
-          "wrongCount": 2,
-          "totalAnswers": 17
+          "correctStreak": 20,
+          "wrongCount": 12,
+          "totalAnswers": 113
         }
       },
-      "updatedAt": "2026-06-04T10:28:02.290Z",
+      "updatedAt": "2026-06-04T11:47:28.945Z",
       "bibleTranslation": "UTT",
       "practiceTracks": [
         {
@@ -264,22 +264,47 @@
           "themeId": "pentateuch",
           "nodeId": "pentateuch-sub-1-sub-2",
           "difficulty": "baby",
-          "highestUnlockedStage": 1,
+          "highestUnlockedStage": 4,
           "stageResults": [
             {
               "stageIndex": 0,
-              "correct": 8,
+              "correct": 10,
               "total": 10,
               "passed": true,
-              "completedAt": "2026-06-04T10:26:52.364Z"
+              "completedAt": "2026-06-04T11:01:12.746Z",
+              "attempts": 2
+            },
+            {
+              "stageIndex": 1,
+              "correct": 10,
+              "total": 10,
+              "passed": true,
+              "completedAt": "2026-06-04T11:47:28.904Z",
+              "attempts": 2
+            },
+            {
+              "stageIndex": 2,
+              "correct": 10,
+              "total": 10,
+              "passed": true,
+              "completedAt": "2026-06-04T11:45:39.423Z",
+              "attempts": 2
+            },
+            {
+              "stageIndex": 3,
+              "correct": 10,
+              "total": 10,
+              "passed": true,
+              "completedAt": "2026-06-04T11:39:54.482Z",
+              "attempts": 1
             }
           ]
         }
       ],
       "playerRank": {
         "tier": "baby",
-        "plaque": 5,
-        "wisdomPoints": 0,
+        "plaque": 4,
+        "wisdomPoints": 8,
         "unlockedTier": "child"
       }
     }
@@ -296,8 +321,8 @@
         },
         "pentateuch": {
           "themeId": "pentateuch",
-          "totalPoints": 28,
-          "gamesPlayed": 6,
+          "totalPoints": 44,
+          "gamesPlayed": 11,
           "playersCount": 1
         },
         "patriarchs": {
@@ -409,7 +434,7 @@
           "playersCount": 0
         }
       },
-      "lastUpdated": "2026-06-04T10:30:58.525Z"
+      "lastUpdated": "2026-06-04T11:24:30.578Z"
     }
   },
   "studyAnswers": {
@@ -1318,11 +1343,1662 @@
         "subthemeId": "pentateuch-sub-1-sub-2",
         "isCorrect": true,
         "answeredAt": "2026-06-04T10:28:02.273Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:49:08.575Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:49:32.985Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:49:35.387Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:49:36.726Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:49:37.526Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:49:38.246Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:49:39.096Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:49:39.818Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T10:49:40.371Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:49:41.262Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T10:49:56.521Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00472",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:52:55.511Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00507",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T10:52:59.765Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00478",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:53:11.869Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00480",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T10:53:16.689Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00499",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:53:26.944Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00475",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T10:58:12.537Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00501",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:58:20.784Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00508",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:58:26.398Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00492",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:58:32.515Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00485",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:58:44.661Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00498",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:58:48.960Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00489",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:58:53.694Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00510",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:59:00.494Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00506",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:59:16.859Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00476",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T10:59:23.936Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00479",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:00:17.338Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00482",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:00:23.496Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00484",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:00:27.157Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00502",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:00:34.453Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00509",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:00:40.121Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00500",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:00:48.625Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00503",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:00:52.618Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00497",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:00:58.409Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00505",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:01:05.664Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00487",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:01:10.626Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00474",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T11:25:43.648Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00490",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:25:54.163Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00485",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:25:59.202Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00472",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:26:02.927Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00492",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T11:26:06.038Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00503",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:26:11.904Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00493",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:26:16.029Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00454",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:26:21.411Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00476",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:26:24.756Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00476",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:26:34.945Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00497",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:26:57.880Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00461",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:27:01.129Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00510",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:27:06.919Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00469",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:27:13.284Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00480",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:27:17.813Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00498",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:27:21.617Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00458",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T11:27:30.128Z",
+        "errorTag": "knowledge-gap"
       }
     ]
   },
   "telemetry": {
     "guest": [
+      {
+        "name": "practice_stage_completed",
+        "createdAt": "2026-06-04T11:47:28.905Z",
+        "payload": {
+          "themeId": "pentateuch",
+          "difficulty": "baby",
+          "stageIndex": 1,
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "passed": true,
+          "wisdomEarned": 4,
+          "points": 1,
+          "correctCount": 10,
+          "totalQuestions": 10
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:47:27.921Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:47:24.064Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00480",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:47:18.877Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00455",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:47:14.162Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00457",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:47:08.903Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00488",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:47:04.486Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00464",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:47:00.810Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00471",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:46:47.461Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00472",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:46:43.303Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00497",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:46:36.505Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00485",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:46:20.640Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00311",
+          "subthemeId": "pentateuch-sub-1-sub-1",
+          "nodeId": "pentateuch-sub-1-sub-1",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:46:14.212Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00300",
+          "subthemeId": "pentateuch-sub-1-sub-1",
+          "nodeId": "pentateuch-sub-1-sub-1",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:46:09.413Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00294",
+          "subthemeId": "pentateuch-sub-1-sub-1",
+          "nodeId": "pentateuch-sub-1-sub-1",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T11:45:57.727Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "practice_stage_completed",
+        "createdAt": "2026-06-04T11:45:39.424Z",
+        "payload": {
+          "themeId": "pentateuch",
+          "difficulty": "baby",
+          "stageIndex": 2,
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "passed": true,
+          "wisdomEarned": 3,
+          "points": 0,
+          "correctCount": 10,
+          "totalQuestions": 10
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:45:26.133Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00474",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:45:19.007Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00461",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:45:12.664Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00484",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:45:09.833Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00463",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:45:02.475Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00477",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:44:52.618Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00505",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:44:48.581Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00507",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:44:40.012Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00458",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:44:36.197Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00453",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:44:30.913Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00479",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:40:40.877Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00458",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:40:34.452Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00453",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:40:31.372Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00479",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "practice_stage_completed",
+        "createdAt": "2026-06-04T11:39:54.483Z",
+        "payload": {
+          "themeId": "pentateuch",
+          "difficulty": "baby",
+          "stageIndex": 3,
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "passed": true,
+          "wisdomEarned": 8,
+          "points": 5,
+          "correctCount": 10,
+          "totalQuestions": 10
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:39:53.815Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00492",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:39:49.562Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00498",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:39:45.563Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00491",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:39:38.760Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00508",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:39:36.015Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00493",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:39:31.959Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00499",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:39:25.000Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00475",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:39:10.723Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00489",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:39:06.228Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00478",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:38:56.022Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00452",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "practice_stage_completed",
+        "createdAt": "2026-06-04T11:36:09.734Z",
+        "payload": {
+          "themeId": "pentateuch",
+          "difficulty": "baby",
+          "stageIndex": 2,
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "passed": true,
+          "wisdomEarned": 5,
+          "points": 5,
+          "correctCount": 9,
+          "totalQuestions": 10
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:36:08.084Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00505",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:36:02.143Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00453",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:35:50.194Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00477",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:35:46.007Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00461",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:35:41.662Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00484",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:35:37.240Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00507",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:35:33.130Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00463",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:35:24.122Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00479",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:35:20.832Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00474",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:35:16.628Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00458",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T11:34:58.710Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:34:12.601Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:34:12.584Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:34:12.584Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:27:30.129Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00458",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:27:21.618Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00498",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:27:17.814Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00480",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:27:13.285Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00469",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:27:06.920Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00510",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:27:01.130Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00461",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:26:57.881Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00497",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "practice_stage_completed",
+        "createdAt": "2026-06-04T11:26:36.762Z",
+        "payload": {
+          "themeId": "pentateuch",
+          "difficulty": "baby",
+          "stageIndex": 1,
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "passed": true,
+          "wisdomEarned": 4,
+          "points": 4,
+          "correctCount": 8,
+          "totalQuestions": 9
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:26:24.757Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00476",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:26:21.412Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00454",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:26:16.030Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00493",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:26:11.905Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00503",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:26:06.039Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00492",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:26:02.928Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00472",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:25:59.203Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00485",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:25:54.164Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00490",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:25:43.650Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00474",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T11:25:28.722Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T11:21:35.604Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "practice_stage_completed",
+        "createdAt": "2026-06-04T11:01:12.746Z",
+        "payload": {
+          "themeId": "pentateuch",
+          "difficulty": "baby",
+          "stageIndex": 0,
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "passed": true,
+          "wisdomEarned": 0,
+          "points": 0,
+          "correctCount": 10,
+          "totalQuestions": 10
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:01:10.627Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00487",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:01:05.665Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00505",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:00:58.409Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00497",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:00:52.619Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00503",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:00:48.626Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00500",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:00:40.122Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00509",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:00:34.454Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00502",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:00:27.158Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00484",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:00:23.497Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00482",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T11:00:17.339Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00479",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T10:59:53.638Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "practice_stage_completed",
+        "createdAt": "2026-06-04T10:59:25.120Z",
+        "payload": {
+          "themeId": "pentateuch",
+          "difficulty": "baby",
+          "stageIndex": 0,
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "passed": true,
+          "wisdomEarned": 4,
+          "points": 1,
+          "correctCount": 9,
+          "totalQuestions": 10
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:59:23.937Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00476",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:59:16.861Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00506",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:59:00.495Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00510",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:58:53.695Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00489",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:58:48.961Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00498",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:58:44.662Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00485",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:58:32.516Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00492",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:58:26.399Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00508",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:58:20.785Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00501",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:58:12.538Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00475",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:53:26.945Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00499",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:53:16.690Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00480",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:53:11.870Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00478",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:52:59.766Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00507",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:52:55.512Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00472",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:56.529Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:41.264Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:40.372Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:39.819Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:39.098Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:38.247Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:37.527Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:36.727Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:35.390Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:32.988Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:49:19.935Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:49:19.930Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:08.577Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:49:19.930Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T10:49:08.577Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00473",
+          "subthemeId": "pentateuch-sub-1-sub-2",
+          "nodeId": "pentateuch-sub-1-sub-2",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:49:01.122Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:49:01.117Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:49:01.117Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:48:58.460Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:48:58.454Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T10:48:58.454Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
       {
         "name": "study_path_advanced",
         "createdAt": "2026-06-04T10:36:22.574Z",
