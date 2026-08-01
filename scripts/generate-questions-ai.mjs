@@ -29,10 +29,8 @@ import {
   normalizeAiQuestion,
   makeQuestionId,
 } from './lib/question-db.mjs';
-import {
-  PRACTICE_QUESTIONS_PER_STAGE,
-  STAGE_COUNT_BY_DIFFICULTY,
-} from './lib/practice-config.mjs';
+import { PRACTICE_QUESTIONS_PER_STAGE, STAGE_COUNT_BY_DIFFICULTY } from './lib/practice-config.mjs';
+import { getPracticeStageCount } from './lib/practice-stage-config.mjs';
 import {
   assertSubtopicNodeId,
   buildSubtopicPromptBlock,
@@ -202,9 +200,11 @@ export function resolveContext(opts) {
   return { title: '', description: '', path: [] };
 }
 
-function buildPrompt(context, difficulty, count) {
+function buildPrompt(context, difficulty, count, topicNodeId = null) {
   const subtopicBlock = buildSubtopicPromptBlock(context, difficulty);
-  const stageCount = STAGE_COUNT_BY_DIFFICULTY[difficulty] ?? 5;
+  const stageCount = topicNodeId
+    ? getPracticeStageCount(topicNodeId, difficulty)
+    : (STAGE_COUNT_BY_DIFFICULTY[difficulty] ?? 5);
   const perStage = PRACTICE_QUESTIONS_PER_STAGE;
 
   return `Ти експерт з Біблії. Створи рівно ${count} УНІКАЛЬНИХ вікторинних питань українською.
@@ -281,7 +281,7 @@ async function generateBatch(themeId, difficulty, count, model, provider, topicP
     };
   })();
 
-  const prompt = buildPrompt(context, difficulty, Math.min(count, BATCH_SIZE));
+  const prompt = buildPrompt(context, difficulty, Math.min(count, BATCH_SIZE), topicNodeId);
   console.log(`  ⏳ ${themeId} / ${difficulty}: запит ${Math.min(count, BATCH_SIZE)} питань...`);
 
   const raw = await queryLLM(prompt, { model, provider });

@@ -12,6 +12,7 @@ import { DIFFICULTY_LABELS, type TopicHierarchyMap, type TopicNode } from '../ty
 import { ACHIEVEMENTS } from '../data/achievements';
 import { getAvatarById } from '../data/cosmetics';
 import { TopicMap } from '../components/TopicMap';
+import { ProfileSectionSkeleton } from '../components/skeletons';
 import { PlayerRankCard } from '../components/PlayerRankCard';
 import { MotionDialog, MotionPage, MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
@@ -370,6 +371,7 @@ export function Profile() {
           </div>
           <Icon name="arrow-right" size={18} className={masteryOpen ? styles.chevronUp : styles.chevronDown} />
         </button>
+        {masteryOpen && loadingTopicMap && <ProfileSectionSkeleton />}
         {masteryOpen && !loadingTopicMap && (
           <TopicMap
             topicHierarchy={topicHierarchies}

@@ -21,7 +21,7 @@ export const THEMES: Theme[] = [
   {
     id: 'patriarchs',
     title: 'Патріархи',
-    description: 'Авраам, Ісак, Яків та Йосиф',
+    description: 'Авраам, Ісак, Яків та Йосиф (Пятикнижжя → Буття)',
     icon: '🏕️',
     color: '#8b7355',
     categoryId: 'old-testament',
@@ -45,7 +45,7 @@ export const THEMES: Theme[] = [
   {
     id: 'wisdom-poetry',
     title: 'Мудрість і поезія',
-    description: 'Job, Псалми, Приповісті, Еклesiаст та Пісня',
+    description: 'Йов, Псалми, Приповісті, Екклесіаст та Пісня',
     icon: '📖',
     color: '#7a5c8a',
     categoryId: 'old-testament',
@@ -59,17 +59,9 @@ export const THEMES: Theme[] = [
     categoryId: 'old-testament',
   },
   {
-    id: 'mosaic-law',
-    title: 'Закон Мойсея',
-    description: 'Заповіді, устави та святині',
-    icon: '⚖️',
-    color: '#5c4d7a',
-    categoryId: 'old-testament',
-  },
-  {
     id: 'commandments',
     title: 'Десять заповідей',
-    description: 'Божий закон на Синаї',
+    description: 'Божий закон на Синаї (Пятикнижжя → Вихід → Завіт на Синаї)',
     icon: '📋',
     color: '#4a5568',
     categoryId: 'old-testament',

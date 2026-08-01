@@ -6,6 +6,7 @@ import { generateRecommendations, formatRecommendation, getRecommendationLink } 
 import type { Recommendation } from '../types';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
+import { ListPageSkeleton } from '../components/skeletons';
 import styles from './StudyHub.module.css';
 
 export function StudyHub() {
@@ -33,7 +34,9 @@ export function StudyHub() {
         <p>Обери режим навчання на сьогодні</p>
       </header>
 
-      {!loading && (
+      {loading ? (
+        <ListPageSkeleton cards={2} />
+      ) : (
         <MotionStagger as="ul" className={styles.modesList} enter={shouldEnter}>
           <MotionStaggerItem as="li">
             <Link to="/play/study/themes" className={styles.card}>

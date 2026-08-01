@@ -99,18 +99,18 @@ export const QUESTIONS: Question[] = [
   q('old-testament', 'youth', 4, 'Яку книгу написав Соломон про мудрість?', ['Притчі', 'Псалми', 'Вихід', 'Суддів'], 0, 'Прит. 1:1'),
   q('old-testament', 'youth', 5, 'Хто був «батьком багатьох народів»?', ['Авраам', 'Ной', 'Мойсей', 'Ісав'], 0, 'Бут. 17:5'),
 
-  // Закон Мойсея
-  q('mosaic-law', 'child', 1, 'Скільки заповідей на кам’яних скрижалях?', ['10', '7', '12', '613'], 0, 'Вих. 20'),
-  q('mosaic-law', 'child', 2, 'Яке свято згадує вихід з Єгипту?', ['Пасха', 'Труби', 'Кущі', 'Завіщення'], 0, 'Вих. 12'),
-  q('mosaic-law', 'child', 3, 'Хто отримав Закон на горі?', ['Мойсей', 'Аарон', 'Ісус Навин', 'Самуїл'], 0, 'Вих. 19:20'),
-  q('mosaic-law', 'child', 4, 'Що не можна робити в суботу?', ['Працювати', 'Молитися', 'Читати', 'Їсти'], 0, 'Вих. 20:10'),
-  q('mosaic-law', 'child', 5, 'Яка скотина була «жертвою за гріх»?', ['Козел / ягня', 'Голуб', 'Риба', 'Хліб'], 0, 'Лев. 4'),
-  q('mosaic-law', 'youth', 2, 'Який рік — прощення боргів?', ['Ювілейний', 'Суботній', 'Святковий', 'Врожайний'], 0, 'Лев. 25'),
-  q('mosaic-law', 'youth', 4, 'Що було на ковчезі завіту?', ['Херувими', 'Агнці', 'Зірки', 'Хрест'], 0, 'Вих. 25:18'),
-  q('mosaic-law', 'youth', 5, 'Яке місто — «місто притулку»?', ['Города-втечі', 'Єрусалим', 'Сихем', 'Віфлеєм'], 0, 'Чис. 35'),
-  q('mosaic-law', 'student', 1, 'Скільки книг у Торі (Пентатеух)?', ['5', '4', '12', '39'], 0),
-  q('mosaic-law', 'student', 4, 'Яка жертва — «цілопалення»?', ['Ольта', 'Хліб', 'Пити', 'Мир'], 0, 'Лев. 1'),
-  q('mosaic-law', 'student', 5, 'Що забороняла третя заповідь?', ['Легкомовність імені Бога', 'Крадіжку', 'Брехню', 'Зависть'], 0, 'Вих. 20:7'),
+  // Пятикнижжя
+  q('pentateuch', 'child', 1, 'Скільки заповідей на кам’яних скрижалях?', ['10', '7', '12', '613'], 0, 'Вих. 20'),
+  q('pentateuch', 'child', 2, 'Яке свято згадує вихід з Єгипту?', ['Пасха', 'Труби', 'Кущі', 'Завіщення'], 0, 'Вих. 12'),
+  q('pentateuch', 'child', 3, 'Хто отримав Закон на горі?', ['Мойсей', 'Аарон', 'Ісус Навин', 'Самуїл'], 0, 'Вих. 19:20'),
+  q('pentateuch', 'child', 4, 'Що не можна робити в суботу?', ['Працювати', 'Молитися', 'Читати', 'Їсти'], 0, 'Вих. 20:10'),
+  q('pentateuch', 'child', 5, 'Яка скотина була «жертвою за гріх»?', ['Козел / ягня', 'Голуб', 'Риба', 'Хліб'], 0, 'Лев. 4'),
+  q('pentateuch', 'youth', 2, 'Який рік — прощення боргів?', ['Ювілейний', 'Суботній', 'Святковий', 'Врожайний'], 0, 'Лев. 25'),
+  q('pentateuch', 'youth', 4, 'Що було на ковчезі завіту?', ['Херувими', 'Агнці', 'Зірки', 'Хрест'], 0, 'Вих. 25:18'),
+  q('pentateuch', 'youth', 5, 'Яке місто — «місто притулку»?', ['Города-втечі', 'Єрусалим', 'Сихем', 'Віфлеєм'], 0, 'Чис. 35'),
+  q('pentateuch', 'student', 1, 'Скільки книг у Торі (Пентатеух)?', ['5', '4', '12', '39'], 0),
+  q('pentateuch', 'student', 4, 'Яка жертва — «цілопалення»?', ['Ольта', 'Хліб', 'Пити', 'Мир'], 0, 'Лев. 1'),
+  q('pentateuch', 'student', 5, 'Що забороняла третя заповідь?', ['Легкомовність імені Бога', 'Крадіжку', 'Брехню', 'Зависть'], 0, 'Вих. 20:7'),
 
   // Апостол Павло
   q('paul', 'child', 1, 'Як звали Павла до навернення?', ['Савл', 'Симон', 'Варнава', 'Тимофій'], 0, 'Дії 13:9'),
@@ -300,6 +300,16 @@ export const QUESTIONS: Question[] = [
 
 export const ALL_QUESTIONS: Question[] = [...QUESTIONS, ...EXTRA_QUESTIONS].map(withEmbeddedTopicTags);
 
+type QuestionDbLoaderModule = typeof import('./questionDbLoader');
+
+async function importQuestionDbLoader(): Promise<QuestionDbLoaderModule> {
+  if (typeof window !== 'undefined') {
+    return import('./questionDbLoader');
+  }
+  const serverLoader = ['..', '..', 'server', 'questionDbLoader.ts'].join('/');
+  return import(/* @vite-ignore */ serverLoader) as Promise<QuestionDbLoaderModule>;
+}
+
 let allQuestionsCache: Question[] | null = null;
 let allQuestionsPromise: Promise<Question[]> | null = null;
 
@@ -308,7 +318,7 @@ export async function getAllQuestionsAsync(): Promise<Question[]> {
   if (allQuestionsCache) return allQuestionsCache;
   if (!allQuestionsPromise) {
     allQuestionsPromise = (async () => {
-      const { loadAllAiQuestions } = await import('./questionDbLoader');
+      const { loadAllAiQuestions } = await importQuestionDbLoader();
       const ai = await loadAllAiQuestions();
       const byId = new Map<string, Question>();
       for (const q of ALL_QUESTIONS) byId.set(q.id, q);
@@ -440,7 +450,7 @@ function applyExcludeIds(pool: Question[], excludeIds: string[] | undefined, min
   return filtered.length >= minKeep ? filtered : pool;
 }
 
-function pickQuestionsFromPool(
+export function pickQuestionsFromPool(
   pool: Question[],
   count = QUESTIONS_PER_LEVEL,
   options?: PracticePickOptions,
@@ -492,7 +502,7 @@ function resolveStageQuestionIds(
   return shuffled.slice(0, Math.min(count, shuffled.length)).map((q) => q.id);
 }
 
-function pickQuestionsForStage(
+export function pickQuestionsForStage(
   pool: Question[],
   stageIndex: number,
   count = PRACTICE_QUESTIONS_PER_STAGE,
@@ -528,7 +538,7 @@ export function getStageQuestionCount(poolSize: number, stageIndex: number, coun
 }
 
 async function loadAiQuestionsForThemes(themeIds: Iterable<string>): Promise<Question[]> {
-  const { loadAiQuestionsForTheme } = await import('./questionDbLoader');
+  const { loadAiQuestionsForTheme } = await importQuestionDbLoader();
   const merged: Question[] = [];
   for (const themeId of themeIds) {
     try {

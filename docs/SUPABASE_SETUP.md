@@ -33,3 +33,26 @@ curl http://localhost:3001/health/storage
 - `GET/PUT /stats/:userId`
 
 Клієнт: zustand (local cache) + TanStack Query (sync з API).
+
+## 5. Питання (банк у Postgres)
+
+Після оновлення схеми (`server/db/schema.sql` — таблиці `questions`, `question_exclusions`, `question_overrides`):
+
+```bash
+npm run questions:import-supabase
+```
+
+Публічні ендпоінти (через той самий Express, без `@supabase/supabase-js` на клієнті):
+
+- `GET /api/questions?themeId=&difficulty=&count=`
+- `GET /api/questions/by-ids?ids=id1,id2`
+- `GET /api/questions/counts?themeId=`
+- `GET /api/questions/meta`
+
+`QUESTIONS_PROVIDER=json` — fallback на локальні JSON (dev без БД). За замовчуванням — SQL, якщо задано `DATABASE_URL`.
+
+Перевірка:
+
+```bash
+curl "http://localhost:3001/api/questions?themeId=gospels&difficulty=youth&count=5"
+```

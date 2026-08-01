@@ -2,17 +2,12 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getThemeById } from '../data/themes';
+import { invalidateAllQuestionsCache } from '../data/questions';
 import {
-  getAllQuestionsAsync,
-  getQuestionsByIdsOrdered,
-  getQuestionsForLevelAsync,
-  getQuestionsForNodeAsync,
-  getQuestionsForCategoryAsync,
-  getQuestionsForStageAsync,
-  getQuestionsForNodeStageAsync,
-  getQuestionsForCategoryStageAsync,
-  invalidateAllQuestionsCache,
-} from '../data/questions';
+  fetchQuestionsByIds,
+  fetchQuestionsForSession,
+  fetchReviewQuestions,
+} from '../repos/questionsRepo';
 import { buildPracticePickOptions } from '../lib/practiceQuestionPick';
 import { usePlayer } from '../context/PlayerContext';
 import { useToast } from '../components/Toast';
@@ -39,10 +34,12 @@ import {
   findPracticeTrack,
   getOrCreatePracticeTrack,
   canPlayDifficulty,
+  getPracticeStageCount,
 } from '../lib/practiceProgression';
 import { studyRepo } from '../repos/studyRepo';
-import { loadAllTopicHierarchies, findRootByThemeId } from '../data/topicDbLoader';
+import { loadAllTopicHierarchies } from '../data/topicDbLoader';
 import { InfoTooltip } from '../components/InfoTooltip';
+import { QuizPoolSkeleton } from '../components/skeletons';
 import { STAGE_POINTS_TOOLTIP } from '../lib/practiceScoringHelp';
 import {
   AnswerOptionButton,
@@ -56,6 +53,7 @@ import {
   loadGameSession,
   type QuizRunSession,
 } from '../lib/gameSession';
+import { usePracticeNodeOverridesStore } from '../stores/practiceNodeOverridesStore';
 import {
   answerFeedbackVariants,
   answerRevealFlashVariants,
@@ -102,6 +100,9 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   const validDiff = difficulty && isValidDifficulty(difficulty) ? difficulty : null;
   const stageIndex = stageIndexParam != null ? Number(stageIndexParam) : 0;
   const effectiveNodeId = nodeId ?? null;
+  const nodeStageOverrides = usePracticeNodeOverridesStore((s) =>
+    effectiveNodeId ? s.overrides[effectiveNodeId] : undefined,
+  );
   const isStageRoute = stageIndexParam != null;
 
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -122,8 +123,13 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   const [editOpen, setEditOpen] = useState(false);
   const [editError, setEditError] = useState<string | null>(null);
   const [editSaving, setEditSaving] = useState(false);
-  const [questionTimeLeft, setQuestionTimeLeft] = useState(QUESTION_TIME);
+  const [deadlineAt, setDeadlineAt] = useState<number | null>(null);
+  const [timerTick, setTimerTick] = useState(0);
   const questionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const questionTimeLeft =
+    deadlineAt != null
+      ? Math.max(0, Math.ceil((deadlineAt - Date.now()) / 1000))
+      : QUESTION_TIME;
   const sessionRestoredRef = useRef(false);
   const questionsLoadedSessionRef = useRef<string | null>(null);
   const practiceTracksRef = useRef(profile.practiceTracks);
@@ -149,7 +155,13 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     setFinished(saved.finished);
     setShowResult(saved.showResult);
     setSelected(saved.selected);
-    setQuestionTimeLeft(saved.questionTimeLeft);
+    if (saved.deadlineAt != null) {
+      setDeadlineAt(saved.deadlineAt);
+    } else if (saved.questionTimeLeft != null) {
+      setDeadlineAt(Date.now() + saved.questionTimeLeft * 1000);
+    } else {
+      setDeadlineAt(Date.now() + QUESTION_TIME * 1000);
+    }
     if (saved.earnedPoints != null) setEarnedPoints(saved.earnedPoints);
     if (saved.earnedWisdom != null) setEarnedWisdom(saved.earnedWisdom);
     if (saved.stagePassed != null) setStagePassed(saved.stagePassed);
@@ -168,7 +180,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       finished,
       showResult,
       selected,
-      questionTimeLeft,
+      deadlineAt: deadlineAt ?? undefined,
       earnedPoints,
       earnedWisdom,
       stagePassed,
@@ -184,7 +196,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       finished,
       showResult,
       selected,
-      questionTimeLeft,
+      deadlineAt,
       earnedPoints,
       earnedWisdom,
       stagePassed,
@@ -218,7 +230,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     const tryRestore = async (): Promise<boolean> => {
       const saved = loadGameSession<QuizRunSession>(sessionKey);
       if (!saved?.questionIds.length) return false;
-      const restored = await getQuestionsByIdsOrdered(saved.questionIds);
+      const restored = await fetchQuestionsByIds(saved.questionIds);
       if (restored.length !== saved.questionIds.length) return false;
       if (!cancelled) applyQuizSession(saved, restored);
       return true;
@@ -262,9 +274,8 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
       if (mode === 'review') {
         const history = studyRepo.getAnswerHistory();
-        const wrongQuestionIds = new Set(history.filter((a) => !a.isCorrect).map((a) => a.questionId));
-        const allQuestions = await getAllQuestionsAsync();
-        const wrongQuestions = allQuestions.filter((q) => wrongQuestionIds.has(q.id));
+        const wrongIds = [...new Set(history.filter((a) => !a.isCorrect).map((a) => a.questionId))];
+        const wrongQuestions = await fetchReviewQuestions(wrongIds);
         wrongQuestions.sort(() => Math.random() - 0.5);
         if (!cancelled) {
           setQuestions(wrongQuestions);
@@ -285,74 +296,33 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
       const questionCount = isStageRoute ? PRACTICE_QUESTIONS_PER_STAGE : QUESTIONS_PER_LEVEL;
 
-      if (effectiveNodeId) {
+      if (effectiveNodeId && !topicHierarchy) {
         try {
-          if (!topicHierarchy) {
-            topicHierarchy = await loadAllTopicHierarchies();
-          }
-          const targetNode = findNodeInHierarchies(topicHierarchy, effectiveNodeId);
-
-          if (targetNode?.aggregateThemeIds && validDiff) {
-            const aggQuestions = isStageRoute
-              ? await getQuestionsForCategoryStageAsync(
-                  targetNode.aggregateThemeIds,
-                  validDiff,
-                  practiceStageIndex,
-                  questionCount,
-                  pickOptions,
-                )
-              : await getQuestionsForCategoryAsync(
-                  themeId ?? targetNode.aggregateThemeIds[0],
-                  targetNode.aggregateThemeIds,
-                  validDiff,
-                  questionCount,
-                  pickOptions,
-                );
-            if (!cancelled) {
-              setQuestions(aggQuestions);
-              setLoading(false);
-              questionsLoadedSessionRef.current = sessionKey;
-            }
-            return;
-          }
-
-          const rootNode = findRootByThemeId(topicHierarchy, themeId ?? '');
-          if (rootNode) {
-            const nodeQuestions = isStageRoute
-              ? await getQuestionsForNodeStageAsync(
-                  effectiveNodeId,
-                  rootNode,
-                  validDiff,
-                  practiceStageIndex,
-                  questionCount,
-                  false,
-                  false,
-                  pickOptions,
-                )
-              : await getQuestionsForNodeAsync(
-                  effectiveNodeId,
-                  rootNode,
-                  validDiff ?? undefined,
-                  questionCount,
-                  false,
-                  false,
-                  pickOptions,
-                );
-            if (!cancelled) {
-              setQuestions(nodeQuestions);
-              setLoading(false);
-              questionsLoadedSessionRef.current = sessionKey;
-            }
-            return;
-          }
-        } catch (error) {
-          console.error('Failed to load questions for node:', error);
+          topicHierarchy = await loadAllTopicHierarchies();
+        } catch {
+          /* optional */
         }
       }
 
-      const qs = isStageRoute
-        ? await getQuestionsForStageAsync(themeId, validDiff, practiceStageIndex, questionCount, pickOptions)
-        : await getQuestionsForLevelAsync(themeId, validDiff, questionCount, pickOptions);
+      const targetNode =
+        topicHierarchy && effectiveNodeId
+          ? findNodeInHierarchies(topicHierarchy, effectiveNodeId)
+          : null;
+
+      const qs = await fetchQuestionsForSession({
+        themeId,
+        themeIds: targetNode?.aggregateThemeIds,
+        difficulty: validDiff,
+        topicNodeId: effectiveNodeId ?? undefined,
+        nodeId: effectiveNodeId,
+        count: questionCount,
+        stageIndex: isStageRoute ? practiceStageIndex : undefined,
+        pickOptions,
+        practiceTrack: pickOptions?.practiceTrack,
+        excludeIds: pickOptions?.excludeIds,
+        seed: pickOptions?.runNonce,
+      });
+
       if (!cancelled) {
         setQuestions(qs);
         setLoading(false);
@@ -378,13 +348,19 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
   const backToThemeUrl = `/play/study/themes/${themeId}${effectiveNodeId ? `/${effectiveNodeId}` : ''}`;
 
+  const maxStageIndex = useMemo(() => {
+    if (!validDiff) return 0;
+    return Math.max(0, getPracticeStageCount(effectiveNodeId, validDiff) - 1);
+  }, [validDiff, effectiveNodeId, nodeStageOverrides]);
+
   const stageAccessBlocked = useMemo(() => {
     if (mode !== 'practice' || !isStageRoute || !validDiff || !themeId) return false;
     if (!canPlayDifficulty(profile.playerRank, validDiff)) return true;
+    if (stageIndex < 0 || stageIndex > maxStageIndex) return true;
     const track = findPracticeTrack(profile.practiceTracks ?? [], themeId, effectiveNodeId, validDiff)
       ?? getOrCreatePracticeTrack([], themeId, effectiveNodeId, validDiff);
     return !isStageUnlocked(track, stageIndex);
-  }, [mode, isStageRoute, validDiff, themeId, profile, effectiveNodeId, stageIndex]);
+  }, [mode, isStageRoute, validDiff, themeId, profile, effectiveNodeId, stageIndex, maxStageIndex]);
 
   const clearQuestionTimer = useCallback(() => {
     if (questionTimerRef.current) {
@@ -395,15 +371,9 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
   const startQuestionTimer = useCallback(() => {
     clearQuestionTimer();
-    setQuestionTimeLeft(QUESTION_TIME);
+    setDeadlineAt(Date.now() + QUESTION_TIME * 1000);
     questionTimerRef.current = setInterval(() => {
-      setQuestionTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearQuestionTimer();
-          return 0;
-        }
-        return prev - 1;
-      });
+      setTimerTick((t) => t + 1);
     }, 1000);
   }, [clearQuestionTimer]);
 
@@ -420,6 +390,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   }, [index, showResult, loading, finished, current, startQuestionTimer, clearQuestionTimer]);
 
   useEffect(() => {
+    void timerTick;
     if (questionTimeLeft > 0 || showResult || !current || loading || finished) return;
     clearQuestionTimer();
     setSelected(-1);
@@ -447,7 +418,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     (optionIndex: number) => {
       if (showResult || !current) return;
       clearQuestionTimer();
-      setQuestionTimeLeft(QUESTION_TIME);
+      setDeadlineAt(Date.now() + QUESTION_TIME * 1000);
       setSelected(optionIndex);
       setShowResult(true);
       recordAnswerEvent({
@@ -474,7 +445,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
     if (index < questions.length - 1) {
       clearQuestionTimer();
-      setQuestionTimeLeft(QUESTION_TIME);
+      setDeadlineAt(Date.now() + QUESTION_TIME * 1000);
       setIndex((i) => i + 1);
       setSelected(null);
       setShowResult(false);
@@ -546,7 +517,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       setSelected(null);
       setExplanationOpen(false);
       clearQuestionTimer();
-      setQuestionTimeLeft(QUESTION_TIME);
+      setDeadlineAt(Date.now() + QUESTION_TIME * 1000);
     } catch (error) {
       setEditError(
         error instanceof Error
@@ -579,7 +550,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       setSelected(null);
       setExplanationOpen(false);
       clearQuestionTimer();
-      setQuestionTimeLeft(QUESTION_TIME);
+      setDeadlineAt(Date.now() + QUESTION_TIME * 1000);
     } catch (error) {
       setEditError(
         error instanceof Error
@@ -594,10 +565,10 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   const timerProgress = questionTimeLeft / QUESTION_TIME;
   const timerColor =
     timerProgress > 0.5
-      ? '#4a9c5d'
+      ? 'var(--success)'
       : timerProgress > 0.25
-        ? '#c9a227'
-        : '#e05050';
+        ? 'var(--gold)'
+        : 'var(--danger)';
 
   const timerRadius = 60;
   const timerCircumference = 2 * Math.PI * timerRadius;
@@ -606,7 +577,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   if (loading) {
     return (
       <section className={styles.page}>
-        <p className={styles.errorMsg}>Завантаження питань…</p>
+        <QuizPoolSkeleton />
       </section>
     );
   }
@@ -679,11 +650,6 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
           {mode === 'review' ? (
             <p className={styles.resultTheme}>Робота над помилками</p>
-          ) : effectiveNodeId && (effectiveNodeId === 'ot-all' || effectiveNodeId === 'nt-all') ? (
-            <p className={styles.resultTheme}>
-              📚 Усі питання · {validDiff && DIFFICULTY_LABELS[validDiff]}
-              {isStageRoute ? ` · Етап ${stageIndex + 1}` : ''}
-            </p>
           ) : (
             <p className={styles.resultTheme}>
               {theme?.icon} {theme?.title} · {validDiff && DIFFICULTY_LABELS[validDiff]}
@@ -804,9 +770,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
             <span className={styles.themeBadge}>
               {mode === 'review'
                 ? '🧠 Робота над помилками'
-                : effectiveNodeId && (effectiveNodeId === 'ot-all' || effectiveNodeId === 'nt-all')
-                  ? '📚 Усі питання'
-                  : `${theme?.icon} ${theme?.title}`}
+                : `${theme?.icon} ${theme?.title}`}
             </span>
           </div>
         </div>

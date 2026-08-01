@@ -1,4 +1,5 @@
-import { getMixedQuestionsByDifficulty, getQuestionsByIdsOrdered } from '../../data/questions';
+import { getMixedQuestionsByDifficulty } from '../../data/questions';
+import { fetchQuestionsByIds } from '../../repos/questionsRepo';
 import type { Difficulty, Question } from '../../types';
 import {
   buildMillionaireSessionKey,
@@ -76,7 +77,7 @@ export async function loadMillionaireRun(): Promise<{
 } | null> {
   const saved = loadGameSession<MillionaireRunSession>(MILLIONAIRE_SESSION_KEY);
   if (!saved?.questionIds.length) return null;
-  const questions = await getQuestionsByIdsOrdered(saved.questionIds);
+  const questions = await fetchQuestionsByIds(saved.questionIds);
   if (questions.length < 1 || questions.length !== saved.questionIds.length) return null;
   return { questions, session: saved };
 }

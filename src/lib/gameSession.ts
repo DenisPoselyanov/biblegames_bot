@@ -15,7 +15,10 @@ export interface QuizRunSession {
   finished: boolean;
   showResult: boolean;
   selected: number | null;
-  questionTimeLeft: number;
+  /** Unix ms when current question timer ends (preferred over questionTimeLeft) */
+  deadlineAt?: number;
+  /** @deprecated restored into deadlineAt */
+  questionTimeLeft?: number;
   earnedPoints?: number;
   earnedWisdom?: number;
   stagePassed?: boolean;

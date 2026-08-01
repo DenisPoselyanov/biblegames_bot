@@ -147,6 +147,46 @@
           "children": []
         }
       ]
+    },
+    {
+      "id": "gospels-sub-5",
+      "title": "Ключові постаті",
+      "description": "Люди, які зустріли Ісуса в Євангеліях — від родини до правителів і учнів.",
+      "icon": "👤",
+      "children": [
+        { "id": "gospels-sub-5-sub-1", "title": "Іван Хреститель", "description": "Проповідник покаяння, який хрестив Ісуса в Йордані.", "icon": "💧", "children": [] },
+        { "id": "gospels-sub-5-sub-2", "title": "Марія", "description": "Мати Ісуса, обрана Богом для народження Месії.", "icon": "👩", "children": [] },
+        { "id": "gospels-sub-5-sub-3", "title": "Йосиф", "description": "Наречений Марії, опікун дитинства Ісуса.", "icon": "🪚", "children": [] },
+        { "id": "gospels-sub-5-sub-4", "title": "Марія Магдалина", "description": "Вірна послідовниця, якій Ісус з'явився після воскресіння.", "icon": "🌅", "children": [] },
+        { "id": "gospels-sub-5-sub-5", "title": "Никодим", "description": "Фарисей, який прийшов до Ісуса вночі та допомагав поховати його.", "icon": "🌙", "children": [] },
+        { "id": "gospels-sub-5-sub-6", "title": "Закхей", "description": "Митар з Єрихону, якого Ісус відвідав у домі.", "icon": "🌳", "children": [] },
+        { "id": "gospels-sub-5-sub-7", "title": "Лазар", "description": "Друг Ісуса з Віфанії, якого Ісус воскресив із мертвих.", "icon": "🪦", "children": [] },
+        { "id": "gospels-sub-5-sub-8", "title": "Марта і Марія", "description": "Сестри Лазаря, гостинні учениці Ісуса в Віфанії.", "icon": "🏠", "children": [] },
+        { "id": "gospels-sub-5-sub-9", "title": "Пилат", "description": "Римський намісник, який засудив Ісуса на розп'яття.", "icon": "⚖️", "children": [] },
+        { "id": "gospels-sub-5-sub-10", "title": "Ірод Антипа", "description": "Тетрарх Галілеї, перед яким Ісус мовчав на суді.", "icon": "👑", "children": [] },
+        { "id": "gospels-sub-5-sub-11", "title": "Каяфа", "description": "Первосвященик, який організував суд над Ісусом.", "icon": "🕍", "children": [] },
+        { "id": "gospels-sub-5-sub-12", "title": "Юда Іскаріот", "description": "Учень, який зрадив Ісуса за тридцять срібняків.", "icon": "🪙", "children": [] },
+        {
+          "id": "gospels-sub-5-sub-apostles",
+          "title": "Дванадцять апостолів",
+          "description": "Учні, яких Ісус покликав для проповіді Царства.",
+          "icon": "👥",
+          "children": [
+            { "id": "gospels-sub-5-sub-apostles-1", "title": "Петро", "description": "Рибаль, камінь церкви, який тричі заперечив Ісуса.", "icon": "🪨", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-2", "title": "Андрій", "description": "Брат Петра, перший, хто пішов за Ісусом.", "icon": "🎣", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-3", "title": "Іван", "description": "Улюблений учень, який стояв біля хреста.", "icon": "❤️", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-4", "title": "Яків", "description": "Син Зеведеєв, один із трьох на Переображенні.", "icon": "⚡", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-5", "title": "Филип", "description": "Учень з Віфсаїди, який привів Натанаїла до Ісуса.", "icon": "📍", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-6", "title": "Варфоломій", "description": "Також Натанаїл; Ісус бачив його під фігою.", "icon": "🌳", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-7", "title": "Матвій", "description": "Митар, покликаний зі свого прилавка.", "icon": "📜", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-8", "title": "Фома", "description": "Учень, який засумнівався у воскресінні, поки не побачив рани.", "icon": "✋", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-9", "title": "Яків Алфеєв", "description": "Син Алфея, один із дванадцяти.", "icon": "👤", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-10", "title": "Симон Зилот", "description": "Учень, який належав до ревнителів.", "icon": "🔥", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-11", "title": "Іуда Тадей", "description": "Також Леввій; автор однойменного послання в традиції.", "icon": "📖", "children": [] },
+            { "id": "gospels-sub-5-sub-apostles-12", "title": "Матія", "description": "Обраний на місце Юди Іскаріота після зради.", "icon": "🎲", "children": [] }
+          ]
+        }
+      ]
     }
   ]
 }

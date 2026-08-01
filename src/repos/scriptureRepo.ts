@@ -13,9 +13,13 @@ export async function fetchScripturePassage(
   if (!hasApi() || !reference.trim()) return null;
   const params = new URLSearchParams({ ref: reference.trim() });
   if (translation) params.set('translation', translation);
-  const res = await fetch(apiUrl(`/api/scripture?${params.toString()}`));
-  if (!res.ok) return null;
-  return (await res.json()) as ScripturePassage;
+  try {
+    const res = await fetch(apiUrl(`/api/scripture?${params.toString()}`));
+    if (!res.ok) return null;
+    return (await res.json()) as ScripturePassage;
+  } catch {
+    return null;
+  }
 }
 
 export async function fetchDailyScripture(translation?: BollsTranslation): Promise<DailyScripture | null> {
@@ -23,7 +27,11 @@ export async function fetchDailyScripture(translation?: BollsTranslation): Promi
   const params = new URLSearchParams();
   if (translation) params.set('translation', translation);
   const qs = params.toString();
-  const res = await fetch(apiUrl(`/api/scripture/daily${qs ? `?${qs}` : ''}`));
-  if (!res.ok) return null;
-  return (await res.json()) as DailyScripture;
+  try {
+    const res = await fetch(apiUrl(`/api/scripture/daily${qs ? `?${qs}` : ''}`));
+    if (!res.ok) return null;
+    return (await res.json()) as DailyScripture;
+  } catch {
+    return null;
+  }
 }

@@ -1,5 +1,33 @@
 [
   {
+    "id": "ks_1780739186737_hdnzl2",
+    "code": "GJRMCP",
+    "finishedAt": "2026-06-06T09:46:26.737Z",
+    "settings": {
+      "themeIds": [
+        "geography",
+        "old-testament",
+        "patriarchs",
+        "kings"
+      ],
+      "questionCount": 10,
+      "timePerQuestion": 20,
+      "difficulty": "baby",
+      "flowMode": "auto",
+      "scoringMode": "classic",
+      "thinkTimeSec": 5,
+      "hostParticipates": true
+    },
+    "questionCount": 10,
+    "players": [
+      {
+        "name": "Sasha",
+        "score": 0,
+        "rank": 1
+      }
+    ]
+  },
+  {
     "id": "ks_1780561332911_zy1wpc",
     "code": "JPCQTG",
     "finishedAt": "2026-06-04T08:22:12.911Z",

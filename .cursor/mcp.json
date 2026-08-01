@@ -39,6 +39,12 @@
         "-y",
         "@modelcontextprotocol/server-sequential-thinking@2025.12.18"
       ]
+    },
+    "open-pencil": {
+      "command": "C:\\Users\\PoselyanovLaptop\\AppData\\Roaming\\npm\\openpencil-mcp.cmd",
+      "env": {
+        "OPENPENCIL_MCP_ROOT": "E:\\Portfolio\\Denis Poselyanov\\Telegram\\biblegames_bot"
+      }
     }
   }
 }

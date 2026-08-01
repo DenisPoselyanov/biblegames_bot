@@ -22,7 +22,7 @@ export const STUDY_THEME_GROUPS: StudyThemeGroup[] = [
     icon: '📜',
     subthemes: [
       { id: 'patriarchs-path', title: 'Патріархи', description: 'Авраам, Ісак, Яків і Йосиф', icon: '🏕️', themeId: 'patriarchs' },
-      { id: 'sinai-law', title: 'Закон Мойсея', description: 'Заповіді, устави та святині', icon: '⚖️', themeId: 'mosaic-law' },
+      { id: 'pentateuch-torah', title: 'Пятикнижжя', description: 'Тора: від Буття до Повторення Закону', icon: '📜', themeId: 'pentateuch' },
       { id: 'kings-and-judges', title: 'Царі та Судді', description: 'Лідери Ізраїля в епоху випробувань', icon: '👑', themeId: 'kings' },
     ],
   },

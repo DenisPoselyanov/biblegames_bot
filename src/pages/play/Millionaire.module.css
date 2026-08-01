@@ -246,15 +246,15 @@
 }
 
 .option.correct {
-  border-color: #4a9c5d;
-  background: rgba(74, 156, 93, 0.18);
-  color: #9ee0ad;
+  border-color: var(--success);
+  background: var(--success-bg);
+  color: var(--success-text);
 }
 
 .option.wrong {
-  border-color: #9c4a4a;
-  background: rgba(156, 74, 74, 0.18);
-  color: #e8b0b0;
+  border-color: var(--danger);
+  background: var(--danger-bg);
+  color: var(--danger-text);
 }
 
 .actionRow {
@@ -391,7 +391,7 @@
   width: 100%;
   border: 0;
   background: var(--gold);
-  color: #1b1608;
+  color: var(--on-primary);
   margin-top: 1rem;
 }
 

@@ -1,7 +1,7 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: var(--z-modal);
   display: grid;
   place-items: end center;
   padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
@@ -128,7 +128,7 @@
   border-radius: 10px;
   border: 1px solid rgba(220, 80, 80, 0.45);
   background: rgba(220, 80, 80, 0.12);
-  color: #f08080;
+  color: var(--danger-text);
   font-size: 0.82rem;
   line-height: 1.4;
 }
@@ -150,7 +150,7 @@
 .deleteBtn {
   border: 1px solid rgba(220, 80, 80, 0.45);
   background: rgba(220, 80, 80, 0.12);
-  color: #f08080;
+  color: var(--danger-text);
 }
 
 .saveBtn {

@@ -81,7 +81,7 @@
 .progressBar span {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, var(--gold), #e8c547);
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
   border-radius: 2px;
   transition: width var(--duration-normal) var(--ease-out);
 }

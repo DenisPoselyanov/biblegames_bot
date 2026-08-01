@@ -8,7 +8,10 @@ import type {
 } from '../src/types/kahoot';
 import { normalizeKahootSettings } from '../src/types/kahoot';
 import { buildPlayerRanks } from '../src/lib/kahootRanking';
-import { getKahootQuestionsByIdsSync, getKahootQuestionsSync } from '../src/data/kahootQuestions';
+import {
+  pickKahootQuestions,
+  pickKahootQuestionsByIds,
+} from './services/questionService';
 import { calcQuestionPoints } from './kahootScoring';
 
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -247,7 +250,7 @@ export class RoomManager {
     return state;
   }
 
-  startGame(hostSocketId: string): KahootRoomState {
+  async startGame(hostSocketId: string): Promise<KahootRoomState> {
     const room = this.getRoomBySocket(hostSocketId);
     if (!room) throw new Error('Кімнату не знайдено');
     if (room.hostId !== hostSocketId) throw new Error('Лише ведучий може почати гру');
@@ -260,8 +263,11 @@ export class RoomManager {
     }
 
     const questions = room.settings.questionIds?.length
-      ? getKahootQuestionsByIdsSync(room.settings.questionIds, room.settings.questionCount)
-      : getKahootQuestionsSync(
+      ? await pickKahootQuestionsByIds(
+          room.settings.questionIds,
+          room.settings.questionCount,
+        )
+      : await pickKahootQuestions(
           room.settings.themeIds,
           room.settings.questionCount,
           room.settings.difficulty,

@@ -9,5 +9,5 @@
     "noEmit": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["./**/*", "../src/data/kahootQuestions.ts", "../src/data/questions.ts", "../src/data/questions-extra.ts", "../src/types/**/*"]
+  "include": ["./**/*", "../src/data/kahootQuestions.ts", "../src/data/questions.ts", "../src/data/questions-extra.ts", "../src/data/topicDbLoader.shared.ts", "../src/data/questionDbLoader.shared.ts", "../src/types/**/*"]
 }

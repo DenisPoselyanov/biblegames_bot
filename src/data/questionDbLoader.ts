@@ -1,35 +1,11 @@
 import type { Question } from '../types';
-import { normalizeQuestionReference } from '../lib/bibleReference';
+import { normalizeQuestion, themeIdFromPath } from './questionDbLoader.shared';
 
-/** Ліниве завантаження JSON з data/question-db (тисячі питань без важкого старту) */
+/** Vite replaces import.meta.glob at build time — must not be behind a runtime check. */
 const dbModules = import.meta.glob('../../data/question-db/*.json');
 
 const cache = new Map<string, Question[]>();
-let loadPromises = new Map<string, Promise<Question[]>>();
-
-function normalizeCorrectIndex(value: unknown): number {
-  if (typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 3) {
-    return value;
-  }
-  return 0;
-}
-
-function normalizeQuestion(q: Question, themeId: string): Question {
-  const raw = q as Question & { reference?: unknown };
-  return {
-    ...q,
-    themeId: q.themeId || themeId,
-    reference: normalizeQuestionReference(raw.reference),
-    correctIndex: normalizeCorrectIndex(
-      q.correctIndex ?? (q as Question & { correct?: number }).correct,
-    ),
-  };
-}
-
-function themeIdFromPath(path: string): string {
-  const match = path.match(/\/([^/]+)\.json$/);
-  return match?.[1] ?? '';
-}
+const loadPromises = new Map<string, Promise<Question[]>>();
 
 export async function loadAiQuestionsForTheme(themeId: string): Promise<Question[]> {
   if (cache.has(themeId)) return cache.get(themeId)!;
@@ -66,7 +42,6 @@ export function clearQuestionDbCache(): void {
   loadPromises.clear();
 }
 
-/** Завантажити всі AI питання з усіх тем */
 export async function loadAllAiQuestions(): Promise<Question[]> {
   const entries = await Promise.all(
     Object.entries(dbModules).map(async ([path, loader]) => {

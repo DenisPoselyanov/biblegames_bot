@@ -51,7 +51,7 @@
 .subTabActive {
   border-color: rgba(100, 150, 200, 0.45);
   background: rgba(100, 150, 200, 0.12);
-  color: #8bf;
+  color: var(--info);
 }
 
 .tabBtn {
@@ -142,15 +142,15 @@
 }
 
 .badgeGreen {
-  background: rgba(100, 200, 100, 0.12);
-  border-color: rgba(100, 200, 100, 0.35);
-  color: #6c6;
+  background: var(--success-bg);
+  border-color: color-mix(in srgb, var(--success) 35%, transparent);
+  color: var(--success-text);
 }
 
 .badgeRed {
-  background: rgba(200, 80, 80, 0.12);
-  border-color: rgba(200, 80, 80, 0.35);
-  color: #e88;
+  background: var(--danger-bg);
+  border-color: color-mix(in srgb, var(--danger) 35%, transparent);
+  color: var(--danger-text);
 }
 
 .scoreLabel {
@@ -199,7 +199,7 @@
   border-radius: 8px;
   border: 1px solid rgba(200, 80, 80, 0.45);
   background: transparent;
-  color: #e88;
+  color: var(--danger-text);
   font-size: 0.8rem;
   cursor: pointer;
   font-weight: 600;
@@ -227,7 +227,7 @@
 
 .issueHigh {
   background: rgba(200, 80, 80, 0.1);
-  color: #e88;
+  color: var(--danger-text);
   border: 1px solid rgba(200, 80, 80, 0.3);
 }
 
@@ -239,7 +239,7 @@
 
 .issueLow {
   background: rgba(100, 200, 100, 0.1);
-  color: #6c6;
+  color: var(--success-text);
   border: 1px solid rgba(100, 200, 100, 0.3);
 }
 
@@ -341,7 +341,7 @@
 
 .correctOption {
   font-weight: 600;
-  color: #6c6; /* Green color for correct answer */
+  color: var(--success-text); /* Green color for correct answer */
 }
 
 .explanation {

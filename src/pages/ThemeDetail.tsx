@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getThemeById } from '../data/themes';
 import {
-  getQuestionCountByDifficultyAsync,
-  getQuestionCountByCategoryAsync,
-  getQuestionCountForNodeAsync,
-} from '../data/questions';
+  fetchQuestionCountByCategory,
+  fetchQuestionCountByDifficulty,
+  fetchQuestionCountForNode,
+  fetchQuestionCounts,
+} from '../repos/questionsRepo';
 import { usePlayer } from '../context/PlayerContext';
 import {
   DIFFICULTIES,
@@ -18,6 +19,7 @@ import { Icon } from '../components/Icon';
 import { InfoTooltip } from '../components/InfoTooltip';
 import { STAGE_POINTS_TOOLTIP, THEME_POINTS_TOOLTIP } from '../lib/practiceScoringHelp';
 import { PracticeStageStepper } from '../components/PracticeStageStepper';
+import { ThemeDetailSkeleton } from '../components/skeletons';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import { loadTopicHierarchy, loadAllTopicHierarchies, findNodeById, findParentNode } from '../data/topicDbLoader';
@@ -29,8 +31,10 @@ import {
   getDifficultyUnlockRankLabel,
   getDifficultyUnlockRequirement,
   getStageQuizPath,
-  STAGE_COUNT_BY_DIFFICULTY,
+  getPracticeStageCount,
 } from '../lib/practiceProgression';
+import { PracticeNodeStageEditor } from '../components/PracticeNodeStageEditor';
+import { usePracticeNodeOverridesStore } from '../stores/practiceNodeOverridesStore';
 import styles from './ThemeDetail.module.css';
 
 export function ThemeDetail() {
@@ -39,6 +43,8 @@ export function ThemeDetail() {
   const navigate = useNavigate();
   const theme = getThemeById(themeId ?? '');
   const { profile } = usePlayer();
+  const nodeStageOverrides = usePracticeNodeOverridesStore((s) => s.overrides);
+  void nodeStageOverrides;
 
   const themePoints = profile.themePoints[theme?.id ?? ''] ?? 0;
   const [loading, setLoading] = useState(true);
@@ -51,9 +57,14 @@ export function ThemeDetail() {
 
   // Визначаємо, чи це агрегатний вузол "Всі питання"
   const loadAggregateCounts = async (themeIds: string[]) => {
+    const batch = await fetchQuestionCounts({ themeIds });
+    if (batch) {
+      setQuestionCounts(batch);
+      return;
+    }
     const entries = await Promise.all(
       DIFFICULTIES.map(async (diff) => {
-        const count = await getQuestionCountByCategoryAsync(themeIds, diff);
+        const count = await fetchQuestionCountByCategory(themeIds, diff);
         return [diff, count] as const;
       }),
     );
@@ -103,7 +114,8 @@ export function ThemeDetail() {
       // Інакше — завантажуємо звичайну тему
       const tid = themeId ?? '';
       if (tid) {
-        const hierarchy = await loadTopicHierarchy(tid);
+        let hierarchy: TopicNode | null = null;
+        hierarchy = await loadTopicHierarchy(tid);
         if (!cancelled && hierarchy) {
           setTopicHierarchy(hierarchy);
 
@@ -116,16 +128,25 @@ export function ThemeDetail() {
           }
         }
 
-        const entries = await Promise.all(
-          DIFFICULTIES.map(async (diff) => {
-            const count = urlNodeId && hierarchy
-              ? await getQuestionCountForNodeAsync(urlNodeId, hierarchy, diff)
-              : await getQuestionCountByDifficultyAsync(tid, diff);
-            return [diff, count] as const;
-          }),
-        );
-        if (!cancelled) {
-          setQuestionCounts(Object.fromEntries(entries));
+        const batch = await fetchQuestionCounts({
+          themeId: tid,
+          topicNodeId: urlNodeId || undefined,
+        });
+        if (batch && !cancelled) {
+          setQuestionCounts(batch);
+        } else {
+          const entries = await Promise.all(
+            DIFFICULTIES.map(async (diff) => {
+              const count =
+                urlNodeId && hierarchy
+                  ? await fetchQuestionCountForNode(urlNodeId, hierarchy, diff, tid)
+                  : await fetchQuestionCountByDifficulty(tid, diff);
+              return [diff, count] as const;
+            }),
+          );
+          if (!cancelled) {
+            setQuestionCounts(Object.fromEntries(entries));
+          }
         }
       }
       if (!cancelled) setLoading(false);
@@ -141,7 +162,7 @@ export function ThemeDetail() {
   if (loading) {
     return (
       <section className={styles.page}>
-        <p>Завантаження...</p>
+        <ThemeDetailSkeleton />
       </section>
     );
   }
@@ -193,6 +214,12 @@ export function ThemeDetail() {
 
     navigate('/play/study/themes');
   };
+
+  const isSubtopicPage =
+    !isAggregate &&
+    Boolean(trackNodeId) &&
+    Boolean(topicHierarchy) &&
+    trackNodeId !== topicHierarchy?.id;
 
   const handleSelectNode = (id: string | null) => {
     if (!topicHierarchy) return;
@@ -283,12 +310,22 @@ export function ThemeDetail() {
         )}
       </h2>
 
+      {isSubtopicPage && trackNodeId && selectedNode && (
+        <PracticeNodeStageEditor
+          nodeId={trackNodeId}
+          nodeTitle={selectedNode.title}
+          hierarchyRoot={topicHierarchy}
+        />
+      )}
+
       <MotionStagger as="ul" className={styles.levels} enter={shouldEnter}>
         {sortedDifficulties.map((diff) => {
           const availableQuestions = questionCounts[diff] ?? 0;
           const diffIndex = DIFFICULTY_ORDER[diff];
           const emojis = ['👶', '🧒', '🧑', '🎓', '📖', '👨‍🏫', '⛪'];
-          const stageCount = STAGE_COUNT_BY_DIFFICULTY[diff];
+          const stageCount = getPracticeStageCount(trackNodeId, diff, {
+            hierarchyRoot: topicHierarchy,
+          });
           const difficultyUnlocked = canPlayDifficulty(profile.playerRank, diff);
           const track = findPracticeTrack(
             profile.practiceTracks ?? [],
@@ -427,6 +464,7 @@ function HierarchyTree({
           practiceTracks,
           themeId,
           currentNode.id,
+          { hierarchyRoot: node },
         );
         const isSelected = selectedNodeId === currentNode.id;
         const hasChildren = currentNode.children && currentNode.children.length > 0;

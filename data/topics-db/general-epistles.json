@@ -148,6 +148,18 @@
           "children": []
         }
       ]
+    },
+    {
+      "id": "general-epistles-sub-6",
+      "title": "Автори послань",
+      "description": "Апостоли та лідери, які написали загальні послання Нового Завіту.",
+      "icon": "✍️",
+      "children": [
+        { "id": "general-epistles-sub-6-sub-1", "title": "Яків", "description": "Брат Господній, автор послання про віру та діла.", "icon": "⚖️", "children": [] },
+        { "id": "general-epistles-sub-6-sub-2", "title": "Петро", "description": "Апостол, автор двох послань до розсіяних вірян.", "icon": "🪨", "children": [] },
+        { "id": "general-epistles-sub-6-sub-3", "title": "Іван", "description": "Улюблений учень, автор трьох послань про любов і істину.", "icon": "❤️", "children": [] },
+        { "id": "general-epistles-sub-6-sub-4", "title": "Юда", "description": "Брат Господній, автор короткого послання про боротьбу за віру.", "icon": "🛡️", "children": [] }
+      ]
     }
   ]
 }

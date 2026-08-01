@@ -50,3 +50,20 @@
 
 - Не комітити `.env`, bot tokens, `DATABASE_URL`
 - `x-user-id` header на backend — не production auth (потрібен Telegram initData verify)
+
+## Open Pencil (дизайн → код)
+
+- **MCP:** `open-pencil` у `.cursor/mcp.json` (проєктний `OPENPENCIL_MCP_ROOT`)
+- **CLI:** `openpencil-mcp` (глобально `@open-pencil/mcp@0.13.2`)
+- **Файли дизайну:** `design/*.fig` — комітяться в git
+- **Десктоп:** Open Pencil має бути запущений + відкритий документ (WebSocket `127.0.0.1:7601`)
+- **Токени UI:** `src/index.css` (`--bg`, `--gold`, `--font-serif`, `--font-sans`, spacing, radius)
+- **Шрифти:** Cormorant Garamond (заголовки), Source Sans 3 (текст)
+- **Типовий flow:** макет у `design/` → MCP `design_to_tokens` / `get_codegen_prompt` → React + CSS modules
+
+### Швидкий старт
+
+1. Запустити Open Pencil (Start Menu → Open Pencil)
+2. Cursor → Settings → MCP → перезавантажити `open-pencil`
+3. Попросити агента: «Створи макет Home у `design/home.fig`»
+

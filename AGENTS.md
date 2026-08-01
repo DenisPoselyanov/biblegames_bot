@@ -21,6 +21,7 @@ This folder is home. Treat it that way.
 - Запускати lint, stats, test scripts
 - Оновлювати документацію та MEMORY.md
 - Готувати deploy checklist (Vercel + Railway + BotFather)
+- Дизайн UI через Open Pencil (`design/*.fig`, MCP `open-pencil`) — див. `TOOLS.md`
 
 ### Що потребує підтвердження Дениса
 

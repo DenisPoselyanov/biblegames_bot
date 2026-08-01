@@ -1,7 +1,7 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: var(--z-modal);
   display: grid;
   place-items: end center;
   padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));

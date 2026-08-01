@@ -32,7 +32,7 @@ import {
   getDefaultPlayerRank,
   getOrCreatePracticeTrack,
   PASS_MIN_CORRECT,
-  STAGE_COUNT_BY_DIFFICULTY,
+  getPracticeStageCount,
 } from '../lib/practiceProgression';
 import { loadAllTopicHierarchies } from '../data/topicDbLoader';
 import type { BollsTranslation } from '../lib/bollsConstants';
@@ -288,11 +288,12 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         completedAt: new Date().toISOString(),
       };
 
+      const maxStageIndex = getPracticeStageCount(nodeId, difficulty) - 1;
       const filteredResults = existingTrack.stageResults.filter((r) => r.stageIndex !== stageIndex);
       const nextHighestUnlocked = passed
         ? Math.max(
             existingTrack.highestUnlockedStage,
-            Math.min(stageIndex + 1, STAGE_COUNT_BY_DIFFICULTY[difficulty] - 1),
+            Math.min(stageIndex + 1, maxStageIndex),
           )
         : existingTrack.highestUnlockedStage;
 
@@ -356,7 +357,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
       const nextStageUnlocked =
         passed &&
-        stageIndex < STAGE_COUNT_BY_DIFFICULTY[difficulty] - 1 &&
+        stageIndex < maxStageIndex &&
         updatedTrack.highestUnlockedStage >= stageIndex + 1;
 
       return {

@@ -33,6 +33,23 @@
           "themeId": "new-testament"
         }
       ]
+    },
+    {
+      "id": "nt-custom-klyuchi-postati-nz",
+      "title": "Ключові постаті Нового Завіту (огляд)",
+      "description": "Короткий огляд головних груп постатей — деталі в темах Євангелія та Дій.",
+      "icon": "👥",
+      "themeId": "new-testament",
+      "children": [
+        { "id": "nt-custom-klyuchi-postati-nz-sub-1", "title": "Дванадцять апостолів", "description": "Учні, покликані Ісусом проповідувати Царство.", "icon": "✝️", "children": [], "themeId": "new-testament" },
+        { "id": "nt-custom-klyuchi-postati-nz-sub-2", "title": "Жінки в Євангеліях", "description": "Марія, Марія Магдалина, Марта та інші вірні послідовниці.", "icon": "👩", "children": [], "themeId": "new-testament" },
+        { "id": "nt-custom-klyuchi-postati-nz-sub-3", "title": "Римські та іудейські правителі", "description": "Пилат, Ірод, Каяфа та інші на суді над Христом.", "icon": "👑", "children": [], "themeId": "new-testament" },
+        { "id": "nt-custom-klyuchi-postati-nz-sub-4", "title": "Перші мученики", "description": "Стефан, Яків та інші, які віддали життя за віру.", "icon": "🕊️", "children": [], "themeId": "new-testament" },
+        { "id": "nt-custom-klyuchi-postati-nz-sub-5", "title": "Супутники Павла", "description": "Тимофій, Сила, Лука, Варнава та інші місіонери.", "icon": "🗺️", "children": [], "themeId": "new-testament" },
+        { "id": "nt-custom-klyuchi-postati-nz-sub-6", "title": "Опоненти віри", "description": "Фарисеї, юдейські радники та переслідувачі церкви.", "icon": "⚡", "children": [], "themeId": "new-testament" },
+        { "id": "nt-custom-klyuchi-postati-nz-sub-7", "title": "Автори послань", "description": "Павло, Петро, Іван, Яків, Юда та автор до Євреїв.", "icon": "📜", "children": [], "themeId": "new-testament" },
+        { "id": "nt-custom-klyuchi-postati-nz-sub-8", "title": "Патріархи в Новому Завіті", "description": "Авраам, Мойсей та Ілля як зразки віри в NT.", "icon": "⭐", "children": [], "themeId": "new-testament" }
+      ]
     }
   ]
 }

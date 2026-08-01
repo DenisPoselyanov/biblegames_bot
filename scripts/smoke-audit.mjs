@@ -62,7 +62,7 @@ function testFilterByTopicNodeId() {
 
 async function testTopicsBundleLoads() {
   try {
-    const { loadAllTopicHierarchies } = await import('../src/data/topicDbLoader.ts');
+    const { loadAllTopicHierarchies } = await import('../server/topicHierarchyLoader.ts');
     const map = await loadAllTopicHierarchies();
     assert.ok(Object.keys(map).length >= 2, 'topics hierarchy map should not be empty fallback only');
   } catch (e) {

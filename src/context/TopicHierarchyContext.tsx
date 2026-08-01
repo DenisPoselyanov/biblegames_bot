@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from 'react';
@@ -39,8 +40,10 @@ export function TopicHierarchyProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const value = useMemo(() => ({ hierarchies, loading }), [hierarchies, loading]);
+
   return (
-    <TopicHierarchyContext.Provider value={{ hierarchies, loading }}>
+    <TopicHierarchyContext.Provider value={value}>
       {children}
     </TopicHierarchyContext.Provider>
   );

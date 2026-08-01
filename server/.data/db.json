@@ -6,7 +6,7 @@
       "themePoints": {
         "geography": 159,
         "judges": 57,
-        "pentateuch": 44
+        "pentateuch": 49
       },
       "completedLevels": [
         {
@@ -71,7 +71,7 @@
         "biblical-millionaire"
       ],
       "avatar": "lion",
-      "coins": 67810,
+      "coins": 67815,
       "unlockedAvatars": [
         "fish",
         "sword",
@@ -212,9 +212,40 @@
           "correctStreak": 20,
           "wrongCount": 12,
           "totalAnswers": 113
+        },
+        "pentateuch-sub-1-sub-3": {
+          "mastery": 73,
+          "confidence": 85,
+          "lastReviewedAt": "2026-06-04T14:59:39.543Z",
+          "errorTags": [
+            "knowledge-gap"
+          ],
+          "correctStreak": 3,
+          "wrongCount": 2,
+          "totalAnswers": 13
+        },
+        "pentateuch-sub-4-sub-4": {
+          "mastery": 0,
+          "confidence": 0,
+          "lastReviewedAt": "2026-06-05T07:54:53.684Z",
+          "errorTags": [
+            "knowledge-gap"
+          ],
+          "correctStreak": 0,
+          "wrongCount": 1,
+          "totalAnswers": 1
+        },
+        "kings-sub-1-sub-4": {
+          "mastery": 7,
+          "confidence": 100,
+          "lastReviewedAt": "2026-06-05T10:36:13.595Z",
+          "errorTags": [],
+          "correctStreak": 1,
+          "wrongCount": 0,
+          "totalAnswers": 1
         }
       },
-      "updatedAt": "2026-06-04T11:47:28.945Z",
+      "updatedAt": "2026-06-22T08:07:59.800Z",
       "bibleTranslation": "UTT",
       "practiceTracks": [
         {
@@ -299,12 +330,28 @@
               "attempts": 1
             }
           ]
+        },
+        {
+          "themeId": "pentateuch",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "difficulty": "baby",
+          "highestUnlockedStage": 1,
+          "stageResults": [
+            {
+              "stageIndex": 0,
+              "correct": 10,
+              "total": 10,
+              "passed": true,
+              "completedAt": "2026-06-04T14:59:40.612Z",
+              "attempts": 1
+            }
+          ]
         }
       ],
       "playerRank": {
         "tier": "baby",
         "plaque": 4,
-        "wisdomPoints": 8,
+        "wisdomPoints": 16,
         "unlockedTier": "child"
       }
     }
@@ -321,8 +368,8 @@
         },
         "pentateuch": {
           "themeId": "pentateuch",
-          "totalPoints": 44,
-          "gamesPlayed": 11,
+          "totalPoints": 49,
+          "gamesPlayed": 12,
           "playersCount": 1
         },
         "patriarchs": {
@@ -434,7 +481,7 @@
           "playersCount": 0
         }
       },
-      "lastUpdated": "2026-06-04T11:24:30.578Z"
+      "lastUpdated": "2026-06-06T09:38:44.113Z"
     }
   },
   "studyAnswers": {
@@ -1775,11 +1822,1508 @@
         "isCorrect": false,
         "answeredAt": "2026-06-04T11:27:30.128Z",
         "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00458",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T11:35:16.625Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00474",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:35:20.830Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00479",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:35:24.121Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00463",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:35:33.129Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00507",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:35:37.239Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00484",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:35:41.660Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00461",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:35:46.006Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00477",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:35:50.193Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00453",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:36:02.142Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00505",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:36:08.083Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00452",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:38:56.020Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00478",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:39:06.227Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00489",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:39:10.722Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00475",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:39:24.998Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00499",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:39:31.958Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00493",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:39:36.014Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00508",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:39:38.759Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00491",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:39:45.562Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00498",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:39:49.561Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00492",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:39:53.814Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00479",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:40:31.371Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00453",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:40:34.451Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00458",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T11:40:40.876Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00479",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:44:30.912Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00453",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:44:36.195Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00458",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:44:40.011Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00507",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:44:48.580Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00505",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:44:52.617Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00477",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:45:02.474Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00463",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:45:09.832Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00484",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:45:12.663Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00461",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:45:19.006Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00474",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:45:26.132Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00294",
+        "subthemeId": "pentateuch-sub-1-sub-1",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-1",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:46:09.412Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00300",
+        "subthemeId": "pentateuch-sub-1-sub-1",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-1",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:46:14.210Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00311",
+        "subthemeId": "pentateuch-sub-1-sub-1",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-1",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:46:20.639Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00485",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:46:36.504Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00497",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:46:43.302Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00472",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:46:47.460Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00471",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:47:00.809Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00464",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:47:04.485Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00488",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:47:08.902Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00457",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:47:14.161Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00455",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:47:18.876Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00480",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:47:24.063Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00473",
+        "subthemeId": "pentateuch-sub-1-sub-2",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-2",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T11:47:27.920Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00642",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:50:13.271Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00642",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:56:29.584Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-05777",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:56:41.389Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00627",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T14:56:50.762Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00627",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:57:58.785Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-05775",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:58:05.947Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00658",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:58:14.433Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00650",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:58:20.127Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-05773",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:58:25.499Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00633",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": false,
+        "answeredAt": "2026-06-04T14:58:34.131Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00653",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:58:42.391Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00632",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:58:49.570Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-00632",
+        "subthemeId": "pentateuch-sub-1-sub-3",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-1-sub-3",
+        "isCorrect": true,
+        "answeredAt": "2026-06-04T14:59:39.542Z"
+      },
+      {
+        "questionId": "pentateuch-baby-ai-02309",
+        "subthemeId": "pentateuch-sub-4-sub-4",
+        "themeId": "pentateuch",
+        "nodeId": "pentateuch-sub-4-sub-4",
+        "isCorrect": false,
+        "answeredAt": "2026-06-05T07:54:53.684Z",
+        "errorTag": "knowledge-gap"
+      },
+      {
+        "questionId": "kings-baby-ai-04960",
+        "subthemeId": "kings-sub-1-sub-4",
+        "themeId": "kings",
+        "nodeId": "kings-sub-1-sub-4",
+        "isCorrect": true,
+        "answeredAt": "2026-06-05T10:36:13.594Z"
       }
     ]
   },
   "telemetry": {
     "guest": [
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-22T08:07:43.644Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-22T08:07:43.635Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-22T08:07:43.635Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-06T09:42:09.835Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-06T09:40:48.461Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-06T09:40:48.457Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-06T09:40:48.457Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-06T09:38:06.822Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-06T09:38:06.817Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-06T09:38:06.817Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-06T09:01:26.117Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-06T09:01:19.053Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-06T09:01:19.048Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-06T09:01:19.048Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T10:36:22.608Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T10:36:22.535Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-05T10:36:13.596Z",
+        "payload": {
+          "questionId": "kings-baby-ai-04960",
+          "subthemeId": "kings-sub-1-sub-4",
+          "nodeId": "kings-sub-1-sub-4",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T10:36:22.535Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-05T10:36:13.596Z",
+        "payload": {
+          "questionId": "kings-baby-ai-04960",
+          "subthemeId": "kings-sub-1-sub-4",
+          "nodeId": "kings-sub-1-sub-4",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T10:35:47.289Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T10:14:59.894Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T10:14:53.042Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T10:08:38.581Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T10:08:36.147Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T10:08:36.141Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T10:08:36.141Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T10:08:26.978Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T10:08:26.974Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T10:08:26.974Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T09:54:21.088Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T09:00:12.847Z",
+        "payload": {
+          "groupId": "new-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T08:56:38.368Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T08:55:05.895Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T08:53:42.675Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T08:53:07.321Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T08:53:07.316Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T08:53:07.316Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-05T07:54:53.686Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-02309",
+          "subthemeId": "pentateuch-sub-4-sub-4",
+          "nodeId": "pentateuch-sub-4-sub-4",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T07:46:08.957Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T07:46:07.098Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T07:46:07.094Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T07:46:07.094Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T07:16:22.299Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T07:13:24.991Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T07:13:24.987Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T07:13:24.987Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T07:10:48.401Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T07:04:48.859Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T06:26:23.595Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T06:23:34.141Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T06:23:34.130Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T06:23:34.130Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T06:21:10.542Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T06:21:10.538Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T06:21:10.538Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T06:07:42.087Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-05T06:07:34.683Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T06:07:24.133Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T06:07:24.128Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-05T06:07:24.128Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T15:13:59.634Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T15:10:16.059Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T15:06:59.060Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "practice_stage_completed",
+        "createdAt": "2026-06-04T14:59:40.612Z",
+        "payload": {
+          "themeId": "pentateuch",
+          "difficulty": "baby",
+          "stageIndex": 0,
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "passed": true,
+          "wisdomEarned": 8,
+          "points": 5,
+          "correctCount": 10,
+          "totalQuestions": 10
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:59:39.543Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00632",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:58:49.571Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00632",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:58:42.392Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00653",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:58:34.133Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00633",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:58:25.501Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-05773",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:58:20.128Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00650",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:58:14.434Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00658",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:58:05.948Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-05775",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:57:58.787Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00627",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:56:50.764Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00627",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": false
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:56:41.391Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-05777",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:56:29.587Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00642",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T14:56:12.867Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:55:40.468Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:55:40.464Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:55:40.464Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:53:54.449Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:53:54.437Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:53:54.437Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:52:39.771Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:52:39.757Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:52:39.757Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:52:16.661Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:52:16.647Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:52:16.647Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:51:18.494Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:51:18.490Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:51:18.490Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "daily_task_completed",
+        "createdAt": "2026-06-04T14:50:34.821Z",
+        "payload": {
+          "taskId": "daily-review"
+        }
+      },
+      {
+        "name": "question_answered",
+        "createdAt": "2026-06-04T14:50:13.274Z",
+        "payload": {
+          "questionId": "pentateuch-baby-ai-00642",
+          "subthemeId": "pentateuch-sub-1-sub-3",
+          "nodeId": "pentateuch-sub-1-sub-3",
+          "isCorrect": true
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T14:49:56.461Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:49:44.344Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:49:44.334Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:49:44.334Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:43:20.840Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:43:20.831Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:40:24.705Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:40:24.692Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:37:23.825Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:37:23.820Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:35:09.150Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:35:09.145Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:33:39.658Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:33:39.646Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:25:10.102Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T14:25:10.079Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:59:27.418Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:59:27.409Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:59:27.409Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:58:26.270Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:58:26.248Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:58:26.248Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:58:07.024Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:58:07.006Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:58:07.006Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "bible_translation_changed",
+        "createdAt": "2026-06-04T11:56:22.208Z",
+        "payload": {
+          "translation": "UTT"
+        }
+      },
+      {
+        "name": "bible_translation_changed",
+        "createdAt": "2026-06-04T11:56:21.693Z",
+        "payload": {
+          "translation": "UTT"
+        }
+      },
+      {
+        "name": "bible_translation_changed",
+        "createdAt": "2026-06-04T11:56:21.286Z",
+        "payload": {
+          "translation": "UBIO"
+        }
+      },
+      {
+        "name": "study_path_advanced",
+        "createdAt": "2026-06-04T11:56:01.047Z",
+        "payload": {
+          "groupId": "old-testament",
+          "step": "open-group"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:55:46.420Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:55:46.412Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:55:46.412Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:52:23.854Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:52:23.842Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:52:23.842Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:52:18.329Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:52:18.311Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
+      {
+        "name": "session_start",
+        "createdAt": "2026-06-04T11:52:18.311Z",
+        "payload": {
+          "userId": "guest"
+        }
+      },
       {
         "name": "practice_stage_completed",
         "createdAt": "2026-06-04T11:47:28.905Z",
@@ -4981,4401 +6525,6 @@
           "subthemeId": "pentateuch-sub-1-sub-1",
           "nodeId": "pentateuch-sub-1-sub-1",
           "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-02T14:05:13.449Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00291",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-02T14:05:02.358Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-02T14:04:59.615Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-02T14:04:05.768Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-02T14:04:05.761Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-02T14:04:05.761Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "practice_stage_completed",
-        "createdAt": "2026-06-01T18:27:31.690Z",
-        "payload": {
-          "themeId": "pentateuch",
-          "difficulty": "baby",
-          "stageIndex": 0,
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "passed": false,
-          "wisdomEarned": 0,
-          "points": 0,
-          "correctCount": 4,
-          "totalQuestions": 10
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T18:27:30.366Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00302",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T18:27:26.732Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00300",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T18:27:24.380Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00299",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T18:27:15.064Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00298",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T18:27:09.669Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00297",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T18:27:00.640Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00296",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T18:26:51.669Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00295",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T18:26:36.396Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00294",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T18:26:32.746Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00292",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T18:26:26.186Z",
-        "payload": {
-          "questionId": "pentateuch-baby-ai-00291",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-01T18:24:11.104Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T18:21:46.076Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T18:21:46.068Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T18:21:46.068Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-01T18:15:05.248Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T18:08:02.867Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T18:08:02.862Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T18:08:02.862Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T17:33:31.917Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T17:33:31.909Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T17:33:31.909Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:40:36.441Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:40:36.435Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:40:36.435Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-01T16:38:03.761Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:37:06.749Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:37:06.745Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:37:06.745Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:33:18.332Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:33:18.326Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:33:18.326Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-01T16:28:56.258Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:28:42.966Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:28:42.963Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T16:28:42.963Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:32:02.799Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:32:02.794Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:32:02.794Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:31:49.015Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:31:49.011Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:31:49.011Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:30:30.388Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:30:30.382Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:30:30.382Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:08:55.751Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:08:55.747Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T06:08:41.807Z",
-        "payload": {
-          "questionId": "commandments-baby-ai-00002",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T06:08:39.433Z",
-        "payload": {
-          "questionId": "commandments-baby-ai-00001",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:08:55.747Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T06:08:41.807Z",
-        "payload": {
-          "questionId": "commandments-baby-ai-00002",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-06-01T06:08:39.433Z",
-        "payload": {
-          "questionId": "commandments-baby-ai-00001",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-01T06:08:33.719Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:02:50.176Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:02:50.137Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:02:50.137Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-01T06:02:25.758Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:02:10.083Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:02:10.059Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:02:10.059Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:02:08.611Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:02:08.588Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T06:02:08.588Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:55:51.099Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:55:51.079Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:55:51.079Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:50:13.355Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:50:13.352Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:50:13.352Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:47:56.849Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:47:56.846Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:47:56.846Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-01T05:47:32.002Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:47:02.968Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:47:02.964Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:47:02.964Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:47:01.343Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:47:01.339Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:47:01.339Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:46:59.706Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:46:59.703Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:46:59.703Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-01T05:44:09.920Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:41:54.163Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:41:54.159Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:41:54.159Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:31:26.438Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:31:26.441Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:31:26.438Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:25:11.539Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:25:11.534Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:25:11.534Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:25:00.453Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:25:00.452Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:25:00.452Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:24:48.785Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:24:48.783Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:24:48.783Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:21:37.711Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:21:37.709Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:21:37.709Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-06-01T05:12:13.127Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:07:42.988Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:07:42.987Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:07:42.987Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:07:29.170Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:07:29.168Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:07:29.168Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:05:06.015Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:05:06.013Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-06-01T05:05:06.013Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:58:51.218Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T18:58:35.407Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T18:58:35.405Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T18:58:35.405Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T18:54:10.106Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "daily_task_completed",
-        "createdAt": "2026-05-31T18:51:31.293Z",
-        "payload": {
-          "taskId": "daily-review"
-        }
-      },
-      {
-        "name": "daily_task_completed",
-        "createdAt": "2026-05-31T18:51:31.293Z",
-        "payload": {
-          "taskId": "daily-correct"
-        }
-      },
-      {
-        "name": "daily_task_completed",
-        "createdAt": "2026-05-31T18:51:31.293Z",
-        "payload": {
-          "taskId": "daily-levels"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:27:04.084Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:26:25.991Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:26:00.883Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:24:10.231Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:18:26.159Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:15:35.233Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:15:25.307Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:15:19.593Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:15:18.657Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:15:12.343Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T18:11:41.579Z",
-        "payload": {
-          "questionId": "geography-child-ai-00061",
-          "subthemeId": "geography-sub-4-sub-3",
-          "nodeId": "geography-sub-4-sub-3",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T18:11:16.416Z",
-        "payload": {
-          "questionId": "geography-youth-ai-00064",
-          "subthemeId": "geography-sub-4-sub-3",
-          "nodeId": "geography-sub-4-sub-3",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T18:10:36.661Z",
-        "payload": {
-          "questionId": "geography-baby-ai-00089",
-          "subthemeId": "geography-sub-4-sub-1",
-          "nodeId": "geography-sub-4-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T18:10:10.917Z",
-        "payload": {
-          "questionId": "geography-child-ai-00063",
-          "subthemeId": "geography-sub-4-sub-1",
-          "nodeId": "geography-sub-4-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T18:10:02.432Z",
-        "payload": {
-          "questionId": "geography-preacher-ai-00049",
-          "subthemeId": "geography-sub-4-sub-1",
-          "nodeId": "geography-sub-4-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "quiz_completed",
-        "createdAt": "2026-05-31T18:09:48.135Z",
-        "payload": {
-          "themeId": "geography",
-          "difficulty": "youth",
-          "points": 30,
-          "correctCount": 1,
-          "totalQuestions": 1
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T18:09:25.165Z",
-        "payload": {
-          "questionId": "geography-youth-ai-00097",
-          "subthemeId": "geography-sub-4-sub-1",
-          "nodeId": "geography-sub-4-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T18:08:57.064Z",
-        "payload": {
-          "questionId": "geography-student-ai-00019",
-          "subthemeId": "geography-sub-4-sub-1",
-          "nodeId": "geography-sub-4-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T18:07:27.463Z",
-        "payload": {
-          "questionId": "geography-preacher-ai-00049",
-          "subthemeId": "geography-sub-4-sub-1",
-          "nodeId": "geography-sub-4-sub-1",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:06:48.913Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T18:06:37.272Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T18:06:06.765Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T18:06:06.764Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T18:06:06.764Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T18:05:25.482Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T18:05:25.477Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T18:05:25.477Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:54:45.777Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00003",
-          "subthemeId": "mosaic-law-sub-2-sub-1",
-          "nodeId": "mosaic-law-sub-2-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:54:35.959Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00003",
-          "subthemeId": "mosaic-law-sub-2-sub-1",
-          "nodeId": "mosaic-law-sub-2-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:54:34.287Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:54:34.286Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:54:30.929Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00003",
-          "subthemeId": "mosaic-law-sub-2-sub-1",
-          "nodeId": "mosaic-law-sub-2-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:54:34.286Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:54:30.929Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00003",
-          "subthemeId": "mosaic-law-sub-2-sub-1",
-          "nodeId": "mosaic-law-sub-2-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:54:12.096Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00003",
-          "subthemeId": "mosaic-law-sub-2-sub-1",
-          "nodeId": "mosaic-law-sub-2-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:53:05.799Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00081",
-          "subthemeId": "mosaic-law-sub-1-sub-1",
-          "nodeId": "mosaic-law-sub-1-sub-1",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T17:52:56.110Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T17:52:41.378Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T17:52:35.805Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:52:28.017Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:52:28.015Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:52:18.977Z",
-        "payload": {
-          "questionId": "patriarchs-student-4",
-          "subthemeId": "",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:52:28.015Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:52:18.977Z",
-        "payload": {
-          "questionId": "patriarchs-student-4",
-          "subthemeId": "",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:52:16.480Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:52:16.478Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:52:01.011Z",
-        "payload": {
-          "questionId": "geography-child-ai-00060",
-          "subthemeId": "",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:52:16.478Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:52:01.011Z",
-        "payload": {
-          "questionId": "geography-child-ai-00060",
-          "subthemeId": "",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:51:49.515Z",
-        "payload": {
-          "questionId": "prophets-baby-x10",
-          "subthemeId": "",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:45:31.092Z",
-        "payload": {
-          "questionId": "revelation-preacher-x6",
-          "subthemeId": "",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:42:44.774Z",
-        "payload": {
-          "questionId": "new-testament-child-ai-00040",
-          "subthemeId": "",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:41:37.203Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:41:37.202Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:41:37.202Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T17:38:36.897Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:38:23.380Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:38:23.379Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:38:23.379Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:37:15.703Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:37:15.696Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:37:15.696Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-31T17:27:55.734Z",
-        "payload": {
-          "questionId": "old-testament-teacher-ai-00050",
-          "subthemeId": "pentateuch-sub-1-sub-1",
-          "nodeId": "pentateuch-sub-1-sub-1",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T17:26:43.741Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:26:33.417Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:26:33.410Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T17:26:33.410Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:53:48.530Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:53:48.519Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:53:48.519Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T08:50:45.121Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T08:45:03.128Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T08:44:50.432Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T08:44:24.740Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:27:25.275Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:27:25.274Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:27:25.274Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:21:58.780Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:21:58.778Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:21:58.778Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:21:47.785Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:21:47.783Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:21:47.783Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T08:14:18.081Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:14:08.924Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:14:08.922Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:14:08.922Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:14:08.360Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:14:08.358Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:14:08.358Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:14:07.301Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:14:07.300Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:14:07.300Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:13:52.783Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:13:52.778Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:13:52.778Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T08:13:23.253Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:13:17.916Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:13:17.915Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:13:17.915Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:13:16.230Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:13:16.227Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:13:16.227Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:12:08.580Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:12:08.578Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:12:08.578Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:04:28.816Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:04:28.816Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T08:04:23.680Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:04:28.816Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T08:04:23.680Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:04:21.960Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:04:21.959Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:04:21.959Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:04:05.705Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:04:05.704Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T08:04:05.704Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T07:09:26.060Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-31T06:45:55.180Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T06:45:48.834Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T06:45:48.831Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T06:45:48.831Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T06:17:54.794Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T06:17:54.788Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T06:17:54.788Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T06:00:57.832Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T06:00:57.828Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-31T06:00:57.828Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:57:49.590Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:57:49.588Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:57:49.588Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:56:46.160Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:56:46.159Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:56:46.159Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T20:54:56.325Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T20:54:51.293Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:54:46.365Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:54:46.364Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:54:46.364Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:52:38.898Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:52:38.893Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T20:52:38.893Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:39:37.632Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:37:20.059Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:36:39.917Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:36:38.789Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:36:37.466Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:36:36.248Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:34:16.718Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:34:08.867Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:29:54.925Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:29:52.612Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:29:44.906Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:29:26.066Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:27:14.617Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:26:15.306Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:26:04.389Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:26:03.226Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:26:01.813Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:25:55.264Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:25:44.132Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:23:46.069Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-30T16:23:30.133Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00005",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-30T16:23:07.784Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00044",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-30T16:22:56.847Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-x1",
-          "subthemeId": "sinai-law",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:22:52.367Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:22:52.363Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:22:52.363Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-30T16:20:15.113Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00079",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-30T16:20:00.456Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-x3",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-30T16:17:16.038Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00080",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-30T16:15:44.597Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00041",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T16:15:34.683Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:14:40.429Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:14:40.427Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:14:40.427Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:11:59.336Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:11:59.333Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:11:59.333Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:01:15.443Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:01:15.441Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T16:01:15.441Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-30T15:32:12.161Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T15:31:36.317Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T15:31:36.313Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T15:31:36.313Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:12:26.185Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:12:26.183Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:12:26.183Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:12:16.107Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:12:16.106Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:12:16.106Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:12:10.582Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:12:10.580Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:12:10.580Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:10:51.294Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:10:51.289Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:10:51.289Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:10:14.510Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:10:14.508Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:10:14.508Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:09:51.866Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:09:51.864Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:09:51.864Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:08:49.378Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:08:49.372Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-26T09:26:19.486Z",
-        "payload": {
-          "questionId": "mosaic-law-theologian-ai-00073",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-26T09:25:58.861Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-26T09:25:40.370Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-26T09:25:26.606Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-26T09:24:34.971Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-26T09:24:34.967Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-26T09:15:14.657Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-26T09:14:57.523Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-26T09:14:57.513Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T22:26:17.179Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T22:26:17.174Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T22:25:27.249Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T22:25:15.218Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T22:25:15.211Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T21:17:25.462Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:55:02.705Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:47:21.864Z",
-        "payload": {
-          "questionId": "judges-student-3",
-          "subthemeId": "judges",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:47:15.613Z",
-        "payload": {
-          "questionId": "judges-student-2",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:47:04.801Z",
-        "payload": {
-          "questionId": "judges-student-ai-00008",
-          "subthemeId": "judges",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:46:44.359Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "quiz_completed",
-        "createdAt": "2026-05-23T20:24:14.397Z",
-        "payload": {
-          "themeId": "judges",
-          "difficulty": "preacher",
-          "points": 57,
-          "correctCount": 5,
-          "totalQuestions": 7
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:24:11.876Z",
-        "payload": {
-          "questionId": "judges-preacher-ai-00012",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:24:03.177Z",
-        "payload": {
-          "questionId": "judges-preacher-x7",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:23:59.374Z",
-        "payload": {
-          "questionId": "judges-preacher-x6",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:23:55.956Z",
-        "payload": {
-          "questionId": "judges-preacher-ai-00015",
-          "subthemeId": "judges",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:23:47.438Z",
-        "payload": {
-          "questionId": "judges-preacher-ai-00016",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:23:37.193Z",
-        "payload": {
-          "questionId": "judges-preacher-ai-00013",
-          "subthemeId": "judges",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:23:28.030Z",
-        "payload": {
-          "questionId": "judges-preacher-ai-00014",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:22:45.976Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T20:21:52.658Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T20:21:52.646Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:18:06.111Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:15:43.218Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:15:37.589Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T20:10:44.697Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T20:10:44.688Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:50:38.138Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:45:23.531Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:38:06.451Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:37:51.898Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:37:49.233Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:25:32.186Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:22:49.959Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:22:48.213Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "daily_task_completed",
-        "createdAt": "2026-05-23T19:22:42.807Z",
-        "payload": {
-          "taskId": "daily-review"
-        }
-      },
-      {
-        "name": "daily_task_completed",
-        "createdAt": "2026-05-23T19:22:42.805Z",
-        "payload": {
-          "taskId": "daily-levels"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T18:09:30.915Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T18:09:30.908Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:42:25.295Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:42:21.068Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:41:07.389Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:37:13.036Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:36:55.339Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:36:26.316Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:36:26.312Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:35:42.817Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:35:42.813Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:34:03.397Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:34:03.393Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:07:33.569Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:07:31.197Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:07:31.194Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:05:37.902Z",
-        "payload": {
-          "questionId": "geography-theologian-ai-00084",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:05:32.948Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:05:26.808Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:05:23.564Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-x2",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:05:22.174Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00024",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:05:19.435Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-x4",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:05:14.736Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:05:12.222Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:05:12.219Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:01:40.348Z",
-        "payload": {
-          "questionId": "geography-theologian-ai-00088",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:01:37.172Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:01:33.212Z",
-        "payload": {
-          "questionId": "mosaic-law-child-ai-00028",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:00:40.384Z",
-        "payload": {
-          "questionId": "mosaic-law-preacher-ai-00018",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:00:35.726Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:00:28.207Z",
-        "payload": {
-          "questionId": "old-testament-theologian-ai-00057",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:00:20.800Z",
-        "payload": {
-          "questionId": "geography-theologian-ai-00084",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:00:09.208Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:59:53.575Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:59:36.048Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T13:58:18.506Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T13:58:18.501Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T13:56:47.250Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T13:56:47.247Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:55:31.399Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:55:29.715Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:55:24.162Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:55:22.366Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:53:45.466Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:57.178Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:32.641Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:28.664Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:25.948Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:14.626Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:07.782Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:50:38.098Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:50:31.609Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-30T11:08:49.372Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-26T09:26:19.486Z",
-        "payload": {
-          "questionId": "mosaic-law-theologian-ai-00073",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-26T09:25:58.861Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-26T09:25:40.370Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-26T09:25:26.606Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-26T09:24:34.971Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-26T09:24:34.967Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-26T09:15:14.657Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-26T09:14:57.523Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-26T09:14:57.513Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T22:26:17.179Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T22:26:17.174Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T22:25:27.249Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T22:25:15.218Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T22:25:15.211Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T21:17:25.462Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:55:02.705Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:47:21.864Z",
-        "payload": {
-          "questionId": "judges-student-3",
-          "subthemeId": "judges",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:47:15.613Z",
-        "payload": {
-          "questionId": "judges-student-2",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:47:04.801Z",
-        "payload": {
-          "questionId": "judges-student-ai-00008",
-          "subthemeId": "judges",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:46:44.359Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "quiz_completed",
-        "createdAt": "2026-05-23T20:24:14.397Z",
-        "payload": {
-          "themeId": "judges",
-          "difficulty": "preacher",
-          "points": 57,
-          "correctCount": 5,
-          "totalQuestions": 7
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:24:11.876Z",
-        "payload": {
-          "questionId": "judges-preacher-ai-00012",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:24:03.177Z",
-        "payload": {
-          "questionId": "judges-preacher-x7",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:23:59.374Z",
-        "payload": {
-          "questionId": "judges-preacher-x6",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:23:55.956Z",
-        "payload": {
-          "questionId": "judges-preacher-ai-00015",
-          "subthemeId": "judges",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:23:47.438Z",
-        "payload": {
-          "questionId": "judges-preacher-ai-00016",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:23:37.193Z",
-        "payload": {
-          "questionId": "judges-preacher-ai-00013",
-          "subthemeId": "judges",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T20:23:28.030Z",
-        "payload": {
-          "questionId": "judges-preacher-ai-00014",
-          "subthemeId": "judges",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:22:45.976Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T20:21:52.658Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T20:21:52.646Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:18:06.111Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:15:43.218Z",
-        "payload": {
-          "groupId": "new-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T20:15:37.589Z",
-        "payload": {
-          "groupId": "old-testament",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T20:10:44.697Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T20:10:44.688Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:50:38.138Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:45:23.531Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:38:06.451Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:37:51.898Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:37:49.233Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:25:32.186Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:22:49.959Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T19:22:48.213Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "daily_task_completed",
-        "createdAt": "2026-05-23T19:22:42.807Z",
-        "payload": {
-          "taskId": "daily-review"
-        }
-      },
-      {
-        "name": "daily_task_completed",
-        "createdAt": "2026-05-23T19:22:42.805Z",
-        "payload": {
-          "taskId": "daily-levels"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T18:09:30.915Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T18:09:30.908Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:42:25.295Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:42:21.068Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:41:07.389Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:37:13.036Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:36:55.339Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:36:26.316Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:36:26.312Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:35:42.817Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:35:42.813Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:34:03.397Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:34:03.393Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:07:33.569Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:07:31.197Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:07:31.194Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:05:37.902Z",
-        "payload": {
-          "questionId": "geography-theologian-ai-00084",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:05:32.948Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:05:26.808Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:05:23.564Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-x2",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:05:22.174Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-ai-00024",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:05:19.435Z",
-        "payload": {
-          "questionId": "mosaic-law-baby-x4",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:05:14.736Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:05:12.222Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T14:05:12.219Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:01:40.348Z",
-        "payload": {
-          "questionId": "geography-theologian-ai-00088",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:01:37.172Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:01:33.212Z",
-        "payload": {
-          "questionId": "mosaic-law-child-ai-00028",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:00:40.384Z",
-        "payload": {
-          "questionId": "mosaic-law-preacher-ai-00018",
-          "subthemeId": "sinai-law",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:00:35.726Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:00:28.207Z",
-        "payload": {
-          "questionId": "old-testament-theologian-ai-00057",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-23T14:00:20.800Z",
-        "payload": {
-          "questionId": "geography-theologian-ai-00084",
-          "subthemeId": "ot-all",
-          "nodeId": "ot-all",
-          "isCorrect": false
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T14:00:09.208Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:59:53.575Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:59:36.048Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T13:58:18.506Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T13:58:18.501Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T13:56:47.250Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-23T13:56:47.247Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:55:31.399Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:55:29.715Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:55:24.162Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:55:22.366Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:53:45.466Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:57.178Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:32.641Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:28.664Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:25.948Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:14.626Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:51:07.782Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:50:38.098Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:50:31.609Z",
-        "payload": {
-          "groupId": "ot-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-23T13:50:29.490Z",
-        "payload": {
-          "groupId": "nt-group",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "question_answered",
-        "createdAt": "2026-05-21T15:08:04.350Z",
-        "payload": {
-          "questionId": "mosaic-law-beginner-x4",
-          "subthemeId": "",
-          "isCorrect": true
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T15:07:50.241Z",
-        "payload": {
-          "groupId": "bible-context",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T15:07:45.935Z",
-        "payload": {
-          "groupId": "bible-context",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T15:07:38.309Z",
-        "payload": {
-          "groupId": "old-testament-world",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T15:07:25.491Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T15:07:25.488Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T15:07:25.488Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T14:49:33.506Z",
-        "payload": {
-          "groupId": "old-testament-world",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:49:25.116Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:49:25.114Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:49:25.114Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:46:04.223Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:46:04.220Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:46:04.220Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:42:45.880Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:42:45.878Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:34:13.549Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:34:13.537Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T14:28:17.867Z",
-        "payload": {
-          "groupId": "old-testament-world",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:28:15.877Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:28:15.875Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T14:22:38.550Z",
-        "payload": {
-          "groupId": "new-testament-world",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:22:31.730Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:22:31.728Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:22:26.568Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:22:26.568Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T14:22:17.404Z",
-        "payload": {
-          "groupId": "new-testament-world",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T14:22:11.411Z",
-        "payload": {
-          "groupId": "old-testament-world",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T14:22:08.051Z",
-        "payload": {
-          "groupId": "bible-context",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T14:21:58.397Z",
-        "payload": {
-          "groupId": "new-testament-world",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T14:21:56.375Z",
-        "payload": {
-          "groupId": "old-testament-world",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "study_path_advanced",
-        "createdAt": "2026-05-21T14:21:51.434Z",
-        "payload": {
-          "groupId": "bible-context",
-          "step": "open-group"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:21:37.497Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:21:37.496Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:21:18.801Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T14:21:18.799Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T13:12:23.521Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T13:12:23.520Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T12:17:17.901Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T12:17:17.899Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T12:09:45.901Z",
-        "payload": {
-          "userId": "guest"
-        }
-      },
-      {
-        "name": "session_start",
-        "createdAt": "2026-05-21T12:09:45.900Z",
-        "payload": {
-          "userId": "guest"
         }
       }
     ]

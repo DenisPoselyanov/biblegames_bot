@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import { useFocusTrap } from '../hooks/useFocusTrap';
-import { MotionDialog } from './motion';
-import styles from './ConfirmModal.module.css';
+import { Dialog } from 'react-vant';
 import { haptic } from '../lib/telegram';
 
 interface ConfirmModalProps {
@@ -23,46 +21,29 @@ export function ConfirmModal({
   onConfirm,
   onCancel,
 }: ConfirmModalProps) {
-  const focusTrapRef = useFocusTrap(open);
-
   useEffect(() => {
     if (open) haptic.impact('light');
   }, [open]);
 
   return (
-    <MotionDialog
-      open={open}
+    <Dialog
+      visible={open}
+      title={title}
+      message={message}
+      showCancelButton
+      confirmButtonText={confirmText}
+      cancelButtonText={cancelText}
+      confirmButtonColor="var(--gold)"
+      closeOnClickOverlay={false}
+      onConfirm={() => {
+        haptic.impact('medium');
+        onConfirm();
+      }}
+      onCancel={() => {
+        haptic.impact('light');
+        onCancel();
+      }}
       onClose={onCancel}
-      overlayClassName={styles.overlay}
-      modalClassName={styles.modal}
-      aria-labelledby="confirm-title"
-    >
-      <div ref={focusTrapRef}>
-        <h2 id="confirm-title" className={styles.title}>{title}</h2>
-        <p className={styles.message}>{message}</p>
-        <div className={styles.actions}>
-          <button
-            type="button"
-            className={styles.btnCancel}
-            onClick={() => {
-              haptic.impact('light');
-              onCancel();
-            }}
-          >
-            {cancelText}
-          </button>
-          <button
-            type="button"
-            className={styles.btnConfirm}
-            onClick={() => {
-              haptic.impact('medium');
-              onConfirm();
-            }}
-          >
-            {confirmText}
-          </button>
-        </div>
-      </div>
-    </MotionDialog>
+    />
   );
 }

@@ -1,0 +1,6812 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-05T20:06:12.863Z",
+  "provider": "practice-stages-list",
+  "model": "manual",
+  "nodes": {
+    "pentateuch-sub-1-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-1-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-1-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-1-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Тема зосереджена на конкретному епізоді (Буття 12:1-9), що охоплює ключову подію виходу Аврама з Харану. Матеріал обмежений за обсягом, але має фундаментальне богословське значення для розуміння завіту, тому 2 етапи є оптимальними для всіх рівнів підготовки.",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-2-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-2-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-2-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-2-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-2-sub-5": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-2-sub-6": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-2-sub-7": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-2-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-2-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-2-sub-10": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-2-sub-11": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-2-sub-12": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-2-sub-13": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-2-sub-14": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-3-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-9": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-10": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-11": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-12": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-13": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-3-sub-14": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-3-sub-15": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-16": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-3-sub-17": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-18": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-3-sub-19": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-3-sub-20": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-21": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-3-sub-22": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-3-sub-23": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-4-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-4-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-4-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-4-sub-4": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-4-sub-5": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Історія Валаама охоплює чотири розділи книги Числа (22-25) та містить багатий богословський матеріал про Божий суверенітет, пророче покликання та спокусу грошима. Це динамічний сюжетний блок, який дозволяє детально проаналізувати як біографію провидця, так і його пророцтва про майбутнє Ізраїлю.",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-4-sub-6": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-4-sub-7": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-4-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-4-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-4-sub-10": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-4-sub-11": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-4-sub-12": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-4-sub-13": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-4-sub-14": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-5-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-5-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-5-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-5-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-5-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-5-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-5-sub-7": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-5-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-5-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "pentateuch-sub-6-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Матеріал про Ноя зосереджений переважно в 6–9 розділах книги Буття, що охоплює обмежену кількість ключових подій: будівництво ковчега, потоп та заповіт. Це вузька, але дуже насичена подіями та богословськими сенсами тема, якої достатньо для двох етапів вікторин.",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-6-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Постать фараона є центральною для всієї книги Вихід та богослов'я звільнення, що охоплює події від зустрічі з Мойсеєм до виходу з Єгипту. Матеріал дозволяє детально проаналізувати як історико-подієвий аспект, так і складні питання запеклості серця та Божого суверенітету.",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "pentateuch-sub-6-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Матеріал про Міріам зосереджений у кількох ключових епізодах: порятунок немовляти Мойсея, перехід через Червоне море та нарікання на Мойсея. Це вузька, але значуща постать, чия біографія обмежена кількома подіями в П'ятикнижжі.",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "pentateuch-sub-6-sub-4": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Життя Аарона охоплює значну частину П'ятикнижжя: від виходу з Єгипту та встановлення скинії до бунту Корея та смерті на горі Ор. Його роль як першосвященника та посередника створює багатий пласт для вивчення як біографічних подій, так і левітського законодавства.",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "pentateuch-sub-6-sub-5": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Книга Ісуса Навина є самостійним та об'ємним канонічним текстом, що охоплює стратегічні події завоювання, розподілу землі та заповіту. Велика кількість географічних назв, військових кампаній та богословських акцентів дозволяє створити глибоку та багатоетапну програму навчання.",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "pentateuch-sub-6-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Постать Халева висвітлена через два ключові епізоди: розвідка Ханаану (Числа 13-14) та отримання спадщини в Хевроні (Ісус Навин 14). Це цілісна, але вузька сюжетна дуга, обмежена конкретними подіями та генеалогічними згадками.",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-1-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-1-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-1-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "patriarchs-sub-1-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-2-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "patriarchs-sub-2-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-2-sub-3": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "patriarchs-sub-2-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-3-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-3-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-3-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-3-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-4-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-4-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "patriarchs-sub-4-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "patriarchs-sub-4-sub-4": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-5-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "patriarchs-sub-5-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "patriarchs-sub-5-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "patriarchs-sub-5-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "patriarchs-sub-5-sub-5": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "patriarchs-sub-5-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "judges-sub-0-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "judges-sub-0-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "judges-sub-0-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "judges-sub-0-sub-4": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "judges-sub-1-sub-1": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "judges-sub-1-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "judges-sub-1-sub-3": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "judges-sub-2-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "judges-sub-2-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "judges-sub-2-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "judges-sub-4-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "judges-sub-3-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "judges-sub-3-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "judges-sub-3-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "judges-sub-3-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "judges-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "judges-sub-4-sub-3": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "judges-sub-5-sub-1": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Життя Самуїла охоплює значну частину 1-ї книги Самуїлової, включаючи перехід від епохи Суддів до монархії. Це фундаментальна постать із великою кількістю подій, пророчих служінь та богословських аспектів, що дозволяє детально структурувати практику.",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "judges-sub-5-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Життя Іллі охоплює розгорнуту сюжетну дугу в 1-й та 2-й книгах Царів, включаючи багато ключових подій, місць та богословських аспектів. Багатство матеріалу дозволяє створити достатню кількість етапів для вивчення його служіння, чудес та пророчої спадщини.",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "kings-sub-1-sub-1": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "kings-sub-1-sub-2": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "kings-sub-1-sub-3": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "kings-sub-1-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-1-sub-5": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "kings-sub-1-sub-6": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "kings-sub-2-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "kings-sub-2-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "kings-sub-2-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "kings-sub-2-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-2-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-2-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-2-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-3-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "kings-sub-3-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "kings-sub-3-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "kings-sub-3-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-3-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-3-sub-6": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-4-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "kings-sub-4-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "kings-sub-4-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-4-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-5-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "kings-sub-5-sub-2": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "kings-sub-5-sub-3": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "kings-sub-5-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "kings-sub-5-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "kings-sub-5-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "wisdom-poetry-sub-1-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-1-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-1-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-2-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-2-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-2-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-2-sub-4": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-3-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-3-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-3-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-4-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "wisdom-poetry-sub-4-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "wisdom-poetry-sub-5-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "wisdom-poetry-sub-5-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "wisdom-poetry-sub-5-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "wisdom-poetry-sub-6-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "wisdom-poetry-sub-6-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Книга Пісня Пісень є цілісним поетичним твором, насиченим образами, метафорами та топонімами, що дозволяє детально опрацювати текст. Хоча сюжетно вона вужча за історичні книги, її багатство символіки та богословська глибина вимагають поетапного вивчення.",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "wisdom-poetry-sub-6-sub-3": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Книга Екклезіяст є цілісним філософсько-богословським твором з глибокою структурою, що дозволяє детально проаналізувати її тематичні блоки. Велика кількість афористичних висловлювань та теологічних концепцій забезпечує багатий матеріал для створення різнорівневих вікторин.",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "wisdom-poetry-sub-6-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-1-sub-1": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "prophets-sub-1-sub-2": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "prophets-sub-1-sub-3": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "prophets-sub-1-sub-4": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "prophets-sub-1-sub-5": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-2-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-2-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-2-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-2-sub-4": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-2-sub-5": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-2-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-2-sub-7": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-2-sub-8": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-2-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-2-sub-10": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "prophets-sub-2-sub-11": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-2-sub-12": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-3-sub-1": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-3-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-3-sub-3": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-3-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-4-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-4-sub-2": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "prophets-sub-4-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "prophets-sub-5-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-5-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-5-sub-3": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-5-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-5-sub-5": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "prophets-sub-5-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "mosaic-law-sub-1-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Тема базується на ключовій заповіді (Шема), що міститься у небагатьох уривках Закону, таких як Повторення Закону 6:5 та 10:12. Хоча це фундаментальне богословське поняття, воно має обмежену кількість прямих біблійних посилань у межах Закону Мойсея, що робить обсяг матеріалу вузьким.",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "mosaic-law-sub-1-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Тема базується на конкретній заповіді з книги Левит (19:18), яка є ключовим етичним стрижнем Закону. Хоча заповідь фундаментальна, обсяг тексту, що прямо стосується її формулювання в Старому Завіті, обмежений кількома паралельними уривками в межах Закону Мойсея.",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "mosaic-law-sub-2-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Тема жертвоприношень є центральною для книги Левит та значної частини П'ятикнижжя, охоплюючи складну систему культових вимог, типів жертв та їхнього богословського значення. Вона пропонує достатній обсяг матеріалу для глибокого вивчення як на рівні фактів, так і на рівні типології для вищих рангів.",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "mosaic-law-sub-2-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Тема охоплює значні частини книг Вихід, Левит та Числа, детально описуючи інститут священства, обов'язки левитів та служіння у скинії. Це фундаментальна законодавча та богословська основа, яка дозволяє створити багато рівнів складності від базових фактів до глибокого тлумачення.",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "mosaic-law-sub-2-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Тема охоплює фундаментальні церемоніальні закони, детально описані у книгах Вихід, Левит (23 розділ), Числа та Повторення Закону. Вона має глибоке богословське значення, пов'язуючи історичні події з пророчим змістом, що дозволяє структурувати велику кількість питань для різних рівнів складності.",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "mosaic-law-sub-3-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Тема кримінального права в Законі Мойсея обмежена конкретними фрагментами в книгах Вихід, Левит та Повторення Закону, що зосереджені на принципах відплати та відшкодування. Це вузький, але змістовний законодавчий пласт, який не потребує широкої хронологічної дуги, а вимагає точного розуміння біблійних постанов.",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "mosaic-law-sub-3-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Майнові закони детально викладені в книгах Вихід (21-22), Левит та Повторення Закону, що створює багатий нормативний матеріал. Ця тема охоплює широкий спектр цивільних постанов щодо крадіжок, застав та відшкодувань, що дозволяє структурувати навчання на кілька змістовних рівнів.",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "mosaic-law-sub-3-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Тема сімейного права в Законі Мойсея охоплює значний обсяг законодавчих постанов у книгах Вихід, Левит та Повторення Закону, що дозволяє детально опрацювати питання шлюбу, левірату та спадкування. Матеріал є концептуально багатим і має чіткі паралелі, що робить його придатним для розгорнутого вивчення на різних рівнях складності.",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "mosaic-law-sub-4-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Тема базується на конкретних законодавчих списках у книгах Левит (11 розділ) та Повторення Закону (14 розділ), що є вузьким, але чітко структурованим матеріалом. Через обмеженість тексту лише двома основними уривками, тема не дозволяє глибокого розгалуження на багато етапів, зберігаючи стабільну складність для всіх рівнів.",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "mosaic-law-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Тема базується на кількох конкретних законодавчих уривках (Вихід, Левит, Повторення Закону), які мають чіткі межі та не передбачають широкого сюжетного розгалуження. Обсяг матеріалу є достатнім для ґрунтовного вивчення цих обмежень, але обмежений лише законодавчим контекстом.",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "mosaic-law-sub-4-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Тема ритуальної чистоти детально викладена в книгах Левит (11–15 розділи) та Числа, що забезпечує достатній обсяг законодавчого матеріалу для кількох рівнів складності. Це складний богословський пласт, який охоплює як побутові приписи, так і концепцію святості Божого народу.",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-1-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-1-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-1-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-1-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-2-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-2-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-2-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-3-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-3-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-3-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-4-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "commandments-sub-4-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "commandments-sub-4-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-1-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "geography-sub-1-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-1-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "geography-sub-2-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-2-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-2-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-2-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-2-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-2-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-2-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-2-sub-8": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-1": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "geography-sub-3-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-4": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-3-sub-5": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-3-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-10": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-11": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-12": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-13": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-14": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-15": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-16": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-3-sub-17": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-4-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-4-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-4-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-4-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-4-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-4-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-4-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-4-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-5-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-5-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "geography-sub-5-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-5-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-5-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-5-sub-6": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-5-sub-7": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-6-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-6-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "geography-sub-6-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "geography-sub-6-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-sub-6-sub-5": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-sub-6-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-1-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-1-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-1-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-1-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-2-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-2-sub-2": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "gospels-sub-2-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-2-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-3-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-3-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-3-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-3-sub-4": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-4-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-4-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-4-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-5-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-10": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-11": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-12": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-5-sub-apostles-1": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-5-sub-apostles-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-apostles-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "gospels-sub-5-sub-apostles-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-apostles-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-apostles-6": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-apostles-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-apostles-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-apostles-9": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-apostles-10": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-apostles-11": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "gospels-sub-5-sub-apostles-12": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-1-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "acts-sub-1-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-1-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "acts-sub-2-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-2-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "acts-sub-2-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-2-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-3-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "acts-sub-3-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-3-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-4-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "acts-sub-4-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "acts-sub-4-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "acts-sub-4-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-5-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-5-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-5-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-5-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-6-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "acts-sub-6-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-6-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-6-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-6-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-6-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-6-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-6-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "acts-sub-6-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "paul-sub-1-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "paul-sub-1-sub-2": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "paul-sub-1-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "paul-sub-1-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "paul-sub-2-sub-1": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "paul-sub-2-sub-2": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "paul-sub-2-sub-3": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "paul-sub-2-sub-4": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "paul-sub-3-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "paul-sub-3-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "paul-sub-3-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "paul-sub-4-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "paul-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "paul-sub-4-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "paul-sub-4-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "paul-sub-4-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "paul-sub-4-sub-6": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "paul-sub-4-sub-7": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "paul-sub-4-sub-8": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "general-epistles-sub-1-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "general-epistles-sub-1-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "general-epistles-sub-1-sub-3": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 4,
+        "student": 4,
+        "preacher": 3,
+        "teacher": 3,
+        "theologian": 2
+      }
+    },
+    "general-epistles-sub-2-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "general-epistles-sub-2-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "general-epistles-sub-2-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "general-epistles-sub-3-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "general-epistles-sub-3-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "general-epistles-sub-3-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "general-epistles-sub-4-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "general-epistles-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "general-epistles-sub-4-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "general-epistles-sub-5-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "general-epistles-sub-5-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "general-epistles-sub-5-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "general-epistles-sub-6-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "general-epistles-sub-6-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "general-epistles-sub-6-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "general-epistles-sub-6-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-1-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-1-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-1-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-1-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-1-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-1-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-1-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "revelation-sub-2-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "revelation-sub-2-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "revelation-sub-2-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-3-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "revelation-sub-3-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-3-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-3-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "revelation-sub-4-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "revelation-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "revelation-sub-4-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "revelation-sub-4-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "parables-sub-1-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "parables-sub-1-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "parables-sub-1-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "parables-sub-1-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "parables-sub-2-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "parables-sub-2-sub-2": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "parables-sub-2-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "parables-sub-2-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "parables-sub-3-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "parables-sub-3-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "parables-sub-3-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "parables-sub-4-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "parables-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "parables-sub-4-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-1-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-1-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-1-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-1-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-2-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-2-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-2-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-2-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-3-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-3-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-3-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-4-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "miracles-sub-4-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-nt-sub-1-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-1-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-1-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-nt-sub-2-sub-4": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "geography-nt-sub-2-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-8": {
+      "biblicalRichness": 1,
+      "recommendedBaseStages": 1,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 1,
+        "child": 1,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-10": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-11": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-12": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-13": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-2-sub-14": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-3-sub-1": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-3-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-3-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 1,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-4-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-nt-sub-4-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-4-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-4-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-4-sub-5": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-nt-sub-4-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-5-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-5-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-5-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-nt-sub-5-sub-4": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-nt-sub-5-sub-5": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-5-sub-6": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-nt-sub-5-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-5-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-5-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-5-sub-10": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-5-sub-11": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-5-sub-12": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-5-sub-13": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-6-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-nt-sub-6-sub-2": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-6-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "geography-nt-sub-6-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-6-sub-5": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-6-sub-6": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-6-sub-7": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-6-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-6-sub-9": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-6-sub-10": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-6-sub-11": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 1,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "geography-nt-sub-6-sub-12": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 1,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "ot-custom-istorychni-periody-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Тема охоплює перші 11 розділів книги Буття, що містять ключові богословські наративи, генеалогії та архетипові події. Це фундаментальний пласт тексту, який дозволяє глибоке опрацювання як на рівні базових фактів, так і через складні екзегетичні питання.",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "patriarchs": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Період патріархів охоплює значну частину книги Буття (розділи 12–50), містить глибоке богослов'я заповіту, складну генеалогію та численні ключові події. Це фундаментальний історичний блок, який дозволяє детально структурувати питання від простих біографічних фактів до складних етичних та теологічних аспектів.",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "ot-custom-istorychni-periody-sub-3": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Тема охоплює значну частину книги Вихід та є ключовим теологічним фундаментом Старого Завіту, що дозволяє детально опрацювати сюжетні лінії, закон та символізм. Велика кількість подій та персонажів забезпечує високий потенціал для структурування матеріалу на різних рівнях складності.",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "ot-custom-istorychni-periody-sub-4": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Тема охоплює величезний масив біблійного тексту (Вихід, Левит, Числа, Повторення Закону), що включає ключові події, складне законодавство, богословські установи та детальну хронологію мандрів. Це фундаментальний пласт Старого Завіту, що дозволяє створити велику кількість рівнів складності від базових знань до глибокого екзегетичного аналізу.",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "ot-custom-istorychni-periody-sub-5": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Тема охоплює всю книгу Ісуса Навина, містить багатий історичний, географічний та теологічний матеріал про виконання Божих обітниць. Це фундаментальний період завоювання та розподілу землі, що дозволяє детально структурувати навчання від загальних подій до глибокого аналізу заповіту.",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "ot-custom-istorychni-periody-sub-6": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Книга Суддів є цілісним історичним та теологічним блоком, що охоплює складний цикл відступництва та діяльність багатьох ключових постатей. Багатство матеріалу дозволяє детально структурувати практику від загальних подій до глибокого богословського аналізу.",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "ot-custom-istorychni-periody-sub-7": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Цей період охоплює значний масив текстів (1-ша та 2-га книги Самуїлові, 1-ша та 2-га книги Царів, 1-ша та 2-га книги Хронік), що включає складну хронологію, життєписи ключових царів та теологічне осмислення теократії. Велика кількість персонажів та подій дозволяє структурувати матеріал на багато етапів, поступово ускладнюючи рівень від біографічних фактів до аналізу причин розколу.",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "ot-custom-istorychni-periody-sub-8": {
+      "biblicalRichness": 5,
+      "recommendedBaseStages": 5,
+      "reasoning": "Цей період охоплює значний обсяг канонічних текстів (2 Хронік, Ездра, Неемія, Естер, пророки Даниїл, Єзекіїль, Огій, Захарія), що дозволяє глибоко дослідити як історичні події, так і богословські питання відновлення Завіту. Багатство матеріалу дає можливість детально структурувати практику від базових фактів до складного аналізу пророчого та історичного контексту.",
+      "stages": {
+        "baby": 5,
+        "child": 5,
+        "youth": 5,
+        "student": 4,
+        "preacher": 4,
+        "teacher": 3,
+        "theologian": 3
+      }
+    },
+    "nt-custom-poslannia-do-maibutnikh-pokolin-sub-1": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 4,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "nt-custom-poslannia-do-maibutnikh-pokolin-sub-3": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "nt-custom-poslannia-do-maibutnikh-pokolin-sub-4": {
+      "biblicalRichness": 4,
+      "recommendedBaseStages": 4,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 4,
+        "child": 4,
+        "youth": 3,
+        "student": 3,
+        "preacher": 3,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "nt-custom-klyuchi-postati-nz-sub-1": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "nt-custom-klyuchi-postati-nz-sub-2": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 3,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "nt-custom-klyuchi-postati-nz-sub-3": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "nt-custom-klyuchi-postati-nz-sub-4": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    },
+    "nt-custom-klyuchi-postati-nz-sub-5": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 1
+      }
+    },
+    "nt-custom-klyuchi-postati-nz-sub-6": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "nt-custom-klyuchi-postati-nz-sub-7": {
+      "biblicalRichness": 3,
+      "recommendedBaseStages": 3,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 3,
+        "child": 3,
+        "youth": 3,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 2,
+        "theologian": 2
+      }
+    },
+    "nt-custom-klyuchi-postati-nz-sub-8": {
+      "biblicalRichness": 2,
+      "recommendedBaseStages": 2,
+      "reasoning": "Імпорт з practice-stages-list.txt",
+      "stages": {
+        "baby": 2,
+        "child": 2,
+        "youth": 2,
+        "student": 2,
+        "preacher": 2,
+        "teacher": 1,
+        "theologian": 1
+      }
+    }
+  }
+}

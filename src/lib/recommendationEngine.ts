@@ -8,7 +8,7 @@ import {
   type PlayerProfile,
 } from '../types';
 import {
-  STAGE_COUNT_BY_DIFFICULTY,
+  getPracticeStageCount,
   PRACTICE_QUESTIONS_PER_STAGE,
   canPlayDifficulty,
   isStagePassed,
@@ -91,7 +91,7 @@ function generateContinuePracticeRecommendations(
   for (const track of tracks) {
     if (!canPlayDifficulty(rank, track.difficulty)) continue;
 
-    const stageCount = STAGE_COUNT_BY_DIFFICULTY[track.difficulty];
+    const stageCount = getPracticeStageCount(track.nodeId, track.difficulty);
     let nextStage: number | null = null;
 
     for (let stageIndex = 0; stageIndex < stageCount; stageIndex++) {

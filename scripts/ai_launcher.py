@@ -637,13 +637,13 @@ def _popen_argv(cwd, env=None):
     return _popen_kwargs(cwd, shell=False, env=env)
 
 THEME_IDS = [
-    "geography", "old-testament", "mosaic-law", "judges", "kings", "prophets",
+    "geography", "old-testament", "pentateuch", "judges", "kings", "prophets",
     "psalms", "patriarchs", "commandments", "new-testament", "gospels", "paul",
     "parables", "miracles", "revelation",
 ]
 
 THEMES_DICT = {
-    "old-testament": "Старий Завіт", "mosaic-law": "Закон Мойсея", "judges": "Судді",
+    "old-testament": "Старий Завіт", "pentateuch": "Пятикнижжя", "judges": "Судді",
     "kings": "Царі", "prophets": "Пророки", "psalms": "Псалми", "patriarchs": "Патріархи",
     "geography": "Географія СЗ", "geography-nt": "Географія НЗ", "commandments": "Десять заповідей",
     "new-testament": "Новий Завіт", "gospels": "Євангелія", "paul": "Апостол Павло",
@@ -654,7 +654,7 @@ GROUPS_CONF = {
     "old-testament": {
         "title": "Старий Завіт",
         "theme_ids": [
-            "old-testament", "mosaic-law", "judges", "kings", "prophets",
+            "old-testament", "pentateuch", "judges", "kings", "prophets",
             "psalms", "patriarchs", "geography", "commandments",
         ],
     },

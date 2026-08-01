@@ -147,6 +147,20 @@
           "children": []
         }
       ]
+    },
+    {
+      "id": "patriarchs-sub-5",
+      "title": "Родина та сусіди патріархів",
+      "description": "Родичі та сусіди, які вплинули на історію патріархів і народів навколо них.",
+      "icon": "👨‍👩‍👧‍👦",
+      "children": [
+        { "id": "patriarchs-sub-5-sub-1", "title": "Лот", "description": "Племінник Авраама; врятувався з Содому, став батьком Моаву та Амону.", "icon": "🏙️", "children": [] },
+        { "id": "patriarchs-sub-5-sub-2", "title": "Сара", "description": "Дружина Авраама, матір Ісаака, з якою Бог виконав обітницю нащадків.", "icon": "👩", "children": [] },
+        { "id": "patriarchs-sub-5-sub-3", "title": "Рахіль і Лія", "description": "Дружини Якова, матері дванадцяти колін Ізраїля.", "icon": "💐", "children": [] },
+        { "id": "patriarchs-sub-5-sub-4", "title": "Ісав", "description": "Старший брат Якова, батько едомітів, який продав первородство.", "icon": "🍲", "children": [] },
+        { "id": "patriarchs-sub-5-sub-5", "title": "Юда", "description": "Син Якова, від якого пішло царське коліно та рід Давида.", "icon": "🦁", "children": [] },
+        { "id": "patriarchs-sub-5-sub-6", "title": "Моав і Амон", "description": "Народи, що походять від дочок Лота, сусіди Ізраїлю на сході.", "icon": "🏔️", "children": [] }
+      ]
     }
   ]
 }

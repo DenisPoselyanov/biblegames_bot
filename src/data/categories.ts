@@ -10,15 +10,13 @@ export const CATEGORIES: Category[] = [
     themeIds: [
       'old-testament',
       'pentateuch',
-      'patriarchs',
       'judges',
       'kings',
-      'wisdom-poetry',
       'prophets',
-      'mosaic-law',
-      'commandments',
+      'wisdom-poetry',
       'geography',
     ],
+    aggregateExtraThemeIds: ['patriarchs', 'commandments'],
   },
   {
     id: 'new-testament',
@@ -29,13 +27,13 @@ export const CATEGORIES: Category[] = [
     themeIds: [
       'new-testament',
       'gospels',
+      'parables',
+      'miracles',
       'acts',
       'paul',
       'general-epistles',
       'revelation',
       'geography-nt',
-      'parables',
-      'miracles',
     ],
   },
 ];
@@ -45,10 +43,19 @@ export function getCategoryById(id: string): Category | undefined {
 }
 
 export function getCategoryByThemeId(themeId: string): Category | undefined {
-  return CATEGORIES.find((c) => c.themeIds.includes(themeId));
+  return CATEGORIES.find(
+    (c) => c.themeIds.includes(themeId) || (c.aggregateExtraThemeIds?.includes(themeId) ?? false),
+  );
 }
 
 export function getThemeIdsByCategory(categoryId: string): string[] {
+  const cat = getCategoryById(categoryId);
+  if (!cat) return [];
+  return [...cat.themeIds, ...(cat.aggregateExtraThemeIds ?? [])];
+}
+
+/** themeIds that appear as top-level browse branches (excludes embedded themes) */
+export function getBrowseThemeIdsByCategory(categoryId: string): string[] {
   const cat = getCategoryById(categoryId);
   return cat ? cat.themeIds : [];
 }

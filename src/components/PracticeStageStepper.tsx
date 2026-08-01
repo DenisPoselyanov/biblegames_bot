@@ -4,9 +4,10 @@ import {
   getStageQuizPath,
   isStagePassed,
   isStageUnlocked,
-  STAGE_COUNT_BY_DIFFICULTY,
+  getPracticeStageCount,
 } from '../lib/practiceProgression';
 import { getStageQuestionCount } from '../data/questions';
+import { usePracticeNodeOverridesStore } from '../stores/practiceNodeOverridesStore';
 import styles from './PracticeStageStepper.module.css';
 
 interface PracticeStageStepperProps {
@@ -24,7 +25,9 @@ export function PracticeStageStepper({
   questionPoolSize,
   track,
 }: PracticeStageStepperProps) {
-  const stageCount = STAGE_COUNT_BY_DIFFICULTY[difficulty];
+  const nodeOverrides = usePracticeNodeOverridesStore((s) => (nodeId ? s.overrides[nodeId] : undefined));
+  const stageCount = getPracticeStageCount(nodeId, difficulty);
+  void nodeOverrides;
   const highestUnlocked = track?.highestUnlockedStage ?? 0;
 
   return (

@@ -15,13 +15,13 @@ import {
   resolveHierarchyForNode,
 } from './themes-config.mjs';
 import { loadThemeQuestions } from './question-db.mjs';
+import { STAGE_COUNT_BY_DIFFICULTY, stagesPossibleFromPool } from './practice-config.mjs';
 import {
   practiceGap,
-  requiredQuestionsForDifficulty,
+  requiredQuestionsForNode,
   isPracticeReady,
-  STAGE_COUNT_BY_DIFFICULTY,
-  stagesPossibleFromPool,
-} from './practice-config.mjs';
+  getPracticeStageCount,
+} from './practice-stage-config.mjs';
 
 import { isSpecificSubtopicNodeId, themeHasOwnHierarchyFile } from './topic-context.mjs';
 
@@ -193,8 +193,8 @@ export function collectNodePracticeGaps(filter = {}) {
 
     for (const difficulty of diffs) {
       const pool = countNodePool(leaf.nodeId, hierarchy, themeId, difficulty);
-      if (isPracticeReady(pool, difficulty)) continue;
-      const gap = practiceGap(pool, difficulty);
+      if (isPracticeReady(pool, difficulty, leaf.nodeId)) continue;
+      const gap = practiceGap(pool, difficulty, leaf.nodeId);
       if (gap < minGap) continue;
       gaps.push({
         themeId,
@@ -203,8 +203,8 @@ export function collectNodePracticeGaps(filter = {}) {
         path: leaf.path,
         difficulty,
         pool,
-        required: requiredQuestionsForDifficulty(difficulty),
-        stages: STAGE_COUNT_BY_DIFFICULTY[difficulty],
+        required: requiredQuestionsForNode(leaf.nodeId, difficulty),
+        stages: getPracticeStageCount(leaf.nodeId, difficulty),
         possible: stagesPossibleFromPool(pool),
         gap,
       });

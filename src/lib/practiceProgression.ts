@@ -6,20 +6,21 @@ import {
   type PlayerRank,
   type PracticeTrackProgress,
 } from '../types';
+import { PRACTICE_QUESTIONS_PER_STAGE, STAGE_COUNT_BY_DIFFICULTY } from './practiceConstants';
+import { getTotalPracticeStagesForNode } from './practiceStageConfig';
 
-export const PRACTICE_QUESTIONS_PER_STAGE = 10;
-export const PASS_THRESHOLD = 0.7;
-export const PASS_MIN_CORRECT = Math.ceil(PASS_THRESHOLD * PRACTICE_QUESTIONS_PER_STAGE);
+export {
+  PRACTICE_QUESTIONS_PER_STAGE,
+  PASS_THRESHOLD,
+  PASS_MIN_CORRECT,
+  STAGE_COUNT_BY_DIFFICULTY,
+} from './practiceConstants';
 
-export const STAGE_COUNT_BY_DIFFICULTY: Record<Difficulty, number> = {
-  baby: 5,
-  child: 5,
-  youth: 5,
-  student: 4,
-  preacher: 4,
-  teacher: 3,
-  theologian: 3,
-};
+export {
+  getPracticeStageCount,
+  getTotalPracticeStagesForNode,
+  requiredQuestionsForNode,
+} from './practiceStageConfig';
 
 export const WISDOM_PER_STAGE_BASE: Record<Difficulty, number> = {
   baby: 5,
@@ -233,6 +234,7 @@ export function isPracticeReady(poolSize: number, difficulty: Difficulty): boole
   return poolSize >= requiredQuestionsForDifficulty(difficulty);
 }
 
+/** @deprecated Use getTotalPracticeStagesForNode(nodeId) for per-subtopic totals. */
 export const TOTAL_PRACTICE_STAGES_PER_NODE = DIFFICULTIES.reduce(
   (sum, difficulty) => sum + STAGE_COUNT_BY_DIFFICULTY[difficulty],
   0,
@@ -243,14 +245,20 @@ export function computeNodePracticeProgressPercent(
   tracks: PracticeTrackProgress[],
   themeId: string,
   nodeId: string | null,
+  options?: {
+    hierarchyRoot?: import('../types').TopicNode | null;
+    hierarchies?: import('../types').TopicHierarchyMap | null;
+    fallbackBaseStages?: number;
+  },
 ): number {
   let passed = 0;
   for (const difficulty of DIFFICULTIES) {
     const track = findPracticeTrack(tracks, themeId, nodeId, difficulty);
     if (track) passed += countPassedStages(track);
   }
-  if (TOTAL_PRACTICE_STAGES_PER_NODE <= 0) return 0;
-  return Math.round((passed / TOTAL_PRACTICE_STAGES_PER_NODE) * 100);
+  const total = getTotalPracticeStagesForNode(nodeId, options);
+  if (total <= 0) return 0;
+  return Math.round((passed / total) * 100);
 }
 
 export function getDifficultyUnlockRankLabel(difficulty: Difficulty): string {

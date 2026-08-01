@@ -50,7 +50,7 @@ function TopicTreeNode({ node, depth, themeQuestions }: {
         <span>{(node.children?.length ?? 0) > 0 ? (expanded ? '▼' : '▶') : '◈'}</span>
         <span>{node.icon}</span>
         <span style={{ fontWeight: depth === 0 ? 600 : 400 }}>{node.title}</span>
-        <span style={{ fontSize: 12, color: '#888' }}>{questionCount} питань</span>
+        <span className={styles.muted}>{questionCount} питань</span>
       </div>
       {expanded && (node.children?.length ?? 0) > 0 && (
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>

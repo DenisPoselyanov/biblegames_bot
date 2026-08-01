@@ -13,10 +13,9 @@ export const THEMES = [
   { id: 'patriarchs', title: 'Патріархи', category: 'old-testament', context: 'Патріархи: Авраам, Ісак, Яків, Йосиф.' },
   { id: 'judges', title: 'Судді', category: 'old-testament', context: 'Судді Ізраїля: Гедеон, Самсон, Девора, Єфта; також Йошуа та Рут.' },
   { id: 'kings', title: 'Царі', category: 'old-testament', context: 'Царі Ізраїля та Юдеї: Саул, Давид, Соломон; також Ездра, Неемія, Естер.' },
-  { id: 'wisdom-poetry', title: 'Мудрість і поезія', category: 'old-testament', context: 'Job, Псалми, Приповісті, Еклesiаст, Пісня над піснями.' },
+  { id: 'wisdom-poetry', title: 'Мудрість і поезія', category: 'old-testament', context: 'Йов, Псалми, Приповісті, Екклесіаст, Пісня над піснями.' },
   { id: 'prophets', title: 'Пророки', category: 'old-testament', context: 'Пророки ВЗ: великі (Ісая, Єремія, Єзекіїль, Даниїл) та малі (12 книг).' },
-  { id: 'mosaic-law', title: 'Закон Мойсея', category: 'old-testament', context: 'Заповіді, скинія, жертви, святі дні, устави Тори.' },
-  { id: 'commandments', title: 'Десять заповідень', category: 'old-testament', context: 'Десять заповідь, Закон на Синаї, їх зміст.' },
+  { id: 'commandments', title: 'Десять заповідень', category: 'old-testament', context: 'Десять заповідь на Синаї (Пятикнижжя, Вихід), їх зміст.' },
   { id: 'geography', title: 'Географія Старого Завіту', category: 'old-testament', context: 'Місця, річки, гори та регіони Старого Завіту. Точні біблійні факти.' },
   // ---- Новий Завіт ----
   { id: 'new-testament', title: 'Новий Завіт', category: 'new-testament', context: 'Церква, апостоли, вчення, раннє християнство.' },
@@ -37,14 +36,15 @@ export const GROUPS = [
     title: 'Старий Завіт',
     description: 'Перша частина Біблії, яка описує створення світу, історію ізраїльського народу та Божий закон.',
     icon: '📜',
-    themeIds: ['old-testament', 'pentateuch', 'patriarchs', 'judges', 'kings', 'wisdom-poetry', 'prophets', 'mosaic-law', 'commandments', 'geography'],
+    themeIds: ['old-testament', 'pentateuch', 'judges', 'kings', 'prophets', 'wisdom-poetry', 'geography'],
+    aggregateExtraThemeIds: ['patriarchs', 'commandments'],
   },
   {
     id: 'new-testament',
     title: 'Новий Завіт',
     description: 'Друга частина Біблії, яка описує життя Ісуса Христа та народження християнської церкви.',
     icon: '✝️',
-    themeIds: ['new-testament', 'gospels', 'acts', 'paul', 'general-epistles', 'revelation', 'geography-nt', 'parables', 'miracles'],
+    themeIds: ['new-testament', 'gospels', 'parables', 'miracles', 'acts', 'paul', 'general-epistles', 'revelation', 'geography-nt'],
   },
 ];
 

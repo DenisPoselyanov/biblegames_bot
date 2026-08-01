@@ -1,10 +1,12 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getMixedQuestionsByDifficulty, getQuestionsByIdsOrdered } from '../../data/questions';
+import { getMixedQuestionsByDifficulty } from '../../data/questions';
+import { fetchQuestionsByIds } from '../../repos/questionsRepo';
 import { usePlayer } from '../../context/PlayerContext';
 import { ExplanationModal } from '../../components/ExplanationModal';
 import { ConfirmModal } from '../../components/ConfirmModal';
+import { QuizPoolSkeleton } from '../../components/skeletons';
 import { haptic } from '../../lib/telegram';
 import { DIFFICULTY_LABELS } from '../../types';
 import type { Difficulty, Question } from '../../types';
@@ -86,7 +88,7 @@ export function Survival() {
     void (async () => {
       const saved = loadGameSession<SurvivalRunSession>(SURVIVAL_SESSION_KEY);
       if (saved?.currentQuestionId) {
-        const [current] = await getQuestionsByIdsOrdered([saved.currentQuestionId]);
+        const [current] = await fetchQuestionsByIds([saved.currentQuestionId]);
         if (!cancelled && current) {
           sessionRestoredRef.current = true;
           setQuestion(current);
@@ -256,7 +258,7 @@ export function Survival() {
   if (!ready) {
     return (
       <section className={styles.page}>
-        <p>Завантаження…</p>
+        <QuizPoolSkeleton />
       </section>
     );
   }

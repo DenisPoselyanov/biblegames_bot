@@ -72,7 +72,7 @@
   padding: 0 1rem;
   border-radius: 10px;
   background: var(--gold);
-  color: #1b1608;
+  color: var(--on-primary);
   text-decoration: none;
   font-weight: 700;
 }

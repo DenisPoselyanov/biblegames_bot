@@ -37,7 +37,7 @@
 
 .stagePassed {
   border-color: rgba(74, 156, 93, 0.35);
-  color: var(--success-text, #6dbf7e);
+  color: var(--success-text);
   background: rgba(74, 156, 93, 0.08);
 }
 

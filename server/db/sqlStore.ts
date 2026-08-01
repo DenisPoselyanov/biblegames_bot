@@ -1,29 +1,5 @@
 import type { ServerStore } from './store';
-
-type PgPool = {
-  query: (sql: string, params?: unknown[]) => Promise<{ rows: Array<Record<string, unknown>> }>;
-};
-
-let poolPromise: Promise<PgPool> | null = null;
-
-async function getPool(): Promise<PgPool> {
-  if (!process.env.DATABASE_URL) {
-    throw new Error('DATABASE_URL is required for sql storage provider');
-  }
-  if (!poolPromise) {
-    poolPromise = (async () => {
-      const moduleName = 'pg';
-      const mod = (await import(moduleName)) as {
-        Pool: new (opts: Record<string, unknown>) => PgPool;
-      };
-      return new mod.Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: process.env.PG_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
-      });
-    })();
-  }
-  return poolPromise;
-}
+import { getPool } from './pgPool';
 
 export const sqlStore: ServerStore = {
   async getProfile(userId) {

@@ -16,6 +16,7 @@
     "sort-questions": "tsx scripts/sortQuestionsByCategory.ts",
     "questions:stats": "node scripts/analyze-questions.mjs",
     "questions:dedupe-db": "node scripts/dedupe-question-db.mjs",
+    "questions:import-supabase": "tsx scripts/import-questions-supabase.ts",
     "analyze-questions": "node scripts/analyze-questions.mjs",
     "analyze-quality": "tsx scripts/analyzeQuestionQuality.ts",
     "analyze-explanations": "tsx scripts/analyze-explanations.mjs",
@@ -43,6 +44,8 @@
     "balance-questions": "node scripts/balance-questions.mjs",
     "fill-practice": "node scripts/fill-practice-pools.mjs",
     "fill-practice-nodes": "node scripts/fill-practice-nodes.mjs",
+    "assign-practice-stages": "node scripts/assign-practice-stages.mjs",
+    "import-practice-stages-list": "node scripts/import-practice-stages-list.mjs",
     "prune-untagged": "node scripts/prune-untagged-questions.mjs"
   },
   "dependencies": {
@@ -52,8 +55,8 @@
     "pg": "^8.21.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.15.1",
+    "react-vant": "^3.3.5",
     "socket.io-client": "^4.8.3",
     "zustand": "^5.0.14"
   },

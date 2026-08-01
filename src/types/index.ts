@@ -9,6 +9,8 @@ export interface Category {
   icon: string;
   color: string;
   themeIds: string[];
+  /** themeIds for question pools only — not shown as top-level browse branches */
+  aggregateExtraThemeIds?: string[];
 }
 
 export interface Theme {
@@ -265,6 +267,8 @@ export interface TopicNode {
   difficulty?: Difficulty; // Рекомендована складність
   estimatedTime?: number; // Оцінний час навчання в хвилинах
   aggregateThemeIds?: string[]; // Для вузла "Всі питання" — список themeId для агрегації
+  /** Ручна кількість етапів практики по рангах (перебиває AI manifest) */
+  practiceStages?: Partial<Record<Difficulty, number>>;
 }
 
 /** Мапа ієрархій тем: themeId → кореневий TopicNode */

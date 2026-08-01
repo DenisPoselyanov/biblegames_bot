@@ -169,6 +169,23 @@
           "children": []
         }
       ]
+    },
+    {
+      "id": "acts-sub-6",
+      "title": "Герої Дій апостолів",
+      "description": "Лідери ранньої церкви, окрім Петра та Павла.",
+      "icon": "⭐",
+      "children": [
+        { "id": "acts-sub-6-sub-1", "title": "Стефан", "description": "Перший диякон і мученик, побитий камінням.", "icon": "🪨", "children": [] },
+        { "id": "acts-sub-6-sub-2", "title": "Филип", "description": "Диякон і євангеліст, який проповідував ефіоплянину.", "icon": "🌍", "children": [] },
+        { "id": "acts-sub-6-sub-3", "title": "Варнава", "description": "«Син утішення», супутник Павла в першій місії.", "icon": "🤗", "children": [] },
+        { "id": "acts-sub-6-sub-4", "title": "Яків (брат Господній)", "description": "Очільник єрусалимської церкви, убитий Іродом.", "icon": "⛪", "children": [] },
+        { "id": "acts-sub-6-sub-5", "title": "Тимофій", "description": "Молодий помічник Павла з Листри.", "icon": "📖", "children": [] },
+        { "id": "acts-sub-6-sub-6", "title": "Сила", "description": "Проповідник, який супроводжував Павла в місіях.", "icon": "🤝", "children": [] },
+        { "id": "acts-sub-6-sub-7", "title": "Аполлос", "description": "Красномовний проповідник з Олександрії, навчений Акілою.", "icon": "🌊", "children": [] },
+        { "id": "acts-sub-6-sub-8", "title": "Прискила й Акіла", "description": "Подружжя, яке вчило Павла та приймало церкви вдома.", "icon": "🏠", "children": [] },
+        { "id": "acts-sub-6-sub-9", "title": "Тавіфа (Дорка)", "description": "Учіниця з Яфи, воскрешена Петром.", "icon": "🧵", "children": [] }
+      ]
     }
   ]
 }

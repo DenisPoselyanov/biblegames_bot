@@ -20,16 +20,22 @@ export function useScripture(reference: string | undefined, translation: BollsTr
     let cancelled = false;
     setState('loading');
 
-    void fetchScripturePassage(ref, translation).then((data) => {
-      if (cancelled) return;
-      if (!data || data.parseError || data.verses.length === 0) {
+    void fetchScripturePassage(ref, translation)
+      .then((data) => {
+        if (cancelled) return;
+        if (!data || data.parseError || data.verses.length === 0) {
+          setPassage(data);
+          setState('error');
+          return;
+        }
         setPassage(data);
+        setState('ready');
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setPassage(null);
         setState('error');
-        return;
-      }
-      setPassage(data);
-      setState('ready');
-    });
+      });
 
     return () => {
       cancelled = true;

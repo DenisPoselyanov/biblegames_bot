@@ -8,25 +8,25 @@ import styles from './PlayHub.module.css';
 
 interface ModeArt {
   icon: IconName;
-  gradient: string;
+  artBgClass: string;
 }
 
 const MODE_ART: Record<string, ModeArt> = {
   study: {
     icon: 'study',
-    gradient: 'linear-gradient(145deg, #c9a227, #8b6914)',
+    artBgClass: styles.cardArtBgStudy,
   },
   millionaire: {
     icon: 'diamond',
-    gradient: 'linear-gradient(145deg, #8b5cf6, #6d28d9)',
+    artBgClass: styles.cardArtBgMillionaire,
   },
   survival: {
     icon: 'survival',
-    gradient: 'linear-gradient(145deg, #ef4444, #b91c1c)',
+    artBgClass: styles.cardArtBgSurvival,
   },
   kahoot: {
     icon: 'kahoot',
-    gradient: 'linear-gradient(145deg, #06b6d4, #0369a1)',
+    artBgClass: styles.cardArtBgKahoot,
   },
 };
 
@@ -72,7 +72,7 @@ export function PlayHub() {
                   <div
                     className={`${styles.cardArt}${featured ? ` ${styles.cardArtFeatured}` : ''}`}
                   >
-                    <div className={styles.cardArtBg} style={{ background: art.gradient }} />
+                    <div className={`${styles.cardArtBg} ${art.artBgClass}`} />
                     <Icon name={art.icon} size={featured ? 96 : 72} className={styles.cardArtIcon} />
                   </div>
                 </Link>
@@ -86,7 +86,7 @@ export function PlayHub() {
                     <p className={styles.cardDesc}>{mode.description}</p>
                   </div>
                   <div className={styles.cardArt}>
-                    <div className={styles.cardArtBg} style={{ background: art.gradient }} />
+                    <div className={`${styles.cardArtBg} ${art.artBgClass}`} />
                     <Icon name={art.icon} size={72} className={styles.cardArtIcon} />
                   </div>
                 </div>

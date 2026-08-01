@@ -128,7 +128,7 @@
   left: 0;
   top: 0;
   height: 100%;
-  background: linear-gradient(90deg, #4a9c5d, #c9a227, #ef6f6c);
+  background: linear-gradient(90deg, var(--success), var(--gold), var(--danger));
   border-radius: 14px;
   transition: width var(--duration-normal) var(--ease-out);
 }
@@ -147,7 +147,7 @@
 }
 
 .timerCenterLow {
-  color: #ef6f6c;
+  color: var(--danger-text);
 }
 
 @keyframes pulseDanger {

@@ -1,34 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
 
 :root {
-  /* ─── Backgrounds ─── */
-  --bg: #1a1208;
-  --surface: #2a2218;
-  --surface-hover: #322a1e;
-  --border: #3d3428;
-  --border-light: #4d4438;
+  color-scheme: dark;
+  accent-color: var(--gold);
+
+  /* ─── Backgrounds (fallback = classic theme) ─── */
+  --bg: #101820;
+  --surface: #182430;
+  --surface-hover: #1e2d3c;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.12);
 
   /* ─── Text ─── */
-  --text: #f5f0e6;
-  --text-muted: #a89f8f;
-  --text-dim: #786f5f;
+  --text: #f8f3e7;
+  --text-muted: #b8b0a0;
+  --text-dim: #8a8278;
 
   /* ─── Accent ─── */
-  --gold: #c9a227;
-  --gold-light: #e8d48b;
-  --gold-dark: #a67c00;
-  --gold-glow: rgba(201, 162, 39, 0.35);
+  --gold: #d8a84e;
+  --gold-light: #f1d28a;
+  --gold-dark: #8c6d22;
+  --gold-glow: rgba(216, 168, 78, 0.35);
   --on-primary: #1a1208;
-  --accent-bg: rgba(201, 162, 39, 0.08);
-  --accent-bg-strong: rgba(201, 162, 39, 0.15);
-  --accent-border: rgba(201, 162, 39, 0.25);
-  --accent-border-strong: rgba(201, 162, 39, 0.38);
+  --accent-bg: rgba(216, 168, 78, 0.08);
+  --accent-bg-strong: rgba(216, 168, 78, 0.15);
+  --accent-border: rgba(216, 168, 78, 0.25);
+  --accent-border-strong: rgba(216, 168, 78, 0.38);
   --heading: var(--gold-light);
-  --nested-surface: rgba(42, 34, 24, 0.35);
+  --nested-surface: rgba(24, 36, 48, 0.35);
   --overlay-bg: rgba(255, 255, 255, 0.06);
   --overlay-bg-strong: rgba(255, 255, 255, 0.1);
-  --cta-bg: linear-gradient(135deg, #e8d48b 0%, #c9a227 52%, #b08a1f 100%);
-  --cta-shadow: 0 8px 28px rgba(201, 162, 39, 0.32), 0 2px 8px rgba(201, 162, 39, 0.12);
+  --cta-bg: linear-gradient(135deg, #e8c878 0%, #d8a84e 52%, #b08830 100%);
+  --cta-shadow: 0 8px 28px rgba(216, 168, 78, 0.38), 0 2px 8px rgba(0, 0, 0, 0.2);
 
   /* ─── Semantic colors ─── */
   --success: #4a9c5d;
@@ -91,7 +94,7 @@
   --duration-slow: 440ms;
 
   /* ─── Glassmorphism ─── */
-  --glass-bg: linear-gradient(145deg, rgba(42, 34, 24, 0.85), rgba(42, 34, 24, 0.6));
+  --glass-bg: linear-gradient(145deg, rgba(24, 36, 48, 0.88), rgba(16, 24, 32, 0.65));
   --glass-border: rgba(255, 255, 255, 0.06);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 
@@ -272,42 +275,67 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
-.hot-toast-container {
-  z-index: var(--z-toast) !important;
+/* react-vant — align with app tokens */
+.rv-tabbar,
+.rv-dialog,
+.rv-toast,
+.rv-skeleton,
+.rv-empty,
+.rv-loading {
+  font-family: var(--font-sans);
+}
+
+.rv-tabbar--fixed {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.rv-toast {
   top: max(0.75rem, env(safe-area-inset-top, 0px)) !important;
 }
 
-.hot-toast {
-  font-family: var(--font-sans) !important;
-  font-size: var(--fs-base) !important;
-  color: var(--text) !important;
-  background: var(--surface) !important;
-  border: 1px solid var(--border-light) !important;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--shadow-md) !important;
-  max-width: min(22rem, calc(100vw - 2rem)) !important;
+/* Declarative app toast (React 19 — без imperative Toast API react-vant) */
+.app-toast {
+  margin: 0 auto;
+  padding: 0.65rem 1rem;
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  max-width: min(22rem, calc(100vw - 2rem));
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
 }
 
-.hot-toast--success {
-  border-color: var(--success) !important;
-  background: var(--success-bg) !important;
-  color: var(--success-text) !important;
+.app-toast--success {
+  border-color: var(--success);
+  background: var(--success-bg);
+  color: var(--success-text);
 }
 
-.hot-toast--error {
-  border-color: var(--danger) !important;
-  background: var(--danger-bg) !important;
-  color: var(--danger-text) !important;
+.app-toast--error {
+  border-color: var(--danger);
+  background: var(--danger-bg);
+  color: var(--danger-text);
 }
 
-.hot-toast--warning {
-  border-color: var(--warning) !important;
-  background: var(--warning-bg) !important;
-  color: var(--gold-light) !important;
+.app-toast--warning {
+  border-color: var(--warning);
+  background: var(--warning-bg);
+  color: var(--gold-light);
 }
 
-.hot-toast--info {
-  border-color: var(--info) !important;
-  background: var(--info-bg) !important;
-  color: var(--text) !important;
+.app-toast--info {
+  border-color: var(--info);
+  background: var(--info-bg);
+  color: var(--text);
+}
+
+.app-toast__icon {
+  flex-shrink: 0;
 }

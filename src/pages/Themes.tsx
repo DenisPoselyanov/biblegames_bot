@@ -7,6 +7,7 @@ import { useTopicHierarchies } from '../context/TopicHierarchyContext';
 import type { TopicNode } from '../types';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
+import { ListPageSkeleton } from '../components/skeletons';
 import styles from './Themes.module.css';
 
 export function Themes() {
@@ -28,7 +29,10 @@ export function Themes() {
     return findNodeInHierarchies(hierarchies, browseState.activeId) ?? null;
   }, [browseState, hierarchies]);
 
-  const children = useMemo(() => activeNode?.children ?? [], [activeNode]);
+  const children = useMemo(
+    () => (activeNode?.children ?? []).filter((node) => !node.aggregateThemeIds?.length),
+    [activeNode],
+  );
 
   const applyBrowseNode = useCallback((nodeId: string) => {
     setSearchParams({ at: nodeId }, { replace: true });
@@ -86,7 +90,7 @@ export function Themes() {
       </header>
 
       {showLoading ? (
-        <p className={styles.loading}>Завантаження тем...</p>
+        <ListPageSkeleton cards={3} />
       ) : !activeNode ? (
         <MotionStagger as="ul" className={styles.grid} enter={shouldEnter}>
           {['old-testament', 'new-testament'].map((gid) => {
@@ -128,7 +132,7 @@ export function Themes() {
                     type="button"
                     className={styles.subThemeCard}
                     onClick={() => handleNodeClick(node)}
-                    style={{ '--accent': isAllQuestions ? 'var(--gold-dark)' : '#4a7c59' } as React.CSSProperties}
+                    style={{ '--accent': isAllQuestions ? 'var(--gold-dark)' : 'var(--success)' } as React.CSSProperties}
                   >
                     <div className={styles.cardLeft}>
                       <div className={styles.cardLeftContent}>
@@ -145,7 +149,7 @@ export function Themes() {
                     </div>
                     <div
                       className={styles.cardRight}
-                      style={{ background: isAllQuestions ? 'var(--gold-dark)' : '#4a7c59' }}
+                      style={{ background: isAllQuestions ? 'var(--gold-dark)' : 'var(--success)' }}
                     >
                       <span className={styles.cardIcon}>{node.icon}</span>
                     </div>

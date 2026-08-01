@@ -1,5 +1,13 @@
-import { createContext, useCallback, useContext, type ReactNode } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
+import { Popup } from 'react-vant';
 
 type ToastVariant = 'success' | 'error' | 'info' | 'warning';
 
@@ -9,41 +17,78 @@ interface ToastContextValue {
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
-function showHotToast(message: string, variant: ToastVariant = 'info') {
-  const opts = {
-    duration: 3500,
-    className: `hot-toast hot-toast--${variant}`,
-  };
-  switch (variant) {
-    case 'success':
-      toast.success(message, opts);
-      break;
-    case 'error':
-      toast.error(message, opts);
-      break;
-    case 'warning':
-      toast(message, { ...opts, icon: '⚠️' });
-      break;
-    default:
-      toast(message, opts);
-  }
+const TOAST_DURATION_MS = 3500;
+
+interface ToastEntry {
+  id: number;
+  message: string;
+  variant: ToastVariant;
 }
 
 export function ToastProvider({ children }: { children: ReactNode }) {
-  const showToast = useCallback((message: string, variant: ToastVariant = 'info') => {
-    showHotToast(message, variant);
+  const [entry, setEntry] = useState<ToastEntry | null>(null);
+  const [visible, setVisible] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearTimer = useCallback(() => {
+    if (timerRef.current != null) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  const showToast = useCallback(
+    (message: string, variant: ToastVariant = 'info') => {
+      clearTimer();
+      setEntry({ id: Date.now(), message, variant });
+      setVisible(true);
+    },
+    [clearTimer],
+  );
+
+  useEffect(() => {
+    if (!visible || !entry) return;
+    clearTimer();
+    timerRef.current = setTimeout(() => setVisible(false), TOAST_DURATION_MS);
+    return clearTimer;
+  }, [visible, entry?.id, entry, clearTimer]);
+
+  const handleClosed = useCallback(() => {
+    setEntry(null);
   }, []);
 
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <Toaster
-        position="top-center"
-        containerClassName="hot-toast-container"
-        toastOptions={{
-          className: 'hot-toast',
+      <Popup
+        visible={visible && entry != null}
+        position="top"
+        overlay={false}
+        lockScroll={false}
+        duration={0}
+        style={{
+          top: 'max(0.75rem, env(safe-area-inset-top, 0px))',
+          width: '100%',
+          maxWidth: 480,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'transparent',
+          boxShadow: 'none',
         }}
-      />
+        onClose={() => setVisible(false)}
+        onClosed={handleClosed}
+      >
+        {entry && (
+          <div
+            role="status"
+            className={`app-toast app-toast--${entry.variant}`}
+            key={entry.id}
+          >
+            {entry.variant === 'warning' && <span className="app-toast__icon" aria-hidden>⚠️</span>}
+            {entry.message}
+          </div>
+        )}
+      </Popup>
     </ToastContext.Provider>
   );
 }

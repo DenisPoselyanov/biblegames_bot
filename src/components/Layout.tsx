@@ -1,10 +1,18 @@
-import { motion } from 'framer-motion';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { tapSpring } from '../lib/motion';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Tabbar } from 'react-vant';
 import { Icon } from './Icon';
 import styles from './Layout.module.css';
 
-function getTabKey(pathname: string): string {
+type TabKey = 'home' | 'play' | 'shop' | 'profile';
+
+const TAB_ROUTES: Record<TabKey, string> = {
+  home: '/',
+  play: '/play',
+  shop: '/shop',
+  profile: '/profile',
+};
+
+function getTabKey(pathname: string): TabKey {
   if (pathname === '/') return 'home';
   if (pathname.startsWith('/play')) return 'play';
   if (pathname.startsWith('/shop')) return 'shop';
@@ -16,36 +24,12 @@ function getTabKey(pathname: string): string {
   ) {
     return 'profile';
   }
-  return pathname;
-}
-
-function NavItem({
-  to,
-  end,
-  label,
-  icon,
-}: {
-  to: string;
-  end?: boolean;
-  label: string;
-  icon: 'home' | 'play' | 'shop' | 'profile';
-}) {
-  return (
-    <NavLink to={to} end={end} className={({ isActive }) => (isActive ? styles.active : '')}>
-      <motion.span
-        className={styles.navItemInner}
-        whileTap={{ scale: 0.95 }}
-        transition={tapSpring}
-      >
-        <Icon name={icon} size={22} aria-label={label} />
-        <small>{label}</small>
-      </motion.span>
-    </NavLink>
-  );
+  return 'home';
 }
 
 export function Layout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const tabKey = getTabKey(location.pathname);
   const hideNav =
     location.pathname.includes('/quiz/') ||
@@ -54,17 +38,34 @@ export function Layout() {
   return (
     <div className={styles.shell}>
       <main className={styles.main}>
-        <div key={tabKey} className={styles.pageTransition}>
+        <div className={styles.pageTransition}>
           <Outlet />
         </div>
       </main>
       {!hideNav && (
-        <nav className={styles.nav} aria-label="Основна навігація">
-          <NavItem to="/" end label="Головна" icon="home" />
-          <NavItem to="/play" label="Гра" icon="play" />
-          <NavItem to="/shop" label="Крамниця" icon="shop" />
-          <NavItem to="/profile" label="Профіль" icon="profile" />
-        </nav>
+        <Tabbar
+          className={styles.tabbar}
+          fixed
+          safeAreaInsetBottom
+          placeholder
+          value={tabKey}
+          activeColor="var(--gold)"
+          inactiveColor="var(--text-muted)"
+          onChange={(name) => navigate(TAB_ROUTES[name as TabKey])}
+        >
+          <Tabbar.Item name="home" icon={<Icon name="home" size={22} aria-hidden />}>
+            Головна
+          </Tabbar.Item>
+          <Tabbar.Item name="play" icon={<Icon name="play" size={22} aria-hidden />}>
+            Гра
+          </Tabbar.Item>
+          <Tabbar.Item name="shop" icon={<Icon name="shop" size={22} aria-hidden />}>
+            Крамниця
+          </Tabbar.Item>
+          <Tabbar.Item name="profile" icon={<Icon name="profile" size={22} aria-hidden />}>
+            Профіль
+          </Tabbar.Item>
+        </Tabbar>
       )}
     </div>
   );

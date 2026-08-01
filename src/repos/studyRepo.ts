@@ -4,16 +4,22 @@ import { apiFetch, hasApi } from './apiClient';
 
 const ANSWERS_KEY = 'bible-game-answer-events';
 
+let answerHistoryCache: AnswerEvent[] | null = null;
+
 function loadAnswers(): AnswerEvent[] {
+  if (answerHistoryCache) return answerHistoryCache;
   try {
-    return JSON.parse(localStorage.getItem(ANSWERS_KEY) ?? '[]') as AnswerEvent[];
+    answerHistoryCache = JSON.parse(localStorage.getItem(ANSWERS_KEY) ?? '[]') as AnswerEvent[];
+    return answerHistoryCache;
   } catch {
-    return [];
+    answerHistoryCache = [];
+    return answerHistoryCache;
   }
 }
 
 function saveAnswers(items: AnswerEvent[]): void {
-  localStorage.setItem(ANSWERS_KEY, JSON.stringify(items.slice(-2000)));
+  answerHistoryCache = items.slice(-2000);
+  localStorage.setItem(ANSWERS_KEY, JSON.stringify(answerHistoryCache));
 }
 
 function scoreSubthemePriority(subthemeId: string, answers: AnswerEvent[]): number {

@@ -17,16 +17,15 @@ import {
   sanitizeTelemetryEvents,
 } from './middleware/validateBody';
 import { migrateProfileWallet, type ProfileWithLegacyWallet } from '../src/lib/storage';
-import { loadFullQuestionPool } from './questionPool';
 import { scriptureRouter } from './routes/scripture';
 import { questionsAdminRouter } from './routes/questionsAdmin';
+import { questionsRouter } from './routes/questions';
+import { useQuestionsSql } from './db/pgPool';
 
 const PORT = Number(process.env.PORT || 3001);
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
 const STORAGE_PROVIDER = process.env.STORAGE_PROVIDER || 'json';
 const dbStore: ServerStore = STORAGE_PROVIDER === 'sql' ? sqlStore : jsonStore;
-
-loadFullQuestionPool();
 
 const app = express();
 app.use(express.json({ limit: '1mb' }));
@@ -35,13 +34,18 @@ app.use(cors({ origin: [CLIENT_ORIGIN, 'http://127.0.0.1:5173'], credentials: tr
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
 app.use('/api/scripture', scriptureRouter);
+app.use('/api/questions', questionsRouter);
 app.use('/api/admin/questions', questionsAdminRouter);
 
 app.get(
   '/health/storage',
   asyncHandler(async (_req, res) => {
     await dbStore.getStudyAnswers('__health__');
-    res.json({ ok: true, provider: STORAGE_PROVIDER });
+    res.json({
+      ok: true,
+      provider: STORAGE_PROVIDER,
+      questionsProvider: useQuestionsSql() ? 'sql' : 'json',
+    });
   }),
 );
 
@@ -311,12 +315,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('start_game', (_payload: unknown, ack?: (res: unknown) => void) => {
-    try {
-      const state = rooms.startGame(socket.id);
-      ack?.({ ok: true, state });
-    } catch (e) {
-      ack?.({ ok: false, error: (e as Error).message });
-    }
+    void rooms
+      .startGame(socket.id)
+      .then((state) => ack?.({ ok: true, state }))
+      .catch((e: Error) => ack?.({ ok: false, error: e.message }));
   });
 
   socket.on('submit_answer', (payload: { optionIndex: number }, ack?: (res: unknown) => void) => {

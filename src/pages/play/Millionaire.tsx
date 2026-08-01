@@ -5,6 +5,7 @@ import { getMixedQuestionsByDifficulty } from '../../data/questions';
 import { usePlayer } from '../../context/PlayerContext';
 import { ExplanationModal } from '../../components/ExplanationModal';
 import { ConfirmModal } from '../../components/ConfirmModal';
+import { QuizPoolSkeleton } from '../../components/skeletons';
 import { Icon } from '../../components/Icon';
 import { haptic } from '../../lib/telegram';
 import type { Question } from '../../types';
@@ -331,7 +332,7 @@ export function Millionaire() {
   if (!ready) {
     return (
       <section className={styles.page}>
-        <p className={styles.notice}>Завантаження…</p>
+        <QuizPoolSkeleton />
       </section>
     );
   }

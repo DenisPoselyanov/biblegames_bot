@@ -15,9 +15,11 @@ TESTAMENTS = {
         'icon': '📜',
         'desc': 'Перша частина Біблії, яка описує створення світу та історію ізраїльського народу.',
         'themeIds': [
-            'pentateuch', 'patriarchs', 'judges', 'kings',
-            'wisdom-poetry', 'prophets', 'mosaic-law', 'commandments', 'geography',
+            'pentateuch',
+            'judges', 'kings', 'prophets', 'wisdom-poetry', 'geography',
         ],
+        # Embedded themes: question pools keep themeId, not top-level browse branches
+        'aggregateExtraThemeIds': ['patriarchs', 'commandments'],
         'all_id': 'ot-all',
     },
     'new-testament': {
@@ -25,18 +27,34 @@ TESTAMENTS = {
         'icon': '✝️',
         'desc': 'Друга частина Біблії, яка описує життя Ісуса Христа та народження християнської церкви.',
         'themeIds': [
-            'gospels', 'acts', 'paul', 'general-epistles',
-            'revelation', 'geography-nt', 'parables', 'miracles',
+            'gospels', 'parables', 'miracles', 'acts', 'paul',
+            'general-epistles', 'revelation', 'geography-nt',
         ],
         'all_id': 'nt-all',
     },
 }
+
+# Themes embedded inside another theme file (not top-level siblings)
+EMBEDDED_IN = {
+    'patriarchs': {
+        'parent_theme': 'pentateuch',
+        'parent_node_id': 'pentateuch-sub-1',
+        'wrapper_id': 'patriarchs',
+    },
+    'commandments': {
+        'parent_theme': 'pentateuch',
+        'parent_node_id': 'pentateuch-sub-2-group-4',
+        'wrapper_id': 'commandments',
+    },
+}
+
 
 def add_theme_id(node, theme_id):
     """Recursively add themeId to every node in the tree"""
     node['themeId'] = theme_id
     for child in node.get('children', []):
         add_theme_id(child, theme_id)
+
 
 def load_individual(theme_id):
     """Load an individual theme file and add themeId to all nodes"""
@@ -47,6 +65,36 @@ def load_individual(theme_id):
         node = json.load(f)
     add_theme_id(node, theme_id)
     return node
+
+
+def find_node_by_id(node, target_id):
+    if node.get('id') == target_id:
+        return node
+    for child in node.get('children', []):
+        found = find_node_by_id(child, target_id)
+        if found:
+            return found
+    return None
+
+
+def embed_theme_in_parent(parent_node, source_node, parent_node_id, wrapper_id):
+    """Nest a theme under a parent node; keep wrapper id for question tags and deep links."""
+    anchor = find_node_by_id(parent_node, parent_node_id)
+    if not anchor:
+        print(f'WARN: {parent_node_id} not found — {wrapper_id} not embedded')
+        return
+
+    wrapper = {
+        'id': wrapper_id,
+        'title': source_node['title'],
+        'description': source_node['description'],
+        'icon': source_node.get('icon', '📖'),
+        'themeId': wrapper_id,
+        'children': copy.deepcopy(source_node.get('children', [])),
+    }
+    add_theme_id(wrapper, wrapper_id)
+    anchor.setdefault('children', []).append(wrapper)
+
 
 def load_extension_branches(covenant_id):
     """Custom branches from data/topics-db/extensions/{covenant}.json"""
@@ -61,6 +109,7 @@ def load_extension_branches(covenant_id):
         print(f'WARN: failed to read extensions/{covenant_id}.json')
         return []
 
+
 def main():
     root = {
         'id': 'bible-topics',
@@ -70,44 +119,35 @@ def main():
         'children': [],
     }
 
+    embedded_theme_ids = set(EMBEDDED_IN.keys())
+    embedded_sources = {
+        theme_id: load_individual(theme_id) for theme_id in embedded_theme_ids
+    }
+
     for test_id, test_info in TESTAMENTS.items():
-        # Aggregate "all" node
-        all_children = []
-        all_node = {
-            'id': test_info['all_id'],
-            'title': 'Усі питання з цієї теми',
-            'description': f'Всі питання з {test_info["title"].lower()}',
-            'icon': '📚',
-            'themeId': test_id,
-            'aggregateThemeIds': [test_id] + test_info['themeIds'],
-            'children': [],
-        }
+        # Aggregate "*-all" wrappers більше не генеруємо.
 
         theme_nodes = []
         for theme_id in test_info['themeIds']:
+            if theme_id in embedded_theme_ids:
+                continue
             node = load_individual(theme_id)
             if node:
+                for embedded_id, cfg in EMBEDDED_IN.items():
+                    if cfg['parent_theme'] != theme_id:
+                        continue
+                    source = embedded_sources.get(embedded_id)
+                    if source:
+                        embed_theme_in_parent(
+                            node,
+                            source,
+                            cfg['parent_node_id'],
+                            cfg['wrapper_id'],
+                        )
                 theme_nodes.append(node)
             else:
                 print(f'WARN: {theme_id}.json not found')
 
-        # Build aggregate children: all questions from all themes
-        for tn in theme_nodes:
-            # Add a reference to the "all questions of this theme" node if it exists
-            all_theme_node = {
-                'id': f'{tn["id"]}-all',
-                'title': f'Усі питання: {tn["title"]}',
-                'description': f'Всі питання про {tn["title"].lower()}',
-                'icon': tn.get('icon', '📖'),
-                'themeId': tn['themeId'],
-                'aggregateThemeIds': [tn['themeId']],
-                'children': [],
-            }
-            all_children.append(all_theme_node)
-
-        all_node['children'] = all_children
-
-        # Build testament node
         extension_branches = load_extension_branches(test_id)
         for branch in extension_branches:
             add_theme_id(branch, test_id)
@@ -117,7 +157,7 @@ def main():
             'title': test_info['title'],
             'description': test_info['desc'],
             'icon': test_info['icon'],
-            'children': [all_node] + theme_nodes + extension_branches,
+            'children': theme_nodes + extension_branches,
         }
 
         root['children'].append(test_node)
@@ -125,7 +165,6 @@ def main():
     with open(OUTPUT, 'w', encoding='utf-8') as f:
         json.dump(root, f, ensure_ascii=False, indent=2)
 
-    # Count total nodes
     def count_nodes(n):
         return 1 + sum(count_nodes(c) for c in n.get('children', []))
 
@@ -135,6 +174,7 @@ def main():
     print(f'Root children: {len(root["children"])} (testaments)')
     for test in root['children']:
         print(f'  {test["id"]}: {len(test["children"])} children ({sum(count_nodes(c) for c in test["children"])} total nodes)')
+
 
 if __name__ == '__main__':
     main()

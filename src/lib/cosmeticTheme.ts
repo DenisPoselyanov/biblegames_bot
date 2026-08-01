@@ -166,6 +166,8 @@ export function applyCosmeticTheme(theme: CosmeticTheme): void {
   root.style.setProperty('--cta-bg', ctaBg);
   root.style.setProperty('--cta-shadow', ctaShadow);
 
+  root.style.colorScheme = isLight ? 'light' : 'dark';
+
   syncTelegramChromeColors(preview.background);
 }
 
@@ -174,6 +176,7 @@ export function clearCosmeticThemeOverrides(): void {
   for (const name of THEME_CSS_VARS) {
     root.style.removeProperty(name);
   }
+  root.style.removeProperty('color-scheme');
 }
 
 export function applyCosmeticThemeById(themeId: string): void {

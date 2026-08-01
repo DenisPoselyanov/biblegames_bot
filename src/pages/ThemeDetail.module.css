@@ -385,7 +385,7 @@
 .progressBar span {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #4a9c5d, #6dbf7e);
+  background: linear-gradient(90deg, var(--success), var(--success-text));
   border-radius: 2px;
   transition: width var(--duration-normal) var(--ease-out);
 }

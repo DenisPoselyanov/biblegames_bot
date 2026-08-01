@@ -95,7 +95,7 @@
 
 .roadStepDone {
   border-color: rgba(74, 156, 93, 0.3);
-  color: var(--success-text, #6dbf7e);
+  color: var(--success-text);
 }
 
 .roadStepUpcoming {

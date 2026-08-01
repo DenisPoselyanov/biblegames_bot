@@ -38,7 +38,7 @@ const VIRTUAL_PLAYERS: PlayerProfile[] = [
     userId: 'virtual-moses',
     displayName: 'Мойсей',
     coins: 2180,
-    themePoints: { 'mosaic-law': 920, commandments: 540, geography: 310 },
+    themePoints: { pentateuch: 920, commandments: 540, geography: 310 },
     completedLevels: [],
     survivalHighScore: 35,
     millionaireWins: 1,
