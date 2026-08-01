@@ -40,7 +40,7 @@
 | 7 | Progress, profile and settings | planned | — | Phase 6 |
 | 8 | Shop, wallet and entitlements | planned | — | Phase 7 |
 | 9 | Server-backed social and groups | planned | — | Phase 3, 4 |
-| 10 | AI core and content pipeline | planned | — | Phase 1, 5 |
+| 10 | AI core and content pipeline (детальний план — [AI_SYSTEM_REBUILD_ROADMAP.md](./AI_SYSTEM_REBUILD_ROADMAP.md)) | planned | — | Phase 1, 5 |
 | 11 | Protected Content Studio | planned | — | Phase 2, 10 |
 | 12 | Performance, offline and accessibility | planned | — | Phase 8, 9, 10, 11 |
 | 13 | Release migration and rollout | planned | — | Phase 12 |
@@ -61,8 +61,16 @@
 | shop_v2 | off | 8 | TBD | |
 | real_payments | off | 8 | TBD | |
 | server_social | off | 9 | TBD | |
-| ai_core_v2 | off | 10 | TBD | |
+| ai_core_v2 | off | 10 | TBD | Головний flag нового AI pipeline, деталі — [AI_SYSTEM_REBUILD_ROADMAP.md](./AI_SYSTEM_REBUILD_ROADMAP.md) |
+| ai_staging_v2 | off | 10 | TBD | Staging repository замість ad-hoc JSON записів |
+| ai_cli_v2 | off | 10 | TBD | Єдиний `npm run ai -- <task>` CLI замість 24+ окремих скриптів |
+| ai_scripture_verification | off | 10 | TBD | Обов'язкова перевірка цитат перед публікацією |
+| ai_publication_workflow | off | 10 | TBD | draft→...→published state machine, без прямого запису в production |
+| ai_provider_gemini | off | 10 | TBD | |
+| ai_provider_ollama | off | 10 | TBD | |
+| ai_provider_omniroute | off | 10 | TBD | |
 | content_studio_v2 | off | 11 | TBD | |
+| in_app_ai_assistance | off | 14 (після Phase 10) | TBD | Лише після стабілізації AI Content Production |
 | offline_learning | off | 12 | TBD | |
 
 Реєстр порожній до Phase 1 — жоден flag ще не введено в код.
@@ -72,6 +80,29 @@
 - Профіль гравця (`localStorage`, без версії схеми) → потребує `ProfileV2` + migration runner у Phase 1.
 - `data/question-db/*.json` та `data/topics-db/*.json` — паралельні структури; дублювання loaders між `src/data/` і `server/` (`questionDbLoader.ts`, `topicHierarchyLoader.ts`) — консолідувати в Phase 1/5.
 - Auth: перехід з `x-user-id`-fallback на строгу initData-валідацію — Phase 1/13 (ADR-002).
+- AI-скрипти (24+ команд) → консолідація в `scripts/ai/` за планом [AI_SYSTEM_REBUILD_ROADMAP.md](./AI_SYSTEM_REBUILD_ROADMAP.md), з deprecated npm-aliases на перехідний період — Phase 10.6.
+
+## Phase 10 — детальні підетапи (AI core і reviewed content pipeline)
+
+Повний деталізований план — [AI_SYSTEM_REBUILD_ROADMAP.md](./AI_SYSTEM_REBUILD_ROADMAP.md) (доданий 2026-08-01, взятий за основу для розвитку AI-сторони бота). Він деталізує Phase 10 в 11 підфаз із власними комітами; фінальний коміт підфаз відповідає комітy `phase-10` у цьому roadmap:
+
+| Підфаза | Назва | Commit |
+|---|---|---|
+| 10.0 | Audit only (read-only інвентаризація 24+ AI-команд, provider matrix, risk register) | `phase-10a` |
+| 10.1 | Schemas and validation (question/lesson schemas, deterministic validation, заборона `correctIndex=0` fallback) | `phase-10b` |
+| 10.2 | Provider core (провайдер-контракт, registry, `MockProvider`, усунення універсальної `AI_MODEL`) | `phase-10c` |
+| 10.3 | Job runner (retry, budgets, cancellation, checkpoints/resume) | `phase-10d` |
+| 10.4 | Staging (staging repository, atomic writes, без прямого запису в production) | `phase-10e` |
+| 10.5 | Unified tasks and CLI (`npm run ai -- <task>` замість 24+ окремих скриптів) | `phase-10f` |
+| 10.6 | Legacy migration (deprecated aliases, порівняння з golden dataset, дата видалення) | `phase-10g` |
+| 10.7 | Scripture and theological checks (trusted source, sensitivity policy, reviewer gate) | `phase-10h` |
+| 10.8 | Publication workflow (draft→…→published state machine, rollback, audit trail) | `phase-10i` |
+| 10.9 | Content Studio API (jobs/staging/review/provider endpoints, RBAC) | `phase-10j` |
+| 10.10 | Final hardening (tests, security, metrics, Phase 11 readiness) | `phase-10` |
+
+Обов'язкові ADR для Phase 10 (детально в AI-roadmap, розділ 29): `ADR-AI-001` (provider abstraction) … `ADR-AI-010` (in-app AI retrieval architecture) — створюються поетапно разом із відповідною підфазою, а не всі одразу.
+
+Ця AI-модернізація виконується **лише після Phase 1 (архітектурні межі) і Phase 5 (learning objectives/lesson model)**, оскільки Phase 10 вимагає стабільного `learningObjectiveId` і content schema як залежність (див. Phase dependency graph в майстер-промпті, розділ 20).
 
 ## Risk register
 
@@ -84,6 +115,12 @@
 | R-005 | Social demo mistaken for production | high | medium | Hide or label until server-backed; перевірити `test-social`/`GlobalStats` на предмет seed-даних | — | open |
 | R-006 | `x-user-id` fallback без initData у production | high | critical | Enforce initData-only auth в проді (ADR-002) | — | open |
 | R-007 | Величезні question-db chunks (до 12 MB) сповільнюють initial load | medium | medium | Route-level lazy loading по темі, не по всій БД (Phase 12) | — | open |
+| R-008 | 24+ фрагментованих AI-скриптів без єдиного CLI/registry, дублювання normalizers/JSON-парсингу | high | medium | Консолідація в `scripts/ai/` + єдиний CLI (Phase 10.5) | — | open |
+| R-009 | AI-скрипти можуть писати результат напряму в active DB без staging/review | high | critical | Staging repository + publication state machine, `autoApprove=false` за замовчуванням (Phase 10.4, 10.8) | — | open |
+| R-010 | Invalid `correctIndex` може нормалізуватись небезпечним fallback (`0`) замість rejection | high | high | Deterministic question validation забороняє цей fallback (Phase 10.1) | — | open |
+| R-011 | Немає `MockProvider` — AI-тести (якщо є) залежать від реального provider виклику | medium | medium | Provider abstraction + MockProvider (Phase 10.2) | — | open |
+| R-012 | Python launcher (`ai_launcher.py`, `ollama_launcher.py`) має хардкоджені provider/model списки, розсинхронізовані з `.mjs`-скриптами | medium | medium | Machine-readable registry, яким користується і launcher (Phase 10.5) | — | open |
+| R-013 | AI може генерувати питання без `learningObjectiveId`, поза навчальною ієрархією | medium | medium | Обов'язковий `learningObjectiveId` у схемі питання (Phase 5 контракт + Phase 10.1) | — | open |
 
 ## Phase 0 — Baseline, audit and roadmap
 

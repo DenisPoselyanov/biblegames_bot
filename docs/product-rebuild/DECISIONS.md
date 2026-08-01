@@ -1,5 +1,9 @@
 # Decisions — Bible Games SaaS rebuild
 
+## Note — AI System Rebuild Roadmap incorporated (2026-08-01)
+
+`docs/product-rebuild/AI_SYSTEM_REBUILD_ROADMAP.md` was added as the detailed reference plan for Phase 10 (AI core and reviewed content pipeline), at the user's request. It defines 11 sub-phases (10.0–10.10) and ten AI-specific ADRs (`ADR-AI-001`…`ADR-AI-010`, listed in that document's section 29). Those ADRs are **not** created here yet — they get written one at a time, each alongside the sub-phase that needs it, starting with `ADR-AI-001` in Phase 10.2 (provider core). Creating all ten now, before Phase 10 even starts, would violate the same "don't scaffold empty docs ahead of need" principle as ADR-001.
+
 ## ADR-001 — Скорочення цільової архітектури: без повного monorepo (apps/ + packages/)
 
 Date: 2026-08-01
