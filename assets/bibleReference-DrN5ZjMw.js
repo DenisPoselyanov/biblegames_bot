@@ -1,0 +1,1 @@
+function e(e){if(e==null)return;if(Array.isArray(e)){let t=e.map(e=>String(e).trim()).filter(Boolean);return t.length>0?t.join(`; `):void 0}let t=String(e).trim();return t.length>0?t:void 0}export{e as t};
