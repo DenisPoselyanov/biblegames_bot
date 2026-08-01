@@ -30,7 +30,7 @@
 
 | Phase | Name | Status | Commit | Blockers |
 |---:|---|---|---|---|
-| 0 | Baseline, audit and roadmap | completed | `d4ad558` (sync) + phase-00 docs commit | — |
+| 0 | Baseline, audit and roadmap | completed | `d4ad558` (sync) + `7787929` (phase-00) | — |
 | 1 | Architecture boundaries and migrations | planned | — | Phase 0 |
 | 2 | Premium design system and Telegram shell | planned | — | Phase 1 |
 | 3 | Learning-first navigation | planned | — | Phase 2 |
@@ -204,8 +204,8 @@ Phase 0 не змінює логіку застосунку — відкат н�
 
 ### Commit
 
-`d4ad558` — sync pending question/topic DB updates, practice-stage tooling and server refactors (WIP, не Phase 0 по суті).
-Наступний коміт у цій же сесії додає `docs/product-rebuild/*` (Phase 0 baseline docs) — SHA буде зафіксовано після коміту.
+- `d4ad558` — sync pending question/topic DB updates, practice-stage tooling and server refactors (WIP, не Phase 0 по суті, попередній накопичений стан).
+- `7787929` — phase-00: establish rebuild baseline and roadmap (сам Phase 0).
 
 ### Next phase readiness
 
