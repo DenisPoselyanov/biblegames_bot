@@ -433,10 +433,10 @@ function findNodePath(node: TopicNode, targetId: string): TopicNode[] | null {
 }
 
 function progressBorderColor(percent: number): string {
-  if (percent >= 80) return '#39d353';
-  if (percent >= 60) return '#26a641';
-  if (percent >= 40) return '#006d32';
-  if (percent > 0) return '#0e4429';
+  if (percent >= 80) return 'var(--mastery-4)';
+  if (percent >= 60) return 'var(--mastery-3)';
+  if (percent >= 40) return 'var(--mastery-2)';
+  if (percent > 0) return 'var(--mastery-1)';
   return 'rgba(255,255,255,0.2)';
 }
 

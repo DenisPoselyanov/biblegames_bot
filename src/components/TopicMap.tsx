@@ -80,10 +80,10 @@ export function TopicMap({
   const getMasteryColor = (nodeId: string): string => {
     const mastery = masteryStates[nodeId];
     if (!mastery || mastery.totalAnswers === 0) return 'rgba(255,255,255,0.04)';
-    if (mastery.mastery >= 80) return '#39d353';
-    if (mastery.mastery >= 60) return '#26a641';
-    if (mastery.mastery >= 40) return '#006d32';
-    if (mastery.mastery > 0) return '#0e4429';
+    if (mastery.mastery >= 80) return 'var(--mastery-4)';
+    if (mastery.mastery >= 60) return 'var(--mastery-3)';
+    if (mastery.mastery >= 40) return 'var(--mastery-2)';
+    if (mastery.mastery > 0) return 'var(--mastery-1)';
     return 'rgba(255,255,255,0.04)';
   };
 
@@ -139,7 +139,7 @@ export function TopicMap({
           onClick={() => onNodeClick?.(node)}
           style={{
             background: masteryColor,
-            boxShadow: masteryPercent >= 80 ? '0 0 8px rgba(57, 211, 83, 0.5)' : 'none',
+            boxShadow: masteryPercent >= 80 ? '0 0 8px var(--mastery-glow)' : 'none',
           }}
           title={`${node.title}: ${masteryPercent}%`}
         >
@@ -269,10 +269,10 @@ export function TopicMap({
       {/* Легенда кольорів */}
       <div className={styles.legend}>
         <span className={styles.legendItem}>Легенда:</span>
-        <span className={styles.legendItem} style={{ color: '#39d353' }}>● 80%+</span>
-        <span className={styles.legendItem} style={{ color: '#26a641' }}>● 60-79%</span>
-        <span className={styles.legendItem} style={{ color: '#006d32' }}>● 40-59%</span>
-        <span className={styles.legendItem} style={{ color: '#0e4429' }}>● 1-39%</span>
+        <span className={styles.legendItem} style={{ color: 'var(--mastery-4)' }}>● 80%+</span>
+        <span className={styles.legendItem} style={{ color: 'var(--mastery-3)' }}>● 60-79%</span>
+        <span className={styles.legendItem} style={{ color: 'var(--mastery-2)' }}>● 40-59%</span>
+        <span className={styles.legendItem} style={{ color: 'var(--mastery-1)' }}>● 1-39%</span>
         <span className={styles.legendItem} style={{ color: 'rgba(255,255,255,0.3)' }}>● Не почато</span>
       </div>
 

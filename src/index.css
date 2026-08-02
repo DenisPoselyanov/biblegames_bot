@@ -45,6 +45,13 @@
   --info: #5b8fc9;
   --info-bg: rgba(91, 143, 201, 0.15);
 
+  /* ─── Mastery heatmap scale (GitHub-style, fixed - not themized) ─── */
+  --mastery-1: #0e4429;
+  --mastery-2: #006d32;
+  --mastery-3: #26a641;
+  --mastery-4: #39d353;
+  --mastery-glow: rgba(57, 211, 83, 0.5);
+
   /* ─── Typography ─── */
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-sans: 'Source Sans 3', system-ui, sans-serif;
