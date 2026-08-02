@@ -15,6 +15,8 @@ import type { DailyScripture } from '../types/scripture';
 import type { DailyPlanItem, Recommendation } from '../types';
 import { formatRecommendation, getRecommendationLink } from '../lib/recommendationEngine';
 import { isFeatureEnabled } from '../lib/flags';
+import { buildReviewQueue } from '../lib/reviewScheduler';
+import { useTopicHierarchies } from '../context/TopicHierarchyContext';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import styles from './Home.module.css';
@@ -27,6 +29,7 @@ const FALLBACK_DAILY = {
 const learningFirstNav = isFeatureEnabled('learning_first_navigation');
 const dailyPlanV2 = isFeatureEnabled('daily_plan_v2');
 const todayDashboard = isFeatureEnabled('today_dashboard');
+const reviewSchedulerV2 = isFeatureEnabled('review_scheduler_v2');
 
 const TODAY_DATE_FORMAT = new Intl.DateTimeFormat('uk-UA', { day: 'numeric', month: 'long' });
 
@@ -34,6 +37,7 @@ export function Home() {
   const { shouldEnter } = useMotionEntrance('home');
   const { profile, getRecommendations, getDailyPlan } = usePlayer();
   const { displayName } = useTelegram();
+  const { hierarchies } = useTopicHierarchies();
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
   const translation = normalizeBollsTranslation(profile.bibleTranslation);
   const [dailyVerse, setDailyVerse] = useState<DailyScripture | typeof FALLBACK_DAILY>(FALLBACK_DAILY);
@@ -82,6 +86,13 @@ export function Home() {
   }, [completedTaskIds]);
 
   const streakFire = profile.streakDays >= 3 ? '🔥' : profile.streakDays >= 1 ? '✨' : '';
+
+  const reviewThemeId = profile.activeTheme;
+  const reviewHierarchy = reviewSchedulerV2 && reviewThemeId ? hierarchies?.[reviewThemeId] : null;
+  const reviewQueue = useMemo(
+    () => (reviewHierarchy ? buildReviewQueue(profile, reviewHierarchy, reviewThemeId) : []),
+    [reviewHierarchy, profile, reviewThemeId],
+  );
 
   return (
     <section className={styles.page}>
@@ -145,6 +156,14 @@ export function Home() {
           <span className={styles.statLabel}>тем</span>
         </MotionStaggerItem>
       </MotionStagger>
+
+      {reviewSchedulerV2 && reviewQueue.length > 0 && (
+        <Link to={`/play/study/review-queue/${reviewThemeId}`} className={styles.cta}>
+          <span aria-hidden>🔄</span>
+          <span>Повторити {reviewQueue.length} тем{reviewQueue.length === 1 ? 'у' : ''}</span>
+          <Icon name="arrow-right" size={20} />
+        </Link>
+      )}
 
       {dailyPlanV2 ? (
         dailyPlan.length > 0 ? (
