@@ -11,6 +11,9 @@ import { trackEvent } from '../lib/telemetry';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { fetchDailyScripture } from '../repos/scriptureRepo';
 import type { DailyScripture } from '../types/scripture';
+import type { Recommendation } from '../types';
+import { formatRecommendation, getRecommendationLink } from '../lib/recommendationEngine';
+import { isFeatureEnabled } from '../lib/flags';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import styles from './Home.module.css';
@@ -20,19 +23,27 @@ const FALLBACK_DAILY = {
   reference: 'Івана 3:16',
 };
 
+const learningFirstNav = isFeatureEnabled('learning_first_navigation');
+
 export function Home() {
   const { shouldEnter } = useMotionEntrance('home');
-  const { profile } = usePlayer();
+  const { profile, getRecommendations } = usePlayer();
   const { displayName } = useTelegram();
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
   const translation = normalizeBollsTranslation(profile.bibleTranslation);
   const [dailyVerse, setDailyVerse] = useState<DailyScripture | typeof FALLBACK_DAILY>(FALLBACK_DAILY);
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
 
   useEffect(() => {
     void fetchDailyScripture(translation).then((daily) => {
       if (daily?.text) setDailyVerse(daily);
     });
   }, [translation]);
+
+  useEffect(() => {
+    if (!learningFirstNav) return;
+    void getRecommendations(3).then(setRecommendations);
+  }, [getRecommendations]);
   const history = studyRepo.getAnswerHistory();
   const dailyTasks = getDailyTasks(profile, history);
   const insight = buildLearningInsight(profile, history);
@@ -115,11 +126,30 @@ export function Home() {
         </MotionStaggerItem>
       </MotionStagger>
 
-      <Link to="/play" className={styles.cta}>
-        <Icon name="play" size={24} />
-        <span>Продовжити дослідження</span>
-        <Icon name="arrow-right" size={20} />
-      </Link>
+      {learningFirstNav && recommendations.length > 0 ? (
+        <section className={styles.recommendationsSection}>
+          {recommendations.map((rec) => {
+            const formatted = formatRecommendation(rec);
+            return (
+              <Link
+                key={rec.id}
+                to={getRecommendationLink(rec)}
+                className={styles.cta}
+              >
+                <span aria-hidden>{formatted.icon}</span>
+                <span>{formatted.title}</span>
+                <Icon name="arrow-right" size={20} />
+              </Link>
+            );
+          })}
+        </section>
+      ) : (
+        <Link to="/play" className={styles.cta}>
+          <Icon name="play" size={24} />
+          <span>Продовжити дослідження</span>
+          <Icon name="arrow-right" size={20} />
+        </Link>
+      )}
 
       <section className={styles.tasksSection}>
         <h2>Щоденні завдання</h2>
