@@ -111,6 +111,78 @@
   margin-bottom: 1rem;
 }
 
+.planSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.planList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.planStep {
+  margin: 0;
+}
+
+.planStepLink {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.planStepIndex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--nested-surface);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.planStepIcon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.planStepTitle {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.planStepStatus {
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.planStepCompleted {
+  border-color: var(--mastery-4);
+}
+
+.planStepInProgress {
+  border-color: var(--mastery-2);
+}
+
+.planStepAvailable {
+  opacity: 0.9;
+}
+
 .hierarchyToggle {
   width: 100%;
   padding: 0.75rem 1rem;

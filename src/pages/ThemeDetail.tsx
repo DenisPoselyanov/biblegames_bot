@@ -35,6 +35,9 @@ import {
 } from '../lib/practiceProgression';
 import { PracticeNodeStageEditor } from '../components/PracticeNodeStageEditor';
 import { usePracticeNodeOverridesStore } from '../stores/practiceNodeOverridesStore';
+import { isFeatureEnabled } from '../lib/flags';
+import { buildLearningPlan } from '../lib/learningPlan';
+import type { LearningPlanStep } from '../types';
 import styles from './ThemeDetail.module.css';
 
 export function ThemeDetail() {
@@ -221,6 +224,14 @@ export function ThemeDetail() {
     Boolean(topicHierarchy) &&
     trackNodeId !== topicHierarchy?.id;
 
+  const showLearningPlan =
+    isFeatureEnabled('learning_plans') && !isAggregate && !selectedNode && Boolean(topicHierarchy);
+  const learningPlan =
+    showLearningPlan && topicHierarchy
+      ? buildLearningPlan(effectiveThemeId, topicHierarchy, profile)
+      : null;
+  const lessonExperienceEnabled = isFeatureEnabled('lesson_experience_v2');
+
   const handleSelectNode = (id: string | null) => {
     if (!topicHierarchy) return;
 
@@ -269,6 +280,31 @@ export function ThemeDetail() {
           )}
         </div>
       </header>
+
+      {learningPlan && learningPlan.steps.length > 0 && (
+        <div className={styles.planSection}>
+          <h2 className={styles.subtitle}>
+            <span>Навчальний план</span>
+          </h2>
+          <ol className={styles.planList}>
+            {learningPlan.steps.map((step, index) => (
+              <li key={step.nodeId} className={styles.planStep}>
+                <Link
+                  to={lessonExperienceEnabled ? step.lessonPath : step.practicePath}
+                  className={`${styles.planStepLink} ${planStepStatusClass(step.status)}`}
+                >
+                  <span className={styles.planStepIndex}>{index + 1}</span>
+                  <span className={styles.planStepIcon}>{step.icon}</span>
+                  <span className={styles.planStepTitle}>{step.title}</span>
+                  <span className={styles.planStepStatus}>
+                    {planStepStatusLabel(step.status)}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
 
       {!isAggregate && topicHierarchy && (
         <div className={styles.hierarchySection}>
@@ -430,6 +466,18 @@ function findNodePath(node: TopicNode, targetId: string): TopicNode[] | null {
     if (childPath) return [node, ...childPath];
   }
   return null;
+}
+
+function planStepStatusClass(status: LearningPlanStep['status']): string {
+  if (status === 'completed') return styles.planStepCompleted;
+  if (status === 'in_progress') return styles.planStepInProgress;
+  return styles.planStepAvailable;
+}
+
+function planStepStatusLabel(status: LearningPlanStep['status']): string {
+  if (status === 'completed') return '✓';
+  if (status === 'in_progress') return '…';
+  return '';
 }
 
 function progressBorderColor(percent: number): string {
