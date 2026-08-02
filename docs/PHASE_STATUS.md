@@ -1,35 +1,27 @@
 # Bible Games — статус фаз
 
-> Цей файл є коротким індексом. Повні scope, acceptance criteria, dependencies і Definition of Done містяться в [BIBLE_GAMES_MASTER_SPECIFICATION.md](./BIBLE_GAMES_MASTER_SPECIFICATION.md). Детальні active domain specifications не створюють окремої системи фаз.
+> Цей файл є коротким індексом. Повні scope, acceptance criteria, dependencies і Definition of Done містяться тільки в [BIBLE_GAMES_MASTER_SPECIFICATION.md](./BIBLE_GAMES_MASTER_SPECIFICATION.md).
 
 | Phase | Назва | Статус |
 |---:|---|---|
 | 0 | Canonical Documentation and Verified Baseline | ready for merge |
-| 1 | Production Safety & Engineering Foundation | next |
-| 2 | Core Architecture & Authoritative Data Platform | blocked by Phase 1 |
-| 3 | Learning-First Product Rebuild | blocked by Phase 2; visual direction approved — see [PHASE_3_REBRANDING_AND_THEME_SYSTEM.md](./PHASE_3_REBRANDING_AND_THEME_SYSTEM.md) |
-| 4 | Content Quality, Reviewed AI Pipeline & Protected Content Studio | blocked by Phase 2–3 |
-| 5 | Social, Groups, Challenges & Multiplayer | planned |
-| 6 | Economy, Shop, Entitlements & Monetization | planned; monetization model not selected; paid theme catalog depends on Phase 3 theme contract — see [MONETIZATION_STRATEGY.md](./MONETIZATION_STRATEGY.md) |
-| 7 | Performance, Offline, Accessibility & Public Release | planned |
-| 8 | Expansion and Bonus Capabilities | optional future |
+| 1 | Production Safety & Engineering Foundation | next; створює authoritative IDs, idempotency і safe triggers для rewards/wins/celebrations |
+| 2 | Core Architecture & Authoritative Data Platform | blocked by Phase 1; створює typed outcome/event contracts і server-time reconciliation |
+| 3 | Learning-First Product Rebuild | blocked by Phase 2; включає тему `Світло`, design system і основну motion-систему |
+| 4 | Content Quality, Reviewed AI Pipeline & Protected Content Studio | blocked by Phase 2–3; використовує restrained productivity motion без fake progress |
+| 5 | Social, Groups, Challenges & Multiplayer | planned; реалізує communities/challenges/Kahoot motion на server-authoritative events |
+| 6 | Economy, Shop, Entitlements & Monetization | planned; monetization model not selected; реалізує shop/theme/purchase motion після server confirmation — see [MONETIZATION_STRATEGY.md](./MONETIZATION_STRATEGY.md) |
+| 7 | Performance, Offline, Accessibility & Public Release | planned; завершує reduced motion, low-end, Telegram WebView і motion QA hardening |
+| 8 | Expansion and Bonus Capabilities | optional future; optional sound і richer theme-specific celebrations |
 
-## Phase 3 visual decision
+## Phase 3 design and motion documents
 
-Затверджений напрям ребрендингу:
+Phase 3 має два binding domain-документи:
 
-- базова безкоштовна тема `Світло`;
-- premium spiritual minimalism;
-- warm ivory background;
-- deep navy primary;
-- restrained muted gold accent;
-- serif display typography + clean sans-serif UI;
-- м’які surfaces, мінімальні shadows і стримані біблійні hero illustrations;
-- semantic theme tokens;
-- reference screens задають visual language, але не копіюються як product structure;
-- current `classic` theme зберігається як legacy/alternative під час контрольованої міграції.
+- [PHASE_3_REBRANDING_AND_THEME_SYSTEM.md](./PHASE_3_REBRANDING_AND_THEME_SYSTEM.md) — visual identity, тема `Світло`, semantic themes і migration;
+- [MOTION_SYSTEM.md](./MOTION_SYSTEM.md) — transitions, feedback, celebrations, authoritative triggers, reduced motion, performance і розподіл реалізації за Phase 1–8.
 
-Дизайн-система і default theme реалізуються в Phase 3. Каталог, ціни, wallet purchases та theme entitlements реалізуються в Phase 6.
+Наявність motion-специфікації не означає, що runtime animation уже реалізована. Вона є implementation target після завершення залежностей Phase 1–2.
 
 ## Phase 6 decision rule
 
