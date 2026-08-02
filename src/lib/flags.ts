@@ -2,13 +2,17 @@ export type FlagName =
   | 'learning_first_navigation'
   | 'today_dashboard'
   | 'daily_plan_v2'
-  | 'server_streak';
+  | 'server_streak'
+  | 'learning_plans'
+  | 'lesson_experience_v2';
 
 const FLAG_DEFAULTS: Record<FlagName, boolean> = {
   learning_first_navigation: false,
   today_dashboard: false,
   daily_plan_v2: false,
   server_streak: false,
+  learning_plans: false,
+  lesson_experience_v2: false,
 };
 
 /**
