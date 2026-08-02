@@ -34,7 +34,7 @@
 | 1 | Architecture boundaries and migrations | completed | `7be74d9`, `c923220`, `84b7912` | — |
 | 2 | Premium design system and Telegram shell | completed | `2f4265a`, `50f846b`, `d0ff1ff`, `811977e`, `3b1b702` | — |
 | 3 | Learning-first navigation | completed | `31fffb9`, `3368f00`, `37ffa96` | — |
-| 4 | Today, daily plan and streak | planned | — | Phase 3 |
+| 4 | Today, daily plan and streak | completed | `e24aeaf`, `cc5c14d`, `561ee5c`, `e2eb8b3`, `a9fc72e` | — |
 | 5 | Learning plans and lessons | planned | — | Phase 4 |
 | 6 | Learning practice and review | planned | — | Phase 5 |
 | 7 | Progress, profile and settings | planned | — | Phase 6 |
@@ -622,3 +622,135 @@ Phase 2.
 ### Next phase readiness
 
 ready — Phase 4 (Today, daily plan and streak) може стартувати на `main`; додає `today_dashboard`, `daily_plan_v2`, `server_streak` у той самий `flags.ts` реєстр.
+
+## Phase 4 — Today, daily plan and streak
+
+Status: completed
+
+### Goal
+
+Об'єднати розрізнені елементи Home (CTA/рекомендації під `learning_first_navigation`, окремий hardcoded `getDailyTasks()`, inline-серія в stats grid) в один узгоджений "Today"-досвід, і закрити реальний security gap: `streakDays` був повністю client-trusted (сервер лише клемпив до `>= 0`, ніколи не перераховував). Усе — за трьома новими флагами (`today_dashboard`, `daily_plan_v2`, `server_streak`), кожен default `off`.
+
+### Product outcome
+
+За замовчуванням (усі три флаги off) — Home виглядає й поводиться байт-в-байт як після Phase 3, жодних видимих змін. З увімкненими флагами (env override, як і в Phase 3): `today_dashboard` групує дату + `StreakBadge` над привітанням і прибирає дублюючу плитку серії з stats grid; `daily_plan_v2` замінює і CTA/рекомендації, і "Щоденні завдання" на єдину секцію "Сьогоднішній план" (пріоритезований список з `recommendationEngine` + пункт "не втрать серію", коли гравець ще не грав сьогодні); `server_streak` (server-only, вимагає окремого `FEATURE_SERVER_STREAK=true` на Express-процесі) робить `streakDays` таким, що сервер перераховує сам, ігноруючи клієнтське значення.
+
+### Scope
+
+- `src/lib/flags.ts` + `.env.example` — `today_dashboard`, `daily_plan_v2`, `server_streak` (усі default `false`), задокументована конвенція серверного override (`FEATURE_SERVER_STREAK`).
+- `src/lib/dailyPlan.ts` (нове) — `buildDailyPlan()`, повторно використовує `generateRecommendations`/`formatRecommendation`/`getRecommendationLink` з `recommendationEngine.ts` (без дублювання скорингу), додає один "streak-maintenance" пункт через новий `hasPlayedToday()` в `learning.ts`. Новий тип `DailyPlanItem` у `types/index.ts`.
+- `src/context/PlayerContext.tsx` — `getDailyPlan()`, дзеркалить існуючий патерн `getRecommendations()`.
+- `src/pages/Home.tsx` / `Home.module.css` — під `daily_plan_v2` рендерить єдину секцію "Сьогоднішній план" замість окремих recommendation-cards + `getDailyTasks()`-блоку; під `today_dashboard` групує дату + `StreakBadge` над привітанням, прибирає inline-плитку серії зі stats grid.
+- `src/components/StreakBadge.tsx` (+ CSS module, нове) — перевикористовуваний компонент серії, поки що застосований лише в `today_dashboard`-шляху Home.
+- `server/lib/flags.ts` (нове) — серверний flag-реєстр (`process.env.FEATURE_<NAME>`), паралельний клієнтському, бо `flags.ts` працює через Vite `import.meta.env`, недоступний в Express-процесі.
+- `server/lib/streak.ts` (нове) — `recomputeStreak()`, той самий day-boundary алгоритм, що й клієнтський `updateStreak()`, але на UTC-межах доби (замість локального часу пристрою).
+- `server/index.ts` — `PUT /profile/:userId` перераховує `streakDays`/`lastActiveAt` на сервері, коли `FEATURE_SERVER_STREAK=true`, ігноруючи клієнтське значення.
+- `docs/product-rebuild/DECISIONS.md` — `ADR-003` (server-authoritative streak), прийнятий.
+
+### Out of scope
+
+- Новий route/tab для "Today" — лишається на існуючому Home-маршруті (`/`), як і в Phase 3 IA не переглядалась.
+- Рефакторинг `mergeProfiles`/`playerRepo`-стратегії злиття понад те, що потрібно для авторитетності streak (take-the-max для інших полів лишається без змін — некритично, бо `PUT` з увімкненим flag все одно перезаписує `streakDays` при наступній синхронізації).
+- `dailyCompletions`/`GET /dashboard` в `server/index.ts` — залишена мертва заглушка (не викликається жодним клієнтським кодом), Phase 4 на неї не спирається.
+- Виправлення pre-existing lint/typecheck/`test-classification` baseline.
+
+### Dependencies
+
+Phase 3.
+
+### Contract created for next phases
+
+- `src/lib/dailyPlan.ts` / `DailyPlanItem` — готовий шаблон для будь-якого майбутнього об'єднаного "плану" (Phase 5 learning plans можуть розширити той самий тип, а не винаходити новий).
+- `StreakBadge` — перевикористовуваний компонент, готовий для GlobalStats/Profile (Phase 7).
+- `server/lib/flags.ts` — перший серверний flag-реєстр; будь-яка майбутня server-side gated поведінка (Phase 8 `real_payments`, Phase 9 `server_social`) має використовувати той самий `FEATURE_<NAME>` патерн, а не винаходити власний.
+- `ADR-003` — референс-приклад "client-trusted → server-authoritative" рішення; Phase 8 (`real_payments`, server entitlements) і Phase 9 (`server_social`) стикнуться з тим самим класом рішень і можуть посилатись на цей ADR як precedent.
+
+### Files and modules affected
+
+`src/lib/flags.ts`, `.env.example`, `src/lib/dailyPlan.ts` (нове), `src/lib/learning.ts`, `src/types/index.ts`, `src/context/PlayerContext.tsx`, `src/pages/Home.tsx`, `src/pages/Home.module.css`, `src/components/StreakBadge.tsx` (нове), `src/components/StreakBadge.module.css` (нове), `server/lib/flags.ts` (нове), `server/lib/streak.ts` (нове), `server/index.ts`, `docs/product-rebuild/DECISIONS.md`, `docs/product-rebuild/MASTER_ROADMAP.md`.
+
+### API changes
+
+Внутрішній контракт: `PUT /profile/:userId` тепер може повертати (зберігати) `streakDays`/`lastActiveAt`, відмінні від надісланих клієнтом, коли на сервері встановлено `FEATURE_SERVER_STREAK=true`. `GET /profile/:userId` без змін (повертає збережене).
+
+### Data model changes
+
+Немає нових persisted-полів; `DailyPlanItem` — суто client-side derived тип, нічого не зберігається.
+
+### Data migrations
+
+Немає.
+
+### Feature flags
+
+| Flag | Default | Стан після фази |
+|---|---|---|
+| `today_dashboard` | off | Гейтує Today-заголовок (дата + `StreakBadge`) на Home, прибирає inline-плитку серії зі stats grid. |
+| `daily_plan_v2` | off | Гейтує єдину секцію "Сьогоднішній план" замість recommendation-cards + `getDailyTasks()`. |
+| `server_streak` | off | Server-only (`FEATURE_SERVER_STREAK`, не `VITE_FLAG_*`); гейтує серверний перерахунок `streakDays`. |
+
+### UX impact
+
+Немає в дефолтному стані (усі флаги off). З увімкненими флагами: чіткіша "Today"-рамка (дата, серія), один пріоритезований план замість двох розрізнених блоків.
+
+### Accessibility impact
+
+Немає прямого впливу — ті самі семантичні `Link`/`section`/`h2` елементи, новий `StreakBadge` — простий `<span>` без інтерактивності.
+
+### Security impact
+
+R (новий, не в risk register окремим ID, задокументовано в `ADR-003`) — client-trusted `streakDays` закрито, коли `server_streak` увімкнено. Поки flag `off` (default) — ризик лишається відкритим, як і раніше; це свідомий поетапний rollout, той самий підхід, що й ADR-002.
+
+### Performance impact
+
+Немає вимірних змін. `getDailyPlan()` викликає `loadAllTopicHierarchies()` так само, як і існуючий `getRecommendations()` — лише коли `daily_plan_v2` увімкнено.
+
+### Tests
+
+- `npx tsc -b` — ✅ 0 помилок після кожної хвилі.
+- `npm run build` — не запускався окремо цього разу (typecheck через `tsc -b` покриває клієнтський код; ручна browser-перевірка через dev-preview підтвердила рантайм-коректність).
+- `tsc --noEmit -p server/tsconfig.json` (ad-hoc) — той самий pre-existing baseline (~33 помилки, відсутні `@types/express`/`@types/pg` тощо), без нових помилок від `server/lib/flags.ts`/`server/lib/streak.ts`/зміни в `server/index.ts`.
+- Ручна browser-перевірка (dev server, Telegram WebApp mock): усі флаги off → Home рендерить байт-в-байт той самий текст, що до Phase 4 (звірено через `get_page_text`); `daily_plan_v2` on → секція "Сьогоднішній план" рендерить рекомендації з коректними навігаційними посиланнями (клік по картці веде на `/play/study/themes/old-testament` і рендерить сторінку теми); `today_dashboard` on → дата + `StreakBadge` над привітанням, stats grid без дублюючої плитки серії; обидва флаги разом — компонуються без конфліктів.
+- Ручна `curl`-перевірка `server_streak` проти локального `STORAGE_PROVIDER=json` сервера: з `FEATURE_SERVER_STREAK=true` спуфнутий `streakDays: 9999` в тілі `PUT` відкидається й замінюється серверним значенням (1 при першій активності, без змін при повторному `PUT` того самого дня); без flag (default) — той самий спуфнутий `9999` проходить без змін (регресії немає).
+
+### Acceptance criteria
+
+- `flags.ts` реєстр розширено трьома новими флагами, усі default off — ✅
+- Flag off не змінює жодного видимого поведінки/розмітки Home — ✅ (перевірено вручну)
+- `daily_plan_v2` on рендерить єдиний план, що коректно навігує — ✅
+- `today_dashboard` on показує Today-заголовок, обидва флаги компонуються — ✅
+- `server_streak` on робить сервер авторитетним джерелом `streakDays`, off — без регресій — ✅ (перевірено curl)
+- `ADR-003` написаний, той самий шаблон, що ADR-001/ADR-002 — ✅
+- Жодних регресій у typecheck baseline — ✅
+- Кожна хвиля закомічена окремо — ✅ (`e24aeaf`, `cc5c14d`, `561ee5c`, `e2eb8b3`, `a9fc72e`)
+
+### Risks
+
+Немає нових ID у risk register (ризик client-trusted streak був відомий неявно, тепер задокументований і закритий рішенням в `ADR-003`, гейтований flag). Production default лишається `off` для всіх трьох флагів — ця фаза не змінює production-поведінку.
+
+### Rollback plan
+
+Кожен коміт (`phase-04a`…`phase-04f`) незалежний і відкатний окремо через `git revert`: флаги — суто additive; UI-хвилі (4c, 4d) guarded тим самим флагом (default off) — навіть без revert, просто не вмикати флаг еквівалентно повному відкату; серверна хвиля (4e) guarded окремим `FEATURE_SERVER_STREAK`, ізольована в `server/lib/*` + один блок в `server/index.ts`.
+
+### Completed work
+
+- `e24aeaf` — phase-04a: `flags.ts` реєстр + `.env.example` (`today_dashboard`, `daily_plan_v2`, `server_streak`).
+- `cc5c14d` — phase-04b: `dailyPlan.ts` data layer (`buildDailyPlan`, `DailyPlanItem`, `hasPlayedToday`).
+- `561ee5c` — phase-04c: unified "Сьогоднішній план" секція на Home (`daily_plan_v2`).
+- `e2eb8b3` — phase-04d: Today-заголовок + `StreakBadge` (`today_dashboard`).
+- `a9fc72e` — phase-04e: server-authoritative streak (`server_streak`, `ADR-003`).
+- (цей коміт) — phase-04f: документація (цей розділ, оновлення таблиці статусу фаз).
+
+### Deviations from plan
+
+Немає — фаза виконана точно за узгодженим scope (три флаги, дані-шар + дві UI-хвилі + серверна хвиля, без нової IA чи route).
+
+### Known limitations
+
+- Production rollout (default → `true` для будь-якого з трьох флагів) не виконувався — усі лишаються `off`, рішення про ввімкнення окреме майбутнє.
+- `mergeProfiles`/`playerRepo` take-the-max стратегія для інших полів (не streak) лишається без змін — не блокер для цієї фази, але кандидат на окремий розгляд, якщо Phase 8/9 знадобиться повна server-authoritative модель для coins/purchases.
+- `dailyCompletions`/`GET /dashboard` заглушки в `server/index.ts` лишаються незакритим технічним боргом (мертвий код, не зачіпався).
+
+### Next phase readiness
+
+ready — Phase 5 (Learning plans and lessons) може стартувати на `main`; додає `learning_plans`, `lesson_experience_v2` у той самий `flags.ts` реєстр, і може повторно використати `DailyPlanItem`/`buildDailyPlan()` як основу для plan-based lesson sequencing.
