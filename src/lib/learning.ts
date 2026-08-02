@@ -15,6 +15,15 @@ export function updateStreak(profile: PlayerProfile): PlayerProfile {
   return { ...profile, streakDays: 1, lastActiveAt: today.toISOString() };
 }
 
+export function hasPlayedToday(profile: PlayerProfile): boolean {
+  if (!profile.lastActiveAt) return false;
+  const today = new Date();
+  const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const last = new Date(profile.lastActiveAt);
+  const lastDate = new Date(last.getFullYear(), last.getMonth(), last.getDate());
+  return todayDate.getTime() === lastDate.getTime();
+}
+
 export function updateMastery(state: MasteryState | undefined, isCorrect: boolean, tag: string): MasteryState {
   const current = state ?? {
     mastery: 0,

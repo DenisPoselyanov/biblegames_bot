@@ -439,3 +439,18 @@ export interface Recommendation {
   masteryBefore?: number; // Поточний рівень знань
   targetMastery?: number; // Цільовий рівень
 }
+
+// Phase 4 — unified "Сьогоднішній план" (daily_plan_v2), see src/lib/dailyPlan.ts
+export type DailyPlanItemKind = 'recommendation' | 'streak-maintenance';
+
+export interface DailyPlanItem {
+  id: string;
+  kind: DailyPlanItemKind;
+  title: string;
+  description: string;
+  subtitle: string;
+  icon: string;
+  link: string;
+  priority: number;
+  estimatedTime?: number;
+}
