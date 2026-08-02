@@ -17,6 +17,8 @@ import {
   sanitizeTelemetryEvents,
 } from './middleware/validateBody';
 import { migrateProfileWallet, type ProfileWithLegacyWallet } from '../src/lib/storage';
+import { isServerFeatureEnabled } from './lib/flags';
+import { recomputeStreak } from './lib/streak';
 import { scriptureRouter } from './routes/scripture';
 import { questionsAdminRouter } from './routes/questionsAdmin';
 import { questionsRouter } from './routes/questions';
@@ -149,9 +151,13 @@ protectedRouter.put('/profile/:userId', ...withTelegramAuth, asyncHandler(async 
   }
   const existing = (await dbStore.getProfile(userId)) ?? {};
   const sanitized = sanitizeProfileBody(userId, req.body);
+  const streakOverride = isServerFeatureEnabled('server_streak')
+    ? recomputeStreak(existing.lastActiveAt, existing.streakDays)
+    : {};
   const merged = migrateProfileWallet({
     ...existing,
     ...sanitized,
+    ...streakOverride,
     userId,
   });
   await dbStore.setProfile(userId, {

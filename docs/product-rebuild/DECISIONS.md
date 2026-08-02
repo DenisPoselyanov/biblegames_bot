@@ -84,3 +84,46 @@ R-006 закрито для production. Ризик залишається від
 ### Rollback
 
 `git revert 84b7912` — зміна ізольована в одному файлі (`server/middleware/telegramAuth.ts`), не має залежних змін в інших комітах Phase 1.
+
+---
+
+## ADR-003 — Server-authoritative streak (`server_streak`)
+
+Date: 2026-08-02
+Status: accepted (Phase 4)
+
+### Context
+
+Дослідження перед Phase 4 показало, що `streakDays` повністю client-trusted: `updateStreak()` (`src/lib/learning.ts`) рахує серію на клієнті й надсилає готове число на сервер; `server/middleware/validateBody.ts` (`sanitizeProfileBody`) лише клемпить значення до `>= 0`, але ніколи не перераховує його з `lastActiveAt`. Модифікований клієнт може надіслати будь-яке невід'ємне `streakDays`, і сервер збереже його як є (`PUT /profile/:userId`, `server/index.ts`). Той самий клієнтський алгоритм (`learning.ts:4-16`) додатково рахує межу дня через `new Date(y,m,d)` — локальний час пристрою, без нормалізації часового поясу, що дає ще один вектор маніпуляції (зміна timezone на пристрої).
+
+### Decision
+
+Введено flag `server_streak` (реєстр `src/lib/flags.ts`, default `off`) + окремий серверний flag-реєстр `server/lib/flags.ts` (`isServerFeatureEnabled('server_streak')`, читає `process.env.FEATURE_SERVER_STREAK`) — `flags.ts` на клієнті працює через Vite `import.meta.env` і не доступний в Express-процесі, тож знадобився паралельний, а не спільний реєстр.
+
+Коли серверний flag увімкнено, `PUT /profile/:userId` (`server/index.ts`) ігнорує клієнтський `streakDays` і перераховує `streakDays`/`lastActiveAt` через `recomputeStreak()` (`server/lib/streak.ts`) — той самий day-boundary алгоритм, що й `updateStreak()`, але на **UTC-межах доби** (не локальному часі пристрою), використовуючи власне збережене `lastActiveAt` сервера як єдине джерело правди. `GET /profile/:userId` окремої зміни не потребує — він і так повертає те, що збережено, тож коли `PUT` стає авторитетним, читання автоматично коректні.
+
+Коли flag вимкнено — поведінка ідентична поточній (client-trusted passthrough, як в `sanitizeProfileBody`).
+
+### Alternatives considered
+
+1. Перерахунок на GET замість PUT — відхилено: PUT — єдина точка запису, а GET без запису нічого не змінює, це були б окремі шляхи розбіжності.
+2. Спільний `flags.ts` для клієнта й сервера через build-time inject — відхилено як зайва складність для одного флага; server-side `process.env.FEATURE_*` — вже усталений патерн у цьому репо (`STORAGE_PROVIDER`, `NODE_ENV`).
+3. Локальний (не UTC) day-boundary на сервері — відхилено: це відтворило б ту саму timezone-спуфінг діру, яку й мали закрити.
+
+### Consequences
+
+- Поки flag `off` (за замовчуванням) — жодних змін поведінки чи ризиків.
+- Коли `on` — сервер стає єдиним джерелом правди для `streakDays`; клієнт, що надсилає спуфнуте значення, отримає його назад перезаписаним при наступному `GET`.
+- `mergeProfiles` (`src/repos/playerRepo.ts`) і надалі рахує take-the-max локально для offline-сценаріїв — це не проблема, бо результат мержу все одно перезаписується сервером при наступному `PUT`, коли flag `on`.
+
+### Migration impact
+
+Немає — існуючі профілі з клієнтським `streakDays` продовжують працювати; перший `PUT` після увімкнення flag перераховує серію з наявного `lastActiveAt` (якщо він відсутній — стартує з 1, як і в клієнтському алгоритмі).
+
+### Security impact
+
+Закриває описаний вище client-trusted `streakDays` gap і супутню timezone-спуфінг діру, коли flag увімкнено. Поки `off` — ризик лишається відкритим (документовано, не новий регрес).
+
+### Rollback
+
+Кожен файл (`server/lib/flags.ts`, `server/lib/streak.ts`, зміна в `server/index.ts`) — суто additive/guarded тим самим flag (default off); `git revert` на коміт хвилі 4e безпечний і ізольований. Навіть без revert — просто не встановлювати `FEATURE_SERVER_STREAK=true` еквівалентно повному відкату.
