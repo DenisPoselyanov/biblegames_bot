@@ -3,7 +3,8 @@
 > **Статус:** активне domain-джерело правди для UI, UX, themes і visual QA  
 > **Канонічна фаза:** Phase 3 — Learning-First Product Rebuild  
 > **Основна тема:** `Світло`  
-> **Повна Phase 3 специфікація:** [`PHASE_3_REBRANDING_AND_THEME_SYSTEM.md`](./PHASE_3_REBRANDING_AND_THEME_SYSTEM.md)
+> **Повна Phase 3 специфікація:** [`PHASE_3_REBRANDING_AND_THEME_SYSTEM.md`](./PHASE_3_REBRANDING_AND_THEME_SYSTEM.md)  
+> **Канонічна motion-система:** [`MOTION_SYSTEM.md`](./MOTION_SYSTEM.md)
 
 Цей документ замінює попередній напрям `Dark luxury / parchment gold` як головну ідентичність продукту. Темний `classic` не видаляється автоматично, але стає legacy/alternative theme. Основна візуальна система Bible Games тепер — **premium spiritual minimalism**.
 
@@ -105,6 +106,10 @@
 - чужу інформаційну архітектуру.
 
 ---
+
+# 3.5. Motion relationship
+
+`DESIGN_RULES.md` визначає вигляд станів, а `MOTION_SYSTEM.md` — їхню зміну в часі. Компонент не може вводити власні easing, celebration або correct/wrong sequence, якщо shared motion contract уже існує. Theme може змінювати палітру particles/glow, але не semantics, critical durations, reduced-motion behavior або blocking time.
 
 # 4. Primary Theme — «Світло»
 

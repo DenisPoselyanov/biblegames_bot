@@ -38,7 +38,8 @@ main
 4. README.md
 5. docs/README.md
 6. усі активні domain-документи, на які посилається вибрана фаза
-7. docs/archive/CURRENT_STATE_AUDIT.md лише як історичний baseline
+7. docs/MOTION_SYSTEM.md для будь-якої фази, що змінює UI, rewards, games, social, shop або performance
+8. docs/archive/CURRENT_STATE_AUDIT.md лише як історичний baseline
 
 Документи в docs/archive/ не є активними вимогами. Не відновлюй їхні старі phase numbers, пріоритети або статуси Completed без підтвердження канонічною специфікацією та кодом.
 
@@ -135,6 +136,16 @@ UI/UX
 - Дотримуйся docs/DESIGN_RULES.md.
 - Не створюй паралельну дизайн-систему.
 - Основний learning flow не залежить від AI, payments або social-функцій.
+
+MOTION І FEEDBACK
+
+- Використовуй лише канонічні tokens, presets і sequences з docs/MOTION_SYSTEM.md.
+- Не змішуй `framer-motion` і `motion/react`.
+- Final reward, entitlement, level, rank, score або victory animation запускається тільки після authoritative event.
+- Кожна велика celebration має stable event ID і не replay-иться після retry/reconnect/remount.
+- Реалізуй reduced/minimal motion разом із default behavior.
+- Не використовуй confetti для routine success і не блокуй CTA завершенням particles.
+- Перевір interruption, cleanup, focus, ARIA announcement, Telegram Android/iOS і low-end behavior.
 
 CODE QUALITY
 

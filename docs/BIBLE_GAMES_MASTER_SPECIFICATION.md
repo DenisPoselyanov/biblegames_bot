@@ -33,9 +33,10 @@
 3. `DECISIONS.md` — прийняті архітектурні рішення та причини.
 4. `archive/CURRENT_STATE_AUDIT.md` — історичний baseline, а не активний roadmap.
 5. `DESIGN_RULES.md` — доменне джерело правди лише для дизайн-системи.
-6. `archive/DESIGN_AUDIT.md` — знімок відповідності UI дизайн-системі.
-7. `SUPABASE_SETUP.md`, `AI_SETUP.md`, `LOCAL_TOOLS.md`, `DEVELOPER_GUIDE.md` — операційні інструкції, які не можуть змінювати продуктову архітектуру або порядок фаз.
-8. `archive/implementation_plan.md`, `archive/task.md`, `archive/MASTER_ROADMAP.md` і `archive/AI_SYSTEM_REBUILD_ROADMAP.md` — історичні матеріали.
+6. `MOTION_SYSTEM.md` — доменне джерело правди для transitions, feedback, celebrations, reduced motion, authoritative triggers і motion QA.
+7. `archive/DESIGN_AUDIT.md` — знімок відповідності UI дизайн-системі.
+8. `SUPABASE_SETUP.md`, `AI_SETUP.md`, `LOCAL_TOOLS.md`, `DEVELOPER_GUIDE.md` — операційні інструкції, які не можуть змінювати продуктову архітектуру або порядок фаз.
+9. `archive/implementation_plan.md`, `archive/task.md`, `archive/MASTER_ROADMAP.md` і `archive/AI_SYSTEM_REBUILD_ROADMAP.md` — історичні матеріали.
 
 У разі розбіжності завжди перемагає цей документ.
 
@@ -724,6 +725,10 @@ Feature flag не замінює authorization і не приховує неза
 - migration in progress;
 - feature unavailable.
 
+## 8.4.1. Motion system
+
+`MOTION_SYSTEM.md` є джерелом правди для animation behavior. Motion не може визначатися випадковими inline transitions у конкретних компонентах. Великі reward, purchase і competitive celebrations запускаються лише authoritative events; усі critical sequences мають reduced-motion fallback.
+
 ## 8.5. Дизайн-система
 
 `DESIGN_RULES.md` залишається джерелом правди для токенів і компонентних патернів. Під час фаз редизайну необхідно:
@@ -879,7 +884,11 @@ Human reviewer перевіряє:
 - public web version;
 - author marketplace;
 - sophisticated adaptive learning;
-- optional integrations.
+- optional integrations;
+- richer theme-specific celebration packs;
+- advanced optional sound design;
+- classroom/presentation motion presets;
+- seasonal motion only після performance/accessibility review.
 
 ---
 
@@ -959,6 +968,19 @@ Human reviewer перевіряє:
 - migration існуючих профілів;
 - reconciliation для legacy local data;
 - правила, що робити з підозрілими значеннями.
+
+### Authoritative outcome events для UI і motion
+
+Phase 1 повинна створити безпечні server-confirmed triggers для майбутніх анімацій нагород і перемог:
+
+- stable result/event ID для completion, reward, purchase, achievement, level, rank і competitive outcome;
+- idempotency і replay protection;
+- повторний request, reconnect або retry не створює другий event;
+- клієнт не може сам оголосити level up, rank up, entitlement, Kahoot victory або «Мільйонер» victory;
+- authoritative response містить final state і delta;
+- audit timestamps дозволяють відрізнити нову подію від повторно доставленої.
+
+Phase 1 не реалізує повний візуальний motion, але без цього фундаменту Phase 3/5/6 не мають права запускати фінальні celebrations.
 
 ### Engineering gates
 
@@ -1098,6 +1120,24 @@ Frontend може використовувати shared pure types/validation, �
 - idempotency для mutation;
 - OpenAPI або еквівалентний machine-readable contract.
 
+### Typed outcome і motion event contracts
+
+Phase 2 визначає typed contracts, які UI використовує без дублювання бізнес-логіки:
+
+- `ProgressionOutcome`;
+- `EconomyOutcome`;
+- `GameOutcome`;
+- `AchievementGrantEvent`;
+- `LevelChangedEvent`;
+- `RankChangedEvent`;
+- `EntitlementGrantedEvent`;
+- stable `eventId`, `occurredAt`, `previousState`, `nextState`, `delta`;
+- server-time contract для multiplayer timers;
+- persisted consumed-event marker або equivalent deduplication;
+- schema для motion intensity preference.
+
+UI може вибирати presentation sequence, але не переобчислює final outcome.
+
 ### Deployment
 
 Розділити:
@@ -1214,6 +1254,33 @@ GitHub Pages може лишитися demo frontend, але не описуєт
 - privacy;
 - theme/avatar;
 - data export/delete request.
+
+### Rebranding, theme і motion system
+
+Phase 3 обов’язково реалізує активні domain-специфікації:
+
+- [`PHASE_3_REBRANDING_AND_THEME_SYSTEM.md`](./PHASE_3_REBRANDING_AND_THEME_SYSTEM.md);
+- [`DESIGN_RULES.md`](./DESIGN_RULES.md);
+- [`MOTION_SYSTEM.md`](./MOTION_SYSTEM.md).
+
+До scope входять:
+
+- канонічні motion tokens, easing і distance;
+- route/tab/fullscreen transitions;
+- sheets і dialogs;
+- loading/skeleton/data transitions;
+- correct/wrong answer sequences;
+- progress і animated numbers;
+- lesson/practice completion;
+- level up, rank up, achievement і streak;
+- theme switching без flash;
+- shared celebration layer;
+- reduced/minimal motion;
+- haptic preference;
+- authoritative event deduplication на клієнті;
+- visual regression fixtures для critical flows.
+
+Motion має відчуватися як calm premium SaaS interaction design, а не arcade decoration. Повний contract, timings, sequences, fallbacks і phase allocation містяться тільки в `MOTION_SYSTEM.md`.
 
 ## Контентна міграція
 
@@ -1358,6 +1425,17 @@ draft
 
 Studio не входить у звичайний user bundle, якщо це створює security або deployment ризик.
 
+## Content Studio motion
+
+Phase 4 використовує restrained productivity motion:
+
+- job state transitions відображають реальний queued/running/review/failed/completed state;
+- не показувати fake percentage progress;
+- diff, validation і review panels використовують shared UI motion;
+- Scripture review surfaces не мають decorative motion;
+- AI generation completion не подається як духовна або доктринальна перемога;
+- reduced motion і keyboard/focus behavior є обов’язковими.
+
 ## Legacy content cleanup
 
 Повний audit:
@@ -1456,6 +1534,20 @@ Published status надається тільки після проходженн
 - WebSocket tests;
 - display role separated from host role.
 
+## Social і multiplayer motion
+
+Phase 5 реалізує server-backed motion для:
+
+- community join/leave і member count;
+- activity feed;
+- friend challenge send/accept;
+- leaderboard reordering;
+- Kahoot lobby, participant join, countdown, timer, answer reveal, intermediate leaderboard і final podium;
+- respectful result state для non-winners;
+- reconnect і room recovery без повторного відтворення старої victory animation.
+
+Timer і score синхронізуються із сервером. Final podium/victory запускаються лише для нового authoritative `GameOutcome.eventId`.
+
 ## Acceptance criteria
 
 - social data зберігається в production DB;
@@ -1509,6 +1601,22 @@ Published status надається тільки після проходженн
 - restore purchases;
 - refunds/reversals;
 - ownership check server-side.
+
+## Shop, entitlement і theme motion
+
+Phase 6 реалізує:
+
+- store entrance і catalog states;
+- theme preview;
+- flash-free apply owned theme;
+- purchase pending;
+- server-confirmed balance update;
+- entitlement reveal;
+- insufficient balance;
+- restore/refund/reversal states;
+- Stars/payment success лише після verified callback і reconciliation.
+
+Заборонена оптимістична purchase celebration. Duplicate purchase/result не може запускати motion двічі.
 
 ## Real payments
 
@@ -1600,6 +1708,24 @@ Published status надається тільки після проходженн
 - data retention;
 - security review;
 - dependency audit.
+
+## Motion performance і accessibility hardening
+
+Phase 7 завершує motion як production capability:
+
+- frame profiling у Telegram Android/iOS;
+- low-end device tier;
+- reduced/minimal motion audit;
+- performance budgets;
+- no CLS;
+- interruption, background restore і reconnect tests;
+- timer/listener cleanup;
+- ARIA announcements і focus restoration;
+- visual regression для major sequences;
+- no duplicate celebration;
+- particle/bundle budgets.
+
+Release candidate не проходить Phase 7, якщо core UI зрозумілий лише з animation або великі sequences блокують navigation.
 
 ## Rollout
 

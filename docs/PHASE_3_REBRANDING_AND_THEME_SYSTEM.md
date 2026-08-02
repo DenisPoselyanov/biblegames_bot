@@ -4,7 +4,7 @@
 > **Візуальне рішення:** затверджено власником продукту 2026-08-02  
 > **Основна тема:** `Світло`  
 > **Цільова платформа:** Telegram Mini App і сучасний мобільний веб  
-> **Пов’язаний документ:** [`DESIGN_RULES.md`](./DESIGN_RULES.md)  
+> **Пов’язані документи:** [`DESIGN_RULES.md`](./DESIGN_RULES.md), [`MOTION_SYSTEM.md`](./MOTION_SYSTEM.md)  
 > **Межа відповідальності:** Phase 3 створює дизайн-систему і безкоштовну базову тему; Phase 6 реалізує каталог, придбання та entitlements для додаткових тем.
 
 ---
@@ -872,6 +872,12 @@ Motion пояснює зміну стану, а не прикрашає кожн
 
 ---
 
+## 15.3. Канонічна motion-специфікація
+
+Повні transitions, timings, correct/wrong sequences, level/rank/achievement celebrations, Kahoot/«Мільйонер», authoritative triggers, reduced motion, low-end rules і phase allocation визначені в [`MOTION_SYSTEM.md`](./MOTION_SYSTEM.md).
+
+Phase 3 повинна реалізувати motion foundation і core learning/account sequences. Multiplayer-specific sequences завершуються в Phase 5, purchase/payment sequences — у Phase 6, production hardening — у Phase 7. Заборонено локально змінювати цей розподіл без оновлення canonical docs.
+
 # 16. Accessibility
 
 Theme `Світло` є accessibility baseline.
@@ -1087,6 +1093,10 @@ Rollback повертає попередній shell/theme rendering без:
 Theme schema migration повинна бути backward-readable протягом rollout window.
 
 ---
+
+# 21.4. Motion rollout
+
+Motion rollout використовує ті самі feature flags, internal preview, closed alpha і rollback principles, що й visual rebrand. Rollback не може повторно запускати consumed celebrations, втрачати motion preference або змінювати authoritative progress/economy state.
 
 # 22. Acceptance criteria Phase 3: rebranding
 

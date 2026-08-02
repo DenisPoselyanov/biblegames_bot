@@ -393,6 +393,49 @@ Phase/feature не позначається `completed`, якщо є лише:
 
 ---
 
+# ADR-010 — Одна канонічна motion-система з authoritative celebrations
+
+**Дата:** 2026-08-02  
+**Статус:** accepted, implementation distributed across Phase 1–7  
+**Деталі:** [`MOTION_SYSTEM.md`](./MOTION_SYSTEM.md)
+
+## Контекст
+
+Проєкт уже має `framer-motion`, shared variants, MotionSheet і MotionDialog, але без повного contract майбутні екрани можуть отримати різні easing, надмірні celebrations, duplicate animation після reconnect або оптимістичну анімацію непідтвердженої нагороди.
+
+## Рішення
+
+- motion Bible Games має характер calm premium SaaS interaction design;
+- `MOTION_SYSTEM.md` є єдиним domain source of truth;
+- зберігається один animation package;
+- routine motion стриманий, major celebration дозволена лише для рідкісної важливої події;
+- final reward/purchase/competitive motion запускається лише authoritative event;
+- stable event ID запобігає replay;
+- reduced/minimal motion обов’язковий;
+- themes можуть змінювати decorative palette, але не semantics і critical behavior;
+- Phase 1–2 створюють event foundation, Phase 3 — core motion, Phase 5 — social/multiplayer, Phase 6 — economy/shop, Phase 7 — release hardening.
+
+## Наслідки
+
+Позитивні:
+
+- один motion language;
+- premium відчуття без arcade noise;
+- менший ризик duplicate celebration і fake success;
+- accessibility та performance перевіряються системно.
+
+Негативні:
+
+- implementation розподілена між фазами;
+- потрібні visual fixtures і authoritative event contracts;
+- частину legacy inline motion доведеться мігрувати.
+
+## Rollback
+
+Visual motion може бути feature-flagged або reduced до opacity-only, але rollback не може повертати client-authoritative rewards, дублювання events або відсутність reduced-motion support.
+
+---
+
 # Як додавати нові рішення
 
 Кожен новий ADR містить:
