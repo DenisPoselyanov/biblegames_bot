@@ -68,7 +68,7 @@
   padding: 0.6rem 0.75rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
 }
 
 .statItem {
@@ -115,7 +115,7 @@
   position: relative;
   height: 28px;
   background: var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -129,13 +129,13 @@
   top: 0;
   height: 100%;
   background: linear-gradient(90deg, var(--success), var(--gold), var(--danger));
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   transition: width var(--duration-normal) var(--ease-out);
 }
 
 .timerCenter {
   position: relative;
-  z-index: 1;
+  z-index: var(--z-base);
   font-size: 0.85rem;
   font-weight: 800;
   color: var(--text);
@@ -168,7 +168,7 @@
 .questionCard {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: 1.55rem 1.1rem;
   margin-bottom: 1rem;
 }
@@ -196,7 +196,7 @@
   text-align: left;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   color: var(--text);
   font-size: 0.95rem;
   cursor: pointer;
@@ -267,7 +267,7 @@
   margin: 0;
   padding: 0.75rem;
   border: 1px solid var(--accent-border-strong);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: transparent;
   color: var(--gold);
   font: inherit;
@@ -295,7 +295,7 @@
   box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
   border: none;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
@@ -334,7 +334,7 @@
   width: 100%;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: 1rem 0.75rem;
   margin-top: 0.25rem;
 }
@@ -401,7 +401,7 @@
   width: 100%;
   min-height: 2.85rem;
   padding: 0.75rem 1rem;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   font-weight: 800;
   font-size: 1rem;
   text-decoration: none;
@@ -434,7 +434,7 @@
   padding: 2rem 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
 }
 
 .resultCard h1 {

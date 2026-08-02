@@ -38,7 +38,7 @@
 
 .subTabBtn {
   padding: 0.45rem 0.4rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
@@ -56,7 +56,7 @@
 
 .tabBtn {
   padding: 0.6rem 0.5rem;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
@@ -88,7 +88,7 @@
   padding: 0.35rem 0.7rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 0.8rem;
   color: var(--text-muted);
 }
@@ -101,7 +101,7 @@
 
 .primaryBtn {
   padding: 0.75rem 1rem;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   border: none;
   background: var(--cta-bg);
   color: var(--on-primary);
@@ -116,7 +116,7 @@
 .card {
   padding: 0.85rem;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--surface);
   display: flex;
   flex-direction: column;
@@ -132,7 +132,7 @@
 .badge {
   display: inline-flex;
   padding: 0.2rem 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   background: var(--accent-bg-strong);
   border: 1px solid var(--accent-border-strong);
   font-size: 0.7rem;
@@ -180,7 +180,7 @@
 
 .miniBtn {
   padding: 0.4rem 0.7rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text);
@@ -196,7 +196,7 @@
 
 .miniBtnDanger {
   padding: 0.4rem 0.7rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(200, 80, 80, 0.45);
   background: transparent;
   color: var(--danger-text);
@@ -221,7 +221,7 @@
 .issueTag {
   font-size: 0.75rem;
   padding: 0.2rem 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   display: inline-block;
 }
 
@@ -261,7 +261,7 @@
 .poolCard {
   padding: 0.85rem;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--surface);
 }
 
@@ -287,7 +287,7 @@
 .poolTag {
   display: inline-block;
   padding: 0.2rem 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   font-size: 0.75rem;
   color: var(--text-muted);
@@ -308,7 +308,7 @@
 .poolOverlap {
   padding: 0.85rem;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--surface);
 }
 
@@ -357,7 +357,7 @@
   margin-bottom: 1.25rem;
   padding: 1rem;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.03);
 }
 
@@ -385,7 +385,7 @@
   width: 100%;
   padding: 0.55rem 0.65rem;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--bg);
   color: var(--text);
   font-size: 0.95rem;

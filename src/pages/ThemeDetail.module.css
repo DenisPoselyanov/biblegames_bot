@@ -42,7 +42,7 @@
   padding: 1.5rem 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   border-top: 3px solid var(--accent, var(--gold));
 }
 
@@ -81,7 +81,7 @@
   margin: 0.2rem 0.225rem;
   font-size: 0.75rem;
   padding: 0.3rem 0.7rem;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   background: var(--nested-surface);
   border: 1px solid var(--border);
   color: var(--text-muted);
@@ -116,7 +116,7 @@
   padding: 0.75rem 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   color: var(--text);
   font-size: var(--fs-sm);
   font-weight: 500;
@@ -135,7 +135,7 @@
   margin-top: 0.75rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 0.75rem;
   max-height: 300px;
   overflow-y: auto;
@@ -150,7 +150,7 @@
   padding: 0.5rem 0.75rem;
   background: var(--nested-surface);
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   color: var(--text);
   font-size: var(--fs-sm);
   cursor: pointer;
@@ -269,7 +269,7 @@
   padding: 1rem 1.15rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   text-decoration: none;
   color: inherit;
   transition: border-color 0.2s, transform 0.15s;
@@ -306,7 +306,7 @@
   align-items: center;
   justify-content: center;
   background: var(--nested-surface);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
 }
 
 .levelLabel {
@@ -333,7 +333,7 @@
 }
 
 .levelTop .levelStatusLocked {
-  border-radius: 10px;
+  border-radius: var(--radius-md);
 }
 
 .levelStatusNew {

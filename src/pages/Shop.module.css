@@ -103,7 +103,7 @@
 
 .avatarEmoji {
   position: relative;
-  z-index: 1;
+  z-index: var(--z-base);
   font-size: 3rem;
   line-height: 1;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));

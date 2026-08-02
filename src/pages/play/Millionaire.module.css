@@ -67,7 +67,7 @@
 .progressSegment {
   flex: 1;
   height: 0.45rem;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: var(--border);
   transition:
     background-color var(--duration-fast) var(--ease-out),
@@ -138,7 +138,7 @@
   padding: 1.25rem 1rem calc(1.25rem + env(safe-area-inset-bottom));
   background: var(--surface);
   border-top: 1px solid var(--border);
-  border-radius: 24px 24px 0 0;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
 }
 
@@ -168,7 +168,7 @@
   min-height: 2.5rem;
   padding: 0 0.5rem;
   border: 1px solid var(--accent-border-strong);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--accent-bg);
   color: var(--gold-light);
   font-weight: 700;
@@ -195,7 +195,7 @@
   margin: 0 0 0.85rem;
   padding: 0.65rem 0.75rem;
   border: 1px solid var(--accent-border-strong);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: var(--accent-bg-strong);
   color: var(--gold-light);
   font-size: 0.9rem;
@@ -225,7 +225,7 @@
   text-align: left;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   color: var(--text);
   font-size: 0.95rem;
   cursor: pointer;
@@ -267,7 +267,7 @@
   flex: 1;
   padding: 0.85rem 1rem;
   border: 1px solid var(--accent-border-strong);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: var(--accent-bg-strong);
   color: var(--gold-light);
   font-weight: 700;
@@ -295,7 +295,7 @@
   width: fit-content;
   max-width: 100%;
   padding: 0.45rem 0.7rem;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.8rem;
   font-weight: 700;
 }
@@ -309,7 +309,7 @@
 .explanationButton {
   width: fit-content;
   max-width: 100%;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text);
@@ -345,7 +345,7 @@
   box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
   border: none;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
@@ -357,7 +357,7 @@
   padding: 2rem 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
 }
 
 .resultCard h1 {
@@ -381,7 +381,7 @@
   justify-content: center;
   min-height: 2.75rem;
   padding: 0 1rem;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   font-weight: 800;
   text-decoration: none;
   cursor: pointer;
