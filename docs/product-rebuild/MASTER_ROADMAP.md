@@ -32,7 +32,7 @@
 |---:|---|---|---|---|
 | 0 | Baseline, audit and roadmap | completed | `d4ad558` (sync) + `7787929` (phase-00) | — |
 | 1 | Architecture boundaries and migrations | completed | `7be74d9`, `c923220`, `84b7912` | — |
-| 2 | Premium design system and Telegram shell | planned | — | Phase 1 |
+| 2 | Premium design system and Telegram shell | completed | `2f4265a`, `50f846b`, `d0ff1ff`, `811977e`, `3b1b702` | — |
 | 3 | Learning-first navigation | planned | — | Phase 2 |
 | 4 | Today, daily plan and streak | planned | — | Phase 3 |
 | 5 | Learning plans and lessons | planned | — | Phase 4 |
@@ -49,7 +49,6 @@
 
 | Flag | Default | Introduced | Removal target | Notes |
 |---|---|---:|---:|---|
-| new_app_shell | off | 2 | TBD | |
 | learning_first_navigation | off | 3 | TBD | |
 | today_dashboard | off | 4 | TBD | |
 | daily_plan_v2 | off | 4 | TBD | |
@@ -73,7 +72,7 @@
 | in_app_ai_assistance | off | 14 (після Phase 10) | TBD | Лише після стабілізації AI Content Production |
 | offline_learning | off | 12 | TBD | |
 
-Реєстр порожній до Phase 1 — жоден flag ще не введено в код.
+Реєстр порожній станом на кінець Phase 2 — жоден flag ще не введено в код (Phase 2 виявилась суто incremental-вирівнюванням існуючого shell/design-системи, без потреби в runtime-гейтингу; generic `flags.ts` реєстр планується вперше в Phase 3 разом з `learning_first_navigation`).
 
 ## Migration inventory
 
@@ -376,3 +375,132 @@ R-001, R-006 — mitigated (див. risk register вище). Залишкові 
 ### Next phase readiness
 
 ready — Phase 2 (Premium design system and Telegram shell) може стартувати на `main` за тим самим підходом (окремі коміти на крок), якщо користувач не вирішить інакше.
+
+## Phase 2 — Premium design system alignment and Telegram shell hardening
+
+Status: completed
+
+### Goal
+
+Закрити реальний backlog вирівнювання design-системи (задокументований у [DESIGN_AUDIT.md](../../DESIGN_AUDIT.md) ще до старту фази) і додати відсутню Telegram BackButton-інтеграцію, без зміни production-поведінки і без побудови паралельного shell.
+
+### Product outcome
+
+Візуально майже непомітно для звичайного користувача (той самий вигляд, ті самі кольори/відступи — просто через токени замість хардкоду). Помітна зміна: у Telegram нативна кнопка "назад" тепер з'являється на всіх екранах, окрім чотирьох tab-root сторінок (Головна/Гра/Крамниця/Профіль), і повертає на попередній екран.
+
+### Scope
+
+Дослідження на старті фази показало, що прем'єра design-системи вже відбулась **до** Phase 0/1 (комміт `d4ad558`): `DESIGN_RULES.md` і `DESIGN_AUDIT.md` вже існували, `Layout`/shell вже був 🟢 100% compliant (~78% загальна відповідність), і сам аудит вже містив конкретний "Phase 2 Backlog". Це суперечило оригінальному запису в цьому роадмапі (побудова нового shell за flag `new_app_shell`, паралельно зі старим) — за узгодженням із користувачем Phase 2 переорієнтовано на **incremental alignment без flag**, замість дублювання вже готового і вже відповідного shell.
+
+Виконано хвилями (`phase-02a`…`phase-02f`), кожна — окремий коміт:
+
+- **`phase-02a`** — z-index sweep (`z-index: 1/2` → `var(--z-base)`, `calc(var(--z-base) + 1)`) у Home/Shop/Social/Survival/PlayHub/Quiz; radius sweep (`8/10/12/14/16/20/24/999px` → `--radius-sm/md/lg/xl/full`) у AdminPanel/Millionaire/Survival/ThemeDetail/Quiz/TopicMap. Sub-6px декоративні радіуси (progress-bar, heatmap-легенда) свідомо лишені без токена.
+- **`phase-02b`** — typography sweep (font-size strays → найближчий `--fs-*`) в AdminPanel/GlobalStats/Quiz/Millionaire/Survival, з винятком для decorative/display розмірів (emoji, timer, score ≥ 2rem). Spacing sweep — лише точні збіги з `--space-*` токеном замінені в Quiz/Millionaire/Survival; проміжні off-scale значення свідомо залишені літералами (token-крок завеликий, щоб форсоване округлення не змінило візуальну щільність без QA).
+- **`phase-02c`** — adoption `.btn-cta` через CSS Modules `composes: btn-cta from global;` (11 дубльованих блоків / 10 файлів). `.glass-card` adoption свідомо відкладено — "дублікати" насправді розходяться в blur/shadow значеннях, це дизайн-рішення, не механічна заміна. Bottom-sheet модалки (`ExplanationModal`/`QuestionEditModal`/`PlayerProfileModal`) перевірені — вже уніфіковані, змін не знадобилось.
+- **`phase-02d`** — `--mastery-1..4` + `--mastery-glow` токени в `index.css` (fixed heatmap-шкала, за аналогією з `--success`/`--danger`), заміна hardcoded hex у `TopicMap.tsx`/`ThemeDetail.tsx`.
+- **`phase-02e`** — `showBackButton`/`hideBackButton` у `lib/telegram.ts` (guarded, `isVersionAtLeast('6.1')`), `useTelegramBackButton()` хук синхронізує нативну Telegram BackButton з react-router (прихована на 4 tab-root маршрутах, `navigate(-1)` на решті), змонтований через `<TelegramBackButtonSync />` всередині `<BrowserRouter>` в `App.tsx` — покриває і сторінки поза `<Layout>` (quiz/kahoot).
+- **`phase-02f`** — оновлення `DESIGN_AUDIT.md` і цього роадмапу (документація фактичного стану, закриття фази).
+
+### Out of scope
+
+- Фізичне перенесення файлів у `src/core/<domain>/` (ADR-001, без змін від Phase 1).
+- Виправлення pre-existing lint/typecheck/`test-classification` baseline (той самий технічний борг з Phase 0).
+- Kahoot arcade palette (DESIGN_RULES §10, задокументований виняток).
+- Generic feature-flag реєстр (`flags.ts`) — жодна зміна цієї фази не потребує runtime-гейтингу (CSS/token-заміни безпечно відкатні через `git revert`, Telegram API виклики вже guarded через `isVersionAtLeast`); реєстр з'явиться вперше в Phase 3 разом з `learning_first_navigation`.
+- `.glass-card` adoption, повна spacing-уніфікація ігрових сторінок, light-theme адаптація semantic-кольорів — свідомо залишені в backlog `DESIGN_AUDIT.md` (потребують окремого дизайн-рішення або QA-проходу, не механічного token sweep).
+- `src/types/index.ts` / `PlayerContext.tsx` розбиття (не змінилось з Phase 1).
+
+### Dependencies
+
+Phase 1.
+
+### Contract created for next phases
+
+- `DESIGN_AUDIT.md` тепер відображає фактичний стан (~90% compliance) і містить явний backlog того, що залишилось (`.glass-card`, spacing QA, light-theme semantic colors) — наступні фази мають звірятись з ним перед новими UI-змінами, а не вважати design-систему "готовою на 100%".
+- `composes: <utility> from global;` — конвенція для уникнення дублювання CSS-патернів у CSS Modules; майбутні нові компоненти з CTA-кнопками мають composes з `.btn-cta`, а не копіювати `background`/`box-shadow`/`border`.
+- `showBackButton`/`hideBackButton` у `lib/telegram.ts` + `useTelegramBackButton()` у `hooks/useTelegram.ts` — конвенція для будь-якої майбутньої навігаційної логіки, що потребує Telegram chrome (BackButton), включно з version-guard патерном (`isVersionAtLeast`) для нових Bot API можливостей.
+
+### Files and modules affected
+
+`src/index.css` (mastery tokens), `DESIGN_AUDIT.md`, `docs/product-rebuild/MASTER_ROADMAP.md`, CSS-модулі: `Home`, `Shop`, `Social`, `Survival`, `PlayHub`, `Quiz`, `AdminPanel`, `Millionaire`, `ThemeDetail`, `TopicMap`, `GlobalStats`, `StudyHub`, `ExplanationModal`, `QuestionEditModal.module.css`; `TopicMap.tsx`, `ThemeDetail.tsx`, `src/lib/telegram.ts`, `src/hooks/useTelegram.ts`, `src/App.tsx`; додано `.claude/launch.json` (dev-preview конфіг, не production-код).
+
+### API changes
+
+Немає зовнішніх або внутрішніх HTTP-контрактів. Клієнтська поведінка: Telegram native BackButton тепер видима/активна на всіх маршрутах, окрім `/`, `/play`, `/shop`, `/profile`.
+
+### Data model changes
+
+Немає.
+
+### Data migrations
+
+Немає.
+
+### Feature flags
+
+Не введено (див. розділ "Feature flags" вище — реєстр лишається порожнім до Phase 3).
+
+### UX impact
+
+Telegram-користувачі отримують нативну кнопку "назад" на вкладених екранах (theme detail, quiz, kahoot room, admin, social threads тощо) замість покладання лише на in-app UI. Візуальних regressions немає — усі token-заміни звірені на build/lint/manual browser QA (dark + light тема).
+
+### Accessibility impact
+
+Немає прямого впливу (token-заміни зберігають ті самі обчислені кольори/розміри). Fixed focus-visible/z-index конвенції не зачіпались.
+
+### Security impact
+
+Немає.
+
+### Performance impact
+
+Немає вимірних змін (ті самі chunk-warnings, що в baseline).
+
+### Tests
+
+- `npm run build` — ✅ (без нових помилок понад baseline) для кожної хвилі окремо.
+- `tsc -b` — ✅ 0 помилок.
+- `npm run lint` — 56 errors / 26 warnings, той самий baseline (без регресій; проміжна регресія на 1 error у `phase-02e` — `Cannot access refs during render` — виявлена і виправлена в межах тієї ж хвилі до коміту).
+- Ручна browser-перевірка (dev server, `@twa-dev/sdk` browser mock): `composes: btn-cta` рендерить ідентичний gradient/box-shadow/radius, що й раніше (звірено через `getComputedStyle`); Telegram BackButton коректно прихована на `/` (mock version 6.0 < 6.1 -> version guard теж коректно блокує показ); light-theme токен-підміна (`heavenly-jerusalem`-палітра) не ламає рендер жодної торкнутої сторінки.
+- Повний click-through BackButton-навігації в реальному Telegram-клієнті не виконувався в цій сесії (мок SDK не емулює клік по нативній кнопці) — логіка звірена рев'ю коду (стабільна пара `onClick`/`offClick` в межах одного `useEffect`).
+
+### Acceptance criteria
+
+- `DESIGN_AUDIT.md` Phase 2 backlog (пункти 1-7) закритий або свідомо задокументований як відкладений — ✅
+- Жодних нових hardcoded значень, що дублюють існуючі токени — ✅ (у межах виконаного scope)
+- Telegram BackButton інтегрована, guarded для старих клієнтів — ✅
+- Жодних регресій у build/lint/test baseline — ✅
+- Кожна хвиля закомічена окремо — ✅ (`2f4265a`, `50f846b`, `d0ff1ff`, `811977e`, `3b1b702`)
+- Роадмап і аудит відображають фактичний стан, не застарілий план — ✅ (цей запис)
+
+### Risks
+
+Немає нових ризиків у risk register. `.glass-card` adoption і spacing QA залишаються відкритим технічним боргом (задокументовано в `DESIGN_AUDIT.md`), не блокером для Phase 3.
+
+### Rollback plan
+
+Кожен коміт (`phase-02a`…`phase-02f`) незалежний і відкатний окремо через `git revert`: token-заміни в CSS — суто візуальні, без побічних ефектів; `composes` — CSS-only, без зміни JSX/поведінки; BackButton-інтеграція — guarded, no-op поза Telegram і на старих клієнтах, тому відкат безпечний навіть частково.
+
+### Completed work
+
+- `2f4265a` — phase-02a: z-index + border-radius token sweep.
+- `50f846b` — phase-02b: typography + spacing token sweep.
+- `d0ff1ff` — phase-02c: `.btn-cta` adoption через `composes`.
+- `811977e` — phase-02d: `--mastery-1..4` heatmap tokens.
+- `3b1b702` — phase-02e: Telegram BackButton + version guards.
+- (цей коміт) — phase-02f: документація (`DESIGN_AUDIT.md`, цей роадмап).
+
+### Deviations from plan
+
+- **Оригінальний план фази (flag-gated новий shell) відхилено** — дослідження показало, що design-система й shell вже існували і вже відповідали цільовому вигляду ще до старту Phase 0. Побудова паралельної реалізації за `new_app_shell` flag означала б дублювання вже готової і вже 🟢-сумісної роботи. Користувач підтвердив перехід на incremental alignment без flag; `new_app_shell` рядок прибрано з таблиці feature flags вище.
+- `.glass-card` adoption і повна spacing-уніфікація ігрових сторінок **не виконані** — за оцінкою в процесі роботи вони вимагають дизайн-рішень (канонічні blur/shadow значення) або окремого візуального QA-проходу, а не механічної token-заміни; форсування без цього ризикувало непомітними візуальними регресіями. Задокументовано як відкритий backlog у `DESIGN_AUDIT.md`.
+
+### Known limitations
+
+- `DESIGN_AUDIT.md` показує ~90% (не 100%) відповідність — залишок задокументований і свідомий, не прихований технічний борг.
+- Semantic colors (`--success-text` тощо) лишаються не адаптованими під light-тему (DESIGN_RULES §14) — той самий backlog, що існував до Phase 2, не зачіпався цією фазою.
+- Telegram BackButton click-through не перевірявся в реальному Telegram-клієнті цієї сесії (лише через SDK browser mock і рев'ю коду).
+
+### Next phase readiness
+
+ready — Phase 3 (Learning-first navigation) може стартувати на `main`; перший реальний feature-flag реєстр (`flags.ts` + `learning_first_navigation`) буде введено саме там.
