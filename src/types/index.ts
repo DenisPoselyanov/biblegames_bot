@@ -118,6 +118,8 @@ export interface PlayerProfile {
   bibleTranslation?: BollsTranslation;
   practiceTracks: PracticeTrackProgress[];
   playerRank: PlayerRank;
+  /** SM-2-lite review schedule per learning objective, keyed by learningObjectiveId (Phase 6, review_scheduler_v2). */
+  reviewSchedules: Record<LearningObjectiveId, ReviewScheduleState>;
 }
 
 export interface MasteryState {
@@ -491,4 +493,28 @@ export interface LearningPlanStep {
 export interface LearningPlan {
   themeId: string;
   steps: LearningPlanStep[];
+}
+
+// Phase 6 — learning practice and review (review_scheduler_v2), see src/lib/reviewScheduler.ts
+/** SM-2-lite per-objective review schedule state. */
+export interface ReviewScheduleState {
+  learningObjectiveId: LearningObjectiveId;
+  themeId: string;
+  nodeId: string;
+  easeFactor: number;
+  intervalDays: number;
+  repetitions: number;
+  dueAt: string;
+  lastReviewedAt: string;
+}
+
+export interface ReviewQueueItem {
+  learningObjectiveId: LearningObjectiveId;
+  themeId: string;
+  nodeId: string;
+  title: string;
+  icon: string;
+  dueAt: string;
+  overdueDays: number;
+  practicePath: string;
 }

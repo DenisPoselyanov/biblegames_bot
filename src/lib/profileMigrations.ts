@@ -74,6 +74,7 @@ function fillDefaults(profile: StoredProfile, userId: string, displayName: strin
     bibleTranslation: normalizeBollsTranslation(profile.bibleTranslation ?? DEFAULT_BOLLS_TRANSLATION),
     practiceTracks: profile.practiceTracks ?? [],
     playerRank: profile.playerRank ?? getDefaultPlayerRank(),
+    reviewSchedules: profile.reviewSchedules ?? {},
   };
 }
 

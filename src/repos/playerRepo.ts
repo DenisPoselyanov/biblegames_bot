@@ -1,4 +1,10 @@
-import type { CompletedLevel, PlayerProfile, PracticeTrackProgress, PlayerRank } from '../types';
+import type {
+  CompletedLevel,
+  PlayerProfile,
+  PracticeTrackProgress,
+  PlayerRank,
+  ReviewScheduleState,
+} from '../types';
 import { loadProfile, migrateProfileWallet, saveProfile, type ProfileWithLegacyWallet } from '../lib/storage';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { getDefaultPlayerRank, getTrackKey } from '../lib/practiceProgression';
@@ -88,6 +94,20 @@ function mergePracticeTracks(
   return [...map.values()];
 }
 
+function mergeReviewSchedules(
+  local: Record<string, ReviewScheduleState>,
+  remote: Record<string, ReviewScheduleState>,
+): Record<string, ReviewScheduleState> {
+  const merged: Record<string, ReviewScheduleState> = { ...remote };
+  for (const [key, value] of Object.entries(local)) {
+    const existing = merged[key];
+    if (!existing || new Date(value.lastReviewedAt) > new Date(existing.lastReviewedAt)) {
+      merged[key] = value;
+    }
+  }
+  return merged;
+}
+
 function mergeProfiles(local: PlayerProfile, remote: PlayerProfile & ProfileWithLegacyWallet): PlayerProfile {
   const localWallet = migrateProfileWallet(local);
   const remoteWallet = migrateProfileWallet(remote);
@@ -147,6 +167,10 @@ function mergeProfiles(local: PlayerProfile, remote: PlayerProfile & ProfileWith
     playerRank: mergePlayerRank(
       local.playerRank ?? getDefaultPlayerRank(),
       remote.playerRank ?? getDefaultPlayerRank(),
+    ),
+    reviewSchedules: mergeReviewSchedules(
+      local.reviewSchedules ?? {},
+      remote.reviewSchedules ?? {},
     ),
   };
 }

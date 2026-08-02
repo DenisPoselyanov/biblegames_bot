@@ -33,6 +33,7 @@ const VIRTUAL_PLAYERS: PlayerProfile[] = [
     studyMastery: {},
     practiceTracks: [],
     playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
+    reviewSchedules: {},
   },
   {
     userId: 'virtual-moses',
@@ -53,6 +54,7 @@ const VIRTUAL_PLAYERS: PlayerProfile[] = [
     studyMastery: {},
     practiceTracks: [],
     playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
+    reviewSchedules: {},
   },
   {
     userId: 'virtual-miriam',
@@ -73,6 +75,7 @@ const VIRTUAL_PLAYERS: PlayerProfile[] = [
     studyMastery: {},
     practiceTracks: [],
     playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
+    reviewSchedules: {},
   },
   {
     userId: 'virtual-luke',
@@ -93,6 +96,7 @@ const VIRTUAL_PLAYERS: PlayerProfile[] = [
     studyMastery: {},
     practiceTracks: [],
     playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
+    reviewSchedules: {},
   },
 ];
 
