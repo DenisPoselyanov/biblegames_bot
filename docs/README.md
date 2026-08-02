@@ -16,6 +16,7 @@
 - [LOCAL_TOOLS.md](./LOCAL_TOOLS.md) — локальні команди та операційні нотатки.
 - [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) — налаштування PostgreSQL/Supabase через Express BFF.
 - [AI_SETUP.md](./AI_SETUP.md) — безпечне використання поточних legacy AI-інструментів до реалізації Phase 4.
+- [MONETIZATION_STRATEGY.md](./MONETIZATION_STRATEGY.md) — варіанти Telegram Ads, Stars, підписок, affiliate program, sponsorships і Church-плану для Phase 6; конкретна модель ще не обрана.
 
 ## Архів
 
