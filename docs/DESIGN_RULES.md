@@ -1,469 +1,1049 @@
-# DESIGN_RULES — дизайн-система Bible Games Bot
+# DESIGN_RULES — канонічна дизайн-система Bible Games
 
-> Єдине джерело правди для кольорів, відступів, типографіки, тем і компонентних патернів.  
-> Усі нові екрани та правки стилів **повинні** відповідати цим правилам.
+> **Статус:** активне domain-джерело правди для UI, UX, themes і visual QA  
+> **Канонічна фаза:** Phase 3 — Learning-First Product Rebuild  
+> **Основна тема:** `Світло`  
+> **Повна Phase 3 специфікація:** [`PHASE_3_REBRANDING_AND_THEME_SYSTEM.md`](./PHASE_3_REBRANDING_AND_THEME_SYSTEM.md)
 
-**Ключові файли реалізації:**
+Цей документ замінює попередній напрям `Dark luxury / parchment gold` як головну ідентичність продукту. Темний `classic` не видаляється автоматично, але стає legacy/alternative theme. Основна візуальна система Bible Games тепер — **premium spiritual minimalism**.
+
+---
+
+# 1. Роль документа
+
+`DESIGN_RULES.md` визначає:
+
+- базову візуальну ідентичність;
+- semantic tokens;
+- типографіку;
+- spacing;
+- surfaces і elevation;
+- компонентні патерни;
+- правила ілюстрацій;
+- game-mode exceptions;
+- accessibility;
+- theme architecture;
+- visual QA.
+
+Цей документ не визначає:
+
+- бізнес-логіку;
+- маршрути без узгодження з master specification;
+- склад нагород;
+- ціни;
+- entitlement;
+- payment flow;
+- точну кількість navigation tabs лише на основі референсного макета.
+
+Візуальні референси задають **стиль**, а не копію екрану.
+
+---
+
+# 2. Ключові файли поточної реалізації
 
 | Роль | Файл |
-|------|------|
-| Статичні токени (fallback) | `src/index.css` |
-| Runtime-теми | `src/lib/cosmeticTheme.ts`, `src/data/cosmetics.ts` |
-| react-vant | `src/lib/vantTheme.ts`, `src/components/VantProvider.tsx` |
-| App shell | `src/components/Layout.module.css` |
+|---|---|
+| Static fallback tokens | `src/index.css` |
+| Runtime theme application | `src/lib/cosmeticTheme.ts` |
+| Theme definitions/catalog prototype | `src/data/cosmetics.ts` |
+| react-vant mapping | `src/lib/vantTheme.ts` |
+| react-vant provider | `src/components/VantProvider.tsx` |
+| App shell CSS | `src/components/Layout.module.css` |
+| Current app shell structure | `src/components/Layout.tsx` |
+
+Поточний код використовує `DEFAULT_COSMETIC_THEME_ID = 'classic'`. Це baseline, а не фінальна вимога. Перехід на `light` виконується в Phase 3 з migration, fallback і visual tests.
 
 ---
 
-## 1. Design Direction
+# 3. Brand direction
 
-| Аспект | Рішення |
-|--------|---------|
-| Продукт | Біблійна навчальна гра для щоденного використання в Telegram |
-| Тон | «Dark luxury / parchment gold» — теплі акценти, скляна глибина |
-| Платформа | Mobile-first Telegram Mini App, `max-width: 480px` |
-| Шрифти | Cormorant Garamond (заголовки) + Source Sans 3 (UI) |
-| Бібліотека UI | react-vant, стилізована через токени |
+## 3.1. Канонічна формула
 
-**Не робити:** маркетинговий лендінг, uniform card grid без ієрархії, stock purple gradients, сіро-білий «шаблонний» UI.
+> **Premium spiritual minimalism + learning-first clarity + restrained game motivation.**
+
+## 3.2. Продукт має відчуватися
+
+- світлим;
+- теплим;
+- спокійним;
+- дорогим;
+- сучасним;
+- духовно делікатним;
+- зрозумілим із першого погляду;
+- ігровим лише настільки, наскільки це допомагає навчанню.
+
+## 3.3. Продукт не має виглядати
+
+- дитячою arcade-грою;
+- casino-like reward app;
+- фінансовим dashboard;
+- старим церковним сайтом;
+- суцільним glassmorphism;
+- набором однакових карток;
+- copy Apple/Kahoot;
+- каталогом AI-зображень;
+- темним luxury UI за замовчуванням.
+
+## 3.4. Apple-inspired principle
+
+Беремо:
+
+- повітря;
+- чітку ієрархію;
+- передбачувану взаємодію;
+- спокійні поверхні;
+- великі touch targets;
+- короткий motion;
+- системність.
+
+Не копіюємо:
+
+- Apple assets;
+- proprietary screen layouts;
+- system dialogs;
+- logos;
+- чужу інформаційну архітектуру.
 
 ---
 
-## 2. Архітектура токенів
+# 4. Primary Theme — «Світло»
 
+## 4.1. Ідентичність
+
+```text
+id: light
+title: Світло
+price: 0
+availability: always
+mode: light
 ```
-index.css (:root)          ← fallback = тема «classic»
-        ↓ перезаписується
-cosmeticTheme.ts           ← 28 CSS vars на :root (user theme)
-        ↓ паралельно
-vantTheme.ts               ← --rv-* для react-vant
-        ↓ споживають
-*.module.css               ← компонентні стилі
-```
 
-**Правило:** у CSS-модулях і TSX — тільки `var(--*)`. Ніколи не звертатися до `preview.primary` напряму.
+## 4.2. Непорушні правила
+
+- доступна всім;
+- default для нових користувачів;
+- не продається;
+- не видаляється;
+- є visual regression baseline;
+- має працювати без premium assets;
+- має fallback до завантаження профілю;
+- не створює FOUC із темної теми.
+
+## 4.3. Базова палітра
+
+| Role | Token | Target |
+|---|---|---:|
+| App canvas | `--bg-app` | `#F7F4EE` |
+| Main surface | `--bg-surface` | `#FFFEFC` |
+| Subtle surface | `--bg-surface-subtle` | `#F1EDE6` |
+| Elevated surface | `--bg-elevated` | `#FFFFFF` |
+| Primary text | `--text-primary` | `#13294B` |
+| Secondary text | `--text-secondary` | `#667085` |
+| Muted text | `--text-muted` | `#8A8F98` |
+| Brand navy | `--brand-primary` | `#132F57` |
+| Spiritual gold | `--accent-spiritual` | `#C59A3D` |
+| Soft gold | `--accent-spiritual-soft` | `#D8B96B` |
+| Soft border | `--border-soft` | `#E7E1D8` |
+| Strong border | `--border-strong` | `#D8D0C4` |
+
+Значення можуть отримати невелику корекцію після contrast audit. Зміна загального напряму потребує ADR.
+
+## 4.4. Колірна ієрархія
+
+1. Navy — функціональний primary.
+2. Warm ivory — основний фон.
+3. White/cream — surfaces.
+4. Gold — духовний і progress accent.
+5. Semantic state colors — correct, wrong, warning, info.
+
+Gold не є універсальним CTA і не використовується для довгого тексту.
 
 ---
 
-## 3. Кольорова система
+# 5. Semantic tokens
 
-### 3.1 Семантичні ролі
-
-| Роль | Токен | Призначення |
-|------|-------|-------------|
-| Canvas | `--bg` | Фон сторінки |
-| Surface | `--surface`, `--surface-hover` | Картки, панелі, tabbar |
-| Border | `--border`, `--border-light` | Рамки, роздільники |
-| Text | `--text`, `--text-muted`, `--text-dim` | Основний / другорядний / приглушений |
-| Accent | `--gold`, `--gold-light`, `--gold-dark` | Primary (історична назва; = `preview.primary`) |
-| Heading | `--heading` | Заголовки секцій (serif) |
-| Nested | `--nested-surface` | Вкладені блоки всередині карток |
-| Overlay | `--overlay-bg`, `--overlay-bg-strong` | Hover/active фони |
-| CTA | `--cta-bg`, `--cta-shadow`, `--on-primary` | Primary-кнопки |
-| Glass | `--glass-bg`, `--glass-border`, `--glass-shadow` | Скляні картки |
-| Accent fill | `--accent-bg`, `--accent-bg-strong`, `--accent-border`, `--accent-border-strong` | Badge, highlight |
-
-### 3.2 Семантичні стани (фіксовані, не темізуються)
-
-| Стан | Токени |
-|------|--------|
-| Success | `--success`, `--success-bg`, `--success-text` |
-| Danger | `--danger`, `--danger-bg`, `--danger-text` |
-| Warning | `--warning`, `--warning-bg` |
-| Info | `--info`, `--info-bg` |
-
-Значення за замовчуванням (`src/index.css`):
+## 5.1. Background
 
 ```css
---success: #4a9c5d;
---success-bg: rgba(74, 156, 93, 0.18);
---success-text: #9ee0ad;
---danger: #9c4a4a;
---danger-bg: rgba(156, 74, 74, 0.18);
---danger-text: #e8b0b0;
---warning: var(--gold);
---info: #5b8fc9;
---info-bg: rgba(91, 143, 201, 0.15);
+--bg-app;
+--bg-surface;
+--bg-surface-subtle;
+--bg-elevated;
+--bg-inverse;
+--bg-scrim;
 ```
 
-### 3.3 Косметичні теми
-
-Користувач обирає тему в магазині. `PlayerContext` викликає `applyCosmeticThemeById()`.
-
-| ID | Назва | Mode | background | surface | primary | accent | text |
-|----|-------|------|------------|---------|---------|--------|------|
-| `classic` | Класичний стиль | dark | `#101820` | `#182430` | `#d8a84e` | `#f1d28a` | `#f8f3e7` |
-| `gennesaret-sea` | Генісаретське море | dark | `#0f2f3f` | `#174b61` | `#62b6cb` | `#f2cc8f` | `#f7fbff` |
-| `eden-garden` | Едемський сад | dark | `#18251a` | `#2c432e` | `#8fb56f` | `#e0b95a` | `#f7f5e8` |
-| `sinai-revelation` | Синайське одкровення | dark | `#21162f` | `#3a244a` | `#c8553d` | `#f28c28` | `#fff6ef` |
-| `heavenly-jerusalem` | Небесний Єрусалим | **light** | `#f7f4ea` | `#ffffff` | `#c9a227` | `#6c63ff` | `#24242e` |
-
-**Правила тем:**
-
-- `:root` fallback **завжди** = тема `classic` (запобігає FOUC до завантаження профілю).
-- Похідні кольори (muted text, glass, CTA gradient) обчислюються в `cosmeticTheme.ts` через `mixColor()` / `withAlpha()`.
-- Semantic colors (`--success`, `--danger`) не змінюються при зміні теми.
-- Тестувати нові UI на `classic` (dark) і `heavenly-jerusalem` (light).
-
-### 3.4 Похідні кольори
-
-Для прозорих/змішаних відтінків:
+## 5.2. Text
 
 ```css
-/* Стандартний спосіб */
-border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
-
-/* У runtime-темах — через cosmeticTheme.ts */
---accent-border: rgba(primary, 0.25);
+--text-primary;
+--text-secondary;
+--text-muted;
+--text-inverse;
+--text-link;
 ```
 
-**Заборонено:** хардкод `#4a7c59`, `#e21b3c` тощо в компонентах (окрім Kahoot — див. §10).
-
----
-
-## 4. Типографіка
-
-### 4.1 Шрифти
-
-| Токен | Stack | Використання |
-|-------|-------|--------------|
-| `--font-serif` | `'Cormorant Garamond', Georgia, serif` | h1–h6, декоративні заголовки |
-| `--font-sans` | `'Source Sans 3', system-ui, sans-serif` | Body, UI, кнопки, react-vant |
-
-### 4.2 Розмірний ряд
-
-| Токен | rem | px (при 16px base) |
-|-------|-----|---------------------|
-| `--fs-xs` | 0.65 | 10.4 |
-| `--fs-sm` | 0.75 | 12 |
-| `--fs-base` | 0.875 | 14 |
-| `--fs-md` | 0.95 | 15.2 |
-| `--fs-lg` | 1.1 | 17.6 |
-| `--fs-xl` | 1.35 | 21.6 |
-| `--fs-2xl` | 1.75 | 28 |
-| `--fs-3xl` | 2.25 | 36 |
-
-### 4.3 Міжрядковий інтервал
-
-| Токен | Значення |
-|-------|----------|
-| `--lh-tight` | 1.2 |
-| `--lh-normal` | 1.45 |
-| `--lh-relaxed` | 1.6 |
-
-### 4.4 Патерни використання
-
-| Елемент | Стиль |
-|---------|-------|
-| Заголовок сторінки | `var(--heading)` + `var(--font-serif)` + `var(--fs-xl)` |
-| Заголовок картки | `var(--gold)` + `var(--font-sans)` + `font-weight: 700` + `var(--fs-lg)` |
-| Body / опис | `var(--text-muted)` + `var(--fs-sm)` + `var(--lh-normal)` |
-| Kicker / badge | `var(--gold-light)` + `var(--fs-sm)` + `font-weight: 800` + `uppercase` |
-| Meta / лічильник | `var(--text-muted)` + `var(--fs-sm)` + `font-weight: 500` |
-
-**Правило:** не вводити off-scale розміри (`0.85rem`, `1.05rem`). Мапити на найближчий `--fs-*` токен.
-
-### 4.5 Font-weight (без токенів)
-
-| Weight | Використання |
-|--------|--------------|
-| 400 | Body за замовчуванням |
-| 500 | Meta, labels |
-| 600 | Вторинний акцент |
-| 700 | Кнопки, заголовки карток |
-| 800 | Kicker, stat numbers, modal titles |
-
----
-
-## 5. Відступи (Spacing)
-
-### 5.1 Офіційна шкала
-
-| Токен | rem | px |
-|-------|-----|-----|
-| `--space-xs` | 0.25 | 4 |
-| `--space-sm` | 0.5 | 8 |
-| `--space-md` | 0.75 | 12 |
-| `--space-lg` | 1 | 16 |
-| `--space-xl` | 1.5 | 24 |
-| `--space-2xl` | 2 | 32 |
-| `--space-3xl` | 3 | 48 |
-
-**Правило:** `gap`, `padding`, `margin` — через `var(--space-*)`.
-
-### 5.2 Layout-константи (документовані винятки)
-
-| Константа | Значення | Де |
-|-----------|----------|-----|
-| Tabbar clearance | `5.5rem` | `Layout.module.css` → `.main` padding-bottom |
-| Page bottom padding | `3rem`–`5rem` | Залежно від сторінки |
-| Max content width | `480px` | Layout, modals |
-| Safe-area top | `max(0.75rem, env(safe-area-inset-top))` | Toast |
-| Safe-area bottom | `env(safe-area-inset-bottom)` | Tabbar, modals |
+## 5.3. Brand
 
 ```css
-/* Safe-area шаблон */
-padding: max(var(--space-md), env(safe-area-inset-top));
-padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+--brand-primary;
+--brand-primary-hover;
+--brand-primary-pressed;
+--on-brand-primary;
+--accent-spiritual;
+--accent-spiritual-soft;
+--accent-spiritual-bg;
 ```
 
----
-
-## 6. Радіуси, тіні, переходи
-
-### 6.1 Border radius
-
-| Токен | px |
-|-------|-----|
-| `--radius-sm` | 6 |
-| `--radius-md` | 10 |
-| `--radius-lg` | 14 |
-| `--radius-xl` | 20 |
-| `--radius-full` | 9999px (pill) |
-
-**Виняток — bottom-sheet modals:** `border-radius: 16px 16px 14px 14px` (асиметричний, не токенізований).
-
-### 6.2 Shadows
-
-| Токен | Значення |
-|-------|----------|
-| `--shadow-sm` | `0 1px 3px rgba(0,0,0,0.3)` |
-| `--shadow-md` | `0 4px 12px rgba(0,0,0,0.35)` |
-| `--shadow-lg` | `0 8px 32px rgba(0,0,0,0.45)` |
-| `--shadow-gold` | `0 4px 16px var(--gold-glow)` |
-| `--cta-shadow` | Динамічний, з cosmeticTheme |
-
-### 6.3 Transitions
-
-| Токен | ms |
-|-------|-----|
-| `--duration-micro` | 100 |
-| `--duration-fast` | 160 |
-| `--duration-normal` | 240 |
-| `--duration-page` | 280 |
-| `--duration-slow` | 440 |
-
-| Easing | Токен |
-|--------|-------|
-| Out (UI enter) | `--ease-out` |
-| In (UI exit) | `--ease-in` |
-| Smooth (progress) | `--ease-smooth` |
-
----
-
-## 7. Z-index
-
-| Токен | Значення | Використання |
-|-------|----------|--------------|
-| `--z-base` | 1 | Локальні шари |
-| `--z-dropdown` | 50 | Tabbar |
-| `--z-modal` | 100 | Модалки, tooltip |
-| `--z-toast` | 200 | Toast |
-
-**Заборонено:** `z-index: 1000` або довільні числа без токена.
-
----
-
-## 8. Компонентні патерни
-
-### 8.1 App shell
+## 5.4. Border and focus
 
 ```css
-/* Layout.module.css */
-.shell { min-height: 100dvh; background: var(--bg); }
-.main { max-width: 480px; padding: var(--space-lg) var(--space-lg) 5.5rem; }
+--border-soft;
+--border-default;
+--border-strong;
+--border-focus;
+--focus-ring;
 ```
 
-Page enter: fade `240ms` (`layoutTabEnter`). Вимикається при `prefers-reduced-motion`.
-
-### 8.2 Скляна картка
-
-Використовувати клас `.glass-card` з `index.css` або повторювати канонічний патерн:
+## 5.5. Component roles
 
 ```css
-.card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  transition: transform var(--duration-fast) var(--ease-out);
-}
-.card:active {
-  transform: scale(0.98);
-  border-color: var(--accent-border-strong);
-}
+--card-bg;
+--card-border;
+--card-shadow;
+--button-primary-bg;
+--button-primary-text;
+--button-secondary-bg;
+--button-secondary-text;
+--button-secondary-border;
+--nav-bg;
+--nav-active;
+--nav-inactive;
+--progress-track;
+--progress-fill;
+--input-bg;
+--input-border;
 ```
 
-### 8.3 CTA-кнопка
-
-Використовувати глобальний клас `.btn-cta`:
+## 5.6. State tokens
 
 ```css
-.btn-cta {
-  background: var(--cta-bg);
-  color: var(--on-primary);
-  border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent);
-  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255,255,255,0.3);
-  font-weight: 700;
-}
-.btn-cta:active { transform: scale(0.98); }
+--state-success;
+--state-success-bg;
+--state-success-text;
+--state-danger;
+--state-danger-bg;
+--state-danger-text;
+--state-warning;
+--state-warning-bg;
+--state-info;
+--state-info-bg;
 ```
 
-### 8.4 Pressable
+State tokens можуть мати theme-aware корекцію, але значення стану не повинно змінюватися. Green завжди success, red завжди danger.
 
-Клас `.pressable` або `:active { transform: scale(0.96–0.98) }` для інтерактивних елементів.
-
-### 8.5 Модалки
-
-**Два підходи (не змішувати на одному екрані):**
-
-1. **react-vant Dialog** — `ConfirmModal.tsx` (прості підтвердження).
-2. **Custom bottom-sheet** — `ExplanationModal`, `QuestionEditModal`:
-   - Backdrop: `rgba(0, 0, 0, 0.62)`, `z-index: var(--z-modal)`
-   - Surface: `var(--surface)`, `border: 1px solid var(--border)`
-   - Radius: `16px 16px 14px 14px`
-   - Max width: `480px`
-
-### 8.6 Toast
-
-Класи `.app-toast`, `.app-toast--success|error|warning|info` у `index.css`.  
-Обгортка: react-vant `Popup` у `Toast.tsx`.
-
-### 8.7 Skeleton
-
-`react-vant Skeleton` через `AppSkeleton.tsx`. Контейнери — `skeletons.module.css` з токенами `--surface`, `--border`, `--radius-lg`, `--space-*`.  
-Кольори shimmer — з Vant theme vars (`skeletonParagraphBackground`).
-
-### 8.8 Focus
+## 5.7. Hero/imagery
 
 ```css
-button:focus-visible, a:focus-visible, input:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
+--hero-overlay-start;
+--hero-overlay-end;
+--hero-image-opacity;
+--illustration-tint;
 ```
 
-### 8.9 Inputs
+---
+
+# 6. Legacy compatibility
+
+Під час міграції:
 
 ```css
-input, select, textarea {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: var(--space-sm) var(--space-md);
-  color: var(--text);
-}
-input:focus { border-color: var(--gold); }
+--bg: var(--bg-app);
+--surface: var(--bg-surface);
+--surface-hover: var(--bg-surface-subtle);
+--text: var(--text-primary);
+--text-muted: var(--text-secondary);
+--text-dim: var(--text-muted);
+--gold: var(--accent-spiritual);
+--gold-light: var(--accent-spiritual-soft);
+--heading: var(--text-primary);
+--cta-bg: var(--button-primary-bg);
+--on-primary: var(--button-primary-text);
+```
+
+Правила:
+
+- aliases тимчасові;
+- новий код використовує нові tokens;
+- alias removal має issue/owner/date;
+- deprecated token usage перевіряється lint/check script;
+- не робити global search-and-replace без visual review.
+
+---
+
+# 7. Theme schema
+
+## 7.1. Current limitation
+
+Поточний `CosmeticTheme.preview` містить лише:
+
+- background;
+- surface;
+- primary;
+- accent;
+- text.
+
+Цього недостатньо для великого theme catalog.
+
+## 7.2. Target contract
+
+Theme definition має бути versioned і містити:
+
+- stable ID;
+- display metadata;
+- light/dark mode;
+- semantic palette;
+- elevation profile;
+- imagery/tint profile;
+- optional asset set;
+- minimum app version;
+- accessibility status;
+- catalog status;
+- preview data;
+- schema version.
+
+Приклад концептуальної TypeScript моделі наведений у `PHASE_3_REBRANDING_AND_THEME_SYSTEM.md`.
+
+## 7.3. Theme invariants
+
+Тема може змінювати:
+
+- palette;
+- surfaces;
+- accent;
+- elevation у дозволених межах;
+- imagery tone;
+- decorative tint.
+
+Тема не може змінювати:
+
+- layout;
+- routes;
+- component behavior;
+- correct answer;
+- reward;
+- difficulty;
+- information hierarchy;
+- touch target;
+- accessibility meaning;
+- competitive advantage.
+
+---
+
+# 8. Typography
+
+## 8.1. Font stacks
+
+```css
+--font-display: 'Cormorant Garamond', Georgia, serif;
+--font-ui: 'Source Sans 3', system-ui, -apple-system, sans-serif;
+```
+
+## 8.2. Display font
+
+Використовувати для:
+
+- page title;
+- hero title;
+- main question;
+- learning plan title;
+- milestone.
+
+Не використовувати для:
+
+- button;
+- input;
+- dense list;
+- timer;
+- metadata;
+- long explanation.
+
+## 8.3. UI font
+
+Використовувати для:
+
+- body;
+- labels;
+- buttons;
+- navigation;
+- captions;
+- statistics;
+- settings;
+- explanations.
+
+## 8.4. Type scale
+
+Рекомендована semantic scale:
+
+```css
+--text-xs: 0.75rem;
+--text-sm: 0.875rem;
+--text-md: 1rem;
+--text-lg: 1.125rem;
+--text-xl: 1.375rem;
+--text-2xl: 1.75rem;
+--text-3xl: clamp(2rem, 8vw, 3rem);
+```
+
+Не вводити випадкові off-scale values без documented reason.
+
+## 8.5. Weight
+
+- 400 — body;
+- 500 — metadata;
+- 600 — labels/secondary emphasis;
+- 700 — CTA і important title;
+- 800 — короткий stat/kicker лише за потреби.
+
+## 8.6. Text resilience
+
+- перевірити довгі українські назви;
+- text scale 200%;
+- no clipping;
+- no fixed-height body text;
+- no ellipsis для critical content;
+- біблійна цитата має readable line-height.
+
+---
+
+# 9. Spacing and layout
+
+## 9.1. Scale
+
+```css
+--space-1: 0.25rem;  /* 4 */
+--space-2: 0.5rem;   /* 8 */
+--space-3: 0.75rem;  /* 12 */
+--space-4: 1rem;     /* 16 */
+--space-5: 1.25rem;  /* 20 */
+--space-6: 1.5rem;   /* 24 */
+--space-8: 2rem;     /* 32 */
+--space-10: 2.5rem;  /* 40 */
+--space-12: 3rem;    /* 48 */
+```
+
+## 9.2. Layout rules
+
+- mobile-first single column;
+- no horizontal scroll;
+- max content width відповідає Telegram Mini App;
+- page horizontal padding 16–24 px залежно від width;
+- one dominant hero per first viewport;
+- major sections separated by 24–40 px;
+- CTA in one-thumb reach;
+- sticky actions account for tabbar and safe-area;
+- no density reduction merely to fit more cards.
+
+## 9.3. Safe area
+
+```css
+padding-top: max(var(--space-3), env(safe-area-inset-top));
+padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
 ```
 
 ---
 
-## 9. react-vant інтеграція
+# 10. Radius and elevation
 
-`VantProvider` обгортає застосунок і синхронізує:
+## 10.1. Radius
 
-1. `<ConfigProvider themeVars={...}>` — runtime props
-2. `applyVantThemeToDocument()` — `--rv-*` CSS vars на `:root`
+```css
+--radius-sm: 8px;
+--radius-md: 12px;
+--radius-lg: 18px;
+--radius-xl: 24px;
+--radius-full: 9999px;
+```
 
-Ключові маппінги (`vantTheme.ts`):
+Pill використовується лише коли форма має зміст: filter chip, compact status, segmented item.
 
-| Vant var | Джерело |
-|----------|---------|
-| `primaryColor` | `preview.primary` |
-| `textColor` | `preview.text` |
-| `backgroundColor` | `preview.background` |
-| `backgroundColorLight` | `preview.surface` |
-| `tabbarItemActiveColor` | `preview.primary` |
-| `successColor` | `#4a9c5d` (фіксований) |
-| `dangerColor` | `#9c4a4a` (фіксований) |
+## 10.2. Shadows
 
-Tabbar у `Layout.tsx` додатково: `activeColor="var(--gold)"`, `inactiveColor="var(--text-muted)"`.
+```css
+--shadow-card: 0 8px 24px rgba(35, 43, 57, 0.07);
+--shadow-floating: 0 12px 32px rgba(35, 43, 57, 0.11);
+--shadow-modal: 0 20px 56px rgba(35, 43, 57, 0.16);
+```
 
----
+Правила:
 
-## 10. Винятки
-
-### Kahoot mode
-
-`src/pages/play/kahoot/Kahoot.module.css` — окремий arcade-стиль (брендові кольори Kahoot: `#e21b3c`, `#1368ce`, `#d89e00`, `#26890c`).  
-**Не підпорядковується** загальним токенам. Не переносити Kahoot-патерни на інші сторінки.
-
----
-
-## 11. Browser Support & Modern Web
-
-**Цільова платформа:** Telegram WebView, сучасні мобільні браузери (iOS Safari 16+, Chrome Android).  
-**Політика:** Baseline Widely Available CSS. Без polyfills.
-
-### Обов'язкові практики
-
-| Практика | Реалізація |
-|----------|------------|
-| `color-scheme` | `light` / `dark` на `<html>` при застосуванні косметичної теми |
-| `accent-color` | `var(--gold)` на `:root` для нативних контролів |
-| `scrollbar-gutter: stable` | На `html` — запобігає layout shift |
-| `100dvh` | Замість `100vh` для mobile shell |
-| `color-mix()` | Для похідних кольорів (кнопки, borders) |
-| `prefers-reduced-motion` | Всі анімації вимикаються (вже в `index.css`) |
-| `backdrop-filter` | З `-webkit-backdrop-filter` префіксом |
-| FOUC prevention | `:root` = classic + раннє `applyCosmeticThemeById()` у `main.tsx` |
-
-### Не використовувати
-
-- `prefers-color-scheme` для вибору палітри застосунку (теми user-selected, не OS-driven).
-- Анімацію `scrollbar-color` (WebKit flicker bug).
-- `100vh` на mobile (address bar issues).
+- тінь показує elevation;
+- no black halo;
+- no universal gold glow;
+- dark themes мають власний audited profile;
+- border + shadow не повинні створювати важку рамку.
 
 ---
 
-## 12. Анти-патерни
+# 11. Surface patterns
 
-| Не робити | Робити замість |
-|-----------|----------------|
-| Хардкод `#4a7c59` для success | `var(--success)` |
-| `z-index: 50` / `1000` | `var(--z-modal)` / `var(--z-toast)` |
-| Inline `style={{ color: '#...' }}` | CSS module + `var(--*)` |
-| Дублювати CTA/glass стилі в кожному модулі | `.btn-cta`, `.glass-card` |
-| Off-scale font sizes | Найближчий `--fs-*` |
-| Ad-hoc spacing (`0.85rem`) | `var(--space-*)` |
-| Картка в картці без причини | Плоский surface + nested-surface |
-| Default react-vant вигляд без теми | Завжди через `VantProvider` |
+## 11.1. Standard card
+
+- `--card-bg`;
+- `--card-border`;
+- `--card-shadow`;
+- radius 18–24 px;
+- padding 20–24 px;
+- no decorative gradient by default.
+
+## 11.2. Hero card
+
+Містить:
+
+- kicker;
+- strong title;
+- short explanation;
+- progress або one primary action;
+- restrained imagery;
+- overlay for readability.
+
+Hero не повинен містити 5 рівнозначних CTA.
+
+## 11.3. List card
+
+- rows мають stable min-height;
+- divider не доходить під leading icon, якщо це покращує hierarchy;
+- chevron лише коли row navigates;
+- не додавати chevron до static info;
+- entire row clickable, а не лише icon.
+
+## 11.4. Metric cards
+
+- число або значення головне;
+- label короткий;
+- icon secondary;
+- не більше 4 компактних metrics в одному row на достатній ширині;
+- на вузькому екрані grid adapts.
+
+## 11.5. Glass
+
+Glassmorphism — контрольований виняток, не основа системи.
+
+Дозволено:
+
+- overlay на hero image;
+- floating transient control.
+
+Заборонено:
+
+- усі content cards;
+- довгий текст;
+- weak-device без fallback;
+- blur заради декоративності.
 
 ---
 
-## 13. Чеклист для нового UI
+# 12. Buttons
 
-- [ ] Кольори тільки через `var(--*)`
-- [ ] Spacing через `var(--space-*)`
-- [ ] Radius через `var(--radius-*)` (окрім bottom-sheet modals)
-- [ ] Typography через `--fs-*` + правильний `--font-*`
-- [ ] `:active` / `:focus-visible` стани
-- [ ] `prefers-reduced-motion` враховано
-- [ ] Safe-area для fixed елементів
-- [ ] Перевірено на `classic` (dark) і `heavenly-jerusalem` (light)
-- [ ] Z-index через токени
-- [ ] Не виглядає як generic template
+## 12.1. Primary
+
+- navy fill;
+- white/ivory text;
+- min-height 48 px;
+- visible pressed state;
+- visible focus;
+- no aggressive gradient;
+- one primary action per local decision group.
+
+## 12.2. Secondary
+
+- surface or transparent;
+- navy text;
+- soft border;
+- no stronger visual weight than primary.
+
+## 12.3. Tertiary
+
+- text/icon action;
+- underline or state where needed;
+- 44×44 interactive area even if visual glyph is smaller.
+
+## 12.4. Gold/premium
+
+Gold-filled control is reserved for premium/theme preview or special reward action and requires contrast test.
+
+## 12.5. Destructive
+
+- semantic danger;
+- confirmation only for irreversible action;
+- not hidden behind misleading neutral button.
 
 ---
 
-## 14. Backlog (Phase 2)
+# 13. Inputs and controls
 
-Наступні кроки для повної узгодженості (не блокують поточну розробку):
+## 13.1. Inputs
 
-- Міграція game-сторінок (Millionaire, Quiz) на spacing-токени
-- Рефакторинг модулів на `.btn-cta` / `.glass-card` замість дублювання
-- Уніфікація modal-систем (Dialog vs bottom-sheet)
-- Додавання `--radius-card: 16px` як окремого токена для ThemeCard
-- Semantic colors, адаптовані до light-теми
+- min-height 48 px;
+- sufficient placeholder contrast;
+- visible focus;
+- inline error text;
+- icon does not replace label;
+- keyboard-safe scroll.
+
+## 13.2. Search
+
+- clear button;
+- accessible label;
+- debounce only if server query;
+- no fake search field that opens unrelated modal without indication.
+
+## 13.3. Segmented control
+
+- 2–4 options;
+- selected navy;
+- no tiny labels;
+- responsive alternative on narrow width;
+- arrow-key/keyboard support in web mode where applicable.
+
+## 13.4. Toggle
+
+- label describes resulting state;
+- disabled reason visible;
+- state not indicated only by color.
 
 ---
 
-## 15. Аудит відповідності
+# 14. Navigation
 
-Повне порівняння кодової бази з цими правилами: [DESIGN_AUDIT.md](DESIGN_AUDIT.md).
+## 14.1. Visual rules
+
+Bottom navigation:
+
+- one continuous surface;
+- no accidental divider between `Прогрес` and `Профіль`;
+- equal item distribution;
+- stable icon size;
+- stable label baseline;
+- active navy/brand;
+- inactive muted;
+- safe-area bottom;
+- no layout shift on selection.
+
+## 14.2. Product structure
+
+Reference screenshots do not define tabs. Master specification and Phase 3 decide the final learning-first navigation.
+
+Current baseline and target differ; migration requires:
+
+- route map;
+- redirects;
+- deep-link tests;
+- Telegram BackButton behavior;
+- analytics mapping;
+- feature flag;
+- rollback.
+
+Крамниця не займає core learning tab лише для монетизації.
 
 ---
 
-*Останнє оновлення: узгоджено з `index.css`, `cosmetics.ts`, `cosmeticTheme.ts` (тема classic як fallback).*
+# 15. Iconography
+
+- one icon family;
+- outline-first;
+- consistent 1.5–2 px optical stroke;
+- navy active;
+- gray inactive;
+- gold spiritual/decorative;
+- filled state only when meaningful;
+- icon-only button has accessible name;
+- no emoji as production icon unless content explicitly requires emoji.
+
+Permitted motifs:
+
+- Bible;
+- cross;
+- dove;
+- lamp;
+- shield;
+- crown;
+- branch;
+- path;
+- lyre;
+- prayer hands.
+
+Do not use sacred symbols as arbitrary confetti.
+
+---
+
+# 16. Imagery
+
+## 16.1. Direction
+
+- warm;
+- soft;
+- atmospheric;
+- quiet;
+- non-cartoonish;
+- non-chaotic;
+- supportive to content.
+
+## 16.2. Suitable motifs
+
+- cross on hill;
+- sunrise;
+- path;
+- ark;
+- open Bible;
+- dove;
+- lantern;
+- sea;
+- mountains;
+- olive branches.
+
+## 16.3. Technical requirements
+
+- modern compressed format;
+- width/height reserved;
+- responsive crop;
+- lazy loading outside first viewport;
+- graceful fallback;
+- contrast overlay;
+- no functional dependence on image;
+- image budget documented.
+
+## 16.4. Editorial requirements
+
+- visible AI artifacts rejected;
+- biblical/historical depiction reviewed;
+- artwork is not presented as factual reconstruction;
+- no image that undermines theological neutrality without review.
+
+---
+
+# 17. Progress and gamification
+
+## 17.1. Progress
+
+- track neutral;
+- fill gold/accent;
+- number available when useful;
+- no misleading animation;
+- server-authoritative value.
+
+## 17.2. XP and levels
+
+- secondary motivation;
+- never more prominent than next learning action;
+- no pay-to-win appearance;
+- reward animation restrained.
+
+## 17.3. Streak
+
+- motivational, not punitive;
+- no shame language;
+- missed day does not trigger aggressive red alert;
+- flame icon is optional, not mandatory.
+
+## 17.4. Achievements
+
+- consistent badge frame;
+- semantic rarity only if it has product meaning;
+- no fake scarcity;
+- locked state accessible.
+
+---
+
+# 18. Practice answer states
+
+## 18.1. Neutral
+
+- surface background;
+- clear border;
+- large tap area;
+- no hint of correct position.
+
+## 18.2. Selected
+
+- selected state visible before submission;
+- no accidental submit on scroll;
+- keyboard/focus support.
+
+## 18.3. Correct
+
+- success border + background;
+- check icon;
+- `Правильно!` text;
+- explanation/reference;
+- reward secondary.
+
+## 18.4. Incorrect
+
+- selected wrong answer danger state;
+- correct answer success state;
+- `Неправильно` without shame;
+- explanation/reference;
+- next action.
+
+No answer state may rely on color alone.
+
+---
+
+# 19. Game mode exceptions
+
+## 19.1. Kahoot-like mode
+
+Allowed:
+
+- red/blue/yellow/green answer tiles;
+- geometric answer symbols;
+- stronger timer/score hierarchy.
+
+Required:
+
+- shape + text labels;
+- accessible contrast;
+- no flashing;
+- theme-compatible shell;
+- result/explanation returns to common system.
+
+## 19.2. Millionaire
+
+Allowed:
+
+- prize ladder;
+- gold accent;
+- special question composition.
+
+Required:
+
+- same typography family;
+- same shared controls;
+- same accessible answer states;
+- no separate unrelated design system.
+
+## 19.3. Admin/content tools
+
+Protected tools prioritize density and accuracy. They use the same tokens but do not need consumer hero imagery or decorative spiritual visuals.
+
+---
+
+# 20. Motion
+
+```css
+--motion-micro: 120ms;
+--motion-fast: 180ms;
+--motion-normal: 240ms;
+--motion-page: 280ms;
+```
+
+Rules:
+
+- motion explains state change;
+- no permanent pulse;
+- no autoplay parallax;
+- no bounce-heavy spiritual reading UI;
+- reduced motion disables nonessential effects;
+- progress animation does not misrepresent value.
+
+---
+
+# 21. Accessibility
+
+Minimum requirements:
+
+- regular text contrast target 4.5:1;
+- large text/UI boundary target 3:1 where applicable;
+- 44×44 CSS px touch targets;
+- visible focus;
+- semantic headings;
+- aria labels;
+- logical DOM order;
+- no color-only meaning;
+- text scale 200%;
+- reduced motion;
+- screen reader review of critical flows;
+- every paid theme passes same audit.
+
+Gold on ivory is not assumed accessible. It must be measured.
+
+---
+
+# 22. Telegram-specific rules
+
+- use `100dvh`;
+- respect safe-area;
+- account for virtual keyboard;
+- sync Telegram header/background with theme;
+- test Android Telegram;
+- test iOS Telegram;
+- test browser fallback;
+- do not depend on hover;
+- BackButton follows route state;
+- no conflict with Telegram MainButton;
+- theme switch updates Telegram chrome without flicker.
+
+---
+
+# 23. Shared primitives
+
+Required or standardized in Phase 3:
+
+- `AppPage`;
+- `PageHeader`;
+- `SectionHeader`;
+- `BottomNavigation`;
+- `HeroCard`;
+- `ContentCard`;
+- `ListRow`;
+- `PrimaryButton`;
+- `SecondaryButton`;
+- `IconButton`;
+- `SearchField`;
+- `SegmentedControl`;
+- `ProgressBar`;
+- `MetricTile`;
+- `AchievementBadge`;
+- `AnswerOption`;
+- `AnswerFeedback`;
+- `Skeleton`;
+- `EmptyState`;
+- `ErrorState`;
+- `BottomSheet`;
+- `ThemePreview`.
+
+A primitive exists only when it reduces real duplication and has stable API.
+
+---
+
+# 24. Paid and unlockable themes
+
+Phase 3 defines technical compatibility. Phase 6 defines purchases.
+
+Every future theme must:
+
+- use semantic tokens;
+- preserve UX structure;
+- pass accessibility;
+- pass performance budget;
+- have versioned assets;
+- have preview;
+- have fallback;
+- not affect scoring;
+- not affect difficulty;
+- not hide core content;
+- not inject arbitrary CSS/JS.
+
+Candidate directions:
+
+- Нічна молитва;
+- Пустельний шлях;
+- Оливкова гілка;
+- Царські псалми;
+- Ранкова благодать;
+- Ліхтар віри;
+- Ковчег;
+- Небесний спокій;
+- migrated versions of current legacy themes.
+
+Names do not imply approved price or release.
+
+---
+
+# 25. Visual QA
+
+## 25.1. Widths
+
+- 320;
+- 360;
+- 390;
+- 412;
+- 430;
+- 480 CSS px.
+
+## 25.2. States
+
+- loading;
+- empty;
+- error;
+- offline;
+- long text;
+- no image;
+- correct;
+- incorrect;
+- disabled;
+- locked;
+- large text;
+- reduced motion.
+
+## 25.3. Themes
+
+- `Світло` full matrix;
+- `classic` compatibility;
+- one dark candidate;
+- invalid theme fallback;
+- persisted restore;
+- no FOUC.
+
+## 25.4. Automated checks
+
+- hardcoded color audit;
+- visual regression critical routes;
+- accessibility scan;
+- horizontal overflow;
+- theme switch test;
+- Telegram shell smoke;
+- asset size budget.
+
+## 25.5. Human review
+
+- minimalism;
+- hierarchy;
+- spiritual tone;
+- CTA clarity;
+- card density;
+- gold restraint;
+- image restraint;
+- cross-screen consistency.
+
+---
+
+# 26. Definition of Done
+
+Design work is not complete until:
+
+1. `Світло` is the default free theme.
+2. Theme migration preserves existing selection and entitlements.
+3. No dark-to-light startup flash.
+4. Core screens use semantic tokens.
+5. Shared primitives replace real duplication.
+6. Navigation follows product architecture, not mockup copying.
+7. Correct/incorrect states are accessible.
+8. Telegram Android/iOS tested.
+9. Critical visual regression is stable.
+10. Accessibility has no critical issues.
+11. Asset/performance budgets pass.
+12. Rollback is tested.
+13. Legacy token deprecation is documented.
+14. Owner completes final visual review.
+
+---
+
+# 27. Forbidden patterns
+
+- new raw brand hex in feature CSS;
+- random radius;
+- random shadow;
+- gold body text without contrast check;
+- multiple primary CTA in one decision block;
+- copy reference navigation blindly;
+- every card using glass blur;
+- paid theme changing layout;
+- paid theme changing reward;
+- image-only meaning;
+- color-only answer state;
+- theme-specific component fork without documented need;
+- client-side fake purchase;
+- hiding core learning behind theme entitlement;
+- declaring redesign complete from screenshots alone.
