@@ -11,7 +11,7 @@
 
 .title {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: var(--fs-xl);
   margin: 0;
   color: var(--gold-light);
 }
@@ -19,7 +19,7 @@
 .backBtn {
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: var(--fs-base);
 }
 
 .tabs {
@@ -43,7 +43,7 @@
   background: var(--surface);
   color: var(--text);
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: var(--fs-sm);
   cursor: pointer;
   text-align: center;
 }
@@ -61,7 +61,7 @@
   background: var(--surface);
   color: var(--text);
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   cursor: pointer;
   text-align: center;
 }
@@ -89,13 +89,13 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   color: var(--text-muted);
 }
 
 .muted {
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: var(--fs-base);
   margin: 0;
 }
 
@@ -108,7 +108,7 @@
   box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: var(--fs-md);
   cursor: pointer;
   width: 100%;
 }
@@ -135,7 +135,7 @@
   border-radius: var(--radius-sm);
   background: var(--accent-bg-strong);
   border: 1px solid var(--accent-border-strong);
-  font-size: 0.7rem;
+  font-size: var(--fs-sm);
   font-weight: 700;
   text-transform: uppercase;
   color: var(--gold-light);
@@ -154,20 +154,20 @@
 }
 
 .scoreLabel {
-  font-size: 1rem;
+  font-size: var(--fs-md);
   font-weight: 700;
   color: var(--gold);
 }
 
 .questionText {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: var(--fs-md);
   line-height: 1.35;
 }
 
 .reason {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   color: var(--text-muted);
   font-style: italic;
 }
@@ -184,7 +184,7 @@
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text);
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   cursor: pointer;
   font-weight: 600;
 }
@@ -200,7 +200,7 @@
   border: 1px solid rgba(200, 80, 80, 0.45);
   background: transparent;
   color: var(--danger-text);
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   cursor: pointer;
   font-weight: 600;
 }
@@ -219,7 +219,7 @@
 }
 
 .issueTag {
-  font-size: 0.75rem;
+  font-size: var(--fs-sm);
   padding: 0.2rem 0.5rem;
   border-radius: var(--radius-sm);
   display: inline-block;
@@ -267,12 +267,12 @@
 
 .poolCard h3 {
   margin: 0 0 0.5rem;
-  font-size: 0.95rem;
+  font-size: var(--fs-md);
   color: var(--gold-light);
 }
 
 .poolCount {
-  font-size: 1.5rem;
+  font-size: var(--fs-xl);
   font-weight: 800;
   color: var(--gold);
   margin: 0 0 0.5rem;
@@ -289,7 +289,7 @@
   padding: 0.2rem 0.5rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
-  font-size: 0.75rem;
+  font-size: var(--fs-sm);
   color: var(--text-muted);
 }
 
@@ -314,7 +314,7 @@
 
 .poolOverlap h3 {
   margin: 0 0 0.25rem;
-  font-size: 0.95rem;
+  font-size: var(--fs-md);
   color: var(--gold-light);
 }
 
@@ -335,7 +335,7 @@
 
 .optionItem {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: var(--fs-base);
   color: var(--text);
 }
 
@@ -346,7 +346,7 @@
 
 .explanation {
   margin: 0.5rem 0 0;
-  font-size: 0.85rem;
+  font-size: var(--fs-base);
   color: var(--text-muted);
   font-style: italic;
   padding-left: 0.5rem;
@@ -363,7 +363,7 @@
 
 .sectionTitle {
   margin: 0 0 0.75rem;
-  font-size: 1rem;
+  font-size: var(--fs-md);
   color: var(--gold-light);
 }
 
@@ -376,7 +376,7 @@
 .scripturePreviewForm label {
   display: grid;
   gap: 0.25rem;
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   color: var(--text-muted);
 }
 
@@ -388,5 +388,5 @@
   border-radius: var(--radius-md);
   background: var(--bg);
   color: var(--text);
-  font-size: 0.95rem;
+  font-size: var(--fs-md);
 }

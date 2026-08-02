@@ -14,7 +14,7 @@
   border-bottom: 1px solid var(--border);
   border-radius: 0 0 24px 24px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-  padding-top: max(0.75rem, env(safe-area-inset-top));
+  padding-top: max(var(--space-md), env(safe-area-inset-top));
   overflow: hidden;
 }
 
@@ -22,7 +22,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  padding: 0 1rem 0.75rem;
+  padding: 0 var(--space-lg) var(--space-md);
 }
 
 .topRow {
@@ -54,7 +54,7 @@
 .statusCard {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-md);
   width: 100%;
 }
 
@@ -97,7 +97,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 1rem;
+  gap: var(--space-lg);
 }
 
 .statusBlock {
@@ -113,7 +113,7 @@
 }
 
 .statusLabel {
-  font-size: 0.62rem;
+  font-size: var(--fs-xs);
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -122,7 +122,7 @@
 
 .statusValue {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-size: var(--fs-xl);
   font-weight: 700;
   line-height: 1.15;
   color: var(--gold);
@@ -135,7 +135,7 @@
 
 .bottomPanel {
   flex-shrink: 0;
-  padding: 1.25rem 1rem calc(1.25rem + env(safe-area-inset-bottom));
+  padding: 1.25rem var(--space-lg) calc(1.25rem + env(safe-area-inset-bottom));
   background: var(--surface);
   border-top: 1px solid var(--border);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
@@ -151,7 +151,7 @@
 
 .kicker {
   color: var(--gold-light);
-  font-size: 0.72rem;
+  font-size: var(--fs-sm);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -159,20 +159,20 @@
 
 .lifelines {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: var(--space-sm);
+  margin-bottom:var(--space-lg);
 }
 
 .lifelines button {
   flex: 1;
   min-height: 2.5rem;
-  padding: 0 0.5rem;
+  padding: 0 var(--space-sm);
   border: 1px solid var(--accent-border-strong);
   border-radius: var(--radius-lg);
   background: var(--accent-bg);
   color: var(--gold-light);
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: var(--fs-base);
   cursor: pointer;
   transition:
     background-color var(--duration-fast) var(--ease-out),
@@ -193,19 +193,19 @@
 
 .notice {
   margin: 0 0 0.85rem;
-  padding: 0.65rem 0.75rem;
+  padding: 0.65rem var(--space-md);
   border: 1px solid var(--accent-border-strong);
   border-radius: var(--radius-md);
   background: var(--accent-bg-strong);
   color: var(--gold-light);
-  font-size: 0.9rem;
+  font-size: var(--fs-base);
   font-weight: 700;
 }
 
 .questionText {
-  font-size: 1.15rem;
+  font-size: var(--fs-lg);
   line-height: 1.45;
-  margin: 0 0 1rem;
+  margin: 0 0 var(--space-lg);
   font-family: var(--font-serif);
   color: var(--text);
 }
@@ -214,20 +214,20 @@
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  margin: 0 0 0.75rem;
+  margin: 0 0 var(--space-md);
   padding: 0;
   list-style: none;
 }
 
 .option {
   width: 100%;
-  padding: 0.95rem 1rem;
+  padding: 0.95rem var(--space-lg);
   text-align: left;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   color: var(--text);
-  font-size: 0.95rem;
+  font-size: var(--fs-md);
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s, transform 0.1s;
 }
@@ -259,19 +259,19 @@
 
 .actionRow {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-sm);
   margin-top: 0.85rem;
 }
 
 .btnTake {
   flex: 1;
-  padding: 0.85rem 1rem;
+  padding: 0.85rem var(--space-lg);
   border: 1px solid var(--accent-border-strong);
   border-radius: var(--radius-lg);
   background: var(--accent-bg-strong);
   color: var(--gold-light);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--fs-md);
   cursor: pointer;
   transition:
     background-color var(--duration-fast) var(--ease-out),
@@ -282,8 +282,8 @@
 }
 
 .feedback {
-  margin-top: 0.75rem;
-  margin-bottom: 0.25rem;
+  margin-top:var(--space-md);
+  margin-bottom:var(--space-xs);
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
@@ -296,7 +296,7 @@
   max-width: 100%;
   padding: 0.45rem 0.7rem;
   border-radius: var(--radius-full);
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   font-weight: 700;
 }
 
@@ -313,8 +313,8 @@
   border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text);
-  padding: 0.5rem 0.75rem;
-  font-size: 0.85rem;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--fs-base);
   font-weight: 600;
   text-align: left;
   transition:
@@ -339,7 +339,7 @@
 .btnPrimary {
   width: 100%;
   flex: 1;
-  padding: 1rem;
+  padding: var(--space-lg);
   background: var(--cta-bg);
   color: var(--on-primary);
   box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -347,21 +347,21 @@
   border: none;
   border-radius: var(--radius-lg);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--fs-md);
   cursor: pointer;
 }
 
 .resultCard {
-  margin: auto 1rem;
+  margin: auto var(--space-lg);
   text-align: center;
-  padding: 2rem 1rem;
+  padding: var(--space-2xl) var(--space-lg);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
 }
 
 .resultCard h1 {
-  margin: 0 0 0.5rem;
+  margin: 0 0 var(--space-sm);
   font-family: var(--font-serif);
   color: var(--gold-light);
 }
@@ -370,7 +370,7 @@
   font-size: 2rem;
   color: var(--gold);
   font-weight: 700;
-  margin: 0 0 0.5rem;
+  margin: 0 0 var(--space-sm);
   font-family: var(--font-serif);
 }
 
@@ -380,7 +380,7 @@
   align-items: center;
   justify-content: center;
   min-height: 2.75rem;
-  padding: 0 1rem;
+  padding: 0 var(--space-lg);
   border-radius: var(--radius-md);
   font-weight: 800;
   text-decoration: none;
@@ -392,11 +392,11 @@
   border: 0;
   background: var(--gold);
   color: var(--on-primary);
-  margin-top: 1rem;
+  margin-top:var(--space-lg);
 }
 
 .secondaryAction {
-  margin-top: 0.75rem;
+  margin-top:var(--space-md);
   border: 1px solid var(--border);
   color: var(--text);
   width: 100%;
@@ -404,6 +404,6 @@
 
 @media (max-width: 360px) {
   .statusValue {
-    font-size: 1.15rem;
+    font-size: var(--fs-lg);
   }
 }
