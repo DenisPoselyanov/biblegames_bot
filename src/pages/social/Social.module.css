@@ -129,10 +129,7 @@
 }
 
 .btnPrimary {
-  background: var(--cta-bg);
-  color: var(--on-primary);
-  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
+  composes: btn-cta from global;
 }
 
 .btnSecondary {
@@ -287,16 +284,13 @@
 }
 
 .btnFull {
+  composes: btn-cta from global;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-md);
   padding: var(--space-lg);
-  background: var(--cta-bg);
-  color: var(--on-primary);
-  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
   font-weight: 800;
   font-size: var(--fs-md);
   border: none;
@@ -383,12 +377,9 @@
 }
 
 .btnAccept {
+  composes: btn-cta from global;
   padding: 0.45rem 0.9rem;
   border-radius: var(--radius-full);
-  background: var(--cta-bg);
-  color: var(--on-primary);
-  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
   font-weight: 700;
   font-size: 0.8rem;
   border: none;
@@ -558,13 +549,10 @@
 }
 
 .btnJoin {
+  composes: btn-cta from global;
   flex-shrink: 0;
   padding: 0.45rem 0.9rem;
   border-radius: var(--radius-full);
-  background: var(--cta-bg);
-  color: var(--on-primary);
-  box-shadow: var(--cta-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
   font-weight: 700;
   font-size: 0.8rem;
   border: none;

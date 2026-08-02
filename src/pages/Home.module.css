@@ -141,13 +141,12 @@
 /* ── CTA button ── */
 
 .cta {
+  composes: btn-cta from global;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-md);
   padding: var(--space-xl);
-  background: var(--cta-bg);
-  color: var(--on-primary);
   font-weight: 800;
   font-size: var(--fs-lg);
   text-decoration: none;
