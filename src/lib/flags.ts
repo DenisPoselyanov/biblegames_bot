@@ -4,7 +4,8 @@ export type FlagName =
   | 'daily_plan_v2'
   | 'server_streak'
   | 'learning_plans'
-  | 'lesson_experience_v2';
+  | 'lesson_experience_v2'
+  | 'review_scheduler_v2';
 
 const FLAG_DEFAULTS: Record<FlagName, boolean> = {
   learning_first_navigation: false,
@@ -13,6 +14,7 @@ const FLAG_DEFAULTS: Record<FlagName, boolean> = {
   server_streak: false,
   learning_plans: false,
   lesson_experience_v2: false,
+  review_scheduler_v2: false,
 };
 
 /**
