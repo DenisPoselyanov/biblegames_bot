@@ -36,7 +36,7 @@
 | 3 | Learning-first navigation | completed | `31fffb9`, `3368f00`, `37ffa96` | — |
 | 4 | Today, daily plan and streak | completed | `e24aeaf`, `cc5c14d`, `561ee5c`, `e2eb8b3`, `a9fc72e` | — |
 | 5 | Learning plans and lessons | completed | `574cc4b`, `57543aa`, `ddec7ca`, `257cb1b` | — |
-| 6 | Learning practice and review | planned | — | Phase 5 |
+| 6 | Learning practice and review | completed | `0d56915`, `feae4ca`, `b2be7b3`, `230d839`, `12956fd`, `949cfdb` | — |
 | 7 | Progress, profile and settings | planned | — | Phase 6 |
 | 8 | Shop, wallet and entitlements | planned | — | Phase 7 |
 | 9 | Server-backed social and groups | planned | — | Phase 3, 4 |
@@ -882,3 +882,131 @@ R-013 — mitigated (стабільний `learningObjectiveId` доступни
 ### Next phase readiness
 
 ready — Phase 6 (Learning practice and review) може стартувати на `main`; додає `review_scheduler_v2` у той самий `flags.ts` реєстр, і може повторно використати `buildLearningPlan()`/leaf-collection логіку для review-scheduling поверх тієї самої ієрархії.
+
+## Phase 6 — Learning practice and review
+
+Status: completed
+
+### Goal
+
+Формалізувати реальний spaced-repetition розклад повторення замість наявної евристики (`generateReviewRecommendations()` у `recommendationEngine.ts` — фіксований поріг 3 дні + смуга mastery 50-80%, без per-item інтервалу чи ease-фактора). Вводить `review_scheduler_v2` (default `off`) — SM-2-lite розклад (`dueAt`/`intervalDays`/`easeFactor`/`repetitions`) на рівні `learningObjectiveId`, оновлюваний при кожному проходженні практичної стадії листкового вузла.
+
+### Product outcome
+
+За замовчуванням (флаг off) — жодних видимих змін: `Home`/`ThemeDetail` виглядають і поводяться байт-в-байт як після Phase 5. З увімкненим `review_scheduler_v2`: після першого проходження практичної стадії листкового вузла з'являється SM-2-lite розклад повторення для цього вузла; коли розклад "прострочений" (`dueAt` у минулому), на `Home` з'являється картка "🔄 Повторити N тем" з посиланням на нову сторінку `/play/study/review-queue/:themeId`, яка перелічує прострочені об'єкти (найпростроченіші першими) з переходом напряму в ту саму практичну стадію.
+
+### Scope
+
+- `src/lib/flags.ts` + `.env.example` — `review_scheduler_v2` (default `false`), той самий `VITE_FLAG_<NAME>` override-патерн.
+- `src/types/index.ts` — нові типи `ReviewScheduleState`, `ReviewQueueItem`; `PlayerProfile.reviewSchedules: Record<LearningObjectiveId, ReviewScheduleState>`.
+- `src/lib/profileMigrations.ts` — `reviewSchedules: profile.reviewSchedules ?? {}` у `fillDefaults()` (additive-поле, без нової версії схеми — той самий підхід, що й для `practiceTracks` раніше).
+- `src/repos/playerRepo.ts` — `mergeReviewSchedules()` для local/remote sync (обирає запис з пізнішим `lastReviewedAt`), той самий підхід, що й `mergePracticeTracks()`.
+- `src/lib/reviewScheduler.ts` (нове) — `computeNextReviewState()`: спрощений SM-2 (лише pass/fail на рівні стадії, немає per-answer quality-градації); `buildReviewQueue()`: та сама leaf-collection DFS, що й `buildLearningPlan()` (скопійована локально — чиста 4-рядкова функція, не варта міжмодульного зв'язування), фільтрує листкові вузли з простроченим `dueAt`, сортує за зростанням `dueAt`.
+- `src/context/PlayerContext.tsx` — `completePracticeStage()` під `review_scheduler_v2` (і лише коли `nodeId` не `null`) викликає `computeNextReviewState()` і пише в `profile.reviewSchedules`, паралельно до наявного запису в `practiceTracks`.
+- `src/pages/ReviewQueue.tsx` + `.module.css` (нове) — сторінка `/play/study/review-queue/:themeId`, реєстрована в `App.tsx`; список прострочених об'єктів з badge "Прострочено на N дн.", порожній стан "Немає елементів для повторення".
+- `src/pages/Home.tsx` — під `review_scheduler_v2`: CTA-картка з кількістю прострочених об'єктів для активної теми гравця (`profile.activeTheme`, розклад завантажується через `loadTopicHierarchy()` — той самий deep-resolving loader, що й `Lesson.tsx`/`ThemeDetail.tsx`), лінкує на `ReviewQueue`.
+
+### Out of scope
+
+- Заміна наявного `generateReviewRecommendations()` (`recommendationEngine.ts`) чи flat "усі помилки одразу" маршруту `/play/study/review` (`Quiz mode="review"`) — обидва лишаються недоторканими, Phase 6 суто additive за окремим флагом/маршрутом.
+- Per-answer quality-градація (SM-2 повний, quality 0-5) — на рівні практичної стадії доступний лише pass/fail, тому використовується спрощена 2-гілкова версія SM-2.
+- Розклад повторення для агрегатних вузлів чи не-`baby` складностей — так само, як і `buildLearningPlan()`, працює лише над листковими вузлами на базовій складності.
+- Об'єднання review-картки в `buildDailyPlan()` (Phase 4) — свідомо окрема секція/джерело даних (due-дата, а не priority-scoring), щоб не займати вже протестовану логіку `dailyPlan.ts`.
+
+### Dependencies
+
+Phase 5.
+
+### Contract created for next phases
+
+- `ReviewScheduleState`/`ReviewQueueItem` (`src/types/index.ts`) — SM-2-lite розклад на рівні `learningObjectiveId`; Phase 10 (AI content pipeline) чи Phase 7 (progress dashboard) можуть читати `profile.reviewSchedules` для власних агрегацій без дублювання алгоритму.
+- `computeNextReviewState()`/`buildReviewQueue()` (`src/lib/reviewScheduler.ts`) — єдине джерело SM-2-lite логіки; будь-яке майбутнє UI (наприклад, progress dashboard у Phase 7) має перевикористовувати ці функції, а не переобчислювати розклад.
+
+### Files and modules affected
+
+`src/lib/flags.ts`, `.env.example`, `src/types/index.ts`, `src/lib/profileMigrations.ts`, `src/repos/playerRepo.ts`, `src/lib/reviewScheduler.ts` (нове), `src/context/PlayerContext.tsx`, `src/pages/ReviewQueue.tsx` (нове), `src/pages/ReviewQueue.module.css` (нове), `src/App.tsx`, `src/pages/Home.tsx`, `src/pages/GlobalStats.tsx` (мок-профілі), `docs/product-rebuild/MASTER_ROADMAP.md`.
+
+### API changes
+
+Немає.
+
+### Data model changes
+
+`PlayerProfile.reviewSchedules: Record<LearningObjectiveId, ReviewScheduleState>` — нове persisted-поле (localStorage через `playerProfileStore.ts`, той самий механізм, що й `practiceTracks`/`studyMastery`). Заповнюється лише коли `review_scheduler_v2` on; за замовчуванням `{}`.
+
+### Data migrations
+
+Немає версійної міграції — поле додано як `?? {}` default у `fillDefaults()` (той самий безміграційний підхід, що й для `practiceTracks` раніше), сумісне зі старими профілями без бампу `PROFILE_SCHEMA_VERSION`.
+
+### Feature flags
+
+| Flag | Default | Стан після фази |
+|---|---|---|
+| `review_scheduler_v2` | off | Гейтує запис SM-2-lite розкладу в `completePracticeStage()`, картку на `Home` і сторінку `ReviewQueue`. |
+
+### UX impact
+
+Немає в дефолтному стані (флаг off). З `review_scheduler_v2` on: з'являється CTA "🔄 Повторити N тем" на `Home`, коли є прострочені об'єкти для активної теми, і нова сторінка зі списком, відсортованим за терміновістю.
+
+### Accessibility impact
+
+Немає прямого впливу — ті самі семантичні `Link`/`ol`/`li` елементи й `Icon`-кнопка "назад", що й `Lesson.tsx`/`ThemeDetail.tsx`.
+
+### Security impact
+
+Немає.
+
+### Performance impact
+
+Немає вимірних змін для флага off. З флагом on: `buildReviewQueue()` — чистий DFS без мережевих викликів (topic hierarchy вже кешована через `loadTopicHierarchy()`); `Home.tsx` робить один додатковий виклик `loadTopicHierarchy()` для активної теми гравця при монтуванні.
+
+### Tests
+
+- `npx tsc -b` — ✅ 0 помилок після кожної хвилі.
+- `npm run build` — ✅, без нових помилок/попереджень понад baseline.
+- `npm run lint` — 56 errors / 26 warnings, той самий baseline, що й Phase 5.
+- `npm run smoke-audit` — ✅.
+- `npm run test-social` — ✅.
+- Ручна browser-перевірка (dev server, тема `patriarchs`): флаг off → `Home` рендерить той самий вигляд, що в Phase 5 (без картки повторення). Флаг on, симульований прострочений розклад для `patriarchs:patriarchs-sub-1-sub-1` (`dueAt` у минулому) → на `Home` з'являється "🔄 Повторити 1 тему", клік веде на `/play/study/review-queue/patriarchs`, сторінка показує "Покликання Авраама" з badge "Прострочено на 2 дн." і посиланням на правильний `practicePath` (`/play/study/quiz/patriarchs/baby/stage/0/patriarchs-sub-1-sub-1`); порожній розклад → сторінка показує "Немає елементів для повторення", картка на `Home` зникає.
+
+### Acceptance criteria
+
+- `flags.ts` реєстр розширено новим флагом, default off — ✅
+- `computeNextReviewState()` — детермінований SM-2-lite алгоритм, задокументований як спрощення (лише pass/fail) — ✅
+- Flag off не змінює жодного видимого поведінки/розмітки `Home`/`ThemeDetail` — ✅ (перевірено вручну)
+- `review_scheduler_v2` on коректно записує розклад при проходженні стадії, показує прострочені об'єкти на `Home` і `ReviewQueue`, і веде в коректну практичну стадію — ✅
+- Жодних регресій у typecheck/build/lint/test baseline — ✅
+- Кожна хвиля закомічена окремо — ✅ (`0d56915`, `feae4ca`, `b2be7b3`, `230d839`, `12956fd`, `949cfdb`)
+
+### Risks
+
+Немає нових ID у risk register. Production default лишається `off` — ця фаза не змінює production-поведінку.
+
+### Rollback plan
+
+Кожен коміт (`phase-06a`…`phase-06e`, плюс `phase-06e-fix` для виправлення резолюції ієрархії теми) незалежний і відкатний окремо через `git revert`: флаги/типи/дата-шар — суто additive; `ReviewQueue.tsx`+маршрут — інертні, поки на них не лінкує `Home`; `Home`/`PlayerContext`-зміни guarded `review_scheduler_v2` (default off) — навіть без revert, просто не вмикати флаг еквівалентно повному відкату.
+
+### Completed work
+
+- `0d56915` — phase-06a: `review_scheduler_v2` у реєстр флагів + `.env.example`.
+- `feae4ca` — phase-06b: типи (`ReviewScheduleState`, `ReviewQueueItem`) + `reviewSchedules` на `PlayerProfile` + `profileMigrations.ts`/`playerRepo.ts` + `reviewScheduler.ts`.
+- `b2be7b3` — phase-06c: `completePracticeStage()` у `PlayerContext.tsx` записує `reviewSchedules`.
+- `230d839` — phase-06d: `ReviewQueue.tsx` сторінка + маршрут в `App.tsx`.
+- `12956fd` — phase-06e: картка повторення на `Home`.
+- `949cfdb` — phase-06e-fix: виправлення резолюції ієрархії теми (`loadTopicHierarchy()` замість плаского `TopicHierarchyContext`-мапу, яка ключується лише кореневими контейнерами `old-testament`/`new-testament`, а не окремими темами) — знайдено й виправлено під час ручної browser-перевірки.
+- (цей коміт) — phase-06f: документація (цей розділ, оновлення таблиці статусу фаз).
+
+### Deviations from plan
+
+Під час ручної перевірки виявлено, що `TopicHierarchyContext`'s мапа (`useTopicHierarchies()`) ключується лише двома кореневими контейнерами (`old-testament`/`new-testament`), а не окремими темами (`patriarchs` тощо) — початкова реалізація `Home.tsx` (`phase-06e`) покладалась на цю мапу й тому картка повторення ніколи не рендерилась з увімкненим флагом. Виправлено окремим комітом (`phase-06e-fix`) — перехід на `loadTopicHierarchy(themeId)`, той самий deep-resolving loader, що вже використовують `Lesson.tsx`/`ThemeDetail.tsx`. Решта фази виконана точно за узгодженим scope.
+
+### Known limitations
+
+- SM-2-lite використовує лише pass/fail на рівні практичної стадії (не per-answer quality), тому це спрощення класичного SM-2, не повна реалізація.
+- Розклад повторення стартує лише після першого проходження стадії під увімкненим флагом — вузли, ще не пройдені після ввімкнення флага, не з'являються в черзі (свідомо, як і `buildLearningPlan()` — немає "розкладу" для того, що ще не вивчалось).
+- Картка на `Home` показує прострочені об'єкти лише для активної теми гравця (`profile.activeTheme`), не глобально по всіх темах — узгоджено з тим, як `learning_plans`/`Lesson` вже прив'язані до однієї теми за раз.
+- Production rollout (default → `true`) не виконувався — рішення про ввімкнення окреме майбутнє.
+
+### Next phase readiness
+
+ready — Phase 7 (Progress, profile and settings) може стартувати на `main`; `profile.reviewSchedules` і `buildReviewQueue()` доступні для будь-яких progress-агрегацій без дублювання SM-2-lite логіки.
