@@ -13,6 +13,7 @@
 
 - [PHASE_3_REBRANDING_AND_THEME_SYSTEM.md](./PHASE_3_REBRANDING_AND_THEME_SYSTEM.md) — обов’язкова специфікація ребрендингу Phase 3: тема `Світло`, premium spiritual minimalism, semantic tokens, UI migration, accessibility, theme contract і межа з платними темами Phase 6.
 - [DESIGN_RULES.md](./DESIGN_RULES.md) — канонічні правила кольорів, типографіки, spacing, surfaces, компонентів, imagery, game-mode exceptions і visual QA.
+- [MOTION_SYSTEM.md](./MOTION_SYSTEM.md) — канонічні transitions, micro-interactions, correct/wrong feedback, level/rank/achievement celebrations, Kahoot/«Мільйонер», reduced motion, performance budgets і binding розподіл імплементації між Phase 1–8.
 - [MONETIZATION_STRATEGY.md](./MONETIZATION_STRATEGY.md) — варіанти Telegram Ads, Stars, підписок, affiliate program, sponsorships і Church-плану для Phase 6; конкретна модель ще не обрана.
 
 ## Активні операційні документи
@@ -39,6 +40,6 @@
 5. операційні документи;
 6. архівні документи не використовуються для нової роботи.
 
-`PHASE_3_REBRANDING_AND_THEME_SYSTEM.md` деталізує Phase 3, але не створює окремої нумерації або паралельного roadmap. `DESIGN_RULES.md` визначає конкретні UI rules у межах затвердженого Phase 3 напряму.
+`PHASE_3_REBRANDING_AND_THEME_SYSTEM.md`, `DESIGN_RULES.md` і `MOTION_SYSTEM.md` деталізують Phase 3, але не створюють окремої нумерації або паралельного roadmap. Розподіл motion-роботи між іншими фазами в `MOTION_SYSTEM.md` є implementation allocation, а не новою системою фаз.
 
-Не створюйте новий master roadmap, task board або окрему систему фаз поруч із цією структурою.
+Не створюйте новий master roadmap, task board, паралельну дизайн-систему або другу motion-систему поруч із цією структурою.
