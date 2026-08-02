@@ -47,33 +47,40 @@ Status: accepted
 
 ## ADR-002 — Auth: existing Telegram initData validation frontfall to x-user-id
 
-Date: 2026-08-01
-Status: proposed
+Date: 2026-08-01 (proposed) / 2026-08-02 (accepted, implemented in Phase 1)
+Status: accepted
 
 ### Context
 
 Аудит (`CURRENT_STATE_AUDIT.md`, розділ 6) показав, що `server/middleware/telegramAuth.ts` вже має коректну HMAC-валідацію Telegram `initData`, але коли `initData` header відсутній (або `TELEGRAM_BOT_TOKEN` не заданий), middleware приймає запит на основі одного лише `x-user-id`, довіряючи клієнту.
 
-### Decision (proposed, не виконано в Phase 0)
+### Decision
 
-У Phase 1/13 потрібно явно розділити dev-fallback і production-режим: production не повинен приймати запити без валідного `initData`, незалежно від того, чи заданий `TELEGRAM_AUTH_STRICT`. Конкретний план виправлення — предмет окремої фази (не Phase 0), щоб не змінювати production behavior зараз.
+Реалізовано в Phase 1 (`84b7912`): `telegramAuthMiddleware` тепер гейтиться на `NODE_ENV === 'production'` (та сама конвенція, що вже використовувалась у `questionsAdmin.ts`). У production:
+- відсутній `x-telegram-init-data` → `401 missing_telegram_init_data`, незалежно від `TELEGRAM_AUTH_STRICT`;
+- `initData` присутній, але `TELEGRAM_BOT_TOKEN` не заданий (неможливо валідувати) → `500 telegram_auth_not_configured` (fail-closed, а не мовчазний fallback на `x-user-id`);
+- невалідний `initData` → `401 invalid_telegram_init_data` (без змін).
+
+Non-production (dev/CI) behavior лишився без змін — permissive fallback на `x-user-id`, щоб не зламати локальні/CI сценарії, які не надсилають реальний Telegram `initData`.
 
 ### Alternatives considered
 
-Не розглядались детально — зафіксовано як known risk, а не вирішено в межах Phase 0 (Phase 0 не повинен змінювати production behavior).
+1. Вимагати `initData` завжди (і в dev) — відхилено, зламало б локальну розробку/CI без додаткової tooling-роботи для мокання Telegram WebApp.
+2. Окремий env-прапор замість `NODE_ENV` — відхилено, `NODE_ENV=production` вже є усталеною конвенцією в цьому репо (`questionsAdmin.ts`), додатковий прапор — зайва складність.
 
 ### Consequences
 
-Поки не виправлено — залишається ризик R-004-подібного типу (client-trusted identity) для будь-яких шляхів без `initData`.
+- R-006 mitigated: production більше не має шляху client-trusted identity.
+- Незадеплоєний/неправильно сконфігурований `TELEGRAM_BOT_TOKEN` у production тепер явно провалює запити (500) замість тихого even-more-небезпечного fallback — це навмисний trade-off (fail loud > fail open).
 
 ### Migration impact
 
-TBD — залежить від того, наскільки клієнт (bot/telegram-app) фактично надсилає `x-telegram-init-data` вже зараз.
+Немає — клієнт (bot/telegram-app) вже надсилає `x-telegram-init-data` в реальних Telegram WebApp-сесіях; зміна впливає лише на запити, які раніше покладались на самий лише `x-user-id` у production (за визначенням — небажаний шлях).
 
 ### Security impact
 
-Високий — це основний auth-ризик, задокументований у майстер-плані (розділ 16.1).
+R-006 закрито для production. Ризик залишається відкритим лише для dev/CI (навмисно, для DX).
 
 ### Rollback
 
-Не застосовується (рішення ще не реалізоване, лише запропоноване).
+`git revert 84b7912` — зміна ізольована в одному файлі (`server/middleware/telegramAuth.ts`), не має залежних змін в інших комітах Phase 1.
