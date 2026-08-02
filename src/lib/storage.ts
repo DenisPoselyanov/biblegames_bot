@@ -1,76 +1,17 @@
-import type { Difficulty, GlobalStats, PlayerProfile } from '../types';
+import type { GlobalStats, PlayerProfile } from '../types';
 import { THEMES } from '../data/themes';
-import { DEFAULT_COSMETIC_THEME_ID } from '../data/cosmetics';
-import { DEFAULT_BOLLS_TRANSLATION, normalizeBollsTranslation } from './bollsConstants';
-import { getDefaultPlayerRank } from './practiceProgression';
 import { GLOBAL_STATS_STORAGE_KEY, PROFILE_STORAGE_KEY } from './storageKeys';
+import { migrateProfile, type StoredProfile } from './profileMigrations';
 import { useGlobalStatsStore } from '../stores/globalStatsStore';
 import { usePlayerProfileStore } from '../stores/playerProfileStore';
 
 export { GLOBAL_STATS_STORAGE_KEY, PROFILE_STORAGE_KEY } from './storageKeys';
-
-const OLD_DIFFICULTY_MAP: Record<string, Difficulty> = {
-  beginner: 'baby',
-  easy: 'child',
-  medium: 'youth',
-  hard: 'student',
-  expert: 'preacher',
-};
-
-function migrateDifficulty(old: string): Difficulty {
-  return OLD_DIFFICULTY_MAP[old] ?? (old as Difficulty);
-}
-
-/** Legacy profile JSON may still include totalPoints before migration. */
-export type ProfileWithLegacyWallet = Partial<PlayerProfile> & { totalPoints?: number };
-
-/** @deprecated Use migrateProfileWallet — kept for call sites migrating off walletCoins */
-export function walletCoins(profile: ProfileWithLegacyWallet): number {
-  return (profile.coins ?? 0) + (profile.totalPoints ?? 0);
-}
-
-/** One-time legacy wallet: sum coins + totalPoints, drop totalPoints from persisted data. */
-export function migrateProfileWallet<T extends ProfileWithLegacyWallet>(
-  profile: T,
-): Omit<T, 'totalPoints'> & { coins: number } {
-  const coins = walletCoins(profile);
-  const { totalPoints: _legacy, ...rest } = profile;
-  return { ...rest, coins };
-}
-
-function normalizeProfile(
-  profile: ProfileWithLegacyWallet,
-  userId: string,
-  displayName: string,
-): PlayerProfile {
-  return migrateProfileWallet({
-    totalPoints: profile.totalPoints,
-    userId,
-    displayName: profile.displayName ?? displayName,
-    themePoints: profile.themePoints ?? {},
-    completedLevels: (profile.completedLevels ?? []).map((l) => ({
-      ...l,
-      difficulty: migrateDifficulty(l.difficulty),
-    })),
-    survivalHighScore: profile.survivalHighScore ?? 0,
-    millionaireWins: profile.millionaireWins ?? 0,
-    millionaireMaxLevel: profile.millionaireMaxLevel ?? 0,
-    unlockedThemes: profile.unlockedThemes?.length
-      ? profile.unlockedThemes
-      : [DEFAULT_COSMETIC_THEME_ID],
-    activeTheme: profile.activeTheme ?? DEFAULT_COSMETIC_THEME_ID,
-    achievements: profile.achievements ?? [],
-    avatar: profile.avatar ?? '',
-    coins: profile.coins ?? 0,
-    unlockedAvatars: profile.unlockedAvatars ?? [],
-    streakDays: profile.streakDays ?? 0,
-    lastActiveAt: profile.lastActiveAt ?? null,
-    studyMastery: profile.studyMastery ?? {},
-    bibleTranslation: normalizeBollsTranslation(profile.bibleTranslation ?? DEFAULT_BOLLS_TRANSLATION),
-    practiceTracks: profile.practiceTracks ?? [],
-    playerRank: profile.playerRank ?? getDefaultPlayerRank(),
-  });
-}
+export {
+  migrateProfileWallet,
+  walletCoins,
+  PROFILE_SCHEMA_VERSION,
+  type StoredProfile as ProfileWithLegacyWallet,
+} from './profileMigrations';
 
 function emptyGlobalStats(): GlobalStats {
   const themes: GlobalStats['themes'] = {};
@@ -85,12 +26,27 @@ function emptyGlobalStats(): GlobalStats {
   return { themes, lastUpdated: new Date().toISOString() };
 }
 
+/** Unwraps the `{ profile, __v }` envelope written by legacyStorage.ts, falling back to raw flat PlayerProfile JSON. */
+function readStoredProfileEnvelope(raw: string): { profile: StoredProfile; version: number } | null {
+  const parsed = JSON.parse(raw) as unknown;
+  if (parsed && typeof parsed === 'object' && 'profile' in parsed && '__v' in parsed) {
+    const { profile, __v } = parsed as { profile: StoredProfile; __v: number };
+    return { profile, version: __v };
+  }
+  if (parsed && typeof parsed === 'object' && 'userId' in parsed) {
+    return { profile: parsed as StoredProfile, version: 0 };
+  }
+  return null;
+}
+
 function readProfileFromLocalStorage(userId: string, displayName: string): PlayerProfile | null {
   try {
     const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
     if (!raw) return null;
-    const parsed = JSON.parse(raw) as ProfileWithLegacyWallet & PlayerProfile;
-    if (parsed.userId === userId) return normalizeProfile(parsed, userId, displayName);
+    const envelope = readStoredProfileEnvelope(raw);
+    if (envelope?.profile.userId === userId) {
+      return migrateProfile(envelope.profile, envelope.version, userId, displayName);
+    }
   } catch {
     /* ignore */
   }
@@ -118,7 +74,7 @@ export function loadProfile(userId: string, displayName: string): PlayerProfile 
   if (fromStore?.userId === userId) return fromStore;
 
   const fromDisk = readProfileFromLocalStorage(userId, displayName);
-  const profile = fromDisk ?? normalizeProfile({}, userId, displayName);
+  const profile = fromDisk ?? migrateProfile({}, 0, userId, displayName);
   usePlayerProfileStore.getState().setProfile(profile);
   return profile;
 }
