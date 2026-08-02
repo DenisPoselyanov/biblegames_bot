@@ -454,3 +454,41 @@ export interface DailyPlanItem {
   priority: number;
   estimatedTime?: number;
 }
+
+// Phase 5 — learning plans and lessons (learning_plans, lesson_experience_v2), see
+// src/lib/learningObjectives.ts, src/lib/learningPlan.ts, src/lib/lessonContent.ts
+/** Stable id `${themeId}:${nodeId}` — the unit AI content (Phase 10) will target. */
+export type LearningObjectiveId = string;
+
+export interface LessonBlock {
+  id: string;
+  type: 'text' | 'scripture';
+  content: string;
+  reference?: string;
+}
+
+export interface Lesson {
+  id: string;
+  learningObjectiveId: LearningObjectiveId;
+  themeId: string;
+  nodeId: string;
+  title: string;
+  blocks: LessonBlock[];
+}
+
+export type LearningPlanStepStatus = 'completed' | 'in_progress' | 'available';
+
+export interface LearningPlanStep {
+  nodeId: string;
+  learningObjectiveId: LearningObjectiveId;
+  title: string;
+  icon: string;
+  status: LearningPlanStepStatus;
+  lessonPath: string;
+  practicePath: string;
+}
+
+export interface LearningPlan {
+  themeId: string;
+  steps: LearningPlanStep[];
+}
