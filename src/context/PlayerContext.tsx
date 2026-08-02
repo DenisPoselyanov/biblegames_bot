@@ -39,6 +39,9 @@ import {
 import { loadAllTopicHierarchies } from '../data/topicDbLoader';
 import type { BollsTranslation } from '../lib/bollsConstants';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
+import { isFeatureEnabled } from '../lib/flags';
+import { getLearningObjectiveId } from '../lib/learningObjectives';
+import { computeNextReviewState } from '../lib/reviewScheduler';
 import { usePlayerProfileStore } from '../stores/playerProfileStore';
 import { useGlobalStatsStore } from '../stores/globalStatsStore';
 import {
@@ -328,6 +331,18 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       }
 
       const streaked = updateStreak(profile);
+
+      let reviewSchedules = profile.reviewSchedules ?? {};
+      if (isFeatureEnabled('review_scheduler_v2') && nodeId) {
+        const learningObjectiveId = getLearningObjectiveId(themeId, nodeId);
+        const nextSchedule = computeNextReviewState(
+          reviewSchedules[learningObjectiveId],
+          { learningObjectiveId, themeId, nodeId },
+          passed,
+        );
+        reviewSchedules = { ...reviewSchedules, [learningObjectiveId]: nextSchedule };
+      }
+
       const next: PlayerProfile = {
         ...streaked,
         coins: profile.coins + points,
@@ -338,6 +353,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         practiceTracks: tracks,
         playerRank: newRank,
         achievements: updatedAchievements,
+        reviewSchedules,
       };
 
       persistProfile(next);
