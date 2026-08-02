@@ -10,9 +10,13 @@
 | 3 | Learning-First Product Rebuild | blocked by Phase 2 |
 | 4 | Content Quality, Reviewed AI Pipeline & Protected Content Studio | blocked by Phase 2–3 |
 | 5 | Social, Groups, Challenges & Multiplayer | planned |
-| 6 | Economy, Shop, Entitlements & Monetization | planned |
+| 6 | Economy, Shop, Entitlements & Monetization | planned; monetization model not selected — see [MONETIZATION_STRATEGY.md](./MONETIZATION_STRATEGY.md) |
 | 7 | Performance, Offline, Accessibility & Public Release | planned |
 | 8 | Expansion and Bonus Capabilities | optional future |
+
+## Phase 6 decision rule
+
+Phase 6 does not automatically select Telegram Ads, Stars purchases, subscriptions, affiliate programs, sponsorships, a Church plan, or third-party advertising. Before any production monetization, the selected model must be approved through a separate ADR in `DECISIONS.md` after security, server-authoritative economy, legal/privacy, minor protection and no-pay-to-win gates are satisfied.
 
 ## Правило
 
