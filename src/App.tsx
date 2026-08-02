@@ -18,6 +18,9 @@ const Lesson = lazy(() => import('./pages/Lesson').then((m) => ({ default: m.Les
 const ReviewQueue = lazy(() =>
   import('./pages/ReviewQueue').then((m) => ({ default: m.ReviewQueue })),
 );
+const ProgressDashboard = lazy(() =>
+  import('./pages/ProgressDashboard').then((m) => ({ default: m.ProgressDashboard })),
+);
 const Quiz = lazy(() => import('./pages/Quiz').then((m) => ({ default: m.Quiz })));
 const StudyHub = lazy(() => import('./pages/StudyHub').then((m) => ({ default: m.StudyHub })));
 const Profile = lazy(() => import('./pages/Profile').then((m) => ({ default: m.Profile })));
@@ -117,6 +120,7 @@ export default function App() {
               <Route path="play/study/lesson/:themeId/:nodeId" element={<ErrorBoundary><LazyPage><Lesson /></LazyPage></ErrorBoundary>} />
               <Route path="play/study/review-queue/:themeId" element={<ErrorBoundary><LazyPage><ReviewQueue /></LazyPage></ErrorBoundary>} />
               <Route path="profile" element={<ErrorBoundary><LazyPage><Profile /></LazyPage></ErrorBoundary>} />
+              <Route path="profile/progress" element={<ErrorBoundary><LazyPage><ProgressDashboard /></LazyPage></ErrorBoundary>} />
               <Route path="admin" element={<ErrorBoundary><LazyPage><AdminPanel /></LazyPage></ErrorBoundary>} />
               <Route path="shop" element={<ErrorBoundary><LazyPage><Shop /></LazyPage></ErrorBoundary>} />
               <Route path="stats" element={<ErrorBoundary><LazyPage><GlobalStats /></LazyPage></ErrorBoundary>} />
