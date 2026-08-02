@@ -3,6 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN ?? '';
 const AUTH_STRICT = process.env.TELEGRAM_AUTH_STRICT === 'true';
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 function validateInitData(initData: string, botToken: string): { ok: boolean; userId?: string } {
   try {
@@ -33,6 +34,15 @@ function validateInitData(initData: string, botToken: string): { ok: boolean; us
   }
 }
 
+/**
+ * Production must never trust `x-user-id` on its own (ADR-002 / R-006): a valid,
+ * HMAC-verified `x-telegram-init-data` is required regardless of
+ * TELEGRAM_AUTH_STRICT, and regardless of whether TELEGRAM_BOT_TOKEN happens to
+ * be configured — an unconfigured bot token in production is a deploy
+ * misconfiguration, not a license to fall back to client-trusted identity.
+ * Non-production keeps the permissive dev fallback so local/CI workflows that
+ * don't send real Telegram initData keep working.
+ */
 export function telegramAuthMiddleware(req: Request, res: Response, next: NextFunction): void {
   const headerUserId = req.header('x-user-id');
   if (!headerUserId) {
@@ -41,7 +51,17 @@ export function telegramAuthMiddleware(req: Request, res: Response, next: NextFu
   }
 
   const initData = req.header('x-telegram-init-data');
-  if (BOT_TOKEN && initData) {
+
+  if (initData) {
+    if (!BOT_TOKEN) {
+      if (IS_PRODUCTION) {
+        res.status(500).json({ error: 'telegram_auth_not_configured' });
+        return;
+      }
+      next();
+      return;
+    }
+
     const result = validateInitData(initData, BOT_TOKEN);
     if (!result.ok) {
       res.status(401).json({ error: 'invalid_telegram_init_data' });
@@ -55,7 +75,7 @@ export function telegramAuthMiddleware(req: Request, res: Response, next: NextFu
     return;
   }
 
-  if (AUTH_STRICT && BOT_TOKEN) {
+  if (IS_PRODUCTION || (AUTH_STRICT && BOT_TOKEN)) {
     res.status(401).json({ error: 'missing_telegram_init_data' });
     return;
   }
