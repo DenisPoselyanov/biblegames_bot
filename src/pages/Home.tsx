@@ -16,7 +16,8 @@ import type { DailyPlanItem, Recommendation } from '../types';
 import { formatRecommendation, getRecommendationLink } from '../lib/recommendationEngine';
 import { isFeatureEnabled } from '../lib/flags';
 import { buildReviewQueue } from '../lib/reviewScheduler';
-import { useTopicHierarchies } from '../context/TopicHierarchyContext';
+import { loadTopicHierarchy } from '../data/topicDbLoader';
+import type { TopicNode } from '../types';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import styles from './Home.module.css';
@@ -37,7 +38,7 @@ export function Home() {
   const { shouldEnter } = useMotionEntrance('home');
   const { profile, getRecommendations, getDailyPlan } = usePlayer();
   const { displayName } = useTelegram();
-  const { hierarchies } = useTopicHierarchies();
+  const [reviewHierarchy, setReviewHierarchy] = useState<TopicNode | null>(null);
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
   const translation = normalizeBollsTranslation(profile.bibleTranslation);
   const [dailyVerse, setDailyVerse] = useState<DailyScripture | typeof FALLBACK_DAILY>(FALLBACK_DAILY);
@@ -88,7 +89,18 @@ export function Home() {
   const streakFire = profile.streakDays >= 3 ? '🔥' : profile.streakDays >= 1 ? '✨' : '';
 
   const reviewThemeId = profile.activeTheme;
-  const reviewHierarchy = reviewSchedulerV2 && reviewThemeId ? hierarchies?.[reviewThemeId] : null;
+
+  useEffect(() => {
+    if (!reviewSchedulerV2 || !reviewThemeId) return;
+    let cancelled = false;
+    void loadTopicHierarchy(reviewThemeId).then((root) => {
+      if (!cancelled) setReviewHierarchy(root);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [reviewThemeId]);
+
   const reviewQueue = useMemo(
     () => (reviewHierarchy ? buildReviewQueue(profile, reviewHierarchy, reviewThemeId) : []),
     [reviewHierarchy, profile, reviewThemeId],
