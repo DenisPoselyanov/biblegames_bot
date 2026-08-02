@@ -33,7 +33,7 @@
 | 0 | Baseline, audit and roadmap | completed | `d4ad558` (sync) + `7787929` (phase-00) | — |
 | 1 | Architecture boundaries and migrations | completed | `7be74d9`, `c923220`, `84b7912` | — |
 | 2 | Premium design system and Telegram shell | completed | `2f4265a`, `50f846b`, `d0ff1ff`, `811977e`, `3b1b702` | — |
-| 3 | Learning-first navigation | planned | — | Phase 2 |
+| 3 | Learning-first navigation | completed | `31fffb9`, `3368f00`, `37ffa96` | — |
 | 4 | Today, daily plan and streak | planned | — | Phase 3 |
 | 5 | Learning plans and lessons | planned | — | Phase 4 |
 | 6 | Learning practice and review | planned | — | Phase 5 |
@@ -504,3 +504,121 @@ Telegram-користувачі отримують нативну кнопку "
 ### Next phase readiness
 
 ready — Phase 3 (Learning-first navigation) може стартувати на `main`; перший реальний feature-flag реєстр (`flags.ts` + `learning_first_navigation`) буде введено саме там.
+
+## Phase 3 — Learning-first navigation
+
+Status: completed
+
+### Goal
+
+Ввести перший реальний feature-flag реєстр (`flags.ts`) і використати його для м'якого, повністю відкатного зсуву навігації в бік навчання: рекомендації замість генеричного CTA на Home, перейменування вкладки "Гра". Без побудови повноцінного "Today"-дашборду (це Phase 4) і без зміни маршрутів/структури табів.
+
+### Product outcome
+
+За замовчуванням (flag off) — жодних видимих змін, Home і tab bar виглядають ідентично до Phase 2. З увімкненим `learning_first_navigation` (env override для QA): на Home замість кнопки "Продовжити дослідження" рендеряться 1-3 персоналізовані картки-рекомендації (continue-practice / weakness / next-logical / review-scheduled), вкладка "Гра" перейменована на "Навчання".
+
+### Scope
+
+- `src/lib/flags.ts` (новий) — `FlagName` union + `FLAG_DEFAULTS` реєстр, `isFeatureEnabled(name)` з env-override (`VITE_FLAG_<NAME>`, напр. `VITE_FLAG_LEARNING_FIRST_NAVIGATION=true` в `.env.local`). Задекларовано лише один флаг — `learning_first_navigation` (default `false`) — без попереднього scaffolding флагів майбутніх фаз.
+- `.env.example` — документовано конвенцію override.
+- `src/pages/Home.tsx` / `Home.module.css` — під флагом виклик вже існуючого `usePlayer().getRecommendations(3)` (був у `PlayerContext`, раніше не використовувався жодною сторінкою), рендер через вже існуючі `formatRecommendation()`/`getRecommendationLink()` з `recommendationEngine.ts`. При flag off — точно той самий JSX, що й до Phase 3.
+- `src/components/Layout.tsx` — під тим самим флагом перейменування лейбла вкладки "play" ("Гра" → "Навчання"). Маршрут (`/play`) і `getTabKey()`-мапінг незмінні.
+
+### Out of scope
+
+- "Today"-дашборд, daily plan, server-side streak — Phase 4 (`today_dashboard`, `daily_plan_v2`, `server_streak`).
+- Реструктуризація маршрутів / об'єднання Home+PlayHub / зміна порядку вкладок — свідомо відкладено як надто ризиковане для одного флага; поточний порядок (Головна→Гра→Крамниця→Профіль) лишається.
+- Попереднє додавання флагів майбутніх фаз у реєстр (`today_dashboard` тощо) — додаються лише коли стартує їхня фаза, той самий принцип, що й у Phase 2 щодо `.glass-card`.
+- Виправлення pre-existing lint/typecheck/`test-classification` baseline.
+
+### Dependencies
+
+Phase 2.
+
+### Contract created for next phases
+
+- `src/lib/flags.ts` — конвенція для будь-якого майбутнього flag-гейтингу: додати запис у `FlagName` union + `FLAG_DEFAULTS`, override через `VITE_FLAG_<NAME>`. Phase 4+ додають свої флаги сюди по мірі старту, а не одразу всі.
+- Патерн виклику `getRecommendations()`/`formatRecommendation()`/`getRecommendationLink()` на сторінці — готовий до повторного використання в Phase 4 (Today dashboard) і Phase 6 (review scheduler UI).
+
+### Files and modules affected
+
+`src/lib/flags.ts` (нове), `.env.example`, `src/pages/Home.tsx`, `src/pages/Home.module.css`, `src/components/Layout.tsx`, `docs/product-rebuild/MASTER_ROADMAP.md`.
+
+### API changes
+
+Немає.
+
+### Data model changes
+
+Немає.
+
+### Data migrations
+
+Немає.
+
+### Feature flags
+
+| Flag | Default | Стан після фази |
+|---|---|---|
+| `learning_first_navigation` | off | Гейтує Home recommendation-блок і Play-tab лейбл. Реєстр більше не порожній (перший запис). |
+
+### UX impact
+
+Немає в дефолтному стані (flag off). З увімкненим флагом (лише dev/QA через env, не production default): персоналізовані рекомендації на Home, вкладка "Навчання" замість "Гра".
+
+### Accessibility impact
+
+Немає (ті самі семантичні `Link`-елементи, той самий tab bar markup).
+
+### Security impact
+
+Немає.
+
+### Performance impact
+
+Немає вимірних змін; `getRecommendations()` вже викликав `loadAllTopicHierarchies()` при кожному виклику — Home тепер викликає його лише коли flag on.
+
+### Tests
+
+- `npx tsc -b` — ✅ 0 помилок.
+- `npm run build` — ✅, без нових помилок/попереджень понад baseline (ті самі chunk-size і `INEFFECTIVE_DYNAMIC_IMPORT` попередження).
+- `npm run lint` — 56 errors / 26 warnings, той самий baseline.
+- `npm run smoke-audit` — ✅.
+- `npm run test-social` — ✅.
+- Ручна browser-перевірка (dev server): flag off → Home/tab bar рендерять байт-в-байт той самий текст/CTA, що до Phase 3 (звірено через `get_page_text` + DOM-інспекцію tab bar лейблів). Flag on (`VITE_FLAG_LEARNING_FIRST_NAVIGATION=true` в `.env.local`, dev-сервер перезапущено) → рекомендації рендеряться (`next-logical` для порожнього профілю: "Почати вивчення: Старий/Новий Завіт"), вкладка показує "Навчання"; клік по картці рекомендації коректно веде на `/play/study/themes/old-testament` і рендерить сторінку теми.
+
+### Acceptance criteria
+
+- `flags.ts` реєстр введено, `learning_first_navigation` — перший запис — ✅
+- Flag off не змінює жодного видимого поведінки/розмітки — ✅ (перевірено вручну)
+- Flag on рендерить рекомендації і перейменовує вкладку, наскрізна навігація по рекомендації працює — ✅ (перевірено вручну)
+- Жодних регресій у build/lint/test baseline — ✅
+- Кожна хвиля закомічена окремо — ✅ (`31fffb9`, `3368f00`, `37ffa96`)
+
+### Risks
+
+Немає нових ризиків у risk register. Flag default залишається `off` — production-поведінка не змінена цією фазою.
+
+### Rollback plan
+
+Кожен коміт незалежний і відкатний окремо через `git revert`: `flags.ts` — суто additive, нічого його не імпортує критично; Home-зміна і Layout-зміна обидві guarded тим самим флагом (default off), тож навіть без revert — просто не вмикати флаг в production еквівалентно повному відкату.
+
+### Completed work
+
+- `31fffb9` — phase-03a: `flags.ts` реєстр + `.env.example`.
+- `3368f00` — phase-03b: gated recommendation cards на Home.
+- `37ffa96` — phase-03c: gated Play-tab лейбл.
+- (цей коміт) — phase-03d: документація (цей роздiл).
+
+### Deviations from plan
+
+Немає — фаза виконана точно за узгодженим з користувачем обсягом ("інфраструктура + м'який nav-зсув", без повної IA-перебудови).
+
+### Known limitations
+
+- Реальний rollout (production default → `true`) не виконувався в цій фазі — флаг лишається `off` за замовчуванням; рішення про ввімкнення в проді — окреме майбутнє рішення, не частина Phase 3.
+- Порядок вкладок (Home першою) і структура Home/PlayHub як окремих сторінок не переглядались — залишається темою для Phase 4+, якщо знадобиться глибша IA-зміна.
+
+### Next phase readiness
+
+ready — Phase 4 (Today, daily plan and streak) може стартувати на `main`; додає `today_dashboard`, `daily_plan_v2`, `server_streak` у той самий `flags.ts` реєстр.
