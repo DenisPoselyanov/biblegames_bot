@@ -37,7 +37,7 @@
 | 4 | Today, daily plan and streak | completed | `e24aeaf`, `cc5c14d`, `561ee5c`, `e2eb8b3`, `a9fc72e` | — |
 | 5 | Learning plans and lessons | completed | `574cc4b`, `57543aa`, `ddec7ca`, `257cb1b` | — |
 | 6 | Learning practice and review | completed | `0d56915`, `feae4ca`, `b2be7b3`, `230d839`, `12956fd`, `949cfdb` | — |
-| 7 | Progress, profile and settings | planned | — | Phase 6 |
+| 7 | Progress, profile and settings | completed | `f055433`, `d4faadd`, `0163d09`, `7db72d2` | — |
 | 8 | Shop, wallet and entitlements | planned | — | Phase 7 |
 | 9 | Server-backed social and groups | planned | — | Phase 3, 4 |
 | 10 | AI core and content pipeline (детальний план — [AI_SYSTEM_REBUILD_ROADMAP.md](./AI_SYSTEM_REBUILD_ROADMAP.md)) | planned | — | Phase 1, 5 |
@@ -1010,3 +1010,124 @@ Phase 5.
 ### Next phase readiness
 
 ready — Phase 7 (Progress, profile and settings) може стартувати на `main`; `profile.reviewSchedules` і `buildReviewQueue()` доступні для будь-яких progress-агрегацій без дублювання SM-2-lite логіки.
+
+## Phase 7 — Progress, profile and settings
+
+Status: completed
+
+### Goal
+
+Звести розкидані по `Home.tsx`/`dailyPlan.ts` та Phase 6 обчислення (точність 7д/30д, освоєні підтеми, пройдені етапи, прострочені повторення) в один прогрес-дашборд під `progress_dashboard_v2` (default `off`). За рішенням користувача — лише дашборд, без нових settings/notification UI (наявний `Profile.tsx` переклад-picker і соціальні toggles не чіпаються).
+
+### Product outcome
+
+За замовчуванням (флаг off) — жодних видимих змін: `Profile.tsx` виглядає й поводиться байт-в-байт як після Phase 6. З увімкненим `progress_dashboard_v2`: на `Profile` з'являється посилання "Прогрес навчання" (поруч із "Загальний Рейтинг") на нову сторінку `/profile/progress`, яка показує серію (`StreakBadge`), точність 7д/30д, кількість освоєних підтем, кількість пройдених етапів, прогрес рангу/мудрості, і — якщо є прострочені повторення (сумарно по всіх розблокованих темах) — CTA "🔄 Повторити N тем" на чергу повторення активної теми.
+
+### Scope
+
+- `src/lib/flags.ts` + `.env.example` — `progress_dashboard_v2` (default `false`), той самий `VITE_FLAG_<NAME>` override-патерн.
+- `src/types/index.ts` — новий тип `ProgressSummary` — суто agregate view, не persisted.
+- `src/lib/progressDashboard.ts` (нове) — `buildProgressSummary(profile, answerHistory, hierarchies)`: тонка композиція наявних Phase 4-6 функцій (`buildLearningInsight()`, `countTotalPassedStages()`, `buildReviewQueue()`, `computeWisdomProgress()`, `formatRankLabel()`) — жодної нової логіки підрахунку.
+- `src/pages/ProgressDashboard.tsx` + `.module.css` (нове) — сторінка `/profile/progress`, реєстрована в `App.tsx`; секції: серія, kpi-грід (точність 7д/30д, освоєні підтеми, пройдені етапи — той самий візуальний патерн `.kpiCard`, що й на `Home`), ранг/мудрість progress bar, review-due CTA (лінкує на `/play/study/review-queue/:themeId` активної теми — той самий цільовий маршрут, що вже використовує Home).
+- `src/pages/Profile.tsx` — під `progress_dashboard_v2`: одне посилання "Прогрес навчання" (той самий `.ratingBtn` стиль, що й "Загальний Рейтинг"), лінкує на `/profile/progress`.
+
+### Out of scope
+
+- Нові notification/settings UI — наявні переклад-picker і соціальні toggles в `Profile.tsx` не чіпаються.
+- Нові persisted-поля чи міграції — дашборд лише читає наявні `PlayerProfile` дані.
+- Кросс-темна сторінка черги повторення — `reviewDueCount` на дашборді сумує прострочені об'єкти по всіх розблокованих темах, але CTA лінкує лише на чергу активної теми (та сама модель з одним `ReviewQueue.tsx` на тему, що й Phase 6); задокументовано як Known limitation, не блокер.
+- Розширення `PlayerRankCard.tsx`/системи досягнень — дашборд показує компактну версію прогресу рангу, не переробляє наявний компонент.
+
+### Dependencies
+
+Phase 6.
+
+### Contract created for next phases
+
+- `ProgressSummary`/`buildProgressSummary()` (`src/lib/progressDashboard.ts`) — єдина точка агрегації прогрес-даних; будь-яке майбутнє UI (Phase 8+ shop/wallet, чи розширення profile) має перевикористовувати цю функцію, а не переобчислювати `buildLearningInsight`/`buildReviewQueue` напряму.
+
+### Files and modules affected
+
+`src/lib/flags.ts`, `.env.example`, `src/types/index.ts`, `src/lib/progressDashboard.ts` (нове), `src/pages/ProgressDashboard.tsx` (нове), `src/pages/ProgressDashboard.module.css` (нове), `src/App.tsx`, `src/pages/Profile.tsx`, `docs/product-rebuild/MASTER_ROADMAP.md`.
+
+### API changes
+
+Немає.
+
+### Data model changes
+
+Немає нових persisted-полів; `ProgressSummary` — суто client-side derived тип, нічого не зберігається.
+
+### Data migrations
+
+Немає.
+
+### Feature flags
+
+| Flag | Default | Стан після фази |
+|---|---|---|
+| `progress_dashboard_v2` | off | Гейтує посилання на `Profile` і саму сторінку `ProgressDashboard`. |
+
+### UX impact
+
+Немає в дефолтному стані (флаг off). З `progress_dashboard_v2` on: з'являється нове посилання на `Profile` і сторінка з агрегованою статистикою навчання, яких раніше ніде не було зведено разом.
+
+### Accessibility impact
+
+Немає прямого впливу — ті самі семантичні `Link`/`Icon`-кнопка "назад", що й `Lesson.tsx`/`ReviewQueue.tsx`.
+
+### Security impact
+
+Немає.
+
+### Performance impact
+
+Немає вимірних змін для флага off. З флагом on: `ProgressDashboard.tsx` завантажує `loadTopicHierarchy()` для кожної розблокованої теми гравця при монтуванні (той самий deep-resolving loader, кешований після першого виклику) — для типового гравця з невеликою кількістю розблокованих тем це дешево.
+
+### Tests
+
+- `npx tsc -b` — ✅ 0 помилок після кожної хвилі.
+- `npm run build` — ✅, без нових помилок/попереджень понад baseline.
+- `npm run lint` — 56 errors / 26 warnings, той самий baseline, що й Phase 6.
+- `npm run smoke-audit` — ✅.
+- `npm run test-social` — ✅.
+- Ручна browser-перевірка (dev server): флаг off → `Profile` без посилання "Прогрес навчання". Флаг on → посилання з'являється, `/profile/progress` рендерить серію/точність/освоєні підтеми/етапи/ранг коректно для свіжого профілю (усі нулі, без CTA повторення). Симульований прострочений розклад для `patriarchs:patriarchs-sub-1-sub-1` → CTA "🔄 Повторити 1 тем" з'являється і лінкує на `/play/study/review-queue/patriarchs` — коректний `practicePath` підтверджено в Phase 6.
+
+### Acceptance criteria
+
+- `flags.ts` реєстр розширено новим флагом, default off — ✅
+- `buildProgressSummary()` — тонка композиція наявних функцій, без дублювання логіки — ✅
+- Flag off не змінює жодного видимого поведінки/розмітки `Profile.tsx` — ✅ (перевірено вручну)
+- `progress_dashboard_v2` on показує коректні агреговані дані й review-due CTA — ✅
+- Жодних регресій у typecheck/build/lint/test baseline — ✅
+- Кожна хвиля закомічена окремо — ✅ (`f055433`, `d4faadd`, `0163d09`, `7db72d2`)
+
+### Risks
+
+Немає нових ID у risk register. Production default лишається `off` — ця фаза не змінює production-поведінку.
+
+### Rollback plan
+
+Кожен коміт (`phase-07a`…`phase-07d`) незалежний і відкатний окремо через `git revert`: флаг/дата-шар — суто additive; `ProgressDashboard.tsx`+маршрут — інертні, поки на них не лінкує `Profile`; `Profile`-зміна guarded `progress_dashboard_v2` (default off) — навіть без revert, просто не вмикати флаг еквівалентно повному відкату.
+
+### Completed work
+
+- `f055433` — phase-07a: `progress_dashboard_v2` у реєстр флагів + `.env.example`.
+- `d4faadd` — phase-07b: `ProgressSummary` тип + `progressDashboard.ts` (`buildProgressSummary()`).
+- `0163d09` — phase-07c: `ProgressDashboard.tsx` сторінка + маршрут в `App.tsx`.
+- `7db72d2` — phase-07d: посилання на `Profile.tsx`.
+- (цей коміт) — phase-07e: документація (цей розділ, оновлення таблиці статусу фаз).
+
+### Deviations from plan
+
+Немає — фаза виконана точно за узгодженим scope (лише прогрес-дашборд, без нових settings/notification UI).
+
+### Known limitations
+
+- `reviewDueCount` на дашборді сумує прострочені об'єкти по всіх розблокованих темах гравця, але CTA-посилання веде лише на чергу повторення активної теми (`profile.activeTheme`) — якщо прострочені об'єкти є в іншій темі, лічильник це врахує, але клік не приведе прямо до них. Узгоджено з тим, що `ReviewQueue.tsx` (Phase 6) — це одна сторінка на тему; кросс-темна агрегована черга — не в скоупі цієї фази.
+- Ранг/мудрість на дашборді — компактна версія того самого прогресу, що вже показує `PlayerRankCard.tsx` на `Profile`; дублювання інформації в двох місцях свідоме (різний контекст: повна дорожня карта рангів проти короткого прогрес-бару).
+- Production rollout (default → `true`) не виконувався — рішення про ввімкнення окреме майбутнє.
+
+### Next phase readiness
+
+ready — Phase 8 (Shop, wallet and entitlements) може стартувати на `main`.
