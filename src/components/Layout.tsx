@@ -1,7 +1,11 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Tabbar } from 'react-vant';
 import { Icon } from './Icon';
+import { isFeatureEnabled } from '../lib/flags';
 import styles from './Layout.module.css';
+
+const learningFirstNav = isFeatureEnabled('learning_first_navigation');
+const playTabLabel = learningFirstNav ? 'Навчання' : 'Гра';
 
 type TabKey = 'home' | 'play' | 'shop' | 'profile';
 
@@ -57,7 +61,7 @@ export function Layout() {
             Головна
           </Tabbar.Item>
           <Tabbar.Item name="play" icon={<Icon name="play" size={22} aria-hidden />}>
-            Гра
+            {playTabLabel}
           </Tabbar.Item>
           <Tabbar.Item name="shop" icon={<Icon name="shop" size={22} aria-hidden />}>
             Крамниця
