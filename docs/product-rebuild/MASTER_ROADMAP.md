@@ -35,7 +35,7 @@
 | 2 | Premium design system and Telegram shell | completed | `2f4265a`, `50f846b`, `d0ff1ff`, `811977e`, `3b1b702` | — |
 | 3 | Learning-first navigation | completed | `31fffb9`, `3368f00`, `37ffa96` | — |
 | 4 | Today, daily plan and streak | completed | `e24aeaf`, `cc5c14d`, `561ee5c`, `e2eb8b3`, `a9fc72e` | — |
-| 5 | Learning plans and lessons | planned | — | Phase 4 |
+| 5 | Learning plans and lessons | completed | `574cc4b`, `57543aa`, `ddec7ca`, `257cb1b` | — |
 | 6 | Learning practice and review | planned | — | Phase 5 |
 | 7 | Progress, profile and settings | planned | — | Phase 6 |
 | 8 | Shop, wallet and entitlements | planned | — | Phase 7 |
@@ -119,7 +119,7 @@
 | R-010 | Invalid `correctIndex` може нормалізуватись небезпечним fallback (`0`) замість rejection | high | high | Deterministic question validation забороняє цей fallback (Phase 10.1) | — | open |
 | R-011 | Немає `MockProvider` — AI-тести (якщо є) залежать від реального provider виклику | medium | medium | Provider abstraction + MockProvider (Phase 10.2) | — | open |
 | R-012 | Python launcher (`ai_launcher.py`, `ollama_launcher.py`) має хардкоджені provider/model списки, розсинхронізовані з `.mjs`-скриптами | medium | medium | Machine-readable registry, яким користується і launcher (Phase 10.5) | — | open |
-| R-013 | AI може генерувати питання без `learningObjectiveId`, поза навчальною ієрархією | medium | medium | Обов'язковий `learningObjectiveId` у схемі питання (Phase 5 контракт + Phase 10.1) | — | open |
+| R-013 | AI може генерувати питання без `learningObjectiveId`, поза навчальною ієрархією | medium | medium | Обов'язковий `learningObjectiveId` у схемі питання (Phase 5 контракт + Phase 10.1) | — | mitigated (Phase 5, `getLearningObjectiveId()`, `57543aa`) — стабільний id вже доступний; обов'язковість у question schema лишається за Phase 10.1 |
 
 ## Phase 0 — Baseline, audit and roadmap
 
@@ -754,3 +754,131 @@ R (новий, не в risk register окремим ID, задокументов
 ### Next phase readiness
 
 ready — Phase 5 (Learning plans and lessons) може стартувати на `main`; додає `learning_plans`, `lesson_experience_v2` у той самий `flags.ts` реєстр, і може повторно використати `DailyPlanItem`/`buildDailyPlan()` як основу для plan-based lesson sequencing.
+
+## Phase 5 — Learning plans and lessons
+
+Status: completed
+
+### Goal
+
+Ввести `learningObjectiveId` — стабільний ідентифікатор навчальної одиниці, якого потребує Phase 10 (R-013, AI-контент-пайплайн блокується на ньому) — і закрити реальний UX-розрив: вибір теми в `ThemeDetail.tsx` раніше вів одразу в квіз-етап практики, без жодного проміжного "уроку" чи явної впорядкованої навчальної програми (curriculum), лише деревом підтем + списком рівнів складності. Обидва — за новими флагами (`learning_plans`, `lesson_experience_v2`), default `off`, без зміни поведінки існуючого практика/квіз-механізму.
+
+### Product outcome
+
+За замовчуванням (обидва флаги off) — `ThemeDetail` виглядає й поводиться байт-в-байт як після Phase 4. З увімкненим `learning_plans`: на кореневій сторінці теми (без обраного вузла) з'являється секція "Навчальний план" — впорядкований список листкових підтем з індикатором прогресу (✓ пройдено / … в процесі / порожньо). З `lesson_experience_v2` (додатково до `learning_plans`): клік по кроку плану веде на нову сторінку-урок (короткий текст + до двох цитат Писання з посиланням) з кнопкою "Почати практику", яка веде в той самий квіз-етап, що й раніше. Без `lesson_experience_v2` (лише `learning_plans` on) — крок плану веде напряму в практику, як і решта UI.
+
+### Scope
+
+- `src/lib/flags.ts` + `.env.example` — `learning_plans`, `lesson_experience_v2` (обидва default `false`), той самий `VITE_FLAG_<NAME>` override-патерн.
+- `src/types/index.ts` — нові типи `LearningObjectiveId`, `LessonBlock`, `Lesson`, `LearningPlanStep`, `LearningPlan`.
+- `src/lib/learningObjectives.ts` (нове) — `getLearningObjectiveId(themeId, nodeId)` → `` `${themeId}:${nodeId}` `` — детермінований, без міграції даних; це і є Phase 5→10 контракт для R-013.
+- `src/lib/learningPlan.ts` (нове) — `buildLearningPlan()`: DFS по topic hierarchy, збирає листкові вузли (без `aggregateThemeIds`) у порядку документа як послідовність; статус кроку (`completed`/`in_progress`/`available`) рахується через вже існуючі `findPracticeTrack`/`countPassedStages`/`getPracticeStageCount` з `practiceProgression.ts` (той самий механізм, що й per-difficulty список на `ThemeDetail`), без дублювання логіки анлоків.
+- `src/lib/lessonContent.ts` (нове) — `buildLessonForNode()`: збирає `Lesson` з уже наявних даних — `TopicNode.description` (текстовий блок) + до 2 унікальних `Question.reference` з вибірки через існуючий `fetchQuestionsForSession()`. Жодного нового контент-джерела чи AI-залежності — це Phase 10.
+- `src/pages/Lesson.tsx` + `Lesson.module.css` (нове) — сторінка `/play/study/lesson/:themeId/:nodeId`, реєстрована в `App.tsx` (маршрут існує незалежно від флагів — інертний, поки на нього ніхто не лінкує).
+- `src/pages/ThemeDetail.tsx` / `ThemeDetail.module.css` — під `learning_plans`, лише на кореневому рівні теми (без обраного вузла, не агрегат): секція "Навчальний план" над деревом ієрархії; посилання кроку — `lessonPath`, якщо `lesson_experience_v2` теж on, інакше напряму `practicePath` (той самий `getStageQuizPath()`, що й решта сторінки).
+
+### Out of scope
+
+- AI-генерація контенту уроків — це Phase 10 (`ai_core_v2` та підетапи); Phase 5 лише готує схему (`Lesson`/`LessonBlock`) і стабільний id, контент — похідний від наявних даних.
+- Явне поле порядку (`order`) у `TopicNode` — послідовність плану використовує наявний порядок дітей у JSON; задокументовано як Known limitation, не блокер.
+- Зміна механіки складності/етапів практики (`practiceProgression.ts`, `PracticeStageStepper`) — Phase 5 лише читає з неї, нічого не змінює.
+- Урок для вже обраного вузла (drill-down стан `ThemeDetail`) — план рендериться лише на кореневому рівні теми; per-node UI лишається як є.
+
+### Dependencies
+
+Phase 4.
+
+### Contract created for next phases
+
+- `getLearningObjectiveId(themeId, nodeId)` (`src/lib/learningObjectives.ts`) — стабільний id, яким Phase 10 має розмічати AI-згенеровані питання/уроки (R-013); question schema (Phase 10.1) додає це поле як обов'язкове.
+- `Lesson`/`LessonBlock` (`src/types/index.ts`) — мінімальна форма контенту уроку; Phase 10 (AI content pipeline, `src/ai/schemas/lesson.schema.ts` за AI-роадмапом) розширює цю саму форму, а не винаходить нову.
+- `buildLearningPlan()` (`src/lib/learningPlan.ts`) — готовий шаблон впорядкованого curriculum-виду поверх topic hierarchy; Phase 6 (review scheduler) може перевикористати ту саму post-order/leaf-collection логіку.
+
+### Files and modules affected
+
+`src/lib/flags.ts`, `.env.example`, `src/types/index.ts`, `src/lib/learningObjectives.ts` (нове), `src/lib/learningPlan.ts` (нове), `src/lib/lessonContent.ts` (нове), `src/pages/Lesson.tsx` (нове), `src/pages/Lesson.module.css` (нове), `src/App.tsx`, `src/pages/ThemeDetail.tsx`, `src/pages/ThemeDetail.module.css`, `docs/product-rebuild/MASTER_ROADMAP.md`.
+
+### API changes
+
+Немає.
+
+### Data model changes
+
+Немає нових persisted-полів; `Lesson`/`LearningPlan`/`LearningPlanStep` — суто client-side derived типи, нічого не зберігається. `learningObjectiveId` — обчислюваний, не зберігається.
+
+### Data migrations
+
+Немає.
+
+### Feature flags
+
+| Flag | Default | Стан після фази |
+|---|---|---|
+| `learning_plans` | off | Гейтує секцію "Навчальний план" на кореневому рівні `ThemeDetail`. |
+| `lesson_experience_v2` | off | Гейтує перехід кроку плану на `Lesson.tsx` замість прямого переходу в практику. |
+
+### UX impact
+
+Немає в дефолтному стані (обидва флаги off). З `learning_plans` on: явна впорядкована навчальна програма замість лише дерева підтем. З обома on: короткий вступний екран перед практикою для кожної підтеми.
+
+### Accessibility impact
+
+Немає прямого впливу — ті самі семантичні `Link`/`ol`/`li` елементи, `Lesson.tsx` використовує ту саму `Icon`-кнопку "назад", що й `ThemeDetail`.
+
+### Security impact
+
+Немає.
+
+### Performance impact
+
+Немає вимірних змін для флагів off. З `learning_plans` on: `buildLearningPlan()` — чистий DFS без мережевих викликів (topic hierarchy вже завантажена). З `lesson_experience_v2` on: `Lesson.tsx` робить один додатковий `fetchQuestionsForSession()` виклик (count=3) при відкритті уроку — той самий репо-виклик, що й квіз використовує для вибірки питань.
+
+### Tests
+
+- `npx tsc -b` — ✅ 0 помилок після кожної хвилі.
+- `npm run build` — ✅, без нових помилок/попереджень понад baseline (ті самі `INEFFECTIVE_DYNAMIC_IMPORT` і chunk-size попередження).
+- `npm run lint` — 56 errors / 26 warnings, той самий baseline.
+- `npm run smoke-audit` — ✅.
+- `npm run test-social` — ✅.
+- Ручна browser-перевірка (dev server, тема `patriarchs`): обидва флаги off → `ThemeDetail` рендерить той самий вигляд, що в Phase 4 (дерево підтем + рівні складності, без секції плану). `learning_plans` on, `lesson_experience_v2` off → з'являється "Навчальний план" з 20 кроками (усі листкові підтеми `patriarchs`), кожен лінкує напряму на `/play/study/quiz/patriarchs/baby/stage/0/<nodeId>`. Обидва on → той самий крок лінкує на `/play/study/lesson/patriarchs/<nodeId>`; сторінка уроку рендерить текстовий блок з опису підтеми + 2 цитати з посиланнями (напр. "Бут. 12:7", "Бут. 12:5"), кнопка "Почати практику" коректно веде в той самий квіз-етап і рендерить питання.
+
+### Acceptance criteria
+
+- `flags.ts` реєстр розширено двома новими флагами, default off — ✅
+- `getLearningObjectiveId()` — стабільний, детермінований, задокументований як Phase 10 контракт — ✅
+- Flag off не змінює жодного видимого поведінки/розмітки `ThemeDetail` — ✅ (перевірено вручну)
+- `learning_plans` on рендерить впорядкований план, що коректно навігує в практику — ✅
+- Обидва флаги on ведуть через `Lesson.tsx` з коректно зібраним контентом і робочим CTA — ✅
+- Жодних регресій у typecheck/build/lint/test baseline — ✅
+- Кожна хвиля закомічена окремо — ✅ (`574cc4b`, `57543aa`, `ddec7ca`, `257cb1b`)
+
+### Risks
+
+R-013 — mitigated (стабільний `learningObjectiveId` доступний; обов'язковість поля в question schema лишається за Phase 10.1). Немає нових ID у risk register. Production default лишається `off` для обох флагів — ця фаза не змінює production-поведінку.
+
+### Rollback plan
+
+Кожен коміт (`phase-05a`…`phase-05d`) незалежний і відкатний окремо через `git revert`: флаги/типи/дата-шар — суто additive; `Lesson.tsx`+маршрут — інертні, поки на них не лінкує `ThemeDetail`; `ThemeDetail`-зміна guarded `learning_plans` (default off) — навіть без revert, просто не вмикати флаг еквівалентно повному відкату.
+
+### Completed work
+
+- `574cc4b` — phase-05a: `learning_plans`, `lesson_experience_v2` у реєстр флагів + `.env.example`.
+- `57543aa` — phase-05b: типи (`Lesson`, `LessonBlock`, `LearningPlan`, `LearningPlanStep`) + `learningObjectives.ts` + `learningPlan.ts`.
+- `ddec7ca` — phase-05c: `lessonContent.ts` + `Lesson.tsx` сторінка + маршрут в `App.tsx`.
+- `257cb1b` — phase-05d: секція "Навчальний план" на `ThemeDetail` (`learning_plans`).
+- (цей коміт) — phase-05e: документація (цей розділ, оновлення таблиці статусу фаз і risk register).
+
+### Deviations from plan
+
+Немає — фаза виконана точно за узгодженим scope (два флаги, дані-шар + нова сторінка уроку + UI-хвиля на `ThemeDetail`, без зміни existing practice/quiz механіки).
+
+### Known limitations
+
+- Послідовність навчального плану — це порядок дітей у наявному JSON topic hierarchy, немає окремого явного поля `order`; якщо авторський порядок колись розійдеться з бажаною педагогічною послідовністю, знадобиться або нове поле, або ручне пересортування даних.
+- Контент уроку — це похідне з наявних `description`/`reference` полів, не справжній AI-згенерований навчальний матеріал; повноцінний контент з'явиться лише в Phase 10.
+- Статус кроку плану рахується лише проти `baby`-складності (завжди розблокована) — не відображає прогрес на вищих рівнях складності; для curriculum-огляду це свідомий спрощення, не баг.
+- Production rollout (default → `true` для будь-якого з двох флагів) не виконувався — рішення про ввімкнення окреме майбутнє.
+
+### Next phase readiness
+
+ready — Phase 6 (Learning practice and review) може стартувати на `main`; додає `review_scheduler_v2` у той самий `flags.ts` реєстр, і може повторно використати `buildLearningPlan()`/leaf-collection логіку для review-scheduling поверх тієї самої ієрархії.
