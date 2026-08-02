@@ -306,6 +306,93 @@ Phase/feature не позначається `completed`, якщо є лише:
 
 ---
 
+# ADR-009 — Ребрендинг на тему «Світло» і semantic theme system
+
+**Дата:** 2026-08-02  
+**Статус:** accepted, implementation pending Phase 3  
+**Деталі:** [`PHASE_3_REBRANDING_AND_THEME_SYSTEM.md`](./PHASE_3_REBRANDING_AND_THEME_SYSTEM.md), [`DESIGN_RULES.md`](./DESIGN_RULES.md)
+
+## Контекст
+
+Поточний код використовує темну тему `classic` як default і ранню модель косметичних themes. Власник продукту затвердив новий візуальний напрям за наданими референсами: теплий світлий фон, deep navy, restrained gold, serif display typography, м’які картки, багато повітря та стримані духовні ілюстрації.
+
+Потрібно уникнути двох помилок:
+
+- механічно скопіювати окремі кнопки, navigation або screen structure з референсів;
+- створити один жорстко захардкоджений світлий дизайн, який неможливо розширити майбутніми темами.
+
+## Рішення
+
+- канонічний напрям бренду: **premium spiritual minimalism**;
+- базова тема: `Світло` зі stable ID `light`;
+- `Світло` є безкоштовною, always-available і default theme;
+- основний canvas — warm ivory;
+- primary functional color — deep navy;
+- muted gold — spiritual/progress accent, а не універсальний CTA;
+- Cormorant Garamond використовується для display hierarchy, Source Sans 3 — для UI;
+- референси визначають visual language, але не product IA;
+- усі компоненти переходять на semantic tokens;
+- legacy CSS variables тимчасово мапляться на нові aliases;
+- current `classic` і вибір existing users зберігаються під час migration;
+- future themes не можуть змінювати layout, behavior, accessibility, rewards або difficulty;
+- default theme architecture реалізується в Phase 3;
+- catalog, prices, wallet purchases та entitlements додаткових themes реалізуються в Phase 6.
+
+## Alternatives considered
+
+### Залишити `classic` основною
+
+Відхилено: не відповідає затвердженому світлому продуктового відчуттю.
+
+### Зробити лише один світлий hardcoded UI
+
+Відхилено: блокує theme economy і створює дублювання стилів.
+
+### Копіювати референсні екрани один в один
+
+Відхилено: референси можуть суперечити поточним routes, learning architecture і функціоналу.
+
+### Одразу реалізувати багато платних themes у Phase 3
+
+Відхилено: Phase 3 має довести contract на default theme; economy й entitlements належать Phase 6.
+
+## Наслідки
+
+Позитивні:
+
+- одна впізнавана ідентичність;
+- кращий mobile UX;
+- системна підтримка майбутніх themes;
+- менше hardcoded colors;
+- чітка межа між дизайном і economy;
+- accessibility baseline.
+
+Ризики:
+
+- migration великої кількості legacy styles;
+- FOUC при неправильному fallback;
+- regression existing themes;
+- надмірне використання gold або imagery;
+- bundle growth від theme assets.
+
+## Обов’язкові gates
+
+- token migration plan;
+- visual regression;
+- accessibility audit;
+- Telegram Android/iOS review;
+- existing theme preservation;
+- invalid theme fallback;
+- no FOUC;
+- feature flag і rollback;
+- owner final visual review.
+
+## Rollback
+
+Під час rollout old renderer і `classic` залишаються доступними за feature flag. Rollback не може скидати purchased themes, profile settings, progress або wallet data.
+
+---
+
 # Як додавати нові рішення
 
 Кожен новий ADR містить:
