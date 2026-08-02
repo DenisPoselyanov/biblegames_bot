@@ -1,0 +1,108 @@
+name: Sync detailed phase plans
+
+on:
+  push:
+    paths:
+      - '.github/workflows/sync-detailed-phase-plans.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: agent/unify-product-documentation
+
+      - name: Update canonical documentation links
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          master = Path('docs/BIBLE_GAMES_MASTER_SPECIFICATION.md')
+          text = master.read_text(encoding='utf-8')
+
+          hierarchy_old = """5. `DESIGN_RULES.md` — доменне джерело правди лише для дизайн-системи.
+6. `MOTION_SYSTEM.md` — доменне джерело правди для transitions, feedback, celebrations, reduced motion, authoritative triggers і motion QA.
+7. `archive/DESIGN_AUDIT.md` — знімок відповідності UI дизайн-системі.
+8. `SUPABASE_SETUP.md`, `AI_SETUP.md`, `LOCAL_TOOLS.md`, `DEVELOPER_GUIDE.md` — операційні інструкції, які не можуть змінювати продуктову архітектуру або порядок фаз.
+9. `archive/implementation_plan.md`, `archive/task.md`, `archive/MASTER_ROADMAP.md` і `archive/AI_SYSTEM_REBUILD_ROADMAP.md` — історичні матеріали."""
+          hierarchy_new = """5. `DESIGN_RULES.md` — доменне джерело правди лише для дизайн-системи.
+6. `MOTION_SYSTEM.md` — доменне джерело правди для transitions, feedback, celebrations, reduced motion, authoritative triggers і motion QA.
+7. `phases/README.md` та окремі файли `phases/PHASE_0...PHASE_8` — детальні implementation-плани, що підпорядковуються цьому документу й ADR.
+8. `archive/DESIGN_AUDIT.md` — знімок відповідності UI дизайн-системі.
+9. `SUPABASE_SETUP.md`, `AI_SETUP.md`, `LOCAL_TOOLS.md`, `DEVELOPER_GUIDE.md` — операційні інструкції, які не можуть змінювати продуктову архітектуру або порядок фаз.
+10. `archive/implementation_plan.md`, `archive/task.md`, `archive/MASTER_ROADMAP.md` і `archive/AI_SYSTEM_REBUILD_ROADMAP.md` — історичні матеріали."""
+          if hierarchy_old in text:
+              text = text.replace(hierarchy_old, hierarchy_new, 1)
+
+          phase_map = """## 11.1. Детальні implementation-плани Phase 0–8
+
+Короткі розділи нижче визначають canonical outcome, порядок і acceptance criteria. Повна технічна реалізація кожної Phase описана окремо:
+
+- [Phase 0 — Canonical Documentation and Verified Baseline](./phases/PHASE_0_CANONICAL_DOCUMENTATION_AND_BASELINE.md);
+- [Phase 1 — Production Safety & Engineering Foundation](./phases/PHASE_1_PRODUCTION_SAFETY_AND_ENGINEERING_FOUNDATION.md);
+- [Phase 2 — Core Architecture & Authoritative Data Platform](./phases/PHASE_2_CORE_ARCHITECTURE_AND_DATA_PLATFORM.md);
+- [Phase 3 — Learning Product, Rebrand & Motion](./phases/PHASE_3_LEARNING_PRODUCT_REBRAND_AND_MOTION.md);
+- [Phase 4 — Content Quality, Reviewed AI Pipeline & Content Studio](./phases/PHASE_4_CONTENT_AI_AND_CONTENT_STUDIO.md);
+- [Phase 5 — Social, Groups, Challenges & Multiplayer](./phases/PHASE_5_SOCIAL_GROUPS_CHALLENGES_AND_MULTIPLAYER.md);
+- [Phase 6 — Economy, Shop, Entitlements & Monetization](./phases/PHASE_6_ECONOMY_SHOP_ENTITLEMENTS_AND_MONETIZATION.md);
+- [Phase 7 — Performance, Offline, Accessibility & Public Release](./phases/PHASE_7_PERFORMANCE_OFFLINE_ACCESSIBILITY_AND_RELEASE.md);
+- [Phase 8 — Expansion and Bonus Capabilities](./phases/PHASE_8_EXPANSION_AND_BONUS_CAPABILITIES.md).
+
+Implementation-файли деталізують baseline коду, workstreams, API/data contracts, міграції, конфлікти, rollout, rollback і tests, але не можуть змінювати canonical phase order. Перед виконанням агент зобов’язаний звірити відповідний файл з актуальним branch і підготувати execution brief.
+
+---
+
+"""
+          marker = '# 12. Великий план фаз\n'
+          if phase_map.strip() not in text and marker in text:
+              text = text.replace(marker, phase_map + marker, 1)
+          master.write_text(text, encoding='utf-8')
+
+          prompt = Path('docs/AI_AGENT_MASTER_EXECUTION_PROMPT.md')
+          text = prompt.read_text(encoding='utf-8')
+          sources_old = """6. усі активні domain-документи, на які посилається вибрана фаза
+7. docs/MOTION_SYSTEM.md для будь-якої фази, що змінює UI, rewards, games, social, shop або performance
+8. docs/archive/CURRENT_STATE_AUDIT.md лише як історичний baseline"""
+          sources_new = """6. docs/phases/README.md і окремий implementation-файл вибраної Phase з docs/phases/
+7. усі активні domain-документи, на які посилається вибрана фаза
+8. docs/MOTION_SYSTEM.md для будь-якої фази, що змінює UI, rewards, games, social, shop або performance
+9. docs/archive/CURRENT_STATE_AUDIT.md лише як історичний baseline"""
+          if sources_old in text:
+              text = text.replace(sources_old, sources_new, 1)
+
+          brief_old = """1. Виконай read-only аудит актуальної гілки:
+   - перевір routes, imports, API, storage, database schema, env, scripts, tests і CI;"""
+          brief_new = """1. Визнач точний файл вибраної Phase у docs/phases/ і прочитай його повністю. Зістав кожний workstream, dependency, migration, conflict, test і acceptance criterion з актуальним кодом.
+
+2. Виконай read-only аудит актуальної гілки:
+   - перевір routes, imports, API, storage, database schema, env, scripts, tests і CI;"""
+          if brief_old in text:
+              text = text.replace(brief_old, brief_new, 1)
+              text = text.replace('\n2. Підготуй execution brief:', '\n3. Підготуй execution brief:', 1)
+              text = text.replace('\n3. Реалізуй фазу поступово, але без зменшення її scope:', '\n4. Реалізуй фазу поступово, але без зменшення її scope:', 1)
+              text = text.replace('\n4. Не став запитань, відповідь на які можна знайти', '\n5. Не став запитань, відповідь на які можна знайти', 1)
+          prompt.write_text(text, encoding='utf-8')
+
+          status = Path('docs/PHASE_STATUS.md')
+          text = status.read_text(encoding='utf-8')
+          note = """> Детальні implementation-плани кожної Phase: [`phases/README.md`](./phases/README.md). Статус нижче залишається коротким і не замінює відповідний Phase-файл.\n\n"""
+          if 'phases/README.md' not in text:
+              first_break = text.find('\n\n')
+              if first_break != -1:
+                  text = text[:first_break+2] + note + text[first_break+2:]
+          status.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit synchronized documentation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/sync-detailed-phase-plans.yml
+          git add docs/BIBLE_GAMES_MASTER_SPECIFICATION.md docs/AI_AGENT_MASTER_EXECUTION_PROMPT.md docs/PHASE_STATUS.md
+          git commit -m "docs: integrate detailed Phase 0-8 implementation plans"
+          git push origin HEAD:agent/unify-product-documentation
