@@ -10,6 +10,12 @@ export default defineConfig({
   base: pagesBase,
   plugins: [react()],
   cacheDir: path.join(os.tmpdir(), 'biblegames-bot-vite'),
+  resolve: {
+    alias: {
+      '@': path.resolve(import.meta.dirname, 'src'),
+      '@core': path.resolve(import.meta.dirname, 'src/core'),
+    },
+  },
   server: {
     proxy: {
       '/api': 'http://localhost:3001',

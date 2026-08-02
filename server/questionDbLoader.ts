@@ -4,11 +4,9 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Question } from '../src/types/index';
 import { normalizeQuestion, themeIdFromPath } from '../src/data/questionDbLoader.shared';
+import { createQuestionDbLoader } from '../src/data/questionDbLoader.core';
 
 const questionDbDir = join(dirname(fileURLToPath(import.meta.url)), '../data/question-db');
-
-const cache = new Map<string, Question[]>();
-const loadPromises = new Map<string, Promise<Question[]>>();
 
 function readThemeQuestions(themeId: string): Question[] {
   const path = join(questionDbDir, `${themeId}.json`);
@@ -22,38 +20,17 @@ function readThemeQuestions(themeId: string): Question[] {
   }
 }
 
-export async function loadAiQuestionsForTheme(themeId: string): Promise<Question[]> {
-  if (cache.has(themeId)) return cache.get(themeId)!;
+const loader = createQuestionDbLoader({
+  listThemeIds() {
+    if (!existsSync(questionDbDir)) return [];
+    return readdirSync(questionDbDir)
+      .filter((name: string) => name.endsWith('.json'))
+      .map((file) => themeIdFromPath(`/${file}`))
+      .filter((themeId): themeId is string => Boolean(themeId));
+  },
+  async loadTheme(themeId) {
+    return readThemeQuestions(themeId);
+  },
+});
 
-  if (!loadPromises.has(themeId)) {
-    const promise = Promise.resolve(readThemeQuestions(themeId)).then((normalized) => {
-      cache.set(themeId, normalized);
-      return normalized;
-    });
-    loadPromises.set(themeId, promise);
-  }
-
-  return loadPromises.get(themeId)!;
-}
-
-export function preloadThemeQuestions(themeId: string): void {
-  void loadAiQuestionsForTheme(themeId);
-}
-
-export function clearQuestionDbCache(): void {
-  cache.clear();
-  loadPromises.clear();
-}
-
-export async function loadAllAiQuestions(): Promise<Question[]> {
-  if (!existsSync(questionDbDir)) return [];
-  const files = readdirSync(questionDbDir).filter((name: string) => name.endsWith('.json'));
-  const all: Question[] = [];
-  for (const file of files) {
-    const themeId = themeIdFromPath(`/${file}`);
-    if (!themeId) continue;
-    const questions = await loadAiQuestionsForTheme(themeId);
-    all.push(...questions);
-  }
-  return all;
-}
+export const { loadAiQuestionsForTheme, preloadThemeQuestions, clearQuestionDbCache, loadAllAiQuestions } = loader;

@@ -20,7 +20,13 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+
+    /* Domain boundary aliases (ADR-001) — see src/core/README.md */
+    "paths": {
+      "@/*": ["./src/*"],
+      "@core/*": ["./src/core/*"]
+    }
   },
   "include": ["src"]
 }
