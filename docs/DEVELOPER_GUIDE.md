@@ -5,7 +5,7 @@
 
 **Головна думка:** ти не вчиш «нову мову з нуля». Ти вчиш **новий спосіб збирати той самий сайт**, який раніше був би `index.html` + `style.css` + `script.js`.
 
-**Дизайн-система:** кольори, відступи, теми та UI-патерни — див. [DESIGN_RULES.md](DESIGN_RULES.md). Аудит відповідності коду — [DESIGN_AUDIT.md](DESIGN_AUDIT.md).
+**Дизайн-система:** кольори, відступи, теми та UI-патерни — див. [DESIGN_RULES.md](DESIGN_RULES.md). Аудит відповідності коду — [archive/DESIGN_AUDIT.md](./archive/DESIGN_AUDIT.md).
 
 ---
 
@@ -471,7 +471,7 @@ export const DIFFICULTY_POINTS = {
 
 - **questions.ts** — основні питання вручну
 - **questions-extra.ts** — додаткові вручну
-- **data/question-db/*.json** — тисячі питань від локальної AI (Ollama), див. `scripts/AI_SETUP.md`
+- **data/question-db/*.json** — тисячі питань від локальної AI (Ollama), див. `docs/AI_SETUP.md`
 
 **Як вибираються 7 питань:**
 1. Збираються всі питання **цієї теми** і **цієї складності** (TS + JSON)
@@ -503,7 +503,7 @@ npm run generate-ai -- --theme geography --count 50
 npm run questions:stats
 ```
 
-Детально: **`scripts/AI_SETUP.md`**
+Детально: **`docs/AI_SETUP.md`**
 
 ---
 
