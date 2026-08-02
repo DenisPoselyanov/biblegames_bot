@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { useTelegram } from '../hooks/useTelegram';
 import { Icon } from '../components/Icon';
+import { StreakBadge } from '../components/StreakBadge';
 import { getAvatarById } from '../data/cosmetics';
 import { studyRepo } from '../repos/studyRepo';
 import { formatRankLabel } from '../lib/practiceProgression';
@@ -25,6 +26,9 @@ const FALLBACK_DAILY = {
 
 const learningFirstNav = isFeatureEnabled('learning_first_navigation');
 const dailyPlanV2 = isFeatureEnabled('daily_plan_v2');
+const todayDashboard = isFeatureEnabled('today_dashboard');
+
+const TODAY_DATE_FORMAT = new Intl.DateTimeFormat('uk-UA', { day: 'numeric', month: 'long' });
 
 export function Home() {
   const { shouldEnter } = useMotionEntrance('home');
@@ -82,6 +86,14 @@ export function Home() {
   return (
     <section className={styles.page}>
       <header className={styles.header}>
+        {todayDashboard && (
+          <div className={styles.todayRow}>
+            <span className={styles.todayDate}>
+              Сьогодні, {TODAY_DATE_FORMAT.format(new Date())}
+            </span>
+            <StreakBadge streakDays={profile.streakDays} />
+          </div>
+        )}
         <div className={styles.greeting}>
           <div className={styles.greetingRow}>
             <span className={styles.avatarBadge}>{avatarEmoji}</span>
@@ -114,13 +126,15 @@ export function Home() {
           <span className={styles.statValue}>{passedStages}</span>
           <span className={styles.statLabel}>етапів</span>
         </MotionStaggerItem>
-        <MotionStaggerItem className={styles.stat}>
-          <span className={`${styles.statIconWrap} ${styles.statIconWrapEmoji}`}>
-            {streakFire || '📅'}
-          </span>
-          <span className={styles.statValue}>{profile.streakDays}</span>
-          <span className={styles.statLabel}>серія</span>
-        </MotionStaggerItem>
+        {!todayDashboard && (
+          <MotionStaggerItem className={styles.stat}>
+            <span className={`${styles.statIconWrap} ${styles.statIconWrapEmoji}`}>
+              {streakFire || '📅'}
+            </span>
+            <span className={styles.statValue}>{profile.streakDays}</span>
+            <span className={styles.statLabel}>серія</span>
+          </MotionStaggerItem>
+        )}
         <MotionStaggerItem className={styles.stat}>
           <span className={styles.statIconWrap}>
             <Icon name="book" size={30} />

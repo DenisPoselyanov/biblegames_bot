@@ -5,6 +5,25 @@
   padding: var(--space-xl) 0 var(--space-lg);
 }
 
+/* ── Today header (today_dashboard) ── */
+
+.todayRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: 0 var(--space-lg) var(--space-md);
+  text-align: left;
+}
+
+.todayDate {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+
 .greeting {
   display: flex;
   flex-direction: column;
