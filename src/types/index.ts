@@ -518,3 +518,16 @@ export interface ReviewQueueItem {
   overdueDays: number;
   practicePath: string;
 }
+
+// Phase 7 — progress, profile and settings (progress_dashboard_v2), see src/lib/progressDashboard.ts
+/** Aggregated read-only view over existing profile/insight/review data — no new persisted state. */
+export interface ProgressSummary {
+  streakDays: number;
+  accuracy7d: number;
+  accuracy30d: number;
+  masteredSubthemes: number;
+  stagesPassed: number;
+  reviewDueCount: number;
+  wisdom: { current: number; required: number; label: string };
+  rankLabel: string;
+}
