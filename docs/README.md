@@ -32,6 +32,7 @@
 - [DESIGN_RULES.md](./DESIGN_RULES.md) — канонічні правила кольорів, типографіки, spacing, surfaces, компонентів, imagery, game-mode exceptions і visual QA.
 - [MOTION_SYSTEM.md](./MOTION_SYSTEM.md) — канонічні transitions, micro-interactions, correct/wrong feedback, level/rank/achievement celebrations, Kahoot/«Мільйонер», reduced motion, performance budgets і binding розподіл імплементації між Phase 1–8.
 - [MONETIZATION_STRATEGY.md](./MONETIZATION_STRATEGY.md) — варіанти Telegram Ads, Stars, підписок, affiliate program, sponsorships і Church-плану для Phase 6; конкретна модель ще не обрана.
+- [FUTURE_UPGRADE_OPTIONS.md](./FUTURE_UPGRADE_OPTIONS.md) — повний advisory-каталог майбутніх варіантів розвитку. Усі пункти мають статус `candidate` і не входять у roadmap або implementation scope без окремого вибору власника продукту та decision gate.
 
 ## Активні операційні документи
 
@@ -56,10 +57,13 @@
 4. implementation-файл відповідної Phase у `docs/phases/`;
 5. фактичний код і перевірені tests;
 6. операційні документи;
-7. архівні документи не використовуються для нової роботи.
+7. `FUTURE_UPGRADE_OPTIONS.md` — лише каталог кандидатів після явного вибору конкретного коду;
+8. архівні документи не використовуються для нової роботи.
 
 Implementation-файл не виконується сліпо. Перед початком агент зобов’язаний звірити його з актуальним branch, git history, routes, schemas, tests та deployment. Якщо код змінився, execution brief фіксує відмінності, але не створює паралельний roadmap.
 
 `PHASE_3_REBRANDING_AND_THEME_SYSTEM.md`, `DESIGN_RULES.md` і `MOTION_SYSTEM.md` деталізують Phase 3, але не створюють окремої нумерації. Розподіл motion-роботи між іншими фазами в `MOTION_SYSTEM.md` є implementation allocation, а не новою системою фаз.
+
+`FUTURE_UPGRADE_OPTIONS.md` не виконується як один backlog. AI-агент читає та деталізує лише ті коди, які власник продукту явно вибрав. Сам факт наявності пункту в каталозі не є дозволом на реалізацію.
 
 Не створюйте новий master roadmap, task board, паралельну дизайн-систему або другу motion-систему поруч із цією структурою.
