@@ -119,6 +119,29 @@ export function syncTelegramTheme(): void {
   }
 }
 
+/** Show Telegram's native BackButton and wire it to a callback (Bot API 6.1+). No-op outside Telegram or on older clients. */
+export function showBackButton(onClick: () => void): void {
+  try {
+    if (!WebApp.BackButton) return;
+    if (typeof WebApp.isVersionAtLeast === 'function' && !WebApp.isVersionAtLeast('6.1')) return;
+    WebApp.BackButton.onClick(onClick);
+    WebApp.BackButton.show();
+  } catch (e) {
+    console.warn('BackButton show failed:', e);
+  }
+}
+
+/** Hide Telegram's native BackButton and detach the given callback. */
+export function hideBackButton(onClick: () => void): void {
+  try {
+    if (!WebApp.BackButton) return;
+    WebApp.BackButton.offClick(onClick);
+    WebApp.BackButton.hide();
+  } catch (e) {
+    console.warn('BackButton hide failed:', e);
+  }
+}
+
 /** Show/hide Telegram MainButton with text and callback */
 export function showMainButton(text: string, onClick: () => void): void {
   try {

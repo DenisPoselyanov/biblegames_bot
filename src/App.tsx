@@ -7,6 +7,7 @@ import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AppSkeleton } from './components/skeletons';
+import { useTelegramBackButton } from './hooks/useTelegram';
 
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const Themes = lazy(() => import('./pages/Themes').then((m) => ({ default: m.Themes })));
@@ -85,6 +86,11 @@ function LegacyQuizRedirect() {
   return <Navigate to={`/play/study/quiz/${themeId}/${difficulty}`} replace />;
 }
 
+function TelegramBackButtonSync() {
+  useTelegramBackButton();
+  return null;
+}
+
 export default function App() {
   return (
     <PlayerProvider>
@@ -94,6 +100,7 @@ export default function App() {
       <BrowserRouter
         basename={import.meta.env.BASE_URL.replace(/\/$/, '') || undefined}
       >
+          <TelegramBackButtonSync />
           <Routes>
             <Route element={<Layout />}>
               <Route index element={<ErrorBoundary><LazyPage><Home /></LazyPage></ErrorBoundary>} />
