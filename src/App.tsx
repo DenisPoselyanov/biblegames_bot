@@ -14,6 +14,7 @@ const Themes = lazy(() => import('./pages/Themes').then((m) => ({ default: m.The
 const ThemeDetail = lazy(() =>
   import('./pages/ThemeDetail').then((m) => ({ default: m.ThemeDetail })),
 );
+const Lesson = lazy(() => import('./pages/Lesson').then((m) => ({ default: m.Lesson })));
 const Quiz = lazy(() => import('./pages/Quiz').then((m) => ({ default: m.Quiz })));
 const StudyHub = lazy(() => import('./pages/StudyHub').then((m) => ({ default: m.StudyHub })));
 const Profile = lazy(() => import('./pages/Profile').then((m) => ({ default: m.Profile })));
@@ -110,6 +111,7 @@ export default function App() {
               <Route path="play/study/themes/:themeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
               <Route path="play/study/themes/:themeId/:nodeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
               <Route path="play/study/theme/:themeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
+              <Route path="play/study/lesson/:themeId/:nodeId" element={<ErrorBoundary><LazyPage><Lesson /></LazyPage></ErrorBoundary>} />
               <Route path="profile" element={<ErrorBoundary><LazyPage><Profile /></LazyPage></ErrorBoundary>} />
               <Route path="admin" element={<ErrorBoundary><LazyPage><AdminPanel /></LazyPage></ErrorBoundary>} />
               <Route path="shop" element={<ErrorBoundary><LazyPage><Shop /></LazyPage></ErrorBoundary>} />
