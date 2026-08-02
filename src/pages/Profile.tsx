@@ -18,6 +18,7 @@ import { MotionDialog, MotionPage, MotionStagger, MotionStaggerItem } from '../c
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import { fadeUpVariants, reducedTransition, transitionUi } from '../lib/motion';
 import { loadAllTopicHierarchies } from '../data/topicDbLoader';
+import { isFeatureEnabled } from '../lib/flags';
 import { communityManager } from '../lib/communities';
 import { friendChallengeManager } from '../lib/friendChallenges';
 import {
@@ -27,6 +28,8 @@ import {
   type BollsTranslation,
 } from '../lib/bollsConstants';
 import styles from './Profile.module.css';
+
+const progressDashboardV2 = isFeatureEnabled('progress_dashboard_v2');
 
 function CircularProgress({ value, size = 48, stroke = 4 }: { value: number; size?: number; stroke?: number }) {
   const r = (size - stroke) / 2;
@@ -261,6 +264,12 @@ export function Profile() {
       <Link to="/stats" className={styles.ratingBtn}>
         <Icon name="stats" size={18} /> Загальний Рейтинг
       </Link>
+
+      {progressDashboardV2 && (
+        <Link to="/profile/progress" className={styles.ratingBtn}>
+          <Icon name="brain" size={18} /> Прогрес навчання
+        </Link>
+      )}
 
       <Link to="/shop" className={styles.shopLink} onClick={() => haptic.impact('light')}>
         <Icon name="shop" size={18} />
