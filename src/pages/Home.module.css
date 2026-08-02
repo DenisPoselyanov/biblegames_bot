@@ -151,6 +151,75 @@
   margin-bottom: 0;
 }
 
+/* ── Daily plan (daily_plan_v2) ── */
+
+.dailyPlanSection {
+  margin-bottom: var(--space-2xl);
+}
+
+.dailyPlanSection h2 {
+  font-size: var(--fs-md);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--heading);
+  margin: 0 0 var(--space-md);
+  font-weight: 800;
+}
+
+.dailyPlanList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.dailyPlanCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--duration-fast) var(--ease-out), border-color var(--duration-normal) var(--ease-out);
+}
+
+.dailyPlanCard:active {
+  transform: scale(0.98);
+}
+
+.dailyPlanIcon {
+  font-size: var(--fs-xl);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.dailyPlanBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dailyPlanTitle {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text);
+  line-height: var(--lh-tight);
+}
+
+.dailyPlanSubtitle {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: var(--lh-tight);
+}
+
 /* ── CTA button ── */
 
 .cta {

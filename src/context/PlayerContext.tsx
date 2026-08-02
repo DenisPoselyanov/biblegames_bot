@@ -9,6 +9,7 @@ import {
 } from 'react';
 import type {
   CompletedLevel,
+  DailyPlanItem,
   Difficulty,
   GlobalStats,
   PlayerProfile,
@@ -26,6 +27,7 @@ import { updateMastery, updateStreak } from '../lib/learning';
 import { flushTelemetry, trackEvent } from '../lib/telemetry';
 import { studyRepo } from '../repos/studyRepo';
 import { generateRecommendations } from '../lib/recommendationEngine';
+import { buildDailyPlan } from '../lib/dailyPlan';
 import {
   advancePlayerRank,
   computeStageWisdom,
@@ -88,6 +90,7 @@ interface PlayerContextValue {
   purchaseAvatar: (avatarId: string, price: number) => { purchased: boolean; reason?: 'owned' | 'coins' };
   recordAnswerEvent: (params: { themeId: string; isCorrect: boolean; questionId: string; errorTag?: string; nodeId?: string }) => void;
   getRecommendations: (maxRecommendations?: number) => Promise<Recommendation[]>;
+  getDailyPlan: () => Promise<DailyPlanItem[]>;
   setBibleTranslation: (translation: BollsTranslation) => void;
 }
 
@@ -565,6 +568,16 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     [profile],
   );
 
+  const getDailyPlan = useCallback(async (): Promise<DailyPlanItem[]> => {
+    try {
+      const topicHierarchy = await loadAllTopicHierarchies();
+      return buildDailyPlan({ profile, topicHierarchy });
+    } catch (error) {
+      console.error('Failed to build daily plan:', error);
+      return [];
+    }
+  }, [profile]);
+
   const value = useMemo(
     () => ({
       profile,
@@ -582,6 +595,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       purchaseAvatar,
       recordAnswerEvent,
       getRecommendations,
+      getDailyPlan,
       setBibleTranslation,
     }),
     [
@@ -600,6 +614,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       purchaseAvatar,
       recordAnswerEvent,
       getRecommendations,
+      getDailyPlan,
       setBibleTranslation,
     ],
   );

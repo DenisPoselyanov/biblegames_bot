@@ -11,7 +11,7 @@ import { trackEvent } from '../lib/telemetry';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { fetchDailyScripture } from '../repos/scriptureRepo';
 import type { DailyScripture } from '../types/scripture';
-import type { Recommendation } from '../types';
+import type { DailyPlanItem, Recommendation } from '../types';
 import { formatRecommendation, getRecommendationLink } from '../lib/recommendationEngine';
 import { isFeatureEnabled } from '../lib/flags';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
@@ -24,15 +24,17 @@ const FALLBACK_DAILY = {
 };
 
 const learningFirstNav = isFeatureEnabled('learning_first_navigation');
+const dailyPlanV2 = isFeatureEnabled('daily_plan_v2');
 
 export function Home() {
   const { shouldEnter } = useMotionEntrance('home');
-  const { profile, getRecommendations } = usePlayer();
+  const { profile, getRecommendations, getDailyPlan } = usePlayer();
   const { displayName } = useTelegram();
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
   const translation = normalizeBollsTranslation(profile.bibleTranslation);
   const [dailyVerse, setDailyVerse] = useState<DailyScripture | typeof FALLBACK_DAILY>(FALLBACK_DAILY);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [dailyPlan, setDailyPlan] = useState<DailyPlanItem[]>([]);
 
   useEffect(() => {
     void fetchDailyScripture(translation).then((daily) => {
@@ -41,9 +43,13 @@ export function Home() {
   }, [translation]);
 
   useEffect(() => {
+    if (dailyPlanV2) {
+      void getDailyPlan().then(setDailyPlan);
+      return;
+    }
     if (!learningFirstNav) return;
     void getRecommendations(3).then(setRecommendations);
-  }, [getRecommendations]);
+  }, [getRecommendations, getDailyPlan]);
   const history = studyRepo.getAnswerHistory();
   const dailyTasks = getDailyTasks(profile, history);
   const insight = buildLearningInsight(profile, history);
@@ -126,65 +132,97 @@ export function Home() {
         </MotionStaggerItem>
       </MotionStagger>
 
-      {learningFirstNav && recommendations.length > 0 ? (
-        <section className={styles.recommendationsSection}>
-          {recommendations.map((rec) => {
-            const formatted = formatRecommendation(rec);
-            return (
-              <Link
-                key={rec.id}
-                to={getRecommendationLink(rec)}
-                className={styles.cta}
-              >
-                <span aria-hidden>{formatted.icon}</span>
-                <span>{formatted.title}</span>
-                <Icon name="arrow-right" size={20} />
-              </Link>
-            );
-          })}
-        </section>
+      {dailyPlanV2 ? (
+        dailyPlan.length > 0 ? (
+          <section className={styles.dailyPlanSection}>
+            <h2>Сьогоднішній план</h2>
+            <MotionStagger as="ul" className={styles.dailyPlanList} enter={shouldEnter}>
+              {dailyPlan.map((item) => (
+                <MotionStaggerItem key={item.id} className={styles.dailyPlanCardWrap}>
+                  <Link to={item.link} className={styles.dailyPlanCard}>
+                    <span className={styles.dailyPlanIcon} aria-hidden>
+                      {item.icon}
+                    </span>
+                    <span className={styles.dailyPlanBody}>
+                      <span className={styles.dailyPlanTitle}>{item.title}</span>
+                      <span className={styles.dailyPlanSubtitle}>{item.subtitle}</span>
+                    </span>
+                    <Icon name="arrow-right" size={20} />
+                  </Link>
+                </MotionStaggerItem>
+              ))}
+            </MotionStagger>
+          </section>
+        ) : (
+          <Link to="/play" className={styles.cta}>
+            <Icon name="play" size={24} />
+            <span>Продовжити дослідження</span>
+            <Icon name="arrow-right" size={20} />
+          </Link>
+        )
       ) : (
-        <Link to="/play" className={styles.cta}>
-          <Icon name="play" size={24} />
-          <span>Продовжити дослідження</span>
-          <Icon name="arrow-right" size={20} />
-        </Link>
-      )}
+        <>
+          {learningFirstNav && recommendations.length > 0 ? (
+            <section className={styles.recommendationsSection}>
+              {recommendations.map((rec) => {
+                const formatted = formatRecommendation(rec);
+                return (
+                  <Link
+                    key={rec.id}
+                    to={getRecommendationLink(rec)}
+                    className={styles.cta}
+                  >
+                    <span aria-hidden>{formatted.icon}</span>
+                    <span>{formatted.title}</span>
+                    <Icon name="arrow-right" size={20} />
+                  </Link>
+                );
+              })}
+            </section>
+          ) : (
+            <Link to="/play" className={styles.cta}>
+              <Icon name="play" size={24} />
+              <span>Продовжити дослідження</span>
+              <Icon name="arrow-right" size={20} />
+            </Link>
+          )}
 
-      <section className={styles.tasksSection}>
-        <h2>Щоденні завдання</h2>
-        <MotionStagger as="ul" className={styles.taskList} enter={shouldEnter}>
-          {dailyTasks.map((task) => {
-            const pct = task.goal > 0 ? Math.min((task.progress / task.goal) * 100, 100) : 0;
-            const done = pct >= 100;
-            return (
-              <MotionStaggerItem
-                key={task.id}
-                className={`${styles.taskCard} ${done ? styles.taskCardCompleted : ''}`}
-              >
-                <div className={styles.taskInfo}>
-                  <span>{task.title}</span>
-                  <div className={styles.progressBar}>
-                    <div
-                      className={`${styles.progressFill} ${done ? styles.progressFillComplete : ''}`}
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                </div>
-                {done ? (
-                  <span className={styles.taskCheck}>
-                    <Icon name="check" size={16} />
-                  </span>
-                ) : (
-                  <span className={styles.taskCount}>
-                    {task.progress}/{task.goal}
-                  </span>
-                )}
-              </MotionStaggerItem>
-            );
-          })}
-        </MotionStagger>
-      </section>
+          <section className={styles.tasksSection}>
+            <h2>Щоденні завдання</h2>
+            <MotionStagger as="ul" className={styles.taskList} enter={shouldEnter}>
+              {dailyTasks.map((task) => {
+                const pct = task.goal > 0 ? Math.min((task.progress / task.goal) * 100, 100) : 0;
+                const done = pct >= 100;
+                return (
+                  <MotionStaggerItem
+                    key={task.id}
+                    className={`${styles.taskCard} ${done ? styles.taskCardCompleted : ''}`}
+                  >
+                    <div className={styles.taskInfo}>
+                      <span>{task.title}</span>
+                      <div className={styles.progressBar}>
+                        <div
+                          className={`${styles.progressFill} ${done ? styles.progressFillComplete : ''}`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                    </div>
+                    {done ? (
+                      <span className={styles.taskCheck}>
+                        <Icon name="check" size={16} />
+                      </span>
+                    ) : (
+                      <span className={styles.taskCount}>
+                        {task.progress}/{task.goal}
+                      </span>
+                    )}
+                  </MotionStaggerItem>
+                );
+              })}
+            </MotionStagger>
+          </section>
+        </>
+      )}
 
       <section className={styles.kpiSection}>
         <h2>Навчальні показники</h2>
