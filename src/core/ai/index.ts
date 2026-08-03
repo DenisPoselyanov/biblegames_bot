@@ -1,9 +1,11 @@
 /**
- * AI domain barrel — see ../README.md
+ * AI domain barrel — see ../README.md.
  *
- * Placeholder: no client-side AI code exists yet. AI content tooling currently
- * lives in scripts/ (see docs/product-rebuild/AI_SYSTEM_REBUILD_ROADMAP.md,
- * Phase 10). This barrel will gain exports once in-app AI assistance ships
- * behind the `in_app_ai_assistance` flag (post-Phase 10).
+ * Placeholder only. Reviewed AI generation, validation, revision history and
+ * publication belong to canonical Phase 4:
+ * docs/phases/PHASE_4_CONTENT_AI_AND_CONTENT_STUDIO.md.
+ *
+ * Do not implement client-side publishing or revive the archived Phase 10
+ * roadmap as an active source of truth.
  */
 export {};

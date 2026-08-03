@@ -1,22 +1,19 @@
 # Domain boundaries (`src/core/`)
 
-Introduced in Phase 1 ([ADR-001](../../docs/product-rebuild/DECISIONS.md#adr-001--скорочення-цільової-архітектури-без-повного-monorepo-apps--packages)) as a **logical**, additive boundary — not a physical monorepo split. Files stay where they already live; each `src/core/<domain>/index.ts` is a barrel that re-exports the modules belonging to that domain, importable via the `@core/<domain>` alias (configured in `tsconfig.app.json` and `vite.config.ts`/`vite.config.mjs`).
+The current architecture direction is defined by [canonical Phase 2](../../docs/phases/PHASE_2_CORE_ARCHITECTURE_AND_DATA_PLATFORM.md) and [ADR](../../docs/DECISIONS.md). The existing barrels are useful baseline code created under the legacy roadmap; they do not by themselves complete canonical Phase 1 or Phase 2.
 
-New code in a given domain should import through `@core/<domain>` instead of reaching across with deep relative paths. Existing relative imports are untouched — this is not a breaking rename.
+New code in a domain should prefer the approved domain boundary instead of uncontrolled deep cross-domain imports. Existing imports are migrated only through an explicit plan, tests and compatibility review.
 
 ## Domain map
 
 | Domain | Barrel | Covers |
 |---|---|---|
-| `learning` | `@core/learning` | question/topic DB + loaders, practice progression, streak, study themes, player profile/progress |
-| `social` | `@core/social` | communities, friend challenges, Kahoot live rooms/ranking |
-| `shop` | `@core/shop` | cosmetics catalog, cosmetic theme application |
-| `ai` | `@core/ai` | placeholder — no client-side AI code exists yet; today's AI tooling lives in `scripts/` (see Phase 10 roadmap). Reserved for future in-app AI assistance (`in_app_ai_assistance` flag, post-Phase 10) |
-| `shared` | `@core/shared` | generic infra: storage/persistence, Telegram SDK, motion tokens, query client, telemetry |
+| `learning` | `@core/learning` | question/topic loaders, practice, streak, themes, profile/progress |
+| `social` | `@core/social` | communities, challenges, Kahoot |
+| `shop` | `@core/shop` | cosmetics and theme application |
+| `ai` | `@core/ai` | placeholder; production AI/content work belongs to [canonical Phase 4](../../docs/phases/PHASE_4_CONTENT_AI_AND_CONTENT_STUDIO.md) |
+| `shared` | `@core/shared` | storage, Telegram SDK, motion, query client and telemetry |
 
-`src/types/index.ts` (currently a single 441-line barrel mixing learning/social/shop types) and `src/context/PlayerContext.tsx` (mixes player/progress/wallet state) are known cross-domain files — deliberately **not** split or moved in Phase 1; that's a dedicated future task, not a mechanical file move.
+Known cross-domain files such as `src/types/index.ts` and `src/context/PlayerContext.tsx` must not be split mechanically. Follow the active Phase plan and current code evidence.
 
-## Non-goals for Phase 1
-
-- No physical file moves of high-fan-in modules (`lib/motion.ts`, `lib/telegram.ts`, `data/themes.ts`, `context/PlayerContext.tsx`, etc.) — see [MASTER_ROADMAP.md](../../docs/product-rebuild/MASTER_ROADMAP.md).
-- No monorepo/`packages/` split — see ADR-001.
+Legacy roadmap context is preserved in [`docs/archive/legacy-product-rebuild/`](../../docs/archive/legacy-product-rebuild/).
