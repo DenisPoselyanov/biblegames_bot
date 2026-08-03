@@ -1,0 +1,1 @@
+import{rr as e,sr as t}from"./index-DMg2QO2C.js";var n=t(e(),1),r=`motion-seen:`;function i(e){let t=`${r}${e}`,[i]=(0,n.useState)(()=>{try{return sessionStorage.getItem(t)!==`1`}catch{return!0}});return(0,n.useEffect)(()=>{try{sessionStorage.setItem(t,`1`)}catch{}},[t]),{shouldEnter:i}}export{i as t};
