@@ -33,14 +33,15 @@ main
 Перед змінами повністю прочитай:
 
 1. docs/BIBLE_GAMES_MASTER_SPECIFICATION.md
-2. docs/DECISIONS.md
-3. docs/PHASE_STATUS.md
-4. README.md
-5. docs/README.md
-6. docs/phases/README.md і окремий implementation-файл вибраної Phase з docs/phases/
-7. усі активні domain-документи, на які посилається вибрана фаза
-8. docs/MOTION_SYSTEM.md для будь-якої фази, що змінює UI, rewards, games, social, shop або performance
-9. docs/archive/CURRENT_STATE_AUDIT.md лише як історичний baseline
+2. docs/OPEN_SOURCE_REFERENCE_ARCHITECTURE.md
+3. docs/DECISIONS.md
+4. docs/PHASE_STATUS.md
+5. README.md
+6. docs/README.md
+7. docs/phases/README.md і окремий implementation-файл вибраної Phase з docs/phases/
+8. усі активні domain-документи, на які посилається вибрана фаза
+9. docs/MOTION_SYSTEM.md для будь-якої фази, що змінює UI, rewards, games, social, shop або performance
+10. docs/archive/CURRENT_STATE_AUDIT.md лише як історичний baseline
 
 Документи в docs/archive/ не є активними вимогами. Не відновлюй їхні старі phase numbers, пріоритети або статуси Completed без підтвердження канонічною специфікацією та кодом.
 
@@ -57,7 +58,19 @@ main
    - перевір, чи частина вимог фази вже реалізована або суперечить поточному коду;
    - перевір, чи implementation-файл містить шляхи/припущення, що вже змінилися, і зафіксуй розбіжність без створення нового roadmap.
 
-3. Підготуй execution brief:
+3. Якщо функція має зовнішній open-source референс із docs/OPEN_SOURCE_REFERENCE_ARCHITECTURE.md, підготуй reference evidence:
+   - конкретна задача Bible Games;
+   - один основний repository;
+   - точні GitHub search terms/symbols;
+   - актуальний branch і recent activity;
+   - знайдений pattern/state machine/contract;
+   - що варто повторити;
+   - що не можна копіювати;
+   - license conclusion;
+   - native TypeScript implementation path;
+   - required tests.
+
+4. Підготуй execution brief:
    - фактичний baseline;
    - product outcome;
    - scope;
@@ -71,16 +84,17 @@ main
    - rollout;
    - rollback;
    - validation matrix;
-   - mapping кожного acceptance criterion Phase-файлу до конкретного evidence.
+   - mapping кожного acceptance criterion Phase-файлу до конкретного evidence;
+   - reference evidence, якщо зовнішній pattern релевантний.
 
-4. Реалізуй фазу поступово, але без зменшення її scope:
+5. Реалізуй фазу поступово, але без зменшення її scope:
    - спочатку safety і migration foundation;
    - потім domain logic;
    - потім API та persistence;
    - потім UI integration;
    - потім tests, observability і documentation sync.
 
-5. Не став запитань, відповідь на які можна знайти в репозиторії, git history, tests або документації. Реальну неоднозначність із суттєвим продуктовим, юридичним, фінансовим, security або доктринальним наслідком зафіксуй як decision point. Для іншого обирай найбезпечніше backward-compatible рішення.
+6. Не став запитань, відповідь на які можна знайти в репозиторії, git history, tests або документації. Реальну неоднозначність із суттєвим продуктовим, юридичним, фінансовим, security або доктринальним наслідком зафіксуй як decision point. Для іншого обирай найбезпечніше backward-compatible рішення.
 
 НЕПОРУШНІ ПРАВИЛА
 
@@ -125,13 +139,34 @@ CONTENT ТА THEOLOGICAL SAFETY
 
 ARCHITECTURE
 
+- Зберігай поточний React/TypeScript/Vite/Express/Socket.IO/PostgreSQL стек, якщо ADR не довів необхідність зміни.
+- Еволюціонуй проєкт у modular monolith; не створюй microservices без виміряної потреби.
 - Не виконуй повний monorepo rewrite без нового ADR і доведеної необхідності.
 - Вводь domain boundaries поступово.
+- Розділяй Question Bank і Question Runtime.
+- Lesson реалізується через versioned Block Registry, а не довільний HTML/runtime plugins.
+- `QuestionDifficulty`, `PlayerRank`, `ObjectiveMastery` і `MemoryState` є різними поняттями.
+- Published Question/Lesson revisions immutable; sessions посилаються на конкретні revision IDs.
+- Scripture є окремим module з translation/licensing metadata.
+- Background AI/import/media work виконується через job queue, а не request handler.
+- Redis, Meilisearch, Kubernetes, GraphQL або новий framework вводиться лише після spike, evidence й ADR.
 - Canonical business logic не дублюється між frontend, server, bot і scripts.
 - Не створюй speculative abstractions без реального use case.
 - Не змішуй великий refactor, redesign і нову функцію без migration, flag та rollback.
 - Не вигадуй файли, APIs або completed behavior — спочатку перевір їх існування.
 - Детальний Phase-файл є implementation guide, а не дозволом ігнорувати фактичний код або master specification.
+
+OPEN-SOURCE REFERENCES
+
+- Oppia, H5P, Moodle, ClassQuiz, Anki/FSRS, Frappe Learning, Kolibri й AndBible є reference projects, а не dependencies.
+- Не пиши «зробимо як Moodle/Oppia/ClassQuiz» без конкретного знайденого pattern.
+- Не копіюй великі файли, assets, translations, datasets або production configs.
+- Перед copy/adaptation перевір актуальний LICENSE конкретного repo/submodule.
+- Не копіюй GPL/AGPL/MPL code без explicit owner/legal decision.
+- Architecture idea реалізуй нативно в Bible Games.
+- Не змінюй stack лише через те, що reference project використовує інший framework.
+- README стороннього repo не є доказом correctness; перевір code, tests, issues/commits і actual lifecycle.
+- Не вигадуй path, symbol або API зовнішнього repo.
 
 UI/UX
 
@@ -220,11 +255,21 @@ GIT ТА SCOPE
 - відсутність direct published write;
 - review, publication і rollback audit trail.
 
+Для функцій, що використовують open-source reference, додатково:
+
+- reference repo/branch/recent activity;
+- exact search terms/symbols;
+- pattern summary;
+- license review;
+- evidence, що stack не був змінений без ADR;
+- native implementation і tests, а не copied files.
+
 DOCUMENTATION SYNC
 
 У межах тієї самої фази:
 
 - онови docs/BIBLE_GAMES_MASTER_SPECIFICATION.md лише фактичними результатами;
+- онови docs/OPEN_SOURCE_REFERENCE_ARCHITECTURE.md лише якщо validated architecture, stack, MVP або reference rule справді змінилися;
 - онови відповідний implementation-файл у docs/phases/ лише якщо фактична реалізація змінила validated plan або виявила новий обов’язковий constraint;
 - онови docs/PHASE_STATUS.md;
 - додай або онови ADR у docs/DECISIONS.md;
@@ -245,6 +290,7 @@ DOCUMENTATION SYNC
 - demo fallback не видається за production;
 - security boundaries перевірені automated tests;
 - документація відповідає фактичному коду;
+- external reference використано з evidence/license review, якщо він був потрібний;
 - final report містить конкретні докази.
 
 ФОРМАТ ФІНАЛЬНОГО ЗВІТУ
@@ -261,10 +307,11 @@ DOCUMENTATION SYNC
 10. Rollback.
 11. Known limitations.
 12. Mapping acceptance criteria з implementation-файлу до evidence.
-13. Commits і PR.
-14. Чи можна чесно позначити фазу Completed; якщо ні — конкретні blockers.
+13. Open-source reference evidence і license conclusion, якщо застосовувалося.
+14. Commits і PR.
+15. Чи можна чесно позначити фазу Completed; якщо ні — конкретні blockers.
 
-Починай із читання точного Phase-файлу, read-only аудиту та execution brief. Не підміняй реалізацію документацією і не зменшуй acceptance criteria.
+Починай із читання точного Phase-файлу, docs/OPEN_SOURCE_REFERENCE_ARCHITECTURE.md, read-only аудиту та execution brief. Не підміняй реалізацію документацією і не зменшуй acceptance criteria.
 ```
 
 ---
@@ -292,7 +339,8 @@ docs/phases/PHASE_1_PRODUCTION_SAFETY_AND_ENGINEERING_FOUNDATION.md
 ## Рекомендації для Codex і Claude Code
 
 - Дозволь агенту читати весь репозиторій і git history перед змінами.
+- Дозволь read-only пошук у reference GitHub repositories, зазначених у `OPEN_SOURCE_REFERENCE_ARCHITECTURE.md`.
 - Для великої фази використовуй planning/research mode перед implementation.
 - Не проси реалізувати кілька великих фаз одним запуском.
 - Після кожного PR звіряй результат із acceptance criteria всієї фази та її implementation-файлу.
-- Новий чат або context reset має починатися з цього prompt, канонічної специфікації та точного файла Phase, а не з архівного roadmap.
+- Новий чат або context reset має починатися з цього prompt, канонічної специфікації, reference architecture та точного файла Phase, а не з архівного roadmap.
