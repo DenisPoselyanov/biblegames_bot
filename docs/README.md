@@ -5,12 +5,13 @@
 ## Почати звідси
 
 1. [BIBLE_GAMES_MASTER_SPECIFICATION.md](./BIBLE_GAMES_MASTER_SPECIFICATION.md) — продукт, архітектура, великі Phase та глобальний Definition of Done.
-2. [PHASE_STATUS.md](./PHASE_STATUS.md) — фактичний стан канонічних Phase.
-3. [phases/README.md](./phases/README.md) — окремі детальні implementation-плани Phase 0–8.
-4. [AI_AGENT_MASTER_EXECUTION_PROMPT.md](./AI_AGENT_MASTER_EXECUTION_PROMPT.md) — execution rules для Codex, Claude Code та інших агентів.
-5. [DECISIONS.md](./DECISIONS.md) — прийняті ADR.
-6. [ROADMAP_MIGRATION.md](./ROADMAP_MIGRATION.md) — відповідність старої Phase 0–13 системи новій канонічній структурі.
-7. [AI_DOCUMENTATION_RULES.md](./AI_DOCUMENTATION_RULES.md) — короткі правила вибору джерела правди.
+2. [OPEN_SOURCE_REFERENCE_ARCHITECTURE.md](./OPEN_SOURCE_REFERENCE_ARCHITECTURE.md) — binding уточнення стеку, modular-monolith архітектури, MVP, roadmap і правил використання open-source референсів.
+3. [PHASE_STATUS.md](./PHASE_STATUS.md) — фактичний стан канонічних Phase.
+4. [phases/README.md](./phases/README.md) — окремі детальні implementation-плани Phase 0–8.
+5. [AI_AGENT_MASTER_EXECUTION_PROMPT.md](./AI_AGENT_MASTER_EXECUTION_PROMPT.md) — execution rules для Codex, Claude Code та інших агентів.
+6. [DECISIONS.md](./DECISIONS.md) — прийняті ADR.
+7. [ROADMAP_MIGRATION.md](./ROADMAP_MIGRATION.md) — відповідність старої Phase 0–13 системи новій канонічній структурі.
+8. [AI_DOCUMENTATION_RULES.md](./AI_DOCUMENTATION_RULES.md) — короткі правила вибору джерела правди та роботи з GitHub-референсами.
 
 ## Детальні плани Phase
 
@@ -24,8 +25,11 @@
 - [Phase 7](./phases/PHASE_7_PERFORMANCE_OFFLINE_ACCESSIBILITY_AND_RELEASE.md)
 - [Phase 8](./phases/PHASE_8_EXPANSION_AND_BONUS_CAPABILITIES.md)
 
-## Domain-документи
+Перед виконанням будь-якої Phase агент читає її окремий файл **разом із** `OPEN_SOURCE_REFERENCE_ARCHITECTURE.md`. Зовнішній репозиторій є джерелом патерну, а не дозволом змінювати стек або копіювати код.
 
+## Binding domain-документи
+
+- [OPEN_SOURCE_REFERENCE_ARCHITECTURE.md](./OPEN_SOURCE_REFERENCE_ARCHITECTURE.md) — стек, modular monolith, domain boundaries, MVP, Phase alignment і GitHub search guide.
 - [PHASE_3_REBRANDING_AND_THEME_SYSTEM.md](./PHASE_3_REBRANDING_AND_THEME_SYSTEM.md)
 - [DESIGN_RULES.md](./DESIGN_RULES.md)
 - [MOTION_SYSTEM.md](./MOTION_SYSTEM.md)
@@ -43,12 +47,14 @@
 
 1. `BIBLE_GAMES_MASTER_SPECIFICATION.md`;
 2. прийняті ADR у `DECISIONS.md`;
-3. binding domain-документ відповідної системи;
+3. `OPEN_SOURCE_REFERENCE_ARCHITECTURE.md` та інший binding domain-документ відповідної системи;
 4. implementation-файл активної Phase;
 5. актуальний код, migrations і перевірені tests;
 6. операційні документи;
 7. `FUTURE_UPGRADE_OPTIONS.md` — тільки після явного вибору конкретного коду;
 8. `archive/` — лише історія.
+
+`OPEN_SOURCE_REFERENCE_ARCHITECTURE.md` уточнює master specification, але не може змінити product mission, Phase order або прийнятий ADR. Якщо зовнішній проєкт використовує інший стек, Bible Games реалізує патерн нативно в поточному React/TypeScript/Express/PostgreSQL стеку, якщо окремий ADR не вирішив інакше.
 
 Старий `docs/product-rebuild/` більше не є roadmap. Там залишено лише compatibility notice, а повні файли перенесені до `docs/archive/legacy-product-rebuild/`.
 
