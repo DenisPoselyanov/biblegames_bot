@@ -7,7 +7,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "types": ["node", "vite/client"]
   },
-  "include": ["./**/*", "../src/data/kahootQuestions.ts", "../src/data/questions.ts", "../src/data/questions-extra.ts", "../src/data/topicDbLoader.shared.ts", "../src/data/questionDbLoader.shared.ts", "../src/types/**/*"]
+  "include": ["./**/*", "../src/data/kahootQuestions.ts", "../src/data/questions.ts", "../src/data/questions-extra.ts", "../src/data/topicDbLoader.shared.ts", "../src/data/questionDbLoader.shared.ts", "../src/types/**/*"],
+  "exclude": ["node_modules", "__tests__", "**/*.test.ts", "**/*.spec.ts"]
 }

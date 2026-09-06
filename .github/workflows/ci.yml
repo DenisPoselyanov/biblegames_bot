@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install (root)
+        run: npm ci
+
+      - name: Install (server)
+        run: npm ci --prefix server
+
+      # Blocking gate for the code Phase 1 owns (server + config + tooling).
+      # Full-repo `npm run lint` has pre-existing src/ + scripts/ debt tracked
+      # separately (see docs/DECISIONS.md ADR-002 progress note) and is not a
+      # required gate yet.
+      - name: Lint (server + tooling)
+        run: npm run lint:ws
+
+      - name: Typecheck (frontend)
+        run: npm run typecheck
+
+      - name: Typecheck (server)
+        run: npm run typecheck:server
+
+      - name: Unit tests
+        run: npm run test
+
+      - name: Integration tests
+        run: npm run test:integration
+
+      - name: Smoke audit
+        run: npm run smoke-audit
+
+      - name: Build
+        run: npm run build

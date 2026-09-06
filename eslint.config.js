@@ -19,4 +19,25 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Node runtimes: Express server, CLI scripts, admin bot, config files.
+    files: [
+      'server/**/*.{ts,tsx}',
+      'scripts/**/*.{ts,tsx}',
+      'bot/**/*.{ts,tsx}',
+      '*.config.{ts,mts}',
+      'vitest.config.ts',
+    ],
+    languageOptions: {
+      globals: { ...globals.node },
+    },
+    rules: {
+      // These runtimes are not React — the react-* rule sets don't apply.
+      // (e.g. server/services/questionService.ts has a plain `useQuestionsSql()`
+      // predicate that rules-of-hooks would otherwise flag.)
+      'react-refresh/only-export-components': 'off',
+      'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+    },
+  },
 ])
