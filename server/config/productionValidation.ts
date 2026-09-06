@@ -1,5 +1,21 @@
 import type { ServerConfig } from './env';
 
+/** Loopback / wildcard hosts that must never appear in a production origin. */
+function isUnsafeProductionOrigin(origin: string): boolean {
+  let url: URL;
+  try {
+    url = new URL(origin);
+  } catch {
+    return true; // unparseable origin is not a valid production allow-list entry
+  }
+  const host = url.hostname.toLowerCase().replace(/^\[|\]$/g, '');
+  if (url.protocol !== 'https:') return true;
+  if (host === 'localhost' || host.endsWith('.localhost')) return true;
+  if (host === '0.0.0.0' || host === '::1' || host === '::') return true;
+  if (/^127\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(host)) return true;
+  return false;
+}
+
 /**
  * Fail-closed production gate (Phase 1 §5.1, ADR-002 / ADR-006).
  *
@@ -24,11 +40,11 @@ export function collectProductionConfigErrors(config: ServerConfig): string[] {
   if (config.clientOrigins.length === 0) {
     errors.push('CLIENT_ORIGIN(S) must list at least one allowed origin in production.');
   }
-  const localOrigin = config.clientOrigins.find(
-    (o) => o.includes('localhost') || o.includes('127.0.0.1'),
-  );
-  if (localOrigin) {
-    errors.push(`CLIENT_ORIGIN(S) must not contain a localhost origin in production ("${localOrigin}").`);
+  const unsafeOrigin = config.clientOrigins.find(isUnsafeProductionOrigin);
+  if (unsafeOrigin) {
+    errors.push(
+      `CLIENT_ORIGIN(S) must be https and non-loopback in production ("${unsafeOrigin}").`,
+    );
   }
 
   return errors;

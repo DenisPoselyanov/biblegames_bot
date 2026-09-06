@@ -38,7 +38,25 @@ describe('collectProductionConfigErrors', () => {
     const errors = collectProductionConfigErrors(
       prodConfig({ CLIENT_ORIGIN: 'http://localhost:5173' }),
     );
-    expect(errors.join(' ')).toMatch(/localhost/);
+    expect(errors.join(' ')).toMatch(/loopback|https/);
+  });
+
+  it.each([
+    'http://app.example.com', // not https
+    'https://127.0.0.1:8443',
+    'https://[::1]',
+    'https://sub.localhost',
+    'not-a-url',
+  ])('blocks unsafe production origin %s', (origin) => {
+    const errors = collectProductionConfigErrors(prodConfig({ CLIENT_ORIGIN: origin }));
+    expect(errors.join(' ')).toMatch(/CLIENT_ORIGIN/);
+  });
+
+  it('allows a normal https origin whose host merely contains "localhost" as a label prefix', () => {
+    // `localhost.example.com` is a real external host, not loopback.
+    expect(
+      collectProductionConfigErrors(prodConfig({ CLIENT_ORIGIN: 'https://localhost.example.com' })),
+    ).toEqual([]);
   });
 
   it('blocks production when STORAGE_PROVIDER=sql but DATABASE_URL is unset', () => {

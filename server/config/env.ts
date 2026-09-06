@@ -35,8 +35,15 @@ export interface LoadConfigResult {
 
 const DEFAULT_MAX_AGE_SEC = 86_400;
 
-function parseNodeEnv(raw: string | undefined): NodeEnv {
-  if (raw === 'production' || raw === 'test') return raw;
+function parseNodeEnv(raw: string | undefined, warnings: string[]): NodeEnv {
+  if (raw === 'production' || raw === 'test' || raw === 'development') return raw;
+  if (raw && raw.trim()) {
+    // Unrecognized non-empty NODE_ENV: fail closed. Treating it as
+    // `development` would silently skip the production config gate and could
+    // enable dev identity. `production` is the safe interpretation.
+    warnings.push(`Unrecognized NODE_ENV "${raw}", treating as "production" (fail-closed)`);
+    return 'production';
+  }
   return 'development';
 }
 
@@ -55,7 +62,7 @@ function parseIntOr(raw: string | undefined, fallback: number): number {
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResult {
   const warnings: string[] = [];
-  const nodeEnv = parseNodeEnv(env.NODE_ENV);
+  const nodeEnv = parseNodeEnv(env.NODE_ENV, warnings);
 
   let authMode: AuthMode = 'telegram';
   if (env.AUTH_MODE === 'development') {
