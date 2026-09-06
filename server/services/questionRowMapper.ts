@@ -16,7 +16,7 @@ export function rowToQuestion(row: QuestionRow): Question {
     payload.correctIndex ?? (payload as { correct?: number }).correct,
   );
   return {
-    ...(payload as Question),
+    ...(payload as unknown as Question),
     id: row.id,
     themeId: row.theme_id,
     difficulty: row.difficulty as Difficulty,

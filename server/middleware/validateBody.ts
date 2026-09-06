@@ -136,12 +136,12 @@ export function sanitizeStatsBody(userId: string, body: unknown): Record<string,
   };
 }
 
-export function sanitizeStudyAnswers(body: unknown): unknown[] {
+export function sanitizeStudyAnswers(body: unknown): Array<Record<string, unknown>> {
   if (!Array.isArray(body)) return [];
-  return body.slice(0, 5000);
+  return body.slice(0, 5000).filter(isRecord);
 }
 
-export function sanitizeTelemetryEvents(body: unknown): unknown[] {
+export function sanitizeTelemetryEvents(body: unknown): Array<Record<string, unknown>> {
   if (!isRecord(body) || !Array.isArray(body.events)) return [];
-  return body.events.slice(0, 100);
+  return body.events.slice(0, 100).filter(isRecord);
 }
