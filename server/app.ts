@@ -9,17 +9,18 @@ import { requestId } from './middleware/requestId';
 import { errorHandler } from './middleware/errorHandler';
 import { ForbiddenError } from './lib/errors';
 import { createRequireAuthenticated } from './auth/middleware';
+import { RoleRegistry } from './authz/roleRegistry';
+import { createPolicies } from './authz/policy';
+import { createAuditLog, type AuditLog } from './audit';
 import {
-  sanitizeProfileBody,
   sanitizeStatsBody,
   sanitizeStudyAnswers,
   sanitizeTelemetryEvents,
 } from './middleware/validateBody';
-import { migrateProfileWallet, type ProfileWithLegacyWallet } from '../src/lib/storage';
-import { isServerFeatureEnabled } from './lib/flags';
-import { recomputeStreak } from './lib/streak';
+import { readProfile, writeProfile } from './services/profileService';
 import { scriptureRouter } from './routes/scripture';
-import { questionsAdminRouter } from './routes/questionsAdmin';
+import { createQuestionsAdminRouter } from './routes/questionsAdmin';
+import { createMeRouter } from './routes/me';
 import { questionsRouter } from './routes/questions';
 import { useQuestionsSql } from './db/pgPool';
 import { listKahootSessions, getKahootSession, sessionToCsv } from './kahootSessions';
@@ -27,6 +28,8 @@ import { listKahootSessions, getKahootSession, sessionToCsv } from './kahootSess
 export interface AppDeps {
   config: ServerConfig;
   dbStore?: ServerStore;
+  auditLog?: AuditLog;
+  roleRegistry?: RoleRegistry;
 }
 
 function assertSelf(req: Request, userId: string): void {
@@ -48,6 +51,9 @@ export function createApp(deps: AppDeps): Express {
   const dbStore: ServerStore =
     deps.dbStore ?? (config.storageProvider === 'sql' ? sqlStore : jsonStore);
   const requireAuthenticated = createRequireAuthenticated(config);
+  const roleRegistry = deps.roleRegistry ?? new RoleRegistry(config.roleGrants);
+  const auditLog = deps.auditLog ?? createAuditLog(config);
+  const { requirePermission } = createPolicies({ roleRegistry, auditLog });
 
   const app = express();
   app.use(express.json({ limit: '1mb' }));
@@ -58,7 +64,13 @@ export function createApp(deps: AppDeps): Express {
 
   app.use('/api/scripture', scriptureRouter);
   app.use('/api/questions', questionsRouter);
-  app.use('/api/admin/questions', questionsAdminRouter);
+  app.use(
+    '/api/admin/questions',
+    requireAuthenticated,
+    requirePermission('questions:admin'),
+    createQuestionsAdminRouter({ auditLog, config }),
+  );
+  app.use('/api/v1/me', requireAuthenticated, createMeRouter({ dbStore, roleRegistry }));
 
   app.get(
     '/health/storage',
@@ -122,34 +134,8 @@ export function createApp(deps: AppDeps): Express {
     '/profile/:userId',
     requireAuthenticated,
     asyncHandler(async (req, res) => {
-      const { userId } = req.params;
-      assertSelf(req, userId);
-      const profile = await dbStore.getProfile(userId);
-      if (!profile) {
-        res.json({
-          userId,
-          displayName: '',
-          themePoints: {},
-          completedLevels: [],
-          survivalHighScore: 0,
-          millionaireWins: 0,
-          millionaireMaxLevel: 0,
-          unlockedThemes: [],
-          activeTheme: '',
-          achievements: [],
-          avatar: '',
-          coins: 0,
-          unlockedAvatars: [],
-          streakDays: 0,
-          lastActiveAt: null,
-          studyMastery: {},
-          bibleTranslation: 'UTT',
-          practiceTracks: [],
-          playerRank: { tier: 'baby', plaque: 7, wisdomPoints: 0, unlockedTier: 'child' },
-        });
-        return;
-      }
-      res.json(migrateProfileWallet(profile as ProfileWithLegacyWallet));
+      assertSelf(req, req.params.userId);
+      res.json(await readProfile(dbStore, req.params.userId));
     }),
   );
 
@@ -157,20 +143,8 @@ export function createApp(deps: AppDeps): Express {
     '/profile/:userId',
     requireAuthenticated,
     asyncHandler(async (req, res) => {
-      const { userId } = req.params;
-      assertSelf(req, userId);
-      const existing = (await dbStore.getProfile(userId)) ?? {};
-      const sanitized = sanitizeProfileBody(userId, req.body);
-      const streakOverride = isServerFeatureEnabled('server_streak')
-        ? recomputeStreak(existing.lastActiveAt, existing.streakDays)
-        : {};
-      const merged = migrateProfileWallet({
-        ...existing,
-        ...sanitized,
-        ...streakOverride,
-        userId,
-      });
-      await dbStore.setProfile(userId, { ...merged, updatedAt: new Date().toISOString() });
+      assertSelf(req, req.params.userId);
+      await writeProfile(dbStore, req.params.userId, req.body);
       res.json({ ok: true });
     }),
   );

@@ -8,6 +8,8 @@
  * hermetic.
  */
 
+import { parseRoleGrants, type RoleGrant } from '../authz/roleRegistry';
+
 export type NodeEnv = 'development' | 'test' | 'production';
 export type AuthMode = 'telegram' | 'development';
 export type StorageProvider = 'json' | 'sql';
@@ -25,6 +27,10 @@ export interface ServerConfig {
   storageProvider: StorageProvider;
   databaseUrl: string;
   questionAdminEnabled: boolean;
+  /** Allow the admin question routes to write JSON files directly in production. */
+  questionAdminFsWrites: boolean;
+  /** Config-sourced RBAC grants (Phase 1 WS2, ADR-011). */
+  roleGrants: RoleGrant[];
 }
 
 export interface LoadConfigResult {
@@ -96,6 +102,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     storageProvider,
     databaseUrl: env.DATABASE_URL ?? '',
     questionAdminEnabled: env.QUESTION_ADMIN_ENABLED === 'true',
+    questionAdminFsWrites: env.QUESTION_ADMIN_FS_WRITES === 'true',
+    roleGrants: parseRoleGrants(env, warnings),
   });
 
   return { config, warnings };

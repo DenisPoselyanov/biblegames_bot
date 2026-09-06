@@ -108,8 +108,28 @@
   `FEATURE_AUTHV2=false` на один реліз; legacy `server/middleware/telegramAuth.ts` поки збережено.
 - Тести: `server/auth/telegramInitData.test.ts`, `server/config/productionValidation.test.ts`,
   `server/__tests__/integration/{auth,socket}.test.ts`.
-- **Ще не зроблено (наступні workstreams):** RBAC/permissions і policy middleware, self-scoped
-  `/api/v1/me/*`, server session bridge, rate limiting, видалення legacy `x-user-id` шляху.
+
+## Implementation progress (Phase 1 WS2, 2026-09-06)
+
+- `server/authz/roles.ts` — типізована таксономія `Role` / `Permission`, `ROLE_PERMISSIONS`
+  (admin — superset; `questions:admin` admin-only до Phase 4 Content Studio).
+- `server/authz/roleRegistry.ts` — config-sourced grants (`RBAC_ROLE_GRANTS` JSON + `RBAC_ADMIN_IDS`),
+  парсинг fail-safe (невалідний JSON / невідома роль → warning, не crash, без escalation).
+- `server/authz/policy.ts` — `requireRole`, `requirePermission`, `requireOwnResourceOrPermission`;
+  стабільні коди `forbidden_role` / `forbidden_permission` / `forbidden_user_scope`;
+  прапорець `rbacV2` (default ON), break-glass `FEATURE_RBACV2=false`.
+- `server/audit/` — append-only `AuditLog` port: JSONL adapter (`.data/audit-log.jsonl`,
+  `appendFileSync`), SQL adapter + таблиця `audit_log` (`server/db/schema.sql`), `redactAuditMetadata`.
+  Кожна admin-мутація і кожен authz-denial → audit record (actor, action, target, result, requestId).
+- `server/routes/me.ts` — self-scoped `/api/v1/me/*` (identity з `req.auth`, без `:userId`);
+  legacy `/profile/:userId` тимчасово збережено (WS4 видаляє), спільна логіка в
+  `server/services/profileService.ts`.
+- `server/routes/questionsAdmin.ts` — auth + `requirePermission('questions:admin')` перед mount;
+  production відхиляє прямі FS-записи без `QUESTION_ADMIN_FS_WRITES=true`.
+- Тести: `server/authz/*.test.ts`, `server/audit/jsonlAuditLog.test.ts`,
+  `server/__tests__/integration/rbac.test.ts`.
+- **Ще не зроблено (наступні workstreams):** persisted role store + runtime grant/revoke API (WS3),
+  server session bridge, rate limiting (WS4), видалення legacy `x-user-id` / `/profile/:userId` (WS4).
 
 ## Контекст
 
@@ -453,6 +473,43 @@ Phase/feature не позначається `completed`, якщо є лише:
 ## Rollback
 
 Visual motion може бути feature-flagged або reduced до opacity-only, але rollback не може повертати client-authoritative rewards, дублювання events або відсутність reduced-motion support.
+
+---
+
+# ADR-011 — RBAC у Phase 1 config-sourced, store-backed пізніше
+
+**Дата:** 2026-09-06
+**Статус:** accepted, implementation in progress (Phase 1 WS2)
+
+## Контекст
+
+Phase 1 §6 вимагає server-side ролі, permissions, policy middleware і audit log.
+Persisted role store, runtime grant/revoke API і legacy-profile migration належать
+WS3 (який володіє розширенням storage contract). WS2 потрібна лише authority-межа,
+не повний CRUD ролей.
+
+## Рішення
+
+- У Phase 1 ролі призначаються **лише через конфіг**: `RBAC_ROLE_GRANTS` (JSON
+  `{"<userId>":["admin",...]}`) + `RBAC_ADMIN_IDS` (shortcut). Парситься один раз
+  у `loadConfig` у типізований `RoleRegistry`.
+- Frontend `VITE_ADMIN_IDS` ніколи не є authority (лише UX-приховування меню).
+- Permissions виводяться з ролей (`ROLE_PERMISSIONS`); `questions:admin` — тільки
+  для `admin` до появи Phase 4 Content Studio (ADR-004).
+- Audit log **персиститься вже зараз** (append-only JSONL / SQL), бо Phase 1
+  Definition of Done вимагає queryable audit records.
+- Runtime grant/revoke API + persisted role store — WS3.
+
+## Наслідки
+
+- Немає міграції БД у WS2; зміна ролі = деплой конфігу (прийнятно для одного власника).
+- Парсинг fail-safe: зламаний `RBAC_ROLE_GRANTS` → warning + нуль grants, ніколи
+  не crash і ніколи не privilege escalation.
+
+## Rollback
+
+`FEATURE_RBACV2=false` на один реліз — policy middleware вироджується до
+«authenticated достатньо» (поведінка WS1). Auth при цьому залишається обов'язковим.
 
 ---
 

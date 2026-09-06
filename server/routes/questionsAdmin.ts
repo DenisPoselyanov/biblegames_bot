@@ -1,6 +1,9 @@
-import { Router } from 'express';
+import { Router, type Request } from 'express';
 import type { Question } from '../../src/types/index';
+import type { ServerConfig } from '../config/env';
 import { asyncHandler } from '../middleware/asyncHandler';
+import { ForbiddenError } from '../lib/errors';
+import { buildAuditRecord, type AuditLog } from '../audit';
 import { deleteQuestionPermanently, updateQuestionPermanently } from '../questionAdmin';
 
 function isAdminEnabled(): boolean {
@@ -31,33 +34,115 @@ function sanitizeQuestionPatch(body: unknown): Partial<Question> {
   return patch;
 }
 
-export const questionsAdminRouter = Router();
+export interface QuestionsAdminRouterDeps {
+  auditLog: AuditLog;
+  config: ServerConfig;
+}
 
-questionsAdminRouter.use((req, res, next) => {
-  if (!isAdminEnabled()) {
-    res.status(403).json({ error: 'question_admin_disabled' });
-    return;
-  }
-  next();
-});
+/**
+ * Admin question mutation router (Phase 1 §6.3).
+ *
+ * Authentication + `questions:admin` permission are enforced by the caller
+ * (see server/app.ts) before this router runs. This router adds:
+ * - a `QUESTION_ADMIN_ENABLED` defense-in-depth gate;
+ * - a production guard against direct JSON file writes;
+ * - an audit record for every mutation, success or handled failure.
+ */
+export function createQuestionsAdminRouter({ auditLog, config }: QuestionsAdminRouterDeps): Router {
+  const router = Router();
 
-questionsAdminRouter.put(
-  '/:questionId',
-  asyncHandler(async (req, res) => {
-    const patch = sanitizeQuestionPatch(req.body);
-    if (Object.keys(patch).length === 0) {
-      res.status(400).json({ error: 'empty_patch' });
+  router.use((req, res, next) => {
+    if (!isAdminEnabled()) {
+      res.status(403).json({ error: 'question_admin_disabled' });
       return;
     }
-    const updated = updateQuestionPermanently(req.params.questionId, patch);
-    res.json({ ok: true, question: updated });
-  }),
-);
+    if (config.isProduction && !config.questionAdminFsWrites) {
+      // Phase 1 §6.3 / ADR-004: no direct production content writes until the
+      // Phase 4 Content Studio lifecycle exists. Opt in with QUESTION_ADMIN_FS_WRITES=true.
+      next(
+        new ForbiddenError(
+          'question_admin_fs_write_disabled',
+          'Direct question edits are disabled in production',
+        ),
+      );
+      return;
+    }
+    next();
+  });
 
-questionsAdminRouter.delete(
-  '/:questionId',
-  asyncHandler(async (req, res) => {
-    const result = deleteQuestionPermanently(req.params.questionId);
-    res.json({ ok: true, ...result });
-  }),
-);
+  const actor = (req: Request) => ({
+    userId: req.auth?.userId ?? null,
+    authSource: req.auth?.authSource ?? null,
+  });
+
+  router.put(
+    '/:questionId',
+    asyncHandler(async (req, res) => {
+      const patch = sanitizeQuestionPatch(req.body);
+      if (Object.keys(patch).length === 0) {
+        res.status(400).json({ error: 'empty_patch' });
+        return;
+      }
+      try {
+        const updated = updateQuestionPermanently(req.params.questionId, patch);
+        await auditLog.append(
+          buildAuditRecord({
+            actor: actor(req),
+            action: 'question.update',
+            target: req.params.questionId,
+            result: 'ok',
+            requestId: req.id,
+            metadata: { fields: Object.keys(patch) },
+          }),
+        );
+        res.json({ ok: true, question: updated });
+      } catch (err) {
+        await auditLog.append(
+          buildAuditRecord({
+            actor: actor(req),
+            action: 'question.update',
+            target: req.params.questionId,
+            result: 'error',
+            requestId: req.id,
+            metadata: { fields: Object.keys(patch), error: (err as Error).message },
+          }),
+        );
+        throw err;
+      }
+    }),
+  );
+
+  router.delete(
+    '/:questionId',
+    asyncHandler(async (req, res) => {
+      try {
+        const result = deleteQuestionPermanently(req.params.questionId);
+        await auditLog.append(
+          buildAuditRecord({
+            actor: actor(req),
+            action: 'question.delete',
+            target: req.params.questionId,
+            result: 'ok',
+            requestId: req.id,
+            metadata: { source: result.source },
+          }),
+        );
+        res.json({ ok: true, ...result });
+      } catch (err) {
+        await auditLog.append(
+          buildAuditRecord({
+            actor: actor(req),
+            action: 'question.delete',
+            target: req.params.questionId,
+            result: 'error',
+            requestId: req.id,
+            metadata: { error: (err as Error).message },
+          }),
+        );
+        throw err;
+      }
+    }),
+  );
+
+  return router;
+}
