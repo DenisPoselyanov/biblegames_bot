@@ -11,9 +11,16 @@
 
 import { Router, type Request } from 'express';
 import { asyncHandler } from '../middleware/asyncHandler';
-import { UnauthorizedError } from '../lib/errors';
+import { AppError, UnauthorizedError } from '../lib/errors';
+import { serverFlag } from '../lib/flags';
+import type { ServerConfig } from '../config/env';
 import type { ServerStore } from '../db/store';
 import type { RoleRegistry } from '../authz/roleRegistry';
+import type { WalletLedger } from '../wallet';
+import type { AuditLog } from '../audit';
+import { buildAuditRecord } from '../audit';
+import type { MigrationStore } from '../migration/migrationStore';
+import { applyMigration } from '../migration/applyMigration';
 import { readProfile, writeProfile } from '../services/profileService';
 import {
   sanitizeStatsBody,
@@ -24,6 +31,10 @@ import {
 export interface MeRouterDeps {
   dbStore: ServerStore;
   roleRegistry: RoleRegistry;
+  walletLedger: WalletLedger;
+  migrationStore: MigrationStore;
+  auditLog: AuditLog;
+  config: ServerConfig;
 }
 
 function requirePrincipal(req: Request) {
@@ -33,7 +44,14 @@ function requirePrincipal(req: Request) {
   return req.auth;
 }
 
-export function createMeRouter({ dbStore, roleRegistry }: MeRouterDeps): Router {
+export function createMeRouter({
+  dbStore,
+  roleRegistry,
+  walletLedger,
+  migrationStore,
+  auditLog,
+  config,
+}: MeRouterDeps): Router {
   const router = Router();
 
   router.get('/', (req, res) => {
@@ -54,7 +72,7 @@ export function createMeRouter({ dbStore, roleRegistry }: MeRouterDeps): Router 
     '/profile',
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
-      res.json(await readProfile(dbStore, userId));
+      res.json(await readProfile(dbStore, userId, walletLedger));
     }),
   );
 
@@ -62,8 +80,50 @@ export function createMeRouter({ dbStore, roleRegistry }: MeRouterDeps): Router 
     '/profile',
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
-      await writeProfile(dbStore, userId, req.body);
+      await writeProfile(dbStore, userId, req.body, { mode: 'full' });
       res.json({ ok: true });
+    }),
+  );
+
+  router.patch(
+    '/preferences',
+    asyncHandler(async (req, res) => {
+      const { userId } = requirePrincipal(req);
+      await writeProfile(dbStore, userId, req.body, { mode: 'preferences' });
+      res.json(await readProfile(dbStore, userId, walletLedger));
+    }),
+  );
+
+  router.post(
+    '/migrate',
+    asyncHandler(async (req, res) => {
+      const { userId } = requirePrincipal(req);
+      if (!serverFlag('authoritativeProfileV2', false)) {
+        throw new AppError('not_enabled', 'Migration is not enabled', 404);
+      }
+      const { record, replayed } = await applyMigration(userId, req.body ?? {}, {
+        dbStore,
+        walletLedger,
+        migrationStore,
+        config,
+      });
+      if (!replayed) {
+        await auditLog.append(
+          buildAuditRecord({
+            actor: { userId, authSource: req.auth?.authSource ?? null },
+            action: 'migration.claim',
+            target: userId,
+            result: 'ok',
+            requestId: req.id,
+            metadata: {
+              status: record.status,
+              sourceVersion: record.sourceVersion,
+              acceptedCoins: (record.accepted as { coins?: number }).coins,
+            },
+          }),
+        );
+      }
+      res.status(replayed ? 200 : 201).json({ ok: true, replayed, record });
     }),
   );
 

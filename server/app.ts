@@ -12,6 +12,9 @@ import { createRequireAuthenticated } from './auth/middleware';
 import { RoleRegistry } from './authz/roleRegistry';
 import { createPolicies } from './authz/policy';
 import { createAuditLog, type AuditLog } from './audit';
+import { createWalletLedger, type WalletLedger } from './wallet';
+import { createIdempotencyStore, type IdempotencyStore } from './lib/idempotency';
+import { createMigrationStore, type MigrationStore } from './migration/migrationStore';
 import {
   sanitizeStatsBody,
   sanitizeStudyAnswers,
@@ -21,6 +24,7 @@ import { readProfile, writeProfile } from './services/profileService';
 import { scriptureRouter } from './routes/scripture';
 import { createQuestionsAdminRouter } from './routes/questionsAdmin';
 import { createMeRouter } from './routes/me';
+import { createProgressionRouter } from './routes/progression';
 import { questionsRouter } from './routes/questions';
 import { useQuestionsSql } from './db/pgPool';
 import { listKahootSessions, getKahootSession, sessionToCsv } from './kahootSessions';
@@ -30,6 +34,9 @@ export interface AppDeps {
   dbStore?: ServerStore;
   auditLog?: AuditLog;
   roleRegistry?: RoleRegistry;
+  walletLedger?: WalletLedger;
+  idempotency?: IdempotencyStore;
+  migrationStore?: MigrationStore;
 }
 
 function assertSelf(req: Request, userId: string): void {
@@ -53,6 +60,9 @@ export function createApp(deps: AppDeps): Express {
   const requireAuthenticated = createRequireAuthenticated(config);
   const roleRegistry = deps.roleRegistry ?? new RoleRegistry(config.roleGrants);
   const auditLog = deps.auditLog ?? createAuditLog(config);
+  const walletLedger = deps.walletLedger ?? createWalletLedger(config);
+  const idempotency = deps.idempotency ?? createIdempotencyStore(config);
+  const migrationStore = deps.migrationStore ?? createMigrationStore(config);
   const { requirePermission } = createPolicies({ roleRegistry, auditLog });
 
   const app = express();
@@ -70,7 +80,16 @@ export function createApp(deps: AppDeps): Express {
     requirePermission('questions:admin'),
     createQuestionsAdminRouter({ auditLog, config }),
   );
-  app.use('/api/v1/me', requireAuthenticated, createMeRouter({ dbStore, roleRegistry }));
+  app.use(
+    '/api/v1/me',
+    requireAuthenticated,
+    createMeRouter({ dbStore, roleRegistry, walletLedger, migrationStore, auditLog, config }),
+  );
+  app.use(
+    '/api/v1/progression',
+    requireAuthenticated,
+    createProgressionRouter({ dbStore, walletLedger, idempotency }),
+  );
 
   app.get(
     '/health/storage',
@@ -135,7 +154,7 @@ export function createApp(deps: AppDeps): Express {
     requireAuthenticated,
     asyncHandler(async (req, res) => {
       assertSelf(req, req.params.userId);
-      res.json(await readProfile(dbStore, req.params.userId));
+      res.json(await readProfile(dbStore, req.params.userId, walletLedger));
     }),
   );
 
@@ -144,7 +163,7 @@ export function createApp(deps: AppDeps): Express {
     requireAuthenticated,
     asyncHandler(async (req, res) => {
       assertSelf(req, req.params.userId);
-      await writeProfile(dbStore, req.params.userId, req.body);
+      await writeProfile(dbStore, req.params.userId, req.body, { mode: 'full' });
       res.json({ ok: true });
     }),
   );

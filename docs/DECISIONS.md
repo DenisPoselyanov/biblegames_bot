@@ -171,7 +171,45 @@ Development fallback:
 # ADR-003 — Progression, wallet і rewards є server-authoritative
 
 **Дата:** 2026-08-02  
-**Статус:** accepted, implementation pending Phase 1
+**Статус:** accepted, implementation in progress (Phase 1 WS3)
+
+## Implementation progress (Phase 1 WS3, 2026-09-06)
+
+- `server/wallet/` — immutable ledger port: `earn` / `spend` / `migration_opening` /
+  `adjustment` / `reversal`; balance = `sum(amount)`, ніколи mutable integer;
+  idempotent на `(sourceType, sourceId)`; no negative balance; JSON adapter
+  (`.data/wallet.json`, atomic + per-file mutex) + SQL adapter (`wallet_ledger`,
+  one-statement CTE insert) + `wallet_ledger` таблиця.
+- `server/lib/idempotency.ts` — `IdempotencyStore` (recall/remember, TTL 24h,
+  cap 5000) — command-level replay cache поверх ledger-рівневої гарантії.
+- `server/progression/` — `computeCompletion(kind, boundedInput, snapshot)`:
+  server рахує coins/wisdom/rank/wins/streak/achievements; client-supplied
+  totals не читаються; bounds (`correctCount<=total<=100`, difficulty enum, coin
+  caps). `rankMath.ts` — faithful port `advancePlayerRank`/`computeStageWisdom`
+  (як `server/lib/streak.ts` для `updateStreak`); sync до Phase 2 consolidation.
+- `POST /api/v1/progression/completions` — єдина Phase-1 command (`level` /
+  `practice_stage` / `millionaire` / `survival`) → wallet entry + authoritative
+  profile write + `ProgressionOutcome { eventId, previous, next, delta }`; стабільний
+  `eventId = hash(userId, sourceId)`.
+- `PATCH /api/v1/me/preferences` — whitelist (displayName, bibleTranslation,
+  activeTheme∈owned, avatar∈owned). `writeProfile(mode: 'full'|'preferences')`:
+  при `authoritativeProfileV2` ON legacy `PUT /profile` **вирізає** authoritative
+  поля (coins, playerRank, streak, achievements, completedLevels, mastery,
+  practiceTracks, wins, unlocks, themePoints); при `disableLegacyProfileWrites`
+  ON → 409.
+- `POST /api/v1/me/migrate` — one-time bounded: coins cap `MIGRATION_MAX_COINS`
+  (default 100000), `migration_opening` wallet entry (sourceId = userId),
+  `migration_records` таблиця, `auditLog` action `migration.claim`; повтор →
+  recorded result, без другого credit.
+- `server/db/atomicJson.ts` — `writeJsonFileAtomic` (tmp + fsync + rename) +
+  `withFileMutex`; `jsonStore` переписаний з debounce на synchronous atomic write.
+- Прапорці (default OFF): `authoritativeProfileV2`, `disableLegacyProfileWrites`.
+  `walletLedgerV1` з §17 folded у `authoritativeProfileV2` (ADR-011 anti-sprawl).
+- Тести: `server/{db,wallet,progression}/*.test.ts`, `server/lib/idempotency.test.ts`,
+  `server/__tests__/integration/progression.test.ts`.
+- **Ще не зроблено (WS4):** cutover React-клієнта (`PlayerContext`/`playerRepo`) на
+  нові endpoints, flip прапорців ON, видалення legacy `PUT /profile` + `x-user-id`,
+  Phase 1 DoD sign-off; per-game endpoints (§7.2) — Phase 2.
 
 ## Контекст
 
@@ -277,7 +315,18 @@ Protected Content Studio отримує RBAC і може бути фізично
 # ADR-006 — Transactional production storage; JSON лише як контрольований adapter
 
 **Дата:** 2026-08-02  
-**Статус:** accepted, implementation pending Phase 1/2
+**Статус:** accepted, implementation in progress (Phase 1 WS3 — atomic JSON + wallet)
+
+## Implementation progress (Phase 1 WS3, 2026-09-06)
+
+- `server/db/atomicJson.ts` — mutable JSON adapters пишуть atomic (tmp + `fsync` +
+  `rename`); `withFileMutex` серіалізує concurrent mutations одного файлу в межах
+  процесу. `jsonStore` більше не debounce-ить.
+- Новий domain contract per store: `WalletLedger`, `IdempotencyStore`,
+  `MigrationStore` — по одному JSON adapter (dev) і одному SQL adapter (prod),
+  без зміни contract. SQL wallet `post` — one-statement CTE (balance check +
+  `on conflict do nothing`), тобто atomic без явної транзакції.
+- Postgres обовʼязковий лише в production (`STORAGE_PROVIDER=sql`); JSON — dev/fixtures.
 
 ## Контекст
 
