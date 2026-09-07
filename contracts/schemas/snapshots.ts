@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { difficultySchema } from '../enums/index';
 import { entityId, isoTimestamp, nonNegativeInt } from './primitives';
 
 /**
@@ -8,30 +9,43 @@ import { entityId, isoTimestamp, nonNegativeInt } from './primitives';
  * internal derivation — a snapshot is a computed view, not a stored aggregate.
  */
 
-export const progressionSnapshot = z.object({
-  coins: nonNegativeInt,
-  wisdom: nonNegativeInt,
-  rankTier: z.number().int().min(0),
-  rankPlaque: z.number().int().min(0),
-  rankUnlockedTier: z.number().int().min(0),
-  streakDays: z.number().int().min(0),
-  lastActiveAt: isoTimestamp.nullable(),
-  completedLevels: z.record(z.string(), z.number().int().min(0)).default({}),
-  millionaireWins: nonNegativeInt.default(0),
-  millionaireMaxLevel: z.number().int().min(0).default(0),
-  survivalHighScore: nonNegativeInt.default(0),
-  achievements: z.array(z.string().max(64)).default([]),
-  themePoints: z.record(z.string(), nonNegativeInt).default({}),
-});
+/** Mirrors `ProgressionSnapshot` in `server/progression/completionOutcome.ts`. */
+export const progressionSnapshot = z
+  .object({
+    coins: nonNegativeInt,
+    wisdom: nonNegativeInt,
+    rankTier: difficultySchema,
+    rankPlaque: z.number().int().min(0),
+    rankUnlockedTier: difficultySchema,
+    streakDays: z.number().int().min(0),
+    lastActiveAt: isoTimestamp.nullable(),
+    millionaireWins: nonNegativeInt,
+    millionaireMaxLevel: z.number().int().min(0),
+    survivalHighScore: nonNegativeInt,
+    completedLevels: z.array(z.record(z.string(), z.unknown())),
+    achievements: z.array(z.string().max(64)),
+    themePoints: z.record(z.string(), nonNegativeInt),
+    practiceTracks: z.array(z.record(z.string(), z.unknown())),
+    studyMastery: z.record(z.string(), z.unknown()),
+  })
+  .passthrough();
 export type ProgressionSnapshot = z.infer<typeof progressionSnapshot>;
 
-export const progressionDelta = z.object({
-  coins: z.number().int(),
-  wisdom: z.number().int(),
-  rankTier: z.number().int(),
-  streakDays: z.number().int(),
-  achievementsGranted: z.array(z.string().max(64)).default([]),
-});
+/**
+ * `.passthrough()` — the delta carries kind-specific extras the server derives
+ * (`nextStageUnlocked`, `nextStageIndex`, `rankChanged`, …). Phase 3 replaces this
+ * with a discriminated union per `CompletionKind`; a derived output is never a
+ * trust boundary, so passthrough is acceptable here (§8).
+ */
+export const progressionDelta = z
+  .object({
+    coins: z.number().int(),
+    wisdom: z.number().int(),
+    rankTier: z.number().int(),
+    streakDays: z.number().int(),
+    achievementsGranted: z.array(z.string().max(64)).default([]),
+  })
+  .passthrough();
 export type ProgressionDelta = z.infer<typeof progressionDelta>;
 
 /** Progression outcome envelope — `eventId` is the motion/notification dedup key (§7.2). */

@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express, { type Express } from 'express';
+import { CONTRACT_VERSION, CONTRACT_VERSION_HEADER } from '../contracts/index';
 import type { ServerConfig } from './config/env';
 import type { ServerStore } from './db/store';
 import { jsonStore } from './db/jsonStore';
@@ -69,6 +70,10 @@ export function createApp(deps: AppDeps): Express {
   app.use(express.json({ limit: '1mb' }));
   app.use(cors({ origin: config.clientOrigins, credentials: true }));
   app.use(requestId);
+  app.use((_req, res, next) => {
+    res.setHeader(CONTRACT_VERSION_HEADER, CONTRACT_VERSION);
+    next();
+  });
 
   // --- Health / observability (§16) ---
   app.get('/health', (_req, res) => res.json({ ok: true }));

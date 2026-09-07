@@ -43,14 +43,17 @@ export const learningStateResponse = z.object({
   reviewSchedules: z.record(z.string(), z.record(z.string(), z.unknown())),
 });
 
-/** `POST /api/v1/me/migrate` — one-time bounded legacy import (Phase 1 §9). */
+/**
+ * `POST /api/v1/me/migrate` — one-time bounded legacy import (Phase 1 §9).
+ * `profile` is the legacy client-owned blob; the server validates + bounds each
+ * field it trusts (`server/migration/applyMigration.ts`), so the contract keeps
+ * it as an opaque record rather than re-describing the legacy shape.
+ */
 export const migrateRequest = z
   .object({
-    coins: z.number().int().min(0).max(10_000_000).optional(),
-    themePoints: z.record(z.string().max(64), z.number().int().min(0)).optional(),
-    completedLevels: z.record(z.string(), z.number().int().min(0)).optional(),
-    achievements: z.array(z.string().max(64)).max(500).optional(),
-    sourceVersion: z.number().int().min(0).optional(),
+    sourceVersion: z.number().int().min(0).max(1000).optional(),
+    hash: z.string().max(128).optional(),
+    profile: z.record(z.string(), z.unknown()).optional(),
   })
   .strip();
 export type MigrateRequest = z.infer<typeof migrateRequest>;
@@ -59,25 +62,20 @@ export const migrateResponse = z.object({
   ok: z.literal(true),
   replayed: z.boolean(),
   record: z.object({
-    status: z.string(),
+    userId: entityId,
     sourceVersion: z.number().int(),
     migrationVersion: z.number().int(),
+    submittedHash: z.string(),
     accepted: z.record(z.string(), z.unknown()),
     rejected: z.record(z.string(), z.unknown()),
-    submittedAt: isoTimestamp.optional(),
+    walletOpeningEntryId: z.string().nullable(),
+    status: z.enum(['applied', 'applied_with_caps']),
+    createdAt: isoTimestamp,
   }),
 });
 
-/** `POST /api/v1/me/telemetry` */
+/** `POST /api/v1/me/telemetry` — events are bounded, not otherwise trusted. */
 export const telemetryRequest = z.object({
-  events: z
-    .array(
-      z.object({
-        name: z.string().min(1).max(64),
-        at: isoTimestamp.optional(),
-        props: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
-    .max(100),
+  events: z.array(z.record(z.string(), z.unknown())).max(100),
 });
 export type TelemetryRequest = z.infer<typeof telemetryRequest>;

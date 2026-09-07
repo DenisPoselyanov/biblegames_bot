@@ -42,8 +42,19 @@ export const MOTION_INTENSITY_VALUES = ['full', 'reduced', 'minimal'] as const;
 export const motionIntensitySchema = z.enum(MOTION_INTENSITY_VALUES);
 export type MotionIntensity = z.infer<typeof motionIntensitySchema>;
 
-/** Authorization roles (mirrors server/authz/roles.ts until WS2 persists them). */
-export const ROLE_VALUES = ['admin', 'reviewer', 'moderator', 'player'] as const;
+/**
+ * Authorization roles — MUST mirror `ROLES` in `server/authz/roles.ts`
+ * (parity test guards this) until WS2 makes `contracts` the single source and
+ * the server imports from here.
+ */
+export const ROLE_VALUES = [
+  'user',
+  'group_leader',
+  'content_reviewer',
+  'content_publisher',
+  'support',
+  'admin',
+] as const;
 export const roleSchema = z.enum(ROLE_VALUES);
 export type Role = z.infer<typeof roleSchema>;
 

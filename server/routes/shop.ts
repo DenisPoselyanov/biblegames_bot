@@ -10,7 +10,9 @@
  */
 
 import { Router, type Request } from 'express';
+import { shopContract } from '../../contracts/index';
 import { asyncHandler } from '../middleware/asyncHandler';
+import { validateBody } from '../middleware/validate';
 import { AppError, UnauthorizedError } from '../lib/errors';
 import { metrics } from '../lib/metrics';
 import { buildAuditRecord, type AuditLog } from '../audit';
@@ -47,15 +49,10 @@ export function createShopRouter({
 
   router.post(
     '/purchases',
+    validateBody(shopContract.purchaseRequest, 'invalid_purchase'),
     asyncHandler(async (req, res) => {
       const { userId, authSource } = principal(req);
-      const body = (req.body ?? {}) as Record<string, unknown>;
-      const kind = body.kind === 'theme' || body.kind === 'avatar' ? body.kind : null;
-      const itemId = String(body.itemId ?? '').trim().slice(0, 64);
-      const idempotencyKey = String(body.idempotencyKey ?? '').trim();
-      if (!kind) throw new AppError('invalid_purchase', 'kind must be "theme" or "avatar"', 400);
-      if (!itemId) throw new AppError('invalid_purchase', 'itemId required', 400);
-      if (!idempotencyKey) throw new AppError('invalid_purchase', 'idempotencyKey required', 400);
+      const { kind, itemId, idempotencyKey } = req.body as shopContract.PurchaseRequest;
 
       const scopedKey = `shop.purchase:${userId}:${idempotencyKey}`;
       const cached = await idempotency.recall(scopedKey);

@@ -10,7 +10,9 @@
  */
 
 import { Router, type Request } from 'express';
+import { meContract } from '../../contracts/index';
 import { asyncHandler } from '../middleware/asyncHandler';
+import { validateBody } from '../middleware/validate';
 import { UnauthorizedError } from '../lib/errors';
 import { createRateLimit } from '../middleware/rateLimit';
 import type { ServerConfig } from '../config/env';
@@ -81,6 +83,7 @@ export function createMeRouter({
   router.patch(
     '/preferences',
     rl('me_preferences', 60_000, 20),
+    validateBody(meContract.preferencesRequest, 'invalid_preferences'),
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
       await writePreferences(dbStore, userId, req.body);
@@ -92,6 +95,7 @@ export function createMeRouter({
   router.patch(
     '/learning-state',
     rl('me_preferences', 60_000, 20),
+    validateBody(meContract.learningStateRequest, 'invalid_learning_state'),
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
       const reviewSchedules = await writeLearningState(dbStore, userId, req.body);

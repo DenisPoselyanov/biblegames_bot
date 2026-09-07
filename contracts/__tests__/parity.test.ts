@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { DIFFICULTIES } from '../../src/types/index';
-import { DIFFICULTY_VALUES, apiErrorEnvelope, difficultySchema } from '../index';
+import { ROLES } from '../../server/authz/roles';
+import { DIFFICULTY_VALUES, ROLE_VALUES, apiErrorEnvelope, difficultySchema } from '../index';
 import { completionRequest } from '../api/progression';
 
 /**
@@ -12,6 +13,10 @@ import { completionRequest } from '../api/progression';
 describe('contract parity with src/types', () => {
   it('difficulty vocabulary matches src/types DIFFICULTIES', () => {
     expect([...DIFFICULTY_VALUES]).toEqual([...DIFFICULTIES]);
+  });
+
+  it('role vocabulary matches server/authz ROLES', () => {
+    expect([...ROLE_VALUES]).toEqual([...ROLES]);
   });
 });
 
