@@ -20,6 +20,18 @@ export default defineConfig([
     },
   },
   {
+    // Isomorphic runtime contracts (Phase 2 §7) — no React, no Node, no DOM assumptions.
+    files: ['contracts/**/*.ts'],
+    languageOptions: {
+      globals: {},
+    },
+    rules: {
+      'react-refresh/only-export-components': 'off',
+      'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+    },
+  },
+  {
     // Node runtimes: Express server, CLI scripts, admin bot, config files.
     files: [
       'server/**/*.{ts,tsx}',
