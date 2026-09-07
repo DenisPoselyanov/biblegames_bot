@@ -7,9 +7,10 @@ import { describe, expect, it } from 'vitest';
 import { schema } from '../schema';
 
 /**
- * Until `server/db/schema.sql` is deleted (once every table is behind a
- * repository), the Drizzle schema and the hand-written SQL must describe the
- * same set of tables — a table added to one but not the other is drift.
+ * Until `server/db/schema.sql` is deleted (once every legacy table is behind a
+ * repository), every table it declares must also exist in the Drizzle schema —
+ * a legacy table dropped from Drizzle is drift. The Drizzle schema is a
+ * superset: WS2 adds new tables (identity, RBAC, …) that schema.sql never had.
  */
 const schemaSqlPath = resolve(
   dirname(fileURLToPath(import.meta.url)),
@@ -26,12 +27,24 @@ function tablesInSchemaSql(): Set<string> {
 }
 
 describe('Drizzle schema ↔ server/db/schema.sql parity', () => {
-  it('declares exactly the tables the hand-written schema.sql has', () => {
-    const drizzleTables = new Set(
-      Object.values(schema)
-        .filter((t) => is(t, PgTable))
-        .map((t) => getTableName(t as PgTable)),
+  const drizzleTables = new Set(
+    Object.values(schema)
+      .filter((t) => is(t, PgTable))
+      .map((t) => getTableName(t as PgTable)),
+  );
+
+  it('covers every legacy table from schema.sql', () => {
+    const missing = [...tablesInSchemaSql()].filter((t) => !drizzleTables.has(t));
+    expect(missing, `legacy tables absent from the Drizzle schema: ${missing.join(', ')}`).toEqual(
+      [],
     );
-    expect([...drizzleTables].sort()).toEqual([...tablesInSchemaSql()].sort());
+  });
+
+  it('new (WS2+) tables are limited to the known identity/RBAC set', () => {
+    const legacy = tablesInSchemaSql();
+    const added = [...drizzleTables].filter((t) => !legacy.has(t)).sort();
+    expect(added).toEqual(
+      ['external_identities', 'roles', 'user_preferences', 'user_roles', 'users'].sort(),
+    );
   });
 });

@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { getTableName, sql } from 'drizzle-orm';
-import { is } from 'drizzle-orm';
+import { getTableName, is, sql } from 'drizzle-orm';
 import { PgTable } from 'drizzle-orm/pg-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { ROLES } from '../../../authz/roles';
 import { createTestDatabase, type TestDatabase } from '../testing';
 import { schema } from '../schema';
 
@@ -41,6 +41,11 @@ describe('migration framework (§18.1)', () => {
       readFileSync(resolve(migrationsFolder, 'meta/_journal.json'), 'utf8'),
     ) as { entries: unknown[] };
     expect(rows.length).toBe(journal.entries.length);
+  });
+
+  it('seeds the roles table to match server/authz/roles.ts ROLES', async () => {
+    const { rows } = await tdb.raw.execute<{ key: string }>(sql`select key from roles order by key`);
+    expect(rows.map((r) => r.key).sort()).toEqual([...ROLES].sort());
   });
 
   it('is a no-op on re-run (safe rerun policy)', async () => {

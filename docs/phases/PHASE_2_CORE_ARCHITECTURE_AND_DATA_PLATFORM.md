@@ -64,9 +64,18 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   snapshot. `db:generate`/`db:check` run `drizzle-kit` via `npx` — not a dep;
   runner needs only `drizzle-orm`. `drizzle-orm` → deps, `@electric-sql/pglite`
   → devDeps (lock in sync, `npm ci` clean). `npm run check` green, 172 tests.
-- **Next:** identity/RBAC tables → repository interfaces + contract tests →
-  persisted role store (runtime grant/revoke, closes ADR-011 handoff) → shared
-  rate-limit/metrics store (closes Phase 1 handoff). Flag `legacyStoreReadOnly`.
+- **Identity + RBAC tables + repositories (§5.1, §9, §10):** `schema/identity.ts`
+  — `users`, `external_identities`, `roles`, `user_roles` (grant w/ provenance +
+  `revoked_at`), `user_preferences`. Migration `0001_nosy_cable.sql` (new tables,
+  plain create) + seeds `roles` from `ROLES`. `server/domains/identity/` —
+  `UserRepository` / `RoleRepository` interfaces + domain types (ORM-free),
+  `inMemoryRepository.ts` peer. SQL adapter
+  `infrastructure/database/repositories/identity.ts` (opaque `Transaction` →
+  Drizzle executor narrowed in one place). Shared `repositoryContract.ts` runs
+  against in-memory **and** pglite. `npm run check` green, 184 tests.
+- **Next:** persisted role store wired into the principal + a runtime
+  grant/revoke service/route (closes ADR-011 handoff) → shared rate-limit/metrics
+  store (closes Phase 1 handoff). Flag `legacyStoreReadOnly`.
 
 ---
 
