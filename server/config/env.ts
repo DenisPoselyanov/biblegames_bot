@@ -33,6 +33,14 @@ export interface ServerConfig {
   roleGrants: RoleGrant[];
   /** Max coins a one-time legacy migration will accept; excess is capped (Phase 1 §9). */
   migrationMaxCoins: number;
+  /**
+   * Demo/in-memory routes (`/study/path`, `/dashboard`, `/leaderboard`, …).
+   * Impossible in production (§10, §17): on by default off-prod, opt-out via
+   * `DEMO_ROUTES_ENABLED=false`.
+   */
+  demoRoutesEnabled: boolean;
+  /** Disable HTTP + socket rate limiting (§13). Forced off under `NODE_ENV=test`. */
+  rateLimitDisabled: boolean;
 }
 
 export interface LoadConfigResult {
@@ -107,6 +115,11 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     questionAdminFsWrites: env.QUESTION_ADMIN_FS_WRITES === 'true',
     roleGrants: parseRoleGrants(env, warnings),
     migrationMaxCoins: parseIntOr(env.MIGRATION_MAX_COINS, 100_000),
+    demoRoutesEnabled: nodeEnv !== 'production' && env.DEMO_ROUTES_ENABLED !== 'false',
+    // Off in tests by default so suites don't trip limits; a suite that needs to
+    // exercise limiting sets RATE_LIMIT_DISABLED=false explicitly.
+    rateLimitDisabled:
+      env.RATE_LIMIT_DISABLED === 'true' || (nodeEnv === 'test' && env.RATE_LIMIT_DISABLED !== 'false'),
   });
 
   return { config, warnings };

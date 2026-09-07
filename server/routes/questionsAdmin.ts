@@ -2,7 +2,7 @@ import { Router, type Request } from 'express';
 import type { Question } from '../../src/types/index';
 import type { ServerConfig } from '../config/env';
 import { asyncHandler } from '../middleware/asyncHandler';
-import { ForbiddenError } from '../lib/errors';
+import { AppError, ForbiddenError } from '../lib/errors';
 import { buildAuditRecord, type AuditLog } from '../audit';
 import { deleteQuestionPermanently, updateQuestionPermanently } from '../questionAdmin';
 
@@ -75,6 +75,13 @@ export function createQuestionsAdminRouter({ auditLog, config }: QuestionsAdminR
     authSource: req.auth?.authSource ?? null,
   });
 
+  /** Map the domain layer's bare errors onto the stable HTTP envelope (§12). */
+  const asHttpError = (err: unknown): unknown => {
+    const message = err instanceof Error ? err.message : String(err);
+    if (message === 'question_not_found') return new AppError('question_not_found', 'No such question', 404);
+    return err;
+  };
+
   router.put(
     '/:questionId',
     asyncHandler(async (req, res) => {
@@ -107,7 +114,7 @@ export function createQuestionsAdminRouter({ auditLog, config }: QuestionsAdminR
             metadata: { fields: Object.keys(patch), error: (err as Error).message },
           }),
         );
-        throw err;
+        throw asHttpError(err);
       }
     }),
   );
@@ -139,7 +146,7 @@ export function createQuestionsAdminRouter({ auditLog, config }: QuestionsAdminR
             metadata: { error: (err as Error).message },
           }),
         );
-        throw err;
+        throw asHttpError(err);
       }
     }),
   );

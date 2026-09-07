@@ -114,8 +114,13 @@ interface PlayerContextValue {
 
 const PlayerContext = createContext<PlayerContextValue | null>(null);
 
+/**
+ * The server-authoritative `/api/v1` command surface is the only remote path
+ * (WS4 part 2 removed the `authoritative_profile` flag and the legacy fallback).
+ * When there's no API base configured we run fully local.
+ */
 function authoritativeEnabled(): boolean {
-  return hasApi() && isFeatureEnabled('authoritative_profile');
+  return hasApi();
 }
 
 /** sessionStorage set of authoritative event ids whose celebration has already played (ADR-010). */
@@ -215,7 +220,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     localDirtyRef.current = false;
     loadProfile(userId, displayName);
 
-    void studyRepo.syncHistory(userId);
+    void studyRepo.syncHistory();
     trackEvent('session_start', { userId });
     void flushTelemetry(userId);
 
@@ -734,7 +739,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         isCorrect,
         answeredAt: new Date().toISOString(),
         errorTag: errorTag ?? (isCorrect ? undefined : 'knowledge-gap'),
-      }, userId);
+      });
 
       if (authoritativeEnabled()) {
         void progressionRepo

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { loadConfig } from '../../config/env';
 import { createApp } from '../../app';
@@ -7,10 +7,6 @@ import { createMemoryIdempotencyStore } from '../../lib/idempotency';
 import { createMemoryMigrationStore } from '../../migration/migrationStore';
 import { createMemoryAuditLog } from '../../audit';
 import { createMemoryStore } from '../helpers/memoryStore';
-
-afterEach(() => {
-  delete process.env.FEATURE_AUTHORITATIVEPROFILEV2;
-});
 
 function makeApp(env: Record<string, string> = {}) {
   const { config } = loadConfig({ NODE_ENV: 'test', AUTH_MODE: 'development', ...env });
@@ -36,14 +32,7 @@ const answer = (overrides: Record<string, unknown> = {}) => ({
 });
 
 describe('POST /api/v1/progression/answers', () => {
-  it('404s when the flag is off', async () => {
-    const { app } = makeApp();
-    const res = await request(app).post('/api/v1/progression/answers').set('x-user-id', '7').send(answer());
-    expect(res.status).toBe(404);
-  });
-
   it('raises mastery for the node and records the answer', async () => {
-    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
     const { app } = makeApp();
     const res = await request(app).post('/api/v1/progression/answers').set('x-user-id', '7').send(answer());
     expect(res.status).toBe(200);
@@ -59,7 +48,6 @@ describe('POST /api/v1/progression/answers', () => {
   });
 
   it('is idempotent on idempotencyKey', async () => {
-    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
     const { app } = makeApp();
     await request(app).post('/api/v1/progression/answers').set('x-user-id', '7').send(answer());
     await request(app).post('/api/v1/progression/answers').set('x-user-id', '7').send(answer());
@@ -68,7 +56,6 @@ describe('POST /api/v1/progression/answers', () => {
   });
 
   it('grants mastery-expert only once mastery reaches 100', async () => {
-    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
     const { app } = makeApp();
     let granted: string[] = [];
     for (let i = 0; i < 30; i += 1) {
@@ -84,7 +71,6 @@ describe('POST /api/v1/progression/answers', () => {
   });
 
   it('400s on a missing idempotencyKey', async () => {
-    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
     const { app } = makeApp();
     const res = await request(app)
       .post('/api/v1/progression/answers')

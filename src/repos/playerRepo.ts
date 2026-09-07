@@ -1,262 +1,55 @@
-import type {
-  CompletedLevel,
-  PlayerProfile,
-  PracticeTrackProgress,
-  PlayerRank,
-  ReviewScheduleState,
-} from '../types';
-import { loadProfile, migrateProfileWallet, saveProfile, type ProfileWithLegacyWallet } from '../lib/storage';
+import type { PlayerProfile } from '../types';
+import { loadProfile, saveProfile } from '../lib/storage';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
-import { getDefaultPlayerRank, getTrackKey } from '../lib/practiceProgression';
-import { DIFFICULTY_ORDER } from '../types';
-import { apiFetch, hasApi } from './apiClient';
-import { isFeatureEnabled } from '../lib/flags';
+import { hasApi } from './apiClient';
 import { progressionRepo } from './progressionRepo';
 
-function isRemoteEnabled(): boolean {
-  return hasApi();
-}
-
-function isAuthoritative(): boolean {
-  return hasApi() && isFeatureEnabled('authoritative_profile');
-}
-
-function levelKey(level: CompletedLevel): string {
-  return `${level.themeId}:${level.difficulty}`;
-}
-
-function mergeCompletedLevels(
-  local: CompletedLevel[],
-  remote: CompletedLevel[],
-): CompletedLevel[] {
-  const map = new Map<string, CompletedLevel>();
-  for (const level of remote) {
-    map.set(levelKey(level), level);
-  }
-  for (const level of local) {
-    const key = levelKey(level);
-    const existing = map.get(key);
-    if (!existing) {
-      map.set(key, level);
-      continue;
-    }
-    const existingScore = existing.score / Math.max(1, existing.maxScore);
-    const levelScore = level.score / Math.max(1, level.maxScore);
-    const existingTime = new Date(existing.completedAt).getTime();
-    const levelTime = new Date(level.completedAt).getTime();
-    if (
-      levelScore > existingScore ||
-      (levelScore === existingScore && levelTime > existingTime)
-    ) {
-      map.set(key, level);
-    }
-  }
-  return [...map.values()];
-}
-
-function mergePlayerRank(local: PlayerRank, remote: PlayerRank): PlayerRank {
-  const localScore = DIFFICULTY_ORDER[local.tier] * 10 + (8 - local.plaque);
-  const remoteScore = DIFFICULTY_ORDER[remote.tier] * 10 + (8 - remote.plaque);
-  const better = localScore >= remoteScore ? local : remote;
-  const worse = localScore >= remoteScore ? remote : local;
-  return {
-    tier: better.tier,
-    plaque: better.plaque,
-    wisdomPoints: Math.max(local.wisdomPoints, remote.wisdomPoints),
-    unlockedTier:
-      DIFFICULTY_ORDER[better.unlockedTier] >= DIFFICULTY_ORDER[worse.unlockedTier]
-        ? better.unlockedTier
-        : worse.unlockedTier,
-  };
-}
-
-function mergePracticeTracks(
-  local: PracticeTrackProgress[],
-  remote: PracticeTrackProgress[],
-): PracticeTrackProgress[] {
-  const map = new Map<string, PracticeTrackProgress>();
-  for (const track of [...remote, ...local]) {
-    const key = getTrackKey(track.themeId, track.nodeId, track.difficulty);
-    const existing = map.get(key);
-    if (!existing) {
-      map.set(key, { ...track, stageResults: [...track.stageResults] });
-      continue;
-    }
-    const resultsByStage = new Map<number, PracticeTrackProgress['stageResults'][0]>();
-    for (const r of [...existing.stageResults, ...track.stageResults]) {
-      const prev = resultsByStage.get(r.stageIndex);
-      if (!prev || (r.passed && !prev.passed) || new Date(r.completedAt) > new Date(prev.completedAt)) {
-        resultsByStage.set(r.stageIndex, r);
-      }
-    }
-    map.set(key, {
-      themeId: track.themeId,
-      nodeId: track.nodeId,
-      difficulty: track.difficulty,
-      highestUnlockedStage: Math.max(existing.highestUnlockedStage, track.highestUnlockedStage),
-      stageResults: [...resultsByStage.values()].sort((a, b) => a.stageIndex - b.stageIndex),
-    });
-  }
-  return [...map.values()];
-}
-
-function mergeReviewSchedules(
-  local: Record<string, ReviewScheduleState>,
-  remote: Record<string, ReviewScheduleState>,
-): Record<string, ReviewScheduleState> {
-  const merged: Record<string, ReviewScheduleState> = { ...remote };
-  for (const [key, value] of Object.entries(local)) {
-    const existing = merged[key];
-    if (!existing || new Date(value.lastReviewedAt) > new Date(existing.lastReviewedAt)) {
-      merged[key] = value;
-    }
-  }
-  return merged;
-}
-
-function mergeProfiles(local: PlayerProfile, remote: PlayerProfile & ProfileWithLegacyWallet): PlayerProfile {
-  const localWallet = migrateProfileWallet(local);
-  const remoteWallet = migrateProfileWallet(remote);
-  const themePoints: Record<string, number> = { ...remote.themePoints };
-  for (const [key, value] of Object.entries(local.themePoints)) {
-    themePoints[key] = Math.max(themePoints[key] ?? 0, value);
-  }
-
-  const mastery = { ...remote.studyMastery };
-  for (const [key, value] of Object.entries(local.studyMastery)) {
-    if (!mastery[key]) {
-      mastery[key] = value;
-      continue;
-    }
-    mastery[key] = {
-      ...mastery[key],
-      mastery: Math.max(mastery[key].mastery, value.mastery),
-      confidence: Math.max(mastery[key].confidence, value.confidence),
-      correctStreak: Math.max(mastery[key].correctStreak, value.correctStreak),
-      wrongCount: Math.max(mastery[key].wrongCount, value.wrongCount),
-      totalAnswers: Math.max(mastery[key].totalAnswers, value.totalAnswers),
-      errorTags: Array.from(new Set([...mastery[key].errorTags, ...value.errorTags])),
-      lastReviewedAt: mastery[key].lastReviewedAt && value.lastReviewedAt
-        ? (new Date(mastery[key].lastReviewedAt) > new Date(value.lastReviewedAt)
-          ? mastery[key].lastReviewedAt
-          : value.lastReviewedAt)
-        : mastery[key].lastReviewedAt ?? value.lastReviewedAt,
-    };
-  }
-
-  return {
-    ...remoteWallet,
-    displayName: local.displayName || remote.displayName,
-    coins: Math.max(localWallet.coins, remoteWallet.coins),
-    survivalHighScore: Math.max(local.survivalHighScore, remote.survivalHighScore),
-    millionaireWins: Math.max(local.millionaireWins, remote.millionaireWins),
-    millionaireMaxLevel: Math.max(local.millionaireMaxLevel, remote.millionaireMaxLevel),
-    streakDays: Math.max(local.streakDays, remote.streakDays),
-    themePoints,
-    completedLevels: mergeCompletedLevels(local.completedLevels, remote.completedLevels),
-    unlockedThemes: Array.from(new Set([...remote.unlockedThemes, ...local.unlockedThemes])),
-    unlockedAvatars: Array.from(new Set([...remote.unlockedAvatars, ...local.unlockedAvatars])),
-    achievements: Array.from(new Set([...remote.achievements, ...local.achievements])),
-    studyMastery: mastery,
-    lastActiveAt: local.lastActiveAt && remote.lastActiveAt
-      ? (new Date(local.lastActiveAt) > new Date(remote.lastActiveAt) ? local.lastActiveAt : remote.lastActiveAt)
-      : local.lastActiveAt ?? remote.lastActiveAt,
-    activeTheme: local.activeTheme || remote.activeTheme,
-    avatar: local.avatar || remote.avatar,
-    bibleTranslation: normalizeBollsTranslation(
-      local.bibleTranslation ?? remote.bibleTranslation,
-    ),
-    practiceTracks: mergePracticeTracks(
-      local.practiceTracks ?? [],
-      remote.practiceTracks ?? [],
-    ),
-    playerRank: mergePlayerRank(
-      local.playerRank ?? getDefaultPlayerRank(),
-      remote.playerRank ?? getDefaultPlayerRank(),
-    ),
-    reviewSchedules: mergeReviewSchedules(
-      local.reviewSchedules ?? {},
-      remote.reviewSchedules ?? {},
-    ),
-  };
-}
-
-function profilesEqual(a: PlayerProfile, b: PlayerProfile): boolean {
-  return JSON.stringify(a) === JSON.stringify(b);
-}
+/**
+ * The server-authoritative `/api/v1` surface is the only remote path (WS4 part 2
+ * removed the `authoritative_profile` flag and the legacy whole-profile
+ * `GET/PUT /profile/:userId` round-trip). Authoritative fields are owned by the
+ * progression / shop / migration commands; the client only ever writes the
+ * preference whitelist. With no API base configured the app runs fully local.
+ */
 
 export const playerRepo = {
   async get(userId: string, displayName: string): Promise<PlayerProfile> {
     const local = loadProfile(userId, displayName);
+    if (!hasApi()) return local;
 
-    if (isAuthoritative()) {
-      // Server is the source of truth. One-time migration seeds it from the
-      // local profile the first time the flag is on for this user.
-      try {
-        await maybeMigrate(userId, local);
-        const remote = await progressionRepo.getProfile();
-        if (!remote) return local;
-        const hydrated: PlayerProfile = {
-          ...local,
-          ...remote,
-          userId,
-          displayName: remote.displayName || displayName || local.displayName,
-          bibleTranslation: normalizeBollsTranslation(
-            remote.bibleTranslation ?? local.bibleTranslation,
-          ),
-        };
-        saveProfile(hydrated);
-        return hydrated;
-      } catch {
-        return local;
-      }
-    }
-
-    if (!isRemoteEnabled()) return local;
     try {
-      const response = await apiFetch(`/profile/${userId}`, userId);
-      if (!response.ok) return local;
-      const remote = (await response.json()) as ProfileWithLegacyWallet & PlayerProfile;
-      const merged = mergeProfiles(local, remote);
-      saveProfile(merged);
-      if (!profilesEqual(merged, remote)) {
-        await apiFetch(`/profile/${merged.userId}`, userId, {
-          method: 'PUT',
-          body: JSON.stringify(merged),
-        });
-      }
-      return merged;
+      // One-time migration seeds the server from the local profile on first run.
+      await maybeMigrate(userId, local);
+      const remote = await progressionRepo.getProfile();
+      if (!remote) return local;
+      const hydrated: PlayerProfile = {
+        ...local,
+        ...remote,
+        userId,
+        displayName: remote.displayName || displayName || local.displayName,
+        bibleTranslation: normalizeBollsTranslation(
+          remote.bibleTranslation ?? local.bibleTranslation,
+        ),
+      };
+      saveProfile(hydrated);
+      return hydrated;
     } catch {
       return local;
     }
   },
+
   async save(profile: PlayerProfile): Promise<void> {
     saveProfile(profile);
-    if (!isRemoteEnabled()) return;
-
-    if (isAuthoritative()) {
-      // Authoritative fields are owned by the command endpoints; the whole-
-      // profile PUT is gone. Only the preference whitelist is synced here.
-      try {
-        await progressionRepo.savePreferences({
-          displayName: profile.displayName,
-          bibleTranslation: profile.bibleTranslation,
-          activeTheme: profile.activeTheme,
-          avatar: profile.avatar,
-        });
-      } catch {
-        /* noop — preferences retry on next change */
-      }
-      return;
-    }
-
+    if (!hasApi()) return;
     try {
-      await apiFetch(`/profile/${profile.userId}`, profile.userId, {
-        method: 'PUT',
-        body: JSON.stringify(profile),
+      await progressionRepo.savePreferences({
+        displayName: profile.displayName,
+        bibleTranslation: profile.bibleTranslation,
+        activeTheme: profile.activeTheme,
+        avatar: profile.avatar,
       });
     } catch {
-      /* noop */
+      /* noop — preferences retry on the next change */
     }
   },
 };

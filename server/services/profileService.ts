@@ -1,28 +1,22 @@
 /**
- * Shared profile read/write logic used by the legacy `/profile/:userId` routes
- * and the self-scoped `/api/v1/me/*` routes (Phase 1 §5.3, §7.1).
+ * Shared profile read/write logic for the self-scoped `/api/v1/me/*` routes
+ * (Phase 1 §5.3, §7.1).
  *
- * WS3 splits writes into two modes:
- * - `preferences` — a small whitelist the client is still trusted to set;
- * - `full` — the legacy whole-profile write. When `authoritativeProfileV2` is
- *   on, the authoritative fields (coins, rank, streak, achievements, …) are
- *   stripped from the body before merge (DoD #6); when
- *   `disableLegacyProfileWrites` is on it is refused outright (§9.3).
+ * WS4 part 2 removed the legacy whole-profile `PUT`: the client can no longer
+ * send `coins`, `playerRank`, `streakDays`, `achievements`, `completedLevels`,
+ * `studyMastery`, `practiceTracks`, game wins or unlocks as final values (DoD
+ * #6). The only write the client is trusted with is the preference whitelist
+ * (`writePreferences`); everything authoritative goes through the progression /
+ * shop / migration commands.
  *
- * `reviewSchedules` is authoritative-stripped like the rest, but the SM-2-lite
- * scheduling model is Phase 3 work (§7.4), so WS4 keeps it a client-owned blob
- * the server persists verbatim via `PATCH /api/v1/me/learning-state`
- * (`writeLearningState` below) — a tracked Phase-1 DoD exception, not server
- * authority.
+ * `reviewSchedules` is persisted verbatim as a client-owned opaque blob via
+ * `PATCH /api/v1/me/learning-state` (`writeLearningState` below) — a tracked
+ * Phase-1 DoD exception (§7.4); the SM-2-lite scheduling model is Phase 3 work.
  */
 
 import type { ServerStore } from '../db/store';
 import { migrateProfileWallet, type ProfileWithLegacyWallet } from '../../src/lib/storage';
 import { isBollsTranslation } from '../../src/lib/bollsConstants';
-import { AppError } from '../lib/errors';
-import { isServerFeatureEnabled, serverFlag } from '../lib/flags';
-import { recomputeStreak } from '../lib/streak';
-import { sanitizeProfileBody } from '../middleware/validateBody';
 import type { WalletLedger } from '../wallet';
 
 /** The default profile returned when a user has no stored record yet. */
@@ -50,29 +44,6 @@ export function emptyProfile(userId: string): Record<string, unknown> {
     playerRank: { tier: 'baby', plaque: 7, wisdomPoints: 0, unlockedTier: 'child' },
   };
 }
-
-/**
- * Fields the server owns once `authoritativeProfileV2` is on. The client may
- * still send them (old clients will) — they are dropped, not rejected.
- */
-export const AUTHORITATIVE_PROFILE_FIELDS = [
-  'coins',
-  'totalPoints',
-  'playerRank',
-  'streakDays',
-  'lastActiveAt',
-  'achievements',
-  'completedLevels',
-  'studyMastery',
-  'practiceTracks',
-  'millionaireWins',
-  'millionaireMaxLevel',
-  'survivalHighScore',
-  'unlockedThemes',
-  'unlockedAvatars',
-  'themePoints',
-  'reviewSchedules',
-] as const;
 
 export interface ProfilePreferences {
   displayName?: string;
@@ -119,74 +90,29 @@ export function sanitizePreferences(
 export async function readProfile(
   dbStore: ServerStore,
   userId: string,
-  walletLedger?: WalletLedger,
+  walletLedger: WalletLedger,
 ): Promise<Record<string, unknown>> {
   const profile = await dbStore.getProfile(userId);
   const base = profile
     ? migrateProfileWallet(profile as ProfileWithLegacyWallet)
     : emptyProfile(userId);
-  if (walletLedger && serverFlag('authoritativeProfileV2', false)) {
-    return { ...base, coins: await walletLedger.getBalance(userId) };
-  }
-  return base;
+  return { ...base, coins: await walletLedger.getBalance(userId) };
 }
 
-export interface WriteProfileOptions {
-  mode?: 'full' | 'preferences';
-}
-
-export async function writeProfile(
+/** Apply the preference whitelist and nothing else (Phase 1 §7.1). */
+export async function writePreferences(
   dbStore: ServerStore,
   userId: string,
   body: unknown,
-  opts: WriteProfileOptions = {},
 ): Promise<void> {
-  const mode = opts.mode ?? 'full';
   const existing = (await dbStore.getProfile(userId)) ?? {};
-
-  if (mode === 'preferences') {
-    const prefs = sanitizePreferences(body, existing as Record<string, unknown>);
-    await dbStore.setProfile(userId, {
-      ...existing,
-      ...prefs,
-      userId,
-      updatedAt: new Date().toISOString(),
-    });
-    return;
-  }
-
-  if (serverFlag('disableLegacyProfileWrites', false)) {
-    throw new AppError(
-      'legacy_profile_write_disabled',
-      'Whole-profile writes are disabled; use /api/v1/me/preferences and progression commands',
-      409,
-    );
-  }
-
-  let incoming = sanitizeProfileBody(userId, body) as Record<string, unknown>;
-  if (serverFlag('authoritativeProfileV2', false)) {
-    incoming = Object.fromEntries(
-      Object.entries(incoming).filter(
-        ([key]) => !(AUTHORITATIVE_PROFILE_FIELDS as readonly string[]).includes(key),
-      ),
-    );
-  }
-
-  const streakOverride =
-    isServerFeatureEnabled('server_streak') && !serverFlag('authoritativeProfileV2', false)
-      ? recomputeStreak(
-          (existing as { lastActiveAt?: unknown }).lastActiveAt,
-          (existing as { streakDays?: unknown }).streakDays,
-        )
-      : {};
-
-  const merged = migrateProfileWallet({
+  const prefs = sanitizePreferences(body, existing as Record<string, unknown>);
+  await dbStore.setProfile(userId, {
     ...existing,
-    ...incoming,
-    ...streakOverride,
+    ...prefs,
     userId,
-  } as ProfileWithLegacyWallet);
-  await dbStore.setProfile(userId, { ...merged, updatedAt: new Date().toISOString() });
+    updatedAt: new Date().toISOString(),
+  });
 }
 
 const MAX_REVIEW_SCHEDULE_KEYS = 500;

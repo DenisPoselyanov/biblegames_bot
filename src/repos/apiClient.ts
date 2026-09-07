@@ -10,23 +10,11 @@ export function apiUrl(path: string): string {
   return `${API_BASE}${path}`;
 }
 
-export async function apiFetch(path: string, userId: string, init?: RequestInit): Promise<Response> {
-  const initData = getTelegramInitData();
-  return fetch(apiUrl(path), {
-    ...init,
-    headers: {
-      'Content-Type': 'application/json',
-      'x-user-id': userId,
-      ...(initData ? { 'x-telegram-init-data': initData } : {}),
-      ...(init?.headers ?? {}),
-    },
-  });
-}
-
 /**
  * Self-scoped `/api/v1/*` fetch. Identity is the verified Telegram principal
- * (`req.auth`) only — no `x-user-id`. Used by the WS4 authoritative-profile
- * path; the server derives the user from `x-telegram-init-data`.
+ * (`req.auth`) only — the server derives the user from `x-telegram-init-data`.
+ * `x-user-id` is sent solely as the dev-identity fallback for local runs
+ * without Telegram (server `AUTH_MODE=development`).
  */
 export async function apiV1Fetch(path: string, init?: RequestInit): Promise<Response> {
   const initData = getTelegramInitData();

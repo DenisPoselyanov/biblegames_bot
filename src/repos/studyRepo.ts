@@ -1,11 +1,14 @@
 import type { AnswerEvent, StudyPath, StudySession, StudyMode } from '../types';
 import { STUDY_THEME_GROUPS } from '../data/study_themes';
-import { apiFetch, apiV1Fetch, hasApi } from './apiClient';
-import { isFeatureEnabled } from '../lib/flags';
+import { apiV1Fetch, hasApi } from './apiClient';
 
-function isAuthoritative(): boolean {
-  return hasApi() && isFeatureEnabled('authoritative_profile');
-}
+/**
+ * Answer history is server-owned: `PlayerContext.recordAnswerEvent` sends the
+ * mastery command (`POST /api/v1/progression/answers`), which also persists the
+ * history row. This repo keeps a local mirror for offline reads and derives the
+ * study path from it (WS4 part 2 removed the legacy `/study/answer` +
+ * `/study/answers/:userId` endpoints).
+ */
 
 const ANSWERS_KEY = 'bible-game-answer-events';
 
@@ -47,63 +50,25 @@ export const studyRepo = {
       answers: [],
     };
   },
-  async appendAnswer(event: AnswerEvent, userId?: string): Promise<void> {
+  appendAnswer(event: AnswerEvent): void {
     const list = loadAnswers();
     list.push(event);
     saveAnswers(list);
-    // Authoritative mode: PlayerContext.recordAnswerEvent sends the mastery
-    // command (POST /api/v1/progression/answers), which also stores history.
-    if (isAuthoritative()) return;
-    if (!hasApi() || !userId) return;
-    try {
-      await apiFetch('/study/answer', userId, {
-        method: 'POST',
-        body: JSON.stringify(event),
-      });
-    } catch {
-      /* noop */
-    }
   },
   getAnswerHistory(): AnswerEvent[] {
     return loadAnswers();
   },
-  async syncHistory(userId: string): Promise<void> {
+  async syncHistory(): Promise<void> {
     if (!hasApi()) return;
-
-    if (isAuthoritative()) {
-      // Read-only: the server owns the answer history (written by the mastery
-      // command). Merge remote into local for offline read consumers.
-      try {
-        const response = await apiV1Fetch('/me/study/answers');
-        if (!response.ok) return;
-        const remote = (await response.json()) as AnswerEvent[];
-        const map = new Map<string, AnswerEvent>();
-        [...remote, ...loadAnswers()].forEach((item) => {
-          map.set(`${item.questionId}-${item.answeredAt}-${item.subthemeId}`, item);
-        });
-        saveAnswers([...map.values()].sort((a, b) => a.answeredAt.localeCompare(b.answeredAt)));
-      } catch {
-        /* noop */
-      }
-      return;
-    }
-
     try {
-      const response = await apiFetch(`/study/answers/${userId}`, userId);
+      const response = await apiV1Fetch('/me/study/answers');
       if (!response.ok) return;
       const remote = (await response.json()) as AnswerEvent[];
-      const local = loadAnswers();
       const map = new Map<string, AnswerEvent>();
-      [...remote, ...local].forEach((item) => {
-        const key = `${item.questionId}-${item.answeredAt}-${item.subthemeId}`;
-        map.set(key, item);
+      [...remote, ...loadAnswers()].forEach((item) => {
+        map.set(`${item.questionId}-${item.answeredAt}-${item.subthemeId}`, item);
       });
-      const merged = [...map.values()].sort((a, b) => a.answeredAt.localeCompare(b.answeredAt));
-      saveAnswers(merged);
-      await apiFetch(`/study/answers/${userId}`, userId, {
-        method: 'PUT',
-        body: JSON.stringify(merged),
-      });
+      saveAnswers([...map.values()].sort((a, b) => a.answeredAt.localeCompare(b.answeredAt)));
     } catch {
       /* noop */
     }

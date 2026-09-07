@@ -14,7 +14,6 @@ export interface TelemetryEvent {
 }
 
 import { getTelegramInitData } from './telegram';
-import { isFeatureEnabled } from './flags';
 
 const TELEMETRY_KEY = 'bible-game-telemetry-events';
 const API_BASE = import.meta.env.VITE_API_BASE_URL as string | undefined;
@@ -48,15 +47,13 @@ export async function flushTelemetry(userId: string): Promise<void> {
   if (queue.length === 0) return;
   try {
     const initData = getTelegramInitData();
-    const authoritative = isFeatureEnabled('authoritative_profile');
-    const url = authoritative ? `${API_BASE}/api/v1/me/telemetry` : `${API_BASE}/telemetry/${userId}`;
-    const response = await fetch(url, {
+    const response = await fetch(`${API_BASE}/api/v1/me/telemetry`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(authoritative ? {} : { 'x-user-id': userId }),
-        ...(initData ? { 'x-telegram-init-data': initData } : {}),
-        ...(authoritative && !initData ? { 'x-user-id': userId } : {}),
+        // Identity is the verified Telegram principal; the `x-user-id` header is
+        // only a dev-identity fallback for local runs without Telegram.
+        ...(initData ? { 'x-telegram-init-data': initData } : { 'x-user-id': userId }),
       },
       body: JSON.stringify({ events: queue }),
     });

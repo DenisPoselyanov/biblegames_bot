@@ -7,16 +7,12 @@
  * the catalog price, posts a `spend` wallet entry (the ledger rejects an
  * overdraw and is idempotent on `(sourceType, sourceId)`), records ownership,
  * and audits the adjustment (§6.4).
- *
- * Gated by `serverFlag('authoritativeProfileV2')` (default OFF) like the
- * progression command — until WS4 part 2 flips it, the client keeps the legacy
- * local path.
  */
 
 import { Router, type Request } from 'express';
 import { asyncHandler } from '../middleware/asyncHandler';
 import { AppError, UnauthorizedError } from '../lib/errors';
-import { serverFlag } from '../lib/flags';
+import { metrics } from '../lib/metrics';
 import { buildAuditRecord, type AuditLog } from '../audit';
 import { WalletError, type WalletLedger } from '../wallet';
 import type { IdempotencyStore } from '../lib/idempotency';
@@ -49,14 +45,6 @@ export function createShopRouter({
 }: ShopRouterDeps): Router {
   const router = Router();
 
-  router.use((_req, res, next) => {
-    if (!serverFlag('authoritativeProfileV2', false)) {
-      res.status(404).json({ error: { code: 'not_enabled', message: 'Shop purchases are not enabled' } });
-      return;
-    }
-    next();
-  });
-
   router.post(
     '/purchases',
     asyncHandler(async (req, res) => {
@@ -72,6 +60,7 @@ export function createShopRouter({
       const scopedKey = `shop.purchase:${userId}:${idempotencyKey}`;
       const cached = await idempotency.recall(scopedKey);
       if (cached) {
+        metrics.inc('idempotency_replay_total', { surface: 'shop' });
         res.json(cached.result);
         return;
       }
@@ -100,6 +89,7 @@ export function createShopRouter({
         balanceAfter = entry.balanceAfter;
       } catch (err) {
         if (err instanceof WalletError && err.code === 'insufficient_funds') {
+          metrics.inc('reward_failed_total', { reason: 'insufficient_funds' });
           throw new AppError('insufficient_funds', 'Not enough coins for this purchase', 409);
         }
         throw err;

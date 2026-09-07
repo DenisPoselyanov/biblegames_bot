@@ -1,13 +1,9 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import type { NextFunction, Request, Response } from 'express';
 import { createMemoryAuditLog } from '../audit';
 import { AppError } from '../lib/errors';
 import { RoleRegistry } from './roleRegistry';
 import { createPolicies } from './policy';
-
-afterEach(() => {
-  delete process.env.FEATURE_RBACV2;
-});
 
 function fakeReq(overrides: Partial<Request> = {}): Request {
   return {
@@ -65,20 +61,6 @@ describe('requirePermission', () => {
     const { error } = await run(requirePermission('questions:admin'), fakeReq());
 
     expect((error as AppError).httpStatus).toBe(401);
-  });
-
-  it('FEATURE_RBACV2=false degrades to authenticated-only', async () => {
-    process.env.FEATURE_RBACV2 = 'false';
-    const auditLog = createMemoryAuditLog();
-    const { requirePermission } = createPolicies({ roleRegistry: registry, auditLog });
-    const req = fakeReq({
-      auth: { userId: 'reviewer-1', authSource: 'telegram' } as Request['auth'],
-    });
-
-    const { error } = await run(requirePermission('questions:admin'), req);
-
-    expect(error).toBeUndefined();
-    expect(auditLog.records).toHaveLength(0);
   });
 });
 

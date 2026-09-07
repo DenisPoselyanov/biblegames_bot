@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { loadConfig } from '../../config/env';
 import { createApp } from '../../app';
@@ -7,10 +7,6 @@ import { createMemoryIdempotencyStore } from '../../lib/idempotency';
 import { createMemoryMigrationStore } from '../../migration/migrationStore';
 import { createMemoryAuditLog, type AuditLog } from '../../audit';
 import { createMemoryStore } from '../helpers/memoryStore';
-
-afterEach(() => {
-  delete process.env.FEATURE_AUTHORITATIVEPROFILEV2;
-});
 
 function makeApp(env: Record<string, string> = {}) {
   const { config } = loadConfig({ NODE_ENV: 'test', AUTH_MODE: 'development', ...env });
@@ -44,14 +40,7 @@ async function fund(app: ReturnType<typeof makeApp>['app'], amount: number) {
 }
 
 describe('POST /api/v1/shop/purchases', () => {
-  it('404s when the flag is off', async () => {
-    const { app } = makeApp();
-    const res = await request(app).post('/api/v1/shop/purchases').set('x-user-id', '7').send(buyTheme());
-    expect(res.status).toBe(404);
-  });
-
   it('debits the wallet, records ownership, sets active theme, and audits', async () => {
-    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
     const { app, walletLedger, auditLog } = makeApp();
     await fund(app, 500);
 
@@ -73,7 +62,6 @@ describe('POST /api/v1/shop/purchases', () => {
   });
 
   it('rejects insufficient funds and leaves no ownership', async () => {
-    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
     const { app, walletLedger } = makeApp();
     await fund(app, 100);
 
@@ -87,7 +75,6 @@ describe('POST /api/v1/shop/purchases', () => {
   });
 
   it('409s on a second purchase of an owned item', async () => {
-    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
     const { app } = makeApp();
     await fund(app, 1000);
     await request(app).post('/api/v1/shop/purchases').set('x-user-id', '7').send(buyTheme());
@@ -100,7 +87,6 @@ describe('POST /api/v1/shop/purchases', () => {
   });
 
   it('400s on an unknown item', async () => {
-    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
     const { app } = makeApp();
     await fund(app, 1000);
     const res = await request(app)
@@ -112,7 +98,6 @@ describe('POST /api/v1/shop/purchases', () => {
   });
 
   it('replays an identical idempotencyKey without a second debit', async () => {
-    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
     const { app, walletLedger } = makeApp();
     await fund(app, 1000);
     const a = await request(app).post('/api/v1/shop/purchases').set('x-user-id', '7').send(buyTheme());

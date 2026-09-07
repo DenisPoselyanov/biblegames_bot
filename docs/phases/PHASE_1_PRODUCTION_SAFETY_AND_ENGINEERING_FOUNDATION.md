@@ -733,3 +733,73 @@ Phase 2 receives:
 - migration and audit mechanisms.
 
 Phase 2 then consolidates these into stable domain boundaries, canonical schemas and deployment architecture without reopening client-trust vulnerabilities.
+
+---
+
+## 23. Definition of Done — sign-off (2026-09-07)
+
+Phase 1 landed as five stacked workstreams (WS1 auth foundation → WS2 RBAC/audit →
+WS3 server authority → WS4 part 1 client cutover → WS4 part 2 flag removal +
+hardening). WS4 part 2 removed every rollout break-glass flag and its fallback
+branch, so the secure path is the only path. Evidence for each §20 item:
+
+| # | DoD item | Evidence |
+|---|---|---|
+| 1 | Production starts only with valid secure config | `server/config/productionValidation.ts`; `assertProductionConfig` in `server/index.ts`; `server/config/productionValidation.test.ts` (13 cases) |
+| 2 | Valid Telegram identity is the only production user identity | `server/auth/telegramInitData.ts` + `server/auth/middleware.ts` (no legacy fallback); `server/auth/telegramInitData.test.ts`, `__tests__/integration/auth.test.ts` |
+| 3 | `x-user-id` cannot authenticate or authorize | legacy `telegramAuth.ts` deleted; `x-user-id` is only a dev-identity fixture (`AUTH_MODE=development`, blocked in prod); `auth.test.ts` "rejects … when only x-user-id is supplied" |
+| 4 | All protected HTTP + Socket.IO ops use a typed principal | `req.auth` / `socket.data.principal`; `server/auth/socket.ts` (no `secureKahootIdentity` bypass); `__tests__/integration/socket.test.ts` |
+| 5 | Admin/content mutations require permissions + audit records | `server/authz/policy.ts` (unconditional), `server/routes/questionsAdmin.ts`, `server/audit/`; `__tests__/integration/rbac.test.ts` |
+| 6 | Client cannot write coins/rank/streak/achievements/mastery/unlocks/wins as final values | whole-profile `PUT` removed; `server/services/profileService.ts` `writePreferences` is whitelist-only; `progression.test.ts` "there is no whole-profile PUT", `shop.test.ts`, `answers.test.ts` |
+| 7 | Reward/progression commands are transactional + idempotent | `server/wallet/` (ledger uniqueness), `server/lib/idempotency.ts`, `server/progression/`; `progression.test.ts` (double-submit, replay), `shop.test.ts` (replay) |
+| 8 | Stable authoritative event IDs | `eventId = sha256(userId, sourceId)` in `server/routes/progression.ts`; client celebration replay guard `src/context/PlayerContext.tsx` (`CELEBRATED_KEY`, ADR-010) |
+| 9 | Legacy migration is bounded, versioned, one-time | `server/migration/applyMigration.ts` (`MIGRATION_MAX_COINS` cap, `migration_records`); `progression.test.ts` "runs once, caps huge coins, … replays on repeat" |
+| 10 | Demo routes removed from production or isolated | `server/routes/demo.ts` mounted only when `config.demoRoutesEnabled` (`nodeEnv !== 'production'`); `__tests__/integration/observability.test.ts` "removes demo routes entirely under NODE_ENV=production" |
+| 11 | CI runs lint + FE/server typecheck + unit/integration + smoke + build | `.github/workflows/ci.yml`, `npm run check` (`lint:ws` → `typecheck` → `typecheck:server` → `test` → `smoke-audit` → `build`) |
+| 12 | Security tests cover forged identity, cross-user, duplicate mutation, rollback | `auth.test.ts`, `rbac.test.ts`, `progression.test.ts`, `shop.test.ts`, `server/auth/telegramInitData.test.ts` |
+| 13 | Production persistence is transactional | `server/db/atomicJson.ts` (tmp+fsync+rename + mutex, dev), `server/wallet/sqlWalletLedger.ts` (one-statement CTE, prod); `server/db/atomicJson.test.ts` |
+| 14 | Feature flags and rollback documented + tested | rollout flags **removed** after evidence (this section + `docs/DECISIONS.md` WS4 part 2); rate limiting / demo isolation gated by `RATE_LIMIT_DISABLED` / `DEMO_ROUTES_ENABLED` (documented in `.env.example`) |
+| 15 | No critical P0 from the Phase 0 audit open without an accepted exception | see "Known limitations" below |
+
+### §13 Rate limiting
+
+In-memory fixed-window limiter (`server/middleware/rateLimit.ts`), keyed by
+`req.auth.userId` (falling back to IP), with per-surface policies for auth,
+preferences, progression, shop, migration, telemetry and admin; a coarse per-IP
+guard runs before authentication. Socket lifecycle events (`create_room`,
+`join_room`, `submit_answer`) use the shared window store via
+`server/lib/socketRateLimit.ts`. Over-limit → `429` through the standard error
+envelope with `Retry-After`. Tests: `server/middleware/rateLimit.test.ts`,
+`server/__tests__/integration/rateLimit.test.ts`.
+
+### §16 Observability
+
+`server/lib/logger.ts` — one JSON object per line, never raw initData / profiles
+/ tokens / `DATABASE_URL`. `server/lib/metrics.ts` — in-process counters
+(`auth_failed_total`, `authz_denied_total`, `rate_limited_total`,
+`idempotency_replay_total`, `reward_failed_total`, `server_error_total`) served
+at `GET /metrics`. `GET /health/live` + `GET /health/ready` (liveness /
+readiness). Request id propagates through the error envelope and socket logs.
+Startup logs a secret-free config summary. Tests:
+`server/lib/metrics.test.ts`, `server/__tests__/integration/observability.test.ts`.
+
+### Known limitations / accepted exceptions
+
+- **`reviewSchedules` is a client-owned opaque blob** persisted verbatim via
+  `PATCH /api/v1/me/learning-state` (§7.4). The server never computes or rewards
+  from it. Full server authority for review scheduling is Phase 3 (§7.4 "detailed
+  learning model belongs to Phase 2/3"). Tracked, owner-accepted.
+- **Rate limiter + metrics are single-instance / in-memory.** Correct for the
+  current single-process deployment; a shared/distributed backend is Phase 2/7
+  (§18 "minimal services; Phase 2 consolidates").
+- **Pre-existing repo gate debt** predates Phase 1 and remains tracked, not a
+  Phase 1 blocker: `eslint .` is red on `src/` + `scripts/` (the enforced gate is
+  `lint:ws` = `server` + tooling), and there is historical lockfile drift. See
+  `docs/DECISIONS.md` ADR-002 progress notes.
+- **Server session bridge (§5.5)** was not built — raw verified initData per
+  request is sufficient for Phase 1. Optional, deferred.
+
+### Status
+
+Phase 1 is **complete**. All 20 §20 DoD items are satisfied or covered by a
+tracked, owner-accepted exception above; `npm run check` is green (146 tests).

@@ -10,7 +10,6 @@ import { errorHandler } from '../../middleware/errorHandler';
 import { createMemoryStore } from '../helpers/memoryStore';
 
 afterEach(() => {
-  delete process.env.FEATURE_RBACV2;
   delete process.env.QUESTION_ADMIN_ENABLED;
 });
 
@@ -57,17 +56,6 @@ describe('RBAC — admin question routes', () => {
     const res = await request(app).put('/api/admin/questions/q-1').send({ text: 'x' });
     expect(res.status).toBe(401);
   });
-
-  it('FEATURE_RBACV2=false lets any authenticated user through (break-glass)', async () => {
-    process.env.FEATURE_RBACV2 = 'false';
-    const { app } = devApp({ admins: ['500'] });
-    const res = await request(app)
-      .put('/api/admin/questions/does-not-exist')
-      .set('x-user-id', '999')
-      .send({ text: 'edited' });
-    expect(res.status).not.toBe(403);
-    expect(res.status).not.toBe(401);
-  });
 });
 
 describe('self-scoped /api/v1/me', () => {
@@ -94,7 +82,7 @@ describe('self-scoped /api/v1/me', () => {
     expect(empty.body.userId).toBe('7');
 
     await request(app)
-      .put('/api/v1/me/profile')
+      .patch('/api/v1/me/preferences')
       .set('x-user-id', '7')
       .send({ displayName: 'Grace' })
       .expect(200);
