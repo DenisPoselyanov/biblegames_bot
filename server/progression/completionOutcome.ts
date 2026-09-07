@@ -7,10 +7,19 @@
  * the full progression model is Phase 2/3 (§7.2, §18).
  */
 
-import { DIFFICULTIES, DIFFICULTY_ORDER, DIFFICULTY_POINTS, type Difficulty } from '../../src/types/index';
+import {
+  DIFFICULTIES,
+  DIFFICULTY_ORDER,
+  DIFFICULTY_POINTS,
+  type Difficulty,
+  type MasteryState,
+  type PracticeStageResult,
+  type PracticeTrackProgress,
+} from '../../src/types/index';
 import { AppError } from '../lib/errors';
 import { recomputeStreak } from '../lib/streak';
 import { advancePlayerRank, computeStageWisdom, getDefaultPlayerRank } from './rankMath';
+import { applyPracticeStage } from './practiceTracks';
 
 export type CompletionKind = 'level' | 'practice_stage' | 'millionaire' | 'survival';
 
@@ -21,12 +30,18 @@ export const MILLIONAIRE_MAX_LEVEL = 20;
 export const MILLIONAIRE_COINS_PER_LEVEL = 25;
 export const MILLIONAIRE_WIN_BONUS = 150;
 export const PRACTICE_PASS_MIN_CORRECT = 7;
+/** Survival correct-answer count that earns the `iron-shield` achievement (src/pages/play/Survival.tsx). */
+export const SURVIVAL_IRON_SHIELD_MIN = 30;
 
 export interface CompletionInput {
   kind: CompletionKind;
   difficulty?: string;
   themeId?: string;
+  nodeId?: string | null;
   stageIndex?: number;
+  /** Client hint for the track's total stage count (1..12); caps the upper unlock bound only. */
+  stageCount?: number;
+  questionIds?: string[];
   correctCount?: number;
   totalQuestions?: number;
   reachedLevel?: number;
@@ -48,6 +63,8 @@ export interface ProgressionSnapshot {
   completedLevels: Array<Record<string, unknown>>;
   achievements: string[];
   themePoints: Record<string, number>;
+  practiceTracks: PracticeTrackProgress[];
+  studyMastery: Record<string, MasteryState>;
 }
 
 export interface CompletionResult {
@@ -58,6 +75,11 @@ export interface CompletionResult {
     levelChanged: boolean;
     rankChanged: boolean;
     achievementsGranted: string[];
+    /** practice_stage only — lets the client render its result screen without recomputing. */
+    stageResult?: PracticeStageResult;
+    nextStageUnlocked?: boolean;
+    stagePerfect?: boolean;
+    passed?: boolean;
   };
 }
 
@@ -108,6 +130,13 @@ export function snapshotFromProfile(profile: Record<string, unknown>): Progressi
       profile.themePoints && typeof profile.themePoints === 'object'
         ? { ...(profile.themePoints as Record<string, number>) }
         : {},
+    practiceTracks: Array.isArray(profile.practiceTracks)
+      ? (profile.practiceTracks as PracticeTrackProgress[])
+      : [],
+    studyMastery:
+      profile.studyMastery && typeof profile.studyMastery === 'object'
+        ? { ...(profile.studyMastery as Record<string, MasteryState>) }
+        : {},
   };
 }
 
@@ -121,12 +150,18 @@ export function computeCompletion(
     completedLevels: [...current.completedLevels],
     achievements: [...current.achievements],
     themePoints: { ...current.themePoints },
+    practiceTracks: current.practiceTracks.map((t) => ({ ...t })),
+    studyMastery: { ...current.studyMastery },
   };
   const granted: string[] = [];
   let coinsDelta = 0;
   let wisdomDelta = 0;
   let levelChanged = false;
   let rankChanged = false;
+  let stageResult: PracticeStageResult | undefined;
+  let nextStageUnlocked: boolean | undefined;
+  let stagePerfect: boolean | undefined;
+  let passedOut: boolean | undefined;
 
   const streak = recomputeStreak(current.lastActiveAt, current.streakDays, now);
   next.streakDays = streak.streakDays;
@@ -179,11 +214,42 @@ export function computeCompletion(
     case 'practice_stage': {
       const difficulty = requireDifficulty(input.difficulty);
       const { correct, total } = requireBoundedCount(input.correctCount, input.totalQuestions);
+      const themeId = String(input.themeId ?? '').slice(0, 64);
+      if (!themeId) bad('themeId required for a practice_stage completion');
+      const stageIndex = Number(input.stageIndex ?? 0);
+      if (!Number.isInteger(stageIndex) || stageIndex < 0 || stageIndex > 50) {
+        bad('stageIndex out of range');
+      }
+      const nodeId =
+        typeof input.nodeId === 'string' && input.nodeId ? input.nodeId.slice(0, 128) : null;
       const passed = correct >= PRACTICE_PASS_MIN_CORRECT;
-      const points = passed ? Math.round(DIFFICULTY_POINTS[difficulty] * (correct / total)) : 0;
-      const wisdom = passed ? computeStageWisdom(difficulty, correct, total) : 0;
-      coinsDelta = points;
-      wisdomDelta = wisdom;
+
+      // Full value this run is worth; the track applies it incrementally over
+      // the stage's prior best so replaying an aced stage grants 0.
+      const pointsThisRun = passed ? Math.round(DIFFICULTY_POINTS[difficulty] * (correct / total)) : 0;
+      const wisdomThisRun = passed ? computeStageWisdom(difficulty, correct, total) : 0;
+
+      const applied = applyPracticeStage(next.practiceTracks, {
+        themeId,
+        nodeId,
+        difficulty,
+        stageIndex,
+        correct,
+        total,
+        passed,
+        pointsThisRun,
+        wisdomThisRun,
+        stageCount: input.stageCount,
+        questionIds: input.questionIds,
+        now,
+      });
+      next.practiceTracks = applied.tracks;
+      coinsDelta = applied.awardedPoints;
+      wisdomDelta = applied.awardedWisdom;
+      stageResult = applied.stageResult;
+      nextStageUnlocked = applied.nextStageUnlocked;
+      stagePerfect = applied.stagePerfect;
+      passedOut = passed;
 
       const advanced = advancePlayerRank(
         {
@@ -192,7 +258,7 @@ export function computeCompletion(
           wisdomPoints: current.wisdom,
           unlockedTier: current.rankUnlockedTier,
         },
-        wisdom,
+        applied.awardedWisdom,
       );
       rankChanged =
         DIFFICULTY_ORDER[advanced.tier] > DIFFICULTY_ORDER[current.rankTier] ||
@@ -202,9 +268,8 @@ export function computeCompletion(
       next.rankUnlockedTier = advanced.unlockedTier;
       next.wisdom = advanced.wisdomPoints;
 
-      if (input.themeId && points > 0) {
-        const themeId = String(input.themeId).slice(0, 64);
-        next.themePoints[themeId] = (next.themePoints[themeId] ?? 0) + points;
+      if (applied.awardedPoints > 0) {
+        next.themePoints[themeId] = (next.themePoints[themeId] ?? 0) + applied.awardedPoints;
       }
       if (correct === total) grant('flawless-level');
       break;
@@ -222,7 +287,10 @@ export function computeCompletion(
       const won = reached >= runLength;
       coinsDelta = reached * MILLIONAIRE_COINS_PER_LEVEL + (won ? MILLIONAIRE_WIN_BONUS : 0);
       next.millionaireMaxLevel = Math.max(current.millionaireMaxLevel, reached);
-      if (won) next.millionaireWins = current.millionaireWins + 1;
+      if (won) {
+        next.millionaireWins = current.millionaireWins + 1;
+        grant('biblical-millionaire');
+      }
       break;
     }
 
@@ -232,6 +300,7 @@ export function computeCompletion(
       const bounded = Math.min(Math.floor(score), SURVIVAL_MAX_SCORE);
       coinsDelta = bounded * SURVIVAL_COINS_PER_POINT;
       next.survivalHighScore = Math.max(current.survivalHighScore, bounded);
+      if (bounded >= SURVIVAL_IRON_SHIELD_MIN) grant('iron-shield');
       break;
     }
 
@@ -249,6 +318,10 @@ export function computeCompletion(
       levelChanged,
       rankChanged,
       achievementsGranted: granted,
+      stageResult,
+      nextStageUnlocked,
+      stagePerfect,
+      passed: passedOut,
     },
   };
 }

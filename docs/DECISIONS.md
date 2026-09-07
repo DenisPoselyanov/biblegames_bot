@@ -131,6 +131,39 @@
 - **Ще не зроблено (наступні workstreams):** persisted role store + runtime grant/revoke API (WS3),
   server session bridge, rate limiting (WS4), видалення legacy `x-user-id` / `/profile/:userId` (WS4).
 
+## Implementation progress (Phase 1 WS4 part 2, 2026-09-07)
+
+- Rollout break-glass прапорці **видалено разом із fallback-гілками**: `authV2`,
+  `secureKahootIdentity`, `rbacV2` (+ `authoritativeProfileV2`,
+  `disableLegacyProfileWrites`, `server_streak` — див. ADR-003/006). Fail-closed
+  Telegram auth, RBAC policy enforcement і server-authoritative progression —
+  тепер безумовні. Break-glass window (один реліз) закрито доказами WS1–WS4pt1.
+- Видалено `server/middleware/telegramAuth.ts` (legacy verifier), legacy
+  `/profile/:userId` + `/stats/:userId` + `/study/answers/:userId` +
+  `/telemetry/:userId` роути, whole-profile `PUT` (і `/api/v1/me/profile` PUT),
+  мертвий `server/storage.ts`. `x-user-id` більше не існує як шлях автентифікації
+  (лишається лише як dev-identity fixture при `AUTH_MODE=development`).
+- Клієнт: прапорець `authoritative_profile` видалено; `playerRepo` / `statsRepo` /
+  `studyRepo` / `telemetry` ходять лише на `/api/v1` (з локальним fallback при
+  offline / no API base); `mergeProfiles` та `apiFetch` (+ `x-user-id`) видалено.
+- Rate limiting (§13): in-memory fixed-window (`server/middleware/rateLimit.ts` +
+  `server/lib/socketRateLimit.ts`), per principal-or-IP; окремі політики для
+  auth/prefs/progression/shop/migrate/telemetry/admin і для socket
+  create_room/join_room/submit_answer; `429` через стандартний error envelope із
+  `Retry-After`. Single-instance — розподілений store це Phase 2/7.
+- Observability (§16): `server/lib/logger.ts` (JSON-line structured logs),
+  `server/lib/metrics.ts` (in-process лічильники: `auth_failed_total`,
+  `authz_denied_total`, `rate_limited_total`, `idempotency_replay_total`,
+  `reward_failed_total`, `server_error_total`), `GET /health/live`,
+  `GET /health/ready`, `GET /metrics`, secret-free startup summary, request-id у
+  socket-логах.
+- Demo-роути (`/study/path`, `/dashboard`, `/leaderboard`, …) винесено в
+  `server/routes/demo.ts` і монтуються лише при `config.demoRoutesEnabled`
+  (`nodeEnv !== 'production'`) — у production їх фізично немає.
+- Тести: `rateLimit.test.ts`, `metrics.test.ts`, integration `observability` +
+  `rateLimit`; legacy auth/profile/flag тести переписано. `npm run check` green,
+  146 тестів.
+
 ## Контекст
 
 Поточний middleware вміє перевіряти Telegram `initData`, але може fallback-итися на client-supplied `x-user-id`. Strict behavior також залежить від наявності bot token.
@@ -210,6 +243,49 @@ Development fallback:
 - **Ще не зроблено (WS4):** cutover React-клієнта (`PlayerContext`/`playerRepo`) на
   нові endpoints, flip прапорців ON, видалення legacy `PUT /profile` + `x-user-id`,
   Phase 1 DoD sign-off; per-game endpoints (§7.2) — Phase 2.
+
+## Implementation progress (Phase 1 WS4 part 2, 2026-09-07)
+
+- Прапорці `authoritativeProfileV2` / `disableLegacyProfileWrites` (server) і
+  `authoritative_profile` (client) **видалено** — server-authoritative
+  progression/wallet/shop/migration безумовні. `server_streak` + legacy
+  `recomputeStreak`-гілка в `profileService` видалені (streak рахує
+  `completionOutcome`). `writeProfile(mode)` згорнуто до `writePreferences`
+  (whitelist-only). `readProfile` завжди повертає баланс із wallet ledger.
+- Клієнт остаточно на `/api/v1`: `playerRepo.get/save` → `progressionRepo`
+  (+ one-time `migrate`), `statsRepo` read-through `/me/stats`, `studyRepo`
+  history через mastery-команду, `telemetry` → `/api/v1/me/telemetry`.
+  Fallback на локальний розрахунок при offline/no API base збережено.
+- Деталі rate limiting / observability / DoD sign-off — див. ADR-002 (WS4 part 2)
+  і `docs/phases/PHASE_1_...md` §23.
+
+## Implementation progress (Phase 1 WS4 part 1, 2026-09-07)
+
+Все ще за прапорцем `authoritativeProfileV2` (server) / `authoritative_profile`
+(client), обидва default OFF. Частина 2 (flip + видалення legacy + DoD) окремо.
+
+- Закрито server-gaps, без яких flip зламав би клієнт:
+  - `server/progression/practiceTracks.ts` — `applyPracticeStage()` виводить
+    `stageResults` + `highestUnlockedStage` з `practice_stage` подій; unlock =
+    «попередній етап пройдено». Нагороди інкрементні над попереднім best етапу.
+  - `server/progression/masteryMath.ts` — порт `updateMastery`; `mastery-expert`
+    при mastery == 100 (клієнтський `>= 0.99` — баг, не відтворено).
+  - `server/progression/globalStats.ts` — `GlobalStats` виводиться з completion.
+  - `POST /api/v1/progression/answers` — server-authoritative mastery + історія.
+  - `POST /api/v1/shop/purchases` — ціна з каталогу на сервері, `spend` у ledger
+    (overdraw → 409), ownership + `aesthete`, audit `shop.purchase`.
+  - survival → `iron-shield` (30+), millionaire → `biblical-millionaire` (win).
+- `PATCH /api/v1/me/learning-state` — `reviewSchedules` зберігається як
+  **client-owned opaque blob** (сервер не рахує і не нагороджує з нього).
+  Це **tracked Phase-1 DoD exception**: повна server-authority для review
+  scheduling — Phase 3 (§7.4 «detailed learning model belongs to Phase 2/3»).
+- Клієнт: `src/repos/progressionRepo.ts` + flag-gated repoint у `playerRepo`/
+  `statsRepo`/`studyRepo`/`telemetry`; `PlayerContext` completion-методи async →
+  команди; ADR-010 celebration replay guard за `eventId`; kahoot handshake
+  identity. Fallback на локальний розрахунок при offline/помилці.
+- Тести: `masteryMath` port-equivalence, practice-track derivation +
+  incremental replay, shop (insufficient/owned/unknown/replay), answers,
+  `learning-state`, `progressionRepo` (URL/headers/error mapping). 138 green.
 
 ## Контекст
 
@@ -327,6 +403,15 @@ Protected Content Studio отримує RBAC і може бути фізично
   без зміни contract. SQL wallet `post` — one-statement CTE (balance check +
   `on conflict do nothing`), тобто atomic без явної транзакції.
 - Postgres обовʼязковий лише в production (`STORAGE_PROVIDER=sql`); JSON — dev/fixtures.
+
+## Implementation progress (Phase 1 WS4 part 2, 2026-09-07)
+
+- Останній client-trusted write-шлях (whole-profile `PUT`) видалено — усі
+  authoritative мутації йдуть через транзакційні команди (wallet CTE / atomic
+  JSON + mutex). Мертвий `server/storage.ts` (неатомарний `writeFileSync`-adapter,
+  без importer'ів) видалено.
+- Rate-limit і metrics store — in-memory single-instance (свідомо, Phase 1 §18
+  «minimal services; Phase 2 consolidates»); distributed backend — Phase 2/7.
 
 ## Контекст
 
@@ -559,6 +644,12 @@ WS3 (який володіє розширенням storage contract). WS2 по�
 
 `FEATURE_RBACV2=false` на один реліз — policy middleware вироджується до
 «authenticated достатньо» (поведінка WS1). Auth при цьому залишається обов'язковим.
+
+## Update (Phase 1 WS4 part 2, 2026-09-07)
+
+Break-glass window закрито: `FEATURE_RBACV2` і його fallback-гілка видалені —
+policy enforcement безумовний. Config-sourced grants (`RBAC_ROLE_GRANTS` /
+`RBAC_ADMIN_IDS`) без змін; persisted role store + runtime grant/revoke — Phase 2.
 
 ---
 

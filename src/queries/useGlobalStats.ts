@@ -8,7 +8,7 @@ import { statsKeys } from './keys';
 export function useGlobalStatsQuery(userId: string) {
   return useQuery({
     queryKey: statsKeys.byUser(userId),
-    queryFn: () => statsRepo.get(userId),
+    queryFn: () => statsRepo.get(),
     enabled: Boolean(userId),
     initialData: () => loadGlobalStats(),
     staleTime: 30_000,
@@ -39,7 +39,7 @@ export function useRecordGlobalPlayMutation(userId: string) {
       themeId: string;
       points: number;
       isNewPlayerForTheme: boolean;
-    }) => statsRepo.recordPlay(themeId, points, isNewPlayerForTheme, userId),
+    }) => statsRepo.recordPlay(themeId, points, isNewPlayerForTheme),
     onSuccess: (stats) => {
       setGlobalStats(stats);
       queryClient.setQueryData(statsKeys.byUser(userId), stats);
@@ -53,7 +53,7 @@ export function useRefreshGlobalStats(userId: string) {
 
   return () => {
     void queryClient.invalidateQueries({ queryKey: statsKeys.byUser(userId) });
-    void statsRepo.get(userId).then((stats) => {
+    void statsRepo.get().then((stats) => {
       setGlobalStats(stats);
       queryClient.setQueryData(statsKeys.byUser(userId), stats);
     });

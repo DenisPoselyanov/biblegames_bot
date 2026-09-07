@@ -1,8 +1,7 @@
 import type { Request, Response, NextFunction, RequestHandler } from 'express';
 import type { ServerConfig } from '../config/env';
-import { serverFlag } from '../lib/flags';
-import { telegramAuthMiddleware } from '../middleware/telegramAuth';
 import { UnauthorizedError } from '../lib/errors';
+import { metrics } from '../lib/metrics';
 import { verifyTelegramInitData } from './telegramInitData';
 import { isDevIdentityEnabled, resolveDevPrincipal } from './devIdentityProvider';
 import type { AuthErrorCode } from './principal';
@@ -35,24 +34,18 @@ export function readInitData(req: Request): string {
  * - `authMode === 'development'` (non-production only): deterministic fixture
  *   identity from `x-user-id` / `x-user-name`.
  *
- * Gated by the `authV2` flag (default ON). `FEATURE_AUTHV2=false` is a one-release
- * break-glass that reverts to the legacy middleware.
+ * There is no legacy fallback: WS4 part 2 removed the `authV2` break-glass and
+ * `server/middleware/telegramAuth.ts` along with it.
  */
 export function createRequireAuthenticated(config: ServerConfig): RequestHandler {
-  const legacy = telegramAuthMiddleware;
-
   return function requireAuthenticated(req: Request, res: Response, next: NextFunction): void {
-    if (!serverFlag('authV2', true)) {
-      legacy(req, res, next);
-      return;
-    }
-
     if (isDevIdentityEnabled(config)) {
       const principal = resolveDevPrincipal({
         userId: req.header('x-user-id'),
         displayName: req.header('x-user-name'),
       });
       if (!principal) {
+        metrics.inc('auth_failed_total', { reason: 'dev_identity_unavailable' });
         next(new UnauthorizedError('dev_identity_unavailable', AUTH_ERROR_MESSAGES.dev_identity_unavailable));
         return;
       }
@@ -66,6 +59,7 @@ export function createRequireAuthenticated(config: ServerConfig): RequestHandler
       maxAgeSec: config.authInitDataMaxAgeSec,
     });
     if (!result.ok) {
+      metrics.inc('auth_failed_total', { reason: result.code });
       next(new UnauthorizedError(result.code, AUTH_ERROR_MESSAGES[result.code]));
       return;
     }

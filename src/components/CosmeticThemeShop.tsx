@@ -21,8 +21,8 @@ export function CosmeticThemeShop({ enter = true }: CosmeticThemeShopProps) {
     showToast('Тему застосовано', 'success');
   };
 
-  const handleBuyTheme = (themeId: string) => {
-    const result = purchaseTheme(themeId);
+  const handleBuyTheme = async (themeId: string) => {
+    const result = await purchaseTheme(themeId);
     if (!result.purchased) {
       if (result.reason === 'coins') {
         showToast('Недостатньо монет для придбання цієї теми!', 'error');
@@ -56,7 +56,7 @@ export function CosmeticThemeShop({ enter = true }: CosmeticThemeShopProps) {
                 Застосувати
               </button>
             ) : (
-              <button type="button" className={styles.btnBuy} onClick={() => handleBuyTheme(theme.id)}>
+              <button type="button" className={styles.btnBuy} onClick={() => void handleBuyTheme(theme.id)}>
                 <Icon name="star" size={14} />
                 {theme.price}
               </button>

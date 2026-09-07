@@ -1,5 +1,5 @@
 import cors from 'cors';
-import express, { type Express, type Request } from 'express';
+import express, { type Express } from 'express';
 import type { ServerConfig } from './config/env';
 import type { ServerStore } from './db/store';
 import { jsonStore } from './db/jsonStore';
@@ -7,7 +7,8 @@ import { sqlStore } from './db/sqlStore';
 import { asyncHandler } from './middleware/asyncHandler';
 import { requestId } from './middleware/requestId';
 import { errorHandler } from './middleware/errorHandler';
-import { ForbiddenError } from './lib/errors';
+import { createRateLimit } from './middleware/rateLimit';
+import { metrics } from './lib/metrics';
 import { createRequireAuthenticated } from './auth/middleware';
 import { RoleRegistry } from './authz/roleRegistry';
 import { createPolicies } from './authz/policy';
@@ -15,16 +16,12 @@ import { createAuditLog, type AuditLog } from './audit';
 import { createWalletLedger, type WalletLedger } from './wallet';
 import { createIdempotencyStore, type IdempotencyStore } from './lib/idempotency';
 import { createMigrationStore, type MigrationStore } from './migration/migrationStore';
-import {
-  sanitizeStatsBody,
-  sanitizeStudyAnswers,
-  sanitizeTelemetryEvents,
-} from './middleware/validateBody';
-import { readProfile, writeProfile } from './services/profileService';
 import { scriptureRouter } from './routes/scripture';
 import { createQuestionsAdminRouter } from './routes/questionsAdmin';
 import { createMeRouter } from './routes/me';
 import { createProgressionRouter } from './routes/progression';
+import { createShopRouter } from './routes/shop';
+import { createDemoRouter } from './routes/demo';
 import { questionsRouter } from './routes/questions';
 import { useQuestionsSql } from './db/pgPool';
 import { listKahootSessions, getKahootSession, sessionToCsv } from './kahootSessions';
@@ -37,16 +34,6 @@ export interface AppDeps {
   walletLedger?: WalletLedger;
   idempotency?: IdempotencyStore;
   migrationStore?: MigrationStore;
-}
-
-function assertSelf(req: Request, userId: string): void {
-  // `req.auth` is the authoritative identity under authV2. When the `authV2`
-  // break-glass flag is off the legacy middleware runs instead and sets no
-  // principal, so fall back to the (insecure) header it validated.
-  const selfId = req.auth?.userId ?? req.header('x-user-id');
-  if (selfId !== userId) {
-    throw new ForbiddenError('forbidden_user_scope', "Cannot access another user's data");
-  }
 }
 
 /**
@@ -65,32 +52,39 @@ export function createApp(deps: AppDeps): Express {
   const migrationStore = deps.migrationStore ?? createMigrationStore(config);
   const { requirePermission } = createPolicies({ roleRegistry, auditLog });
 
+  const rl = (name: string, windowMs: number, max: number) =>
+    createRateLimit({ name, windowMs, max, disabled: config.rateLimitDisabled });
+  // Coarse per-IP guard that runs before authentication (§13 "auth attempts").
+  const rlIp = (name: string, windowMs: number, max: number) =>
+    createRateLimit({
+      name,
+      windowMs,
+      max,
+      disabled: config.rateLimitDisabled,
+      by: (req) => req.ip ?? 'unknown',
+    });
+
   const app = express();
+  app.set('trust proxy', 1);
   app.use(express.json({ limit: '1mb' }));
   app.use(cors({ origin: config.clientOrigins, credentials: true }));
   app.use(requestId);
 
+  // --- Health / observability (§16) ---
   app.get('/health', (_req, res) => res.json({ ok: true }));
-
-  app.use('/api/scripture', scriptureRouter);
-  app.use('/api/questions', questionsRouter);
-  app.use(
-    '/api/admin/questions',
-    requireAuthenticated,
-    requirePermission('questions:admin'),
-    createQuestionsAdminRouter({ auditLog, config }),
+  app.get('/health/live', (_req, res) => res.json({ ok: true }));
+  app.get(
+    '/health/ready',
+    asyncHandler(async (_req, res) => {
+      try {
+        await dbStore.getStudyAnswers('__health__');
+        await walletLedger.getBalance('__health__');
+        res.json({ ok: true, provider: config.storageProvider });
+      } catch {
+        res.status(503).json({ ok: false });
+      }
+    }),
   );
-  app.use(
-    '/api/v1/me',
-    requireAuthenticated,
-    createMeRouter({ dbStore, roleRegistry, walletLedger, migrationStore, auditLog, config }),
-  );
-  app.use(
-    '/api/v1/progression',
-    requireAuthenticated,
-    createProgressionRouter({ dbStore, walletLedger, idempotency }),
-  );
-
   app.get(
     '/health/storage',
     asyncHandler(async (_req, res) => {
@@ -102,125 +96,48 @@ export function createApp(deps: AppDeps): Express {
       });
     }),
   );
+  app.get('/metrics', (_req, res) => res.json(metrics.snapshot()));
 
-  // --- Demo/in-memory endpoints (WS4 removes or isolates these) ---
-  const studyAnswers: Array<Record<string, unknown>> = [];
-  const dailyCompletions: Array<Record<string, unknown>> = [];
+  // --- Public content ---
+  app.use('/api/scripture', scriptureRouter);
+  app.use('/api/questions', questionsRouter);
 
-  // --- Authenticated self-scoped routes ---
-  const protectedRouter = express.Router();
-
-  protectedRouter.get(
-    '/study/answers/:userId',
+  // --- Admin (authenticated + permissioned + rate limited, §6.3) ---
+  app.use(
+    '/api/admin/questions',
+    rlIp('admin_ip', 60_000, 60),
     requireAuthenticated,
-    asyncHandler(async (req, res) => {
-      assertSelf(req, req.params.userId);
-      res.json(await dbStore.getStudyAnswers(req.params.userId));
-    }),
+    requirePermission('questions:admin'),
+    rl('admin', 60_000, 20),
+    createQuestionsAdminRouter({ auditLog, config }),
   );
 
-  protectedRouter.put(
-    '/study/answers/:userId',
+  // --- Authenticated self-scoped command surface (§5.3, §7) ---
+  // A coarse per-IP limiter runs before auth (§13 "auth attempts"); the finer
+  // per-principal limits live inside / alongside each router.
+  app.use('/api/v1', rlIp('api_v1_ip', 60_000, 120));
+  app.use(
+    '/api/v1/me',
     requireAuthenticated,
-    asyncHandler(async (req, res) => {
-      assertSelf(req, req.params.userId);
-      await dbStore.setStudyAnswers(req.params.userId, sanitizeStudyAnswers(req.body));
-      res.json({ ok: true });
-    }),
+    createMeRouter({ dbStore, roleRegistry, walletLedger, migrationStore, auditLog, config }),
+  );
+  app.use(
+    '/api/v1/progression',
+    requireAuthenticated,
+    rl('progression', 60_000, 60),
+    createProgressionRouter({ dbStore, walletLedger, idempotency }),
+  );
+  app.use(
+    '/api/v1/shop',
+    requireAuthenticated,
+    rl('shop', 60_000, 15),
+    createShopRouter({ dbStore, walletLedger, auditLog, idempotency }),
   );
 
-  protectedRouter.get(
-    '/stats/:userId',
-    requireAuthenticated,
-    asyncHandler(async (req, res) => {
-      assertSelf(req, req.params.userId);
-      const stats = await dbStore.getStats(req.params.userId);
-      res.json(stats ?? { themes: {}, lastUpdated: new Date().toISOString() });
-    }),
-  );
-
-  protectedRouter.put(
-    '/stats/:userId',
-    requireAuthenticated,
-    asyncHandler(async (req, res) => {
-      assertSelf(req, req.params.userId);
-      await dbStore.setStats(req.params.userId, sanitizeStatsBody(req.params.userId, req.body));
-      res.json({ ok: true });
-    }),
-  );
-
-  protectedRouter.get(
-    '/profile/:userId',
-    requireAuthenticated,
-    asyncHandler(async (req, res) => {
-      assertSelf(req, req.params.userId);
-      res.json(await readProfile(dbStore, req.params.userId, walletLedger));
-    }),
-  );
-
-  protectedRouter.put(
-    '/profile/:userId',
-    requireAuthenticated,
-    asyncHandler(async (req, res) => {
-      assertSelf(req, req.params.userId);
-      await writeProfile(dbStore, req.params.userId, req.body, { mode: 'full' });
-      res.json({ ok: true });
-    }),
-  );
-
-  protectedRouter.post(
-    '/telemetry/:userId',
-    requireAuthenticated,
-    asyncHandler(async (req, res) => {
-      assertSelf(req, req.params.userId);
-      const events = sanitizeTelemetryEvents(req.body);
-      await dbStore.appendTelemetry(req.params.userId, events);
-      res.json({ ok: true, accepted: events.length });
-    }),
-  );
-
-  app.use(protectedRouter);
-
-  // --- Demo endpoints (unauthenticated, in-memory) ---
-  app.get('/study/path', (_req, res) => {
-    res.json({
-      generatedAt: new Date().toISOString(),
-      nodes: [
-        { subthemeId: 'gospels-life', priority: 92, reason: 'weakness' },
-        { subthemeId: 'sinai-law', priority: 74, reason: 'scheduled-review' },
-        { subthemeId: 'bible-geography', priority: 68, reason: 'new' },
-      ],
-    });
-  });
-
-  app.post('/study/answer', (req, res) => {
-    studyAnswers.push({ ...req.body, createdAt: new Date().toISOString() });
-    res.json({ ok: true });
-  });
-
-  app.post('/daily/complete', (req, res) => {
-    dailyCompletions.push({ ...req.body, createdAt: new Date().toISOString() });
-    res.json({ ok: true });
-  });
-
-  app.get('/dashboard', (_req, res) => {
-    res.json({
-      streakDays: 0,
-      todaysGoal: 'Пройти 2 рівні в Дослідженні',
-      completedToday: dailyCompletions.length,
-      answeredToday: studyAnswers.length,
-    });
-  });
-
-  app.get('/leaderboard', (_req, res) => {
-    res.json({
-      items: [
-        { userId: 'u1', displayName: 'Аполлос', points: 2420 },
-        { userId: 'u2', displayName: 'Мойсей', points: 2180 },
-        { userId: 'u3', displayName: 'Маріам', points: 1740 },
-      ],
-    });
-  });
+  // --- Demo/in-memory endpoints — mounted only off-production (§10, §17) ---
+  if (config.demoRoutesEnabled) {
+    app.use(createDemoRouter());
+  }
 
   // --- Kahoot session export (HTTP only, no realtime dependency) ---
   app.get(

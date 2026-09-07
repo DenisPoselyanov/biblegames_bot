@@ -5,14 +5,14 @@
  * is no `:userId` path parameter, so cross-user access is structurally
  * impossible. Authentication is enforced by the caller (see server/app.ts).
  *
- * These run alongside the legacy `/profile/:userId` etc. routes during Phase 1;
- * WS4 removes the legacy ones.
+ * WS4 part 2 removed the legacy `/profile/:userId` routes and the whole-profile
+ * `PUT` — these self-scoped routes are the only user-facing profile surface.
  */
 
 import { Router, type Request } from 'express';
 import { asyncHandler } from '../middleware/asyncHandler';
-import { AppError, UnauthorizedError } from '../lib/errors';
-import { serverFlag } from '../lib/flags';
+import { UnauthorizedError } from '../lib/errors';
+import { createRateLimit } from '../middleware/rateLimit';
 import type { ServerConfig } from '../config/env';
 import type { ServerStore } from '../db/store';
 import type { RoleRegistry } from '../authz/roleRegistry';
@@ -21,7 +21,7 @@ import type { AuditLog } from '../audit';
 import { buildAuditRecord } from '../audit';
 import type { MigrationStore } from '../migration/migrationStore';
 import { applyMigration } from '../migration/applyMigration';
-import { readProfile, writeProfile } from '../services/profileService';
+import { readProfile, writePreferences, writeLearningState } from '../services/profileService';
 import {
   sanitizeStatsBody,
   sanitizeStudyAnswers,
@@ -53,6 +53,8 @@ export function createMeRouter({
   config,
 }: MeRouterDeps): Router {
   const router = Router();
+  const rl = (name: string, windowMs: number, max: number) =>
+    createRateLimit({ name, windowMs, max, disabled: config.rateLimitDisabled });
 
   router.get('/', (req, res) => {
     const principal = requirePrincipal(req);
@@ -76,31 +78,32 @@ export function createMeRouter({
     }),
   );
 
-  router.put(
-    '/profile',
+  router.patch(
+    '/preferences',
+    rl('me_preferences', 60_000, 20),
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
-      await writeProfile(dbStore, userId, req.body, { mode: 'full' });
-      res.json({ ok: true });
+      await writePreferences(dbStore, userId, req.body);
+      res.json(await readProfile(dbStore, userId, walletLedger));
     }),
   );
 
+  // Client-owned review-schedule blob (§7.4 tracked exception — see profileService).
   router.patch(
-    '/preferences',
+    '/learning-state',
+    rl('me_preferences', 60_000, 20),
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
-      await writeProfile(dbStore, userId, req.body, { mode: 'preferences' });
-      res.json(await readProfile(dbStore, userId, walletLedger));
+      const reviewSchedules = await writeLearningState(dbStore, userId, req.body);
+      res.json({ ok: true, reviewSchedules });
     }),
   );
 
   router.post(
     '/migrate',
+    rl('me_migrate', 300_000, 3),
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
-      if (!serverFlag('authoritativeProfileV2', false)) {
-        throw new AppError('not_enabled', 'Migration is not enabled', 404);
-      }
       const { record, replayed } = await applyMigration(userId, req.body ?? {}, {
         dbStore,
         walletLedger,
@@ -164,6 +167,7 @@ export function createMeRouter({
 
   router.post(
     '/telemetry',
+    rl('me_telemetry', 60_000, 30),
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
       const events = sanitizeTelemetryEvents(req.body);

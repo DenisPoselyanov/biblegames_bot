@@ -47,12 +47,13 @@ export async function flushTelemetry(userId: string): Promise<void> {
   if (queue.length === 0) return;
   try {
     const initData = getTelegramInitData();
-    const response = await fetch(`${API_BASE}/telemetry/${userId}`, {
+    const response = await fetch(`${API_BASE}/api/v1/me/telemetry`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-id': userId,
-        ...(initData ? { 'x-telegram-init-data': initData } : {}),
+        // Identity is the verified Telegram principal; the `x-user-id` header is
+        // only a dev-identity fallback for local runs without Telegram.
+        ...(initData ? { 'x-telegram-init-data': initData } : { 'x-user-id': userId }),
       },
       body: JSON.stringify({ events: queue }),
     });

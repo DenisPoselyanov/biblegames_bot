@@ -1,5 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { AppError } from '../lib/errors';
+import { log } from '../lib/logger';
+import { metrics } from '../lib/metrics';
 
 interface ErrorEnvelope {
   error: {
@@ -30,7 +32,8 @@ export function errorHandler(
 
   if (err instanceof AppError) {
     if (err.httpStatus >= 500) {
-      console.error(`[${requestId}] ${err.code}:`, err.message);
+      metrics.inc('server_error_total', { code: err.code });
+      log.error('request.error', { requestId, code: err.code, message: err.message });
     }
     const body: ErrorEnvelope = {
       error: { code: err.code, message: err.message, requestId, fields: err.fields },
@@ -39,7 +42,12 @@ export function errorHandler(
     return;
   }
 
-  console.error(`[${requestId}] unhandled_error:`, err);
+  metrics.inc('server_error_total', { code: 'unhandled' });
+  log.error('request.unhandled_error', {
+    requestId,
+    message: err instanceof Error ? err.message : String(err),
+    stack: err instanceof Error ? err.stack : undefined,
+  });
   const body: ErrorEnvelope = {
     error: { code: 'internal_error', message: 'Internal server error', requestId },
   };

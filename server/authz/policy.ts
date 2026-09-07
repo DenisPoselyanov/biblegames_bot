@@ -4,14 +4,12 @@
  * Every policy here runs AFTER `requireAuthenticated` (it reads `req.auth`). A
  * missing principal is treated as an auth failure, not an authz failure.
  *
- * Feature flag `rbacV2` (default ON): when `FEATURE_RBACV2=false`, the policies
- * degrade to "authenticated is enough" — the WS1 behavior — as a one-release
- * break-glass while RBAC rolls out.
+ * WS4 part 2 removed the `rbacV2` break-glass — the policies always enforce.
  */
 
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ForbiddenError, UnauthorizedError } from '../lib/errors';
-import { serverFlag } from '../lib/flags';
+import { metrics } from '../lib/metrics';
 import type { AuditLog } from '../audit';
 import { buildAuditRecord } from '../audit';
 import type { Permission, Role } from './roles';
@@ -20,10 +18,6 @@ import type { RoleRegistry } from './roleRegistry';
 export interface PolicyDeps {
   roleRegistry: RoleRegistry;
   auditLog: AuditLog;
-}
-
-function rbacEnabled(): boolean {
-  return serverFlag('rbacV2', true);
 }
 
 function principal(req: Request): { userId: string; authSource: string } {
@@ -35,6 +29,7 @@ function principal(req: Request): { userId: string; authSource: string } {
 
 export function createPolicies({ roleRegistry, auditLog }: PolicyDeps) {
   function auditDenied(req: Request, needed: string[], kind: 'role' | 'permission'): void {
+    metrics.inc('authz_denied_total', { kind });
     void auditLog.append(
       buildAuditRecord({
         actor: {
@@ -58,7 +53,7 @@ export function createPolicies({ roleRegistry, auditLog }: PolicyDeps) {
     return (req: Request, _res: Response, next: NextFunction): void => {
       try {
         const { userId } = principal(req);
-        if (!rbacEnabled() || roles.some((role) => roleRegistry.hasRole(userId, role))) {
+        if (roles.some((role) => roleRegistry.hasRole(userId, role))) {
           attachAuthz(req);
           next();
           return;
@@ -76,7 +71,7 @@ export function createPolicies({ roleRegistry, auditLog }: PolicyDeps) {
       try {
         const { userId } = principal(req);
         const matched = permissions.find((perm) => roleRegistry.hasPermission(userId, perm));
-        if (!rbacEnabled() || matched) {
+        if (matched) {
           attachAuthz(req, matched);
           next();
           return;
@@ -111,8 +106,8 @@ export function createPolicies({ roleRegistry, auditLog }: PolicyDeps) {
           next();
           return;
         }
-        if (!rbacEnabled() || roleRegistry.hasPermission(userId, permission)) {
-          attachAuthz(req, rbacEnabled() ? permission : undefined);
+        if (roleRegistry.hasPermission(userId, permission)) {
+          attachAuthz(req, permission);
           next();
           return;
         }

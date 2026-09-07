@@ -1,48 +1,34 @@
 import type { GlobalStats } from '../types';
-import { loadGlobalStats, recordGlobalPlay } from '../lib/storage';
-import { saveGlobalStats } from '../lib/storage';
-import { apiFetch, hasApi } from './apiClient';
+import { loadGlobalStats, recordGlobalPlay, saveGlobalStats } from '../lib/storage';
+import { apiV1Fetch, hasApi } from './apiClient';
 
+/**
+ * Global stats are server-derived from progression completions (WS4 part 2
+ * removed the legacy client-computed `PUT /stats/:userId` whole-object write).
+ * This repo is read-through: `recordPlay` only updates the local mirror.
+ */
 export const statsRepo = {
-  async get(userId?: string): Promise<GlobalStats> {
+  async get(): Promise<GlobalStats> {
     const local = loadGlobalStats();
-    if (!hasApi() || !userId) return local;
+    if (!hasApi()) return local;
     try {
-      const response = await apiFetch(`/stats/${userId}`, userId);
+      const response = await apiV1Fetch('/me/stats');
       if (!response.ok) return local;
       const remote = (await response.json()) as GlobalStats;
-      const themes = { ...remote.themes };
-      for (const [themeId, localTheme] of Object.entries(local.themes)) {
-        const remoteTheme = themes[themeId] ?? { themeId, totalPoints: 0, gamesPlayed: 0, playersCount: 0 };
-        themes[themeId] = {
-          themeId,
-          totalPoints: Math.max(remoteTheme.totalPoints, localTheme.totalPoints),
-          gamesPlayed: Math.max(remoteTheme.gamesPlayed, localTheme.gamesPlayed),
-          playersCount: Math.max(remoteTheme.playersCount, localTheme.playersCount),
-        };
-      }
-      const merged: GlobalStats = { themes, lastUpdated: new Date().toISOString() };
-      saveGlobalStats(merged);
-      await apiFetch(`/stats/${userId}`, userId, {
-        method: 'PUT',
-        body: JSON.stringify(merged),
-      });
-      return merged;
+      saveGlobalStats(remote);
+      return remote;
     } catch {
       return local;
     }
   },
-  async recordPlay(themeId: string, points: number, isNewPlayerForTheme: boolean, userId?: string): Promise<GlobalStats> {
-    const updated = recordGlobalPlay(themeId, points, isNewPlayerForTheme);
-    if (!hasApi() || !userId) return updated;
-    try {
-      await apiFetch(`/stats/${userId}`, userId, {
-        method: 'PUT',
-        body: JSON.stringify(updated),
-      });
-    } catch {
-      /* noop */
-    }
-    return updated;
+
+  async recordPlay(
+    themeId: string,
+    points: number,
+    isNewPlayerForTheme: boolean,
+  ): Promise<GlobalStats> {
+    // The server records the play from the progression completion command; here
+    // we only keep the local mirror fresh for offline reads.
+    return recordGlobalPlay(themeId, points, isNewPlayerForTheme);
   },
 };

@@ -40,6 +40,12 @@ import { loadAllTopicHierarchies } from '../data/topicDbLoader';
 import type { BollsTranslation } from '../lib/bollsConstants';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { isFeatureEnabled } from '../lib/flags';
+import { hasApi } from '../repos/apiClient';
+import {
+  progressionRepo,
+  type CompletionCommand,
+  type ProgressionOutcome,
+} from '../repos/progressionRepo';
 import { getLearningObjectiveId } from '../lib/learningObjectives';
 import { computeNextReviewState } from '../lib/reviewScheduler';
 import { usePlayerProfileStore } from '../stores/playerProfileStore';
@@ -62,7 +68,7 @@ interface PlayerContextValue {
     difficulty: Difficulty,
     correctCount: number,
     totalQuestions: number,
-  ) => { points: number; alreadyCompleted: boolean };
+  ) => Promise<{ points: number; alreadyCompleted: boolean }>;
   completePracticeStage: (
     themeId: string,
     difficulty: Difficulty,
@@ -71,7 +77,7 @@ interface PlayerContextValue {
     totalQuestions: number,
     nodeId: string | null,
     questionIds?: string[],
-  ) => {
+  ) => Promise<{
     passed: boolean;
     points: number;
     wisdomEarned: number;
@@ -81,16 +87,25 @@ interface PlayerContextValue {
     previousRankLabel: string;
     newRankLabel: string;
     streakDays: number;
-  };
+    celebrate: boolean;
+  }>;
   isLevelDone: (themeId: string, difficulty: Difficulty) => boolean;
-  saveSurvivalRun: (score: number, pointsEarned: number) => void;
-  saveMillionaireRun: (reachedLevel: number, pointsEarned: number, runLength: number) => void;
+  saveSurvivalRun: (score: number, pointsEarned: number, runId?: string) => Promise<void>;
+  saveMillionaireRun: (
+    reachedLevel: number,
+    pointsEarned: number,
+    runLength: number,
+    runId?: string,
+  ) => Promise<void>;
   unlockAchievement: (achievementId: string) => boolean;
-  purchaseTheme: (themeId: string) => { purchased: boolean; reason?: 'missing' | 'owned' | 'coins' };
+  purchaseTheme: (themeId: string) => Promise<{ purchased: boolean; reason?: 'missing' | 'owned' | 'coins' }>;
   setActiveTheme: (themeId: string) => boolean;
   refreshStats: () => void;
   setAvatar: (avatarId: string) => boolean;
-  purchaseAvatar: (avatarId: string, price: number) => { purchased: boolean; reason?: 'owned' | 'coins' };
+  purchaseAvatar: (
+    avatarId: string,
+    price: number,
+  ) => Promise<{ purchased: boolean; reason?: 'missing' | 'owned' | 'coins' }>;
   recordAnswerEvent: (params: { themeId: string; isCorrect: boolean; questionId: string; errorTag?: string; nodeId?: string }) => void;
   getRecommendations: (maxRecommendations?: number) => Promise<Recommendation[]>;
   getDailyPlan: () => Promise<DailyPlanItem[]>;
@@ -98,6 +113,86 @@ interface PlayerContextValue {
 }
 
 const PlayerContext = createContext<PlayerContextValue | null>(null);
+
+/**
+ * The server-authoritative `/api/v1` command surface is the only remote path
+ * (WS4 part 2 removed the `authoritative_profile` flag and the legacy fallback).
+ * When there's no API base configured we run fully local.
+ */
+function authoritativeEnabled(): boolean {
+  return hasApi();
+}
+
+/** sessionStorage set of authoritative event ids whose celebration has already played (ADR-010). */
+const CELEBRATED_KEY = 'bible-game-celebrated-events';
+
+function celebrationAlreadyPlayed(eventId: string): boolean {
+  try {
+    const seen = JSON.parse(sessionStorage.getItem(CELEBRATED_KEY) ?? '[]') as string[];
+    if (seen.includes(eventId)) return true;
+    sessionStorage.setItem(CELEBRATED_KEY, JSON.stringify([...seen, eventId].slice(-200)));
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+async function purchaseViaServer(
+  kind: 'theme' | 'avatar',
+  itemId: string,
+  persist: (next: PlayerProfile) => void,
+  profile: PlayerProfile,
+): Promise<{ purchased: boolean; reason?: 'missing' | 'owned' | 'coins' }> {
+  try {
+    const res = await progressionRepo.purchase({
+      kind,
+      itemId,
+      idempotencyKey: `${kind}:${itemId}`,
+    });
+    persist({
+      ...profile,
+      coins: res.balance,
+      unlockedThemes: res.unlockedThemes,
+      unlockedAvatars: res.unlockedAvatars,
+      activeTheme: res.activeTheme || profile.activeTheme,
+      avatar: res.avatar || profile.avatar,
+      achievements: res.achievementsGranted.length
+        ? Array.from(new Set([...profile.achievements, ...res.achievementsGranted]))
+        : profile.achievements,
+    });
+    return { purchased: true };
+  } catch (err) {
+    const code = (err as { code?: string }).code;
+    if (code === 'insufficient_funds') return { purchased: false, reason: 'coins' };
+    if (code === 'already_owned') return { purchased: false, reason: 'owned' };
+    return { purchased: false, reason: 'missing' };
+  }
+}
+
+/** Overlay the server-authoritative snapshot onto the local profile, keeping client-owned fields. */
+function applyOutcome(current: PlayerProfile, outcome: ProgressionOutcome): PlayerProfile {
+  const n = outcome.next;
+  return {
+    ...current,
+    coins: n.coins,
+    playerRank: {
+      tier: n.rankTier,
+      plaque: n.rankPlaque,
+      wisdomPoints: n.wisdom,
+      unlockedTier: n.rankUnlockedTier,
+    },
+    streakDays: n.streakDays,
+    lastActiveAt: n.lastActiveAt,
+    completedLevels: n.completedLevels as unknown as PlayerProfile['completedLevels'],
+    achievements: n.achievements,
+    themePoints: n.themePoints,
+    practiceTracks: n.practiceTracks,
+    studyMastery: n.studyMastery,
+    millionaireWins: n.millionaireWins,
+    millionaireMaxLevel: n.millionaireMaxLevel,
+    survivalHighScore: n.survivalHighScore,
+  };
+}
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
   const { userId, displayName } = useTelegram();
@@ -125,7 +220,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     localDirtyRef.current = false;
     loadProfile(userId, displayName);
 
-    void studyRepo.syncHistory(userId);
+    void studyRepo.syncHistory();
     trackEvent('session_start', { userId });
     void flushTelemetry(userId);
 
@@ -163,7 +258,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   );
 
   const completeLevel = useCallback(
-    (
+    async (
       themeId: string,
       difficulty: Difficulty,
       correctCount: number,
@@ -176,6 +271,26 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       const alreadyCompleted = profile.completedLevels.some(
         (l) => l.themeId === themeId && l.difficulty === difficulty,
       );
+
+      if (authoritativeEnabled()) {
+        const runId = `level:${themeId}:${difficulty}`;
+        try {
+          const outcome = await progressionRepo.completion({
+            kind: 'level',
+            runId,
+            idempotencyKey: `${runId}:${correctCount}/${totalQuestions}`,
+            difficulty,
+            themeId,
+            correctCount,
+            totalQuestions,
+          });
+          persistProfile(applyOutcome(profile, outcome));
+          trackEvent('quiz_completed', { themeId, difficulty, points: outcome.delta.coins, correctCount, totalQuestions });
+          return { points: outcome.delta.coins, alreadyCompleted };
+        } catch {
+          /* fall through to local computation, mark nothing — retry on next run */
+        }
+      }
       const basePoints = DIFFICULTY_POINTS[difficulty];
       const accuracy = correctCount / totalQuestions;
       const points = Math.round(basePoints * accuracy);
@@ -230,7 +345,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   );
 
   const completePracticeStage = useCallback(
-    (
+    async (
       themeId: string,
       difficulty: Difficulty,
       stageIndex: number,
@@ -249,6 +364,59 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
       const previousRank = profile.playerRank ?? getDefaultPlayerRank();
       const previousRankLabel = formatRankLabel(previousRank.tier, previousRank.plaque);
+
+      if (authoritativeEnabled()) {
+        const runId = `practice:${themeId}:${nodeId ?? '_root'}:${difficulty}:${stageIndex}`;
+        try {
+          const outcome = await progressionRepo.completion({
+            kind: 'practice_stage',
+            runId,
+            idempotencyKey: `${runId}:${correctCount}/${totalQuestions}`,
+            difficulty,
+            themeId,
+            nodeId,
+            stageIndex,
+            questionIds,
+            correctCount,
+            totalQuestions,
+          });
+          let nextProfile = applyOutcome(profile, outcome);
+
+          // Review schedules stay client-owned (§7.4); persist the blob separately.
+          if (isFeatureEnabled('review_scheduler_v2') && nodeId) {
+            const learningObjectiveId = getLearningObjectiveId(themeId, nodeId);
+            const nextSchedule = computeNextReviewState(
+              (profile.reviewSchedules ?? {})[learningObjectiveId],
+              { learningObjectiveId, themeId, nodeId },
+              outcome.delta.passed ?? passed,
+            );
+            const reviewSchedules = { ...(profile.reviewSchedules ?? {}), [learningObjectiveId]: nextSchedule };
+            nextProfile = { ...nextProfile, reviewSchedules };
+            void progressionRepo.saveLearningState(reviewSchedules).catch(() => {});
+          }
+
+          persistProfile(nextProfile);
+          trackEvent('practice_stage_completed', {
+            themeId, difficulty, stageIndex, nodeId, passed,
+            wisdomEarned: outcome.delta.wisdom, points: outcome.delta.coins, correctCount, totalQuestions,
+          });
+          const newRankLabel = formatRankLabel(outcome.next.rankTier, outcome.next.rankPlaque);
+          return {
+            passed: outcome.delta.passed ?? passed,
+            points: outcome.delta.coins,
+            wisdomEarned: outcome.delta.wisdom,
+            stagePerfect: outcome.delta.stagePerfect ?? stagePerfectNow,
+            nextStageUnlocked: outcome.delta.nextStageUnlocked ?? false,
+            rankPromoted: outcome.delta.rankChanged,
+            previousRankLabel,
+            newRankLabel,
+            streakDays: outcome.next.streakDays,
+            celebrate: !celebrationAlreadyPlayed(outcome.eventId),
+          };
+        } catch {
+          /* fall through to local computation */
+        }
+      }
 
       const tracks = [...(profile.practiceTracks ?? [])];
       const trackTemplate = getOrCreatePracticeTrack(tracks, themeId, nodeId, difficulty);
@@ -389,6 +557,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         previousRankLabel,
         newRankLabel: formatRankLabel(newRank.tier, newRank.plaque),
         streakDays: streaked.streakDays,
+        celebrate: true,
       };
     },
     [profile, userId, persistProfile, recordPlayMutation],
@@ -401,19 +570,50 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     [profile, persistProfile],
   );
 
+  const runCompletion = useCallback(
+    async (cmd: CompletionCommand): Promise<boolean> => {
+      if (!authoritativeEnabled()) return false;
+      try {
+        const outcome = await progressionRepo.completion(cmd);
+        persistProfile(applyOutcome(profile, outcome));
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    [profile, persistProfile],
+  );
+
   const saveSurvivalRun = useCallback(
-    (score: number, pointsEarned: number) => {
+    async (score: number, pointsEarned: number, runId?: string) => {
+      const rid = runId ?? `survival:${Date.now()}`;
+      const done = await runCompletion({
+        kind: 'survival',
+        runId: rid,
+        idempotencyKey: rid,
+        score,
+      });
+      if (done) return;
       updateProfile((current) => ({
         ...current,
         coins: current.coins + pointsEarned,
         survivalHighScore: Math.max(current.survivalHighScore, score),
       }));
     },
-    [updateProfile],
+    [runCompletion, updateProfile],
   );
 
   const saveMillionaireRun = useCallback(
-    (reachedLevel: number, pointsEarned: number, runLength: number) => {
+    async (reachedLevel: number, pointsEarned: number, runLength: number, runId?: string) => {
+      const rid = runId ?? `millionaire:${Date.now()}`;
+      const done = await runCompletion({
+        kind: 'millionaire',
+        runId: rid,
+        idempotencyKey: rid,
+        reachedLevel,
+        runLength,
+      });
+      if (done) return;
       const completedRun = runLength > 0 && reachedLevel >= runLength;
       updateProfile((current) => ({
         ...current,
@@ -422,7 +622,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         millionaireMaxLevel: Math.max(current.millionaireMaxLevel, reachedLevel),
       }));
     },
-    [updateProfile],
+    [runCompletion, updateProfile],
   );
 
   const unlockAchievement = useCallback(
@@ -441,12 +641,17 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   );
 
   const purchaseTheme = useCallback(
-    (themeId: string) => {
+    async (themeId: string) => {
       const theme = getCosmeticThemeById(themeId);
       if (!theme) return { purchased: false, reason: 'missing' as const };
       if (profile.unlockedThemes.includes(themeId)) {
         return { purchased: false, reason: 'owned' as const };
       }
+
+      if (authoritativeEnabled()) {
+        return purchaseViaServer('theme', themeId, persistProfile, profile);
+      }
+
       if (profile.coins < theme.price) {
         return { purchased: false, reason: 'coins' as const };
       }
@@ -466,7 +671,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
       return { purchased: true };
     },
-    [profile.coins, profile.unlockedThemes, updateProfile],
+    [profile, persistProfile, updateProfile],
   );
 
   const setActiveTheme = useCallback(
@@ -482,10 +687,15 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   );
 
   const purchaseAvatar = useCallback(
-    (avatarId: string, price: number) => {
+    async (avatarId: string, price: number) => {
       if (profile.unlockedAvatars.includes(avatarId)) {
         return { purchased: false, reason: 'owned' as const };
       }
+
+      if (authoritativeEnabled()) {
+        return purchaseViaServer('avatar', avatarId, persistProfile, profile);
+      }
+
       if (profile.coins < price) {
         return { purchased: false, reason: 'coins' as const };
       }
@@ -499,7 +709,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
       return { purchased: true };
     },
-    [profile.coins, profile.unlockedAvatars, updateProfile],
+    [profile, persistProfile, updateProfile],
   );
 
   const setAvatar = useCallback(
@@ -529,24 +739,49 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         isCorrect,
         answeredAt: new Date().toISOString(),
         errorTag: errorTag ?? (isCorrect ? undefined : 'knowledge-gap'),
-      }, userId);
-
-      updateProfile((current) => {
-        const nextMasteryState = updateMastery(current.studyMastery[effectiveNodeId], isCorrect, errorTag ?? 'knowledge-gap');
-        const nextAchievements = [...current.achievements];
-        if (nextMasteryState.mastery >= 0.99 && !nextAchievements.includes('mastery-expert')) {
-          nextAchievements.push('mastery-expert');
-        }
-
-        return {
-          ...current,
-          achievements: nextAchievements,
-          studyMastery: {
-            ...current.studyMastery,
-            [effectiveNodeId]: nextMasteryState,
-          },
-        };
       });
+
+      if (authoritativeEnabled()) {
+        void progressionRepo
+          .answer({
+            questionId,
+            themeId,
+            nodeId: nodeId ?? undefined,
+            subthemeId: effectiveNodeId,
+            isCorrect,
+            errorTag,
+            idempotencyKey: `answer:${questionId}:${Date.now()}`,
+          })
+          .then((res) => {
+            updateProfile((current) => ({
+              ...current,
+              studyMastery: { ...current.studyMastery, [res.nodeId]: res.mastery },
+              achievements: res.achievementsGranted.length
+                ? Array.from(new Set([...current.achievements, ...res.achievementsGranted]))
+                : current.achievements,
+            }));
+          })
+          .catch(() => {
+            /* offline — local mastery below still applies */
+          });
+      } else {
+        updateProfile((current) => {
+          const nextMasteryState = updateMastery(current.studyMastery[effectiveNodeId], isCorrect, errorTag ?? 'knowledge-gap');
+          const nextAchievements = [...current.achievements];
+          if (nextMasteryState.mastery >= 0.99 && !nextAchievements.includes('mastery-expert')) {
+            nextAchievements.push('mastery-expert');
+          }
+
+          return {
+            ...current,
+            achievements: nextAchievements,
+            studyMastery: {
+              ...current.studyMastery,
+              [effectiveNodeId]: nextMasteryState,
+            },
+          };
+        });
+      }
 
       trackEvent('question_answered', { questionId, subthemeId: effectiveNodeId, nodeId, isCorrect });
     },
