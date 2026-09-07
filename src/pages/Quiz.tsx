@@ -437,7 +437,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     [showResult, current, clearQuestionTimer, themeId, effectiveNodeId, recordAnswerEvent],
   );
 
-  const handleNext = useCallback(() => {
+  const handleNext = useCallback(async () => {
     if (!current) return;
     if (mode === 'practice' && (!validDiff || !themeId)) return;
 
@@ -455,7 +455,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
     if (mode === 'practice' && themeId && validDiff) {
       const practiceStageIndex = isStageRoute ? stageIndex : 0;
-      const result = completePracticeStage(
+      const result = await completePracticeStage(
         themeId,
         validDiff,
         practiceStageIndex,
@@ -471,17 +471,20 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       setNextStageUnlocked(result.nextStageUnlocked);
       setRankPromoted(result.rankPromoted);
       setNewRankLabel(result.newRankLabel);
-      if (result.points > 0) {
-        showToast(`+${result.points} монет`, 'success');
-      }
-      if (result.wisdomEarned > 0) {
-        showToast(`+${result.wisdomEarned} мудрості`, 'success');
-      }
-      if (result.rankPromoted) {
-        showToast(`Новий ранг: ${result.newRankLabel}`, 'success');
-      }
-      if (result.streakDays > 1 && result.passed) {
-        showToast(`Серія ${result.streakDays} дн.!`, 'info');
+      // `celebrate` is false on an authoritative replay (same eventId) — ADR-010.
+      if (result.celebrate) {
+        if (result.points > 0) {
+          showToast(`+${result.points} монет`, 'success');
+        }
+        if (result.wisdomEarned > 0) {
+          showToast(`+${result.wisdomEarned} мудрості`, 'success');
+        }
+        if (result.rankPromoted) {
+          showToast(`Новий ранг: ${result.newRankLabel}`, 'success');
+        }
+        if (result.streakDays > 1 && result.passed) {
+          showToast(`Серія ${result.streakDays} дн.!`, 'info');
+        }
       }
       haptic.notification(result.passed ? 'success' : 'error');
     } else {

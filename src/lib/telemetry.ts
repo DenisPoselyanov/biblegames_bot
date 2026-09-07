@@ -14,6 +14,7 @@ export interface TelemetryEvent {
 }
 
 import { getTelegramInitData } from './telegram';
+import { isFeatureEnabled } from './flags';
 
 const TELEMETRY_KEY = 'bible-game-telemetry-events';
 const API_BASE = import.meta.env.VITE_API_BASE_URL as string | undefined;
@@ -47,12 +48,15 @@ export async function flushTelemetry(userId: string): Promise<void> {
   if (queue.length === 0) return;
   try {
     const initData = getTelegramInitData();
-    const response = await fetch(`${API_BASE}/telemetry/${userId}`, {
+    const authoritative = isFeatureEnabled('authoritative_profile');
+    const url = authoritative ? `${API_BASE}/api/v1/me/telemetry` : `${API_BASE}/telemetry/${userId}`;
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-id': userId,
+        ...(authoritative ? {} : { 'x-user-id': userId }),
         ...(initData ? { 'x-telegram-init-data': initData } : {}),
+        ...(authoritative && !initData ? { 'x-user-id': userId } : {}),
       },
       body: JSON.stringify({ events: queue }),
     });

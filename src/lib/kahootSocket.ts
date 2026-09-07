@@ -1,15 +1,31 @@
 import { io, type Socket } from 'socket.io-client';
 import type { KahootRoomState } from '../types/kahoot';
+import { getTelegramInitData } from './telegram';
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001';
 
 let socket: Socket | null = null;
 
+function readDevUserId(): string {
+  try {
+    return (
+      (window as unknown as { Telegram?: { WebApp?: { initDataUnsafe?: { user?: { id?: number } } } } })
+        .Telegram?.WebApp?.initDataUnsafe?.user?.id?.toString() ?? 'guest'
+    );
+  } catch {
+    return 'guest';
+  }
+}
+
 export function getKahootSocket(): Socket {
   if (!socket) {
+    const initData = getTelegramInitData();
     socket = io(SERVER_URL, {
       autoConnect: true,
       transports: ['websocket', 'polling'],
+      // Bind identity at the handshake so the server's secureKahootIdentity
+      // path attaches a verified principal instead of trusting event payloads.
+      auth: initData ? { initData } : { userId: readDevUserId() },
     });
   }
   return socket;

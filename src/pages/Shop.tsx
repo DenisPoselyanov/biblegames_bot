@@ -19,8 +19,8 @@ export function Shop() {
     showToast('Аватар обрано', 'success');
   };
 
-  const handleBuyAvatar = (avatarId: string, price: number) => {
-    const result = purchaseAvatar(avatarId, price);
+  const handleBuyAvatar = async (avatarId: string, price: number) => {
+    const result = await purchaseAvatar(avatarId, price);
     if (!result.purchased) {
       if (result.reason === 'coins') {
         showToast('Недостатньо монет для придбання!', 'error');
@@ -80,7 +80,7 @@ export function Shop() {
                     ) : (
                       <button
                         className={styles.btnBuy}
-                        onClick={() => handleBuyAvatar(avatar.id, avatar.price)}
+                        onClick={() => void handleBuyAvatar(avatar.id, avatar.price)}
                       >
                         <Icon name="coins" size={14} />
                         {avatar.price}

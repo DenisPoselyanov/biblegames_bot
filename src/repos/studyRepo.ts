@@ -1,6 +1,11 @@
 import type { AnswerEvent, StudyPath, StudySession, StudyMode } from '../types';
 import { STUDY_THEME_GROUPS } from '../data/study_themes';
-import { apiFetch, hasApi } from './apiClient';
+import { apiFetch, apiV1Fetch, hasApi } from './apiClient';
+import { isFeatureEnabled } from '../lib/flags';
+
+function isAuthoritative(): boolean {
+  return hasApi() && isFeatureEnabled('authoritative_profile');
+}
 
 const ANSWERS_KEY = 'bible-game-answer-events';
 
@@ -46,6 +51,9 @@ export const studyRepo = {
     const list = loadAnswers();
     list.push(event);
     saveAnswers(list);
+    // Authoritative mode: PlayerContext.recordAnswerEvent sends the mastery
+    // command (POST /api/v1/progression/answers), which also stores history.
+    if (isAuthoritative()) return;
     if (!hasApi() || !userId) return;
     try {
       await apiFetch('/study/answer', userId, {
@@ -61,6 +69,25 @@ export const studyRepo = {
   },
   async syncHistory(userId: string): Promise<void> {
     if (!hasApi()) return;
+
+    if (isAuthoritative()) {
+      // Read-only: the server owns the answer history (written by the mastery
+      // command). Merge remote into local for offline read consumers.
+      try {
+        const response = await apiV1Fetch('/me/study/answers');
+        if (!response.ok) return;
+        const remote = (await response.json()) as AnswerEvent[];
+        const map = new Map<string, AnswerEvent>();
+        [...remote, ...loadAnswers()].forEach((item) => {
+          map.set(`${item.questionId}-${item.answeredAt}-${item.subthemeId}`, item);
+        });
+        saveAnswers([...map.values()].sort((a, b) => a.answeredAt.localeCompare(b.answeredAt)));
+      } catch {
+        /* noop */
+      }
+      return;
+    }
+
     try {
       const response = await apiFetch(`/study/answers/${userId}`, userId);
       if (!response.ok) return;

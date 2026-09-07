@@ -6,7 +6,8 @@ export type FlagName =
   | 'learning_plans'
   | 'lesson_experience_v2'
   | 'review_scheduler_v2'
-  | 'progress_dashboard_v2';
+  | 'progress_dashboard_v2'
+  | 'authoritative_profile';
 
 const FLAG_DEFAULTS: Record<FlagName, boolean> = {
   learning_first_navigation: false,
@@ -17,6 +18,11 @@ const FLAG_DEFAULTS: Record<FlagName, boolean> = {
   lesson_experience_v2: false,
   review_scheduler_v2: false,
   progress_dashboard_v2: false,
+  // Phase 1 WS4: route progression / preferences / purchases through the
+  // server-authoritative /api/v1 command surface instead of whole-profile
+  // PUT /profile. Pair with the server's FEATURE_AUTHORITATIVEPROFILEV2.
+  // Default OFF — WS4 part 2 flips this after internal validation.
+  authoritative_profile: false,
 };
 
 /**

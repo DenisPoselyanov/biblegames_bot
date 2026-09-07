@@ -10,9 +10,15 @@ import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { getDefaultPlayerRank, getTrackKey } from '../lib/practiceProgression';
 import { DIFFICULTY_ORDER } from '../types';
 import { apiFetch, hasApi } from './apiClient';
+import { isFeatureEnabled } from '../lib/flags';
+import { progressionRepo } from './progressionRepo';
 
 function isRemoteEnabled(): boolean {
   return hasApi();
+}
+
+function isAuthoritative(): boolean {
+  return hasApi() && isFeatureEnabled('authoritative_profile');
 }
 
 function levelKey(level: CompletedLevel): string {
@@ -182,6 +188,30 @@ function profilesEqual(a: PlayerProfile, b: PlayerProfile): boolean {
 export const playerRepo = {
   async get(userId: string, displayName: string): Promise<PlayerProfile> {
     const local = loadProfile(userId, displayName);
+
+    if (isAuthoritative()) {
+      // Server is the source of truth. One-time migration seeds it from the
+      // local profile the first time the flag is on for this user.
+      try {
+        await maybeMigrate(userId, local);
+        const remote = await progressionRepo.getProfile();
+        if (!remote) return local;
+        const hydrated: PlayerProfile = {
+          ...local,
+          ...remote,
+          userId,
+          displayName: remote.displayName || displayName || local.displayName,
+          bibleTranslation: normalizeBollsTranslation(
+            remote.bibleTranslation ?? local.bibleTranslation,
+          ),
+        };
+        saveProfile(hydrated);
+        return hydrated;
+      } catch {
+        return local;
+      }
+    }
+
     if (!isRemoteEnabled()) return local;
     try {
       const response = await apiFetch(`/profile/${userId}`, userId);
@@ -203,6 +233,23 @@ export const playerRepo = {
   async save(profile: PlayerProfile): Promise<void> {
     saveProfile(profile);
     if (!isRemoteEnabled()) return;
+
+    if (isAuthoritative()) {
+      // Authoritative fields are owned by the command endpoints; the whole-
+      // profile PUT is gone. Only the preference whitelist is synced here.
+      try {
+        await progressionRepo.savePreferences({
+          displayName: profile.displayName,
+          bibleTranslation: profile.bibleTranslation,
+          activeTheme: profile.activeTheme,
+          avatar: profile.avatar,
+        });
+      } catch {
+        /* noop — preferences retry on next change */
+      }
+      return;
+    }
+
     try {
       await apiFetch(`/profile/${profile.userId}`, profile.userId, {
         method: 'PUT',
@@ -213,3 +260,25 @@ export const playerRepo = {
     }
   },
 };
+
+const MIGRATED_KEY_PREFIX = 'bible-game-migrated:';
+
+async function maybeMigrate(userId: string, local: PlayerProfile): Promise<void> {
+  const key = `${MIGRATED_KEY_PREFIX}${userId}`;
+  try {
+    if (localStorage.getItem(key)) return;
+  } catch {
+    return;
+  }
+  try {
+    await progressionRepo.migrate(local);
+  } catch {
+    // Server is idempotent; a failed attempt just retries next load.
+    return;
+  }
+  try {
+    localStorage.setItem(key, new Date().toISOString());
+  } catch {
+    /* noop */
+  }
+}
