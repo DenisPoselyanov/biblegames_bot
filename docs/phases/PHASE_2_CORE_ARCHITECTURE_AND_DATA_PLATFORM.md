@@ -7,6 +7,42 @@
 
 ---
 
+## Implementation progress
+
+Phase 2 is split into **5 stacked workstreams** (owner decision 2026-09-07):
+WS1 contracts + architecture rules + server composition · WS2 persistence platform
+(Drizzle, migrations, repositories, persisted RBAC, shared rate-limit/metrics) ·
+WS3 canonical content repository + realtime gateway v2 · WS4 frontend data
+architecture · WS5 jobs + object storage + deployment + migration cutover + DoD.
+Stack confirmed: **Zod + Drizzle + pg-boss** (ADR-013 accepted; ADR-012 / ADR-014
+proposed pending spike).
+
+### WS1 (in progress) — branch `phase-2/ws1-contracts-composition`
+
+- **Contracts (§7, §8):** `contracts/` created — one Zod schema per boundary,
+  types inferred, client-safe. `version` / `enums` / `schemas` (primitives, §7.5
+  error envelope, snapshots) / `api/{me,progression,shop}` / `events/realtime`.
+  `@contracts` alias wired into frontend + server + vitest.
+- **Validation:** `validateBody(schema, code?)` middleware on progression
+  `/completions` + `/answers`, shop `/purchases`, me `/preferences` +
+  `/learning-state`. `.strict()` rejects unknown command keys (§25).
+  `AppError` + `errorHandler` emit the §7.5 envelope
+  (`messageKey` / `fieldErrors` / `retryable`) alongside legacy `fields`.
+  `x-contract-version` response header (§20).
+- **Server composition (§4, acc. #10/#11):** `server/app/createRealtimeServer.ts`
+  + `createHttpServer.ts` — full HTTP + Socket.IO stack builds in-process with no
+  `listen`; `server/index.ts` reduced to the bootstrap and is the only port bind.
+- **Domain skeleton (§5, §11):** `server/domains/` ownership map + `shared/context.ts`
+  (`ServiceContext`: principal / requestId / injectable clock / opaque tx slot).
+- **Architecture tests (§21, §22):** contracts purity + cycle-freedom, `src/ ↛
+  server/`, `server/domains ↛ express/socket.io/react`, port-free composition,
+  enum parity `contracts ↔ src/types` + `server/authz/roles`.
+- **Deferred to WS2:** dependency-cruiser (full-repo cycles + `services ↛ express`),
+  move `server/authz` + React client onto `@contracts`, OpenAPI generation.
+- `npm run check` green, 167 tests.
+
+---
+
 ## 1. Product outcome
 
 After Phase 2, Bible Games has one canonical backend/data architecture instead of several partially overlapping systems. Frontend, bot, server, realtime and scripts share contracts without sharing unsafe implementation. The project can evolve in later phases without duplicating progression rules, question loading, profile schemas or error handling.

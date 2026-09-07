@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@core': path.resolve(__dirname, 'src/core'),
+      '@contracts': path.resolve(__dirname, 'contracts/index.ts'),
     },
   },
   server: {

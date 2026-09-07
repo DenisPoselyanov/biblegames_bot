@@ -8,7 +8,7 @@
     "build": "tsc -b && node scripts/run-vite.mjs build",
     "build:pages": "node scripts/build-pages.mjs",
     "lint": "eslint .",
-    "lint:ws": "eslint server vitest.config.ts eslint.config.js",
+    "lint:ws": "eslint server contracts vitest.config.ts eslint.config.js",
     "typecheck": "tsc -b --pretty false",
     "typecheck:server": "tsc -p server/tsconfig.json --pretty false",
     "test": "vitest run",
@@ -65,6 +65,7 @@
     "react-router-dom": "^7.15.1",
     "react-vant": "^3.3.5",
     "socket.io-client": "^4.8.3",
+    "zod": "^3.25.76",
     "zustand": "^5.0.14"
   },
   "devDependencies": {

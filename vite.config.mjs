@@ -14,6 +14,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(import.meta.dirname, 'src'),
       '@core': path.resolve(import.meta.dirname, 'src/core'),
+      '@contracts': path.resolve(import.meta.dirname, 'contracts/index.ts'),
     },
   },
   server: {
