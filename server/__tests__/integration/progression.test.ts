@@ -97,6 +97,83 @@ describe('POST /api/v1/progression/completions', () => {
   });
 });
 
+const practiceStage = (overrides: Record<string, unknown> = {}) => ({
+  kind: 'practice_stage',
+  idempotencyKey: 'ps1',
+  runId: 'run1',
+  difficulty: 'child',
+  themeId: 'gospels',
+  nodeId: 'gospels-life',
+  stageIndex: 0,
+  correctCount: 8,
+  totalQuestions: 10,
+  ...overrides,
+});
+
+describe('POST /api/v1/progression/completions — practice tracks', () => {
+  it('persists a practice track and advances highestUnlockedStage', async () => {
+    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
+    const { app } = makeApp();
+    const res = await request(app)
+      .post('/api/v1/progression/completions')
+      .set('x-user-id', '7')
+      .send(practiceStage());
+    expect(res.status).toBe(200);
+    expect(res.body.delta.nextStageUnlocked).toBe(true);
+
+    const profile = await request(app).get('/api/v1/me/profile').set('x-user-id', '7');
+    expect(profile.body.practiceTracks).toHaveLength(1);
+    expect(profile.body.practiceTracks[0].highestUnlockedStage).toBe(1);
+    expect(profile.body.practiceTracks[0].stageResults[0]).toMatchObject({
+      stageIndex: 0,
+      passed: true,
+      attempts: 1,
+    });
+  });
+
+  it('re-running an aced stage under a fresh runId grants no extra coins', async () => {
+    process.env.FEATURE_AUTHORITATIVEPROFILEV2 = 'true';
+    const { app, walletLedger } = makeApp();
+    await request(app)
+      .post('/api/v1/progression/completions')
+      .set('x-user-id', '7')
+      .send(practiceStage({ correctCount: 10, idempotencyKey: 'k-a', runId: 'run-a' }));
+    const balance = await walletLedger.getBalance('7');
+    expect(balance).toBeGreaterThan(0);
+
+    const replay = await request(app)
+      .post('/api/v1/progression/completions')
+      .set('x-user-id', '7')
+      .send(practiceStage({ correctCount: 10, idempotencyKey: 'k-b', runId: 'run-b' }));
+    expect(replay.body.delta.coins).toBe(0);
+    expect(await walletLedger.getBalance('7')).toBe(balance);
+  });
+});
+
+describe('PATCH /api/v1/me/learning-state', () => {
+  it('stores the reviewSchedules blob verbatim', async () => {
+    const { app } = makeApp();
+    const schedule = {
+      'gospels-life:recall': {
+        learningObjectiveId: 'gospels-life:recall',
+        themeId: 'gospels',
+        nodeId: 'gospels-life',
+        easeFactor: 2.5,
+        intervalDays: 1,
+        repetitions: 1,
+        dueAt: '2026-09-10T00:00:00.000Z',
+        lastReviewedAt: '2026-09-07T00:00:00.000Z',
+      },
+    };
+    const res = await request(app)
+      .patch('/api/v1/me/learning-state')
+      .set('x-user-id', '7')
+      .send({ reviewSchedules: schedule });
+    expect(res.status).toBe(200);
+    expect(res.body.reviewSchedules['gospels-life:recall'].easeFactor).toBe(2.5);
+  });
+});
+
 describe('preference / progression write split', () => {
   it('PATCH /api/v1/me/preferences changes only whitelisted fields', async () => {
     const { app } = makeApp();

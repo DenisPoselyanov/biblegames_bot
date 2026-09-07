@@ -70,6 +70,55 @@ describe('computeCompletion — practice_stage', () => {
   });
 });
 
+describe('computeCompletion — practice_stage track derivation', () => {
+  it('records a stage result and unlocks the next stage on a pass', () => {
+    const res = computeCompletion(
+      {
+        kind: 'practice_stage',
+        difficulty: 'child',
+        themeId: 't',
+        nodeId: 'n1',
+        stageIndex: 0,
+        correctCount: 8,
+        totalQuestions: 10,
+      },
+      base(),
+    );
+    expect(res.next.practiceTracks).toHaveLength(1);
+    const track = res.next.practiceTracks[0];
+    expect(track.highestUnlockedStage).toBe(1);
+    expect(track.stageResults[0]).toMatchObject({ stageIndex: 0, passed: true, attempts: 1 });
+    expect(res.delta.nextStageUnlocked).toBe(true);
+    expect(res.delta.passed).toBe(true);
+  });
+
+  it('re-running an already-aced stage grants 0 coins and 0 wisdom', () => {
+    const first = computeCompletion(
+      { kind: 'practice_stage', difficulty: 'child', themeId: 't', nodeId: 'n1', stageIndex: 0, correctCount: 10, totalQuestions: 10 },
+      base(),
+    );
+    expect(first.delta.coins).toBeGreaterThan(0);
+    expect(first.delta.wisdom).toBeGreaterThan(0);
+
+    const replay = computeCompletion(
+      { kind: 'practice_stage', difficulty: 'child', themeId: 't', nodeId: 'n1', stageIndex: 0, correctCount: 10, totalQuestions: 10 },
+      first.next,
+    );
+    expect(replay.delta.coins).toBe(0);
+    expect(replay.delta.wisdom).toBe(0);
+    expect(replay.next.practiceTracks[0].stageResults[0].attempts).toBe(2);
+  });
+
+  it('a failed stage does not unlock the next one', () => {
+    const res = computeCompletion(
+      { kind: 'practice_stage', difficulty: 'child', themeId: 't', nodeId: 'n1', stageIndex: 0, correctCount: 3, totalQuestions: 10 },
+      base(),
+    );
+    expect(res.next.practiceTracks[0].highestUnlockedStage).toBe(0);
+    expect(res.delta.nextStageUnlocked).toBe(false);
+  });
+});
+
 describe('computeCompletion — millionaire & survival', () => {
   it('millionaire awards per level + a win bonus when the run is finished', () => {
     const res = computeCompletion(
@@ -79,6 +128,21 @@ describe('computeCompletion — millionaire & survival', () => {
     expect(res.delta.coins).toBe(10 * 25 + 150);
     expect(res.next.millionaireWins).toBe(1);
     expect(res.next.millionaireMaxLevel).toBe(10);
+    expect(res.delta.achievementsGranted).toContain('biblical-millionaire');
+  });
+
+  it('millionaire loss does not grant biblical-millionaire', () => {
+    const res = computeCompletion({ kind: 'millionaire', reachedLevel: 4, runLength: 10 }, base());
+    expect(res.delta.achievementsGranted).not.toContain('biblical-millionaire');
+  });
+
+  it('survival grants iron-shield at 30+ and not below', () => {
+    expect(
+      computeCompletion({ kind: 'survival', score: 30 }, base()).delta.achievementsGranted,
+    ).toContain('iron-shield');
+    expect(
+      computeCompletion({ kind: 'survival', score: 29 }, base()).delta.achievementsGranted,
+    ).not.toContain('iron-shield');
   });
 
   it('millionaire without finishing gives no win', () => {

@@ -25,6 +25,7 @@ import { scriptureRouter } from './routes/scripture';
 import { createQuestionsAdminRouter } from './routes/questionsAdmin';
 import { createMeRouter } from './routes/me';
 import { createProgressionRouter } from './routes/progression';
+import { createShopRouter } from './routes/shop';
 import { questionsRouter } from './routes/questions';
 import { useQuestionsSql } from './db/pgPool';
 import { listKahootSessions, getKahootSession, sessionToCsv } from './kahootSessions';
@@ -89,6 +90,11 @@ export function createApp(deps: AppDeps): Express {
     '/api/v1/progression',
     requireAuthenticated,
     createProgressionRouter({ dbStore, walletLedger, idempotency }),
+  );
+  app.use(
+    '/api/v1/shop',
+    requireAuthenticated,
+    createShopRouter({ dbStore, walletLedger, auditLog, idempotency }),
   );
 
   app.get(

@@ -8,6 +8,12 @@
  *   on, the authoritative fields (coins, rank, streak, achievements, …) are
  *   stripped from the body before merge (DoD #6); when
  *   `disableLegacyProfileWrites` is on it is refused outright (§9.3).
+ *
+ * `reviewSchedules` is authoritative-stripped like the rest, but the SM-2-lite
+ * scheduling model is Phase 3 work (§7.4), so WS4 keeps it a client-owned blob
+ * the server persists verbatim via `PATCH /api/v1/me/learning-state`
+ * (`writeLearningState` below) — a tracked Phase-1 DoD exception, not server
+ * authority.
  */
 
 import type { ServerStore } from '../db/store';
@@ -40,6 +46,7 @@ export function emptyProfile(userId: string): Record<string, unknown> {
     studyMastery: {},
     bibleTranslation: 'UTT',
     practiceTracks: [],
+    reviewSchedules: {},
     playerRank: { tier: 'baby', plaque: 7, wisdomPoints: 0, unlockedTier: 'child' },
   };
 }
@@ -180,4 +187,32 @@ export async function writeProfile(
     userId,
   } as ProfileWithLegacyWallet);
   await dbStore.setProfile(userId, { ...merged, updatedAt: new Date().toISOString() });
+}
+
+const MAX_REVIEW_SCHEDULE_KEYS = 500;
+
+/**
+ * Opaque persistence for the client-owned review-schedule blob (§7.4, tracked
+ * Phase-1 DoD exception). Only `reviewSchedules` is accepted; each value must be
+ * an object; the map is capped. The server never computes or rewards from it.
+ */
+export async function writeLearningState(
+  dbStore: ServerStore,
+  userId: string,
+  body: unknown,
+): Promise<Record<string, unknown>> {
+  const existing = (await dbStore.getProfile(userId)) ?? {};
+  const raw = isRecord(body) && isRecord(body.reviewSchedules) ? body.reviewSchedules : {};
+  const entries = Object.entries(raw)
+    .filter(([, v]) => isRecord(v))
+    .slice(0, MAX_REVIEW_SCHEDULE_KEYS);
+  const reviewSchedules = Object.fromEntries(entries);
+
+  await dbStore.setProfile(userId, {
+    ...existing,
+    reviewSchedules,
+    userId,
+    updatedAt: new Date().toISOString(),
+  });
+  return reviewSchedules;
 }

@@ -21,7 +21,7 @@ import type { AuditLog } from '../audit';
 import { buildAuditRecord } from '../audit';
 import type { MigrationStore } from '../migration/migrationStore';
 import { applyMigration } from '../migration/applyMigration';
-import { readProfile, writeProfile } from '../services/profileService';
+import { readProfile, writeProfile, writeLearningState } from '../services/profileService';
 import {
   sanitizeStatsBody,
   sanitizeStudyAnswers,
@@ -91,6 +91,16 @@ export function createMeRouter({
       const { userId } = requirePrincipal(req);
       await writeProfile(dbStore, userId, req.body, { mode: 'preferences' });
       res.json(await readProfile(dbStore, userId, walletLedger));
+    }),
+  );
+
+  // Client-owned review-schedule blob (§7.4 tracked exception — see profileService).
+  router.patch(
+    '/learning-state',
+    asyncHandler(async (req, res) => {
+      const { userId } = requirePrincipal(req);
+      const reviewSchedules = await writeLearningState(dbStore, userId, req.body);
+      res.json({ ok: true, reviewSchedules });
     }),
   );
 
