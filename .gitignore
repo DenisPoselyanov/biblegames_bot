@@ -24,6 +24,9 @@ dist-ssr
 *.sw?
 .env
 
+# Local audit log (JSONL adapter — server/audit/jsonlAuditLog.ts)
+server/.data/audit-log.jsonl
+
 # AI-generated analysis reports
 data/question-categories.json
 question-quality-report.json

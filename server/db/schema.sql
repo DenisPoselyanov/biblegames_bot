@@ -65,3 +65,22 @@ create table if not exists question_overrides (
   updated_at timestamptz not null default now()
 );
 
+-- Audit log (Phase 1 §6.4) — append-only; no update/delete paths in code.
+create table if not exists audit_log (
+  id bigserial primary key,
+  actor_user_id text,
+  actor_auth_source text,
+  action text not null,
+  target text,
+  result text not null,
+  request_id text,
+  created_at timestamptz not null default now(),
+  metadata jsonb not null default '{}'::jsonb
+);
+
+create index if not exists idx_audit_log_action_time
+  on audit_log(action, created_at desc);
+
+create index if not exists idx_audit_log_actor_time
+  on audit_log(actor_user_id, created_at desc);
+
