@@ -24,8 +24,11 @@ dist-ssr
 *.sw?
 .env
 
-# Local audit log (JSONL adapter — server/audit/jsonlAuditLog.ts)
+# Local dev storage adapters (server/audit, server/wallet, server/lib/idempotency, server/migration)
 server/.data/audit-log.jsonl
+server/.data/wallet.json
+server/.data/idempotency.json
+server/.data/migrations.json
 
 # AI-generated analysis reports
 data/question-categories.json

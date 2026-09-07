@@ -84,3 +84,42 @@ create index if not exists idx_audit_log_action_time
 create index if not exists idx_audit_log_actor_time
   on audit_log(actor_user_id, created_at desc);
 
+-- Wallet ledger (Phase 1 §8) — append-only; balance = sum(amount).
+create table if not exists wallet_ledger (
+  id text primary key,
+  user_id text not null,
+  type text not null,
+  amount bigint not null,
+  balance_after bigint not null,
+  source_type text not null,
+  source_id text not null,
+  reversal_of text,
+  created_at timestamptz not null default now(),
+  metadata jsonb not null default '{}'::jsonb,
+  unique (source_type, source_id)
+);
+
+create index if not exists idx_wallet_ledger_user_time
+  on wallet_ledger(user_id, created_at desc);
+
+-- Command-level idempotency (Phase 1 §7.3).
+create table if not exists idempotency_keys (
+  key text primary key,
+  user_id text,
+  result jsonb not null,
+  created_at timestamptz not null default now()
+);
+
+-- One-time legacy profile migration record (Phase 1 §9).
+create table if not exists migration_records (
+  user_id text primary key,
+  source_version int not null default 0,
+  migration_version int not null,
+  submitted_hash text,
+  accepted jsonb not null default '{}'::jsonb,
+  rejected jsonb not null default '{}'::jsonb,
+  wallet_opening_entry_id text,
+  status text not null,
+  created_at timestamptz not null default now()
+);
+

@@ -31,6 +31,8 @@ export interface ServerConfig {
   questionAdminFsWrites: boolean;
   /** Config-sourced RBAC grants (Phase 1 WS2, ADR-011). */
   roleGrants: RoleGrant[];
+  /** Max coins a one-time legacy migration will accept; excess is capped (Phase 1 §9). */
+  migrationMaxCoins: number;
 }
 
 export interface LoadConfigResult {
@@ -104,6 +106,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     questionAdminEnabled: env.QUESTION_ADMIN_ENABLED === 'true',
     questionAdminFsWrites: env.QUESTION_ADMIN_FS_WRITES === 'true',
     roleGrants: parseRoleGrants(env, warnings),
+    migrationMaxCoins: parseIntOr(env.MIGRATION_MAX_COINS, 100_000),
   });
 
   return { config, warnings };
