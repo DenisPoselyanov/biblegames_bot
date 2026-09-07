@@ -211,6 +211,34 @@ Development fallback:
   нові endpoints, flip прапорців ON, видалення legacy `PUT /profile` + `x-user-id`,
   Phase 1 DoD sign-off; per-game endpoints (§7.2) — Phase 2.
 
+## Implementation progress (Phase 1 WS4 part 1, 2026-09-07)
+
+Все ще за прапорцем `authoritativeProfileV2` (server) / `authoritative_profile`
+(client), обидва default OFF. Частина 2 (flip + видалення legacy + DoD) окремо.
+
+- Закрито server-gaps, без яких flip зламав би клієнт:
+  - `server/progression/practiceTracks.ts` — `applyPracticeStage()` виводить
+    `stageResults` + `highestUnlockedStage` з `practice_stage` подій; unlock =
+    «попередній етап пройдено». Нагороди інкрементні над попереднім best етапу.
+  - `server/progression/masteryMath.ts` — порт `updateMastery`; `mastery-expert`
+    при mastery == 100 (клієнтський `>= 0.99` — баг, не відтворено).
+  - `server/progression/globalStats.ts` — `GlobalStats` виводиться з completion.
+  - `POST /api/v1/progression/answers` — server-authoritative mastery + історія.
+  - `POST /api/v1/shop/purchases` — ціна з каталогу на сервері, `spend` у ledger
+    (overdraw → 409), ownership + `aesthete`, audit `shop.purchase`.
+  - survival → `iron-shield` (30+), millionaire → `biblical-millionaire` (win).
+- `PATCH /api/v1/me/learning-state` — `reviewSchedules` зберігається як
+  **client-owned opaque blob** (сервер не рахує і не нагороджує з нього).
+  Це **tracked Phase-1 DoD exception**: повна server-authority для review
+  scheduling — Phase 3 (§7.4 «detailed learning model belongs to Phase 2/3»).
+- Клієнт: `src/repos/progressionRepo.ts` + flag-gated repoint у `playerRepo`/
+  `statsRepo`/`studyRepo`/`telemetry`; `PlayerContext` completion-методи async →
+  команди; ADR-010 celebration replay guard за `eventId`; kahoot handshake
+  identity. Fallback на локальний розрахунок при offline/помилці.
+- Тести: `masteryMath` port-equivalence, practice-track derivation +
+  incremental replay, shop (insufficient/owned/unknown/replay), answers,
+  `learning-state`, `progressionRepo` (URL/headers/error mapping). 138 green.
+
 ## Контекст
 
 Legacy frontend сам обчислює coins, rank, wisdom, streak, achievements, purchases і передає готовий профіль серверу. Навіть із правильним auth користувач може підробити payload.
