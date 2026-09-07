@@ -653,6 +653,74 @@ policy enforcement безумовний. Config-sourced grants (`RBAC_ROLE_GRANT
 
 ---
 
+# ADR-013 — Zod як єдина runtime-schema для всіх меж, `contracts/` як source of truth
+
+**Дата:** 2026-09-07
+**Статус:** accepted, implementation in progress (Phase 2 WS1)
+
+## Контекст
+
+Phase 2 §8 вимагає один runtime-validation підхід для HTTP, Socket.IO, imports і
+tests; §7 — versioned canonical schemas; §25 забороняє ділитися frontend-типами як
+неперевіреними server-контрактами. `OPEN_SOURCE_REFERENCE_ARCHITECTURE.md` §4.2
+призначає Zod на Phase 1–2. У Phase 1 Zod фактично не вводився (валідація —
+ad-hoc `String(x ?? '')` + `sanitize*`).
+
+## Рішення
+
+- Runtime-схема — **Zod 3.x** (пряма залежність). Альтернативи (Valibot, TypeBox,
+  ручний JSON Schema) відхилені: Zod уже у транзитивному дереві, найбільша
+  екосистема, `z.infer` покриває вимогу «типи походять зі схеми».
+- Канонічні контракти живуть у top-level **`contracts/`** — не в `src/`, не в
+  `server/`. Компілюється в обидва бандли; `@contracts` alias. Правила — у
+  `contracts/README.md`: жодних імпортів окрім `zod` і сусідніх модулів;
+  `CONTRACT_VERSION` (semver) б'ється лише на breaking change шіпнутого контракту;
+  критичні значення відхиляються, не коерсяться.
+- `validateBody(schema, code?)` middleware парсить `req.body`, замінює на
+  типізоване значення, на помилку кидає `400 AppError` з `fieldErrors` і стабільним
+  per-surface кодом (`invalid_completion`, …).
+- Error envelope (§7.5): `AppError` отримав `messageKey` / `fieldErrors` /
+  `retryable`; `errorHandler` емітить новий envelope + legacy `fields` (вікно
+  cutover) + мапить `ZodError` → envelope.
+- Parity-тести пінять `contracts` enums до `src/types` (`DIFFICULTIES`) і
+  `server/authz/roles.ts` (`ROLES`) поки клієнт і RBAC не перейдуть на `@contracts`
+  (Phase 3 / WS2).
+- Architecture-тести (§21): `contracts/` purity + cycle-freedom; `src/ ↛ server/`;
+  `server/domains/ ↛ express/socket.io/react`; composition будується без порту.
+
+## Не входить у WS1
+
+Повний OpenAPI-ген, generation з `contracts` у OpenAPI/клієнт SDK, dependency-cruiser
+(full-repo cycles + `services ↛ express`), перехід `server/authz` і React-клієнта на
+`@contracts`. Прапорець `generatedContracts` зарезервований.
+
+## Rollback
+
+`validateBody` можна зняти з роуту точково (повертає ad-hoc парсинг Phase 1); envelope
+залишається сумісним, бо `fields` емітиться далі. `contracts/` не має рантайм-побічних
+ефектів окрім валідації.
+
+---
+
+# ADR-012 — ORM і міграційний фреймворк (Drizzle)
+
+**Дата:** 2026-09-07
+**Статус:** proposed — spike у Phase 2 WS2 має підтвердити (owner попередньо
+затвердив Drizzle + Drizzle Kit 2026-09-07)
+
+Деталі й наслідки заповнюються після spike (§9, §10, §18.1). Поточний стан: сирий
+`pg` + рукописний `server/db/schema.sql`, без міграційного журналу/checksum.
+
+---
+
+# ADR-014 — Background job queue (pg-boss)
+
+**Дата:** 2026-09-07
+**Статус:** proposed — spike у Phase 2 WS5 (owner попередньо затвердив pg-boss
+2026-09-07, щоб не вводити Redis заради jobs — §17, ref-arch §3.10).
+
+---
+
 # Як додавати нові рішення
 
 Кожен новий ADR містить:
