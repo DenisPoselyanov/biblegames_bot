@@ -89,7 +89,27 @@
 # ADR-002 — Production auth тільки fail-closed
 
 **Дата:** 2026-08-02  
-**Статус:** accepted, implementation pending Phase 1
+**Статус:** accepted, implementation in progress (Phase 1 WS1)
+
+## Implementation progress (Phase 1 WS1, 2026-09-06)
+
+- `server/config/env.ts` + `server/config/productionValidation.ts` — типізований config, production
+  не стартує без `TELEGRAM_BOT_TOKEN`, при `AUTH_MODE=development`, при localhost-origin або
+  `sql` без `DATABASE_URL`.
+- `server/auth/telegramInitData.ts` — hardened verifier: єдиний `hash`, sorted data-check-string,
+  `crypto.timingSafeEqual` з length-guard, `auth_date` freshness + clock-skew, безпечний парсинг
+  `user`, типізований `AuthenticatedPrincipal`.
+- `server/auth/middleware.ts` + `server/auth/socket.ts` — fail-closed HTTP і Socket.IO auth,
+  `x-user-id` більше не автентифікує; `req.auth` / `socket.data.principal`. Cross-user доступ
+  відхиляється порівнянням з `req.auth.userId`, не з заголовком.
+- `server/auth/devIdentityProvider.ts` — explicit `AUTH_MODE=development`, неможливий у production
+  (гарантовано `assertProductionConfig`), друкує попередження при старті.
+- Rollback: прапорці `authV2` / `secureKahootIdentity` (default ON), break-glass
+  `FEATURE_AUTHV2=false` на один реліз; legacy `server/middleware/telegramAuth.ts` поки збережено.
+- Тести: `server/auth/telegramInitData.test.ts`, `server/config/productionValidation.test.ts`,
+  `server/__tests__/integration/{auth,socket}.test.ts`.
+- **Ще не зроблено (наступні workstreams):** RBAC/permissions і policy middleware, self-scoped
+  `/api/v1/me/*`, server session bridge, rate limiting, видалення legacy `x-user-id` шляху.
 
 ## Контекст
 

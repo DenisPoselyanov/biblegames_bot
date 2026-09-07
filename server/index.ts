@@ -1,232 +1,32 @@
-import cors from 'cors';
-import express from 'express';
-import { createServer } from 'http';
+import { createServer } from 'node:http';
 import { Server } from 'socket.io';
 import type { KahootCreatePayload, KahootJoinPayload, KahootRoomSettings } from '../src/types/kahoot';
+import { loadConfig } from './config/env';
+import { assertProductionConfig } from './config/productionValidation';
+import { createApp } from './app';
+import { installSocketAuth, socketIsAuthenticated } from './auth/socket';
+import { isDevIdentityEnabled } from './auth/devIdentityProvider';
 import { RoomManager } from './roomManager';
-import { saveKahootSession, listKahootSessions, getKahootSession, sessionToCsv } from './kahootSessions';
-import { jsonStore } from './db/jsonStore';
-import { sqlStore } from './db/sqlStore';
-import type { ServerStore } from './db/store';
-import { asyncHandler } from './middleware/asyncHandler';
-import { telegramAuthMiddleware } from './middleware/telegramAuth';
-import {
-  sanitizeProfileBody,
-  sanitizeStatsBody,
-  sanitizeStudyAnswers,
-  sanitizeTelemetryEvents,
-} from './middleware/validateBody';
-import { migrateProfileWallet, type ProfileWithLegacyWallet } from '../src/lib/storage';
-import { isServerFeatureEnabled } from './lib/flags';
-import { recomputeStreak } from './lib/streak';
-import { scriptureRouter } from './routes/scripture';
-import { questionsAdminRouter } from './routes/questionsAdmin';
-import { questionsRouter } from './routes/questions';
-import { useQuestionsSql } from './db/pgPool';
+import { saveKahootSession } from './kahootSessions';
 
-const PORT = Number(process.env.PORT || 3001);
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
-const STORAGE_PROVIDER = process.env.STORAGE_PROVIDER || 'json';
-const dbStore: ServerStore = STORAGE_PROVIDER === 'sql' ? sqlStore : jsonStore;
+const { config, warnings } = loadConfig();
+for (const warning of warnings) console.warn(`⚠️  config: ${warning}`);
 
-const app = express();
-app.use(express.json({ limit: '1mb' }));
-app.use(cors({ origin: [CLIENT_ORIGIN, 'http://127.0.0.1:5173'], credentials: true }));
+assertProductionConfig(config);
 
-app.get('/health', (_req, res) => res.json({ ok: true }));
+if (isDevIdentityEnabled(config)) {
+  console.warn(
+    '⚠️  AUTH_MODE=development — identity is an insecure fixture. Never use this in production.',
+  );
+}
 
-app.use('/api/scripture', scriptureRouter);
-app.use('/api/questions', questionsRouter);
-app.use('/api/admin/questions', questionsAdminRouter);
-
-app.get(
-  '/health/storage',
-  asyncHandler(async (_req, res) => {
-    await dbStore.getStudyAnswers('__health__');
-    res.json({
-      ok: true,
-      provider: STORAGE_PROVIDER,
-      questionsProvider: useQuestionsSql() ? 'sql' : 'json',
-    });
-  }),
-);
-
-const studyAnswers: Array<Record<string, unknown>> = [];
-const dailyCompletions: Array<Record<string, unknown>> = [];
-
-const protectedRouter = express.Router();
-const withTelegramAuth = [telegramAuthMiddleware];
-
-protectedRouter.get('/study/answers/:userId', ...withTelegramAuth, asyncHandler(async (req, res) => {
-  const { userId } = req.params;
-  if (req.header('x-user-id') !== userId) {
-    res.status(403).json({ error: 'forbidden_user_scope' });
-    return;
-  }
-  res.json(await dbStore.getStudyAnswers(userId));
-}));
-
-protectedRouter.put('/study/answers/:userId', ...withTelegramAuth, asyncHandler(async (req, res) => {
-  const { userId } = req.params;
-  if (req.header('x-user-id') !== userId) {
-    res.status(403).json({ error: 'forbidden_user_scope' });
-    return;
-  }
-  const list = sanitizeStudyAnswers(req.body);
-  await dbStore.setStudyAnswers(userId, list);
-  res.json({ ok: true });
-}));
-
-protectedRouter.get('/stats/:userId', ...withTelegramAuth, asyncHandler(async (req, res) => {
-  const { userId } = req.params;
-  if (req.header('x-user-id') !== userId) {
-    res.status(403).json({ error: 'forbidden_user_scope' });
-    return;
-  }
-  const stats = await dbStore.getStats(userId);
-  if (!stats) {
-    res.json({
-      themes: {},
-      lastUpdated: new Date().toISOString(),
-    });
-    return;
-  }
-  res.json(stats);
-}));
-
-protectedRouter.put('/stats/:userId', ...withTelegramAuth, asyncHandler(async (req, res) => {
-  const { userId } = req.params;
-  if (req.header('x-user-id') !== userId) {
-    res.status(403).json({ error: 'forbidden_user_scope' });
-    return;
-  }
-  await dbStore.setStats(userId, sanitizeStatsBody(userId, req.body));
-  res.json({ ok: true });
-}));
-
-protectedRouter.get('/profile/:userId', ...withTelegramAuth, asyncHandler(async (req, res) => {
-  const { userId } = req.params;
-  if (req.header('x-user-id') !== userId) {
-    res.status(403).json({ error: 'forbidden_user_scope' });
-    return;
-  }
-  const profile = await dbStore.getProfile(userId);
-  if (!profile) {
-    res.json({
-      userId,
-      displayName: '',
-      themePoints: {},
-      completedLevels: [],
-      survivalHighScore: 0,
-      millionaireWins: 0,
-      millionaireMaxLevel: 0,
-      unlockedThemes: [],
-      activeTheme: '',
-      achievements: [],
-      avatar: '',
-      coins: 0,
-      unlockedAvatars: [],
-      streakDays: 0,
-      lastActiveAt: null,
-      studyMastery: {},
-      bibleTranslation: 'UTT',
-      practiceTracks: [],
-      playerRank: {
-        tier: 'baby',
-        plaque: 7,
-        wisdomPoints: 0,
-        unlockedTier: 'child',
-      },
-    });
-    return;
-  }
-  res.json(migrateProfileWallet(profile as ProfileWithLegacyWallet));
-}));
-
-protectedRouter.put('/profile/:userId', ...withTelegramAuth, asyncHandler(async (req, res) => {
-  const { userId } = req.params;
-  if (req.header('x-user-id') !== userId) {
-    res.status(403).json({ error: 'forbidden_user_scope' });
-    return;
-  }
-  const existing = (await dbStore.getProfile(userId)) ?? {};
-  const sanitized = sanitizeProfileBody(userId, req.body);
-  const streakOverride = isServerFeatureEnabled('server_streak')
-    ? recomputeStreak(existing.lastActiveAt, existing.streakDays)
-    : {};
-  const merged = migrateProfileWallet({
-    ...existing,
-    ...sanitized,
-    ...streakOverride,
-    userId,
-  });
-  await dbStore.setProfile(userId, {
-    ...merged,
-    updatedAt: new Date().toISOString(),
-  });
-  res.json({ ok: true });
-}));
-
-protectedRouter.post('/telemetry/:userId', ...withTelegramAuth, asyncHandler(async (req, res) => {
-  const { userId } = req.params;
-  if (req.header('x-user-id') !== userId) {
-    res.status(403).json({ error: 'forbidden_user_scope' });
-    return;
-  }
-  const events = sanitizeTelemetryEvents(req.body);
-  await dbStore.appendTelemetry(userId, events);
-  res.json({ ok: true, accepted: events.length });
-}));
-
-app.use(protectedRouter);
-
-app.get('/study/path', (_req, res) => {
-  res.json({
-    generatedAt: new Date().toISOString(),
-    nodes: [
-      { subthemeId: 'gospels-life', priority: 92, reason: 'weakness' },
-      { subthemeId: 'sinai-law', priority: 74, reason: 'scheduled-review' },
-      { subthemeId: 'bible-geography', priority: 68, reason: 'new' },
-    ],
-  });
-});
-
-app.post('/study/answer', (req, res) => {
-  studyAnswers.push({ ...req.body, createdAt: new Date().toISOString() });
-  res.json({ ok: true });
-});
-
-app.post('/daily/complete', (req, res) => {
-  dailyCompletions.push({ ...req.body, createdAt: new Date().toISOString() });
-  res.json({ ok: true });
-});
-
-app.get('/dashboard', (_req, res) => {
-  res.json({
-    streakDays: 0,
-    todaysGoal: 'Пройти 2 рівні в Дослідженні',
-    completedToday: dailyCompletions.length,
-    answeredToday: studyAnswers.length,
-  });
-});
-
-app.get('/leaderboard', (_req, res) => {
-  res.json({
-    items: [
-      { userId: 'u1', displayName: 'Аполлос', points: 2420 },
-      { userId: 'u2', displayName: 'Мойсей', points: 2180 },
-      { userId: 'u3', displayName: 'Маріам', points: 1740 },
-    ],
-  });
-});
-
+const app = createApp({ config });
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-  cors: {
-    origin: [CLIENT_ORIGIN, 'http://127.0.0.1:5173'],
-    methods: ['GET', 'POST'],
-  },
+  cors: { origin: config.clientOrigins, methods: ['GET', 'POST'] },
 });
+
+installSocketAuth(io, config);
 
 const rooms = new RoomManager(
   (code, state) => {
@@ -244,36 +44,19 @@ const rooms = new RoomManager(
   },
 );
 
-app.get(
-  '/api/kahoot/sessions',
-  asyncHandler(async (_req, res) => {
-    res.json({ sessions: listKahootSessions(50) });
-  }),
-);
-
-app.get(
-  '/api/kahoot/sessions/:id/csv',
-  asyncHandler(async (req, res) => {
-    const session = getKahootSession(req.params.id);
-    if (!session) {
-      res.status(404).json({ error: 'not_found' });
-      return;
-    }
-    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    res.setHeader('Content-Disposition', `attachment; filename="kahoot-${session.code}.csv"`);
-    res.send(sessionToCsv(session));
-  }),
-);
+function ackUnauthorized(ack?: (res: unknown) => void): void {
+  ack?.({ ok: false, error: 'unauthorized' });
+}
 
 io.on('connection', (socket) => {
+  const principal = socket.data.principal;
+
   socket.on('create_room', (payload: KahootCreatePayload, ack?: (res: unknown) => void) => {
+    if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
     try {
-      const state = rooms.createRoom(
-        socket.id,
-        payload.hostName,
-        payload.settings,
-        payload.hostTelegramId,
-      );
+      const hostName = principal?.displayName ?? payload.hostName;
+      const hostTelegramId = principal?.telegramUserId ?? payload.hostTelegramId;
+      const state = rooms.createRoom(socket.id, hostName, payload.settings, hostTelegramId);
       socket.join(state.code);
       ack?.({ ok: true, state });
     } catch (e) {
@@ -282,6 +65,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('join_room', (payload: KahootJoinPayload, ack?: (res: unknown) => void) => {
+    if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
     try {
       const state = rooms.joinRoom(payload.code, socket.id, payload.playerName, payload.customField);
       socket.join(state.code);
@@ -292,6 +76,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('rejoin_room', (payload: KahootJoinPayload, ack?: (res: unknown) => void) => {
+    if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
     try {
       const state = rooms.rejoinRoom(payload.code, socket.id, payload.playerName);
       socket.join(state.code);
@@ -302,6 +87,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('join_as_display', (payload: { code: string }, ack?: (res: unknown) => void) => {
+    if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
     try {
       const state = rooms.joinAsDisplay(payload.code, socket.id);
       socket.join(state.code.toUpperCase());
@@ -312,6 +98,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('update_settings', (settings: Partial<KahootRoomSettings>, ack?: (res: unknown) => void) => {
+    if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
     try {
       const state = rooms.updateSettings(socket.id, settings);
       ack?.({ ok: true, state });
@@ -321,6 +108,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('start_game', (_payload: unknown, ack?: (res: unknown) => void) => {
+    if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
     void rooms
       .startGame(socket.id)
       .then((state) => ack?.({ ok: true, state }))
@@ -328,6 +116,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('submit_answer', (payload: { optionIndex: number }, ack?: (res: unknown) => void) => {
+    if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
     try {
       const optionIndex = Number(payload?.optionIndex);
       const state = rooms.submitAnswer(socket.id, optionIndex);
@@ -338,6 +127,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('advance_phase', (_payload: unknown, ack?: (res: unknown) => void) => {
+    if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
     try {
       const state = rooms.advancePhase(socket.id);
       ack?.({ ok: true, state });
@@ -356,17 +146,8 @@ io.on('connection', (socket) => {
   });
 });
 
-app.use((err: Error, _req: express.Request, res: express.Response, next: express.NextFunction) => {
-  if (res.headersSent) {
-    next(err);
-    return;
-  }
-  console.error(err);
-  res.status(500).json({ error: 'internal_error' });
-});
-
-httpServer.listen(PORT, () => {
-  console.log(`🎮 Kahoot server: http://localhost:${PORT}`);
+httpServer.listen(config.port, () => {
+  console.log(`🎮 Kahoot server: http://localhost:${config.port}`);
 });
 
 httpServer.on('error', (err) => {

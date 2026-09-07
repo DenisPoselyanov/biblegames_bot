@@ -45,7 +45,7 @@ interface Room {
 }
 
 function makeCode(existing: Set<string>): string {
-  let code = '';
+  let code: string;
   do {
     code = '';
     for (let i = 0; i < 6; i++) {
