@@ -6,7 +6,9 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // `spike/` holds throwaway exploration (Phase 2 WS2 Drizzle spike) — it
+  // deliberately imports deps not yet in package.json and is not a build input.
+  globalIgnores(['dist', 'spike']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

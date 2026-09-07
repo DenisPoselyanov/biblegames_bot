@@ -14,10 +14,12 @@ WS1 contracts + architecture rules + server composition · WS2 persistence platf
 (Drizzle, migrations, repositories, persisted RBAC, shared rate-limit/metrics) ·
 WS3 canonical content repository + realtime gateway v2 · WS4 frontend data
 architecture · WS5 jobs + object storage + deployment + migration cutover + DoD.
-Stack confirmed: **Zod + Drizzle + pg-boss** (ADR-013 accepted; ADR-012 / ADR-014
-proposed pending spike).
+Stack confirmed: **Zod + Drizzle + pg-boss** (ADR-013 + ADR-012 accepted;
+ADR-014 proposed pending spike).
 
-### WS1 (in progress) — branch `phase-2/ws1-contracts-composition`
+WS1 landed on `main` (PR #8, merge `b4d0a34`).
+
+### WS1 (done, merged) — PR #8 → `main` `b4d0a34`
 
 - **Contracts (§7, §8):** `contracts/` created — one Zod schema per boundary,
   types inferred, client-safe. `version` / `enums` / `schemas` (primitives, §7.5
@@ -40,6 +42,21 @@ proposed pending spike).
 - **Deferred to WS2:** dependency-cruiser (full-repo cycles + `services ↛ express`),
   move `server/authz` + React client onto `@contracts`, OpenAPI generation.
 - `npm run check` green, 167 tests.
+
+### WS2 (in progress) — branch `phase-2/ws2-persistence`
+
+- **Drizzle spike (ADR-012 → accepted):** `spike/drizzle/` — schema slice of the
+  §9 core tables, `contract-bridge.ts` (Drizzle `InferSelectModel` composes with
+  `@contracts` as storage types behind the repository seam — §25 trap avoided by
+  rule), `repositories.ts` (§10 interfaces + Drizzle adapter + in-memory parity
+  peer, `Transaction` → `ServiceContext.tx`), generated migration
+  `0000_clammy_owl.sql` + journal v7 + checksummed snapshot (offline, no DB).
+  `drizzle-orm@0.44.7` / `drizzle-kit@0.31.10`; `npm run check` stays green.
+  Findings: `spike/drizzle/FINDINGS.md`.
+- **Next:** migration framework + adopt existing tables → identity/RBAC tables →
+  repository interfaces + contract tests → persisted role store (runtime
+  grant/revoke, closes ADR-011 handoff) → shared rate-limit/metrics store
+  (closes Phase 1 handoff). Flag `legacyStoreReadOnly`.
 
 ---
 

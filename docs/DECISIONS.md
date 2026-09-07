@@ -705,11 +705,76 @@ ad-hoc `String(x ?? '')` + `sanitize*`).
 # ADR-012 — ORM і міграційний фреймворк (Drizzle)
 
 **Дата:** 2026-09-07
-**Статус:** proposed — spike у Phase 2 WS2 має підтвердити (owner попередньо
-затвердив Drizzle + Drizzle Kit 2026-09-07)
+**Статус:** accepted (spike підтвердив 2026-09-07 — `spike/drizzle/FINDINGS.md`),
+implementation у Phase 2 WS2
 
-Деталі й наслідки заповнюються після spike (§9, §10, §18.1). Поточний стан: сирий
-`pg` + рукописний `server/db/schema.sql`, без міграційного журналу/checksum.
+## Контекст
+
+Phase 2 §9 вимагає визначені core-таблиці з міграціями; §10 — repository-інтерфейси
+з contract-тестами; §18.1 — міграційний фреймворк з журналом/checksum/ordered IDs/
+staging rehearsal. Поточний стан (Phase 1): сирий `pg` Pool
+(`server/db/pgPool.ts`) + рукописний `server/db/schema.sql` + JSON-адаптери, без
+міграційного журналу. `OPEN_SOURCE_REFERENCE_ARCHITECTURE.md` §3 і owner
+попередньо затвердили Drizzle + Drizzle Kit 2026-09-07.
+
+## Рішення
+
+- **ORM — `drizzle-orm` 0.44.x** (пряма `dependencies`), адаптер
+  `drizzle-orm/node-postgres` поверх наявного `pg.Pool` — lazy-import і
+  `isDatabaseConfigured()` gate не чіпаються, raw SQL і Drizzle ділять один пул,
+  адопція таблиць інкрементальна.
+- **Міграції — `drizzle-kit` 0.31.x** (`devDependencies`). `drizzle-kit generate`
+  дає ordered IDs + `meta/_journal.json` (журнал v7) + checksummed snapshot
+  offline, без конекшена. Покриває 7/9 властивостей §18.1; backup/restore і
+  forward-fix для незворотних змін — це runbook (WS5 deploy doc), не інструмент.
+  `push` — лише dev; staging/prod — тільки `migrate`.
+- **Контракти проти ORM-типів (§25):** `@contracts` (Zod) лишається єдиним
+  джерелом для кожної process/network межі. Drizzle `InferSelectModel` — це
+  *storage*-типи, внутрішні для `server/infrastructure/`. Repository — шов
+  маппінгу; `jsonb`-колонка з контрактним типом декларується
+  `.$type<TheContract>()` **і** `schema.parse()`-иться на читанні (DB — trust
+  boundary, §8). `drizzle-zod` — лише для внутрішніх insert-guard, ніколи не
+  реекспортується з `contracts/` (додати lint-правило у WS2).
+- **Transaction** — `db.transaction(async (tx) => …)`; `tx` кладеться у вже
+  зарезервований `ServiceContext.tx` (`server/domains/shared/context.ts`).
+  Repo без `tx` читає на пулі.
+- Схема — по-доменні файли у `server/infrastructure/database/`, реекспорт у барел;
+  `drizzle.config.ts` у корені → `server/migrations/`.
+
+## Alternatives
+
+Prisma (важчий рантайм, окремий engine, гірша ESM/edge історія), Kysely (лише
+query-builder, без міграцій — довелося б додавати окремий інструмент), сирий `pg`
+далі (не задовольняє §10/§18.1). TypeORM/Sequelize — legacy-стиль, decorator-heavy.
+
+## Наслідки
+
+- `server/db/sqlStore.ts` + `schema.sql` поступово замінюються repository-адаптерами;
+  перша міграція адоптує наявні `wallet_ledger` / `migration_records` (DDL
+  Drizzle — колонка-в-колонку з `schema.sql`, спайк перевірив), без data-move.
+- JSON-адаптери лишаються для fixtures/dev, проходять ті ж read-контракти;
+  production-writes через них не емулюють транзакції (§10).
+- Новий прапорець `legacyStoreReadOnly` для cutover.
+
+## Migration / security impact
+
+Міграції транзакційні (PG DDL), journal-guarded rerun — no-op. Жодних секретів у
+`drizzle.config.ts` — URL з типізованого env (§19). RBAC переїжджає з config у
+`user_roles` з provenance (закриває handoff ADR-011).
+
+## Rollback
+
+Drizzle обгортає наявний Pool — роут/домен можна лишити на `sqlStore`/raw SQL
+точково. `drizzle-kit` не потрібен у рантаймі (тільки dev/CI/deploy). Якщо ORM
+не влаштує — repository-інтерфейси (§10) вже ізолюють виклики, адаптер міняється
+без зміни доменів.
+
+## Spike
+
+`spike/drizzle/` — schema-зріз, `contract-bridge.ts` (композиція типів),
+`repositories.ts` (інтерфейси + Drizzle-адаптер + in-memory peer),
+`0000_clammy_owl.sql` (згенерована міграція). Видаляється / складається в
+`server/infrastructure/database/` коли WS2 пише справжній шар.
 
 ---
 
