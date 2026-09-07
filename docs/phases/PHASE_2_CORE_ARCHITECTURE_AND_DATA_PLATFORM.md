@@ -53,10 +53,20 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   `0000_clammy_owl.sql` + journal v7 + checksummed snapshot (offline, no DB).
   `drizzle-orm@0.44.7` / `drizzle-kit@0.31.10`; `npm run check` stays green.
   Findings: `spike/drizzle/FINDINGS.md`.
-- **Next:** migration framework + adopt existing tables → identity/RBAC tables →
-  repository interfaces + contract tests → persisted role store (runtime
-  grant/revoke, closes ADR-011 handoff) → shared rate-limit/metrics store
-  (closes Phase 1 handoff). Flag `legacyStoreReadOnly`.
+- **Persistence platform + migration framework (§9, §18.1):**
+  `server/infrastructure/database/` — Drizzle over the shared `pg.Pool`
+  (`client.ts`), per-domain `schema/` adopted 1:1 from `server/db/schema.sql`
+  (11 tables), `migrate.ts` runtime runner (`npm run db:migrate`: drizzle
+  migrator + status/timing log + `drizzle.__migration_runs`), `testing.ts`
+  pglite in-process DB for contract tests. `drizzle.config.ts` +
+  `server/migrations/0000_violet_dagger.sql` (hand-edited to `IF NOT EXISTS` so
+  it adopts the Phase 1 tables, no data move) + journal v7 + checksummed
+  snapshot. `db:generate`/`db:check` run `drizzle-kit` via `npx` — not a dep;
+  runner needs only `drizzle-orm`. `drizzle-orm` → deps, `@electric-sql/pglite`
+  → devDeps (lock in sync, `npm ci` clean). `npm run check` green, 172 tests.
+- **Next:** identity/RBAC tables → repository interfaces + contract tests →
+  persisted role store (runtime grant/revoke, closes ADR-011 handoff) → shared
+  rate-limit/metrics store (closes Phase 1 handoff). Flag `legacyStoreReadOnly`.
 
 ---
 

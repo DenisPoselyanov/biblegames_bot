@@ -1,0 +1,6 @@
+# Migration SQL and Drizzle metadata are checksummed by the migrator — pin to LF
+# so the hash is stable across platforms.
+server/migrations/**/*.sql text eol=lf
+server/migrations/**/*.json text eol=lf
+spike/drizzle/migrations/**/*.sql text eol=lf
+spike/drizzle/migrations/**/*.json text eol=lf

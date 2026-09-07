@@ -53,11 +53,15 @@
     "fill-practice-nodes": "node scripts/fill-practice-nodes.mjs",
     "assign-practice-stages": "node scripts/assign-practice-stages.mjs",
     "import-practice-stages-list": "node scripts/import-practice-stages-list.mjs",
-    "prune-untagged": "node scripts/prune-untagged-questions.mjs"
+    "prune-untagged": "node scripts/prune-untagged-questions.mjs",
+    "db:generate": "npx --yes drizzle-kit@^0.31.10 generate",
+    "db:migrate": "tsx server/infrastructure/database/migrate.ts",
+    "db:check": "npx --yes drizzle-kit@^0.31.10 check"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.0",
     "@twa-dev/sdk": "^8.0.2",
+    "drizzle-orm": "^0.44.7",
     "framer-motion": "^12.40.0",
     "pg": "^8.21.0",
     "react": "^19.2.6",
@@ -75,6 +79,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/supertest": "6.0.2",
+    "@electric-sql/pglite": "^0.5.8",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
