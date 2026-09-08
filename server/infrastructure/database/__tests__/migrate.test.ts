@@ -6,6 +6,7 @@ import { PgTable } from 'drizzle-orm/pg-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { ROLES } from '../../../authz/roles';
 import { createTestDatabase, type TestDatabase } from '../testing';
+import { isMissingMigrationState } from '../migrate';
 import { schema } from '../schema';
 
 const migrationsFolder = resolve(dirname(fileURLToPath(import.meta.url)), '../../../migrations');
@@ -58,6 +59,14 @@ describe('migration framework (§18.1)', () => {
       sql`select count(*)::text as n from drizzle.__drizzle_migrations`,
     );
     expect(after.rows[0]?.n).toBe(before.rows[0]?.n);
+  });
+
+  it('treats only "state not created yet" errors as a clean first run', () => {
+    expect(isMissingMigrationState({ code: '42P01' })).toBe(true); // undefined_table
+    expect(isMissingMigrationState({ code: '3F000' })).toBe(true); // invalid_schema_name
+    expect(isMissingMigrationState({ code: '57P01' })).toBe(false); // admin_shutdown
+    expect(isMissingMigrationState(new Error('ECONNREFUSED'))).toBe(false);
+    expect(isMissingMigrationState(null)).toBe(false);
   });
 
   it('the adopt migration survives running against an already-populated database', async () => {

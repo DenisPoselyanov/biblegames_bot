@@ -672,13 +672,27 @@ Persisted role store + runtime grant/revoke landed:
 - `server/authz/roleService.ts` + `server/routes/adminRoles.ts` —
   `GET/POST/DELETE /api/v1/admin/roles/:userId`, `admin`-only, mount лише коли
   підключено persisted identity store. Audit `rbac.role_granted` / `_revoked`,
-  guard проти self-revoke власної `admin`-ролі. Контракт — `contracts/api/admin.ts`.
+  guard проти self-revoke власної `admin`-ролі; `grant` **і** `revoke` вимагають
+  наявного `users`-рядка (404 `user_not_found` інакше). Контракт —
+  `contracts/api/admin.ts`.
+- `server/authz/principalIdentity.ts` — `attachPersistedIdentity` у authed-
+  ланцюгу (спека §11 `IdentityService.resolveTelegramUser`): на першому запиті
+  кожен автентифікований principal upsert-иться у `users` + `external_identities`
+  (per-process «seen»-кеш, TTL 1h; збій запису best-effort, лог + пропуск). Без
+  цього кроку `users` у проді порожня і будь-який runtime grant → 404. Монтується
+  лише разом з persisted identity store.
 - `RBAC_ADMIN_IDS` тепер bootstrap floor для першого admin, який далі роздає
   ролі через API. Зняти config-floored роль = правка конфігу.
+- Cross-instance: `RoleResolver.invalidate()` — process-local. На інстансі, що
+  зробив зміну, вона видима одразу; інші сходяться за TTL резолвера — `ttlMs`
+  (30s) для plain-users, коротший `privilegedTtlMs` (5s) для principal з будь-
+  якою elevated-роллю, щоб revoke розповсюджувався швидко. Справжня cross-
+  instance інвалідизація (pg `LISTEN/NOTIFY` або спільний кеш) — Phase 7 разом
+  із deployment topology.
 
 Rollback: без `AppDeps.database` резолвер повертається до config-only, а
-admin-роут просто не монтується — request path не має break-glass прапорця,
-enforcement лишається безумовним.
+admin-роут (і identity-upsert крок) просто не монтуються — request path не має
+break-glass прапорця, enforcement лишається безумовним.
 
 ## Update (Phase 2 WS2 part 4, 2026-09-08) — shared rate-limit store
 

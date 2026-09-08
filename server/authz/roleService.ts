@@ -4,7 +4,8 @@
  * The one place role mutations happen at runtime. It writes through the
  * `RoleRepository` (provenance + `revoked_at` kept for audit), appends an audit
  * record for every change, and invalidates the `RoleResolver` cache so the new
- * state is visible on the caller's next request.
+ * state is visible on the caller's next request **on this instance** — other
+ * instances converge within the resolver's TTL (see `./roleResolver.ts`).
  *
  * Lives in `server/authz/` (composition), not `server/domains/` — it depends on
  * the audit log and the resolver, which are not domain concerns.
@@ -109,6 +110,7 @@ export function createRoleService({
           409,
         );
       }
+      await requireUser(input.userId);
       const row = await roleRepo.revoke({
         userId: input.userId,
         role: input.role,

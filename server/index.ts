@@ -58,4 +58,7 @@ async function main(): Promise<void> {
   });
 }
 
-void main();
+void main().catch((err: unknown) => {
+  log.error('server.boot_failed', { message: err instanceof Error ? err.message : String(err) });
+  process.exit(1);
+});

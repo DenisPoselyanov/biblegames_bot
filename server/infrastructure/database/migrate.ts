@@ -35,14 +35,25 @@ function journalTags(): string[] {
   return parsed.entries.sort((a, b) => a.idx - b.idx).map((e) => e.tag);
 }
 
+/** PG error codes that just mean "the drizzle migration bookkeeping isn't there yet". */
+const MISSING_MIGRATION_STATE = new Set([
+  '42P01', // undefined_table
+  '3F000', // invalid_schema_name
+]);
+
+export function isMissingMigrationState(err: unknown): boolean {
+  return MISSING_MIGRATION_STATE.has((err as { code?: string } | null)?.code ?? '');
+}
+
 async function appliedCount(pool: Pool): Promise<number> {
   try {
     const { rows } = await pool.query<{ n: string }>(
       'select count(*)::text as n from drizzle.__drizzle_migrations',
     );
     return Number(rows[0]?.n ?? 0);
-  } catch {
-    return 0; // table not created yet — first run
+  } catch (err) {
+    if (isMissingMigrationState(err)) return 0; // not created yet — first run
+    throw err; // a real failure — don't silently report every migration as pending
   }
 }
 

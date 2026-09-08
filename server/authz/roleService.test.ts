@@ -80,6 +80,13 @@ describe('roleService.revoke', () => {
     });
   });
 
+  it('404s a revoke for a user that never signed in', async () => {
+    const { service } = harness();
+    await expect(
+      service.revoke({ actor: 'root', userId: 'ghost', role: 'support' }),
+    ).rejects.toMatchObject({ code: 'user_not_found', httpStatus: 404 });
+  });
+
   it('revoking a role the user does not hold is a clean no-op', async () => {
     const { repos, service, auditLog } = harness();
     await seedUser(repos);

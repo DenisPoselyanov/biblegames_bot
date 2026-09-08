@@ -83,6 +83,23 @@ describe('/api/v1/admin/roles (persisted RBAC)', () => {
     expect(res.body.error.code).toBe('user_not_found');
   });
 
+  it('a plain authenticated request registers the user so a later grant lands', async () => {
+    const { app } = persistedApp();
+    // No manual upsertFromIdentity — the authed chain persists u9 on first request.
+    await request(app).get('/api/v1/me').set('x-user-id', 'u9').expect(200);
+
+    const granted = await asAdmin(app, 'post', '/api/v1/admin/roles/u9').send({ role: 'support' });
+    expect(granted.status).toBe(201);
+    expect(granted.body.grant).toMatchObject({ userId: 'u9', role: 'support' });
+  });
+
+  it('404s a revoke against a user that never signed in', async () => {
+    const { app } = persistedApp();
+    const res = await asAdmin(app, 'delete', '/api/v1/admin/roles/ghost/support');
+    expect(res.status).toBe(404);
+    expect(res.body.error.code).toBe('user_not_found');
+  });
+
   it('refuses a self-revoke of admin', async () => {
     const { app } = persistedApp();
     const res = await asAdmin(app, 'delete', '/api/v1/admin/roles/500/admin');

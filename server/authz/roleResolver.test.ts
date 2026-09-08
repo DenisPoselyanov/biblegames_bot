@@ -46,6 +46,28 @@ describe('createPersistedRoleResolver', () => {
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
+  it('caches an elevated principal for the shorter privileged TTL', async () => {
+    const { roles } = createInMemoryIdentityRepositories();
+    await roles.grant({ userId: 'priv', role: 'support', grantedBy: 'root' });
+    const spy = vi.spyOn(roles, 'activeRoles');
+    let ms = 0;
+    const resolver = createPersistedRoleResolver({
+      roleRepo: roles,
+      floor: floor(),
+      ttlMs: 30_000,
+      privilegedTtlMs: 1_000,
+      now: () => new Date(ms),
+    });
+
+    await resolver.resolve('priv'); // elevated → 1s cache
+    await resolver.resolve('plain'); // user-only → 30s cache
+
+    ms = 1_500;
+    await resolver.resolve('priv'); // TTL elapsed → refetch
+    await resolver.resolve('plain'); // still cached
+    expect(spy).toHaveBeenCalledTimes(3);
+  });
+
   it('expires the cache entry once the TTL elapses', async () => {
     const { roles } = createInMemoryIdentityRepositories();
     const spy = vi.spyOn(roles, 'activeRoles');

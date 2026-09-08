@@ -75,4 +75,24 @@ describe('createRateLimit middleware', () => {
     await tick();
     expect(next.mock.calls.every((c) => c[0] === undefined)).toBe(true);
   });
+
+  it('does not set Retry-After once the response has started, and never rejects unhandled', async () => {
+    const sentRes = {
+      headersSent: true,
+      setHeader: vi.fn(() => {
+        throw new Error('ERR_HTTP_HEADERS_SENT');
+      }),
+    } as unknown as Response;
+    const mw = createRateLimit({ name: 'm2', windowMs: 60_000, max: 1 });
+    const next = vi.fn();
+
+    mw(mkReq(), sentRes, next); // 1st hit — allowed
+    await tick();
+    mw(mkReq(), sentRes, next); // 2nd hit — over the limit
+    await tick();
+
+    expect(sentRes.setHeader).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledTimes(2);
+    expect((next.mock.calls[1][0] as AppError).code).toBe('rate_limited');
+  });
 });

@@ -54,8 +54,15 @@ export interface PersistedRoleResolverDeps {
   /** Config grants, applied as an un-revokable floor. */
   floor: RoleRegistry;
   now?: () => Date;
-  /** Cache lifetime for a resolved entry. Default 30s. */
+  /** Cache lifetime for a plain (`user`-only) principal. Default 30s. */
   ttlMs?: number;
+  /**
+   * Cache lifetime for a principal that holds any elevated role. Kept short
+   * because `invalidate()` is process-local — on a multi-instance deployment it
+   * bounds how long another instance keeps serving a role that was just revoked
+   * here (or misses one just granted). Default 5s.
+   */
+  privilegedTtlMs?: number;
 }
 
 interface CacheEntry {
@@ -66,7 +73,12 @@ interface CacheEntry {
 /**
  * Reads `user_roles` and unions the result with the config floor. A short-TTL
  * per-user cache keeps the hot path off the database between grants; the
- * grant/revoke service calls `invalidate(userId)` so a change is visible at once.
+ * grant/revoke service calls `invalidate(userId)`, so a change is visible
+ * immediately **on the instance that made it**. Other instances pick it up when
+ * their own cache entry expires — `ttlMs` for plain users, the shorter
+ * `privilegedTtlMs` for anyone holding an elevated role (a proper cross-instance
+ * invalidation — pg `LISTEN/NOTIFY` or a shared cache — is a Phase 7 concern,
+ * tracked in DECISIONS.md ADR-011).
  *
  * Fail-safe: if the store read throws, resolution degrades to the config floor
  * for that call (never a 500, never a privilege escalation) and is not cached.
@@ -76,6 +88,7 @@ export function createPersistedRoleResolver({
   floor,
   now = () => new Date(),
   ttlMs = 30_000,
+  privilegedTtlMs = 5_000,
 }: PersistedRoleResolverDeps): RoleResolver {
   const cache = new Map<string, CacheEntry>();
 
@@ -101,7 +114,8 @@ export function createPersistedRoleResolver({
       }
 
       const value = describe([...persisted, ...floor.rolesFor(userId)]);
-      cache.set(userId, { value, expiresAt: nowMs + ttlMs });
+      const elevated = value.roles.some((role) => role !== 'user');
+      cache.set(userId, { value, expiresAt: nowMs + (elevated ? privilegedTtlMs : ttlMs) });
       metrics.inc('role_resolve_total', { source: 'store' });
       return value;
     },

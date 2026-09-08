@@ -78,15 +78,22 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   `requireAuthenticated` and stamps the resolved roles+permissions onto
   `req.authz`; `policy.ts` and `routes/me.ts` are now synchronous readers of it.
   `createPersistedRoleResolver` reads `user_roles` and unions the config grants
-  as an **un-revokable floor** (short-TTL per-user cache + `invalidate` on
-  change; store-read failure degrades to the floor, never a 500). `roleService`
-  = runtime grant/revoke (provenance, audit `rbac.role_granted`/`_revoked`,
-  cache invalidation, self-admin-revoke guard). `routes/adminRoles.ts` —
-  `GET/POST/DELETE /api/v1/admin/roles/:userId`, `admin`-only, mounted only when
-  a persisted identity store is wired. `contracts/api/admin.ts` for the surface.
-  `AppDeps.database` (Drizzle over the shared pool) selects the persisted path;
-  `server/db/pgPool.ts` now types the one shared `pg.Pool`. eslint bans
-  `drizzle-*` imports from `contracts/`. `npm run check` green, 205 tests.
+  as an **un-revokable floor** (per-user cache + `invalidate` on change: `ttlMs`
+  30s for plain users, `privilegedTtlMs` 5s for anyone with an elevated role so a
+  cross-instance revoke propagates fast; store-read failure degrades to the
+  floor, never a 500). `attachPersistedIdentity` (`server/authz/principalIdentity.ts`)
+  upserts every authenticated principal into `users` + `external_identities` on
+  first sight (spec §11 `IdentityService.resolveTelegramUser`) — without it
+  `users` stays empty in prod and every runtime grant 404s. `roleService` =
+  runtime grant/revoke (provenance, audit `rbac.role_granted`/`_revoked`, cache
+  invalidation, self-admin-revoke guard, `user_not_found` on grant **and**
+  revoke). `routes/adminRoles.ts` — `GET/POST/DELETE /api/v1/admin/roles/:userId`,
+  `admin`-only, mounted only when a persisted identity store is wired.
+  `contracts/api/admin.ts` for the surface. `AppDeps.database` (Drizzle over the
+  shared pool) selects the persisted path; `server/db/pgPool.ts` now types the
+  one shared `pg.Pool`. eslint bans `drizzle-*` imports from `contracts/`.
+  Proper cross-instance cache invalidation (pg `LISTEN/NOTIFY`) is a Phase 7
+  item. `npm run check` green, 205 tests.
 - **Shared rate-limit store (§13, closes the Phase 1 handoff):** fixed-window
   counting moved behind a `RateLimitStore` interface
   (`server/middleware/rateLimitStore.ts`). `createMemoryRateLimitStore` is the
@@ -98,6 +105,13 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   Shared contract test runs the memory + pglite adapters. Metrics stay
   in-process (cross-instance = a real backend; Phase 7). `npm run check` green,
   215 tests.
+- **Review fixes (PR #9):** identity-upsert step wired into the authed chain
+  (runtime grant was 404-only in prod without it); `roleService.revoke` now
+  mirrors `grant`'s `user_not_found` check; resolver cache split into plain vs
+  privileged TTL; `createRateLimit` async path routes a late `res.setHeader`
+  throw to the error handler instead of an unhandled rejection; `migrate.ts`
+  `appliedCount` only swallows "state not created yet", rethrows real failures.
+  `npm run check` green, 225 tests.
 - **Next:** PR WS2 → main. Flag `legacyStoreReadOnly` and the JSON→SQL cutover
   are WS5.
 

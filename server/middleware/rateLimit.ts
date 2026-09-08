@@ -94,16 +94,18 @@ export function createRateLimit(opts: RateLimitOptions): RequestHandler {
       next();
       return;
     }
-    void hitLimit(opts.name, by(req), opts.windowMs, opts.max).then(
-      ({ ok, retryAfterSec }) => {
+    // `.catch(next)` routes both a store rejection and any throw in the handler
+    // (e.g. `res.setHeader` after the client aborted) to the error handler —
+    // never an unhandled rejection off the back of `void`.
+    void hitLimit(opts.name, by(req), opts.windowMs, opts.max)
+      .then(({ ok, retryAfterSec }) => {
         if (ok) {
           next();
           return;
         }
-        res.setHeader('Retry-After', String(retryAfterSec));
+        if (!res.headersSent) res.setHeader('Retry-After', String(retryAfterSec));
         next(new AppError('rate_limited', 'Too many requests, slow down', 429));
-      },
-      next,
-    );
+      })
+      .catch(next);
   };
 }

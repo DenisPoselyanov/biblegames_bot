@@ -19,6 +19,7 @@ import {
   type RoleResolver,
 } from './authz/roleResolver';
 import { createAttachPrincipalRoles } from './authz/principalRoles';
+import { createAttachPersistedIdentity } from './authz/principalIdentity';
 import { createRoleService, type RoleService } from './authz/roleService';
 import { createPolicies } from './authz/policy';
 import type { IdentityRepositories } from './domains/identity/repository';
@@ -107,8 +108,14 @@ export function createApp(deps: AppDeps): Express {
         })
       : undefined);
   const attachPrincipalRoles = createAttachPrincipalRoles(roleResolver);
-  /** Authenticate, then resolve the principal's roles onto `req.authz`. */
-  const authed = [requireAuthenticated, attachPrincipalRoles];
+  // With a persisted store, every authenticated principal is upserted into
+  // `users` on first sight so the runtime grant surface can target them (spec
+  // §11). Without a store this is a no-op the chain simply omits.
+  const attachPersistedIdentity = identity
+    ? [createAttachPersistedIdentity(identity.users)]
+    : [];
+  /** Authenticate, persist the principal (when a store is wired), then resolve roles. */
+  const authed = [requireAuthenticated, ...attachPersistedIdentity, attachPrincipalRoles];
   const { requireRole, requirePermission } = createPolicies({ auditLog });
 
   const rl = (name: string, windowMs: number, max: number) =>
