@@ -40,11 +40,18 @@ describe('Drizzle schema ↔ server/db/schema.sql parity', () => {
     );
   });
 
-  it('new (WS2+) tables are limited to the known identity/RBAC set', () => {
+  it('new (WS2+) tables are limited to the known identity/RBAC + platform set', () => {
     const legacy = tablesInSchemaSql();
     const added = [...drizzleTables].filter((t) => !legacy.has(t)).sort();
     expect(added).toEqual(
-      ['external_identities', 'roles', 'user_preferences', 'user_roles', 'users'].sort(),
+      [
+        'external_identities',
+        'rate_limit_counters',
+        'roles',
+        'user_preferences',
+        'user_roles',
+        'users',
+      ].sort(),
     );
   });
 });

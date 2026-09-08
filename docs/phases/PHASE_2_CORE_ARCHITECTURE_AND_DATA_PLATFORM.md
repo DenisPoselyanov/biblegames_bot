@@ -87,8 +87,19 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   `AppDeps.database` (Drizzle over the shared pool) selects the persisted path;
   `server/db/pgPool.ts` now types the one shared `pg.Pool`. eslint bans
   `drizzle-*` imports from `contracts/`. `npm run check` green, 205 tests.
-- **Next:** shared rate-limit/metrics store (closes the Phase 1 handoff), flag
-  `legacyStoreReadOnly`. Then PR WS2 → main.
+- **Shared rate-limit store (§13, closes the Phase 1 handoff):** fixed-window
+  counting moved behind a `RateLimitStore` interface
+  (`server/middleware/rateLimitStore.ts`). `createMemoryRateLimitStore` is the
+  default; `createSqlRateLimitStore` (`rate_limit_counters`, migration `0002`)
+  is selected when `AppDeps.database` is wired — one atomic
+  `INSERT … ON CONFLICT DO UPDATE` per hit, the window rolls inside the `CASE`,
+  so instances cannot race past the limit. `hitLimit` / `allowSocketEvent` are
+  now async and **fail open** on a store outage (`rate_limit_store_error_total`).
+  Shared contract test runs the memory + pglite adapters. Metrics stay
+  in-process (cross-instance = a real backend; Phase 7). `npm run check` green,
+  215 tests.
+- **Next:** PR WS2 → main. Flag `legacyStoreReadOnly` and the JSON→SQL cutover
+  are WS5.
 
 ---
 

@@ -9,6 +9,7 @@ behind repositories one at a time without a big-bang cutover.
 | `client.ts` | `createDatabase(pool)` → `Database`; `Transaction` type (the concrete type behind `ServiceContext.tx`). |
 | `migrate.ts` | Runtime migration runner (`npm run db:migrate`). Wraps `drizzle-orm`'s migrator and adds status + timing logging (§18.1). node-postgres only. |
 | `testing.ts` | `createTestDatabase()` — a migrated `@electric-sql/pglite` instance, typed as `Database`. Repository contract tests run against this and the in-memory adapters. dev-only. |
+| `repositories/` | Production (Drizzle) implementations of domain / middleware interfaces: `identity.ts` (`UserRepository`/`RoleRepository`), `rateLimitStore.ts` (`RateLimitStore` — atomic fixed-window on `rate_limit_counters`, selected when a DB is wired). |
 | `../../migrations/` | Generated SQL + `meta/_journal.json` (journal) + `meta/*_snapshot.json` (checksummed snapshots). |
 
 ## Workflow

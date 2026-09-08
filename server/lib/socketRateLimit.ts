@@ -1,7 +1,9 @@
 /**
- * Socket.IO rate limiting (Phase 1 §11, §13) — reuses the HTTP limiter's
- * in-memory window store via `hitLimit`. Key is the verified principal id, else
- * the handshake address (never a payload-supplied name/id).
+ * Socket.IO rate limiting (Phase 1 §11, §13) — reuses the HTTP limiter's window
+ * store via `hitLimit` (in-memory by default, shared Postgres when wired —
+ * Phase 2 WS2 part 4). Key is the verified principal id, else the handshake
+ * address (never a payload-supplied name/id). `hitLimit` fails open on a store
+ * outage, so this never rejects a legitimate event because the store is down.
  */
 
 import type { Socket } from 'socket.io';
@@ -24,13 +26,14 @@ function socketKey(socket: Socket): string {
   return socket.data.principal?.userId ?? socket.handshake.address ?? socket.id;
 }
 
-/** True when the event is allowed; false when the caller should reject it. */
-export function allowSocketEvent(
+/** Resolves true when the event is allowed; false when the caller should reject it. */
+export async function allowSocketEvent(
   socket: Socket,
   event: keyof typeof SOCKET_LIMITS,
   disabled = false,
-): boolean {
+): Promise<boolean> {
   if (disabled) return true;
   const policy = SOCKET_LIMITS[event];
-  return hitLimit(policy.name, socketKey(socket), policy.windowMs, policy.max).ok;
+  const { ok } = await hitLimit(policy.name, socketKey(socket), policy.windowMs, policy.max);
+  return ok;
 }

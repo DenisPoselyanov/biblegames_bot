@@ -46,6 +46,7 @@ async function main(): Promise<void> {
       storageProvider: config.storageProvider,
       questionsProvider: useQuestionsSql() ? 'sql' : 'json',
       rbacStore: database ? 'persisted' : 'config',
+      rateLimitStore: database ? 'shared' : 'memory',
       clientOrigins: config.clientOrigins,
       demoRoutesEnabled: config.demoRoutesEnabled,
       rateLimitDisabled: config.rateLimitDisabled,

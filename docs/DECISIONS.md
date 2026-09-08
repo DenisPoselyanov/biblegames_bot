@@ -412,6 +412,11 @@ Protected Content Studio отримує RBAC і може бути фізично
   без importer'ів) видалено.
 - Rate-limit і metrics store — in-memory single-instance (свідомо, Phase 1 §18
   «minimal services; Phase 2 consolidates»); distributed backend — Phase 2/7.
+  **Оновлення (Phase 2 WS2 part 4):** rate-limit store винесено за інтерфейс
+  `RateLimitStore` + Postgres-адаптер (`rate_limit_counters`, атомарний
+  fixed-window upsert), який вмикається коли є БД; in-memory лишається дефолтом.
+  Metrics store — навмисно ще in-process (cross-instance = реальний backend:
+  Prometheus scrape / StatsD), відкладено до Phase 7 разом із deployment.
 
 ## Контекст
 
@@ -674,6 +679,25 @@ Persisted role store + runtime grant/revoke landed:
 Rollback: без `AppDeps.database` резолвер повертається до config-only, а
 admin-роут просто не монтується — request path не має break-glass прапорця,
 enforcement лишається безумовним.
+
+## Update (Phase 2 WS2 part 4, 2026-09-08) — shared rate-limit store
+
+Закриває Phase 1 §13 single-instance handoff:
+
+- `server/middleware/rateLimitStore.ts` — інтерфейс `RateLimitStore` +
+  `createMemoryRateLimitStore` (стара `Map`-логіка, дефолт).
+- `server/infrastructure/database/repositories/rateLimitStore.ts` —
+  Postgres-адаптер: один атомарний `INSERT … ON CONFLICT DO UPDATE` на hit,
+  вікно котиться в `CASE` (race-free між інстансами). Таблиця
+  `rate_limit_counters` (міграція `0002`), прибирання застарілих рядків — WS5
+  pg-boss job.
+- `rateLimit.ts` / `socketRateLimit.ts` тепер async; `hitLimit` **fail-open**
+  при збої store (+ `rate_limit_store_error_total`) — лімітер не має класти
+  request path. `createApp` бере SQL-store коли є `deps.database`;
+  `configureRateLimitStore` ставить його на module-singleton, `resetRateLimits`
+  повертає свіжий in-memory (ізоляція тестів).
+- Metrics store — свідомо ще in-process (Phase 7, з deployment). Прапорець
+  `legacyStoreReadOnly` — це WS5 cutover, не тут.
 
 ---
 
