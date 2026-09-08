@@ -73,9 +73,22 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   `infrastructure/database/repositories/identity.ts` (opaque `Transaction` →
   Drizzle executor narrowed in one place). Shared `repositoryContract.ts` runs
   against in-memory **and** pglite. `npm run check` green, 184 tests.
-- **Next:** persisted role store wired into the principal + a runtime
-  grant/revoke service/route (closes ADR-011 handoff) → shared rate-limit/metrics
-  store (closes Phase 1 handoff). Flag `legacyStoreReadOnly`.
+- **Persisted RBAC wired into the request path (§9, closes ADR-011):**
+  `RoleResolver` is the one async seam — `attachPrincipalRoles` runs after
+  `requireAuthenticated` and stamps the resolved roles+permissions onto
+  `req.authz`; `policy.ts` and `routes/me.ts` are now synchronous readers of it.
+  `createPersistedRoleResolver` reads `user_roles` and unions the config grants
+  as an **un-revokable floor** (short-TTL per-user cache + `invalidate` on
+  change; store-read failure degrades to the floor, never a 500). `roleService`
+  = runtime grant/revoke (provenance, audit `rbac.role_granted`/`_revoked`,
+  cache invalidation, self-admin-revoke guard). `routes/adminRoles.ts` —
+  `GET/POST/DELETE /api/v1/admin/roles/:userId`, `admin`-only, mounted only when
+  a persisted identity store is wired. `contracts/api/admin.ts` for the surface.
+  `AppDeps.database` (Drizzle over the shared pool) selects the persisted path;
+  `server/db/pgPool.ts` now types the one shared `pg.Pool`. eslint bans
+  `drizzle-*` imports from `contracts/`. `npm run check` green, 205 tests.
+- **Next:** shared rate-limit/metrics store (closes the Phase 1 handoff), flag
+  `legacyStoreReadOnly`. Then PR WS2 → main.
 
 ---
 

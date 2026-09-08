@@ -1,8 +1,10 @@
 /**
  * Reusable authorization policies (Phase 1 §6.2).
  *
- * Every policy here runs AFTER `requireAuthenticated` (it reads `req.auth`). A
- * missing principal is treated as an auth failure, not an authz failure.
+ * Every policy here runs AFTER `requireAuthenticated` + `attachPrincipalRoles`
+ * (Phase 2 WS2 part 3): it reads the resolved `req.authz`, never a store. A
+ * missing principal is treated as an auth failure, not an authz failure; a
+ * principal with no resolved `authz` degrades to the implicit `user` role.
  *
  * WS4 part 2 removed the `rbacV2` break-glass — the policies always enforce.
  */
@@ -13,10 +15,8 @@ import { metrics } from '../lib/metrics';
 import type { AuditLog } from '../audit';
 import { buildAuditRecord } from '../audit';
 import type { Permission, Role } from './roles';
-import type { RoleRegistry } from './roleRegistry';
 
 export interface PolicyDeps {
-  roleRegistry: RoleRegistry;
   auditLog: AuditLog;
 }
 
@@ -27,7 +27,10 @@ function principal(req: Request): { userId: string; authSource: string } {
   return { userId: req.auth.userId, authSource: req.auth.authSource };
 }
 
-export function createPolicies({ roleRegistry, auditLog }: PolicyDeps) {
+const heldRoles = (req: Request): Role[] => req.authz?.roles ?? ['user'];
+const heldPermissions = (req: Request): Permission[] => req.authz?.permissions ?? [];
+
+export function createPolicies({ auditLog }: PolicyDeps) {
   function auditDenied(req: Request, needed: string[], kind: 'role' | 'permission'): void {
     metrics.inc('authz_denied_total', { kind });
     void auditLog.append(
@@ -40,20 +43,24 @@ export function createPolicies({ roleRegistry, auditLog }: PolicyDeps) {
         target: `${req.method} ${req.originalUrl.split('?')[0]}`,
         result: 'denied',
         requestId: req.id,
-        metadata: { kind, needed, held: roleRegistry.rolesFor(req.auth?.userId ?? '') },
+        metadata: { kind, needed, held: heldRoles(req) },
       }),
     );
   }
 
   const attachAuthz = (req: Request, matchedPermission?: Permission): void => {
-    req.authz = { roles: roleRegistry.rolesFor(req.auth?.userId ?? ''), matchedPermission };
+    req.authz = {
+      roles: heldRoles(req),
+      permissions: req.authz?.permissions,
+      matchedPermission,
+    };
   };
 
   const requireRole = (...roles: Role[]): RequestHandler => {
     return (req: Request, _res: Response, next: NextFunction): void => {
       try {
-        const { userId } = principal(req);
-        if (roles.some((role) => roleRegistry.hasRole(userId, role))) {
+        principal(req);
+        if (roles.some((role) => heldRoles(req).includes(role))) {
           attachAuthz(req);
           next();
           return;
@@ -69,8 +76,8 @@ export function createPolicies({ roleRegistry, auditLog }: PolicyDeps) {
   const requirePermission = (...permissions: Permission[]): RequestHandler => {
     return (req: Request, _res: Response, next: NextFunction): void => {
       try {
-        const { userId } = principal(req);
-        const matched = permissions.find((perm) => roleRegistry.hasPermission(userId, perm));
+        principal(req);
+        const matched = permissions.find((perm) => heldPermissions(req).includes(perm));
         if (matched) {
           attachAuthz(req, matched);
           next();
@@ -106,7 +113,7 @@ export function createPolicies({ roleRegistry, auditLog }: PolicyDeps) {
           next();
           return;
         }
-        if (roleRegistry.hasPermission(userId, permission)) {
+        if (heldPermissions(req).includes(permission)) {
           attachAuthz(req, permission);
           next();
           return;

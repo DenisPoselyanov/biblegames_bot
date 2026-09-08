@@ -1,9 +1,12 @@
 /**
  * Config-sourced role grants (Phase 1 WS2, ADR-011).
  *
- * Phase 1 does not have a persisted role store or a runtime grant/revoke API —
- * that is WS3, which owns the storage-contract expansion. Here roles come from
- * two env vars parsed once by `loadConfig`:
+ * As of Phase 2 WS2 there IS a persisted role store and a runtime grant/revoke
+ * API (`./roleService.ts`, `routes/adminRoles.ts`). This registry is no longer
+ * the whole story — it is the **un-revokable floor** that
+ * `createPersistedRoleResolver` unions on top of the persisted `user_roles` set,
+ * so a deploy-time `RBAC_ADMIN_IDS` still bootstraps the first admin. Roles here
+ * come from two env vars parsed once by `loadConfig`:
  *
  *   RBAC_ROLE_GRANTS  JSON — either `{"<userId>": ["admin", ...]}` or
  *                     `[{"userId": "...", "roles": ["..."]}]`

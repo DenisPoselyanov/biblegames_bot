@@ -651,6 +651,30 @@ Break-glass window закрито: `FEATURE_RBACV2` і його fallback-гіл�
 policy enforcement безумовний. Config-sourced grants (`RBAC_ROLE_GRANTS` /
 `RBAC_ADMIN_IDS`) без змін; persisted role store + runtime grant/revoke — Phase 2.
 
+## Update (Phase 2 WS2 part 3, 2026-09-08) — handoff closed
+
+Persisted role store + runtime grant/revoke landed:
+
+- `user_roles` (provenance + `revoked_at`) — WS2 part 2; `RoleRepository` +
+  contract tests.
+- `server/authz/roleResolver.ts` — `RoleResolver` is the single async seam.
+  `attachPrincipalRoles` middleware resolves роль+permissions на `req.authz`
+  одразу після `requireAuthenticated`; `policy.ts` / `routes/me.ts` — синхронні
+  читачі. `createPersistedRoleResolver` читає `user_roles` і **юнить** config
+  grants як **un-revokable floor** (short-TTL per-user cache + `invalidate` при
+  зміні; збій читання store → деградація до floor, ніколи не 500 і не
+  escalation). Без БД → `createConfigRoleResolver` (стара поведінка).
+- `server/authz/roleService.ts` + `server/routes/adminRoles.ts` —
+  `GET/POST/DELETE /api/v1/admin/roles/:userId`, `admin`-only, mount лише коли
+  підключено persisted identity store. Audit `rbac.role_granted` / `_revoked`,
+  guard проти self-revoke власної `admin`-ролі. Контракт — `contracts/api/admin.ts`.
+- `RBAC_ADMIN_IDS` тепер bootstrap floor для першого admin, який далі роздає
+  ролі через API. Зняти config-floored роль = правка конфігу.
+
+Rollback: без `AppDeps.database` резолвер повертається до config-only, а
+admin-роут просто не монтується — request path не має break-glass прапорця,
+enforcement лишається безумовним.
+
 ---
 
 # ADR-013 — Zod як єдина runtime-schema для всіх меж, `contracts/` як source of truth
