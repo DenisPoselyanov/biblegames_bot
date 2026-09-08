@@ -8,8 +8,13 @@ declare global {
       id?: string;
       /** Verified identity, set by requireAuthenticated. Absent on public routes. */
       auth?: AuthenticatedPrincipal;
-      /** Authorization context, set by policy middleware (server/authz/policy.ts). */
-      authz?: { roles: Role[]; matchedPermission?: Permission };
+      /**
+       * Authorization context. `roles`/`permissions` are set by
+       * `attachPrincipalRoles` (server/authz/principalRoles.ts) right after auth;
+       * `matchedPermission` is added by the policy middleware that let the
+       * request through (server/authz/policy.ts).
+       */
+      authz?: { roles: Role[]; permissions?: Permission[]; matchedPermission?: Permission };
     }
   }
 }

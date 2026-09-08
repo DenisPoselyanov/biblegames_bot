@@ -412,6 +412,11 @@ Protected Content Studio отримує RBAC і може бути фізично
   без importer'ів) видалено.
 - Rate-limit і metrics store — in-memory single-instance (свідомо, Phase 1 §18
   «minimal services; Phase 2 consolidates»); distributed backend — Phase 2/7.
+  **Оновлення (Phase 2 WS2 part 4):** rate-limit store винесено за інтерфейс
+  `RateLimitStore` + Postgres-адаптер (`rate_limit_counters`, атомарний
+  fixed-window upsert), який вмикається коли є БД; in-memory лишається дефолтом.
+  Metrics store — навмисно ще in-process (cross-instance = реальний backend:
+  Prometheus scrape / StatsD), відкладено до Phase 7 разом із deployment.
 
 ## Контекст
 
@@ -651,6 +656,63 @@ Break-glass window закрито: `FEATURE_RBACV2` і його fallback-гіл�
 policy enforcement безумовний. Config-sourced grants (`RBAC_ROLE_GRANTS` /
 `RBAC_ADMIN_IDS`) без змін; persisted role store + runtime grant/revoke — Phase 2.
 
+## Update (Phase 2 WS2 part 3, 2026-09-08) — handoff closed
+
+Persisted role store + runtime grant/revoke landed:
+
+- `user_roles` (provenance + `revoked_at`) — WS2 part 2; `RoleRepository` +
+  contract tests.
+- `server/authz/roleResolver.ts` — `RoleResolver` is the single async seam.
+  `attachPrincipalRoles` middleware resolves роль+permissions на `req.authz`
+  одразу після `requireAuthenticated`; `policy.ts` / `routes/me.ts` — синхронні
+  читачі. `createPersistedRoleResolver` читає `user_roles` і **юнить** config
+  grants як **un-revokable floor** (short-TTL per-user cache + `invalidate` при
+  зміні; збій читання store → деградація до floor, ніколи не 500 і не
+  escalation). Без БД → `createConfigRoleResolver` (стара поведінка).
+- `server/authz/roleService.ts` + `server/routes/adminRoles.ts` —
+  `GET/POST/DELETE /api/v1/admin/roles/:userId`, `admin`-only, mount лише коли
+  підключено persisted identity store. Audit `rbac.role_granted` / `_revoked`,
+  guard проти self-revoke власної `admin`-ролі; `grant` **і** `revoke` вимагають
+  наявного `users`-рядка (404 `user_not_found` інакше). Контракт —
+  `contracts/api/admin.ts`.
+- `server/authz/principalIdentity.ts` — `attachPersistedIdentity` у authed-
+  ланцюгу (спека §11 `IdentityService.resolveTelegramUser`): на першому запиті
+  кожен автентифікований principal upsert-иться у `users` + `external_identities`
+  (per-process «seen»-кеш, TTL 1h; збій запису best-effort, лог + пропуск). Без
+  цього кроку `users` у проді порожня і будь-який runtime grant → 404. Монтується
+  лише разом з persisted identity store.
+- `RBAC_ADMIN_IDS` тепер bootstrap floor для першого admin, який далі роздає
+  ролі через API. Зняти config-floored роль = правка конфігу.
+- Cross-instance: `RoleResolver.invalidate()` — process-local. На інстансі, що
+  зробив зміну, вона видима одразу; інші сходяться за TTL резолвера — `ttlMs`
+  (30s) для plain-users, коротший `privilegedTtlMs` (5s) для principal з будь-
+  якою elevated-роллю, щоб revoke розповсюджувався швидко. Справжня cross-
+  instance інвалідизація (pg `LISTEN/NOTIFY` або спільний кеш) — Phase 7 разом
+  із deployment topology.
+
+Rollback: без `AppDeps.database` резолвер повертається до config-only, а
+admin-роут (і identity-upsert крок) просто не монтуються — request path не має
+break-glass прапорця, enforcement лишається безумовним.
+
+## Update (Phase 2 WS2 part 4, 2026-09-08) — shared rate-limit store
+
+Закриває Phase 1 §13 single-instance handoff:
+
+- `server/middleware/rateLimitStore.ts` — інтерфейс `RateLimitStore` +
+  `createMemoryRateLimitStore` (стара `Map`-логіка, дефолт).
+- `server/infrastructure/database/repositories/rateLimitStore.ts` —
+  Postgres-адаптер: один атомарний `INSERT … ON CONFLICT DO UPDATE` на hit,
+  вікно котиться в `CASE` (race-free між інстансами). Таблиця
+  `rate_limit_counters` (міграція `0002`), прибирання застарілих рядків — WS5
+  pg-boss job.
+- `rateLimit.ts` / `socketRateLimit.ts` тепер async; `hitLimit` **fail-open**
+  при збої store (+ `rate_limit_store_error_total`) — лімітер не має класти
+  request path. `createApp` бере SQL-store коли є `deps.database`;
+  `configureRateLimitStore` ставить його на module-singleton, `resetRateLimits`
+  повертає свіжий in-memory (ізоляція тестів).
+- Metrics store — свідомо ще in-process (Phase 7, з deployment). Прапорець
+  `legacyStoreReadOnly` — це WS5 cutover, не тут.
+
 ---
 
 # ADR-013 — Zod як єдина runtime-schema для всіх меж, `contracts/` як source of truth
@@ -705,11 +767,76 @@ ad-hoc `String(x ?? '')` + `sanitize*`).
 # ADR-012 — ORM і міграційний фреймворк (Drizzle)
 
 **Дата:** 2026-09-07
-**Статус:** proposed — spike у Phase 2 WS2 має підтвердити (owner попередньо
-затвердив Drizzle + Drizzle Kit 2026-09-07)
+**Статус:** accepted (spike підтвердив 2026-09-07 — `spike/drizzle/FINDINGS.md`),
+implementation у Phase 2 WS2
 
-Деталі й наслідки заповнюються після spike (§9, §10, §18.1). Поточний стан: сирий
-`pg` + рукописний `server/db/schema.sql`, без міграційного журналу/checksum.
+## Контекст
+
+Phase 2 §9 вимагає визначені core-таблиці з міграціями; §10 — repository-інтерфейси
+з contract-тестами; §18.1 — міграційний фреймворк з журналом/checksum/ordered IDs/
+staging rehearsal. Поточний стан (Phase 1): сирий `pg` Pool
+(`server/db/pgPool.ts`) + рукописний `server/db/schema.sql` + JSON-адаптери, без
+міграційного журналу. `OPEN_SOURCE_REFERENCE_ARCHITECTURE.md` §3 і owner
+попередньо затвердили Drizzle + Drizzle Kit 2026-09-07.
+
+## Рішення
+
+- **ORM — `drizzle-orm` 0.44.x** (пряма `dependencies`), адаптер
+  `drizzle-orm/node-postgres` поверх наявного `pg.Pool` — lazy-import і
+  `isDatabaseConfigured()` gate не чіпаються, raw SQL і Drizzle ділять один пул,
+  адопція таблиць інкрементальна.
+- **Міграції — `drizzle-kit` 0.31.x** (`devDependencies`). `drizzle-kit generate`
+  дає ordered IDs + `meta/_journal.json` (журнал v7) + checksummed snapshot
+  offline, без конекшена. Покриває 7/9 властивостей §18.1; backup/restore і
+  forward-fix для незворотних змін — це runbook (WS5 deploy doc), не інструмент.
+  `push` — лише dev; staging/prod — тільки `migrate`.
+- **Контракти проти ORM-типів (§25):** `@contracts` (Zod) лишається єдиним
+  джерелом для кожної process/network межі. Drizzle `InferSelectModel` — це
+  *storage*-типи, внутрішні для `server/infrastructure/`. Repository — шов
+  маппінгу; `jsonb`-колонка з контрактним типом декларується
+  `.$type<TheContract>()` **і** `schema.parse()`-иться на читанні (DB — trust
+  boundary, §8). `drizzle-zod` — лише для внутрішніх insert-guard, ніколи не
+  реекспортується з `contracts/` (додати lint-правило у WS2).
+- **Transaction** — `db.transaction(async (tx) => …)`; `tx` кладеться у вже
+  зарезервований `ServiceContext.tx` (`server/domains/shared/context.ts`).
+  Repo без `tx` читає на пулі.
+- Схема — по-доменні файли у `server/infrastructure/database/`, реекспорт у барел;
+  `drizzle.config.ts` у корені → `server/migrations/`.
+
+## Alternatives
+
+Prisma (важчий рантайм, окремий engine, гірша ESM/edge історія), Kysely (лише
+query-builder, без міграцій — довелося б додавати окремий інструмент), сирий `pg`
+далі (не задовольняє §10/§18.1). TypeORM/Sequelize — legacy-стиль, decorator-heavy.
+
+## Наслідки
+
+- `server/db/sqlStore.ts` + `schema.sql` поступово замінюються repository-адаптерами;
+  перша міграція адоптує наявні `wallet_ledger` / `migration_records` (DDL
+  Drizzle — колонка-в-колонку з `schema.sql`, спайк перевірив), без data-move.
+- JSON-адаптери лишаються для fixtures/dev, проходять ті ж read-контракти;
+  production-writes через них не емулюють транзакції (§10).
+- Новий прапорець `legacyStoreReadOnly` для cutover.
+
+## Migration / security impact
+
+Міграції транзакційні (PG DDL), journal-guarded rerun — no-op. Жодних секретів у
+`drizzle.config.ts` — URL з типізованого env (§19). RBAC переїжджає з config у
+`user_roles` з provenance (закриває handoff ADR-011).
+
+## Rollback
+
+Drizzle обгортає наявний Pool — роут/домен можна лишити на `sqlStore`/raw SQL
+точково. `drizzle-kit` не потрібен у рантаймі (тільки dev/CI/deploy). Якщо ORM
+не влаштує — repository-інтерфейси (§10) вже ізолюють виклики, адаптер міняється
+без зміни доменів.
+
+## Spike
+
+`spike/drizzle/` — schema-зріз, `contract-bridge.ts` (композиція типів),
+`repositories.ts` (інтерфейси + Drizzle-адаптер + in-memory peer),
+`0000_clammy_owl.sql` (згенерована міграція). Видаляється / складається в
+`server/infrastructure/database/` коли WS2 пише справжній шар.
 
 ---
 

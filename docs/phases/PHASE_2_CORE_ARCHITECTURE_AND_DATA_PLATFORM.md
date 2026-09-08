@@ -14,10 +14,12 @@ WS1 contracts + architecture rules + server composition · WS2 persistence platf
 (Drizzle, migrations, repositories, persisted RBAC, shared rate-limit/metrics) ·
 WS3 canonical content repository + realtime gateway v2 · WS4 frontend data
 architecture · WS5 jobs + object storage + deployment + migration cutover + DoD.
-Stack confirmed: **Zod + Drizzle + pg-boss** (ADR-013 accepted; ADR-012 / ADR-014
-proposed pending spike).
+Stack confirmed: **Zod + Drizzle + pg-boss** (ADR-013 + ADR-012 accepted;
+ADR-014 proposed pending spike).
 
-### WS1 (in progress) — branch `phase-2/ws1-contracts-composition`
+WS1 landed on `main` (PR #8, merge `b4d0a34`).
+
+### WS1 (done, merged) — PR #8 → `main` `b4d0a34`
 
 - **Contracts (§7, §8):** `contracts/` created — one Zod schema per boundary,
   types inferred, client-safe. `version` / `enums` / `schemas` (primitives, §7.5
@@ -40,6 +42,78 @@ proposed pending spike).
 - **Deferred to WS2:** dependency-cruiser (full-repo cycles + `services ↛ express`),
   move `server/authz` + React client onto `@contracts`, OpenAPI generation.
 - `npm run check` green, 167 tests.
+
+### WS2 (in progress) — branch `phase-2/ws2-persistence`
+
+- **Drizzle spike (ADR-012 → accepted):** `spike/drizzle/` — schema slice of the
+  §9 core tables, `contract-bridge.ts` (Drizzle `InferSelectModel` composes with
+  `@contracts` as storage types behind the repository seam — §25 trap avoided by
+  rule), `repositories.ts` (§10 interfaces + Drizzle adapter + in-memory parity
+  peer, `Transaction` → `ServiceContext.tx`), generated migration
+  `0000_clammy_owl.sql` + journal v7 + checksummed snapshot (offline, no DB).
+  `drizzle-orm@0.44.7` / `drizzle-kit@0.31.10`; `npm run check` stays green.
+  Findings: `spike/drizzle/FINDINGS.md`.
+- **Persistence platform + migration framework (§9, §18.1):**
+  `server/infrastructure/database/` — Drizzle over the shared `pg.Pool`
+  (`client.ts`), per-domain `schema/` adopted 1:1 from `server/db/schema.sql`
+  (11 tables), `migrate.ts` runtime runner (`npm run db:migrate`: drizzle
+  migrator + status/timing log + `drizzle.__migration_runs`), `testing.ts`
+  pglite in-process DB for contract tests. `drizzle.config.ts` +
+  `server/migrations/0000_violet_dagger.sql` (hand-edited to `IF NOT EXISTS` so
+  it adopts the Phase 1 tables, no data move) + journal v7 + checksummed
+  snapshot. `db:generate`/`db:check` run `drizzle-kit` via `npx` — not a dep;
+  runner needs only `drizzle-orm`. `drizzle-orm` → deps, `@electric-sql/pglite`
+  → devDeps (lock in sync, `npm ci` clean). `npm run check` green, 172 tests.
+- **Identity + RBAC tables + repositories (§5.1, §9, §10):** `schema/identity.ts`
+  — `users`, `external_identities`, `roles`, `user_roles` (grant w/ provenance +
+  `revoked_at`), `user_preferences`. Migration `0001_nosy_cable.sql` (new tables,
+  plain create) + seeds `roles` from `ROLES`. `server/domains/identity/` —
+  `UserRepository` / `RoleRepository` interfaces + domain types (ORM-free),
+  `inMemoryRepository.ts` peer. SQL adapter
+  `infrastructure/database/repositories/identity.ts` (opaque `Transaction` →
+  Drizzle executor narrowed in one place). Shared `repositoryContract.ts` runs
+  against in-memory **and** pglite. `npm run check` green, 184 tests.
+- **Persisted RBAC wired into the request path (§9, closes ADR-011):**
+  `RoleResolver` is the one async seam — `attachPrincipalRoles` runs after
+  `requireAuthenticated` and stamps the resolved roles+permissions onto
+  `req.authz`; `policy.ts` and `routes/me.ts` are now synchronous readers of it.
+  `createPersistedRoleResolver` reads `user_roles` and unions the config grants
+  as an **un-revokable floor** (per-user cache + `invalidate` on change: `ttlMs`
+  30s for plain users, `privilegedTtlMs` 5s for anyone with an elevated role so a
+  cross-instance revoke propagates fast; store-read failure degrades to the
+  floor, never a 500). `attachPersistedIdentity` (`server/authz/principalIdentity.ts`)
+  upserts every authenticated principal into `users` + `external_identities` on
+  first sight (spec §11 `IdentityService.resolveTelegramUser`) — without it
+  `users` stays empty in prod and every runtime grant 404s. `roleService` =
+  runtime grant/revoke (provenance, audit `rbac.role_granted`/`_revoked`, cache
+  invalidation, self-admin-revoke guard, `user_not_found` on grant **and**
+  revoke). `routes/adminRoles.ts` — `GET/POST/DELETE /api/v1/admin/roles/:userId`,
+  `admin`-only, mounted only when a persisted identity store is wired.
+  `contracts/api/admin.ts` for the surface. `AppDeps.database` (Drizzle over the
+  shared pool) selects the persisted path; `server/db/pgPool.ts` now types the
+  one shared `pg.Pool`. eslint bans `drizzle-*` imports from `contracts/`.
+  Proper cross-instance cache invalidation (pg `LISTEN/NOTIFY`) is a Phase 7
+  item. `npm run check` green, 205 tests.
+- **Shared rate-limit store (§13, closes the Phase 1 handoff):** fixed-window
+  counting moved behind a `RateLimitStore` interface
+  (`server/middleware/rateLimitStore.ts`). `createMemoryRateLimitStore` is the
+  default; `createSqlRateLimitStore` (`rate_limit_counters`, migration `0002`)
+  is selected when `AppDeps.database` is wired — one atomic
+  `INSERT … ON CONFLICT DO UPDATE` per hit, the window rolls inside the `CASE`,
+  so instances cannot race past the limit. `hitLimit` / `allowSocketEvent` are
+  now async and **fail open** on a store outage (`rate_limit_store_error_total`).
+  Shared contract test runs the memory + pglite adapters. Metrics stay
+  in-process (cross-instance = a real backend; Phase 7). `npm run check` green,
+  215 tests.
+- **Review fixes (PR #9):** identity-upsert step wired into the authed chain
+  (runtime grant was 404-only in prod without it); `roleService.revoke` now
+  mirrors `grant`'s `user_not_found` check; resolver cache split into plain vs
+  privileged TTL; `createRateLimit` async path routes a late `res.setHeader`
+  throw to the error handler instead of an unhandled rejection; `migrate.ts`
+  `appliedCount` only swallows "state not created yet", rethrows real failures.
+  `npm run check` green, 225 tests.
+- **Next:** PR WS2 → main. Flag `legacyStoreReadOnly` and the JSON→SQL cutover
+  are WS5.
 
 ---
 

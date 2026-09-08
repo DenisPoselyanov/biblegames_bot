@@ -17,7 +17,6 @@ import { UnauthorizedError } from '../lib/errors';
 import { createRateLimit } from '../middleware/rateLimit';
 import type { ServerConfig } from '../config/env';
 import type { ServerStore } from '../db/store';
-import type { RoleRegistry } from '../authz/roleRegistry';
 import type { WalletLedger } from '../wallet';
 import type { AuditLog } from '../audit';
 import { buildAuditRecord } from '../audit';
@@ -32,7 +31,6 @@ import {
 
 export interface MeRouterDeps {
   dbStore: ServerStore;
-  roleRegistry: RoleRegistry;
   walletLedger: WalletLedger;
   migrationStore: MigrationStore;
   auditLog: AuditLog;
@@ -48,7 +46,6 @@ function requirePrincipal(req: Request) {
 
 export function createMeRouter({
   dbStore,
-  roleRegistry,
   walletLedger,
   migrationStore,
   auditLog,
@@ -60,7 +57,8 @@ export function createMeRouter({
 
   router.get('/', (req, res) => {
     const principal = requirePrincipal(req);
-    const { roles, permissions } = roleRegistry.describe(principal.userId);
+    // Resolved upstream by `attachPrincipalRoles` (server/authz/principalRoles.ts).
+    const { roles = ['user'], permissions = [] } = req.authz ?? {};
     res.json({
       userId: principal.userId,
       displayName: principal.displayName,

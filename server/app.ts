@@ -8,11 +8,25 @@ import { sqlStore } from './db/sqlStore';
 import { asyncHandler } from './middleware/asyncHandler';
 import { requestId } from './middleware/requestId';
 import { errorHandler } from './middleware/errorHandler';
-import { createRateLimit } from './middleware/rateLimit';
+import { configureRateLimitStore, createRateLimit } from './middleware/rateLimit';
+import type { RateLimitStore } from './middleware/rateLimitStore';
 import { metrics } from './lib/metrics';
 import { createRequireAuthenticated } from './auth/middleware';
 import { RoleRegistry } from './authz/roleRegistry';
+import {
+  createConfigRoleResolver,
+  createPersistedRoleResolver,
+  type RoleResolver,
+} from './authz/roleResolver';
+import { createAttachPrincipalRoles } from './authz/principalRoles';
+import { createAttachPersistedIdentity } from './authz/principalIdentity';
+import { createRoleService, type RoleService } from './authz/roleService';
 import { createPolicies } from './authz/policy';
+import type { IdentityRepositories } from './domains/identity/repository';
+import type { Database } from './infrastructure/database/client';
+import { createSqlIdentityRepositories } from './infrastructure/database/repositories/identity';
+import { createSqlRateLimitStore } from './infrastructure/database/repositories/rateLimitStore';
+import { createAdminRolesRouter } from './routes/adminRoles';
 import { createAuditLog, type AuditLog } from './audit';
 import { createWalletLedger, type WalletLedger } from './wallet';
 import { createIdempotencyStore, type IdempotencyStore } from './lib/idempotency';
@@ -32,6 +46,23 @@ export interface AppDeps {
   dbStore?: ServerStore;
   auditLog?: AuditLog;
   roleRegistry?: RoleRegistry;
+  /**
+   * Drizzle handle over the shared `pg.Pool` (Phase 2 WS2). When present (or
+   * `identity` is given directly) RBAC resolves from the persisted `user_roles`
+   * store and the `/api/v1/admin/roles` surface is mounted.
+   */
+  database?: Database;
+  identity?: IdentityRepositories;
+  roleResolver?: RoleResolver;
+  roleService?: RoleService;
+  /**
+   * Shared fixed-window rate-limit store (Phase 2 WS2 part 4). Defaults to the
+   * Postgres adapter when `database` is set, otherwise the process-wide
+   * in-memory store. Installed on the module singleton — the last `createApp`
+   * wins, which is fine for the one-app-per-process runtime and matches how
+   * tests already `resetRateLimits()`.
+   */
+  rateLimitStore?: RateLimitStore;
   walletLedger?: WalletLedger;
   idempotency?: IdempotencyStore;
   migrationStore?: MigrationStore;
@@ -51,7 +82,41 @@ export function createApp(deps: AppDeps): Express {
   const walletLedger = deps.walletLedger ?? createWalletLedger(config);
   const idempotency = deps.idempotency ?? createIdempotencyStore(config);
   const migrationStore = deps.migrationStore ?? createMigrationStore(config);
-  const { requirePermission } = createPolicies({ roleRegistry, auditLog });
+
+  // --- Shared rate-limit store (Phase 2 WS2 part 4, closes the Phase 1 §13 handoff) ---
+  const rateLimitStore =
+    deps.rateLimitStore ??
+    (deps.database ? createSqlRateLimitStore(deps.database) : undefined);
+  if (rateLimitStore) configureRateLimitStore(rateLimitStore);
+
+  // --- RBAC principal resolution (Phase 2 WS2 part 3, closes ADR-011) ---
+  const identity =
+    deps.identity ?? (deps.database ? createSqlIdentityRepositories(deps.database) : undefined);
+  const roleResolver =
+    deps.roleResolver ??
+    (identity
+      ? createPersistedRoleResolver({ roleRepo: identity.roles, floor: roleRegistry })
+      : createConfigRoleResolver(roleRegistry));
+  const roleService =
+    deps.roleService ??
+    (identity
+      ? createRoleService({
+          roleRepo: identity.roles,
+          userRepo: identity.users,
+          auditLog,
+          resolver: roleResolver,
+        })
+      : undefined);
+  const attachPrincipalRoles = createAttachPrincipalRoles(roleResolver);
+  // With a persisted store, every authenticated principal is upserted into
+  // `users` on first sight so the runtime grant surface can target them (spec
+  // §11). Without a store this is a no-op the chain simply omits.
+  const attachPersistedIdentity = identity
+    ? [createAttachPersistedIdentity(identity.users)]
+    : [];
+  /** Authenticate, persist the principal (when a store is wired), then resolve roles. */
+  const authed = [requireAuthenticated, ...attachPersistedIdentity, attachPrincipalRoles];
+  const { requireRole, requirePermission } = createPolicies({ auditLog });
 
   const rl = (name: string, windowMs: number, max: number) =>
     createRateLimit({ name, windowMs, max, disabled: config.rateLimitDisabled });
@@ -111,7 +176,7 @@ export function createApp(deps: AppDeps): Express {
   app.use(
     '/api/admin/questions',
     rlIp('admin_ip', 60_000, 60),
-    requireAuthenticated,
+    ...authed,
     requirePermission('questions:admin'),
     rl('admin', 60_000, 20),
     createQuestionsAdminRouter({ auditLog, config }),
@@ -121,20 +186,33 @@ export function createApp(deps: AppDeps): Express {
   // A coarse per-IP limiter runs before auth (§13 "auth attempts"); the finer
   // per-principal limits live inside / alongside each router.
   app.use('/api/v1', rlIp('api_v1_ip', 60_000, 120));
+
+  // Runtime RBAC grant/revoke (§9, closes ADR-011) — only with a persisted store.
+  if (roleService) {
+    app.use(
+      '/api/v1/admin/roles',
+      rlIp('admin_ip', 60_000, 60),
+      ...authed,
+      requireRole('admin'),
+      rl('admin_roles', 60_000, 30),
+      createAdminRolesRouter({ roleService }),
+    );
+  }
+
   app.use(
     '/api/v1/me',
-    requireAuthenticated,
-    createMeRouter({ dbStore, roleRegistry, walletLedger, migrationStore, auditLog, config }),
+    ...authed,
+    createMeRouter({ dbStore, walletLedger, migrationStore, auditLog, config }),
   );
   app.use(
     '/api/v1/progression',
-    requireAuthenticated,
+    ...authed,
     rl('progression', 60_000, 60),
     createProgressionRouter({ dbStore, walletLedger, idempotency }),
   );
   app.use(
     '/api/v1/shop',
-    requireAuthenticated,
+    ...authed,
     rl('shop', 60_000, 15),
     createShopRouter({ dbStore, walletLedger, auditLog, idempotency }),
   );

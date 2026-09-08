@@ -14,9 +14,19 @@ contract tests exist (§25 "moving files without defining ownership").
   request id, clock, and later a transaction handle — never a `Request`.
 - A domain owns its types, runtime schemas (from `@contracts` where client-facing),
   service commands, repository *interfaces*, and tests. Infrastructure adapters
-  (SQL / JSON) implement those interfaces from `server/infrastructure/` (WS2).
+  (SQL / in-memory) implement those interfaces from `server/infrastructure/`
+  (WS2). Interfaces expose domain / `@contracts` types only — never a Drizzle
+  `InferSelectModel` or a `pg` type. The opaque `Transaction` from
+  `ServiceContext` is narrowed to a driver type only inside the SQL adapter.
 - No cycles between domains. Cross-domain needs go through a published service
   interface, not a deep import.
+
+## Populated so far (WS2)
+
+- **`identity/`** — `repository.ts` (`UserRepository`, `RoleRepository`),
+  `types.ts`, `inMemoryRepository.ts`. SQL adapter:
+  `server/infrastructure/database/repositories/identity.ts`. Contract:
+  `identity/__tests__/repositoryContract.ts` (runs vs in-memory + pglite).
 
 ## Map
 

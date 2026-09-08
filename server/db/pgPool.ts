@@ -1,6 +1,11 @@
-export type PgPool = {
-  query: (sql: string, params?: unknown[]) => Promise<{ rows: Array<Record<string, unknown>> }>;
-};
+import type { Pool } from 'pg';
+
+/**
+ * The one shared `pg.Pool` for the whole server. The raw-SQL adapters and the
+ * Drizzle handle (`server/infrastructure/database/client.ts`) both run on this
+ * pool (ADR-012) — never open a second one.
+ */
+export type PgPool = Pool;
 
 let poolPromise: Promise<PgPool> | null = null;
 

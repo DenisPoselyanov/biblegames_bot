@@ -6,7 +6,9 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // `spike/` holds throwaway exploration (Phase 2 WS2 Drizzle spike) — it
+  // deliberately imports deps not yet in package.json and is not a build input.
+  globalIgnores(['dist', 'spike']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -29,6 +31,13 @@ export default defineConfig([
       'react-refresh/only-export-components': 'off',
       'react-hooks/rules-of-hooks': 'off',
       'react-hooks/exhaustive-deps': 'off',
+      // ADR-012: `@contracts` is Zod-only. Drizzle (and `drizzle-zod`) are
+      // storage-layer concerns — a `drizzle-zod` schema must never be
+      // re-exported from a contract module.
+      'no-restricted-imports': [
+        'error',
+        { paths: ['drizzle-zod', 'drizzle-orm', 'drizzle-orm/pg-core'] },
+      ],
     },
   },
   {

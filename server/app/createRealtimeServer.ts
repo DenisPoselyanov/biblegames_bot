@@ -55,9 +55,10 @@ export function createRealtimeServer(httpServer: HttpServer, config: ServerConfi
   io.on('connection', (socket) => {
     const principal = socket.data.principal;
 
-    socket.on('create_room', (payload: KahootCreatePayload, ack?: (res: unknown) => void) => {
+    socket.on('create_room', async (payload: KahootCreatePayload, ack?: (res: unknown) => void) => {
       if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
-      if (!allowSocketEvent(socket, 'create_room', config.rateLimitDisabled)) return ackRateLimited(ack);
+      if (!(await allowSocketEvent(socket, 'create_room', config.rateLimitDisabled)))
+        return ackRateLimited(ack);
       try {
         const hostName = principal?.displayName ?? payload.hostName;
         const hostTelegramId = principal?.telegramUserId ?? payload.hostTelegramId;
@@ -69,9 +70,10 @@ export function createRealtimeServer(httpServer: HttpServer, config: ServerConfi
       }
     });
 
-    socket.on('join_room', (payload: KahootJoinPayload, ack?: (res: unknown) => void) => {
+    socket.on('join_room', async (payload: KahootJoinPayload, ack?: (res: unknown) => void) => {
       if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
-      if (!allowSocketEvent(socket, 'join_room', config.rateLimitDisabled)) return ackRateLimited(ack);
+      if (!(await allowSocketEvent(socket, 'join_room', config.rateLimitDisabled)))
+        return ackRateLimited(ack);
       try {
         const state = rooms.joinRoom(payload.code, socket.id, payload.playerName, payload.customField);
         socket.join(state.code);
@@ -121,9 +123,10 @@ export function createRealtimeServer(httpServer: HttpServer, config: ServerConfi
         .catch((e: Error) => ack?.({ ok: false, error: e.message }));
     });
 
-    socket.on('submit_answer', (payload: { optionIndex: number }, ack?: (res: unknown) => void) => {
+    socket.on('submit_answer', async (payload: { optionIndex: number }, ack?: (res: unknown) => void) => {
       if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
-      if (!allowSocketEvent(socket, 'submit_answer', config.rateLimitDisabled)) return ackRateLimited(ack);
+      if (!(await allowSocketEvent(socket, 'submit_answer', config.rateLimitDisabled)))
+        return ackRateLimited(ack);
       try {
         const optionIndex = Number(payload?.optionIndex);
         const state = rooms.submitAnswer(socket.id, optionIndex);
