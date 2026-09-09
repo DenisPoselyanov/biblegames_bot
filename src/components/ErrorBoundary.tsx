@@ -1,5 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { Icon } from './Icon';
+import { reportClientError } from '../lib/errorReporter';
 
 interface Props {
   children: ReactNode;
@@ -24,6 +25,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error('ErrorBoundary caught:', error, info);
+    reportClientError({ code: 'render_error', message: error.message });
     this.props.onError?.(error, info);
   }
 

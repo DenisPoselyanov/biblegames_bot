@@ -29,10 +29,13 @@ export async function getPool(): Promise<PgPool> {
       const mod = (await import('pg')) as {
         Pool: new (opts: Record<string, unknown>) => PgPool;
       };
-      return new mod.Pool({
+      const pool = new mod.Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: process.env.PG_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
       });
+      // Query timing / counters (Phase 2 §20).
+      const { instrumentPool } = await import('../infrastructure/database/instrument');
+      return instrumentPool(pool);
     })();
   }
   return poolPromise;

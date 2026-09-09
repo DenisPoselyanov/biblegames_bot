@@ -258,6 +258,19 @@ Jobs, storage, deployment, migration cutover & DoD (§17–§20, §26, §27). Of
   migration / rollout procedures and a single-VPS systemd example.
   `.env.example` + `docs/README.md` updated. Docs-only.
 
+- **Observability standardization (§20, part 4):** `docs/OBSERVABILITY.md` — the
+  log schema (`level` reserved), the ID taxonomy (`requestId` / `jobId`+`type` /
+  `eventId`), and the full metric catalog. New instrumentation: `httpMetrics`
+  middleware (`http_requests_total{method,status}`, `http_server_errors_total`,
+  `http.slow_request` warn ≥ 1s); `instrumentPool` wraps `pg.Pool.query`
+  (`db_queries_total{op}` where `op` = `<verb> <table>`, `db_slow_queries_total`
+  ≥ 200ms, `db_query_errors_total`). Frontend: `src/lib/errorReporter.ts`
+  (`window.onerror` + `unhandledrejection` + `ErrorBoundary`) → `POST
+  /api/v1/client-errors` (`contracts/api/observability.ts`, `.strict()`,
+  unauthenticated, 30/min per IP) sending only `{ route, buildVersion, code,
+  level, message? }` — never a stack or payload. `__APP_VERSION__` baked in by
+  Vite (`VITE_BUILD_ID` | `<pkg>-dev`). `npm run check` green, 337 tests (+14).
+
 ---
 
 ## 1. Product outcome

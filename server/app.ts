@@ -7,6 +7,7 @@ import { jsonStore } from './db/jsonStore';
 import { sqlStore } from './db/sqlStore';
 import { asyncHandler } from './middleware/asyncHandler';
 import { requestId } from './middleware/requestId';
+import { httpMetrics } from './middleware/httpMetrics';
 import { errorHandler } from './middleware/errorHandler';
 import { configureRateLimitStore, createRateLimit } from './middleware/rateLimit';
 import type { RateLimitStore } from './middleware/rateLimitStore';
@@ -37,6 +38,7 @@ import { createIdempotencyStore, type IdempotencyStore } from './lib/idempotency
 import { createMigrationStore, type MigrationStore } from './migration/migrationStore';
 import { scriptureRouter } from './routes/scripture';
 import { createQuestionsAdminRouter } from './routes/questionsAdmin';
+import { createClientErrorsRouter } from './routes/clientErrors';
 import { createMeRouter } from './routes/me';
 import { createProgressionRouter } from './routes/progression';
 import { createShopRouter } from './routes/shop';
@@ -159,6 +161,7 @@ export function createApp(deps: AppDeps): Express {
   app.use(express.json({ limit: '1mb' }));
   app.use(cors({ origin: config.clientOrigins, credentials: true }));
   app.use(requestId);
+  app.use(httpMetrics);
   app.use((_req, res, next) => {
     res.setHeader(CONTRACT_VERSION_HEADER, CONTRACT_VERSION);
     next();
@@ -210,6 +213,13 @@ export function createApp(deps: AppDeps): Express {
   // A coarse per-IP limiter runs before auth (§13 "auth attempts"); the finer
   // per-principal limits live inside / alongside each router.
   app.use('/api/v1', rlIp('api_v1_ip', 60_000, 120));
+
+  // Frontend error reporting (§20) — unauthenticated, tightly IP-limited.
+  app.use(
+    '/api/v1/client-errors',
+    rlIp('client_errors_ip', 60_000, 30),
+    createClientErrorsRouter(),
+  );
 
   // Runtime RBAC grant/revoke (§9, closes ADR-011) — only with a persisted store.
   if (roleService) {
