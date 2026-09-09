@@ -248,6 +248,16 @@ Jobs, storage, deployment, migration cutover & DoD (§17–§20, §26, §27). Of
   `latest.json` and is registered on the worker when content wiring is present.
   ADR-015 → accepted. `npm run check` green, 323 tests (+18).
 
+- **Deployment topology + typed env (§19, part 3):** `docs/DEPLOYMENT.md` — the
+  7 deployable units (frontend bundle, API, realtime [still in-process, explicit
+  boundary], bot, job worker, migration command, database), each with its run
+  command, port, restart safety and health/observability. A full env-var
+  reference per unit, split public (`VITE_*`, baked into the bundle) vs
+  server-only, with a secret inventory (`TELEGRAM_BOT_TOKEN`, `DATABASE_URL`,
+  `BOT_TOKEN`, `S3_*` keys, AI keys — never in Vite, never logged). Deploy /
+  migration / rollout procedures and a single-VPS systemd example.
+  `.env.example` + `docs/README.md` updated. Docs-only.
+
 ---
 
 ## 1. Product outcome

@@ -39,6 +39,7 @@
 ## Операційні документи
 
 - [DEVELOPER_GUIDE.md](./DEVELOPER_GUIDE.md)
+- [DEPLOYMENT.md](./DEPLOYMENT.md) — deployable units, per-unit env configuration, migration & rollout procedures (Phase 2 §19).
 - [LOCAL_TOOLS.md](./LOCAL_TOOLS.md)
 - [SUPABASE_SETUP.md](./SUPABASE_SETUP.md)
 - [AI_SETUP.md](./AI_SETUP.md)
