@@ -5,11 +5,11 @@ import { loadProfile } from '../lib/storage';
 import { playerRepo } from '../repos/playerRepo';
 import { hasApi } from '../repos/apiClient';
 import { usePlayerProfileStore } from '../stores/playerProfileStore';
-import { profileKeys } from './keys';
+import { queryKeys } from './keys';
 
 export function usePlayerProfileQuery(userId: string, displayName: string) {
   return useQuery({
-    queryKey: profileKeys.byUser(userId),
+    queryKey: queryKeys.me.profile(userId),
     queryFn: () => playerRepo.get(userId, displayName),
     enabled: Boolean(userId),
     initialData: () => loadProfile(userId, displayName),
@@ -41,20 +41,20 @@ export function useSavePlayerProfileMutation(userId: string) {
     mutationFn: (profile: PlayerProfile) => playerRepo.save(profile),
     onMutate: async (profile) => {
       setProfile(profile);
-      await queryClient.cancelQueries({ queryKey: profileKeys.byUser(userId) });
-      const previous = queryClient.getQueryData<PlayerProfile>(profileKeys.byUser(userId));
-      queryClient.setQueryData(profileKeys.byUser(userId), profile);
+      await queryClient.cancelQueries({ queryKey: queryKeys.me.profile(userId) });
+      const previous = queryClient.getQueryData<PlayerProfile>(queryKeys.me.profile(userId));
+      queryClient.setQueryData(queryKeys.me.profile(userId), profile);
       return { previous };
     },
     onError: (_err, _profile, context) => {
       if (context?.previous) {
         setProfile(context.previous);
-        queryClient.setQueryData(profileKeys.byUser(userId), context.previous);
+        queryClient.setQueryData(queryKeys.me.profile(userId), context.previous);
       }
     },
     onSettled: () => {
       if (hasApi()) {
-        void queryClient.invalidateQueries({ queryKey: profileKeys.byUser(userId) });
+        void queryClient.invalidateQueries({ queryKey: queryKeys.me.profile(userId) });
       }
     },
   });
