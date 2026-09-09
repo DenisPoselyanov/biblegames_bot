@@ -235,6 +235,19 @@ Jobs, storage, deployment, migration cutover & DoD (§17–§20, §26, §27). Of
   schedule. Metrics: `jobs_{enqueued,started,completed,retried,failed}_total{type}`.
   ADR-014 → accepted. `npm run check` green, 305 tests (+16).
 
+- **Object storage adapter + ADR-015 (§19, part 2):** `server/domains/storage/`
+  — an `ObjectStore` interface (`put` / `get` / `head` / `delete` / `list`) for
+  platform **outputs** (content snapshots now; export bundles + AI artifacts +
+  media later). The **filesystem adapter** is the default (one file per key +
+  a `.meta` sidecar, atomic writes, `OBJECT_STORAGE_DIR`). The **S3 adapter**
+  (`OBJECT_STORAGE_DRIVER=s3`) talks S3 REST over `fetch` with a hand-rolled
+  SigV4 (`sigv4.ts`, verified against the AWS `aws4_testsuite` vectors) — no
+  `aws-sdk`; works with AWS / MinIO / R2 / B2. A memory adapter backs tests;
+  all three pass one `objectStoreContract`. The `content.snapshot` job
+  (`buildSnapshot` → `ObjectStore`) writes `snapshots/<setId>/<hash>.json` +
+  `latest.json` and is registered on the worker when content wiring is present.
+  ADR-015 → accepted. `npm run check` green, 323 tests (+18).
+
 ---
 
 ## 1. Product outcome

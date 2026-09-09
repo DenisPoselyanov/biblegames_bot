@@ -906,14 +906,72 @@ graphile-worker (близький аналог pg-boss, менша спільн�
 - pg-boss потрапить у `dependencies` у part 1b (v12: deps `cron-parser`,
   `serialize-error` + bump `pg` 8.21→8.23 — lockfile-діф чистий ~80 рядків,
   перевірено 2026-09-09); поки не додано.
-- `content/snapshot.ts` `buildSnapshot` стає хендлером типу `content.snapshot` у
-  WS5 part 2 (коли з'явиться object-storage).
+- `content/snapshot.ts` `buildSnapshot` став хендлером типу `content.snapshot`
+  (WS5 part 2) — пише через `ObjectStore` (ADR-015).
 
 ## Rollback
 
 `JobQueue`-інтерфейс ізолює виклики: адаптер міняється без зміни продюсерів.
 Прибрати worker з deploy → sweep-и просто не крутяться (застарілі рядки
 нешкідливі, наступний hit їх перезаписує). Жодних незворотних змін даних.
+
+---
+
+# ADR-015 — Object storage: filesystem default, hand-rolled SigV4 для S3
+
+**Дата:** 2026-09-09
+**Статус:** accepted, implementation у Phase 2 WS5 part 2.
+
+## Контекст
+
+Phase 2 §19 і ref-arch §3.6 вимагають S3-сумісний адаптер об'єктного сховища для
+**виходів**: published-content снапшоти (§14), пізніше export-бандли, сирі
+AI-артефакти (Phase 4), медіа. §19 також: «single VPS may host multiple
+processes» і «secrets are not bundled into Vite». Наявний стан — лише JSON-файли
+на диску через `atomicJson`.
+
+## Рішення
+
+- **Доменний інтерфейс `ObjectStore`** (`server/domains/storage/objectStore.ts`)
+  — `put` / `get` / `head` / `delete` / `list(prefix)`. Чистий, без `fs`/мережі.
+  Ключі — `/`-розділені, без `.`/`..`/провідного слешу (`assertValidObjectKey`).
+- **`filesystem` адаптер — default** (`server/infrastructure/storage/`). Один
+  файл на ключ + `<key>.meta` сайдкар (content-type, metadata, sha-256 etag).
+  Атомарний запис (temp + `rename`, як JSON-стори — ADR-006). Це домівка
+  снапшотів на одному VPS. Корінь — `OBJECT_STORAGE_DIR` (default
+  `server/.data/objects`, у `.gitignore`).
+- **`s3` адаптер — шлях масштабування**. `OBJECT_STORAGE_DRIVER=s3` +
+  `S3_ENDPOINT`/`S3_BUCKET`/`S3_REGION`/`S3_ACCESS_KEY_ID`/`S3_SECRET_ACCESS_KEY`
+  (+ опц. `S3_KEY_PREFIX`). Говорить S3 REST через `fetch` + **власний SigV4**
+  (`sigv4.ts`, ~110 рядків, звірено з AWS `aws4_testsuite` векторами) — **без
+  `aws-sdk`** (важкий, ~20 МБ transitively, для 4 операцій — надмір). Path-style
+  адресація за замовч. (MinIO/R2/B2 усі приймають). Секрети — тільки в
+  server-only `env.ts`, ніколи не в клієнтський бандл.
+- **`memory` адаптер** — тести. Усі три проходять спільний `objectStoreContract`.
+- **Не в БД, не source of truth** (§25): снапшот регенерується з канонічного
+  стору; `content.snapshot`-джоб пише `snapshots/<setId>/<contentHash>.json` +
+  `latest.json`.
+
+## Alternatives
+
+`@aws-sdk/client-s3` (важкий, ESM-проблеми, 50+ transitive), `minio` client
+(теж чималий, тільки MinIO/AWS), `aws4fetch` (крихітний, але зайва залежність
+там, де 110 рядків signing вистачає і повністю тестуються). Тримати снапшоти в
+Postgres BYTEA — змішує output зі стором, роздуває БД.
+
+## Наслідки
+
+- env: `OBJECT_STORAGE_DRIVER` (`filesystem`|`s3`), `OBJECT_STORAGE_DIR`,
+  `S3_*`. Неповна S3-конфігурація → warn + fallback на `filesystem`.
+- `.gitignore` += `server/.data/objects/`.
+- S3-адаптер **не** покритий інтеграційним тестом проти живого MinIO у CI —
+  signing протестовано юніт-векторами; live-lane — ручний / майбутній.
+
+## Rollback
+
+`ObjectStore`-інтерфейс ізолює: драйвер міняється конфігом без зміни продюсерів.
+`filesystem` не має зовнішніх залежностей. Снапшоти — виходи, їх втрата
+безпечна (регенеруються джобом).
 
 ---
 

@@ -13,12 +13,15 @@ import { metrics } from '../lib/metrics';
 import { JOB_TYPES } from '../domains/jobs/catalog';
 import { createInMemoryJobQueue } from '../domains/jobs/inMemoryQueue';
 import type { JobQueue } from '../domains/jobs/queue';
+import type { ContentRepositories } from '../domains/content/repository';
+import type { ObjectStore } from '../domains/storage/objectStore';
 import {
   idempotencySweepHandler,
   rateLimitSweepHandler,
   telemetryRetentionHandler,
   type SweepQuery,
 } from './sweeps';
+import { contentSnapshotHandler } from './contentSnapshot';
 
 export function createJobQueue(config: ServerConfig): JobQueue {
   if (config.jobQueueDriver === 'postgres') {
@@ -41,6 +44,11 @@ export interface CoreJobDeps {
   query: SweepQuery;
   /** Interval between recurring sweeps. Default 6h. */
   everyMs?: number;
+  /**
+   * Content snapshot wiring (§14). When present, the on-demand
+   * `content.snapshot` job type is registered.
+   */
+  content?: { repos: ContentRepositories; store: ObjectStore };
 }
 
 export function registerCoreJobs(queue: JobQueue, deps: CoreJobDeps): void {
@@ -59,4 +67,11 @@ export function registerCoreJobs(queue: JobQueue, deps: CoreJobDeps): void {
     handler: telemetryRetentionHandler(sweepDeps),
     everyMs,
   });
+
+  if (deps.content) {
+    // On demand only — no `everyMs`. Enqueued after a content publish.
+    queue.register(JOB_TYPES.CONTENT_SNAPSHOT, {
+      handler: contentSnapshotHandler(deps.content),
+    });
+  }
 }

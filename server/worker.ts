@@ -13,6 +13,9 @@ import { loadConfig } from './config/env';
 import { assertProductionConfig } from './config/productionValidation';
 import { log } from './lib/logger';
 import { getPool, isDatabaseConfigured } from './db/pgPool';
+import { createDatabase } from './infrastructure/database/client';
+import { createSqlContentRepositories } from './infrastructure/database/repositories/content';
+import { createObjectStore } from './infrastructure/storage';
 import { createJobQueue, registerCoreJobs } from './jobs';
 import type { SweepQuery } from './jobs/sweeps';
 
@@ -35,8 +38,18 @@ async function main(): Promise<void> {
         detail: 'JOB_SCHEDULES_ENABLED=true but no DATABASE_URL — retention sweeps need SQL',
       });
     } else {
-      registerCoreJobs(queue, { query: poolQuery });
-      log.info('worker.schedules_registered', { types: (await queue.stats()).types });
+      const db = createDatabase(await getPool());
+      registerCoreJobs(queue, {
+        query: poolQuery,
+        content: {
+          repos: createSqlContentRepositories(db),
+          store: createObjectStore(config),
+        },
+      });
+      log.info('worker.schedules_registered', {
+        types: (await queue.stats()).types,
+        objectStorage: config.objectStorageDriver,
+      });
     }
   }
 

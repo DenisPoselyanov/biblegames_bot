@@ -30,6 +30,22 @@ export type CanonicalContentMode = 'off' | 'compare' | 'canonical';
  */
 export type JobQueueDriver = 'memory' | 'postgres';
 
+/**
+ * Object storage driver (Phase 2 §19):
+ * - `filesystem` — one directory on the host (default; single-VPS);
+ * - `s3`         — any S3-compatible service (AWS, MinIO, R2, B2).
+ */
+export type ObjectStorageDriver = 'filesystem' | 's3';
+
+export interface S3Config {
+  endpoint: string;
+  bucket: string;
+  region: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+  keyPrefix: string;
+}
+
 export interface ServerConfig {
   nodeEnv: NodeEnv;
   isProduction: boolean;
@@ -67,6 +83,12 @@ export interface ServerConfig {
   realtimeGatewayV2: boolean;
   /** Background job queue driver (Phase 2 §17, ADR-014). */
   jobQueueDriver: JobQueueDriver;
+  /** Object storage driver (Phase 2 §19). */
+  objectStorageDriver: ObjectStorageDriver;
+  /** Filesystem object-store root (used when `objectStorageDriver === 'filesystem'`). */
+  objectStorageDir: string;
+  /** S3 connection — present only when `objectStorageDriver === 's3'` and fully configured. */
+  s3: S3Config | null;
   /**
    * Whether this process runs the recurring maintenance jobs (retention sweeps).
    * The dedicated worker (`server/worker.ts`) sets this; the API process leaves
@@ -138,6 +160,37 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     warnings.push(`Unknown JOB_QUEUE_DRIVER "${env.JOB_QUEUE_DRIVER}", falling back to "memory"`);
   }
 
+  let objectStorageDriver: ObjectStorageDriver = 'filesystem';
+  if (env.OBJECT_STORAGE_DRIVER === 's3') {
+    objectStorageDriver = 's3';
+  } else if (env.OBJECT_STORAGE_DRIVER && env.OBJECT_STORAGE_DRIVER !== 'filesystem') {
+    warnings.push(
+      `Unknown OBJECT_STORAGE_DRIVER "${env.OBJECT_STORAGE_DRIVER}", falling back to "filesystem"`,
+    );
+  }
+
+  let s3: S3Config | null = null;
+  if (objectStorageDriver === 's3') {
+    const missing = (
+      ['S3_ENDPOINT', 'S3_BUCKET', 'S3_REGION', 'S3_ACCESS_KEY_ID', 'S3_SECRET_ACCESS_KEY'] as const
+    ).filter((k) => !env[k]);
+    if (missing.length > 0) {
+      warnings.push(
+        `OBJECT_STORAGE_DRIVER=s3 but ${missing.join(', ')} unset — falling back to "filesystem"`,
+      );
+      objectStorageDriver = 'filesystem';
+    } else {
+      s3 = {
+        endpoint: env.S3_ENDPOINT!,
+        bucket: env.S3_BUCKET!,
+        region: env.S3_REGION!,
+        accessKeyId: env.S3_ACCESS_KEY_ID!,
+        secretAccessKey: env.S3_SECRET_ACCESS_KEY!,
+        keyPrefix: env.S3_KEY_PREFIX ?? '',
+      };
+    }
+  }
+
   let storageProvider: StorageProvider = 'json';
   if (env.STORAGE_PROVIDER === 'sql') {
     storageProvider = 'sql';
@@ -175,6 +228,9 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     realtimeGatewayV2: env.REALTIME_GATEWAY_V2 === 'true',
     jobQueueDriver,
     jobSchedulesEnabled: env.JOB_SCHEDULES_ENABLED === 'true',
+    objectStorageDriver,
+    objectStorageDir: env.OBJECT_STORAGE_DIR ?? 'server/.data/objects',
+    s3,
   });
 
   return { config, warnings };
