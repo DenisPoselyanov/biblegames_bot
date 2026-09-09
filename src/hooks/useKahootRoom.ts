@@ -154,6 +154,7 @@ export function useKahootRoom(options?: { displayOnly?: boolean }) {
   const createRoom = useCallback(
     async (hostName: string, settings: KahootRoomSettings, hostTelegramId?: string) => {
       setError(null);
+      lastSequenceRef.current = -1; // fresh room — do not carry a stale sequence
       const res = await emitWithAck<
         { hostName: string; settings: KahootRoomSettings; hostTelegramId?: string },
         KahootRoomState
@@ -177,6 +178,7 @@ export function useKahootRoom(options?: { displayOnly?: boolean }) {
   const joinRoom = useCallback(
     async (code: string, playerName: string, customField?: string) => {
       setError(null);
+      lastSequenceRef.current = -1;
       const res = await emitWithAck<
         { code: string; playerName: string; customField?: string },
         KahootRoomState
@@ -204,6 +206,7 @@ export function useKahootRoom(options?: { displayOnly?: boolean }) {
 
   const joinAsDisplay = useCallback(async (code: string) => {
     setError(null);
+    lastSequenceRef.current = -1;
     const res = await emitWithAck<{ code: string }, KahootRoomState>('join_as_display', {
       code: code.toUpperCase(),
     });
@@ -262,6 +265,7 @@ export function useKahootRoom(options?: { displayOnly?: boolean }) {
 
   const leaveRoom = useCallback(() => {
     getKahootSocket().emit('leave_room');
+    lastSequenceRef.current = -1;
     setRoom(null);
     saveRoomState(null);
     saveSession(null);
