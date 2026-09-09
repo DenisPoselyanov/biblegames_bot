@@ -22,7 +22,12 @@ import type { AuditLog } from '../audit';
 import { buildAuditRecord } from '../audit';
 import type { MigrationStore } from '../migration/migrationStore';
 import { applyMigration } from '../migration/applyMigration';
-import { readProfile, writePreferences, writeLearningState } from '../services/profileService';
+import {
+  readProfile,
+  writePreferences,
+  writeLearningState,
+  type PreferencesCutover,
+} from '../services/profileService';
 import {
   sanitizeStatsBody,
   sanitizeStudyAnswers,
@@ -35,6 +40,8 @@ export interface MeRouterDeps {
   migrationStore: MigrationStore;
   auditLog: AuditLog;
   config: ServerConfig;
+  /** Typed-preferences cutover (Phase 2 §18.2). Present when a database is wired. */
+  preferences?: PreferencesCutover;
 }
 
 function requirePrincipal(req: Request) {
@@ -50,6 +57,7 @@ export function createMeRouter({
   migrationStore,
   auditLog,
   config,
+  preferences,
 }: MeRouterDeps): Router {
   const router = Router();
   const rl = (name: string, windowMs: number, max: number) =>
@@ -74,7 +82,7 @@ export function createMeRouter({
     '/profile',
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
-      res.json(await readProfile(dbStore, userId, walletLedger));
+      res.json(await readProfile(dbStore, userId, walletLedger, preferences));
     }),
   );
 
@@ -84,8 +92,8 @@ export function createMeRouter({
     validateBody(meContract.preferencesRequest, 'invalid_preferences'),
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
-      await writePreferences(dbStore, userId, req.body);
-      res.json(await readProfile(dbStore, userId, walletLedger));
+      await writePreferences(dbStore, userId, req.body, preferences);
+      res.json(await readProfile(dbStore, userId, walletLedger, preferences));
     }),
   );
 

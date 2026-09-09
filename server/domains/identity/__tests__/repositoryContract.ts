@@ -74,6 +74,35 @@ export function runIdentityRepositoryContract(makeHarness: () => Promise<Contrac
     expect(await roles.revoke({ userId: 'u1', role: 'support', revokedBy: 'admin1' })).toBeNull();
   });
 
+  it('preferences upsert is partial and get overlays only set fields (§18.2)', async () => {
+    const { users, preferences } = await setup();
+    await users.upsertFromIdentity({ id: 'u1' }, { provider: 'telegram', externalId: '1' });
+
+    expect(await preferences.get('u1')).toBeNull();
+
+    const first = await preferences.upsert('u1', { activeTheme: 'dawn', avatar: 'lamb' });
+    expect(first).toMatchObject({
+      userId: 'u1',
+      schemaVersion: 1,
+      activeTheme: 'dawn',
+      avatar: 'lamb',
+      bibleTranslation: null,
+    });
+
+    // a partial patch leaves the untouched fields alone
+    const second = await preferences.upsert('u1', { bibleTranslation: 'UTT' });
+    expect(second.activeTheme).toBe('dawn');
+    expect(second.avatar).toBe('lamb');
+    expect(second.bibleTranslation).toBe('UTT');
+
+    // an explicit null clears
+    const third = await preferences.upsert('u1', { avatar: null });
+    expect(third.avatar).toBeNull();
+    expect(third.activeTheme).toBe('dawn');
+
+    expect(await preferences.get('u1')).toEqual(third);
+  });
+
   it('re-granting a revoked role reactivates it and history keeps every transition', async () => {
     const { users, roles } = await setup();
     await users.upsertFromIdentity({ id: 'u1' }, { provider: 'telegram', externalId: '1' });

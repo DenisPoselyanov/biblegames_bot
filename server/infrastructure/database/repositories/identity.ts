@@ -11,9 +11,11 @@ import type { Role } from '../../../../contracts/index';
 import type { Transaction as OpaqueTx } from '../../../domains/shared/context';
 import type {
   IdentityRepositories,
+  PreferencesRepository,
   RoleRepository,
   UserRepository,
 } from '../../../domains/identity/repository';
+import { PREFERENCE_KEYS, type PreferencesPatch, type PreferencesRecord } from '../../../domains/identity/preferences';
 import type {
   ExternalIdentityRef,
   GrantRoleInput,
@@ -23,7 +25,7 @@ import type {
   UserUpsert,
 } from '../../../domains/identity/types';
 import type { Database, Transaction } from '../client';
-import { externalIdentities, userRoles, users } from '../schema/identity';
+import { externalIdentities, userPreferences, userRoles, users } from '../schema/identity';
 
 type Executor = Database | Transaction;
 
@@ -49,6 +51,18 @@ const toGrantRecord = (r: typeof userRoles.$inferSelect): RoleGrantRecord => ({
   grantedAt: r.grantedAt,
   revokedAt: r.revokedAt,
   revokedBy: r.revokedBy,
+});
+
+const toPreferencesRecord = (r: typeof userPreferences.$inferSelect): PreferencesRecord => ({
+  userId: r.userId,
+  schemaVersion: r.schemaVersion,
+  bibleTranslation: r.bibleTranslation,
+  activeTheme: r.activeTheme,
+  avatar: r.avatar,
+  locale: r.locale,
+  timezone: r.timezone,
+  motionIntensity: r.motionIntensity,
+  updatedAt: r.updatedAt,
 });
 
 export function createSqlIdentityRepositories(db: Database): IdentityRepositories {
@@ -167,5 +181,37 @@ export function createSqlIdentityRepositories(db: Database): IdentityRepositorie
     },
   };
 
-  return { users: userRepo, roles: roleRepo };
+  const preferencesRepo: PreferencesRepository = {
+    async get(userId, tx) {
+      const [row] = await asExecutor(db, tx)
+        .select()
+        .from(userPreferences)
+        .where(eq(userPreferences.userId, userId))
+        .limit(1);
+      return row ? toPreferencesRecord(row) : null;
+    },
+
+    async upsert(userId, patch: PreferencesPatch, tx) {
+      const set: Record<string, unknown> = { updatedAt: new Date().toISOString() };
+      for (const key of PREFERENCE_KEYS) {
+        if (patch[key] !== undefined) set[key] = patch[key] ?? null;
+      }
+      const [row] = await asExecutor(db, tx)
+        .insert(userPreferences)
+        .values({
+          userId,
+          bibleTranslation: patch.bibleTranslation ?? null,
+          activeTheme: patch.activeTheme ?? null,
+          avatar: patch.avatar ?? null,
+          locale: patch.locale ?? null,
+          timezone: patch.timezone ?? null,
+          motionIntensity: patch.motionIntensity ?? null,
+        })
+        .onConflictDoUpdate({ target: userPreferences.userId, set })
+        .returning();
+      return toPreferencesRecord(row);
+    },
+  };
+
+  return { users: userRepo, roles: roleRepo, preferences: preferencesRepo };
 }

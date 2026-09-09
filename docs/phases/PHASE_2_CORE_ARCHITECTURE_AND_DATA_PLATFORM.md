@@ -271,6 +271,28 @@ Jobs, storage, deployment, migration cutover & DoD (§17–§20, §26, §27). Of
   level, message? }` — never a stack or payload. `__APP_VERSION__` baked in by
   Vite (`VITE_BUILD_ID` | `<pkg>-dev`). `npm run check` green, 337 tests (+14).
 
+- **Legacy profile decomposition — preferences (§18.2, part 5):** the typed
+  `user_preferences` table (migration `0001`) gets its first authoritative use.
+  New `PreferencesRepository` (`server/domains/identity/preferences.ts`) — SQL
+  adapter + in-memory peer, in the shared identity contract test. `writePreferences`
+  / `readProfile` now **dual-write** the whitelist fields with a typed home
+  (`activeTheme` / `avatar` / `bibleTranslation`) to `user_preferences` and
+  overlay them on read; the blob copy stays in sync during the verification
+  window. `LEGACY_STORE_READONLY=true` freezes those three fields in the blob
+  (typed store becomes authoritative). Backfill:
+  `npm run migrate:backfill-preferences [--dry]` (idempotent, reports
+  scanned/written/unchanged/no-user-row). `displayName` and the
+  progression/entitlement fields are **not** decomposed yet — see below.
+  `npm run check` green, 342 tests (+5).
+
+  *Remaining §18.2 work (post-Phase-2 rollout, §27 step 9):* typed tables +
+  repositories for progression state (level/xp/rank/streak) and
+  achievements/entitlements, their backfill with a `migration_records`-style
+  provenance row and count/sum verification, then the legacy write-path removal
+  once rollout evidence is in. The framework (dual-write + `LEGACY_STORE_READONLY`
+  + backfill pattern) is in place; `player_stats` / `player_profiles` blobs stay
+  authoritative for those fields until then.
+
 ---
 
 ## 1. Product outcome

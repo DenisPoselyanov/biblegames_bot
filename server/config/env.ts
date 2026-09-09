@@ -83,6 +83,13 @@ export interface ServerConfig {
   realtimeGatewayV2: boolean;
   /** Background job queue driver (Phase 2 §17, ADR-014). */
   jobQueueDriver: JobQueueDriver;
+  /**
+   * Legacy profile-blob decomposition cutover (Phase 2 §18.2, ADR-012).
+   * When `true`, preference writes go **only** to the typed `user_preferences`
+   * table and the blob's preference fields are frozen — set this after the
+   * backfill + verification window. Default `false`: dual-write (blob + typed).
+   */
+  legacyStoreReadOnly: boolean;
   /** Object storage driver (Phase 2 §19). */
   objectStorageDriver: ObjectStorageDriver;
   /** Filesystem object-store root (used when `objectStorageDriver === 'filesystem'`). */
@@ -228,6 +235,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     realtimeGatewayV2: env.REALTIME_GATEWAY_V2 === 'true',
     jobQueueDriver,
     jobSchedulesEnabled: env.JOB_SCHEDULES_ENABLED === 'true',
+    legacyStoreReadOnly: env.LEGACY_STORE_READONLY === 'true',
     objectStorageDriver,
     objectStorageDir: env.OBJECT_STORAGE_DIR ?? 'server/.data/objects',
     s3,

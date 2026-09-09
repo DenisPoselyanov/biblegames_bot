@@ -8,7 +8,14 @@
 import { normalizeRoles } from '../../authz/roles';
 import type { Role } from '../../../contracts/index';
 import type { Transaction } from '../shared/context';
-import type { IdentityRepositories, RoleRepository, UserRepository } from './repository';
+import type {
+  IdentityRepositories,
+  PreferencesRepository,
+  RoleRepository,
+  UserRepository,
+} from './repository';
+import type { PreferencesPatch, PreferencesRecord } from './preferences';
+import { PREFERENCE_KEYS } from './preferences';
 import type {
   ExternalIdentityRef,
   GrantRoleInput,
@@ -32,6 +39,7 @@ export function createInMemoryIdentityRepositories(
   const users = new Map<string, UserRecord>();
   const identities = new Map<string, string>(); // provider:externalId -> userId
   const grants = new Map<string, RoleGrantRecord>(); // `${userId}\0${role}` -> row
+  const preferences = new Map<string, PreferencesRecord>();
 
   const iso = (): string => now().toISOString();
   const grantKey = (userId: string, role: Role): string => `${userId}\0${role}`;
@@ -115,5 +123,35 @@ export function createInMemoryIdentityRepositories(
     },
   };
 
-  return { users: userRepo, roles: roleRepo };
+  const preferencesRepo: PreferencesRepository = {
+    async get(userId, tx) {
+      rejectTx(tx);
+      const row = preferences.get(userId);
+      return row ? { ...row } : null;
+    },
+    async upsert(userId, patch: PreferencesPatch, tx) {
+      rejectTx(tx);
+      const ts = iso();
+      const existing = preferences.get(userId);
+      const base: PreferencesRecord = existing ?? {
+        userId,
+        schemaVersion: 1,
+        bibleTranslation: null,
+        activeTheme: null,
+        avatar: null,
+        locale: null,
+        timezone: null,
+        motionIntensity: null,
+        updatedAt: ts,
+      };
+      const next: PreferencesRecord = { ...base, updatedAt: ts };
+      for (const key of PREFERENCE_KEYS) {
+        if (patch[key] !== undefined) next[key] = patch[key] ?? null;
+      }
+      preferences.set(userId, next);
+      return { ...next };
+    },
+  };
+
+  return { users: userRepo, roles: roleRepo, preferences: preferencesRepo };
 }

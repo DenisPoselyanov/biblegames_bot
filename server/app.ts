@@ -236,7 +236,17 @@ export function createApp(deps: AppDeps): Express {
   app.use(
     '/api/v1/me',
     ...authed,
-    createMeRouter({ dbStore, walletLedger, migrationStore, auditLog, config }),
+    createMeRouter({
+      dbStore,
+      walletLedger,
+      migrationStore,
+      auditLog,
+      config,
+      // Typed-preferences cutover (§18.2) — active whenever identity is wired.
+      preferences: identity
+        ? { repo: identity.preferences, legacyReadOnly: config.legacyStoreReadOnly }
+        : undefined,
+    }),
   );
   app.use(
     '/api/v1/progression',
