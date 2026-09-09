@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { usePlayer } from '../../context/PlayerContext';
+import { useResolvedProfile } from '../../hooks/domain/useProfileWriter';
 import { THEMES } from '../../data/themes';
 import { useTelegram } from '../../hooks/useTelegram';
 import { friendChallengeManager } from '../../lib/friendChallenges';
@@ -23,7 +23,7 @@ function getThemeTitle(id: string) {
 export function Challenges() {
   const { shouldEnter } = useMotionEntrance('challenges');
   const { userId, displayName } = useTelegram();
-  const { profile } = usePlayer();
+  const profile = useResolvedProfile();
   const [version, setVersion] = useState(0);
 
   const [friendId, setFriendId] = useState('');

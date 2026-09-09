@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { usePlayer } from '../context/PlayerContext';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
 import { loadAllTopicHierarchies } from '../data/topicDbLoader';
 import { generateRecommendations, formatRecommendation, getRecommendationLink } from '../lib/recommendationEngine';
 import type { Recommendation } from '../types';
@@ -11,7 +11,7 @@ import styles from './StudyHub.module.css';
 
 export function StudyHub() {
   const { shouldEnter } = useMotionEntrance('study-hub');
-  const { profile } = usePlayer();
+  const profile = useResolvedProfile();
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
 

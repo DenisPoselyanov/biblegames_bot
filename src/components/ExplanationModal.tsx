@@ -1,6 +1,6 @@
 import type { Question } from '../types';
 import { useFocusTrap } from '../hooks/useFocusTrap';
-import { usePlayer } from '../context/PlayerContext';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { MotionSheet } from './motion';
 import { ScripturePanel } from './ScripturePanel';
@@ -20,7 +20,7 @@ export function ExplanationModal({
   onClose,
   showReaderLink = true,
 }: ExplanationModalProps) {
-  const { profile } = usePlayer();
+  const profile = useResolvedProfile();
   const translation = normalizeBollsTranslation(profile.bibleTranslation);
   const focusTrapRef = useFocusTrap(open);
 

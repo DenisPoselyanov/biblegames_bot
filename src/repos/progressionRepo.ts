@@ -1,35 +1,53 @@
 /**
- * Client for the Phase 1 server-authoritative command surface (`/api/v1/*`).
- *
- * Only used when the `authoritative_profile` flag is on. Every method throws on
- * a non-2xx response so the caller (PlayerContext) can fall back to the local
- * computation and mark the run pending-sync.
+ * Client for the server-authoritative command surface (`/api/v1/*`), built on
+ * the typed API client (`src/lib/apiClient`). Every method throws on a non-2xx
+ * response so the caller (`useProgression` / `useEconomy`) can fall back to the
+ * local computation and mark the run pending-sync.
  */
 
+import type { ZodType } from 'zod';
+import { progressionContract, shopContract } from '@contracts';
 import type { Difficulty, MasteryState, PlayerProfile, PracticeStageResult } from '../types';
-import { apiV1Fetch, readApiError, type ApiError } from './apiClient';
+import { ApiError, apiRequest, type ApiRequestOptions } from '../lib/apiClient';
 
+/** A failed progression command. Carries the server's §7.5 envelope fields. */
 export class ProgressionError extends Error {
   readonly code: string;
   readonly status: number;
-  constructor(status: number, error: ApiError) {
-    super(error.message);
+  readonly retryable: boolean;
+  readonly requestId?: string;
+  readonly fieldErrors?: Record<string, string[]>;
+  constructor(source: ApiError) {
+    super(source.message);
     this.name = 'ProgressionError';
-    this.code = error.code;
-    this.status = status;
+    this.code = source.code;
+    this.status = source.status;
+    this.retryable = source.retryable;
+    this.requestId = source.requestId;
+    this.fieldErrors = source.fieldErrors;
   }
 }
 
-async function post<T>(path: string, body: unknown): Promise<T> {
-  const res = await apiV1Fetch(path, { method: 'POST', body: JSON.stringify(body) });
-  if (!res.ok) throw new ProgressionError(res.status, await readApiError(res));
-  return (await res.json()) as T;
+/** Run a command through the typed client, remapping `ApiError` → `ProgressionError`. */
+async function call<T>(path: string, opts: ApiRequestOptions<T>): Promise<T> {
+  try {
+    return await apiRequest<T>(path, opts);
+  } catch (err) {
+    if (err instanceof ApiError) throw new ProgressionError(err);
+    throw err; // network / abort errors propagate untouched
+  }
 }
 
-async function patch<T>(path: string, body: unknown): Promise<T> {
-  const res = await apiV1Fetch(path, { method: 'PATCH', body: JSON.stringify(body) });
-  if (!res.ok) throw new ProgressionError(res.status, await readApiError(res));
-  return (await res.json()) as T;
+function post<T>(
+  path: string,
+  body: unknown,
+  extra?: Omit<ApiRequestOptions<T>, 'method' | 'body'>,
+): Promise<T> {
+  return call<T>(path, { method: 'POST', body, ...extra });
+}
+
+function patch<T>(path: string, body: unknown): Promise<T> {
+  return call<T>(path, { method: 'PATCH', body });
 }
 
 export interface ProgressionSnapshot {
@@ -106,7 +124,11 @@ export interface PurchaseOutcome {
 
 export const progressionRepo = {
   completion(cmd: CompletionCommand): Promise<ProgressionOutcome> {
-    return post<ProgressionOutcome>('/progression/completions', cmd);
+    // The local `ProgressionOutcome` still diverges from the contract snapshot
+    // shape (delta extras); the typed read model in WS4 part 4 validates this.
+    return post<ProgressionOutcome>('/progression/completions', cmd, {
+      idempotencyKey: cmd.idempotencyKey,
+    });
   },
 
   answer(input: {
@@ -118,7 +140,11 @@ export const progressionRepo = {
     errorTag?: string;
     idempotencyKey: string;
   }): Promise<AnswerOutcome> {
-    return post<AnswerOutcome>('/progression/answers', input);
+    return post<AnswerOutcome>('/progression/answers', input, {
+      idempotencyKey: input.idempotencyKey,
+      schema: progressionContract.answerResponse as unknown as ZodType<AnswerOutcome>,
+      onInvalidResponse: 'warn',
+    });
   },
 
   purchase(input: {
@@ -126,7 +152,11 @@ export const progressionRepo = {
     itemId: string;
     idempotencyKey: string;
   }): Promise<PurchaseOutcome> {
-    return post<PurchaseOutcome>('/shop/purchases', input);
+    return post<PurchaseOutcome>('/shop/purchases', input, {
+      idempotencyKey: input.idempotencyKey,
+      schema: shopContract.purchaseResponse as unknown as ZodType<PurchaseOutcome>,
+      onInvalidResponse: 'warn',
+    });
   },
 
   savePreferences(prefs: {
@@ -149,8 +179,13 @@ export const progressionRepo = {
   },
 
   async getProfile(): Promise<PlayerProfile | null> {
-    const res = await apiV1Fetch('/me/profile');
-    if (!res.ok) return null;
-    return (await res.json()) as PlayerProfile;
+    try {
+      return await apiRequest<PlayerProfile>('/me/profile');
+    } catch (err) {
+      // A missing/forbidden profile is a null result; transport failures still
+      // propagate so `playerRepo.get` can fall back to the local copy.
+      if (err instanceof ApiError) return null;
+      throw err;
+    }
   },
 };

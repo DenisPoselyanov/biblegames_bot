@@ -1,33 +1,12 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  type ReactNode,
-} from 'react';
-import type {
-  CompletedLevel,
-  DailyPlanItem,
-  Difficulty,
-  GlobalStats,
-  PlayerProfile,
-  Recommendation,
-} from '../types';
-import { DIFFICULTY_POINTS, DIFFICULTY_ORDER } from '../types';
-import { formatRankLabel } from '../lib/practiceProgression';
-import { loadGlobalStats, loadProfile } from '../lib/storage';
-import { useTelegram } from '../hooks/useTelegram';
-import { getAchievementById } from '../data/achievements';
-import { getCosmeticThemeById } from '../data/cosmetics';
-import { applyCosmeticThemeById } from '../lib/cosmeticTheme';
-import { STUDY_THEME_GROUPS } from '../data/study_themes';
-import { updateMastery, updateStreak } from '../lib/learning';
-import { flushTelemetry, trackEvent } from '../lib/telemetry';
-import { studyRepo } from '../repos/studyRepo';
-import { generateRecommendations } from '../lib/recommendationEngine';
-import { buildDailyPlan } from '../lib/dailyPlan';
+import { useCallback, useMemo } from 'react';
+import type { CompletedLevel, Difficulty, PlayerProfile } from '../../types';
+import { DIFFICULTY_POINTS, DIFFICULTY_ORDER } from '../../types';
+import { formatRankLabel } from '../../lib/practiceProgression';
+import { getAchievementById } from '../../data/achievements';
+import { STUDY_THEME_GROUPS } from '../../data/study_themes';
+import { updateMastery, updateStreak } from '../../lib/learning';
+import { trackEvent } from '../../lib/telemetry';
+import { studyRepo } from '../../repos/studyRepo';
 import {
   advancePlayerRank,
   computeStageWisdom,
@@ -35,93 +14,18 @@ import {
   getOrCreatePracticeTrack,
   PASS_MIN_CORRECT,
   getPracticeStageCount,
-} from '../lib/practiceProgression';
-import { loadAllTopicHierarchies } from '../data/topicDbLoader';
-import type { BollsTranslation } from '../lib/bollsConstants';
-import { normalizeBollsTranslation } from '../lib/bollsConstants';
-import { isFeatureEnabled } from '../lib/flags';
-import { hasApi } from '../repos/apiClient';
+} from '../../lib/practiceProgression';
+import { isFeatureEnabled } from '../../lib/flags';
 import {
   progressionRepo,
   type CompletionCommand,
-  type ProgressionOutcome,
-} from '../repos/progressionRepo';
-import { getLearningObjectiveId } from '../lib/learningObjectives';
-import { computeNextReviewState } from '../lib/reviewScheduler';
-import { usePlayerProfileStore } from '../stores/playerProfileStore';
-import { useGlobalStatsStore } from '../stores/globalStatsStore';
-import {
-  usePlayerProfileSync,
-  useSavePlayerProfileMutation,
-} from '../queries/usePlayerProfile';
-import {
-  useGlobalStatsSync,
-  useRecordGlobalPlayMutation,
-  useRefreshGlobalStats,
-} from '../queries/useGlobalStats';
-
-interface PlayerContextValue {
-  profile: PlayerProfile;
-  globalStats: GlobalStats;
-  completeLevel: (
-    themeId: string,
-    difficulty: Difficulty,
-    correctCount: number,
-    totalQuestions: number,
-  ) => Promise<{ points: number; alreadyCompleted: boolean }>;
-  completePracticeStage: (
-    themeId: string,
-    difficulty: Difficulty,
-    stageIndex: number,
-    correctCount: number,
-    totalQuestions: number,
-    nodeId: string | null,
-    questionIds?: string[],
-  ) => Promise<{
-    passed: boolean;
-    points: number;
-    wisdomEarned: number;
-    stagePerfect: boolean;
-    nextStageUnlocked: boolean;
-    rankPromoted: boolean;
-    previousRankLabel: string;
-    newRankLabel: string;
-    streakDays: number;
-    celebrate: boolean;
-  }>;
-  isLevelDone: (themeId: string, difficulty: Difficulty) => boolean;
-  saveSurvivalRun: (score: number, pointsEarned: number, runId?: string) => Promise<void>;
-  saveMillionaireRun: (
-    reachedLevel: number,
-    pointsEarned: number,
-    runLength: number,
-    runId?: string,
-  ) => Promise<void>;
-  unlockAchievement: (achievementId: string) => boolean;
-  purchaseTheme: (themeId: string) => Promise<{ purchased: boolean; reason?: 'missing' | 'owned' | 'coins' }>;
-  setActiveTheme: (themeId: string) => boolean;
-  refreshStats: () => void;
-  setAvatar: (avatarId: string) => boolean;
-  purchaseAvatar: (
-    avatarId: string,
-    price: number,
-  ) => Promise<{ purchased: boolean; reason?: 'missing' | 'owned' | 'coins' }>;
-  recordAnswerEvent: (params: { themeId: string; isCorrect: boolean; questionId: string; errorTag?: string; nodeId?: string }) => void;
-  getRecommendations: (maxRecommendations?: number) => Promise<Recommendation[]>;
-  getDailyPlan: () => Promise<DailyPlanItem[]>;
-  setBibleTranslation: (translation: BollsTranslation) => void;
-}
-
-const PlayerContext = createContext<PlayerContextValue | null>(null);
-
-/**
- * The server-authoritative `/api/v1` command surface is the only remote path
- * (WS4 part 2 removed the `authoritative_profile` flag and the legacy fallback).
- * When there's no API base configured we run fully local.
- */
-function authoritativeEnabled(): boolean {
-  return hasApi();
-}
+} from '../../repos/progressionRepo';
+import { getLearningObjectiveId } from '../../lib/learningObjectives';
+import { computeNextReviewState } from '../../lib/reviewScheduler';
+import { authoritativeEnabled, applyOutcome } from '../../lib/progressionOutcome';
+import { useRecordGlobalPlayMutation } from '../../queries/useGlobalStats';
+import { useProfileWriter } from './useProfileWriter';
+import { useAuthSession } from '../../context/AuthSessionContext';
 
 /** sessionStorage set of authoritative event ids whose celebration has already played (ADR-010). */
 const CELEBRATED_KEY = 'bible-game-celebrated-events';
@@ -137,117 +41,63 @@ function celebrationAlreadyPlayed(eventId: string): boolean {
   }
 }
 
-async function purchaseViaServer(
-  kind: 'theme' | 'avatar',
-  itemId: string,
-  persist: (next: PlayerProfile) => void,
-  profile: PlayerProfile,
-): Promise<{ purchased: boolean; reason?: 'missing' | 'owned' | 'coins' }> {
-  try {
-    const res = await progressionRepo.purchase({
-      kind,
-      itemId,
-      idempotencyKey: `${kind}:${itemId}`,
-    });
-    persist({
-      ...profile,
-      coins: res.balance,
-      unlockedThemes: res.unlockedThemes,
-      unlockedAvatars: res.unlockedAvatars,
-      activeTheme: res.activeTheme || profile.activeTheme,
-      avatar: res.avatar || profile.avatar,
-      achievements: res.achievementsGranted.length
-        ? Array.from(new Set([...profile.achievements, ...res.achievementsGranted]))
-        : profile.achievements,
-    });
-    return { purchased: true };
-  } catch (err) {
-    const code = (err as { code?: string }).code;
-    if (code === 'insufficient_funds') return { purchased: false, reason: 'coins' };
-    if (code === 'already_owned') return { purchased: false, reason: 'owned' };
-    return { purchased: false, reason: 'missing' };
-  }
+export interface PracticeStageResult {
+  passed: boolean;
+  points: number;
+  wisdomEarned: number;
+  stagePerfect: boolean;
+  nextStageUnlocked: boolean;
+  rankPromoted: boolean;
+  previousRankLabel: string;
+  newRankLabel: string;
+  streakDays: number;
+  celebrate: boolean;
 }
 
-/** Overlay the server-authoritative snapshot onto the local profile, keeping client-owned fields. */
-function applyOutcome(current: PlayerProfile, outcome: ProgressionOutcome): PlayerProfile {
-  const n = outcome.next;
-  return {
-    ...current,
-    coins: n.coins,
-    playerRank: {
-      tier: n.rankTier,
-      plaque: n.rankPlaque,
-      wisdomPoints: n.wisdom,
-      unlockedTier: n.rankUnlockedTier,
-    },
-    streakDays: n.streakDays,
-    lastActiveAt: n.lastActiveAt,
-    completedLevels: n.completedLevels as unknown as PlayerProfile['completedLevels'],
-    achievements: n.achievements,
-    themePoints: n.themePoints,
-    practiceTracks: n.practiceTracks,
-    studyMastery: n.studyMastery,
-    millionaireWins: n.millionaireWins,
-    millionaireMaxLevel: n.millionaireMaxLevel,
-    survivalHighScore: n.survivalHighScore,
-  };
+export interface ProgressionActions {
+  completeLevel: (
+    themeId: string,
+    difficulty: Difficulty,
+    correctCount: number,
+    totalQuestions: number,
+  ) => Promise<{ points: number; alreadyCompleted: boolean }>;
+  completePracticeStage: (
+    themeId: string,
+    difficulty: Difficulty,
+    stageIndex: number,
+    correctCount: number,
+    totalQuestions: number,
+    nodeId: string | null,
+    questionIds?: string[],
+  ) => Promise<PracticeStageResult>;
+  isLevelDone: (themeId: string, difficulty: Difficulty) => boolean;
+  saveSurvivalRun: (score: number, pointsEarned: number, runId?: string) => Promise<void>;
+  saveMillionaireRun: (
+    reachedLevel: number,
+    pointsEarned: number,
+    runLength: number,
+    runId?: string,
+  ) => Promise<void>;
+  unlockAchievement: (achievementId: string) => boolean;
+  recordAnswerEvent: (params: {
+    themeId: string;
+    isCorrect: boolean;
+    questionId: string;
+    errorTag?: string;
+    nodeId?: string;
+  }) => void;
 }
 
-export function PlayerProvider({ children }: { children: ReactNode }) {
-  const { userId, displayName } = useTelegram();
-  const storedProfile = usePlayerProfileStore((s) => s.profile);
-  const storedGlobalStats = useGlobalStatsStore((s) => s.globalStats);
-  const setProfileInStore = usePlayerProfileStore((s) => s.setProfile);
-
-  const profile =
-    storedProfile?.userId === userId
-      ? storedProfile
-      : loadProfile(userId, displayName);
-  const globalStats = storedGlobalStats ?? loadGlobalStats();
-
-  const localDirtyRef = useRef(false);
-  const profileSyncGen = useRef(0);
-
-  usePlayerProfileSync(userId, displayName, localDirtyRef);
-  useGlobalStatsSync(userId);
-  const saveProfileMutation = useSavePlayerProfileMutation(userId);
+/**
+ * Practice / progression / competitive-run writes (§13.1). Every path is
+ * server-authoritative when an API base is configured and falls back to the
+ * local computation otherwise. State lands through `useProfileWriter`; theme
+ * play counters go through the global-stats mutation.
+ */
+export function useProgression(): ProgressionActions {
+  const { userId } = useAuthSession();
+  const { profile, persistProfile, updateProfile } = useProfileWriter();
   const recordPlayMutation = useRecordGlobalPlayMutation(userId);
-  const refreshStats = useRefreshGlobalStats(userId);
-
-  useEffect(() => {
-    const gen = ++profileSyncGen.current;
-    localDirtyRef.current = false;
-    loadProfile(userId, displayName);
-
-    void studyRepo.syncHistory();
-    trackEvent('session_start', { userId });
-    void flushTelemetry(userId);
-
-    const timer = window.setInterval(() => {
-      void flushTelemetry(userId);
-    }, 15000);
-
-    return () => {
-      if (profileSyncGen.current === gen) {
-        localDirtyRef.current = false;
-      }
-      window.clearInterval(timer);
-    };
-  }, [userId, displayName]);
-
-  useEffect(() => {
-    applyCosmeticThemeById(profile.activeTheme);
-  }, [profile.activeTheme]);
-
-  const persistProfile = useCallback(
-    (next: PlayerProfile) => {
-      localDirtyRef.current = true;
-      setProfileInStore(next);
-      saveProfileMutation.mutate(next);
-    },
-    [setProfileInStore, saveProfileMutation],
-  );
 
   const isLevelDone = useCallback(
     (themeId: string, difficulty: Difficulty) =>
@@ -353,7 +203,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       totalQuestions: number,
       nodeId: string | null,
       questionIds?: string[],
-    ) => {
+    ): Promise<PracticeStageResult> => {
       const passed = correctCount >= PASS_MIN_CORRECT;
       const total = totalQuestions > 0 ? totalQuestions : 1;
       const basePoints = DIFFICULTY_POINTS[difficulty];
@@ -560,14 +410,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         celebrate: true,
       };
     },
-    [profile, userId, persistProfile, recordPlayMutation],
-  );
-
-  const updateProfile = useCallback(
-    (updater: (current: PlayerProfile) => PlayerProfile) => {
-      persistProfile(updater(profile));
-    },
-    [profile, persistProfile],
+    [profile, persistProfile, recordPlayMutation],
   );
 
   const runCompletion = useCallback(
@@ -640,89 +483,6 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     [profile.achievements, updateProfile],
   );
 
-  const purchaseTheme = useCallback(
-    async (themeId: string) => {
-      const theme = getCosmeticThemeById(themeId);
-      if (!theme) return { purchased: false, reason: 'missing' as const };
-      if (profile.unlockedThemes.includes(themeId)) {
-        return { purchased: false, reason: 'owned' as const };
-      }
-
-      if (authoritativeEnabled()) {
-        return purchaseViaServer('theme', themeId, persistProfile, profile);
-      }
-
-      if (profile.coins < theme.price) {
-        return { purchased: false, reason: 'coins' as const };
-      }
-
-      updateProfile((current) => {
-        if (current.unlockedThemes.includes(themeId)) return current;
-        return {
-          ...current,
-          coins: current.coins - theme.price,
-          unlockedThemes: [...current.unlockedThemes, themeId],
-          activeTheme: themeId,
-          achievements: current.achievements.includes('aesthete')
-            ? current.achievements
-            : [...current.achievements, 'aesthete'],
-        };
-      });
-
-      return { purchased: true };
-    },
-    [profile, persistProfile, updateProfile],
-  );
-
-  const setActiveTheme = useCallback(
-    (themeId: string) => {
-      if (!getCosmeticThemeById(themeId) || !profile.unlockedThemes.includes(themeId)) {
-        return false;
-      }
-
-      updateProfile((current) => ({ ...current, activeTheme: themeId }));
-      return true;
-    },
-    [profile.unlockedThemes, updateProfile],
-  );
-
-  const purchaseAvatar = useCallback(
-    async (avatarId: string, price: number) => {
-      if (profile.unlockedAvatars.includes(avatarId)) {
-        return { purchased: false, reason: 'owned' as const };
-      }
-
-      if (authoritativeEnabled()) {
-        return purchaseViaServer('avatar', avatarId, persistProfile, profile);
-      }
-
-      if (profile.coins < price) {
-        return { purchased: false, reason: 'coins' as const };
-      }
-
-      updateProfile((current) => ({
-        ...current,
-        coins: current.coins - price,
-        unlockedAvatars: [...current.unlockedAvatars, avatarId],
-        avatar: avatarId,
-      }));
-
-      return { purchased: true };
-    },
-    [profile, persistProfile, updateProfile],
-  );
-
-  const setAvatar = useCallback(
-    (avatarId: string) => {
-      if (!profile.unlockedAvatars.includes(avatarId) && avatarId !== '') {
-        return false;
-      }
-      updateProfile((current) => ({ ...current, avatar: avatarId }));
-      return true;
-    },
-    [profile.unlockedAvatars, updateProfile],
-  );
-
   const recordAnswerEvent = useCallback(
     ({ themeId, isCorrect, questionId, errorTag, nodeId }: { themeId: string; isCorrect: boolean; questionId: string; errorTag?: string; nodeId?: string }) => {
       const map = new Map(
@@ -785,98 +545,27 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
       trackEvent('question_answered', { questionId, subthemeId: effectiveNodeId, nodeId, isCorrect });
     },
-    [updateProfile, userId],
-  );
-
-  const setBibleTranslation = useCallback(
-    (translation: BollsTranslation) => {
-      const nextTranslation = normalizeBollsTranslation(translation);
-      updateProfile((current) => ({
-        ...current,
-        bibleTranslation: nextTranslation,
-      }));
-      trackEvent('bible_translation_changed', { translation: nextTranslation });
-    },
     [updateProfile],
   );
 
-  const getRecommendations = useCallback(
-    async (maxRecommendations = 5): Promise<Recommendation[]> => {
-      try {
-        const topicHierarchy = await loadAllTopicHierarchies();
-        return generateRecommendations(
-          {
-            profile,
-            topicHierarchy,
-          },
-          maxRecommendations,
-        );
-      } catch (error) {
-        console.error('Failed to generate recommendations:', error);
-        return [];
-      }
-    },
-    [profile],
-  );
-
-  const getDailyPlan = useCallback(async (): Promise<DailyPlanItem[]> => {
-    try {
-      const topicHierarchy = await loadAllTopicHierarchies();
-      return buildDailyPlan({ profile, topicHierarchy });
-    } catch (error) {
-      console.error('Failed to build daily plan:', error);
-      return [];
-    }
-  }, [profile]);
-
-  const value = useMemo(
+  return useMemo(
     () => ({
-      profile,
-      globalStats,
       completeLevel,
       completePracticeStage,
       isLevelDone,
       saveSurvivalRun,
       saveMillionaireRun,
       unlockAchievement,
-      purchaseTheme,
-      setActiveTheme,
-      refreshStats,
-      setAvatar,
-      purchaseAvatar,
       recordAnswerEvent,
-      getRecommendations,
-      getDailyPlan,
-      setBibleTranslation,
     }),
     [
-      profile,
-      globalStats,
       completeLevel,
       completePracticeStage,
       isLevelDone,
       saveSurvivalRun,
       saveMillionaireRun,
       unlockAchievement,
-      purchaseTheme,
-      setActiveTheme,
-      refreshStats,
-      setAvatar,
-      purchaseAvatar,
       recordAnswerEvent,
-      getRecommendations,
-      getDailyPlan,
-      setBibleTranslation,
     ],
   );
-
-  return (
-    <PlayerContext.Provider value={value}>{children}</PlayerContext.Provider>
-  );
-}
-
-export function usePlayer() {
-  const ctx = useContext(PlayerContext);
-  if (!ctx) throw new Error('usePlayer must be used within PlayerProvider');
-  return ctx;
 }

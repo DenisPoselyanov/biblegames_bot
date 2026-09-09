@@ -54,7 +54,20 @@ describe('progressionRepo', () => {
 
   it('sends x-telegram-init-data and no x-user-id when initData is present', async () => {
     currentInitData = 'tg-init-data';
-    mockFetch(200, {});
+    mockFetch(200, {
+      nodeId: 'n1',
+      mastery: {
+        mastery: 0,
+        confidence: 0,
+        lastReviewedAt: null,
+        errorTags: [],
+        correctStreak: 0,
+        wrongCount: 0,
+        totalAnswers: 0,
+      },
+      achievementsGranted: [],
+      answeredAt: '2026-01-01T00:00:00.000Z',
+    });
     await progressionRepo.answer({ questionId: 'q', isCorrect: true, idempotencyKey: 'a1' });
     const headers = calls[0].init.headers as Record<string, string>;
     expect(headers['x-telegram-init-data']).toBe('tg-init-data');

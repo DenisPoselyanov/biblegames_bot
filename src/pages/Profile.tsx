@@ -2,7 +2,8 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useMemo, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { THEMES } from '../data/themes';
-import { usePlayer } from '../context/PlayerContext';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
+import { usePreferences } from '../hooks/usePreferences';
 import { useTelegram } from '../hooks/useTelegram';
 import { useToast } from '../components/Toast';
 import { Icon } from '../components/Icon';
@@ -61,7 +62,8 @@ function CircularProgress({ value, size = 48, stroke = 4 }: { value: number; siz
 export function Profile() {
   const { shouldEnter } = useMotionEntrance('profile');
   const reduced = useReducedMotion();
-  const { profile, setBibleTranslation } = usePlayer();
+  const profile = useResolvedProfile();
+  const { setBibleTranslation } = usePreferences();
   const bibleTranslation = normalizeBollsTranslation(profile.bibleTranslation);
   const { displayName, userId } = useTelegram();
   const { showToast } = useToast();

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { loadTopicHierarchy } from '../data/topicDbLoader';
-import { usePlayer } from '../context/PlayerContext';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
 import { buildReviewQueue } from '../lib/reviewScheduler';
 import type { ReviewQueueItem, TopicNode } from '../types';
 import { Icon } from '../components/Icon';
@@ -10,7 +10,7 @@ import styles from './ReviewQueue.module.css';
 export function ReviewQueue() {
   const { themeId } = useParams<{ themeId: string }>();
   const navigate = useNavigate();
-  const { profile } = usePlayer();
+  const profile = useResolvedProfile();
   const [hierarchy, setHierarchy] = useState<TopicNode | null>(null);
   const [loading, setLoading] = useState(true);
 

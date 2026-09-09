@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { usePlayer } from '../context/PlayerContext';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
 import { studyRepo } from '../repos/studyRepo';
 import { loadTopicHierarchy } from '../data/topicDbLoader';
 import { buildProgressSummary } from '../lib/progressDashboard';
@@ -11,7 +11,7 @@ import styles from './ProgressDashboard.module.css';
 
 export function ProgressDashboard() {
   const navigate = useNavigate();
-  const { profile } = usePlayer();
+  const profile = useResolvedProfile();
   const [hierarchies, setHierarchies] = useState<Record<string, TopicNode | null> | null>(null);
 
   useEffect(() => {

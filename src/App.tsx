@@ -1,6 +1,11 @@
 import { lazy, Suspense, type ReactNode } from 'react';
 import { BrowserRouter, Navigate, Route, Routes, useParams } from 'react-router-dom';
-import { PlayerProvider } from './context/PlayerContext';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './lib/queryClient';
+import { AuthSessionProvider } from './context/AuthSessionContext';
+import { MotionProvider } from './components/motion/MotionProvider';
+import { PlayerDataBootstrap } from './components/PlayerDataBootstrap';
+import { CosmeticThemeSync } from './components/CosmeticThemeSync';
 import { VantProvider } from './components/VantProvider';
 import { TopicHierarchyProvider } from './context/TopicHierarchyContext';
 import { Layout } from './components/Layout';
@@ -100,7 +105,11 @@ function TelegramBackButtonSync() {
 
 export default function App() {
   return (
-    <PlayerProvider>
+    <AuthSessionProvider>
+      <QueryClientProvider client={queryClient}>
+      <MotionProvider>
+      <PlayerDataBootstrap>
+      <CosmeticThemeSync />
       <VantProvider>
       <TopicHierarchyProvider>
       <ToastProvider>
@@ -168,6 +177,9 @@ export default function App() {
       </ToastProvider>
       </TopicHierarchyProvider>
       </VantProvider>
-    </PlayerProvider>
+      </PlayerDataBootstrap>
+      </MotionProvider>
+      </QueryClientProvider>
+    </AuthSessionProvider>
   );
 }

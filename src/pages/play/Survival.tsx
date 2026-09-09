@@ -3,7 +3,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getMixedQuestionsByDifficulty } from '../../data/questions';
 import { fetchQuestionsByIds } from '../../repos/questionsRepo';
-import { usePlayer } from '../../context/PlayerContext';
+import { useProgression } from '../../hooks/domain/useProgression';
+import { useResolvedProfile } from '../../hooks/domain/useProfileWriter';
 import { ExplanationModal } from '../../components/ExplanationModal';
 import { ConfirmModal } from '../../components/ConfirmModal';
 import { QuizPoolSkeleton } from '../../components/skeletons';
@@ -68,7 +69,8 @@ function pickSurvivalQuestion(score: number, excludeIds: string[]): Question | n
 export function Survival() {
   const reduced = useReducedMotion();
   const navigate = useNavigate();
-  const { saveSurvivalRun, unlockAchievement, profile } = usePlayer();
+  const { saveSurvivalRun, unlockAchievement } = useProgression();
+  const profile = useResolvedProfile();
   const [ready, setReady] = useState(false);
   const sessionRestoredRef = useRef(false);
   const [question, setQuestion] = useState<Question | null>(null);

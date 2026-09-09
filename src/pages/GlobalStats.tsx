@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
 import { PlayerProfileModal } from '../components/PlayerProfileModal';
 import { THEMES } from '../data/themes';
-import { usePlayer } from '../context/PlayerContext';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
+import { useGlobalStats } from '../queries/useGlobalStats';
+import { useAuthSession } from '../context/AuthSessionContext';
 import type { PlayerProfile } from '../types';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
@@ -116,7 +118,9 @@ function getRankMeta(profile: PlayerProfile, tab: RankingTab): string {
 
 export function GlobalStats() {
   const { shouldEnter } = useMotionEntrance('global-stats');
-  const { profile, globalStats, refreshStats } = usePlayer();
+  const { userId } = useAuthSession();
+  const profile = useResolvedProfile();
+  const { globalStats, refreshStats } = useGlobalStats(userId);
   const [activeTab, setActiveTab] = useState<RankingTab>('total');
   const [selectedProfile, setSelectedProfile] = useState<PlayerProfile | null>(null);
 

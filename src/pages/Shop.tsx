@@ -1,4 +1,6 @@
-import { usePlayer } from '../context/PlayerContext';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
+import { useEconomy } from '../hooks/domain/useEconomy';
+import { usePreferences } from '../hooks/usePreferences';
 import { useToast } from '../components/Toast';
 import { AVATARS } from '../data/cosmetics';
 import { CosmeticThemeShop } from '../components/CosmeticThemeShop';
@@ -10,7 +12,9 @@ import styles from './Shop.module.css';
 
 export function Shop() {
   const { shouldEnter } = useMotionEntrance('shop');
-  const { profile, setAvatar, purchaseAvatar } = usePlayer();
+  const profile = useResolvedProfile();
+  const { purchaseAvatar } = useEconomy();
+  const { setAvatar } = usePreferences();
   const { showToast } = useToast();
 
   const handleSelectAvatar = (avatarId: string) => {

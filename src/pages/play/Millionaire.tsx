@@ -2,7 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getMixedQuestionsByDifficulty } from '../../data/questions';
-import { usePlayer } from '../../context/PlayerContext';
+import { useProgression } from '../../hooks/domain/useProgression';
 import { ExplanationModal } from '../../components/ExplanationModal';
 import { ConfirmModal } from '../../components/ConfirmModal';
 import { QuizPoolSkeleton } from '../../components/skeletons';
@@ -72,7 +72,7 @@ function emptyMillionaireState() {
 export function Millionaire() {
   const reduced = useReducedMotion();
   const navigate = useNavigate();
-  const { saveMillionaireRun, unlockAchievement } = usePlayer();
+  const { saveMillionaireRun, unlockAchievement } = useProgression();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [ready, setReady] = useState(false);
   const sessionRestoredRef = useRef(false);
