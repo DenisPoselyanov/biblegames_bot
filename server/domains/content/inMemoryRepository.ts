@@ -34,13 +34,20 @@ export function createInMemoryContentRepositories(
   now: () => Date = () => new Date(),
 ): ContentRepositories {
   const revisions = new Map<string, QuestionRevisionRecord>();
+  const revIdsByQuestion = new Map<string, Set<string>>();
   const setKinds = new Map<string, ContentSetVersionRecord['kind']>();
   const versions = new Map<string, ContentSetVersionRecord>(); // `${setId}#${version}`
 
   const iso = (): string => now().toISOString();
+  const putRevision = (r: QuestionRevisionRecord): void => {
+    revisions.set(r.id, r);
+    let ids = revIdsByQuestion.get(r.questionId);
+    if (!ids) revIdsByQuestion.set(r.questionId, (ids = new Set()));
+    ids.add(r.id);
+  };
   const byQuestion = (questionId: string): QuestionRevisionRecord[] =>
-    [...revisions.values()]
-      .filter((r) => r.questionId === questionId)
+    [...(revIdsByQuestion.get(questionId) ?? [])]
+      .map((id) => revisions.get(id)!)
       .sort((a, b) => b.revisionNumber - a.revisionNumber);
 
   const revisionRepo: QuestionRevisionRepository = {
@@ -119,7 +126,7 @@ export function createInMemoryContentRepositories(
         supersededAt: null,
         quarantineReason: null,
       };
-      revisions.set(row.id, row);
+      putRevision(row);
       return { kind: 'created', revision: { ...row } };
     },
     async publishRevision(revisionId, tx) {

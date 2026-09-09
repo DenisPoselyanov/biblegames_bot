@@ -56,7 +56,8 @@
     "prune-untagged": "node scripts/prune-untagged-questions.mjs",
     "db:generate": "npx --yes drizzle-kit@^0.31.10 generate",
     "db:migrate": "tsx server/infrastructure/database/migrate.ts",
-    "db:check": "npx --yes drizzle-kit@^0.31.10 check"
+    "db:check": "npx --yes drizzle-kit@^0.31.10 check",
+    "content:import-legacy": "tsx scripts/content/import-legacy-questions.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.0",
