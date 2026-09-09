@@ -8,7 +8,7 @@ import {
   fetchQuestionCountForNode,
   fetchQuestionCounts,
 } from '../repos/questionsRepo';
-import { usePlayer } from '../context/PlayerContext';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
 import {
   DIFFICULTIES,
   DIFFICULTY_LABELS,
@@ -45,7 +45,7 @@ export function ThemeDetail() {
   const { themeId, nodeId: urlNodeId } = useParams<{ themeId: string; nodeId?: string }>();
   const navigate = useNavigate();
   const theme = getThemeById(themeId ?? '');
-  const { profile } = usePlayer();
+  const profile = useResolvedProfile();
   const nodeStageOverrides = usePracticeNodeOverridesStore((s) => s.overrides);
   void nodeStageOverrides;
 

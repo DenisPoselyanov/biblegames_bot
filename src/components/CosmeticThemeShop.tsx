@@ -1,4 +1,5 @@
-import { usePlayer } from '../context/PlayerContext';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
+import { useEconomy } from '../hooks/domain/useEconomy';
 import { usePreferences } from '../hooks/usePreferences';
 import { useToast } from './Toast';
 import { Icon } from './Icon';
@@ -13,7 +14,8 @@ interface CosmeticThemeShopProps {
 }
 
 export function CosmeticThemeShop({ enter = true }: CosmeticThemeShopProps) {
-  const { profile, purchaseTheme } = usePlayer();
+  const profile = useResolvedProfile();
+  const { purchaseTheme } = useEconomy();
   const { setActiveTheme } = usePreferences();
   const { showToast } = useToast();
 

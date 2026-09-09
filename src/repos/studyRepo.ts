@@ -3,7 +3,7 @@ import { STUDY_THEME_GROUPS } from '../data/study_themes';
 import { apiV1Fetch, hasApi } from './apiClient';
 
 /**
- * Answer history is server-owned: `PlayerContext.recordAnswerEvent` sends the
+ * Answer history is server-owned: `useProgression().recordAnswerEvent` sends the
  * mastery command (`POST /api/v1/progression/answers`), which also persists the
  * history row. This repo keeps a local mirror for offline reads and derives the
  * study path from it (WS4 part 2 removed the legacy `/study/answer` +

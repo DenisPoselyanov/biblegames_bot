@@ -4,7 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/queryClient';
 import { AuthSessionProvider } from './context/AuthSessionContext';
 import { MotionProvider } from './components/motion/MotionProvider';
-import { PlayerProvider } from './context/PlayerContext';
+import { PlayerDataBootstrap } from './components/PlayerDataBootstrap';
 import { CosmeticThemeSync } from './components/CosmeticThemeSync';
 import { VantProvider } from './components/VantProvider';
 import { TopicHierarchyProvider } from './context/TopicHierarchyContext';
@@ -108,7 +108,7 @@ export default function App() {
     <AuthSessionProvider>
       <QueryClientProvider client={queryClient}>
       <MotionProvider>
-      <PlayerProvider>
+      <PlayerDataBootstrap>
       <CosmeticThemeSync />
       <VantProvider>
       <TopicHierarchyProvider>
@@ -177,7 +177,7 @@ export default function App() {
       </ToastProvider>
       </TopicHierarchyProvider>
       </VantProvider>
-      </PlayerProvider>
+      </PlayerDataBootstrap>
       </MotionProvider>
       </QueryClientProvider>
     </AuthSessionProvider>

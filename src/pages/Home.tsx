@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
-import { usePlayer } from '../context/PlayerContext';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
+import { useLearningInsights } from '../hooks/domain/useLearningInsights';
 import { useTelegram } from '../hooks/useTelegram';
 import { Icon } from '../components/Icon';
 import { StreakBadge } from '../components/StreakBadge';
@@ -36,7 +37,8 @@ const TODAY_DATE_FORMAT = new Intl.DateTimeFormat('uk-UA', { day: 'numeric', mon
 
 export function Home() {
   const { shouldEnter } = useMotionEntrance('home');
-  const { profile, getRecommendations, getDailyPlan } = usePlayer();
+  const profile = useResolvedProfile();
+  const { getRecommendations, getDailyPlan } = useLearningInsights();
   const { displayName } = useTelegram();
   const [reviewHierarchy, setReviewHierarchy] = useState<TopicNode | null>(null);
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';

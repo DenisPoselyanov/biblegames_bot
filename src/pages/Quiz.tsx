@@ -9,7 +9,8 @@ import {
   fetchReviewQuestions,
 } from '../repos/questionsRepo';
 import { buildPracticePickOptions } from '../lib/practiceQuestionPick';
-import { usePlayer } from '../context/PlayerContext';
+import { useProgression } from '../hooks/domain/useProgression';
+import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
 import { useToast } from '../components/Toast';
 import { ExplanationModal } from '../components/ExplanationModal';
 import { QuestionEditModal } from '../components/QuestionEditModal';
@@ -93,7 +94,8 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     nodeId?: string;
   }>();
   const navigate = useNavigate();
-  const { completePracticeStage, recordAnswerEvent, profile } = usePlayer();
+  const { completePracticeStage, recordAnswerEvent } = useProgression();
+  const profile = useResolvedProfile();
   const { showToast } = useToast();
 
   const theme = getThemeById(themeId ?? '');

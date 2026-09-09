@@ -1,8 +1,8 @@
 /**
  * Client for the server-authoritative command surface (`/api/v1/*`), built on
  * the typed API client (`src/lib/apiClient`). Every method throws on a non-2xx
- * response so the caller (PlayerContext) can fall back to the local computation
- * and mark the run pending-sync.
+ * response so the caller (`useProgression` / `useEconomy`) can fall back to the
+ * local computation and mark the run pending-sync.
  */
 
 import type { ZodType } from 'zod';

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+import type { GlobalStats } from '../types';
 import { loadGlobalStats } from '../lib/storage';
 import { statsRepo } from '../repos/statsRepo';
 import { useGlobalStatsStore } from '../stores/globalStatsStore';
@@ -45,6 +46,21 @@ export function useRecordGlobalPlayMutation(userId: string) {
       queryClient.setQueryData(queryKeys.me.stats(userId), stats);
     },
   });
+}
+
+/**
+ * Read-side view of global stats for pages: the store snapshot (or the local
+ * fallback) plus the refresh action. `useGlobalStatsSync` must be mounted once
+ * near the root to keep the store fed from the server.
+ */
+export function useGlobalStats(userId: string): {
+  globalStats: GlobalStats;
+  refreshStats: () => void;
+} {
+  const stored = useGlobalStatsStore((s) => s.globalStats);
+  const globalStats = stored ?? loadGlobalStats();
+  const refreshStats = useRefreshGlobalStats(userId);
+  return useMemo(() => ({ globalStats, refreshStats }), [globalStats, refreshStats]);
 }
 
 export function useRefreshGlobalStats(userId: string) {

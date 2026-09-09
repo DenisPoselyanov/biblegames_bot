@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useKahootRoom } from '../../../hooks/useKahootRoom';
-import { usePlayer } from '../../../context/PlayerContext';
+import { useResolvedProfile } from '../../../hooks/domain/useProfileWriter';
 import { normalizeBollsTranslation } from '../../../lib/bollsConstants';
 import { ScripturePanel } from '../../../components/ScripturePanel';
 import { buildKahootStartLink } from '../../../lib/telegram';
@@ -16,7 +16,7 @@ const ANSWER_COLORS = [
 
 export function KahootDisplay() {
   const { code } = useParams<{ code: string }>();
-  const { profile } = usePlayer();
+  const profile = useResolvedProfile();
   const translation = normalizeBollsTranslation(profile.bibleTranslation);
   const { room, error, connected, joinAsDisplay } = useKahootRoom({ displayOnly: true });
   const [timeLeft, setTimeLeft] = useState(0);
