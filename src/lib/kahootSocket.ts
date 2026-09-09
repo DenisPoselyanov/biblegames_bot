@@ -56,6 +56,40 @@ export function onRoomState(handler: (state: KahootRoomState) => void): () => vo
   return () => s.off('room_state', handler);
 }
 
+/** `realtimeGatewayV2` envelope — sequence + serverTime drive reconnect recovery. */
+export interface RoomEventEnvelope {
+  eventId: string;
+  roomId: string;
+  sequence: number;
+  serverTime: string;
+  type: 'room_state' | 'room_closed';
+  payload: unknown;
+}
+
+export function onRoomEvent(handler: (event: RoomEventEnvelope) => void): () => void {
+  const s = getKahootSocket();
+  s.on('room_event', handler);
+  return () => s.off('room_event', handler);
+}
+
+export function resyncRoom(
+  code: string,
+  lastSequence: number,
+): Promise<
+  { ok: true; event: RoomEventEnvelope | null; missed: boolean } | { ok: false; error: string }
+> {
+  const s = getKahootSocket();
+  return new Promise((resolve) => {
+    s.emit('resync_room', { code, lastSequence }, (res: unknown) => {
+      resolve(
+        (res as { ok?: boolean } | null)?.ok
+          ? (res as { ok: true; event: RoomEventEnvelope | null; missed: boolean })
+          : { ok: false, error: 'resync_failed' },
+      );
+    });
+  });
+}
+
 export function onRoomClosed(handler: () => void): () => void {
   const s = getKahootSocket();
   s.on('room_closed', handler);

@@ -16,10 +16,14 @@ import { installSocketAuth, socketIsAuthenticated } from '../auth/socket';
 import { allowSocketEvent } from '../lib/socketRateLimit';
 import { RoomManager } from '../roomManager';
 import { saveKahootSession } from '../kahootSessions';
+import { systemClock } from '../realtime/clock';
+import { createRoomEventGateway, type RoomEventGateway } from '../realtime/roomEventGateway';
 
 export interface RealtimeServer {
   io: Server;
   rooms: RoomManager;
+  /** Present only when `realtimeGatewayV2` is enabled. */
+  gateway: RoomEventGateway | null;
   close: () => Promise<void>;
 }
 
@@ -38,13 +42,23 @@ export function createRealtimeServer(httpServer: HttpServer, config: ServerConfi
 
   installSocketAuth(io, config);
 
+  // Realtime gateway v2 (§15) — typed envelope + per-room sequence + server time.
+  const gateway: RoomEventGateway | null = config.realtimeGatewayV2
+    ? createRoomEventGateway(io, systemClock)
+    : null;
+
   const rooms = new RoomManager(
     (code, state) => {
       if (!state) {
         io.to(code).emit('room_closed');
+        if (gateway) {
+          gateway.emit(code, 'room_closed', { code });
+          gateway.drop(code);
+        }
         return;
       }
       io.to(code).emit('room_state', state);
+      gateway?.emit(code, 'room_state', state);
     },
     (roomCode) => {
       const exported = rooms.exportSession(roomCode);
@@ -146,6 +160,26 @@ export function createRealtimeServer(httpServer: HttpServer, config: ServerConfi
       }
     });
 
+    socket.on(
+      'resync_room',
+      (payload: { code?: string; lastSequence?: number }, ack?: (res: unknown) => void) => {
+        if (!socketIsAuthenticated(socket)) return ackUnauthorized(ack);
+        if (!gateway) {
+          // v2 disabled — nothing to resync against; the client falls back to
+          // its stored `room_state`.
+          ack?.({ ok: true, event: null, missed: false });
+          return;
+        }
+        const code = String(payload?.code ?? '').toUpperCase();
+        const lastSequence = Number.isFinite(payload?.lastSequence)
+          ? Number(payload?.lastSequence)
+          : -1;
+        const event = gateway.latest(code);
+        const current = gateway.sequenceOf(code);
+        ack?.({ ok: true, event, missed: current > lastSequence });
+      },
+    );
+
     socket.on('leave_room', () => {
       const { code } = rooms.leaveRoom(socket.id);
       if (code) socket.leave(code);
@@ -159,6 +193,7 @@ export function createRealtimeServer(httpServer: HttpServer, config: ServerConfi
   return {
     io,
     rooms,
+    gateway,
     close: () =>
       new Promise<void>((resolve) => {
         io.close(() => resolve());

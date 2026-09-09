@@ -52,6 +52,12 @@ export interface ServerConfig {
   rateLimitDisabled: boolean;
   /** Canonical content repository rollout stage (Phase 2 §14, §23). */
   canonicalContentRepository: CanonicalContentMode;
+  /**
+   * Realtime gateway v2 (Phase 2 §15, §23): typed `RealtimeEvent` envelopes with
+   * a per-room monotonic `sequence` and server time, plus a `resync_room`
+   * handler for reconnect recovery. Off → legacy raw `room_state` emits only.
+   */
+  realtimeGatewayV2: boolean;
 }
 
 export interface LoadConfigResult {
@@ -144,6 +150,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     rateLimitDisabled:
       env.RATE_LIMIT_DISABLED === 'true' || (nodeEnv === 'test' && env.RATE_LIMIT_DISABLED !== 'false'),
     canonicalContentRepository,
+    realtimeGatewayV2: env.REALTIME_GATEWAY_V2 === 'true',
   });
 
   return { config, warnings };
