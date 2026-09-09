@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, type RefObject } from 'react';
+import { useEffect } from 'react';
 import type { PlayerProfile } from '../types';
 import { loadProfile } from '../lib/storage';
 import { playerRepo } from '../repos/playerRepo';
@@ -17,18 +17,25 @@ export function usePlayerProfileQuery(userId: string, displayName: string) {
   });
 }
 
-export function usePlayerProfileSync(
-  userId: string,
-  displayName: string,
-  localDirtyRef: RefObject<boolean>,
-) {
+/**
+ * Overlay server profile snapshots onto the store, unless this client has a
+ * pending local write (`store.dirty`). Dirty is reset on user switch so the new
+ * user's profile hydrates from the server.
+ */
+export function usePlayerProfileSync(userId: string, displayName: string) {
   const setProfile = usePlayerProfileStore((s) => s.setProfile);
+  const clearDirty = usePlayerProfileStore((s) => s.clearDirty);
+  const dirty = usePlayerProfileStore((s) => s.dirty);
   const query = usePlayerProfileQuery(userId, displayName);
 
   useEffect(() => {
-    if (!query.data || localDirtyRef.current) return;
+    clearDirty();
+  }, [userId, clearDirty]);
+
+  useEffect(() => {
+    if (!query.data || dirty) return;
     setProfile(query.data);
-  }, [query.data, setProfile, localDirtyRef]);
+  }, [query.data, dirty, setProfile]);
 
   return query;
 }

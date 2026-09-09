@@ -4,7 +4,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   type ReactNode,
 } from 'react';
 import type {
@@ -18,10 +17,9 @@ import type {
 import { DIFFICULTY_POINTS, DIFFICULTY_ORDER } from '../types';
 import { formatRankLabel } from '../lib/practiceProgression';
 import { loadGlobalStats, loadProfile } from '../lib/storage';
-import { useTelegram } from '../hooks/useTelegram';
+import { useAuthSession } from '../context/AuthSessionContext';
 import { getAchievementById } from '../data/achievements';
 import { getCosmeticThemeById } from '../data/cosmetics';
-import { applyCosmeticThemeById } from '../lib/cosmeticTheme';
 import { STUDY_THEME_GROUPS } from '../data/study_themes';
 import { updateMastery, updateStreak } from '../lib/learning';
 import { flushTelemetry, trackEvent } from '../lib/telemetry';
@@ -37,8 +35,6 @@ import {
   getPracticeStageCount,
 } from '../lib/practiceProgression';
 import { loadAllTopicHierarchies } from '../data/topicDbLoader';
-import type { BollsTranslation } from '../lib/bollsConstants';
-import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { isFeatureEnabled } from '../lib/flags';
 import { hasApi } from '../repos/apiClient';
 import {
@@ -50,10 +46,8 @@ import { getLearningObjectiveId } from '../lib/learningObjectives';
 import { computeNextReviewState } from '../lib/reviewScheduler';
 import { usePlayerProfileStore } from '../stores/playerProfileStore';
 import { useGlobalStatsStore } from '../stores/globalStatsStore';
-import {
-  usePlayerProfileSync,
-  useSavePlayerProfileMutation,
-} from '../queries/usePlayerProfile';
+import { usePlayerProfileSync } from '../queries/usePlayerProfile';
+import { usePersistProfile } from '../hooks/usePersistProfile';
 import {
   useGlobalStatsSync,
   useRecordGlobalPlayMutation,
@@ -99,9 +93,7 @@ interface PlayerContextValue {
   ) => Promise<void>;
   unlockAchievement: (achievementId: string) => boolean;
   purchaseTheme: (themeId: string) => Promise<{ purchased: boolean; reason?: 'missing' | 'owned' | 'coins' }>;
-  setActiveTheme: (themeId: string) => boolean;
   refreshStats: () => void;
-  setAvatar: (avatarId: string) => boolean;
   purchaseAvatar: (
     avatarId: string,
     price: number,
@@ -109,7 +101,6 @@ interface PlayerContextValue {
   recordAnswerEvent: (params: { themeId: string; isCorrect: boolean; questionId: string; errorTag?: string; nodeId?: string }) => void;
   getRecommendations: (maxRecommendations?: number) => Promise<Recommendation[]>;
   getDailyPlan: () => Promise<DailyPlanItem[]>;
-  setBibleTranslation: (translation: BollsTranslation) => void;
 }
 
 const PlayerContext = createContext<PlayerContextValue | null>(null);
@@ -195,10 +186,9 @@ function applyOutcome(current: PlayerProfile, outcome: ProgressionOutcome): Play
 }
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
-  const { userId, displayName } = useTelegram();
+  const { userId, displayName } = useAuthSession();
   const storedProfile = usePlayerProfileStore((s) => s.profile);
   const storedGlobalStats = useGlobalStatsStore((s) => s.globalStats);
-  const setProfileInStore = usePlayerProfileStore((s) => s.setProfile);
 
   const profile =
     storedProfile?.userId === userId
@@ -206,20 +196,13 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       : loadProfile(userId, displayName);
   const globalStats = storedGlobalStats ?? loadGlobalStats();
 
-  const localDirtyRef = useRef(false);
-  const profileSyncGen = useRef(0);
-
-  usePlayerProfileSync(userId, displayName, localDirtyRef);
+  usePlayerProfileSync(userId, displayName);
   useGlobalStatsSync(userId);
-  const saveProfileMutation = useSavePlayerProfileMutation(userId);
+  const persistProfile = usePersistProfile(userId);
   const recordPlayMutation = useRecordGlobalPlayMutation(userId);
   const refreshStats = useRefreshGlobalStats(userId);
 
   useEffect(() => {
-    const gen = ++profileSyncGen.current;
-    localDirtyRef.current = false;
-    loadProfile(userId, displayName);
-
     void studyRepo.syncHistory();
     trackEvent('session_start', { userId });
     void flushTelemetry(userId);
@@ -229,25 +212,9 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     }, 15000);
 
     return () => {
-      if (profileSyncGen.current === gen) {
-        localDirtyRef.current = false;
-      }
       window.clearInterval(timer);
     };
-  }, [userId, displayName]);
-
-  useEffect(() => {
-    applyCosmeticThemeById(profile.activeTheme);
-  }, [profile.activeTheme]);
-
-  const persistProfile = useCallback(
-    (next: PlayerProfile) => {
-      localDirtyRef.current = true;
-      setProfileInStore(next);
-      saveProfileMutation.mutate(next);
-    },
-    [setProfileInStore, saveProfileMutation],
-  );
+  }, [userId]);
 
   const isLevelDone = useCallback(
     (themeId: string, difficulty: Difficulty) =>
@@ -674,18 +641,6 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     [profile, persistProfile, updateProfile],
   );
 
-  const setActiveTheme = useCallback(
-    (themeId: string) => {
-      if (!getCosmeticThemeById(themeId) || !profile.unlockedThemes.includes(themeId)) {
-        return false;
-      }
-
-      updateProfile((current) => ({ ...current, activeTheme: themeId }));
-      return true;
-    },
-    [profile.unlockedThemes, updateProfile],
-  );
-
   const purchaseAvatar = useCallback(
     async (avatarId: string, price: number) => {
       if (profile.unlockedAvatars.includes(avatarId)) {
@@ -710,17 +665,6 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       return { purchased: true };
     },
     [profile, persistProfile, updateProfile],
-  );
-
-  const setAvatar = useCallback(
-    (avatarId: string) => {
-      if (!profile.unlockedAvatars.includes(avatarId) && avatarId !== '') {
-        return false;
-      }
-      updateProfile((current) => ({ ...current, avatar: avatarId }));
-      return true;
-    },
-    [profile.unlockedAvatars, updateProfile],
   );
 
   const recordAnswerEvent = useCallback(
@@ -788,18 +732,6 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     [updateProfile, userId],
   );
 
-  const setBibleTranslation = useCallback(
-    (translation: BollsTranslation) => {
-      const nextTranslation = normalizeBollsTranslation(translation);
-      updateProfile((current) => ({
-        ...current,
-        bibleTranslation: nextTranslation,
-      }));
-      trackEvent('bible_translation_changed', { translation: nextTranslation });
-    },
-    [updateProfile],
-  );
-
   const getRecommendations = useCallback(
     async (maxRecommendations = 5): Promise<Recommendation[]> => {
       try {
@@ -840,14 +772,11 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       saveMillionaireRun,
       unlockAchievement,
       purchaseTheme,
-      setActiveTheme,
       refreshStats,
-      setAvatar,
       purchaseAvatar,
       recordAnswerEvent,
       getRecommendations,
       getDailyPlan,
-      setBibleTranslation,
     }),
     [
       profile,
@@ -859,14 +788,11 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       saveMillionaireRun,
       unlockAchievement,
       purchaseTheme,
-      setActiveTheme,
       refreshStats,
-      setAvatar,
       purchaseAvatar,
       recordAnswerEvent,
       getRecommendations,
       getDailyPlan,
-      setBibleTranslation,
     ],
   );
 

@@ -1,28 +1,13 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { WebApp, initTelegramWebApp, isInsideTelegram, showBackButton, hideBackButton } from '../lib/telegram';
+import { showBackButton, hideBackButton } from '../lib/telegram';
+import { useAuthSession } from '../context/AuthSessionContext';
 
-export function useTelegram() {
-  const user = useMemo(() => WebApp.initDataUnsafe?.user, []);
-
-  useEffect(() => {
-    initTelegramWebApp();
-  }, []);
-
-  const userId = user?.id?.toString() ?? 'guest';
-  const displayName =
-    [user?.first_name, user?.last_name].filter(Boolean).join(' ') ||
-    user?.username ||
-    'Гість';
-
-  return {
-    webApp: WebApp,
-    user,
-    userId,
-    displayName,
-    isTelegram: isInsideTelegram(),
-  };
-}
+/**
+ * Back-compat alias for the session principal. New code should call
+ * `useAuthSession()` from `context/AuthSessionContext` directly.
+ */
+export const useTelegram = useAuthSession;
 
 const TAB_ROOT_PATHS = new Set(['/', '/play', '/shop', '/profile']);
 

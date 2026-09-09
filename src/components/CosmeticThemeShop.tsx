@@ -1,4 +1,5 @@
 import { usePlayer } from '../context/PlayerContext';
+import { usePreferences } from '../hooks/usePreferences';
 import { useToast } from './Toast';
 import { Icon } from './Icon';
 import { COSMETIC_THEMES } from '../data/cosmetics';
@@ -12,7 +13,8 @@ interface CosmeticThemeShopProps {
 }
 
 export function CosmeticThemeShop({ enter = true }: CosmeticThemeShopProps) {
-  const { profile, setActiveTheme, purchaseTheme } = usePlayer();
+  const { profile, purchaseTheme } = usePlayer();
+  const { setActiveTheme } = usePreferences();
   const { showToast } = useToast();
 
   const handleSelectTheme = (themeId: string) => {
