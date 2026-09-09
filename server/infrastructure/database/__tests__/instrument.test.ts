@@ -21,8 +21,6 @@ describe('instrumentPool', () => {
 
   it('counts queries and passes results through', async () => {
     const inner = vi.fn().mockResolvedValue({ rows: [{ n: 1 }] });
-    // `instrumented` is module-level; a fresh fake pool still gets wrapped only
-    // once per process — assert on the observable behaviour of the first wrap.
     const pool = { query: inner } as unknown as Pool;
     const wrapped = instrumentPool(pool);
 
@@ -34,7 +32,23 @@ describe('instrumentPool', () => {
     expect(inner).toHaveBeenCalledWith('select 1 from telemetry_events', []);
 
     const snap = metrics.snapshot();
-    const key = Object.keys(snap).find((k) => k.startsWith('db_queries_total'));
-    expect(key).toBeDefined();
+    expect(Object.keys(snap).some((k) => k.startsWith('db_queries_total'))).toBe(true);
+  });
+
+  it('instruments queries on a checked-out client (transaction path)', async () => {
+    const clientQuery = vi.fn().mockResolvedValue({ rows: [] });
+    const client = { query: clientQuery };
+    const pool = {
+      query: vi.fn(),
+      connect: vi.fn().mockResolvedValue(client),
+    } as unknown as Pool;
+
+    instrumentPool(pool);
+    const checkedOut = await pool.connect();
+    await (checkedOut.query as (s: string) => Promise<unknown>)('update wallet_ledger set x = 1');
+
+    expect(clientQuery).toHaveBeenCalledWith('update wallet_ledger set x = 1');
+    const ops = Object.keys(metrics.snapshot()).filter((k) => k.includes('wallet_ledger'));
+    expect(ops.length).toBeGreaterThan(0);
   });
 });

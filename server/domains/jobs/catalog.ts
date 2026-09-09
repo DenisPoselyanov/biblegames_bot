@@ -7,6 +7,7 @@
  * types here; the shape does not change.
  */
 import { z } from 'zod';
+import { contentSetFilter } from '../../../contracts/index';
 
 export const JOB_TYPES = {
   /** Delete `rate_limit_counters` rows whose window ended long ago (§17 cleanup). */
@@ -31,7 +32,7 @@ export const JOB_PAYLOAD_SCHEMAS = {
   [JOB_TYPES.IDEMPOTENCY_SWEEP]: retentionPayload,
   [JOB_TYPES.TELEMETRY_RETENTION]: retentionPayload,
   [JOB_TYPES.CONTENT_SNAPSHOT]: z
-    .object({ setId: z.string().min(1), filter: z.record(z.unknown()).optional() })
+    .object({ setId: z.string().min(1), filter: contentSetFilter.optional() })
     .strict(),
 } satisfies Record<string, z.ZodType>;
 

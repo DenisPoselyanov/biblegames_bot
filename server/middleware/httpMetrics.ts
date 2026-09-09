@@ -13,11 +13,14 @@ import { metrics } from '../lib/metrics';
 const SLOW_MS = 1_000;
 
 function routeLabel(req: Request): string {
-  // `req.route` is only set once a handler matched; `baseUrl` covers the mount.
+  // `req.route` is only set once a handler matched; its `path` keeps param
+  // placeholders (`/:id`), so it is safe as a low-cardinality label. Without a
+  // matched route, fall back to the mount path only — never `req.path`, which
+  // carries real ids and would blow up the label space.
   const base = req.baseUrl || '';
   const path = (req.route as { path?: string } | undefined)?.path;
   if (typeof path === 'string' && path !== '/') return `${base}${path}`;
-  return base || req.path || 'unmatched';
+  return base || 'unmatched';
 }
 
 export function httpMetrics(req: Request, res: Response, next: NextFunction): void {

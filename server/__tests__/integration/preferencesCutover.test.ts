@@ -3,6 +3,7 @@ import request from 'supertest';
 import { loadConfig } from '../../config/env';
 import { createApp } from '../../app';
 import { createInMemoryIdentityRepositories } from '../../domains/identity/inMemoryRepository';
+import { createMemoryIdempotencyStore } from '../../lib/idempotency';
 import { createMemoryStore } from '../helpers/memoryStore';
 import { createMemoryWalletLedger } from '../../wallet';
 
@@ -14,6 +15,7 @@ function makeApp(env: Record<string, string> = {}) {
     config,
     dbStore,
     walletLedger: createMemoryWalletLedger(),
+    idempotency: createMemoryIdempotencyStore(),
     identity,
   });
   return { app, identity, dbStore };
@@ -50,5 +52,29 @@ describe('typed-preferences cutover (§18.2)', () => {
     const res = await request(app).get('/api/v1/me/profile').set('x-user-id', '500');
     expect(res.status).toBe(200);
     expect(res.body.activeTheme).toBe('dawn');
+  });
+
+  it('a shop purchase updates the typed store so the overlay stays consistent', async () => {
+    const { app, identity } = makeApp();
+    // stale typed value that would otherwise mask the purchase
+    await identity.preferences.upsert('500', { activeTheme: 'dawn' });
+
+    // fund via a survival completion (score == coins)
+    await request(app)
+      .post('/api/v1/progression/completions')
+      .set('x-user-id', '500')
+      .send({ kind: 'survival', runId: 'f', idempotencyKey: 'f', score: 500 });
+
+    const buy = await request(app)
+      .post('/api/v1/shop/purchases')
+      .set('x-user-id', '500')
+      .send({ kind: 'theme', itemId: 'gennesaret-sea', idempotencyKey: 'p1' });
+    expect(buy.status).toBe(200);
+    expect(buy.body.activeTheme).toBe('gennesaret-sea');
+
+    expect((await identity.preferences.get('500'))?.activeTheme).toBe('gennesaret-sea');
+
+    const profile = await request(app).get('/api/v1/me/profile').set('x-user-id', '500');
+    expect(profile.body.activeTheme).toBe('gennesaret-sea');
   });
 });

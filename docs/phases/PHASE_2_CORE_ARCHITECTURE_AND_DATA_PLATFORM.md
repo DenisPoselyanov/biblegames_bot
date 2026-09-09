@@ -283,7 +283,7 @@ Jobs, storage, deployment, migration cutover & DoD (§17–§20, §26, §27). Of
   `npm run migrate:backfill-preferences [--dry]` (idempotent, reports
   scanned/written/unchanged/no-user-row). `displayName` and the
   progression/entitlement fields are **not** decomposed yet — see below.
-  `npm run check` green, 342 tests (+5).
+  `npm run check` green, 344 tests (+5).
 
   *Remaining §18.2 work (post-Phase-2 rollout, §27 step 9):* typed tables +
   repositories for progression state (level/xp/rank/streak) and
@@ -1159,7 +1159,7 @@ Phase 2 is complete when:
 
 ### 26.1 Definition of Done — sign-off (WS5, 2026-09-09)
 
-`npm run check` green — **342 tests**, `lint:ws` + `typecheck` ×2 + `smoke-audit`
+`npm run check` green — **344 tests**, `lint:ws` + `typecheck` ×2 + `smoke-audit`
 + `build`. WS1–WS4 merged (`b4d0a34` / `009c5a2` / `1ca59bd` / `f25eca5`); WS5 on
 `phase-2/ws5-jobs-storage-deploy`.
 

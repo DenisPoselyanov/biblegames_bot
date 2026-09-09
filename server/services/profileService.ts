@@ -132,15 +132,16 @@ export async function writePreferences(
 ): Promise<void> {
   const existing = (await dbStore.getProfile(userId)) ?? {};
   const prefs = sanitizePreferences(body, existing as Record<string, unknown>);
+  if (Object.keys(prefs).length === 0) return; // nothing survived the whitelist
 
   if (preferences) {
-    await preferences.repo.upsert(userId, {
-      ...(prefs.activeTheme !== undefined ? { activeTheme: prefs.activeTheme } : {}),
-      ...(prefs.avatar !== undefined ? { avatar: prefs.avatar } : {}),
-      ...(prefs.bibleTranslation !== undefined
-        ? { bibleTranslation: prefs.bibleTranslation }
-        : {}),
-    });
+    const typedPatch: Record<string, string> = {};
+    if (prefs.activeTheme !== undefined) typedPatch.activeTheme = prefs.activeTheme;
+    if (prefs.avatar !== undefined) typedPatch.avatar = prefs.avatar;
+    if (prefs.bibleTranslation !== undefined) typedPatch.bibleTranslation = prefs.bibleTranslation;
+    if (Object.keys(typedPatch).length > 0) {
+      await preferences.repo.upsert(userId, typedPatch);
+    }
   }
 
   // Once the typed store is authoritative (`legacyReadOnly`), stop mirroring the
@@ -150,6 +151,7 @@ export async function writePreferences(
     preferences?.legacyReadOnly
       ? { ...(prefs.displayName !== undefined ? { displayName: prefs.displayName } : {}) }
       : prefs;
+  if (Object.keys(blobPrefs).length === 0) return;
 
   await dbStore.setProfile(userId, {
     ...existing,

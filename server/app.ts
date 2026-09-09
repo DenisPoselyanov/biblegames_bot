@@ -118,6 +118,12 @@ export function createApp(deps: AppDeps): Express {
   // --- RBAC principal resolution (Phase 2 WS2 part 3, closes ADR-011) ---
   const identity =
     deps.identity ?? (deps.database ? createSqlIdentityRepositories(deps.database) : undefined);
+
+  // Typed-preferences cutover (Phase 2 §18.2) — active whenever identity is
+  // wired. Shared by `/me/preferences` (writes) and `/shop/purchases` (auto-equip).
+  const preferencesCutover = identity
+    ? { repo: identity.preferences, legacyReadOnly: config.legacyStoreReadOnly }
+    : undefined;
   const roleResolver =
     deps.roleResolver ??
     (identity
@@ -242,10 +248,7 @@ export function createApp(deps: AppDeps): Express {
       migrationStore,
       auditLog,
       config,
-      // Typed-preferences cutover (§18.2) — active whenever identity is wired.
-      preferences: identity
-        ? { repo: identity.preferences, legacyReadOnly: config.legacyStoreReadOnly }
-        : undefined,
+      preferences: preferencesCutover,
     }),
   );
   app.use(
@@ -258,7 +261,7 @@ export function createApp(deps: AppDeps): Express {
     '/api/v1/shop',
     ...authed,
     rl('shop', 60_000, 15),
-    createShopRouter({ dbStore, walletLedger, auditLog, idempotency }),
+    createShopRouter({ dbStore, walletLedger, auditLog, idempotency, preferences: preferencesCutover }),
   );
 
   // --- Demo/in-memory endpoints — mounted only off-production (§10, §17) ---
