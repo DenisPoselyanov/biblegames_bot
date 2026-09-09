@@ -49,16 +49,19 @@ export function createRealtimeServer(httpServer: HttpServer, config: ServerConfi
 
   const rooms = new RoomManager(
     (code, state) => {
+      // With v2 on, the envelope is the single delivery path — the updated
+      // client applies it and nothing else subscribes to the raw events.
       if (!state) {
-        io.to(code).emit('room_closed');
         if (gateway) {
           gateway.emit(code, 'room_closed', { code });
           gateway.drop(code);
+        } else {
+          io.to(code).emit('room_closed');
         }
         return;
       }
-      io.to(code).emit('room_state', state);
-      gateway?.emit(code, 'room_state', state);
+      if (gateway) gateway.emit(code, 'room_state', state);
+      else io.to(code).emit('room_state', state);
     },
     (roomCode) => {
       const exported = rooms.exportSession(roomCode);

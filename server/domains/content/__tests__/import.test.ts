@@ -66,6 +66,13 @@ describe('importLegacyQuestions (§18.3)', () => {
     expect(await repos.revisions.getPublished('bad')).toBeNull();
   });
 
+  it('a re-run over an already-quarantined question reports it as unchanged, not quarantined', async () => {
+    const repos = createInMemoryContentRepositories();
+    await importLegacyQuestions(repos, [raw({ id: 'bad', correctIndex: 9 })]);
+    const rerun = await importLegacyQuestions(repos, [raw({ id: 'bad', correctIndex: 9 })]);
+    expect(rerun).toMatchObject({ quarantined: 0, unchanged: 1, created: 0 });
+  });
+
   it('rejects structurally broken bodies without writing anything', async () => {
     const repos = createInMemoryContentRepositories();
     const report = await importLegacyQuestions(repos, [raw({ id: 'broken', options: ['x'] })]);

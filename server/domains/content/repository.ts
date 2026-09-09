@@ -25,8 +25,10 @@ export interface QuestionRevisionRepository {
   /** Every revision for a question, newest `revisionNumber` first. */
   listRevisions(questionId: string, tx?: Transaction): Promise<QuestionRevisionRecord[]>;
   /**
-   * Published revisions matching a filter (§12.3 — bounded; `limit` defaults to
-   * 500, hard-capped). Never returns drafts or quarantined revisions.
+   * Published revisions matching a filter — the pool a consumer picks from.
+   * `limit` defaults high enough to cover a full theme+difficulty pool (the
+   * legacy path had no LIMIT); a runaway ceiling still applies. Never returns
+   * drafts or quarantined revisions.
    */
   listPublished(filter: PublishedFilter, tx?: Transaction): Promise<QuestionRevisionRecord[]>;
   /**

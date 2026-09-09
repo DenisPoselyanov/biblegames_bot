@@ -48,6 +48,21 @@ describe('revisionToLegacyQuestion', () => {
 });
 
 describe('createContentQueryService', () => {
+  it('does not truncate a large theme pool (regression: was hard-capped at 500)', async () => {
+    const repos = createInMemoryContentRepositories();
+    const bulk = Array.from({ length: 640 }, (_, i) =>
+      raw({ id: `q${i}`, text: `q${i}?` }),
+    );
+    await importLegacyQuestions(repos, bulk);
+    for (const q of bulk) {
+      const rev = (await repos.revisions.listRevisions(q.id))[0];
+      await repos.revisions.publishRevision(rev.id);
+    }
+    const query = createContentQueryService(repos);
+    expect((await query.listPublished({ themeIds: ['genesis'] })).length).toBe(640);
+    expect((await query.getPublishedByIds(bulk.map((b) => b.id))).length).toBe(640);
+  });
+
   it('lists published by filter and resolves ids in order', async () => {
     const { query } = await seededQuery();
     const genesis = await query.listPublished({ themeIds: ['genesis'] });

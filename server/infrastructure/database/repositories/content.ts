@@ -32,7 +32,16 @@ import {
 
 type Executor = Database | Transaction;
 
-const HARD_LIMIT = 500;
+/**
+ * `listPublished` is an internal pool-building read, not a paginated API surface
+ * (§12.3 owns that). The legacy `questions`-table path it replaces has no LIMIT,
+ * so the default must cover the largest theme+difficulty pool; the ceiling is
+ * only a runaway guard.
+ */
+const DEFAULT_LIMIT = 10_000;
+const MAX_LIMIT = 50_000;
+const boundedLimit = (limit: number | undefined): number =>
+  Math.min(Math.max(1, limit ?? DEFAULT_LIMIT), MAX_LIMIT);
 
 /** Single point where the opaque handle becomes a concrete Drizzle executor. */
 function asExecutor(db: Database, tx?: OpaqueTx): Executor {
@@ -171,7 +180,7 @@ export function createSqlContentRepositories(db: Database): ContentRepositories 
         .from(questionRevisions)
         .where(and(...clauses))
         .orderBy(asc(questionRevisions.questionId))
-        .limit(Math.min(filter.limit ?? HARD_LIMIT, HARD_LIMIT));
+        .limit(boundedLimit(filter.limit));
       const refs = await loadRefs(exec, rows.map((r) => r.id));
       return rows.map((r) => toRevisionRecord(r, refs));
     },

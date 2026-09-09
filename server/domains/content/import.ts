@@ -59,12 +59,15 @@ export async function importLegacyQuestions(
     if (onlyAnswerKey) {
       const salvage = validateQuestion({ ...raw, correctIndex: 0, correct: undefined });
       if (salvage.ok) {
-        await repos.revisions.appendRevision(salvage.draft);
-        await repos.revisions.quarantine({
+        const outcome = await repos.revisions.appendRevision(salvage.draft);
+        const moved = await repos.revisions.quarantine({
           questionId: raw.id,
           reason: `import: ${result.issues.join(', ')}`,
         });
-        report.quarantined += 1;
+        // Only count it as work when something actually changed — a re-run over
+        // an already-quarantined question is a no-op.
+        if (outcome.kind === 'created' || moved > 0) report.quarantined += 1;
+        else report.unchanged += 1;
         continue;
       }
     }

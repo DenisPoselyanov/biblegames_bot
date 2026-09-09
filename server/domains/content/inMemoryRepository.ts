@@ -19,7 +19,16 @@ import type {
   RevisionDraft,
 } from './types';
 
-const HARD_LIMIT = 500;
+/**
+ * `listPublished` is an internal pool-building read, not a paginated API surface
+ * (§12.3 owns that). The legacy `questions`-table path it replaces has no LIMIT,
+ * so the default must cover the largest theme+difficulty pool; the ceiling is
+ * only a runaway guard.
+ */
+const DEFAULT_LIMIT = 10_000;
+const MAX_LIMIT = 50_000;
+const boundedLimit = (limit: number | undefined): number =>
+  Math.min(Math.max(1, limit ?? DEFAULT_LIMIT), MAX_LIMIT);
 
 function rejectTx(tx?: Transaction): void {
   if (tx) {
@@ -70,7 +79,7 @@ export function createInMemoryContentRepositories(
       const themeIds = filter.themeIds && filter.themeIds.length ? new Set(filter.themeIds) : null;
       const questionIds =
         filter.questionIds && filter.questionIds.length ? new Set(filter.questionIds) : null;
-      const limit = Math.min(filter.limit ?? HARD_LIMIT, HARD_LIMIT);
+      const limit = boundedLimit(filter.limit);
       return [...revisions.values()]
         .filter((r) => r.status === 'published')
         .filter((r) => (themeIds ? themeIds.has(r.themeId) : true))
