@@ -184,9 +184,10 @@ Frontend data architecture (§13). `npm run check` green, 289 tests.
 - **Query-key factory + cache defaults (§13.2, §13.3, part 2 `82f84f5`):**
   `src/queries/keys.ts` — the single hierarchical key factory (`me.*`,
   `learning.*`, `practice.*`, `content.*`, `kahoot.*`); `OFFLINE_CACHEABLE_PREFIXES`
-  / `isOfflineCacheable` gate what may touch disk (last profile snapshot +
-  published content only — never wallet / rank / live result). `queryClient`
-  persists only those prefixes.
+  / `isOfflineCacheable` **define** the disk-persistence allowlist (last profile
+  snapshot + published content only — never wallet / rank / live result). Wiring a
+  React Query persister to that gate is deferred to WS5; today only the profile
+  snapshot + preferences are cached, via the zustand persist middleware.
 - **Provider decomposition (§13.1, part 3 `10022c2`):** `AuthSessionProvider`
   (one principal, `initTelegramWebApp()` once, outermost) · `usePreferences`
   (the client-owned write surface — `activeTheme` / `avatar` /
@@ -205,8 +206,9 @@ Frontend data architecture (§13). `npm run check` green, 289 tests.
   read the focused hooks (`useGlobalStats(userId)` is the new stats read-view).
   `PlayerDataBootstrap` keeps the server→store sync + session telemetry mounted
   once near the root.
-- **Deferred to WS5:** offline reconciliation for pending safe commands (§13.3
-  bullet 3 — only preferences + last snapshot are cached today).
+- **Deferred to WS5:** the React Query persister wired to `isOfflineCacheable`,
+  and offline reconciliation for pending safe commands (§13.3 bullet 3 — only
+  preferences + last snapshot are cached today).
 
 ---
 

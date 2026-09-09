@@ -321,7 +321,7 @@ bible-game/
     │   └── topicDbLoader.ts   ← підвантаження ієрархії тем
     │
     ├── types/index.ts        ← числа: 7 питань, очки за рівень
-    ├── context/PlayerContext.tsx  ← рахунок гравця
+    ├── hooks/domain/useProgression.ts  ← рахунок гравця
     ├── lib/                  ← логіка та бізнес-функції
     │   ├── storage.ts            збереження в браузері
     │   ├── learning.ts           навчальний рушій
@@ -777,7 +777,7 @@ npm run build
 ### Коли будеш готовий (не раніше)
 
 12. `pages/Quiz.tsx` — тільки знайди `useState` і кнопки відповідей.
-13. `context/PlayerContext.tsx` — як рахуються очки.
+13. `hooks/domain/useProgression.ts` — як рахуються очки.
 14. `lib/storage.ts` — звичайний `localStorage`.
 
 ---

@@ -31,15 +31,19 @@ export interface ProfileWriter {
  * PATCH fires exactly once per call.
  */
 export function useProfileWriter(): ProfileWriter {
-  const { userId } = useAuthSession();
+  const { userId, displayName } = useAuthSession();
   const profile = useResolvedProfile();
   const persistProfile = usePersistProfile(userId);
 
   const updateProfile = useCallback(
     (updater: (current: PlayerProfile) => PlayerProfile) => {
-      persistProfile(updater(profile));
+      // Resolve the base at call time, not render time: `loadProfile` returns the
+      // live store snapshot when it matches the principal, so back-to-back or
+      // async updaters (achievement grants during a run, `recordAnswerEvent`'s
+      // `.then`) compose instead of clobbering a stale closure value.
+      persistProfile(updater(loadProfile(userId, displayName)));
     },
-    [profile, persistProfile],
+    [userId, displayName, persistProfile],
   );
 
   return { profile, persistProfile, updateProfile };

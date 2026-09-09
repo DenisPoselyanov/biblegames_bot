@@ -5,6 +5,7 @@ import {
 } from '../lib/bollsConstants';
 import { DEFAULT_COSMETIC_THEME_ID, getCosmeticThemeById } from '../data/cosmetics';
 import { trackEvent } from '../lib/telemetry';
+import { loadProfile } from '../lib/storage';
 import { usePlayerProfileStore } from '../stores/playerProfileStore';
 import { useAuthSession } from '../context/AuthSessionContext';
 import { usePersistProfile } from './usePersistProfile';
@@ -28,7 +29,7 @@ export interface PreferencesValue {
  * (`unlockedThemes` / `unlockedAvatars`) stays authoritative and is only read.
  */
 export function usePreferences(): PreferencesValue {
-  const { userId } = useAuthSession();
+  const { userId, displayName } = useAuthSession();
   const persistProfile = usePersistProfile(userId);
 
   const activeTheme =
@@ -38,39 +39,38 @@ export function usePreferences(): PreferencesValue {
     usePlayerProfileStore((s) => s.profile?.bibleTranslation),
   );
 
+  // Base every write on the resolved profile (store snapshot or local fallback),
+  // never bail when the store hasn't hydrated yet — an early tap must still land.
   const setActiveTheme = useCallback(
     (themeId: string) => {
-      const profile = usePlayerProfileStore.getState().profile;
-      if (!profile) return false;
+      const profile = loadProfile(userId, displayName);
       if (!getCosmeticThemeById(themeId) || !profile.unlockedThemes.includes(themeId)) {
         return false;
       }
       persistProfile({ ...profile, activeTheme: themeId });
       return true;
     },
-    [persistProfile],
+    [userId, displayName, persistProfile],
   );
 
   const setAvatar = useCallback(
     (avatarId: string) => {
-      const profile = usePlayerProfileStore.getState().profile;
-      if (!profile) return false;
+      const profile = loadProfile(userId, displayName);
       if (avatarId !== '' && !profile.unlockedAvatars.includes(avatarId)) return false;
       persistProfile({ ...profile, avatar: avatarId });
       return true;
     },
-    [persistProfile],
+    [userId, displayName, persistProfile],
   );
 
   const setBibleTranslation = useCallback(
     (translation: BollsTranslation) => {
-      const profile = usePlayerProfileStore.getState().profile;
-      if (!profile) return;
+      const profile = loadProfile(userId, displayName);
       const nextTranslation = normalizeBollsTranslation(translation);
       persistProfile({ ...profile, bibleTranslation: nextTranslation });
       trackEvent('bible_translation_changed', { translation: nextTranslation });
     },
-    [persistProfile],
+    [userId, displayName, persistProfile],
   );
 
   return useMemo(

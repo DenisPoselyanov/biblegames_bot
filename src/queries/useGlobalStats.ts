@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import type { GlobalStats } from '../types';
 import { loadGlobalStats } from '../lib/storage';
 import { statsRepo } from '../repos/statsRepo';
@@ -67,11 +67,11 @@ export function useRefreshGlobalStats(userId: string) {
   const queryClient = useQueryClient();
   const setGlobalStats = useGlobalStatsStore((s) => s.setGlobalStats);
 
-  return () => {
+  return useCallback(() => {
     void queryClient.invalidateQueries({ queryKey: queryKeys.me.stats(userId) });
     void statsRepo.get().then((stats) => {
       setGlobalStats(stats);
       queryClient.setQueryData(queryKeys.me.stats(userId), stats);
     });
-  };
+  }, [queryClient, setGlobalStats, userId]);
 }
