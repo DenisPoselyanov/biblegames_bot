@@ -223,8 +223,11 @@ Jobs, storage, deployment, migration cutover & DoD (§17–§20, §26, §27). Of
   types each with a Zod payload schema. The **in-memory adapter**
   (`inMemoryQueue.ts`) is the default and the only option with no DB: poll loop,
   capped-exponential backoff, dead-letter after `maxAttempts`, `AbortSignal` on
-  stop, `runDue()` test hook. The Postgres/pg-boss adapter is part 1b
-  (`server/infrastructure/jobs/`, `JOB_QUEUE_DRIVER=postgres`). A dedicated
+  stop, `runDue()` test hook. The durable Postgres/pg-boss adapter is **part 1b
+  (deferred, fast-follow)** — a 2026-09-09 spike found `pg-boss@12` `boss.start()`
+  hangs under pglite, so its contract test needs a real Postgres in CI;
+  `JOB_QUEUE_DRIVER=postgres` currently falls back to in-memory with a loud warn.
+  A dedicated
   **worker process** (`server/worker.ts`, `npm run worker`) runs the queue and,
   when `JOB_SCHEDULES_ENABLED=true`, the recurring maintenance jobs — it never
   binds a port. First handlers: three retention sweeps (`rate_limit_counters`,

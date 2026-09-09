@@ -843,8 +843,12 @@ Drizzle обгортає наявний Pool — роут/домен можна 
 # ADR-014 — Background job queue
 
 **Дата:** 2026-09-07 (proposed) → 2026-09-09 (accepted, Phase 2 WS5 part 1)
-**Статус:** accepted. Абстракція + in-memory адаптер — WS5 part 1; durable
-Postgres-адаптер — WS5 part 1b.
+**Статус:** accepted. Абстракція + in-memory адаптер — WS5 part 1 (готово).
+Durable Postgres/pg-boss адаптер — **відкладено** (part 1b, fast-follow): спайк
+2026-09-09 показав, що `pg-boss@12` `boss.start()` зависає під pglite (навіть із
+`fromPglite` і `supervise:false`), тож контракт-тест потребує справжнього
+Postgres у CI — окрема інфраструктурна робота. In-memory адаптер повністю
+покриває §17 як default; durability — не нумерований acceptance-критерій.
 
 ## Контекст
 
@@ -869,11 +873,13 @@ created/started/completed time, error, checkpoint, idempotency. Довгі за�
 - **In-memory адаптер** (`inMemoryQueue.ts`) — default і єдиний варіант без БД.
   Poll-loop після `start()`, capped-exponential backoff, dead-letter після
   `maxAttempts`. Не переживає рестарт. Тестовий хук `runDue()` обходить таймер.
-- **Postgres/pg-boss адаптер** (`server/infrastructure/jobs/`, WS5 part 1b) —
-  durable-варіант за `JOB_QUEUE_DRIVER=postgres`. pg-boss вимагає справжній
-  Postgres (`SKIP LOCKED`, LISTEN/NOTIFY) — контракт-тест ганяється проти
-  реального PG, не pglite. Поки не готовий — `createJobQueue` падає назад на
-  in-memory з гучним warn.
+- **Postgres/pg-boss адаптер** (`server/infrastructure/jobs/`, WS5 part 1b —
+  відкладено) — durable-варіант за `JOB_QUEUE_DRIVER=postgres`. pg-boss керує
+  власною схемою (`pgboss.*`) через `boss.start()` — поза міграційним
+  фреймворком §18.1 (документований кордон); checkpoint — окрема drizzle-таблиця
+  `job_checkpoints`. Поки не готовий — `createJobQueue` падає назад на in-memory
+  з гучним warn (`jobs.driver_unavailable`), а production-gate вимагає
+  `DATABASE_URL` за `JOB_QUEUE_DRIVER=postgres`.
 - **Окремий worker-процес** (`server/worker.ts`, §19) — не біндить порт, окремо
   рестартиться, `JOB_SCHEDULES_ENABLED=true` тільки в ньому (розклади мають
   крутитись рівно в одному місці). API-процес може лише `enqueue`.
@@ -897,9 +903,9 @@ graphile-worker (близький аналог pg-boss, менша спільн�
   `JOB_SCHEDULES_ENABLED` (default off). Production-gate: `postgres` вимагає
   `DATABASE_URL`.
 - Новий npm-скрипт `worker` / `worker:dev` (root + `server/`).
-- pg-boss потрапляє в `dependencies` у part 1b (deps: `cron-parser`, `p-map`,
-  `serialize-error`, `uuid` — `pg` уже є); lockfile правиться акуратно як
-  drizzle-orm у WS2.
+- pg-boss потрапить у `dependencies` у part 1b (v12: deps `cron-parser`,
+  `serialize-error` + bump `pg` 8.21→8.23 — lockfile-діф чистий ~80 рядків,
+  перевірено 2026-09-09); поки не додано.
 - `content/snapshot.ts` `buildSnapshot` стає хендлером типу `content.snapshot` у
   WS5 part 2 (коли з'явиться object-storage).
 
