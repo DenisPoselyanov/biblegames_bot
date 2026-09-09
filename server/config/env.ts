@@ -14,6 +14,15 @@ export type NodeEnv = 'development' | 'test' | 'production';
 export type AuthMode = 'telegram' | 'development';
 export type StorageProvider = 'json' | 'sql';
 
+/**
+ * `canonicalContentRepository` rollout (Phase 2 §14, §23):
+ * - `off`      — legacy `questions` bank only (default);
+ * - `compare`  — read both, SERVE legacy, log every divergence (dual-read, §27.3);
+ * - `canonical` — serve the canonical `question_revisions` (published), legacy
+ *                 only as a fallback when the canonical set is empty.
+ */
+export type CanonicalContentMode = 'off' | 'compare' | 'canonical';
+
 export interface ServerConfig {
   nodeEnv: NodeEnv;
   isProduction: boolean;
@@ -41,6 +50,14 @@ export interface ServerConfig {
   demoRoutesEnabled: boolean;
   /** Disable HTTP + socket rate limiting (§13). Forced off under `NODE_ENV=test`. */
   rateLimitDisabled: boolean;
+  /** Canonical content repository rollout stage (Phase 2 §14, §23). */
+  canonicalContentRepository: CanonicalContentMode;
+  /**
+   * Realtime gateway v2 (Phase 2 §15, §23): typed `RealtimeEvent` envelopes with
+   * a per-room monotonic `sequence` and server time, plus a `resync_room`
+   * handler for reconnect recovery. Off → legacy raw `room_state` emits only.
+   */
+  realtimeGatewayV2: boolean;
 }
 
 export interface LoadConfigResult {
@@ -87,6 +104,18 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     warnings.push(`Unknown AUTH_MODE "${env.AUTH_MODE}", falling back to "telegram"`);
   }
 
+  let canonicalContentRepository: CanonicalContentMode = 'off';
+  if (
+    env.CANONICAL_CONTENT_REPOSITORY === 'compare' ||
+    env.CANONICAL_CONTENT_REPOSITORY === 'canonical'
+  ) {
+    canonicalContentRepository = env.CANONICAL_CONTENT_REPOSITORY;
+  } else if (env.CANONICAL_CONTENT_REPOSITORY && env.CANONICAL_CONTENT_REPOSITORY !== 'off') {
+    warnings.push(
+      `Unknown CANONICAL_CONTENT_REPOSITORY "${env.CANONICAL_CONTENT_REPOSITORY}", falling back to "off"`,
+    );
+  }
+
   let storageProvider: StorageProvider = 'json';
   if (env.STORAGE_PROVIDER === 'sql') {
     storageProvider = 'sql';
@@ -120,6 +149,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     // exercise limiting sets RATE_LIMIT_DISABLED=false explicitly.
     rateLimitDisabled:
       env.RATE_LIMIT_DISABLED === 'true' || (nodeEnv === 'test' && env.RATE_LIMIT_DISABLED !== 'false'),
+    canonicalContentRepository,
+    realtimeGatewayV2: env.REALTIME_GATEWAY_V2 === 'true',
   });
 
   return { config, warnings };

@@ -50,6 +50,26 @@ describe('server/domains boundary (§11)', () => {
   });
 });
 
+describe('bot integration boundary (§16, acc. #12)', () => {
+  it('nothing under bot/ imports a server/ runtime module', () => {
+    const botDir = join(repoRoot, 'bot');
+    let files: string[];
+    try {
+      files = readdirSync(botDir)
+        .filter((n) => /\.(mjs|js|ts)$/.test(n))
+        .map((n) => join(botDir, n));
+    } catch {
+      return;
+    }
+    const violations = files.flatMap((f) =>
+      importsOf(f)
+        .filter((s) => /(^|\/)server\//.test(s) || s.includes('../server'))
+        .map((s) => `${rel(f)} → ${s}`),
+    );
+    expect(violations, violations.join('\n')).toEqual([]);
+  });
+});
+
 describe('composition root (acc. #10/#11)', () => {
   it('builds the full HTTP + realtime stack without binding a port', async () => {
     const { config } = loadConfig({ NODE_ENV: 'test', AUTH_MODE: 'development' });

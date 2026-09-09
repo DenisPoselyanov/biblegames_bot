@@ -1,10 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { KahootRoomSettings, KahootRoomState } from '../types/kahoot';
 import {
   emitWithAck,
   getKahootSocket,
   onRoomClosed,
+  onRoomEvent,
   onRoomState,
+  resyncRoom,
+  type RoomEventEnvelope,
 } from '../lib/kahootSocket';
 
 const STORAGE_KEY = 'kahoot_session';
@@ -53,12 +56,39 @@ export function useKahootRoom(options?: { displayOnly?: boolean }) {
   const [myId, setMyId] = useState<string | null>(null);
   const [reconnected, setReconnected] = useState(false);
 
+  // `realtimeGatewayV2`: the highest envelope sequence we have applied. Envelopes
+  // arriving out of order or replayed after a reconnect are dropped; timers and
+  // victory animations are driven off `room` state, so they are never restarted.
+  const lastSequenceRef = useRef(-1);
+
+  const applyEnvelope = useCallback((event: RoomEventEnvelope) => {
+    if (event.sequence <= lastSequenceRef.current) return;
+    lastSequenceRef.current = event.sequence;
+    if (event.type === 'room_closed') {
+      setRoom(null);
+      saveRoomState(null);
+      saveSession(null);
+      return;
+    }
+    const state = event.payload as KahootRoomState;
+    setRoom(state);
+    saveRoomState(state);
+    setError(null);
+  }, []);
+
   useEffect(() => {
     const socket = getKahootSocket();
 
     const onConnect = () => {
       setConnected(true);
       setMyId(socket.id ?? null);
+
+      const storedCode = loadSession()?.code ?? loadRoomState()?.code;
+      if (storedCode) {
+        void resyncRoom(storedCode, lastSequenceRef.current).then((res) => {
+          if (res.ok && res.missed && res.event) applyEnvelope(res.event);
+        });
+      }
 
       const session = loadSession();
       if (session && !displayOnly && !reconnected) {
@@ -105,6 +135,7 @@ export function useKahootRoom(options?: { displayOnly?: boolean }) {
       saveRoomState(state);
       setError(null);
     });
+    const unsubEvent = onRoomEvent(applyEnvelope);
     const unsubClosed = onRoomClosed(() => {
       setRoom(null);
       saveRoomState(null);
@@ -115,13 +146,15 @@ export function useKahootRoom(options?: { displayOnly?: boolean }) {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
       unsubState();
+      unsubEvent();
       unsubClosed();
     };
-  }, [displayOnly, reconnected]);
+  }, [displayOnly, reconnected, applyEnvelope]);
 
   const createRoom = useCallback(
     async (hostName: string, settings: KahootRoomSettings, hostTelegramId?: string) => {
       setError(null);
+      lastSequenceRef.current = -1; // fresh room — do not carry a stale sequence
       const res = await emitWithAck<
         { hostName: string; settings: KahootRoomSettings; hostTelegramId?: string },
         KahootRoomState
@@ -145,6 +178,7 @@ export function useKahootRoom(options?: { displayOnly?: boolean }) {
   const joinRoom = useCallback(
     async (code: string, playerName: string, customField?: string) => {
       setError(null);
+      lastSequenceRef.current = -1;
       const res = await emitWithAck<
         { code: string; playerName: string; customField?: string },
         KahootRoomState
@@ -172,6 +206,7 @@ export function useKahootRoom(options?: { displayOnly?: boolean }) {
 
   const joinAsDisplay = useCallback(async (code: string) => {
     setError(null);
+    lastSequenceRef.current = -1;
     const res = await emitWithAck<{ code: string }, KahootRoomState>('join_as_display', {
       code: code.toUpperCase(),
     });
@@ -230,6 +265,7 @@ export function useKahootRoom(options?: { displayOnly?: boolean }) {
 
   const leaveRoom = useCallback(() => {
     getKahootSocket().emit('leave_room');
+    lastSequenceRef.current = -1;
     setRoom(null);
     saveRoomState(null);
     saveSession(null);

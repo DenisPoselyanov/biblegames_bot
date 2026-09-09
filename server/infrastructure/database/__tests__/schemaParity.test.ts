@@ -51,6 +51,12 @@ describe('Drizzle schema ↔ server/db/schema.sql parity', () => {
         'user_preferences',
         'user_roles',
         'users',
+        // WS3 §14 — canonical content revision model
+        'question_revisions',
+        'scripture_references',
+        'content_sets',
+        'content_set_versions',
+        'content_set_items',
       ].sort(),
     );
   });

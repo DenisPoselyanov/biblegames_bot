@@ -11,6 +11,11 @@ import { entityId, isoTimestamp, shortText } from '../schemas/primitives';
  * gateway refactor; today the server still emits the legacy `KahootRoomState`.
  */
 
+/** Server→client event kinds carried by the envelope (`realtimeGatewayV2`). */
+export const SERVER_EVENT_TYPES = ['room_state', 'room_closed'] as const;
+export const serverEventType = z.enum(SERVER_EVENT_TYPES);
+export type ServerEventType = z.infer<typeof serverEventType>;
+
 /** Server→client event envelope — sequence + serverTime drive reconnect recovery. */
 export function realtimeEvent<T extends z.ZodTypeAny>(payload: T) {
   return z.object({
@@ -23,6 +28,27 @@ export function realtimeEvent<T extends z.ZodTypeAny>(payload: T) {
     payload,
   });
 }
+
+/** The envelope the `realtimeGatewayV2` emits as the `room_event` message. */
+export const roomEventEnvelope = realtimeEvent(z.unknown());
+export type RoomEventEnvelope = z.infer<typeof roomEventEnvelope>;
+
+/** `resync_room` command — client sends the last sequence it applied. */
+export const resyncRoomCommand = z.object({
+  code: z.string().trim().min(1).max(12),
+  lastSequence: z.number().int().min(-1),
+});
+
+/** `resync_room` ack — the current envelope plus whether the client fell behind. */
+export const resyncRoomAck = z.union([
+  z.object({
+    ok: z.literal(true),
+    event: roomEventEnvelope.nullable(),
+    missed: z.boolean(),
+  }),
+  z.object({ ok: z.literal(false), error: z.string().max(120) }),
+]);
+export type ResyncRoomAck = z.infer<typeof resyncRoomAck>;
 
 /** Uniform ack for every client→server command. */
 export const socketAck = z.union([
@@ -70,6 +96,7 @@ export const clientCommands = {
   submit_answer: z.object({ optionIndex: z.number().int().min(0).max(9) }),
   advance_phase: z.object({}).strip(),
   leave_room: z.object({}).strip(),
+  resync_room: resyncRoomCommand,
 } as const;
 
 export type ClientCommandName = keyof typeof clientCommands;

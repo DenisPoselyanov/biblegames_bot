@@ -21,12 +21,19 @@ contract tests exist (§25 "moving files without defining ownership").
 - No cycles between domains. Cross-domain needs go through a published service
   interface, not a deep import.
 
-## Populated so far (WS2)
+## Populated so far
 
-- **`identity/`** — `repository.ts` (`UserRepository`, `RoleRepository`),
+- **`identity/`** (WS2) — `repository.ts` (`UserRepository`, `RoleRepository`),
   `types.ts`, `inMemoryRepository.ts`. SQL adapter:
   `server/infrastructure/database/repositories/identity.ts`. Contract:
   `identity/__tests__/repositoryContract.ts` (runs vs in-memory + pglite).
+- **`content/`** (WS3 part 1, §14) — `repository.ts`
+  (`QuestionRevisionRepository`, `ContentSetRepository`), `types.ts`,
+  `contentHash.ts` (stable sha-256 body/set hashing), `inMemoryRepository.ts`.
+  SQL adapter: `server/infrastructure/database/repositories/content.ts`.
+  Contract: `content/__tests__/repositoryContract.ts`. Read contract in
+  `@contracts` `schemas/content.ts`. The legacy `questions` bank stays
+  authoritative until the `canonicalContentRepository` cutover (part 3).
 
 ## Map
 
