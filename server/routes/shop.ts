@@ -19,7 +19,7 @@ import { buildAuditRecord, type AuditLog } from '../audit';
 import { WalletError, type WalletLedger } from '../wallet';
 import type { IdempotencyStore } from '../lib/idempotency';
 import type { ServerStore } from '../db/store';
-import { emptyProfile } from '../services/profileService';
+import { emptyProfile, type PreferencesCutover } from '../services/profileService';
 import { getCosmeticThemeById, getAvatarById } from '../../src/data/cosmetics';
 
 export interface ShopRouterDeps {
@@ -27,6 +27,13 @@ export interface ShopRouterDeps {
   walletLedger: WalletLedger;
   auditLog: AuditLog;
   idempotency: IdempotencyStore;
+  /**
+   * Typed-preferences cutover (Phase 2 §18.2). A purchase auto-equips the item,
+   * which is an `activeTheme` / `avatar` write — it must go through the same
+   * typed store as `PATCH /me/preferences`, or `readProfile`'s overlay would
+   * keep showing the pre-purchase cosmetic.
+   */
+  preferences?: PreferencesCutover;
 }
 
 function principal(req: Request): { userId: string; authSource: string | null } {
@@ -44,6 +51,7 @@ export function createShopRouter({
   walletLedger,
   auditLog,
   idempotency,
+  preferences,
 }: ShopRouterDeps): Router {
   const router = Router();
 
@@ -111,6 +119,20 @@ export function createShopRouter({
       };
       if (kind === 'theme') nextProfile.activeTheme = itemId;
       else nextProfile.avatar = itemId;
+
+      // Keep the typed preference store in step (§18.2). Under `legacyReadOnly`
+      // the blob's activeTheme/avatar is frozen, so the typed upsert is the
+      // authoritative write; otherwise it mirrors the blob.
+      if (preferences) {
+        await preferences.repo.upsert(
+          userId,
+          kind === 'theme' ? { activeTheme: itemId } : { avatar: itemId },
+        );
+        if (preferences.legacyReadOnly) {
+          if (kind === 'theme') delete nextProfile.activeTheme;
+          else delete nextProfile.avatar;
+        }
+      }
       await dbStore.setProfile(userId, nextProfile);
 
       await auditLog.append(
@@ -129,8 +151,8 @@ export function createShopRouter({
         balance: balanceAfter,
         unlockedThemes: kind === 'theme' ? owned : (stored.unlockedThemes ?? []),
         unlockedAvatars: kind === 'avatar' ? owned : (stored.unlockedAvatars ?? []),
-        activeTheme: nextProfile.activeTheme ?? stored.activeTheme ?? '',
-        avatar: nextProfile.avatar ?? stored.avatar ?? '',
+        activeTheme: kind === 'theme' ? itemId : (stored.activeTheme ?? ''),
+        avatar: kind === 'avatar' ? itemId : (stored.avatar ?? ''),
         achievementsGranted: granted,
       };
       await idempotency.remember(scopedKey, result);

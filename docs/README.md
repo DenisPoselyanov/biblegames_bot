@@ -39,6 +39,9 @@
 ## Операційні документи
 
 - [DEVELOPER_GUIDE.md](./DEVELOPER_GUIDE.md)
+- [DEPLOYMENT.md](./DEPLOYMENT.md) — deployable units, per-unit env configuration, migration & rollout procedures (Phase 2 §19).
+- [OBSERVABILITY.md](./OBSERVABILITY.md) — structured log schema, ID taxonomy, metric catalog, frontend error-reporting contract (Phase 2 §20).
+- [ROLLOUT_PHASE_2.md](./ROLLOUT_PHASE_2.md) — Phase 2 flag rollout & rollback sequence (§27).
 - [LOCAL_TOOLS.md](./LOCAL_TOOLS.md)
 - [SUPABASE_SETUP.md](./SUPABASE_SETUP.md)
 - [AI_SETUP.md](./AI_SETUP.md)

@@ -840,11 +840,138 @@ Drizzle обгортає наявний Pool — роут/домен можна 
 
 ---
 
-# ADR-014 — Background job queue (pg-boss)
+# ADR-014 — Background job queue
 
-**Дата:** 2026-09-07
-**Статус:** proposed — spike у Phase 2 WS5 (owner попередньо затвердив pg-boss
-2026-09-07, щоб не вводити Redis заради jobs — §17, ref-arch §3.10).
+**Дата:** 2026-09-07 (proposed) → 2026-09-09 (accepted, Phase 2 WS5 part 1)
+**Статус:** accepted. Абстракція + in-memory адаптер — WS5 part 1 (готово).
+Durable Postgres/pg-boss адаптер — **відкладено** (part 1b, fast-follow): спайк
+2026-09-09 показав, що `pg-boss@12` `boss.start()` зависає під pglite (навіть із
+`fromPglite` і `supervise:false`), тож контракт-тест потребує справжнього
+Postgres у CI — окрема інфраструктурна робота. In-memory адаптер повністю
+покриває §17 як default; durability — не нумерований acceptance-критерій.
+
+## Контекст
+
+Phase 2 §17 вимагає job-абстракцію для: content import/indexing, майбутньої AI-
+генерації, створення publication-снапшотів, telemetry-агрегації, cleanup/expiry,
+пізніше — email/notifications. Job-контракт: ID, type, status, attempts,
+created/started/completed time, error, checkpoint, idempotency. Довгі задачі не
+можна тримати всередині HTTP-запиту. Owner попередньо затвердив pg-boss
+2026-09-07, щоб не вводити Redis заради jobs (ref-arch §3.10) — черга живе в тому
+самому Postgres, що й решта даних (ADR-012).
+
+## Рішення
+
+- **Доменна абстракція `JobQueue`** (`server/domains/jobs/`) — чиста, без `pg`/
+  Express/Socket.IO. `register(type, {handler, maxAttempts, everyMs})`,
+  `enqueue(type, payload, {idempotencyKey, maxAttempts, delayMs})`, `start()`,
+  `stop(graceMs)`, `stats()`. `JobRecord` несе всі поля §17. `JobContext` дає
+  `checkpoint(patch)` (retry бачить попередній checkpoint) і `AbortSignal`
+  (`stop()` сигналить хендлерам).
+- **`server/domains/jobs/catalog.ts`** — реєстр відомих типів + Zod-схема payload
+  на кожен: невалідний `enqueue` падає на межі, не всередині хендлера.
+- **In-memory адаптер** (`inMemoryQueue.ts`) — default і єдиний варіант без БД.
+  Poll-loop після `start()`, capped-exponential backoff, dead-letter після
+  `maxAttempts`. Не переживає рестарт. Тестовий хук `runDue()` обходить таймер.
+- **Postgres/pg-boss адаптер** (`server/infrastructure/jobs/`, WS5 part 1b —
+  відкладено) — durable-варіант за `JOB_QUEUE_DRIVER=postgres`. pg-boss керує
+  власною схемою (`pgboss.*`) через `boss.start()` — поза міграційним
+  фреймворком §18.1 (документований кордон); checkpoint — окрема drizzle-таблиця
+  `job_checkpoints`. Поки не готовий — `createJobQueue` падає назад на in-memory
+  з гучним warn (`jobs.driver_unavailable`), а production-gate вимагає
+  `DATABASE_URL` за `JOB_QUEUE_DRIVER=postgres`.
+- **Окремий worker-процес** (`server/worker.ts`, §19) — не біндить порт, окремо
+  рестартиться, `JOB_SCHEDULES_ENABLED=true` тільки в ньому (розклади мають
+  крутитись рівно в одному місці). API-процес може лише `enqueue`.
+- **Перші хендлери — три retention-sweep-и** (§17 cleanup/expiry), кожен —
+  один bounded `DELETE`: `rate_limit_counters` (застарілі вікна),
+  `idempotency_keys` (SQL-стор ніколи не чистив — тільки JSON), `telemetry_events`
+  (необмежений append). Розклад — раз на 6 год.
+- **Метрики** — `jobs_enqueued_total` / `_started_total` / `_completed_total` /
+  `_retried_total` / `_failed_total`, лейбл `{type}` (low-cardinality).
+
+## Alternatives
+
+BullMQ / bee-queue (потрібен Redis — зайва інфра для одного VPS), Agenda (MongoDB),
+graphile-worker (близький аналог pg-boss, менша спільнота), «просто `setInterval`
+в API-процесі» (не durable, дублюється при кількох інстансах, змішує
+відповідальності — §19).
+
+## Наслідки
+
+- Нова змінна env: `JOB_QUEUE_DRIVER` (`memory`|`postgres`, default `memory`),
+  `JOB_SCHEDULES_ENABLED` (default off). Production-gate: `postgres` вимагає
+  `DATABASE_URL`.
+- Новий npm-скрипт `worker` / `worker:dev` (root + `server/`).
+- pg-boss потрапить у `dependencies` у part 1b (v12: deps `cron-parser`,
+  `serialize-error` + bump `pg` 8.21→8.23 — lockfile-діф чистий ~80 рядків,
+  перевірено 2026-09-09); поки не додано.
+- `content/snapshot.ts` `buildSnapshot` став хендлером типу `content.snapshot`
+  (WS5 part 2) — пише через `ObjectStore` (ADR-015).
+
+## Rollback
+
+`JobQueue`-інтерфейс ізолює виклики: адаптер міняється без зміни продюсерів.
+Прибрати worker з deploy → sweep-и просто не крутяться (застарілі рядки
+нешкідливі, наступний hit їх перезаписує). Жодних незворотних змін даних.
+
+---
+
+# ADR-015 — Object storage: filesystem default, hand-rolled SigV4 для S3
+
+**Дата:** 2026-09-09
+**Статус:** accepted, implementation у Phase 2 WS5 part 2.
+
+## Контекст
+
+Phase 2 §19 і ref-arch §3.6 вимагають S3-сумісний адаптер об'єктного сховища для
+**виходів**: published-content снапшоти (§14), пізніше export-бандли, сирі
+AI-артефакти (Phase 4), медіа. §19 також: «single VPS may host multiple
+processes» і «secrets are not bundled into Vite». Наявний стан — лише JSON-файли
+на диску через `atomicJson`.
+
+## Рішення
+
+- **Доменний інтерфейс `ObjectStore`** (`server/domains/storage/objectStore.ts`)
+  — `put` / `get` / `head` / `delete` / `list(prefix)`. Чистий, без `fs`/мережі.
+  Ключі — `/`-розділені, без `.`/`..`/провідного слешу (`assertValidObjectKey`).
+- **`filesystem` адаптер — default** (`server/infrastructure/storage/`). Один
+  файл на ключ + `<key>.meta` сайдкар (content-type, metadata, sha-256 etag).
+  Атомарний запис (temp + `rename`, як JSON-стори — ADR-006). Це домівка
+  снапшотів на одному VPS. Корінь — `OBJECT_STORAGE_DIR` (default
+  `server/.data/objects`, у `.gitignore`).
+- **`s3` адаптер — шлях масштабування**. `OBJECT_STORAGE_DRIVER=s3` +
+  `S3_ENDPOINT`/`S3_BUCKET`/`S3_REGION`/`S3_ACCESS_KEY_ID`/`S3_SECRET_ACCESS_KEY`
+  (+ опц. `S3_KEY_PREFIX`). Говорить S3 REST через `fetch` + **власний SigV4**
+  (`sigv4.ts`, ~110 рядків, звірено з AWS `aws4_testsuite` векторами) — **без
+  `aws-sdk`** (важкий, ~20 МБ transitively, для 4 операцій — надмір). Path-style
+  адресація за замовч. (MinIO/R2/B2 усі приймають). Секрети — тільки в
+  server-only `env.ts`, ніколи не в клієнтський бандл.
+- **`memory` адаптер** — тести. Усі три проходять спільний `objectStoreContract`.
+- **Не в БД, не source of truth** (§25): снапшот регенерується з канонічного
+  стору; `content.snapshot`-джоб пише `snapshots/<setId>/<contentHash>.json` +
+  `latest.json`.
+
+## Alternatives
+
+`@aws-sdk/client-s3` (важкий, ESM-проблеми, 50+ transitive), `minio` client
+(теж чималий, тільки MinIO/AWS), `aws4fetch` (крихітний, але зайва залежність
+там, де 110 рядків signing вистачає і повністю тестуються). Тримати снапшоти в
+Postgres BYTEA — змішує output зі стором, роздуває БД.
+
+## Наслідки
+
+- env: `OBJECT_STORAGE_DRIVER` (`filesystem`|`s3`), `OBJECT_STORAGE_DIR`,
+  `S3_*`. Неповна S3-конфігурація → warn + fallback на `filesystem`.
+- `.gitignore` += `server/.data/objects/`.
+- S3-адаптер **не** покритий інтеграційним тестом проти живого MinIO у CI —
+  signing протестовано юніт-векторами; live-lane — ручний / майбутній.
+
+## Rollback
+
+`ObjectStore`-інтерфейс ізолює: драйвер міняється конфігом без зміни продюсерів.
+`filesystem` не має зовнішніх залежностей. Снапшоти — виходи, їх втрата
+безпечна (регенеруються джобом).
 
 ---
 

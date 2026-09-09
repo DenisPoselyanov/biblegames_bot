@@ -43,6 +43,8 @@
     "server": "npm run start --prefix server",
     "server:dev": "npm run dev --prefix server",
     "server:install": "npm install --prefix server",
+    "worker": "npm run worker --prefix server",
+    "worker:dev": "npm run worker:dev --prefix server",
     "ai-topic-edit": "node scripts/ai-topic-edit.mjs",
     "generate-ai": "node scripts/generate-questions-ai.mjs",
     "topic-conveyor": "node scripts/topic-conveyor.mjs",
@@ -57,7 +59,8 @@
     "db:generate": "npx --yes drizzle-kit@^0.31.10 generate",
     "db:migrate": "tsx server/infrastructure/database/migrate.ts",
     "db:check": "npx --yes drizzle-kit@^0.31.10 check",
-    "content:import-legacy": "tsx scripts/content/import-legacy-questions.ts"
+    "content:import-legacy": "tsx scripts/content/import-legacy-questions.ts",
+    "migrate:backfill-preferences": "tsx scripts/migrate/backfill-preferences.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.0",

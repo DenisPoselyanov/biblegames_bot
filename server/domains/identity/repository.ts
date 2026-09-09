@@ -11,6 +11,7 @@
  */
 import type { Role } from '../../../contracts/index';
 import type { Transaction } from '../shared/context';
+import type { PreferencesRepository } from './preferences';
 import type {
   ExternalIdentityRef,
   GrantRoleInput,
@@ -48,4 +49,7 @@ export interface RoleRepository {
 export interface IdentityRepositories {
   users: UserRepository;
   roles: RoleRepository;
+  preferences: PreferencesRepository;
 }
+
+export type { PreferencesRepository };

@@ -11,6 +11,7 @@ export * from './schemas/snapshots';
 export * from './schemas/content';
 
 export * as adminContract from './api/admin';
+export * as observabilityContract from './api/observability';
 export * as meContract from './api/me';
 export * as progressionContract from './api/progression';
 export * as shopContract from './api/shop';

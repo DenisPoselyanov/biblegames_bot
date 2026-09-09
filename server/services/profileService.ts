@@ -18,6 +18,19 @@ import type { ServerStore } from '../db/store';
 import { migrateProfileWallet, type ProfileWithLegacyWallet } from '../../src/lib/storage';
 import { isBollsTranslation } from '../../src/lib/bollsConstants';
 import type { WalletLedger } from '../wallet';
+import type { PreferencesRepository } from '../domains/identity/repository';
+
+/**
+ * Typed-preferences cutover (Phase 2 §18.2). When a `PreferencesRepository` is
+ * wired, the whitelist fields with a typed home (`activeTheme` / `avatar` /
+ * `bibleTranslation`) are written to `user_preferences`; the read overlays them
+ * back on top of the legacy blob so consumers see one shape. `legacyReadOnly`
+ * stops the parallel blob write for those fields once the backfill is verified.
+ */
+export interface PreferencesCutover {
+  repo: PreferencesRepository;
+  legacyReadOnly: boolean;
+}
 
 /** The default profile returned when a user has no stored record yet. */
 export function emptyProfile(userId: string): Record<string, unknown> {
@@ -91,12 +104,23 @@ export async function readProfile(
   dbStore: ServerStore,
   userId: string,
   walletLedger: WalletLedger,
+  preferences?: PreferencesCutover,
 ): Promise<Record<string, unknown>> {
   const profile = await dbStore.getProfile(userId);
   const base = profile
     ? migrateProfileWallet(profile as ProfileWithLegacyWallet)
     : emptyProfile(userId);
-  return { ...base, coins: await walletLedger.getBalance(userId) };
+  const merged: Record<string, unknown> = { ...base, coins: await walletLedger.getBalance(userId) };
+
+  if (preferences) {
+    const typed = await preferences.repo.get(userId);
+    if (typed) {
+      if (typed.activeTheme !== null) merged.activeTheme = typed.activeTheme;
+      if (typed.avatar !== null) merged.avatar = typed.avatar;
+      if (typed.bibleTranslation !== null) merged.bibleTranslation = typed.bibleTranslation;
+    }
+  }
+  return merged;
 }
 
 /** Apply the preference whitelist and nothing else (Phase 1 §7.1). */
@@ -104,12 +128,34 @@ export async function writePreferences(
   dbStore: ServerStore,
   userId: string,
   body: unknown,
+  preferences?: PreferencesCutover,
 ): Promise<void> {
   const existing = (await dbStore.getProfile(userId)) ?? {};
   const prefs = sanitizePreferences(body, existing as Record<string, unknown>);
+  if (Object.keys(prefs).length === 0) return; // nothing survived the whitelist
+
+  if (preferences) {
+    const typedPatch: Record<string, string> = {};
+    if (prefs.activeTheme !== undefined) typedPatch.activeTheme = prefs.activeTheme;
+    if (prefs.avatar !== undefined) typedPatch.avatar = prefs.avatar;
+    if (prefs.bibleTranslation !== undefined) typedPatch.bibleTranslation = prefs.bibleTranslation;
+    if (Object.keys(typedPatch).length > 0) {
+      await preferences.repo.upsert(userId, typedPatch);
+    }
+  }
+
+  // Once the typed store is authoritative (`legacyReadOnly`), stop mirroring the
+  // three typed fields into the blob — but `displayName` has no typed home yet,
+  // so it (and everything else) still goes through here.
+  const blobPrefs =
+    preferences?.legacyReadOnly
+      ? { ...(prefs.displayName !== undefined ? { displayName: prefs.displayName } : {}) }
+      : prefs;
+  if (Object.keys(blobPrefs).length === 0) return;
+
   await dbStore.setProfile(userId, {
     ...existing,
-    ...prefs,
+    ...blobPrefs,
     userId,
     updatedAt: new Date().toISOString(),
   });

@@ -14,10 +14,10 @@ WS1 contracts + architecture rules + server composition · WS2 persistence platf
 (Drizzle, migrations, repositories, persisted RBAC, shared rate-limit/metrics) ·
 WS3 canonical content repository + realtime gateway v2 · WS4 frontend data
 architecture · WS5 jobs + object storage + deployment + migration cutover + DoD.
-Stack confirmed: **Zod + Drizzle + pg-boss** (ADR-013 + ADR-012 accepted;
-ADR-014 proposed pending spike).
+Stack confirmed: **Zod + Drizzle + pg-boss** (ADR-013 + ADR-012 + ADR-014 accepted).
 
-WS1 landed on `main` (PR #8, merge `b4d0a34`).
+WS1–WS4 landed on `main` (PRs #8 `b4d0a34`, #9 `009c5a2`, #10 `1ca59bd`, #11 `f25eca5`).
+WS5 in progress on `phase-2/ws5-jobs-storage-deploy`.
 
 ### WS1 (done, merged) — PR #8 → `main` `b4d0a34`
 
@@ -171,7 +171,7 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   repository (in-memory only for now), `legacyStoreReadOnly` + the JSON→SQL
   snapshot cutover.
 
-### WS4 (in progress) — branch `phase-2/ws4-frontend-data`
+### WS4 (done, merged) — PR #11 → `main` `f25eca5`
 
 Frontend data architecture (§13). `npm run check` green, 289 tests.
 
@@ -209,6 +209,89 @@ Frontend data architecture (§13). `npm run check` green, 289 tests.
 - **Deferred to WS5:** the React Query persister wired to `isOfflineCacheable`,
   and offline reconciliation for pending safe commands (§13.3 bullet 3 — only
   preferences + last snapshot are cached today).
+
+WS4 landed on `main` (PR #11, merge `f25eca5`).
+
+### WS5 (in progress) — branch `phase-2/ws5-jobs-storage-deploy`
+
+Jobs, storage, deployment, migration cutover & DoD (§17–§20, §26, §27). Off main `f25eca5`.
+
+- **Background jobs abstraction + ADR-014 (§17, part 1):** `server/domains/jobs/`
+  — a pure `JobQueue` interface (`register` / `enqueue` / `start` / `stop` /
+  `stats`), a `JobRecord` carrying every §17 field (id, type, status, attempts,
+  timestamps, error, checkpoint, idempotency), and a `catalog.ts` of well-known
+  types each with a Zod payload schema. The **in-memory adapter**
+  (`inMemoryQueue.ts`) is the default and the only option with no DB: poll loop,
+  capped-exponential backoff, dead-letter after `maxAttempts`, `AbortSignal` on
+  stop, `runDue()` test hook. The durable Postgres/pg-boss adapter is **part 1b
+  (deferred, fast-follow)** — a 2026-09-09 spike found `pg-boss@12` `boss.start()`
+  hangs under pglite, so its contract test needs a real Postgres in CI;
+  `JOB_QUEUE_DRIVER=postgres` currently falls back to in-memory with a loud warn.
+  A dedicated
+  **worker process** (`server/worker.ts`, `npm run worker`) runs the queue and,
+  when `JOB_SCHEDULES_ENABLED=true`, the recurring maintenance jobs — it never
+  binds a port. First handlers: three retention sweeps (`rate_limit_counters`,
+  `idempotency_keys`, `telemetry_events`), each one bounded `DELETE`, on a 6h
+  schedule. Metrics: `jobs_{enqueued,started,completed,retried,failed}_total{type}`.
+  ADR-014 → accepted. `npm run check` green, 305 tests (+16).
+
+- **Object storage adapter + ADR-015 (§19, part 2):** `server/domains/storage/`
+  — an `ObjectStore` interface (`put` / `get` / `head` / `delete` / `list`) for
+  platform **outputs** (content snapshots now; export bundles + AI artifacts +
+  media later). The **filesystem adapter** is the default (one file per key +
+  a `.meta` sidecar, atomic writes, `OBJECT_STORAGE_DIR`). The **S3 adapter**
+  (`OBJECT_STORAGE_DRIVER=s3`) talks S3 REST over `fetch` with a hand-rolled
+  SigV4 (`sigv4.ts`, verified against the AWS `aws4_testsuite` vectors) — no
+  `aws-sdk`; works with AWS / MinIO / R2 / B2. A memory adapter backs tests;
+  all three pass one `objectStoreContract`. The `content.snapshot` job
+  (`buildSnapshot` → `ObjectStore`) writes `snapshots/<setId>/<hash>.json` +
+  `latest.json` and is registered on the worker when content wiring is present.
+  ADR-015 → accepted. `npm run check` green, 323 tests (+18).
+
+- **Deployment topology + typed env (§19, part 3):** `docs/DEPLOYMENT.md` — the
+  7 deployable units (frontend bundle, API, realtime [still in-process, explicit
+  boundary], bot, job worker, migration command, database), each with its run
+  command, port, restart safety and health/observability. A full env-var
+  reference per unit, split public (`VITE_*`, baked into the bundle) vs
+  server-only, with a secret inventory (`TELEGRAM_BOT_TOKEN`, `DATABASE_URL`,
+  `BOT_TOKEN`, `S3_*` keys, AI keys — never in Vite, never logged). Deploy /
+  migration / rollout procedures and a single-VPS systemd example.
+  `.env.example` + `docs/README.md` updated. Docs-only.
+
+- **Observability standardization (§20, part 4):** `docs/OBSERVABILITY.md` — the
+  log schema (`level` reserved), the ID taxonomy (`requestId` / `jobId`+`type` /
+  `eventId`), and the full metric catalog. New instrumentation: `httpMetrics`
+  middleware (`http_requests_total{method,status}`, `http_server_errors_total`,
+  `http.slow_request` warn ≥ 1s); `instrumentPool` wraps `pg.Pool.query`
+  (`db_queries_total{op}` where `op` = `<verb> <table>`, `db_slow_queries_total`
+  ≥ 200ms, `db_query_errors_total`). Frontend: `src/lib/errorReporter.ts`
+  (`window.onerror` + `unhandledrejection` + `ErrorBoundary`) → `POST
+  /api/v1/client-errors` (`contracts/api/observability.ts`, `.strict()`,
+  unauthenticated, 30/min per IP) sending only `{ route, buildVersion, code,
+  level, message? }` — never a stack or payload. `__APP_VERSION__` baked in by
+  Vite (`VITE_BUILD_ID` | `<pkg>-dev`). `npm run check` green, 337 tests (+14).
+
+- **Legacy profile decomposition — preferences (§18.2, part 5):** the typed
+  `user_preferences` table (migration `0001`) gets its first authoritative use.
+  New `PreferencesRepository` (`server/domains/identity/preferences.ts`) — SQL
+  adapter + in-memory peer, in the shared identity contract test. `writePreferences`
+  / `readProfile` now **dual-write** the whitelist fields with a typed home
+  (`activeTheme` / `avatar` / `bibleTranslation`) to `user_preferences` and
+  overlay them on read; the blob copy stays in sync during the verification
+  window. `LEGACY_STORE_READONLY=true` freezes those three fields in the blob
+  (typed store becomes authoritative). Backfill:
+  `npm run migrate:backfill-preferences [--dry]` (idempotent, reports
+  scanned/written/unchanged/no-user-row). `displayName` and the
+  progression/entitlement fields are **not** decomposed yet — see below.
+  `npm run check` green, 344 tests (+5).
+
+  *Remaining §18.2 work (post-Phase-2 rollout, §27 step 9):* typed tables +
+  repositories for progression state (level/xp/rank/streak) and
+  achievements/entitlements, their backfill with a `migration_records`-style
+  provenance row and count/sum verification, then the legacy write-path removal
+  once rollout evidence is in. The framework (dual-write + `LEGACY_STORE_READONLY`
+  + backfill pattern) is in place; `player_stats` / `player_profiles` blobs stay
+  authoritative for those fields until then.
 
 ---
 
@@ -1073,6 +1156,42 @@ Phase 2 is complete when:
 15. API/error/pagination/idempotency conventions are consistent.
 16. Deployment units and environment configuration are documented accurately.
 17. Phase 3 can build Today/Lessons/Practice without inventing another data model.
+
+### 26.1 Definition of Done — sign-off (WS5, 2026-09-09)
+
+`npm run check` green — **344 tests**, `lint:ws` + `typecheck` ×2 + `smoke-audit`
++ `build`. WS1–WS4 merged (`b4d0a34` / `009c5a2` / `1ca59bd` / `f25eca5`); WS5 on
+`phase-2/ws5-jobs-storage-deploy`.
+
+| # | Status | Evidence |
+|---|--------|----------|
+| 1 | ✅ met | `server/domains/README.md` map; `contracts/__tests__/architecture.test.ts`, `server/__tests__/architecture.test.ts` |
+| 2 | ✅ met | Phase 1 auth unchanged; `auth.test.ts`, `socket.test.ts`, `rbac.test.ts` still green |
+| 3 | ✅ met | `contracts/` (WS1), `CONTRACT_VERSION` + `x-contract-version` header |
+| 4 | ✅ met | `src/lib/apiClient` validates every response against a Zod contract (WS4) |
+| 5 | ✅ met | no client whole-profile write since Phase 1 WS4; only the preference whitelist (`me.ts`) |
+| 6 | 🟡 partial | wallet ledger + identity/RBAC + content on transactional Drizzle repos; **progression/stats still on the `dbStore` blob** — decomposition is the §18.2 rollout follow-up |
+| 7 | 🟡 partial | JSON is the dev default + import/snapshot format; **`STORAGE_PROVIDER=json` is still a production-capable profile/stats store** — retired with the progression decomposition (§27 step 8) |
+| 8 | ✅ met | `question_revisions` + `CANONICAL_CONTENT_REPOSITORY` cutover (WS3); `content.test.ts` |
+| 9 | 🟡 partial | wallet ✅ (ledger), preferences ✅ (typed `user_preferences`, WS5 part 5); **progression + entitlement still in the blob** — same follow-up |
+| 10 | ✅ met | `createHttpServer` builds the full stack with no `listen`; `architecture.test.ts` "composition root" |
+| 11 | ✅ met | `RealtimeEvent` envelope + per-room sequence + `resync_room` behind `REALTIME_GATEWAY_V2` (WS3); `realtimeGateway.test.ts` |
+| 12 | ✅ met | `bot/README.md` + architecture test pins `bot/` imports no `server/` runtime module (WS3) |
+| 13 | ✅ met | Drizzle Kit journal/checksum/ordered ids; `db:migrate` + `drizzle.__migration_runs`; `migrate.test.ts`; `docs/DEPLOYMENT.md` §4.2 |
+| 14 | ✅ met | `architecture.test.ts` (contracts purity, frontend↛server, domain boundary, port-free build), `schemaParity.test.ts` |
+| 15 | ✅ met | §7.5 error envelope, `idempotencyKey` on commands, `validateBody`; `contracts.test.ts` |
+| 16 | ✅ met | `docs/DEPLOYMENT.md` (7 units + per-unit env), `docs/OBSERVABILITY.md`, `.env.example` (WS5 parts 3–4) |
+| 17 | ✅ met | published content query + versioned sets + typed progression outcomes + preference schema are all in place for Phase 3 |
+
+**14 / 17 fully met.** #6, #7, #9 share one remaining piece: decomposing the
+`player_profiles` / `player_stats` progression + entitlement fields into typed
+transactional tables and retiring `STORAGE_PROVIDER=json` for them. WS5 landed
+the framework for this (typed `user_preferences` cutover, `LEGACY_STORE_READONLY`,
+the backfill-script pattern) and preferences are done; progression/entitlement
+decomposition is a bounded, well-specified rollout task (see §18.2 remaining work
++ [ROLLOUT_PHASE_2.md](../ROLLOUT_PHASE_2.md)). It is intentionally **not** rushed
+into WS5 — it touches the reward/celebration hot path and wants its own change +
+rollout evidence (§27 step 9).
 
 ---
 

@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "start": "tsx index.ts",
-    "dev": "tsx watch index.ts"
+    "dev": "tsx watch index.ts",
+    "worker": "tsx worker.ts",
+    "worker:dev": "tsx watch worker.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",

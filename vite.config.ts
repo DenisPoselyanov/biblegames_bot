@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 // Runtime uses vite.config.mjs (see scripts/run-vite.mjs).
 export default defineConfig({
+  define: { __APP_VERSION__: JSON.stringify(process.env.VITE_BUILD_ID || '0.0.0-dev') },
   plugins: [react()],
   resolve: {
     alias: {

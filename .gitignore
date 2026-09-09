@@ -29,6 +29,8 @@ server/.data/audit-log.jsonl
 server/.data/wallet.json
 server/.data/idempotency.json
 server/.data/migrations.json
+server/.data/objects/
+/.data/
 
 # AI-generated analysis reports
 data/question-categories.json

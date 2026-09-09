@@ -7,6 +7,7 @@ import { jsonStore } from './db/jsonStore';
 import { sqlStore } from './db/sqlStore';
 import { asyncHandler } from './middleware/asyncHandler';
 import { requestId } from './middleware/requestId';
+import { httpMetrics } from './middleware/httpMetrics';
 import { errorHandler } from './middleware/errorHandler';
 import { configureRateLimitStore, createRateLimit } from './middleware/rateLimit';
 import type { RateLimitStore } from './middleware/rateLimitStore';
@@ -37,6 +38,7 @@ import { createIdempotencyStore, type IdempotencyStore } from './lib/idempotency
 import { createMigrationStore, type MigrationStore } from './migration/migrationStore';
 import { scriptureRouter } from './routes/scripture';
 import { createQuestionsAdminRouter } from './routes/questionsAdmin';
+import { createClientErrorsRouter } from './routes/clientErrors';
 import { createMeRouter } from './routes/me';
 import { createProgressionRouter } from './routes/progression';
 import { createShopRouter } from './routes/shop';
@@ -116,6 +118,12 @@ export function createApp(deps: AppDeps): Express {
   // --- RBAC principal resolution (Phase 2 WS2 part 3, closes ADR-011) ---
   const identity =
     deps.identity ?? (deps.database ? createSqlIdentityRepositories(deps.database) : undefined);
+
+  // Typed-preferences cutover (Phase 2 §18.2) — active whenever identity is
+  // wired. Shared by `/me/preferences` (writes) and `/shop/purchases` (auto-equip).
+  const preferencesCutover = identity
+    ? { repo: identity.preferences, legacyReadOnly: config.legacyStoreReadOnly }
+    : undefined;
   const roleResolver =
     deps.roleResolver ??
     (identity
@@ -159,6 +167,7 @@ export function createApp(deps: AppDeps): Express {
   app.use(express.json({ limit: '1mb' }));
   app.use(cors({ origin: config.clientOrigins, credentials: true }));
   app.use(requestId);
+  app.use(httpMetrics);
   app.use((_req, res, next) => {
     res.setHeader(CONTRACT_VERSION_HEADER, CONTRACT_VERSION);
     next();
@@ -211,6 +220,13 @@ export function createApp(deps: AppDeps): Express {
   // per-principal limits live inside / alongside each router.
   app.use('/api/v1', rlIp('api_v1_ip', 60_000, 120));
 
+  // Frontend error reporting (§20) — unauthenticated, tightly IP-limited.
+  app.use(
+    '/api/v1/client-errors',
+    rlIp('client_errors_ip', 60_000, 30),
+    createClientErrorsRouter(),
+  );
+
   // Runtime RBAC grant/revoke (§9, closes ADR-011) — only with a persisted store.
   if (roleService) {
     app.use(
@@ -226,7 +242,14 @@ export function createApp(deps: AppDeps): Express {
   app.use(
     '/api/v1/me',
     ...authed,
-    createMeRouter({ dbStore, walletLedger, migrationStore, auditLog, config }),
+    createMeRouter({
+      dbStore,
+      walletLedger,
+      migrationStore,
+      auditLog,
+      config,
+      preferences: preferencesCutover,
+    }),
   );
   app.use(
     '/api/v1/progression',
@@ -238,7 +261,7 @@ export function createApp(deps: AppDeps): Express {
     '/api/v1/shop',
     ...authed,
     rl('shop', 60_000, 15),
-    createShopRouter({ dbStore, walletLedger, auditLog, idempotency }),
+    createShopRouter({ dbStore, walletLedger, auditLog, idempotency, preferences: preferencesCutover }),
   );
 
   // --- Demo/in-memory endpoints — mounted only off-production (§10, §17) ---

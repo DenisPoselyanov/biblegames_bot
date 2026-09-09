@@ -23,6 +23,29 @@ export type StorageProvider = 'json' | 'sql';
  */
 export type CanonicalContentMode = 'off' | 'compare' | 'canonical';
 
+/**
+ * Background job queue driver (Phase 2 §17, ADR-014):
+ * - `memory`   — in-process, non-durable (default; the only option with no DB);
+ * - `postgres` — durable, Postgres-backed (WS5 part 1b; requires `DATABASE_URL`).
+ */
+export type JobQueueDriver = 'memory' | 'postgres';
+
+/**
+ * Object storage driver (Phase 2 §19):
+ * - `filesystem` — one directory on the host (default; single-VPS);
+ * - `s3`         — any S3-compatible service (AWS, MinIO, R2, B2).
+ */
+export type ObjectStorageDriver = 'filesystem' | 's3';
+
+export interface S3Config {
+  endpoint: string;
+  bucket: string;
+  region: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+  keyPrefix: string;
+}
+
 export interface ServerConfig {
   nodeEnv: NodeEnv;
   isProduction: boolean;
@@ -58,6 +81,27 @@ export interface ServerConfig {
    * handler for reconnect recovery. Off → legacy raw `room_state` emits only.
    */
   realtimeGatewayV2: boolean;
+  /** Background job queue driver (Phase 2 §17, ADR-014). */
+  jobQueueDriver: JobQueueDriver;
+  /**
+   * Legacy profile-blob decomposition cutover (Phase 2 §18.2, ADR-012).
+   * When `true`, preference writes go **only** to the typed `user_preferences`
+   * table and the blob's preference fields are frozen — set this after the
+   * backfill + verification window. Default `false`: dual-write (blob + typed).
+   */
+  legacyStoreReadOnly: boolean;
+  /** Object storage driver (Phase 2 §19). */
+  objectStorageDriver: ObjectStorageDriver;
+  /** Filesystem object-store root (used when `objectStorageDriver === 'filesystem'`). */
+  objectStorageDir: string;
+  /** S3 connection — present only when `objectStorageDriver === 's3'` and fully configured. */
+  s3: S3Config | null;
+  /**
+   * Whether this process runs the recurring maintenance jobs (retention sweeps).
+   * The dedicated worker (`server/worker.ts`) sets this; the API process leaves
+   * it off so schedules don't run in N places at once.
+   */
+  jobSchedulesEnabled: boolean;
 }
 
 export interface LoadConfigResult {
@@ -116,6 +160,44 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     );
   }
 
+  let jobQueueDriver: JobQueueDriver = 'memory';
+  if (env.JOB_QUEUE_DRIVER === 'postgres') {
+    jobQueueDriver = 'postgres';
+  } else if (env.JOB_QUEUE_DRIVER && env.JOB_QUEUE_DRIVER !== 'memory') {
+    warnings.push(`Unknown JOB_QUEUE_DRIVER "${env.JOB_QUEUE_DRIVER}", falling back to "memory"`);
+  }
+
+  let objectStorageDriver: ObjectStorageDriver = 'filesystem';
+  if (env.OBJECT_STORAGE_DRIVER === 's3') {
+    objectStorageDriver = 's3';
+  } else if (env.OBJECT_STORAGE_DRIVER && env.OBJECT_STORAGE_DRIVER !== 'filesystem') {
+    warnings.push(
+      `Unknown OBJECT_STORAGE_DRIVER "${env.OBJECT_STORAGE_DRIVER}", falling back to "filesystem"`,
+    );
+  }
+
+  let s3: S3Config | null = null;
+  if (objectStorageDriver === 's3') {
+    const missing = (
+      ['S3_ENDPOINT', 'S3_BUCKET', 'S3_REGION', 'S3_ACCESS_KEY_ID', 'S3_SECRET_ACCESS_KEY'] as const
+    ).filter((k) => !env[k]);
+    if (missing.length > 0) {
+      warnings.push(
+        `OBJECT_STORAGE_DRIVER=s3 but ${missing.join(', ')} unset — falling back to "filesystem"`,
+      );
+      objectStorageDriver = 'filesystem';
+    } else {
+      s3 = {
+        endpoint: env.S3_ENDPOINT!,
+        bucket: env.S3_BUCKET!,
+        region: env.S3_REGION!,
+        accessKeyId: env.S3_ACCESS_KEY_ID!,
+        secretAccessKey: env.S3_SECRET_ACCESS_KEY!,
+        keyPrefix: env.S3_KEY_PREFIX ?? '',
+      };
+    }
+  }
+
   let storageProvider: StorageProvider = 'json';
   if (env.STORAGE_PROVIDER === 'sql') {
     storageProvider = 'sql';
@@ -151,6 +233,12 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
       env.RATE_LIMIT_DISABLED === 'true' || (nodeEnv === 'test' && env.RATE_LIMIT_DISABLED !== 'false'),
     canonicalContentRepository,
     realtimeGatewayV2: env.REALTIME_GATEWAY_V2 === 'true',
+    jobQueueDriver,
+    jobSchedulesEnabled: env.JOB_SCHEDULES_ENABLED === 'true',
+    legacyStoreReadOnly: env.LEGACY_STORE_READONLY === 'true',
+    objectStorageDriver,
+    objectStorageDir: env.OBJECT_STORAGE_DIR ?? 'server/.data/objects',
+    s3,
   });
 
   return { config, warnings };
