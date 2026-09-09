@@ -26,6 +26,10 @@ import type { IdentityRepositories } from './domains/identity/repository';
 import type { Database } from './infrastructure/database/client';
 import { createSqlIdentityRepositories } from './infrastructure/database/repositories/identity';
 import { createSqlRateLimitStore } from './infrastructure/database/repositories/rateLimitStore';
+import { createSqlContentRepositories } from './infrastructure/database/repositories/content';
+import { createContentQueryService } from './services/contentQuery';
+import { configureCanonicalContent } from './services/questionService';
+import type { ContentRepositories } from './domains/content/repository';
 import { createAdminRolesRouter } from './routes/adminRoles';
 import { createAuditLog, type AuditLog } from './audit';
 import { createWalletLedger, type WalletLedger } from './wallet';
@@ -66,6 +70,13 @@ export interface AppDeps {
   walletLedger?: WalletLedger;
   idempotency?: IdempotencyStore;
   migrationStore?: MigrationStore;
+  /**
+   * Canonical content repositories (Phase 2 WS3). Defaults to the SQL adapter
+   * when `database` is set. The `canonicalContentRepository` config mode decides
+   * whether the question read path stays on the legacy bank (`off`), compares
+   * (`compare`), or serves published revisions (`canonical`).
+   */
+  contentRepositories?: ContentRepositories;
 }
 
 /**
@@ -88,6 +99,19 @@ export function createApp(deps: AppDeps): Express {
     deps.rateLimitStore ??
     (deps.database ? createSqlRateLimitStore(deps.database) : undefined);
   if (rateLimitStore) configureRateLimitStore(rateLimitStore);
+
+  // --- Canonical content repository (Phase 2 WS3 part 3, §14) ---
+  const contentRepositories =
+    deps.contentRepositories ??
+    (deps.database ? createSqlContentRepositories(deps.database) : undefined);
+  configureCanonicalContent(
+    contentRepositories && config.canonicalContentRepository !== 'off'
+      ? {
+          mode: config.canonicalContentRepository,
+          query: createContentQueryService(contentRepositories),
+        }
+      : null,
+  );
 
   // --- RBAC principal resolution (Phase 2 WS2 part 3, closes ADR-011) ---
   const identity =

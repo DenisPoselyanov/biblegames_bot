@@ -16,8 +16,12 @@ import {
   type PracticePickOptions,
 } from '../../src/data/questions';
 import { findRootByThemeId } from '../../src/data/topicDbLoader.shared';
+import type { CanonicalContentMode } from '../config/env';
+import { metrics } from '../lib/metrics';
+import { log } from '../lib/logger';
 import { loadAllTopicHierarchies } from '../topicHierarchyLoader';
 import { queryRows, useQuestionsSql } from '../db/pgPool';
+import type { ContentQueryService } from './contentQuery';
 import { applyMutationsToQuestions, rowToQuestion } from './questionRowMapper';
 
 const DIFFICULTIES: Difficulty[] = [
@@ -73,12 +77,113 @@ function applySqlMutations(
     });
 }
 
-async function fetchQuestionsFromSql(filters: {
+// --- Canonical content repository seam (Phase 2 §14, WS3 part 3) --------------
+
+interface CanonicalContent {
+  mode: CanonicalContentMode;
+  query: ContentQueryService;
+}
+let canonicalContent: CanonicalContent | null = null;
+
+/** Wire the published-revision repository in (`server/app.ts`). */
+export function configureCanonicalContent(next: CanonicalContent | null): void {
+  canonicalContent = next && next.mode !== 'off' ? next : null;
+}
+
+/** Test isolation. */
+export function resetCanonicalContent(): void {
+  canonicalContent = null;
+}
+
+type QuestionFilters = {
   themeId?: string;
   themeIds?: string[];
   difficulty?: Difficulty;
   ids?: string[];
-}): Promise<Question[]> {
+};
+
+function canonicalFilterOf(filters: QuestionFilters) {
+  const themeIds = filters.themeId
+    ? [filters.themeId]
+    : filters.themeIds && filters.themeIds.length
+      ? filters.themeIds
+      : undefined;
+  return {
+    themeIds,
+    difficulty: filters.difficulty ?? null,
+    questionIds: filters.ids && filters.ids.length ? filters.ids : undefined,
+  };
+}
+
+async function fetchCanonicalQuestions(filters: QuestionFilters): Promise<Question[]> {
+  if (!canonicalContent) return [];
+  const filter = canonicalFilterOf(filters);
+  const rows = filters.ids?.length
+    ? await canonicalContent.query.getPublishedByIds(filters.ids)
+    : await canonicalContent.query.listPublished(filter);
+  return rows;
+}
+
+/**
+ * Source dispatcher. `off` → legacy SQL only. `canonical` → published revisions,
+ * legacy SQL only when the canonical result is empty. `compare` → serve legacy,
+ * read canonical too and log every id-set divergence (§27.3 dual-read).
+ */
+async function fetchQuestions(filters: QuestionFilters): Promise<Question[]> {
+  if (!canonicalContent) return fetchQuestionsFromSql(filters);
+
+  if (canonicalContent.mode === 'canonical') {
+    try {
+      const rows = await fetchCanonicalQuestions(filters);
+      if (rows.length > 0) return rows;
+    } catch (err) {
+      metrics.inc('content_source_error_total', { source: 'canonical' });
+      log.error('canonical content read failed, falling back to legacy', {
+        msg2: (err as Error).message,
+      });
+    }
+    return fetchQuestionsFromSql(filters);
+  }
+
+  // compare
+  const legacy = await fetchQuestionsFromSql(filters);
+  try {
+    const canonical = await fetchCanonicalQuestions(filters);
+    reportDivergence(filters, legacy, canonical);
+  } catch (err) {
+    metrics.inc('content_source_error_total', { source: 'canonical' });
+    log.error('canonical content compare read failed', { msg2: (err as Error).message });
+  }
+  return legacy;
+}
+
+function reportDivergence(
+  filters: QuestionFilters,
+  legacy: Question[],
+  canonical: Question[],
+): void {
+  const legacyIds = new Set(legacy.map((q) => q.id));
+  const canonicalIds = new Set(canonical.map((q) => q.id));
+  const missingFromCanonical = [...legacyIds].filter((id) => !canonicalIds.has(id));
+  const extraInCanonical = [...canonicalIds].filter((id) => !legacyIds.has(id));
+  if (missingFromCanonical.length === 0 && extraInCanonical.length === 0) {
+    metrics.inc('content_source_compare_total', { result: 'match' });
+    return;
+  }
+  metrics.inc('content_source_compare_total', { result: 'divergent' });
+  metrics.inc('content_source_divergence_total', {}, missingFromCanonical.length + extraInCanonical.length);
+  log.warn('canonical content diverges from legacy', {
+    themeId: filters.themeId,
+    themeIds: filters.themeIds?.slice(0, 8),
+    difficulty: filters.difficulty,
+    legacyCount: legacy.length,
+    canonicalCount: canonical.length,
+    missingFromCanonical: missingFromCanonical.slice(0, 20),
+    extraInCanonical: extraInCanonical.slice(0, 20),
+  });
+}
+
+async function fetchQuestionsFromSql(filters: QuestionFilters): Promise<Question[]> {
   const excluded = await loadExclusionIds();
   const overrides = await loadOverridesMap();
 
@@ -130,8 +235,8 @@ async function buildPoolForParams(params: PickQuestionsParams): Promise<Question
     const hierarchies = await loadAllTopicHierarchies();
     const root = findRootByThemeId(hierarchies, params.themeId);
     if (root) {
-      if (useQuestionsSql()) {
-        const raw = await fetchQuestionsFromSql({
+      if (useQuestionsSql() || canonicalContent) {
+        const raw = await fetchQuestions({
           themeId: params.themeId,
           difficulty: params.difficulty,
         });
@@ -144,8 +249,8 @@ async function buildPoolForParams(params: PickQuestionsParams): Promise<Question
   }
 
   if (params.themeIds?.length) {
-    if (useQuestionsSql()) {
-      const pool = await fetchQuestionsFromSql({
+    if (useQuestionsSql() || canonicalContent) {
+      const pool = await fetchQuestions({
         themeIds: params.themeIds,
         difficulty: params.difficulty,
       });
@@ -155,8 +260,8 @@ async function buildPoolForParams(params: PickQuestionsParams): Promise<Question
   }
 
   if (params.themeId) {
-    if (useQuestionsSql()) {
-      const pool = await fetchQuestionsFromSql({
+    if (useQuestionsSql() || canonicalContent) {
+      const pool = await fetchQuestions({
         themeId: params.themeId,
         difficulty: params.difficulty,
       });
@@ -268,8 +373,8 @@ async function pickQuestionsJsonFallback(
 
 export async function getQuestionsByIds(ids: string[]): Promise<Question[]> {
   if (ids.length === 0) return [];
-  if (useQuestionsSql()) {
-    const rows = await fetchQuestionsFromSql({ ids });
+  if (useQuestionsSql() || canonicalContent) {
+    const rows = await fetchQuestions({ ids });
     if (rows.length > 0) return rows;
   }
   return getQuestionsByIdsOrdered(ids);
@@ -413,8 +518,8 @@ export async function pickKahootQuestions(
   count: number,
   difficulty: Difficulty = 'youth',
 ): Promise<Question[]> {
-  if (useQuestionsSql()) {
-    const pool = await fetchQuestionsFromSql({ themeIds, difficulty });
+  if (useQuestionsSql() || canonicalContent) {
+    const pool = await fetchQuestions({ themeIds, difficulty });
     if (pool.length > 0) {
       return pickQuestionsFromPool(pool, count, { excludeIds: [] });
     }
