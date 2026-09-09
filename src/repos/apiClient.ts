@@ -1,44 +1,28 @@
-import { getTelegramInitData } from '../lib/telegram';
+/**
+ * Compatibility surface for repos not yet ported to the typed client
+ * (`src/lib/apiClient`). New code should import `apiRequest` from there; this
+ * module stays only for the raw-`Response` callers (`statsRepo`, `studyRepo`,
+ * kahoot exports) during the WS4 cutover.
+ */
+import { apiUrl, authHeaders, newRequestId, parseApiError } from '../lib/apiClient';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL as string | undefined;
-
-export function hasApi(): boolean {
-  return Boolean(API_BASE);
-}
-
-export function apiUrl(path: string): string {
-  return `${API_BASE}${path}`;
-}
+export { apiUrl, hasApi } from '../lib/apiClient';
 
 /**
- * Self-scoped `/api/v1/*` fetch. Identity is the verified Telegram principal
- * (`req.auth`) only — the server derives the user from `x-telegram-init-data`.
- * `x-user-id` is sent solely as the dev-identity fallback for local runs
- * without Telegram (server `AUTH_MODE=development`).
+ * Self-scoped `/api/v1/*` fetch returning the raw `Response`. Identity is the
+ * verified Telegram principal; `x-user-id` is only the dev fallback. Every call
+ * carries a client-generated `x-request-id` for log correlation.
  */
 export async function apiV1Fetch(path: string, init?: RequestInit): Promise<Response> {
-  const initData = getTelegramInitData();
   return fetch(apiUrl(`/api/v1${path}`), {
     ...init,
     headers: {
       'Content-Type': 'application/json',
-      ...(initData ? { 'x-telegram-init-data': initData } : {}),
-      // Dev-identity fallback for local runs without Telegram (server AUTH_MODE=development).
-      ...(initData ? {} : { 'x-user-id': readDevUserId() }),
+      'x-request-id': newRequestId(),
+      ...authHeaders(),
       ...(init?.headers ?? {}),
     },
   });
-}
-
-function readDevUserId(): string {
-  try {
-    return (
-      (window as unknown as { Telegram?: { WebApp?: { initDataUnsafe?: { user?: { id?: number } } } } })
-        .Telegram?.WebApp?.initDataUnsafe?.user?.id?.toString() ?? 'guest'
-    );
-  } catch {
-    return 'guest';
-  }
 }
 
 export interface ApiError {
@@ -46,13 +30,8 @@ export interface ApiError {
   message: string;
 }
 
+/** @deprecated use `parseApiError` from `src/lib/apiClient` (returns a typed `ApiError`). */
 export async function readApiError(response: Response): Promise<ApiError> {
-  try {
-    const body = (await response.json()) as { error?: ApiError };
-    if (body?.error?.code) return body.error;
-  } catch {
-    /* fall through */
-  }
-  return { code: `http_${response.status}`, message: response.statusText };
+  const err = await parseApiError(response);
+  return { code: err.code, message: err.message };
 }
-
