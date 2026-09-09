@@ -840,11 +840,74 @@ Drizzle обгортає наявний Pool — роут/домен можна 
 
 ---
 
-# ADR-014 — Background job queue (pg-boss)
+# ADR-014 — Background job queue
 
-**Дата:** 2026-09-07
-**Статус:** proposed — spike у Phase 2 WS5 (owner попередньо затвердив pg-boss
-2026-09-07, щоб не вводити Redis заради jobs — §17, ref-arch §3.10).
+**Дата:** 2026-09-07 (proposed) → 2026-09-09 (accepted, Phase 2 WS5 part 1)
+**Статус:** accepted. Абстракція + in-memory адаптер — WS5 part 1; durable
+Postgres-адаптер — WS5 part 1b.
+
+## Контекст
+
+Phase 2 §17 вимагає job-абстракцію для: content import/indexing, майбутньої AI-
+генерації, створення publication-снапшотів, telemetry-агрегації, cleanup/expiry,
+пізніше — email/notifications. Job-контракт: ID, type, status, attempts,
+created/started/completed time, error, checkpoint, idempotency. Довгі задачі не
+можна тримати всередині HTTP-запиту. Owner попередньо затвердив pg-boss
+2026-09-07, щоб не вводити Redis заради jobs (ref-arch §3.10) — черга живе в тому
+самому Postgres, що й решта даних (ADR-012).
+
+## Рішення
+
+- **Доменна абстракція `JobQueue`** (`server/domains/jobs/`) — чиста, без `pg`/
+  Express/Socket.IO. `register(type, {handler, maxAttempts, everyMs})`,
+  `enqueue(type, payload, {idempotencyKey, maxAttempts, delayMs})`, `start()`,
+  `stop(graceMs)`, `stats()`. `JobRecord` несе всі поля §17. `JobContext` дає
+  `checkpoint(patch)` (retry бачить попередній checkpoint) і `AbortSignal`
+  (`stop()` сигналить хендлерам).
+- **`server/domains/jobs/catalog.ts`** — реєстр відомих типів + Zod-схема payload
+  на кожен: невалідний `enqueue` падає на межі, не всередині хендлера.
+- **In-memory адаптер** (`inMemoryQueue.ts`) — default і єдиний варіант без БД.
+  Poll-loop після `start()`, capped-exponential backoff, dead-letter після
+  `maxAttempts`. Не переживає рестарт. Тестовий хук `runDue()` обходить таймер.
+- **Postgres/pg-boss адаптер** (`server/infrastructure/jobs/`, WS5 part 1b) —
+  durable-варіант за `JOB_QUEUE_DRIVER=postgres`. pg-boss вимагає справжній
+  Postgres (`SKIP LOCKED`, LISTEN/NOTIFY) — контракт-тест ганяється проти
+  реального PG, не pglite. Поки не готовий — `createJobQueue` падає назад на
+  in-memory з гучним warn.
+- **Окремий worker-процес** (`server/worker.ts`, §19) — не біндить порт, окремо
+  рестартиться, `JOB_SCHEDULES_ENABLED=true` тільки в ньому (розклади мають
+  крутитись рівно в одному місці). API-процес може лише `enqueue`.
+- **Перші хендлери — три retention-sweep-и** (§17 cleanup/expiry), кожен —
+  один bounded `DELETE`: `rate_limit_counters` (застарілі вікна),
+  `idempotency_keys` (SQL-стор ніколи не чистив — тільки JSON), `telemetry_events`
+  (необмежений append). Розклад — раз на 6 год.
+- **Метрики** — `jobs_enqueued_total` / `_started_total` / `_completed_total` /
+  `_retried_total` / `_failed_total`, лейбл `{type}` (low-cardinality).
+
+## Alternatives
+
+BullMQ / bee-queue (потрібен Redis — зайва інфра для одного VPS), Agenda (MongoDB),
+graphile-worker (близький аналог pg-boss, менша спільнота), «просто `setInterval`
+в API-процесі» (не durable, дублюється при кількох інстансах, змішує
+відповідальності — §19).
+
+## Наслідки
+
+- Нова змінна env: `JOB_QUEUE_DRIVER` (`memory`|`postgres`, default `memory`),
+  `JOB_SCHEDULES_ENABLED` (default off). Production-gate: `postgres` вимагає
+  `DATABASE_URL`.
+- Новий npm-скрипт `worker` / `worker:dev` (root + `server/`).
+- pg-boss потрапляє в `dependencies` у part 1b (deps: `cron-parser`, `p-map`,
+  `serialize-error`, `uuid` — `pg` уже є); lockfile правиться акуратно як
+  drizzle-orm у WS2.
+- `content/snapshot.ts` `buildSnapshot` стає хендлером типу `content.snapshot` у
+  WS5 part 2 (коли з'явиться object-storage).
+
+## Rollback
+
+`JobQueue`-інтерфейс ізолює виклики: адаптер міняється без зміни продюсерів.
+Прибрати worker з deploy → sweep-и просто не крутяться (застарілі рядки
+нешкідливі, наступний hit їх перезаписує). Жодних незворотних змін даних.
 
 ---
 

@@ -23,6 +23,8 @@ export interface TestDatabase {
   db: Database;
   /** The underlying pglite Drizzle instance (for raw `.execute()` in test setup). */
   raw: PgliteDatabase<typeof schema>;
+  /** The pglite client — `client.query(text, params)` for parametrised raw SQL in tests. */
+  client: PGlite;
   close: () => Promise<void>;
 }
 
@@ -34,6 +36,7 @@ export async function createTestDatabase(): Promise<TestDatabase> {
   return {
     db: raw as unknown as Database,
     raw,
+    client,
     close: () => client.close(),
   };
 }

@@ -23,6 +23,13 @@ export type StorageProvider = 'json' | 'sql';
  */
 export type CanonicalContentMode = 'off' | 'compare' | 'canonical';
 
+/**
+ * Background job queue driver (Phase 2 §17, ADR-014):
+ * - `memory`   — in-process, non-durable (default; the only option with no DB);
+ * - `postgres` — durable, Postgres-backed (WS5 part 1b; requires `DATABASE_URL`).
+ */
+export type JobQueueDriver = 'memory' | 'postgres';
+
 export interface ServerConfig {
   nodeEnv: NodeEnv;
   isProduction: boolean;
@@ -58,6 +65,14 @@ export interface ServerConfig {
    * handler for reconnect recovery. Off → legacy raw `room_state` emits only.
    */
   realtimeGatewayV2: boolean;
+  /** Background job queue driver (Phase 2 §17, ADR-014). */
+  jobQueueDriver: JobQueueDriver;
+  /**
+   * Whether this process runs the recurring maintenance jobs (retention sweeps).
+   * The dedicated worker (`server/worker.ts`) sets this; the API process leaves
+   * it off so schedules don't run in N places at once.
+   */
+  jobSchedulesEnabled: boolean;
 }
 
 export interface LoadConfigResult {
@@ -116,6 +131,13 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     );
   }
 
+  let jobQueueDriver: JobQueueDriver = 'memory';
+  if (env.JOB_QUEUE_DRIVER === 'postgres') {
+    jobQueueDriver = 'postgres';
+  } else if (env.JOB_QUEUE_DRIVER && env.JOB_QUEUE_DRIVER !== 'memory') {
+    warnings.push(`Unknown JOB_QUEUE_DRIVER "${env.JOB_QUEUE_DRIVER}", falling back to "memory"`);
+  }
+
   let storageProvider: StorageProvider = 'json';
   if (env.STORAGE_PROVIDER === 'sql') {
     storageProvider = 'sql';
@@ -151,6 +173,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
       env.RATE_LIMIT_DISABLED === 'true' || (nodeEnv === 'test' && env.RATE_LIMIT_DISABLED !== 'false'),
     canonicalContentRepository,
     realtimeGatewayV2: env.REALTIME_GATEWAY_V2 === 'true',
+    jobQueueDriver,
+    jobSchedulesEnabled: env.JOB_SCHEDULES_ENABLED === 'true',
   });
 
   return { config, warnings };

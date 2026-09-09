@@ -37,6 +37,9 @@ export function collectProductionConfigErrors(config: ServerConfig): string[] {
   if (config.storageProvider === 'sql' && !config.databaseUrl) {
     errors.push('DATABASE_URL is required when STORAGE_PROVIDER=sql in production.');
   }
+  if (config.jobQueueDriver === 'postgres' && !config.databaseUrl) {
+    errors.push('DATABASE_URL is required when JOB_QUEUE_DRIVER=postgres in production.');
+  }
   if (config.clientOrigins.length === 0) {
     errors.push('CLIENT_ORIGIN(S) must list at least one allowed origin in production.');
   }

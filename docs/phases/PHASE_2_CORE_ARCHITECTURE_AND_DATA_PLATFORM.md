@@ -14,10 +14,10 @@ WS1 contracts + architecture rules + server composition · WS2 persistence platf
 (Drizzle, migrations, repositories, persisted RBAC, shared rate-limit/metrics) ·
 WS3 canonical content repository + realtime gateway v2 · WS4 frontend data
 architecture · WS5 jobs + object storage + deployment + migration cutover + DoD.
-Stack confirmed: **Zod + Drizzle + pg-boss** (ADR-013 + ADR-012 accepted;
-ADR-014 proposed pending spike).
+Stack confirmed: **Zod + Drizzle + pg-boss** (ADR-013 + ADR-012 + ADR-014 accepted).
 
-WS1 landed on `main` (PR #8, merge `b4d0a34`).
+WS1–WS4 landed on `main` (PRs #8 `b4d0a34`, #9 `009c5a2`, #10 `1ca59bd`, #11 `f25eca5`).
+WS5 in progress on `phase-2/ws5-jobs-storage-deploy`.
 
 ### WS1 (done, merged) — PR #8 → `main` `b4d0a34`
 
@@ -171,7 +171,7 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   repository (in-memory only for now), `legacyStoreReadOnly` + the JSON→SQL
   snapshot cutover.
 
-### WS4 (in progress) — branch `phase-2/ws4-frontend-data`
+### WS4 (done, merged) — PR #11 → `main` `f25eca5`
 
 Frontend data architecture (§13). `npm run check` green, 289 tests.
 
@@ -209,6 +209,28 @@ Frontend data architecture (§13). `npm run check` green, 289 tests.
 - **Deferred to WS5:** the React Query persister wired to `isOfflineCacheable`,
   and offline reconciliation for pending safe commands (§13.3 bullet 3 — only
   preferences + last snapshot are cached today).
+
+WS4 landed on `main` (PR #11, merge `f25eca5`).
+
+### WS5 (in progress) — branch `phase-2/ws5-jobs-storage-deploy`
+
+Jobs, storage, deployment, migration cutover & DoD (§17–§20, §26, §27). Off main `f25eca5`.
+
+- **Background jobs abstraction + ADR-014 (§17, part 1):** `server/domains/jobs/`
+  — a pure `JobQueue` interface (`register` / `enqueue` / `start` / `stop` /
+  `stats`), a `JobRecord` carrying every §17 field (id, type, status, attempts,
+  timestamps, error, checkpoint, idempotency), and a `catalog.ts` of well-known
+  types each with a Zod payload schema. The **in-memory adapter**
+  (`inMemoryQueue.ts`) is the default and the only option with no DB: poll loop,
+  capped-exponential backoff, dead-letter after `maxAttempts`, `AbortSignal` on
+  stop, `runDue()` test hook. The Postgres/pg-boss adapter is part 1b
+  (`server/infrastructure/jobs/`, `JOB_QUEUE_DRIVER=postgres`). A dedicated
+  **worker process** (`server/worker.ts`, `npm run worker`) runs the queue and,
+  when `JOB_SCHEDULES_ENABLED=true`, the recurring maintenance jobs — it never
+  binds a port. First handlers: three retention sweeps (`rate_limit_counters`,
+  `idempotency_keys`, `telemetry_events`), each one bounded `DELETE`, on a 6h
+  schedule. Metrics: `jobs_{enqueued,started,completed,retried,failed}_total{type}`.
+  ADR-014 → accepted. `npm run check` green, 305 tests (+16).
 
 ---
 
