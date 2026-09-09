@@ -43,7 +43,7 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   move `server/authz` + React client onto `@contracts`, OpenAPI generation.
 - `npm run check` green, 167 tests.
 
-### WS2 (in progress) — branch `phase-2/ws2-persistence`
+### WS2 (done, merged) — PR #9 → `main` `009c5a2`
 
 - **Drizzle spike (ADR-012 → accepted):** `spike/drizzle/` — schema slice of the
   §9 core tables, `contract-bridge.ts` (Drizzle `InferSelectModel` composes with
@@ -112,8 +112,64 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   throw to the error handler instead of an unhandled rejection; `migrate.ts`
   `appliedCount` only swallows "state not created yet", rethrows real failures.
   `npm run check` green, 225 tests.
-- **Next:** PR WS2 → main. Flag `legacyStoreReadOnly` and the JSON→SQL cutover
-  are WS5.
+- Flag `legacyStoreReadOnly` and the JSON→SQL profile cutover are WS5.
+
+### WS3 (in progress) — branch `phase-2/ws3-content-realtime`
+
+- **Canonical content revision model + read contract (§9, §10, §14):**
+  `@contracts/schemas/content.ts` — `questionRevision` (`.strict()`, rejects a
+  `correctIndex` out of range for the options given — no first-option fallback),
+  `scriptureReference`, `publishedQuestion` read projection, `publishedContentSet`
+  (stable `version` + sha-256 `contentHash`), `contentSetFilter`. Drizzle
+  `schema/content.ts` += `question_revisions` (numbered; partial unique index =
+  one `published` revision per question), `scripture_references`, `content_sets`
+  / `content_set_versions` / `content_set_items`; migration `0003` (all-new
+  tables). `server/domains/content/` — `types.ts`, `contentHash.ts` (key-sorted
+  sha-256 body/set hash = the dedup + version identity), `repository.ts`
+  (`QuestionRevisionRepository`, `ContentSetRepository`), `inMemoryRepository.ts`.
+  SQL adapter `infrastructure/database/repositories/content.ts`. Shared contract
+  test runs against in-memory **and** pglite.
+- **Legacy import + validation pipeline (§14, §18.3):**
+  `domains/content/validation.ts` `validateQuestion` is the ingestion gate — it
+  never defaults a missing/out-of-range `correctIndex` to 0; coerces messy legacy
+  field types. `import.ts` `importLegacyQuestions` — valid → `legacy_unreviewed`
+  (idempotent by body hash); answer-key-only fault → imported then quarantined
+  with a reason; structurally broken → rejected and listed. `snapshot.ts`
+  `buildSnapshot` — a static snapshot is an **output**, never read back as a
+  source. `scripts/content/import-legacy-questions.ts`
+  (`npm run content:import-legacy`, `--dry`). Dry run over the whole corpus:
+  89,034 questions, 0 rejected, 0 quarantined.
+- **Read-path cutover behind a flag (§14, §23, §27):**
+  `CANONICAL_CONTENT_REPOSITORY` = `off` (default) / `compare` (serve legacy,
+  read canonical too, log every id-set divergence —
+  `content_source_divergence_total`) / `canonical` (serve published revisions,
+  legacy only as an empty-result fallback). `server/services/contentQuery.ts`
+  maps a revision to the legacy `Question` shape; `questionService.ts`
+  `configureCanonicalContent()` seam + `fetchQuestions()` dispatcher at the five
+  question-serving call sites. `getQuestionCounts` / `getQuestionsMeta` stay on
+  legacy for now. `server/app.ts` derives `contentRepositories` from
+  `deps.database`.
+- **Realtime gateway v2 behind `REALTIME_GATEWAY_V2` (§15, acc. #11):**
+  `server/realtime/clock.ts` (`Clock` service, injectable), `roomEventGateway.ts`
+  — wraps the room broadcast in a typed `RealtimeEvent` envelope with a per-room
+  monotonic `sequence` and `serverTime`; `resync_room` command returns the
+  current envelope plus whether the client fell behind. `createRealtimeServer`
+  emits `room_event` alongside the legacy `room_state` when the flag is on. Client
+  (`useKahootRoom` / `kahootSocket`) applies envelopes by sequence (drops
+  replays), resyncs on reconnect — timers and victory animations are driven off
+  room state, never restarted (§24). Contracts: `roomEventEnvelope`,
+  `resyncRoomCommand` / `resyncRoomAck`, `SERVER_EVENT_TYPES`.
+- **Bot integration boundary (§16):** the Telegram bot (`bot/index.mjs`) is
+  admin-only AI question generation tooling — no progression / purchase / Mini
+  App / notification logic. Its `/generate` writes to the staging
+  `data/question-db/*.json` that now flows through the validated import above;
+  full migration onto a backend authoring API is a Phase 4 Content Studio item.
+  `bot/README.md` records the constraint; an architecture test pins that the bot
+  imports no `server/` runtime module.
+- **Deferred to WS5:** `getQuestionCounts` / `getQuestionsMeta` canonical
+  cutover, client `questionDbLoader` cutover, realtime room/session SQL
+  repository (in-memory only for now), `legacyStoreReadOnly` + the JSON→SQL
+  snapshot cutover.
 
 ---
 
