@@ -1157,6 +1157,42 @@ Phase 2 is complete when:
 16. Deployment units and environment configuration are documented accurately.
 17. Phase 3 can build Today/Lessons/Practice without inventing another data model.
 
+### 26.1 Definition of Done — sign-off (WS5, 2026-09-09)
+
+`npm run check` green — **342 tests**, `lint:ws` + `typecheck` ×2 + `smoke-audit`
++ `build`. WS1–WS4 merged (`b4d0a34` / `009c5a2` / `1ca59bd` / `f25eca5`); WS5 on
+`phase-2/ws5-jobs-storage-deploy`.
+
+| # | Status | Evidence |
+|---|--------|----------|
+| 1 | ✅ met | `server/domains/README.md` map; `contracts/__tests__/architecture.test.ts`, `server/__tests__/architecture.test.ts` |
+| 2 | ✅ met | Phase 1 auth unchanged; `auth.test.ts`, `socket.test.ts`, `rbac.test.ts` still green |
+| 3 | ✅ met | `contracts/` (WS1), `CONTRACT_VERSION` + `x-contract-version` header |
+| 4 | ✅ met | `src/lib/apiClient` validates every response against a Zod contract (WS4) |
+| 5 | ✅ met | no client whole-profile write since Phase 1 WS4; only the preference whitelist (`me.ts`) |
+| 6 | 🟡 partial | wallet ledger + identity/RBAC + content on transactional Drizzle repos; **progression/stats still on the `dbStore` blob** — decomposition is the §18.2 rollout follow-up |
+| 7 | 🟡 partial | JSON is the dev default + import/snapshot format; **`STORAGE_PROVIDER=json` is still a production-capable profile/stats store** — retired with the progression decomposition (§27 step 8) |
+| 8 | ✅ met | `question_revisions` + `CANONICAL_CONTENT_REPOSITORY` cutover (WS3); `content.test.ts` |
+| 9 | 🟡 partial | wallet ✅ (ledger), preferences ✅ (typed `user_preferences`, WS5 part 5); **progression + entitlement still in the blob** — same follow-up |
+| 10 | ✅ met | `createHttpServer` builds the full stack with no `listen`; `architecture.test.ts` "composition root" |
+| 11 | ✅ met | `RealtimeEvent` envelope + per-room sequence + `resync_room` behind `REALTIME_GATEWAY_V2` (WS3); `realtimeGateway.test.ts` |
+| 12 | ✅ met | `bot/README.md` + architecture test pins `bot/` imports no `server/` runtime module (WS3) |
+| 13 | ✅ met | Drizzle Kit journal/checksum/ordered ids; `db:migrate` + `drizzle.__migration_runs`; `migrate.test.ts`; `docs/DEPLOYMENT.md` §4.2 |
+| 14 | ✅ met | `architecture.test.ts` (contracts purity, frontend↛server, domain boundary, port-free build), `schemaParity.test.ts` |
+| 15 | ✅ met | §7.5 error envelope, `idempotencyKey` on commands, `validateBody`; `contracts.test.ts` |
+| 16 | ✅ met | `docs/DEPLOYMENT.md` (7 units + per-unit env), `docs/OBSERVABILITY.md`, `.env.example` (WS5 parts 3–4) |
+| 17 | ✅ met | published content query + versioned sets + typed progression outcomes + preference schema are all in place for Phase 3 |
+
+**14 / 17 fully met.** #6, #7, #9 share one remaining piece: decomposing the
+`player_profiles` / `player_stats` progression + entitlement fields into typed
+transactional tables and retiring `STORAGE_PROVIDER=json` for them. WS5 landed
+the framework for this (typed `user_preferences` cutover, `LEGACY_STORE_READONLY`,
+the backfill-script pattern) and preferences are done; progression/entitlement
+decomposition is a bounded, well-specified rollout task (see §18.2 remaining work
++ [ROLLOUT_PHASE_2.md](../ROLLOUT_PHASE_2.md)). It is intentionally **not** rushed
+into WS5 — it touches the reward/celebration hot path and wants its own change +
+rollout evidence (§27 step 9).
+
 ---
 
 ## 27. Rollout and rollback
