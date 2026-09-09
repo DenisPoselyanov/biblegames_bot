@@ -114,7 +114,7 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   `npm run check` green, 225 tests.
 - Flag `legacyStoreReadOnly` and the JSON→SQL profile cutover are WS5.
 
-### WS3 (in progress) — branch `phase-2/ws3-content-realtime`
+### WS3 (done, merged) — PR #10 → `main` `1ca59bd`
 
 - **Canonical content revision model + read contract (§9, §10, §14):**
   `@contracts/schemas/content.ts` — `questionRevision` (`.strict()`, rejects a
@@ -170,6 +170,43 @@ WS1 landed on `main` (PR #8, merge `b4d0a34`).
   cutover, client `questionDbLoader` cutover, realtime room/session SQL
   repository (in-memory only for now), `legacyStoreReadOnly` + the JSON→SQL
   snapshot cutover.
+
+### WS4 (in progress) — branch `phase-2/ws4-frontend-data`
+
+Frontend data architecture (§13). `npm run check` green, 289 tests.
+
+- **Typed API client (§13.4, part 1 `fb7bf00`):** one `src/lib/apiClient` —
+  attaches the Telegram principal, propagates a per-request id, parses the §7.5
+  error envelope into a typed `ApiError` (`code`, `requestId`), validates every
+  response against a Zod contract, aborts via `AbortSignal`, and never retries a
+  non-idempotent command without an idempotency key. `progressionRepo` /
+  `playerRepo` / `statsRepo` / `studyRepo` sit on it.
+- **Query-key factory + cache defaults (§13.2, §13.3, part 2 `82f84f5`):**
+  `src/queries/keys.ts` — the single hierarchical key factory (`me.*`,
+  `learning.*`, `practice.*`, `content.*`, `kahoot.*`); `OFFLINE_CACHEABLE_PREFIXES`
+  / `isOfflineCacheable` gate what may touch disk (last profile snapshot +
+  published content only — never wallet / rank / live result). `queryClient`
+  persists only those prefixes.
+- **Provider decomposition (§13.1, part 3 `10022c2`):** `AuthSessionProvider`
+  (one principal, `initTelegramWebApp()` once, outermost) · `usePreferences`
+  (the client-owned write surface — `activeTheme` / `avatar` /
+  `bibleTranslation`) · `usePersistProfile` (the one client write path: mark
+  store dirty → set store → preference-whitelist PATCH) · `CosmeticThemeSync`
+  (theme application, was an effect inside the provider). Store gains a
+  non-persisted `dirty` flag; the ref-based dirty seam is gone.
+- **Domain hooks (§13.1, part 4 `78f8178`):** `useProgression`
+  (level / practice-stage / survival / millionaire / achievements / answers),
+  `useEconomy` (theme + avatar purchase), `useLearningInsights`
+  (recommendations + daily plan), `useResolvedProfile` / `useProfileWriter`
+  (profile resolution + mutators). `progressionOutcome.ts` shares
+  `authoritativeEnabled()` + `applyOutcome()`.
+- **PlayerContext retired (§13.1, part 5 `00c797f`):** the aggregate
+  `PlayerContext` / `usePlayer` / `PlayerProvider` are deleted; all 12 consumers
+  read the focused hooks (`useGlobalStats(userId)` is the new stats read-view).
+  `PlayerDataBootstrap` keeps the server→store sync + session telemetry mounted
+  once near the root.
+- **Deferred to WS5:** offline reconciliation for pending safe commands (§13.3
+  bullet 3 — only preferences + last snapshot are cached today).
 
 ---
 
