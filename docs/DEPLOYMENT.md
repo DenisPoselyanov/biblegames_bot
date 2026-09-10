@@ -87,7 +87,7 @@ Everything with a `VITE_` prefix is inlined into `dist/` at build time and is
 | `AUTH_MODE` | — | `telegram` | no | `development` is an insecure fixture, blocked in prod |
 | `AUTH_INITDATA_MAX_AGE_SEC` | — | `86400` | no | |
 | `CLIENT_ORIGIN(S)` | **prod** | localhost | no | comma-separated; https + non-loopback in prod |
-| `STORAGE_PROVIDER` | — | `json` | no | `sql` needs `DATABASE_URL` |
+| `STORAGE_PROVIDER` | **prod** | `json` | no | **must be `sql` in production** (§26.1 / ADR-016); `sql` needs `DATABASE_URL` |
 | `QUESTIONS_PROVIDER` | — | `sql` if `DATABASE_URL` set | no | `json` = local files only |
 | `DATABASE_URL` | when `sql` | — | **yes** | Postgres URI; use the pooler for serverless |
 | `PG_SSL` | — | `false` | no | `true` for managed Postgres |

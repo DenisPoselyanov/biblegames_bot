@@ -18,6 +18,7 @@ changes nothing until a flag is turned on.
 | `JOB_SCHEDULES_ENABLED` | unset \| `true` | **worker only** | unset |
 | `OBJECT_STORAGE_DRIVER` | `filesystem` \| `s3` | worker/API | `filesystem` |
 | `LEGACY_STORE_READONLY` | unset \| `true` | API | unset |
+| `LEGACY_PROGRESSION_READONLY` | unset \| `true` | API | unset |
 
 ---
 
@@ -68,20 +69,48 @@ changes nothing until a flag is turned on.
     it fresh until step 11, no data was lost. (If a divergence is found, re-run
     the backfill — it is idempotent.)
 
-### 2.6 Progression / entitlement decomposition — **not in Phase 2**
+### 2.6 Progression / entitlement decomposition (§18.2, ADR-016)
 
-Typed tables + repositories for progression state (level/xp/rank/streak) and
-achievements/entitlements, their backfill with a `migration_records`-style
-provenance row, count/sum verification, then removal of the legacy write path.
-Follows the same dual-write → verify → `*_READONLY` → drop pattern. Tracked as
-the Phase 2 §26.1 remainder; it touches the reward/celebration hot path and
-ships as its own change with its own rollout evidence.
+Typed tables `progression_state` / `achievement_grants` / `player_theme_stats` /
+`entitlements` replace the progression + entitlement fields of the
+`player_profiles` / `player_stats` blobs. The reward hot path
+(`/completions`, `/answers`, `/shop/purchases`) runs in one transaction with a
+`progression_state` row lock.
+
+12. `npm run db:migrate` — applies `0004`–`0006` (idempotent, journal-guarded).
+13. `npm run migrate:backfill-progression -- --dry` → review the JSON report
+    (`scanned` / `stateWritten` / `noUserRow` / `unknownCatalogIds`) → run for
+    real → `npm run migrate:backfill-progression -- --verify-only` until
+    `countsMatch` **and** `sumsMatch` are `true`. The script never touches
+    `wallet_ledger`.
+14. Deploy (no flag) — the reward path now writes the typed tables **and**
+    mirrors the blob; `GET /me/profile` overlays the typed rows. Verify parity
+    over a window (spot-check `progression_state` / `entitlements` vs the blob).
+15. `LEGACY_PROGRESSION_READONLY=true` — the blob's progression / entitlement /
+    theme-stat fields stop being written; the typed tables are authoritative.
+    `reviewSchedules` + `displayName` still mirror.
+    **Rollback:** unset the flag. The blob mirror resumes; because dual-write
+    kept it fresh until step 15, nothing is lost. On a divergence, re-run the
+    backfill (idempotent).
+16. Merge the `productionValidation.ts` gate (§2.7) once every production env is
+    `STORAGE_PROVIDER=sql`, migrated, backfilled and at
+    `LEGACY_PROGRESSION_READONLY=true` with a clean window.
+17. After the retention window, delete the legacy blob write path
+    (`legacyBlobMirror`, the `applyCompletionBlob` / `applyAnswerBlob` / shop
+    blob branches).
+
+### 2.7 Retire `STORAGE_PROVIDER=json` in production (§26.1, ADR-006/016)
+
+The production start-up gate refuses any `STORAGE_PROVIDER` other than `sql`.
+Non-production is unchanged. **Rollback:** revert the one-line gate; only safe
+while a divergence has not yet been written back into the blob (see §3).
 
 ---
 
 ## 3. Rollback principles (§27)
 
-- New events / ledger rows / audit records are **never** deleted on rollback.
+- New events / ledger rows / audit records — and `progression_state` /
+  `entitlements` / `achievement_grants` rows — are **never** deleted on rollback.
 - Switch the **read projection** back only if the data is still consistent.
 - Do **not** restore insecure client writes (the Phase 1 `PUT /profile` stays
   gone regardless).

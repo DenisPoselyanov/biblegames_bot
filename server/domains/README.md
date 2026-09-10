@@ -34,6 +34,19 @@ contract tests exist (§25 "moving files without defining ownership").
   Contract: `content/__tests__/repositoryContract.ts`. Read contract in
   `@contracts` `schemas/content.ts`. The legacy `questions` bank stays
   authoritative until the `canonicalContentRepository` cutover (part 3).
+- **`progression/`** (WS6, §18.2, ADR-016) — `repository.ts`
+  (`ProgressionStateRepository` with `FOR UPDATE`, `AchievementRepository`,
+  `ThemeStatsRepository`, `AnswerHistoryRepository`), `types.ts`,
+  `mapSnapshot.ts` (storage ↔ reward-engine `ProgressionSnapshot`),
+  `inMemoryRepository.ts`. SQL adapter:
+  `server/infrastructure/database/repositories/progression.ts`. Contract:
+  `progression/__tests__/repositoryContract.ts` (in-memory + pglite). Tables:
+  `progression_state` / `achievement_grants` / `player_theme_stats`.
+- **`economy/`** (WS6, §18.2, ADR-016) — `entitlements.ts`
+  (`EntitlementRepository`), `types.ts`, `inMemoryRepository.ts`. SQL adapter:
+  `server/infrastructure/database/repositories/economy.ts`. Table:
+  `entitlements`. `wallet_ledger` keeps its home under `server/wallet/`
+  (predates this layout).
 
 ## Map
 

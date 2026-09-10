@@ -281,17 +281,15 @@ Jobs, storage, deployment, migration cutover & DoD (§17–§20, §26, §27). Of
   window. `LEGACY_STORE_READONLY=true` freezes those three fields in the blob
   (typed store becomes authoritative). Backfill:
   `npm run migrate:backfill-preferences [--dry]` (idempotent, reports
-  scanned/written/unchanged/no-user-row). `displayName` and the
-  progression/entitlement fields are **not** decomposed yet — see below.
-  `npm run check` green, 344 tests (+5).
+  scanned/written/unchanged/no-user-row). `npm run check` green, 344 tests (+5).
 
-  *Remaining §18.2 work (post-Phase-2 rollout, §27 step 9):* typed tables +
-  repositories for progression state (level/xp/rank/streak) and
-  achievements/entitlements, their backfill with a `migration_records`-style
-  provenance row and count/sum verification, then the legacy write-path removal
-  once rollout evidence is in. The framework (dual-write + `LEGACY_STORE_READONLY`
-  + backfill pattern) is in place; `player_stats` / `player_profiles` blobs stay
-  authoritative for those fields until then.
+  *Progression / entitlement decomposition — **done** (WS6, ADR-016, 2026-09-10):*
+  typed `progression_state` / `achievement_grants` / `player_theme_stats` /
+  `entitlements` tables, a transactional reward hot path, `legacyBlobMirror`
+  dual-write behind `LEGACY_PROGRESSION_READONLY`, and
+  `npm run migrate:backfill-progression [--dry] [--verify-only]`. See §26.2 and
+  [ROLLOUT_PHASE_2.md](../ROLLOUT_PHASE_2.md) §2.6–2.7. (`displayName` still has
+  no typed home — it is `AuthSession`-derived, tracked as post-Phase-2.)
 
 ---
 
@@ -1170,10 +1168,10 @@ Phase 2 is complete when:
 | 3 | ✅ met | `contracts/` (WS1), `CONTRACT_VERSION` + `x-contract-version` header |
 | 4 | ✅ met | `src/lib/apiClient` validates every response against a Zod contract (WS4) |
 | 5 | ✅ met | no client whole-profile write since Phase 1 WS4; only the preference whitelist (`me.ts`) |
-| 6 | 🟡 partial | wallet ledger + identity/RBAC + content on transactional Drizzle repos; **progression/stats still on the `dbStore` blob** — decomposition is the §18.2 rollout follow-up |
-| 7 | 🟡 partial | JSON is the dev default + import/snapshot format; **`STORAGE_PROVIDER=json` is still a production-capable profile/stats store** — retired with the progression decomposition (§27 step 8) |
+| 6 | ✅ met | wallet ledger + identity/RBAC + content + **progression / stats on transactional Drizzle repos** (`progression_state` / `achievement_grants` / `player_theme_stats`, ADR-016); `progressionCutover.test.ts` |
+| 7 | ✅ met | JSON is dev / import / snapshot only; `productionValidation.ts` refuses `STORAGE_PROVIDER` ≠ `sql` in production (ADR-016 PR7) |
 | 8 | ✅ met | `question_revisions` + `CANONICAL_CONTENT_REPOSITORY` cutover (WS3); `content.test.ts` |
-| 9 | 🟡 partial | wallet ✅ (ledger), preferences ✅ (typed `user_preferences`, WS5 part 5); **progression + entitlement still in the blob** — same follow-up |
+| 9 | ✅ met | profile, progression (`progression_state`), wallet (`wallet_ledger`) and entitlement (`entitlements`) are separate authoritative domains + repositories (ADR-016) |
 | 10 | ✅ met | `createHttpServer` builds the full stack with no `listen`; `architecture.test.ts` "composition root" |
 | 11 | ✅ met | `RealtimeEvent` envelope + per-room sequence + `resync_room` behind `REALTIME_GATEWAY_V2` (WS3); `realtimeGateway.test.ts` |
 | 12 | ✅ met | `bot/README.md` + architecture test pins `bot/` imports no `server/` runtime module (WS3) |
@@ -1183,15 +1181,37 @@ Phase 2 is complete when:
 | 16 | ✅ met | `docs/DEPLOYMENT.md` (7 units + per-unit env), `docs/OBSERVABILITY.md`, `.env.example` (WS5 parts 3–4) |
 | 17 | ✅ met | published content query + versioned sets + typed progression outcomes + preference schema are all in place for Phase 3 |
 
-**14 / 17 fully met.** #6, #7, #9 share one remaining piece: decomposing the
-`player_profiles` / `player_stats` progression + entitlement fields into typed
-transactional tables and retiring `STORAGE_PROVIDER=json` for them. WS5 landed
-the framework for this (typed `user_preferences` cutover, `LEGACY_STORE_READONLY`,
-the backfill-script pattern) and preferences are done; progression/entitlement
-decomposition is a bounded, well-specified rollout task (see §18.2 remaining work
-+ [ROLLOUT_PHASE_2.md](../ROLLOUT_PHASE_2.md)). It is intentionally **not** rushed
-into WS5 — it touches the reward/celebration hot path and wants its own change +
-rollout evidence (§27 step 9).
+**17 / 17 fully met** (WS6 `phase-2/progression-decomposition`, 2026-09-10). #6,
+#7, #9 closed by the progression + entitlement decomposition (ADR-016): typed
+`progression_state` / `achievement_grants` / `player_theme_stats` / `entitlements`
+tables (migrations `0004`–`0006`), a transactional reward hot path
+(`db.transaction` + `progression_state` `FOR UPDATE`), the `readProfile` overlay,
+the `legacyBlobMirror` dual-write behind `LEGACY_PROGRESSION_READONLY`,
+`scripts/migrate/backfill-progression.ts` with `progression_backfill_records`
+provenance + count/sum verification, and the `productionValidation.ts` gate
+retiring `STORAGE_PROVIDER=json` for this data. Rollout: [ROLLOUT_PHASE_2.md](../ROLLOUT_PHASE_2.md)
+§2.6–2.7.
+
+### 26.2 WS6 — progression + entitlement decomposition (2026-09-10)
+
+Branch `phase-2/progression-decomposition`, 7 commits:
+
+1. `dfdb792` — typed schema + migrations `0004`–`0006` + `study_answers.idempotency_key`
+2. `364505a` — `server/domains/progression/` + `server/domains/economy/` (interfaces,
+   in-memory peers, Drizzle adapters, contract tests vs in-memory + pglite)
+3. `1f2e7d4` — tx-aware `WalletLedger`, `legacyBlobMirror`, `progressionService`,
+   `ProgressionCutover` + `readProfile` overlay (scaffolding)
+4. `75d6110` — wire the service into `/completions` · `/answers` · `/shop/purchases`
+   · `app.ts` · `me.ts`; `progressionCutover.test.ts` (pglite): one-commit writes,
+   rollback on a mid-tx throw, read overlay, concurrent level+survival no lost
+   update, idempotent `/answers`, atomic purchases
+5. `74bb92d` — `backfill-progression.ts` + `mapSnapshot.test.ts`
+6. docs + ADR-016 (this)
+7. `c787fb1` — `productionValidation.ts` json-retirement gate
+
+Verified server-side: `typecheck:server` + `lint:ws` clean, **330 server tests**.
+(Local `npm run check` could not run the frontend `tsc -b` / `build` / `smoke-audit`
+legs — an unrelated corrupted local `node_modules`; needs a clean `npm ci`.)
 
 ---
 
