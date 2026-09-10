@@ -34,6 +34,12 @@ export function collectProductionConfigErrors(config: ServerConfig): string[] {
   if (config.authMode !== 'telegram') {
     errors.push(`AUTH_MODE must be "telegram" in production (got "${config.authMode}").`);
   }
+  if (config.storageProvider !== 'sql') {
+    errors.push(
+      'STORAGE_PROVIDER must be "sql" in production — JSON is no longer a supported store ' +
+        'for profile / progression / economy data (Phase 2 §26.1, ADR-006 / ADR-016).',
+    );
+  }
   if (config.storageProvider === 'sql' && !config.databaseUrl) {
     errors.push('DATABASE_URL is required when STORAGE_PROVIDER=sql in production.');
   }
