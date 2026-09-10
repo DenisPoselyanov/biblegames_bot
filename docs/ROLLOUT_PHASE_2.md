@@ -77,6 +77,18 @@ Typed tables `progression_state` / `achievement_grants` / `player_theme_stats` /
 (`/completions`, `/answers`, `/shop/purchases`) runs in one transaction with a
 `progression_state` row lock.
 
+> **Progress (2026-09-10).** Steps 12–13 done against the production Supabase
+> project (`mjydeohbnzeikjwuwbko`). It had **never** had a migration run — the
+> whole chain `0000`–`0006` applied in one pass (journal now 7/7); every Phase 1
+> + Phase 2 table present, `roles` seeded. Backfill ran `--dry` → real →
+> `--verify-only`: `countsMatch` **and** `sumsMatch` `true`. The DB is
+> greenfield (one orphan `test-user-123` profile, no `users` row → `noUserRow: 1`,
+> nothing written), so there is no legacy progression data to preserve.
+> **Steps 14–15 remain and need a live deployment:** the parity window and the
+> `LEGACY_PROGRESSION_READONLY` flip only mean something once the app is deployed
+> against this DB and serving real users. Until then the safe default (flag
+> unset, dual-write on) stands.
+
 12. `npm run db:migrate` — applies `0004`–`0006` (idempotent, journal-guarded).
 13. `npm run migrate:backfill-progression -- --dry` → review the JSON report
     (`scanned` / `stateWritten` / `noUserRow` / `unknownCatalogIds`) → run for
