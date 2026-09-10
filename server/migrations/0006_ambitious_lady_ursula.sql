@@ -1,0 +1,2 @@
+ALTER TABLE "study_answers" ADD COLUMN "idempotency_key" text;--> statement-breakpoint
+CREATE UNIQUE INDEX "uq_study_answers_idem" ON "study_answers" USING btree ("user_id","idempotency_key") WHERE "study_answers"."idempotency_key" is not null;
