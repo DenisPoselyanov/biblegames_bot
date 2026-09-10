@@ -19,6 +19,8 @@ import { migrateProfileWallet, type ProfileWithLegacyWallet } from '../../src/li
 import { isBollsTranslation } from '../../src/lib/bollsConstants';
 import type { WalletLedger } from '../wallet';
 import type { PreferencesRepository } from '../domains/identity/repository';
+import type { EntitlementRepository } from '../domains/economy/entitlements';
+import type { ProgressionRepositories } from '../domains/progression/repository';
 
 /**
  * Typed-preferences cutover (Phase 2 §18.2). When a `PreferencesRepository` is
@@ -30,6 +32,22 @@ import type { PreferencesRepository } from '../domains/identity/repository';
 export interface PreferencesCutover {
   repo: PreferencesRepository;
   legacyReadOnly: boolean;
+}
+
+/**
+ * Progression / entitlement decomposition cutover (Phase 2 §18.2, ADR-016).
+ * When wired, `readProfile` overlays the typed `progression_state` /
+ * `achievement_grants` / `entitlements` rows on top of the legacy blob so
+ * consumers keep seeing one profile shape. SQL-only — present only when a
+ * database is wired. `legacyReadOnly` is informational here (the write path in
+ * `progressionService` owns the blob-freeze decision); `readProfile` always
+ * overlays a typed row when it exists.
+ */
+export interface ProgressionCutover {
+  repos: ProgressionRepositories;
+  entitlements: EntitlementRepository;
+  legacyReadOnly: boolean;
+  now: () => Date;
 }
 
 /** The default profile returned when a user has no stored record yet. */
@@ -105,6 +123,7 @@ export async function readProfile(
   userId: string,
   walletLedger: WalletLedger,
   preferences?: PreferencesCutover,
+  progression?: ProgressionCutover,
 ): Promise<Record<string, unknown>> {
   const profile = await dbStore.getProfile(userId);
   const base = profile
@@ -118,6 +137,38 @@ export async function readProfile(
       if (typed.activeTheme !== null) merged.activeTheme = typed.activeTheme;
       if (typed.avatar !== null) merged.avatar = typed.avatar;
       if (typed.bibleTranslation !== null) merged.bibleTranslation = typed.bibleTranslation;
+    }
+  }
+
+  if (progression) {
+    const [state, grants, active] = await Promise.all([
+      progression.repos.state.get(userId),
+      progression.repos.achievements.list(userId),
+      progression.entitlements.listActive(userId, progression.now()),
+    ]);
+    if (state) {
+      merged.playerRank = {
+        tier: state.rankTier,
+        plaque: state.rankPlaque,
+        wisdomPoints: state.wisdomPoints,
+        unlockedTier: state.rankUnlockedTier,
+      };
+      merged.streakDays = state.streakDays;
+      merged.lastActiveAt = state.lastActiveAt;
+      merged.millionaireWins = state.millionaireWins;
+      merged.millionaireMaxLevel = state.millionaireMaxLevel;
+      merged.survivalHighScore = state.survivalHighScore;
+      merged.completedLevels = state.completedLevels;
+      merged.themePoints = state.themePoints;
+      merged.practiceTracks = state.practiceTracks;
+      merged.studyMastery = state.studyMastery;
+      merged.achievements = grants.map((g) => g.achievementId);
+      merged.unlockedThemes = active
+        .filter((e) => e.productKind === 'theme')
+        .map((e) => e.productId);
+      merged.unlockedAvatars = active
+        .filter((e) => e.productKind === 'avatar')
+        .map((e) => e.productId);
     }
   }
   return merged;
