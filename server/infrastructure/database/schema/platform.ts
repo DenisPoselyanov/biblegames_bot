@@ -4,7 +4,7 @@
  * legacy profile-migration record.
  */
 import { bigserial, index, integer, jsonb, pgTable, text } from 'drizzle-orm/pg-core';
-import { createdAt, tstz } from './_shared';
+import { createdAt, tstz, updatedAt } from './_shared';
 
 /** Append-only audit log (Phase 1 §6.4). No update/delete paths in code. */
 export const auditLog = pgTable(
@@ -71,4 +71,24 @@ export const migrationRecords = pgTable('migration_records', {
   walletOpeningEntryId: text('wallet_opening_entry_id'),
   status: text('status').notNull(),
   createdAt: createdAt(),
+});
+
+/**
+ * Provenance for the progression / entitlement backfill (§18.2 steps 5–7, ADR-016).
+ * One row per source `player_profiles` row processed by
+ * `scripts/migrate/backfill-progression.ts`. Separate from `migration_records`
+ * (which is PK'd on `user_id` and owned by the Phase 1 `/me/migrate` claim flow).
+ */
+export const progressionBackfillRecords = pgTable('progression_backfill_records', {
+  userId: text('user_id').primaryKey(),
+  sourceProfileUpdatedAt: tstz('source_profile_updated_at'),
+  /** sha-256 of the derived `ProgressionSnapshot` — re-run is a no-op when it matches. */
+  snapshotHash: text('snapshot_hash').notNull(),
+  achievementsGranted: integer('achievements_granted').notNull().default(0),
+  entitlementsGranted: integer('entitlements_granted').notNull().default(0),
+  themeStatRows: integer('theme_stat_rows').notNull().default(0),
+  /** `applied` | `reapplied` | `skipped_no_user`. */
+  status: text('status').notNull(),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
 });

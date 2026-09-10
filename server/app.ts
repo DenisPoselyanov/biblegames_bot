@@ -26,14 +26,19 @@ import { createPolicies } from './authz/policy';
 import type { IdentityRepositories } from './domains/identity/repository';
 import type { Database } from './infrastructure/database/client';
 import { createSqlIdentityRepositories } from './infrastructure/database/repositories/identity';
+import { createSqlProgressionRepositories } from './infrastructure/database/repositories/progression';
+import { createSqlEconomyRepositories } from './infrastructure/database/repositories/economy';
 import { createSqlRateLimitStore } from './infrastructure/database/repositories/rateLimitStore';
 import { createSqlContentRepositories } from './infrastructure/database/repositories/content';
+import { createProgressionService } from './services/progressionService';
+import { createLegacyBlobMirror } from './services/legacyBlobMirror';
+import type { ProgressionCutover } from './services/profileService';
 import { createContentQueryService } from './services/contentQuery';
 import { configureCanonicalContent } from './services/questionService';
 import type { ContentRepositories } from './domains/content/repository';
 import { createAdminRolesRouter } from './routes/adminRoles';
 import { createAuditLog, type AuditLog } from './audit';
-import { createWalletLedger, type WalletLedger } from './wallet';
+import { createWalletLedger, createSqlWalletLedger, type WalletLedger } from './wallet';
 import { createIdempotencyStore, type IdempotencyStore } from './lib/idempotency';
 import { createMigrationStore, type MigrationStore } from './migration/migrationStore';
 import { scriptureRouter } from './routes/scripture';
@@ -92,7 +97,11 @@ export function createApp(deps: AppDeps): Express {
   const requireAuthenticated = createRequireAuthenticated(config);
   const roleRegistry = deps.roleRegistry ?? new RoleRegistry(config.roleGrants);
   const auditLog = deps.auditLog ?? createAuditLog(config);
-  const walletLedger = deps.walletLedger ?? createWalletLedger(config);
+  // With a database wired, the wallet runs on the shared Drizzle handle so a
+  // reward's ledger row can join the progression transaction (ADR-016).
+  const walletLedger =
+    deps.walletLedger ??
+    (deps.database ? createSqlWalletLedger(deps.database) : createWalletLedger(config));
   const idempotency = deps.idempotency ?? createIdempotencyStore(config);
   const migrationStore = deps.migrationStore ?? createMigrationStore(config);
 
@@ -124,6 +133,35 @@ export function createApp(deps: AppDeps): Express {
   const preferencesCutover = identity
     ? { repo: identity.preferences, legacyReadOnly: config.legacyStoreReadOnly }
     : undefined;
+
+  // Progression / entitlement decomposition cutover (Phase 2 §18.2, ADR-016) —
+  // SQL-only, active whenever a database is wired. `progressionCutover` powers the
+  // `readProfile` overlay; `progressionService` is the transactional write path.
+  const progressionRepos = deps.database
+    ? createSqlProgressionRepositories(deps.database)
+    : undefined;
+  const economyRepos = deps.database ? createSqlEconomyRepositories(deps.database) : undefined;
+  const progressionCutover: ProgressionCutover | undefined =
+    progressionRepos && economyRepos
+      ? {
+          repos: progressionRepos,
+          entitlements: economyRepos.entitlements,
+          legacyReadOnly: config.legacyProgressionReadOnly,
+          now: () => new Date(),
+        }
+      : undefined;
+  const progressionService =
+    deps.database && progressionRepos && economyRepos
+      ? createProgressionService({
+          db: deps.database,
+          repos: progressionRepos,
+          entitlements: economyRepos.entitlements,
+          walletLedger,
+          legacyBlobMirror: createLegacyBlobMirror(),
+          legacyReadOnly: config.legacyProgressionReadOnly,
+          now: () => new Date(),
+        })
+      : undefined;
   const roleResolver =
     deps.roleResolver ??
     (identity
@@ -249,19 +287,28 @@ export function createApp(deps: AppDeps): Express {
       auditLog,
       config,
       preferences: preferencesCutover,
+      progression: progressionCutover,
     }),
   );
   app.use(
     '/api/v1/progression',
     ...authed,
     rl('progression', 60_000, 60),
-    createProgressionRouter({ dbStore, walletLedger, idempotency }),
+    createProgressionRouter({ dbStore, walletLedger, idempotency, service: progressionService }),
   );
   app.use(
     '/api/v1/shop',
     ...authed,
     rl('shop', 60_000, 15),
-    createShopRouter({ dbStore, walletLedger, auditLog, idempotency, preferences: preferencesCutover }),
+    createShopRouter({
+      dbStore,
+      walletLedger,
+      auditLog,
+      idempotency,
+      preferences: preferencesCutover,
+      progression: progressionCutover,
+      db: deps.database,
+    }),
   );
 
   // --- Demo/in-memory endpoints — mounted only off-production (§10, §17) ---

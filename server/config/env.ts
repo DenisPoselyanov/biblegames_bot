@@ -90,6 +90,16 @@ export interface ServerConfig {
    * backfill + verification window. Default `false`: dual-write (blob + typed).
    */
   legacyStoreReadOnly: boolean;
+  /**
+   * Progression / entitlement decomposition cutover (Phase 2 §18.2, ADR-016).
+   * When `true`, the reward hot path writes **only** the typed
+   * `progression_state` / `achievement_grants` / `player_theme_stats` /
+   * `entitlements` tables and the blob's progression fields are frozen — set this
+   * after `migrate:backfill-progression` + its verification window. Default
+   * `false`: dual-write (blob mirror + typed). Independent of
+   * `legacyStoreReadOnly` so each cutover carries its own rollout evidence.
+   */
+  legacyProgressionReadOnly: boolean;
   /** Object storage driver (Phase 2 §19). */
   objectStorageDriver: ObjectStorageDriver;
   /** Filesystem object-store root (used when `objectStorageDriver === 'filesystem'`). */
@@ -236,6 +246,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     jobQueueDriver,
     jobSchedulesEnabled: env.JOB_SCHEDULES_ENABLED === 'true',
     legacyStoreReadOnly: env.LEGACY_STORE_READONLY === 'true',
+    legacyProgressionReadOnly: env.LEGACY_PROGRESSION_READONLY === 'true',
     objectStorageDriver,
     objectStorageDir: env.OBJECT_STORAGE_DIR ?? 'server/.data/objects',
     s3,

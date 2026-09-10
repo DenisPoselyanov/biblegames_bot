@@ -27,6 +27,7 @@ import {
   writePreferences,
   writeLearningState,
   type PreferencesCutover,
+  type ProgressionCutover,
 } from '../services/profileService';
 import {
   sanitizeStatsBody,
@@ -42,6 +43,8 @@ export interface MeRouterDeps {
   config: ServerConfig;
   /** Typed-preferences cutover (Phase 2 §18.2). Present when a database is wired. */
   preferences?: PreferencesCutover;
+  /** Progression / entitlement cutover (Phase 2 §18.2, ADR-016). Present when a database is wired. */
+  progression?: ProgressionCutover;
 }
 
 function requirePrincipal(req: Request) {
@@ -58,6 +61,7 @@ export function createMeRouter({
   auditLog,
   config,
   preferences,
+  progression,
 }: MeRouterDeps): Router {
   const router = Router();
   const rl = (name: string, windowMs: number, max: number) =>
@@ -82,7 +86,7 @@ export function createMeRouter({
     '/profile',
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
-      res.json(await readProfile(dbStore, userId, walletLedger, preferences));
+      res.json(await readProfile(dbStore, userId, walletLedger, preferences, progression));
     }),
   );
 
@@ -93,7 +97,7 @@ export function createMeRouter({
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
       await writePreferences(dbStore, userId, req.body, preferences);
-      res.json(await readProfile(dbStore, userId, walletLedger, preferences));
+      res.json(await readProfile(dbStore, userId, walletLedger, preferences, progression));
     }),
   );
 
@@ -144,6 +148,23 @@ export function createMeRouter({
     '/stats',
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
+      if (progression) {
+        const rows = await progression.repos.themeStats.listForUser(userId);
+        if (rows.length > 0) {
+          const themes = Object.fromEntries(
+            rows.map((r) => [
+              r.themeId,
+              { themeId: r.themeId, totalPoints: r.totalPoints, gamesPlayed: r.gamesPlayed, playersCount: 0 },
+            ]),
+          );
+          const lastUpdated = rows
+            .map((r) => r.updatedAt)
+            .sort()
+            .at(-1);
+          res.json({ themes, lastUpdated: lastUpdated ?? new Date().toISOString() });
+          return;
+        }
+      }
       const stats = await dbStore.getStats(userId);
       res.json(stats ?? { themes: {}, lastUpdated: new Date().toISOString() });
     }),
@@ -162,6 +183,10 @@ export function createMeRouter({
     '/study/answers',
     asyncHandler(async (req, res) => {
       const { userId } = requirePrincipal(req);
+      if (progression) {
+        res.json(await progression.repos.answers.list(userId, 5000));
+        return;
+      }
       res.json(await dbStore.getStudyAnswers(userId));
     }),
   );

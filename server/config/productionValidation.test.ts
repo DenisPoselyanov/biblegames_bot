@@ -8,7 +8,9 @@ function prodConfig(overrides: NodeJS.ProcessEnv = {}) {
     TELEGRAM_BOT_TOKEN: 'real:token',
     AUTH_MODE: 'telegram',
     CLIENT_ORIGIN: 'https://mini-app.example.com',
-    STORAGE_PROVIDER: 'json',
+    // JSON is no longer a production-capable store (§26.1, ADR-016).
+    STORAGE_PROVIDER: 'sql',
+    DATABASE_URL: 'postgres://user:pw@db:5432/app',
     ...overrides,
   }).config;
 }
@@ -64,6 +66,11 @@ describe('collectProductionConfigErrors', () => {
       prodConfig({ STORAGE_PROVIDER: 'sql', DATABASE_URL: '' }),
     );
     expect(errors.join(' ')).toMatch(/DATABASE_URL/);
+  });
+
+  it('blocks production when STORAGE_PROVIDER is not "sql" (§26.1, ADR-016)', () => {
+    const errors = collectProductionConfigErrors(prodConfig({ STORAGE_PROVIDER: 'json' }));
+    expect(errors.join(' ')).toMatch(/STORAGE_PROVIDER must be "sql"/);
   });
 
   it('assertProductionConfig throws an aggregated error', () => {

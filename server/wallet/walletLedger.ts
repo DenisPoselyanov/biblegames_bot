@@ -9,6 +9,7 @@
  */
 
 import { randomUUID } from 'node:crypto';
+import type { Transaction } from '../domains/shared/context';
 
 export type WalletTxnType =
   | 'earn'
@@ -53,10 +54,20 @@ export interface WalletListOptions {
 }
 
 export interface WalletLedger {
-  getBalance(userId: string): Promise<number>;
+  /**
+   * `tx` (SQL adapter only) reads the balance on the transaction's connection so
+   * a reward computed inside `db.transaction` sees a consistent value. The
+   * in-memory / JSON adapters ignore it.
+   */
+  getBalance(userId: string, tx?: Transaction): Promise<number>;
   listEntries(userId: string, opts?: WalletListOptions): Promise<WalletEntry[]>;
-  /** Idempotent on (sourceType, sourceId). Rejects a debit that would overdraw. */
-  post(input: WalletPostInput): Promise<WalletPostResult>;
+  /**
+   * Idempotent on (sourceType, sourceId). Rejects a debit that would overdraw.
+   * `tx` (SQL adapter only) runs the insert on that transaction's connection so
+   * the ledger row commits or rolls back atomically with the caller's other
+   * writes. The in-memory / JSON adapters ignore it.
+   */
+  post(input: WalletPostInput, tx?: Transaction): Promise<WalletPostResult>;
   /** Post a compensating entry for `entryId`. Idempotent on (`reversal`, sourceId). */
   reverse(entryId: string, sourceId: string, metadata?: Record<string, unknown>): Promise<WalletPostResult>;
 }

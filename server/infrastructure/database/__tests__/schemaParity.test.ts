@@ -57,6 +57,12 @@ describe('Drizzle schema ↔ server/db/schema.sql parity', () => {
         'content_sets',
         'content_set_versions',
         'content_set_items',
+        // §18.2 / ADR-016 — progression + entitlement decomposition
+        'progression_state',
+        'achievement_grants',
+        'player_theme_stats',
+        'progression_backfill_records',
+        'entitlements',
       ].sort(),
     );
   });

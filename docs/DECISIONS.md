@@ -418,6 +418,17 @@ Protected Content Studio отримує RBAC і може бути фізично
   Metrics store — навмисно ще in-process (cross-instance = реальний backend:
   Prometheus scrape / StatsD), відкладено до Phase 7 разом із deployment.
 
+## Implementation progress (Phase 2 §18.2 / ADR-016, 2026-09-10)
+
+- Progression + entitlement декомпоновано з blob-таблиць у типізовані
+  `progression_state` / `achievement_grants` / `player_theme_stats` /
+  `entitlements` (гібридна гранулярність — ADR-016). reward hot-path
+  (`/completions`, `/answers`, `/shop/purchases`) тепер відкриває одну
+  `db.transaction` з `progression_state` row-lock.
+- `productionValidation.ts` більше не приймає `STORAGE_PROVIDER` ≠ `sql` у
+  production — json остаточно прибрано як prod-store для profile / progression /
+  economy. json-адаптери лишаються для dev / tests / import-export.
+
 ## Контекст
 
 JSON зручний локально, але synchronous direct writes без lock/version/transaction небезпечні для production mutation.
@@ -972,6 +983,97 @@ Postgres BYTEA — змішує output зі стором, роздуває БД.
 `ObjectStore`-інтерфейс ізолює: драйвер міняється конфігом без зміни продюсерів.
 `filesystem` не має зовнішніх залежностей. Снапшоти — виходи, їх втрата
 безпечна (регенеруються джобом).
+
+---
+
+# ADR-016 — Декомпозиція progression: типізовані скалярні колонки + jsonb-суббеги одного домену
+
+**Дата:** 2026-09-10
+**Статус:** accepted, implementation у Phase 2 (гілка `phase-2/progression-decomposition`).
+
+## Контекст
+
+Phase 2 §26.1 лишає 3 пункти DoD (#6/#7/#9) відкритими: progression і entitlement
+досі живуть як нетипізовані поля у blob-таблицях `player_profiles.payload` /
+`player_stats.payload`, а `STORAGE_PROVIDER=json` досі production-capable для них.
+Spike (`spike/drizzle/FINDINGS.md` §6) свідомо лишив відкритим питання
+гранулярності: «snapshot-as-jsonb vs повністю декомпоновані колонки — WS2 обирає
+per-domain».
+
+`player_profiles.payload` ділиться на дві популяції:
+
+- **Скаляри**, що ганяють ранг / streak / celebration / крос-доменні читання:
+  `playerRank.{tier,plaque,wisdomPoints,unlockedTier}`, `streakDays`,
+  `lastActiveAt`, `millionaireWins`, `millionaireMaxLevel`, `survivalHighScore`.
+- **Колекції**, які reward-движок (`server/progression/completionOutcome.ts`)
+  читає й пише **тільки цілком**: `completedLevels[]`, `themePoints{}`,
+  `practiceTracks[]` (з вкладеними `stageResults[]`), `studyMastery{}`.
+
+## Рішення
+
+**Гібрид.** Типізована таблиця `progression_state` (один рядок на користувача,
+FK → `users`, лочиться `SELECT … FOR UPDATE` у reward hot-path):
+
+- 9 **типізованих скалярних колонок** — індексовні (лідерборди Phase 5,
+  сегментація «streak ≥ N», overlay читання).
+- 4 **`jsonb`-суббеги одного домену** — `computeCompletion` вже бере in-memory
+  `ProgressionSnapshot`, клонує колекції, повертає повний `next`; жодному
+  споживачу Phase 2/3 не потрібен рядково-адресовний вигляд одного
+  `completedLevel`. Кожен беж несе `schema_version` (через рядковий), тож пізніша
+  фаза може нормалізувати окремий беж власною міграцією.
+- `mapSnapshot.ts` — єдине місце, що зчіплює storage-форму з формою рушія.
+
+**Achievements** → окрема таблиця `achievement_grants` (рядок на досягнення, з
+provenance, ідемпотентно на `(user_id, achievement_id)`) замість масиву
+`achievements[]` у blob.
+
+**Entitlements** → повністю реляційна, greenfield-таблиця `entitlements` за формою
+Phase 6 §7.1 + патерн provenance з `user_roles` (`granted_by`/`granted_at`/
+`revoked_at`/`revoked_by`, частковий unique-індекс живого продукту). Замінює масиви
+`unlockedThemes` / `unlockedAvatars`.
+
+**`player_stats`** (`GlobalStats` blob) → `player_theme_stats`, рядок на
+`(user_id, theme_id)`.
+
+Cutover — той самий патерн, що ADR-012/§18.2 preferences: dual-write (typed +
+`legacyBlobMirror`) → verify → `LEGACY_PROGRESSION_READONLY=true` → прибрати
+legacy write-path. Новий флаг **окремий** від `LEGACY_STORE_READONLY`, щоб кожен
+cutover мав власне rollout-свідчення.
+
+## Alternatives
+
+- **(a) Повна нормалізація** кожної колекції в дочірні таблиці — найчистіша
+  модель, але великий surface, репозиторій має дифати масиви в per-row
+  upsert/delete на кожен hot-path-запис (нова домівка для lost-update-багів),
+  жодного споживача Phase 2/3.
+- **(c) Snapshot-as-jsonb** — один рядок `progression_state` з усім
+  `ProgressionSnapshot` як єдиний `jsonb` + `schema_version`. Найменша зміна, але
+  відтворює blob на домен нижче, дає DoD рівно те саме, що гібрид, і лишає Phase 6
+  (якій потрібні economy/entitlement-колонки) ре-мігрувати. Слабко відповідає
+  буквальному «типізовані транзакційні таблиці».
+
+## Наслідки
+
+- Нова env `LEGACY_PROGRESSION_READONLY` (unset|`true`, default unset).
+- Міграції `0004`–`0006` (drizzle-kit generate). `schemaParity` allowlist +5.
+- Нові домени `server/domains/progression/` + `server/domains/economy/` (репо
+  тепер мають реальні реалізації, не тільки резерв у README).
+- reward hot-path (`/completions`, `/answers`, `/shop/purchases`) стає
+  транзакційним — виправляє lost-update між паралельними завершеннями й
+  неатомарну зв'язку wallet.post → setProfile → setStats.
+- `db.transaction()` (зарезервований у `ServiceContext.tx` з WS2) вперше
+  використовується в production-коді.
+- Doповнення до **ADR-006**: json прибрано як production-store для profile /
+  progression / economy через `productionValidation.ts` (§26.1, ADR-016 PR7).
+
+## Rollback
+
+Кожна стадія оборотна: зняти `LEGACY_PROGRESSION_READONLY` → `legacyBlobMirror`
+відновлює запис у blob (dual-write тримав його свіжим до перемикання, тож нічого
+не втрачено; при розбіжності — перезапустити backfill, він ідемпотентний). Рядки
+`progression_state` / `entitlements` / `achievement_grants` **ніколи не
+видаляються** на rollback (§27). Без БД (`STORAGE_PROVIDER` не `sql`) роути
+лишаються на legacy blob-шляху дослівно.
 
 ---
 
