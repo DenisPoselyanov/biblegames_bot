@@ -24,7 +24,8 @@ import { createSqlProgressionRepositories } from '../../server/infrastructure/da
 import { createSqlEconomyRepositories } from '../../server/infrastructure/database/repositories/economy';
 import { snapshotFromProfile } from '../../server/progression/completionOutcome';
 import { snapshotToState } from '../../server/domains/progression/mapSnapshot';
-import { playerThemeStats, progressionBackfillRecords } from '../../server/infrastructure/database/schema/progression';
+import { playerThemeStats } from '../../server/infrastructure/database/schema/progression';
+import { progressionBackfillRecords } from '../../server/infrastructure/database/schema/platform';
 import { getCosmeticThemeById, getAvatarById } from '../../src/data/cosmetics';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');

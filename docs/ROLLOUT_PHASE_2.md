@@ -92,18 +92,25 @@ Typed tables `progression_state` / `achievement_grants` / `player_theme_stats` /
     **Rollback:** unset the flag. The blob mirror resumes; because dual-write
     kept it fresh until step 15, nothing is lost. On a divergence, re-run the
     backfill (idempotent).
-16. Merge the `productionValidation.ts` gate (§2.7) once every production env is
-    `STORAGE_PROVIDER=sql`, migrated, backfilled and at
-    `LEGACY_PROGRESSION_READONLY=true` with a clean window.
+16. **The `productionValidation.ts` gate is already in `main`** (PR #13 /
+    `c787fb1`) — it shipped inside the WS6 code, not as a later PR. So this is a
+    **pre-deploy check, not a merge step:** confirm every production environment
+    already sets `STORAGE_PROVIDER=sql` + `DATABASE_URL` *before* deploying any
+    build at or after `bb45ddd`, or the server refuses to boot (fail-closed,
+    §2.7). Every prod env has required `sql` since the Phase 1 wallet ledger, so
+    this should already hold — verify, don't assume.
 17. After the retention window, delete the legacy blob write path
     (`legacyBlobMirror`, the `applyCompletionBlob` / `applyAnswerBlob` / shop
     blob branches).
 
 ### 2.7 Retire `STORAGE_PROVIDER=json` in production (§26.1, ADR-006/016)
 
-The production start-up gate refuses any `STORAGE_PROVIDER` other than `sql`.
-Non-production is unchanged. **Rollback:** revert the one-line gate; only safe
-while a divergence has not yet been written back into the blob (see §3).
+**Status: already live in `main`** as of PR #13 (`c787fb1`) — merged with the
+WS6 code rather than held back. The production start-up gate refuses any
+`STORAGE_PROVIDER` other than `sql`; non-production is unchanged. Because it is
+already merged, step 16 is a pre-deploy environment check, not a follow-up
+merge. **Rollback:** revert the one-line gate; only safe while a divergence has
+not yet been written back into the blob (see §3).
 
 ---
 
