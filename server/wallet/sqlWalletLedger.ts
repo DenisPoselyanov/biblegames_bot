@@ -40,7 +40,11 @@ function rowToEntry(row: Record<string, unknown>): WalletEntry {
   };
 }
 
-const asTx = (tx?: OpaqueTx): DrizzleTx | undefined => tx as unknown as DrizzleTx | undefined;
+/** A Drizzle handle (the app DB or an open transaction) that can run `.execute`. */
+type DrizzleExec = Pick<DrizzleTx, 'execute'>;
+
+const asTx = (tx?: OpaqueTx): DrizzleExec | undefined =>
+  tx as unknown as DrizzleExec | undefined;
 
 /** Rebuild a `$1..$n` statement as a Drizzle `sql` fragment with bound params. */
 function toDrizzleSql(text: string, params: unknown[]): SQL {
@@ -53,15 +57,18 @@ function toDrizzleSql(text: string, params: unknown[]): SQL {
   return acc;
 }
 
-/** One parametrised statement, on the tx connection when given, else the pool. */
+/**
+ * One parametrised statement. Prefers, in order: an open transaction, the
+ * injected app DB handle, then a fresh pooled connection.
+ */
 async function runParametrised(
-  tx: DrizzleTx | undefined,
+  exec: DrizzleExec | undefined,
   text: string,
   params: unknown[],
 ): Promise<Record<string, unknown>[]> {
-  if (tx) {
-    const result = await tx.execute(toDrizzleSql(text, params));
-    return (result as { rows: Record<string, unknown>[] }).rows;
+  if (exec) {
+    const result = await exec.execute(toDrizzleSql(text, params));
+    return (result as unknown as { rows: Record<string, unknown>[] }).rows;
   }
   const pool = await getPool();
   const result = await pool.query(text, params);
@@ -79,8 +86,10 @@ interface PostRowInput {
   metadata?: Record<string, unknown>;
 }
 
-async function postRow(input: PostRowInput, tx?: OpaqueTx): Promise<WalletPostResult> {
-  const drizzleTx = asTx(tx);
+async function postRow(
+  input: PostRowInput,
+  exec: DrizzleExec | undefined,
+): Promise<WalletPostResult> {
   const params = [
     input.id,
     input.userId,
@@ -92,7 +101,7 @@ async function postRow(input: PostRowInput, tx?: OpaqueTx): Promise<WalletPostRe
     JSON.stringify(input.metadata ?? {}),
   ];
   const inserted = await runParametrised(
-    drizzleTx,
+    exec,
     `with bal as (
        select coalesce(sum(amount), 0)::bigint as balance
        from wallet_ledger where user_id = $2
@@ -111,7 +120,7 @@ async function postRow(input: PostRowInput, tx?: OpaqueTx): Promise<WalletPostRe
   }
 
   const existing = await runParametrised(
-    drizzleTx,
+    exec,
     'select * from wallet_ledger where source_type = $1 and source_id = $2 limit 1',
     [input.sourceType, input.sourceId],
   );
@@ -121,11 +130,18 @@ async function postRow(input: PostRowInput, tx?: OpaqueTx): Promise<WalletPostRe
   throw new WalletError('insufficient_funds', 'Wallet balance cannot go negative');
 }
 
-export function createSqlWalletLedger(): WalletLedger {
+/**
+ * @param db optional injected Drizzle handle (the app DB over the shared pool).
+ *   When given, non-transactional reads/writes run on it instead of a fresh
+ *   pooled connection — this is what lets a pglite-backed test wire the wallet.
+ */
+export function createSqlWalletLedger(db?: DrizzleExec): WalletLedger {
+  const base = (tx?: OpaqueTx): DrizzleExec | undefined => asTx(tx) ?? db;
+
   return {
     async getBalance(userId, tx) {
       const rows = await runParametrised(
-        asTx(tx),
+        base(tx),
         'select coalesce(sum(amount), 0)::bigint as balance from wallet_ledger where user_id = $1',
         [userId],
       );
@@ -133,37 +149,41 @@ export function createSqlWalletLedger(): WalletLedger {
     },
 
     async listEntries(userId, opts) {
-      const pool = await getPool();
-      const result = await pool.query(
+      const rows = await runParametrised(
+        db,
         `select * from wallet_ledger where user_id = $1
          order by created_at desc, id desc limit $2`,
         [userId, clampWalletLimit(opts?.limit)],
       );
-      return result.rows.map(rowToEntry);
+      return rows.map(rowToEntry);
     },
 
     async post(input, tx) {
       assertPostable(input);
-      return postRow({ ...input, id: randomUUID() }, tx);
+      return postRow({ ...input, id: randomUUID() }, base(tx));
     },
 
     async reverse(entryId, sourceId, metadata) {
-      const pool = await getPool();
-      const original = await pool.query('select * from wallet_ledger where id = $1 limit 1', [
-        entryId,
-      ]);
-      if (!original.rows[0]) throw new WalletError('not_found', `No wallet entry ${entryId}`);
-      const entry = rowToEntry(original.rows[0]);
-      return postRow({
-        id: randomUUID(),
-        userId: entry.userId,
-        type: 'reversal',
-        amount: -entry.amount,
-        sourceType: 'reversal',
-        sourceId,
-        reversalOf: entryId,
-        metadata,
-      });
+      const original = await runParametrised(
+        db,
+        'select * from wallet_ledger where id = $1 limit 1',
+        [entryId],
+      );
+      if (!original[0]) throw new WalletError('not_found', `No wallet entry ${entryId}`);
+      const entry = rowToEntry(original[0]);
+      return postRow(
+        {
+          id: randomUUID(),
+          userId: entry.userId,
+          type: 'reversal',
+          amount: -entry.amount,
+          sourceType: 'reversal',
+          sourceId,
+          reversalOf: entryId,
+          metadata,
+        },
+        db,
+      );
     },
   };
 }

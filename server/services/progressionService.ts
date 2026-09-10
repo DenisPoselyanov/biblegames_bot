@@ -23,7 +23,6 @@ import type { Transaction as OpaqueTx } from '../domains/shared/context';
 import type { EntitlementRepository } from '../domains/economy/entitlements';
 import type { ProgressionRepositories } from '../domains/progression/repository';
 import { snapshotToState, stateToSnapshot } from '../domains/progression/mapSnapshot';
-import { studyAnswers } from '../infrastructure/database/schema/progression';
 import {
   computeCompletion,
   type CompletionInput,
@@ -187,9 +186,8 @@ export function createProgressionService(deps: ProgressionServiceDeps): Progress
         }
 
         const answeredAt = now().toISOString();
-        await txHandle
-          .insert(studyAnswers)
-          .values({
+        await repos.answers.append(
+          {
             userId,
             questionId: input.questionId,
             subthemeId: input.subthemeId,
@@ -204,8 +202,9 @@ export function createProgressionService(deps: ProgressionServiceDeps): Progress
               answeredAt,
               errorTag: input.isCorrect ? undefined : input.errorTag,
             },
-          })
-          .onConflictDoNothing({ target: [studyAnswers.userId, studyAnswers.idempotencyKey] });
+          },
+          tx,
+        );
 
         if (!legacyReadOnly) {
           await legacyBlobMirror.writeAnswerState(

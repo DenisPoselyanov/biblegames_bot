@@ -138,4 +138,29 @@ export function runProgressionRepositoryContract(
       gamesPlayed: 1,
     });
   });
+
+  it('answers.append is idempotent on (userId, idempotencyKey) and list is oldest-first', async () => {
+    const { answers } = await setup();
+
+    const mk = (key: string, questionId: string) => ({
+      userId: 'u1',
+      questionId,
+      subthemeId: 'node-a',
+      isCorrect: true,
+      answeredAt: `2026-06-0${key.at(-1)}T00:00:00.000Z`,
+      idempotencyKey: key,
+      payload: { questionId, key },
+    });
+
+    await answers.append(mk('k1', 'q1'));
+    await answers.append(mk('k2', 'q2'));
+    await answers.append(mk('k1', 'q1-retry')); // same key → no-op
+
+    const rows = await answers.list('u1', 100);
+    expect(rows).toHaveLength(2);
+    expect(rows.map((r) => r.questionId)).toEqual(['q1', 'q2']);
+
+    // limit keeps the most-recent, still oldest-first
+    expect((await answers.list('u1', 1)).map((r) => r.questionId)).toEqual(['q2']);
+  });
 }

@@ -32,7 +32,7 @@ describe('progression repositories — SQL adapter (pglite)', () => {
     },
     reset: async () => {
       await tdb.raw.execute(
-        sql`truncate table progression_state, achievement_grants, player_theme_stats, users restart identity cascade`,
+        sql`truncate table progression_state, achievement_grants, player_theme_stats, study_answers, users restart identity cascade`,
       );
     },
   }));

@@ -13,6 +13,7 @@
 import type { Transaction } from '../shared/context';
 import type {
   AchievementGrantRecord,
+  AnswerHistoryEntry,
   GrantAchievementInput,
   ProgressionStatePatch,
   ProgressionStateRecord,
@@ -56,8 +57,16 @@ export interface ThemeStatsRepository {
   recordPlay(input: RecordThemePlayInput, tx?: Transaction): Promise<void>;
 }
 
+export interface AnswerHistoryRepository {
+  /** The user's most-recent answers (payloads), oldest first, capped at `limit`. */
+  list(userId: string, limit: number, tx?: Transaction): Promise<Array<Record<string, unknown>>>;
+  /** Append one row; a duplicate `(userId, idempotencyKey)` is a no-op. */
+  append(entry: AnswerHistoryEntry, tx?: Transaction): Promise<void>;
+}
+
 export interface ProgressionRepositories {
   state: ProgressionStateRepository;
   achievements: AchievementRepository;
   themeStats: ThemeStatsRepository;
+  answers: AnswerHistoryRepository;
 }

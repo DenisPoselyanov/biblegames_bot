@@ -1,10 +1,15 @@
 /**
  * Server-authoritative progression commands (Phase 1 §7.2).
  *
- * `POST /api/v1/progression/completions` is the single Phase-1 command: the
- * client reports a bounded, validated activity result and the server computes
- * the reward, writes an idempotent wallet entry, persists the authoritative
- * progression fields, and returns a typed outcome with a stable `eventId`.
+ * `POST /api/v1/progression/completions` and `/answers`: the client reports a
+ * bounded, validated activity result and the server computes the reward, writes
+ * an idempotent wallet entry, persists the authoritative progression state, and
+ * returns a typed outcome with a stable `eventId`.
+ *
+ * When a database is wired (`service` present, ADR-016) the reward runs in one
+ * transaction against the typed `progression_state` / `achievement_grants` /
+ * `player_theme_stats` tables with a `FOR UPDATE` row lock; otherwise it falls
+ * back to the legacy whole-blob read-modify-write on `dbStore`.
  */
 
 import { createHash } from 'node:crypto';
@@ -29,11 +34,14 @@ import { emptyProfile } from '../services/profileService';
 import { recordThemePlay } from '../progression/globalStats';
 import { updateMastery, MASTERY_EXPERT_THRESHOLD } from '../progression/masteryMath';
 import type { MasteryState } from '../../src/types/index';
+import type { ProgressionService } from '../services/progressionService';
 
 export interface ProgressionRouterDeps {
   dbStore: ServerStore;
   walletLedger: WalletLedger;
   idempotency: IdempotencyStore;
+  /** Transactional reward service — present only when a database is wired (ADR-016). */
+  service?: ProgressionService;
 }
 
 const KINDS: readonly CompletionKind[] = ['level', 'practice_stage', 'millionaire', 'survival'];
@@ -91,10 +99,40 @@ function readCompletionBody(body: unknown): { input: CompletionInput; idempotenc
   };
 }
 
+interface AnswerBody {
+  questionId: string;
+  idempotencyKey: string;
+  isCorrect: boolean;
+  nodeId: string;
+  errorTag: string;
+}
+
+function readAnswerBody(body: unknown): AnswerBody {
+  const b = (body ?? {}) as Record<string, unknown>;
+  const questionId = String(b.questionId ?? '').trim().slice(0, 128);
+  const idempotencyKey = String(b.idempotencyKey ?? '').trim();
+  if (!questionId) throw new AppError('invalid_answer', 'questionId required', 400);
+  if (!idempotencyKey) throw new AppError('invalid_answer', 'idempotencyKey required', 400);
+  if (typeof b.isCorrect !== 'boolean') {
+    throw new AppError('invalid_answer', 'isCorrect must be a boolean', 400);
+  }
+  const themeId = String(b.themeId ?? '').trim().slice(0, 64);
+  const rawNode =
+    (typeof b.nodeId === 'string' && b.nodeId) ||
+    (typeof b.subthemeId === 'string' && b.subthemeId) ||
+    themeId;
+  const nodeId = String(rawNode).trim().slice(0, 128);
+  if (!nodeId) throw new AppError('invalid_answer', 'themeId or nodeId required', 400);
+  const errorTag =
+    typeof b.errorTag === 'string' && b.errorTag ? b.errorTag.slice(0, 64) : 'knowledge-gap';
+  return { questionId, idempotencyKey, isCorrect: b.isCorrect, nodeId, errorTag };
+}
+
 export function createProgressionRouter({
   dbStore,
   walletLedger,
   idempotency,
+  service,
 }: ProgressionRouterDeps): Router {
   const router = Router();
 
@@ -113,64 +151,10 @@ export function createProgressionRouter({
         return;
       }
 
-      const stored = (await dbStore.getProfile(userId)) ?? emptyProfile(userId);
-      const previous = snapshotFromProfile(stored);
-      const { next, delta } = computeCompletion(input, previous);
+      const outcome: ProgressionOutcome = service
+        ? await service.applyCompletion(userId, input, sourceId)
+        : await applyCompletionBlob({ dbStore, walletLedger, userId, input, sourceId });
 
-      let balanceAfter: number;
-      if (delta.coins !== 0) {
-        const { entry } = await walletLedger.post({
-          userId,
-          type: 'earn',
-          amount: delta.coins,
-          sourceType: 'progression.completion',
-          sourceId,
-          metadata: { kind: input.kind },
-        });
-        balanceAfter = entry.balanceAfter;
-      } else {
-        balanceAfter = await walletLedger.getBalance(userId);
-      }
-      next.coins = balanceAfter;
-
-      await dbStore.setProfile(userId, {
-        ...stored,
-        coins: balanceAfter,
-        playerRank: {
-          tier: next.rankTier,
-          plaque: next.rankPlaque,
-          wisdomPoints: next.wisdom,
-          unlockedTier: next.rankUnlockedTier,
-        },
-        streakDays: next.streakDays,
-        lastActiveAt: next.lastActiveAt,
-        completedLevels: next.completedLevels,
-        millionaireWins: next.millionaireWins,
-        millionaireMaxLevel: next.millionaireMaxLevel,
-        survivalHighScore: next.survivalHighScore,
-        achievements: next.achievements,
-        themePoints: next.themePoints,
-        practiceTracks: next.practiceTracks,
-        studyMastery: next.studyMastery,
-        updatedAt: new Date().toISOString(),
-      });
-
-      // Server-derived global stats (replaces the client's PUT /stats whole-object write).
-      if (delta.coins > 0 && (input.kind === 'level' || input.kind === 'practice_stage') && input.themeId) {
-        const themeId = String(input.themeId).slice(0, 64);
-        const hadThemePoints = (previous.themePoints[themeId] ?? 0) > 0;
-        const stats = await dbStore.getStats(userId);
-        const nextStats = recordThemePlay(stats, themeId, delta.coins, !hadThemePoints);
-        await dbStore.setStats(userId, nextStats as unknown as Record<string, unknown>);
-      }
-
-      const outcome: ProgressionOutcome = {
-        eventId: eventId(userId, sourceId),
-        previous,
-        next,
-        delta,
-        occurredAt: new Date().toISOString(),
-      };
       await idempotency.remember(scopedKey, outcome);
       res.json(outcome);
     }),
@@ -181,29 +165,9 @@ export function createProgressionRouter({
     validateBody(progressionContract.answerRequest, 'invalid_answer'),
     asyncHandler(async (req, res) => {
       const { userId } = principal(req);
-      const body = (req.body ?? {}) as Record<string, unknown>;
+      const body = readAnswerBody(req.body);
+      const scopedKey = `progression.answer:${userId}:${body.idempotencyKey}`;
 
-      const questionId = String(body.questionId ?? '').trim().slice(0, 128);
-      const idempotencyKey = String(body.idempotencyKey ?? '').trim();
-      if (!questionId) throw new AppError('invalid_answer', 'questionId required', 400);
-      if (!idempotencyKey) throw new AppError('invalid_answer', 'idempotencyKey required', 400);
-      if (typeof body.isCorrect !== 'boolean') {
-        throw new AppError('invalid_answer', 'isCorrect must be a boolean', 400);
-      }
-      const isCorrect = body.isCorrect;
-      const themeId = String(body.themeId ?? '').trim().slice(0, 64);
-      const rawNode =
-        (typeof body.nodeId === 'string' && body.nodeId) ||
-        (typeof body.subthemeId === 'string' && body.subthemeId) ||
-        themeId;
-      const effectiveNodeId = String(rawNode).trim().slice(0, 128);
-      if (!effectiveNodeId) throw new AppError('invalid_answer', 'themeId or nodeId required', 400);
-      const errorTag =
-        typeof body.errorTag === 'string' && body.errorTag
-          ? body.errorTag.slice(0, 64)
-          : 'knowledge-gap';
-
-      const scopedKey = `progression.answer:${userId}:${idempotencyKey}`;
       const cached = await idempotency.recall(scopedKey);
       if (cached) {
         metrics.inc('idempotency_replay_total', { surface: 'progression' });
@@ -211,53 +175,133 @@ export function createProgressionRouter({
         return;
       }
 
-      const stored = (await dbStore.getProfile(userId)) ?? emptyProfile(userId);
-      const mastery =
-        (stored.studyMastery && typeof stored.studyMastery === 'object'
-          ? (stored.studyMastery as Record<string, MasteryState>)
-          : {});
-      const nextState = updateMastery(mastery[effectiveNodeId], isCorrect, errorTag);
-      const nextMastery = { ...mastery, [effectiveNodeId]: nextState };
+      const outcome = service
+        ? await service.applyAnswer(userId, {
+            questionId: body.questionId,
+            idempotencyKey: body.idempotencyKey,
+            isCorrect: body.isCorrect,
+            nodeId: body.nodeId,
+            subthemeId: body.nodeId,
+            errorTag: body.errorTag,
+          })
+        : await applyAnswerBlob({ dbStore, userId, body });
 
-      const achievements = Array.isArray(stored.achievements)
-        ? [...(stored.achievements as string[])]
-        : [];
-      const granted: string[] = [];
-      if (nextState.mastery >= MASTERY_EXPERT_THRESHOLD && !achievements.includes('mastery-expert')) {
-        achievements.push('mastery-expert');
-        granted.push('mastery-expert');
-      }
-
-      await dbStore.setProfile(userId, {
-        ...stored,
-        studyMastery: nextMastery,
-        achievements,
-        updatedAt: new Date().toISOString(),
-      });
-
-      const answeredAt = new Date().toISOString();
-      const history = await dbStore.getStudyAnswers(userId);
-      history.push({
-        questionId,
-        subthemeId: effectiveNodeId,
-        themeId: themeId || undefined,
-        nodeId: typeof body.nodeId === 'string' ? body.nodeId : undefined,
-        isCorrect,
-        answeredAt,
-        errorTag: isCorrect ? undefined : errorTag,
-      });
-      await dbStore.setStudyAnswers(userId, history.slice(-5000));
-
-      const outcome = {
-        nodeId: effectiveNodeId,
-        mastery: nextState,
-        achievementsGranted: granted,
-        answeredAt,
-      };
       await idempotency.remember(scopedKey, outcome);
       res.json(outcome);
     }),
   );
 
   return router;
+}
+
+// --- Legacy whole-blob path (no database wired) -----------------------------
+
+async function applyCompletionBlob(args: {
+  dbStore: ServerStore;
+  walletLedger: WalletLedger;
+  userId: string;
+  input: CompletionInput;
+  sourceId: string;
+}): Promise<ProgressionOutcome> {
+  const { dbStore, walletLedger, userId, input, sourceId } = args;
+  const stored = (await dbStore.getProfile(userId)) ?? emptyProfile(userId);
+  const previous = snapshotFromProfile(stored);
+  const { next, delta } = computeCompletion(input, previous);
+
+  let balanceAfter: number;
+  if (delta.coins !== 0) {
+    const { entry } = await walletLedger.post({
+      userId,
+      type: 'earn',
+      amount: delta.coins,
+      sourceType: 'progression.completion',
+      sourceId,
+      metadata: { kind: input.kind },
+    });
+    balanceAfter = entry.balanceAfter;
+  } else {
+    balanceAfter = await walletLedger.getBalance(userId);
+  }
+  next.coins = balanceAfter;
+
+  await dbStore.setProfile(userId, {
+    ...stored,
+    coins: balanceAfter,
+    playerRank: {
+      tier: next.rankTier,
+      plaque: next.rankPlaque,
+      wisdomPoints: next.wisdom,
+      unlockedTier: next.rankUnlockedTier,
+    },
+    streakDays: next.streakDays,
+    lastActiveAt: next.lastActiveAt,
+    completedLevels: next.completedLevels,
+    millionaireWins: next.millionaireWins,
+    millionaireMaxLevel: next.millionaireMaxLevel,
+    survivalHighScore: next.survivalHighScore,
+    achievements: next.achievements,
+    themePoints: next.themePoints,
+    practiceTracks: next.practiceTracks,
+    studyMastery: next.studyMastery,
+    updatedAt: new Date().toISOString(),
+  });
+
+  if (delta.coins > 0 && (input.kind === 'level' || input.kind === 'practice_stage') && input.themeId) {
+    const themeId = String(input.themeId).slice(0, 64);
+    const hadThemePoints = (previous.themePoints[themeId] ?? 0) > 0;
+    const stats = await dbStore.getStats(userId);
+    const nextStats = recordThemePlay(stats, themeId, delta.coins, !hadThemePoints);
+    await dbStore.setStats(userId, nextStats as unknown as Record<string, unknown>);
+  }
+
+  return {
+    eventId: eventId(userId, sourceId),
+    previous,
+    next,
+    delta,
+    occurredAt: new Date().toISOString(),
+  };
+}
+
+async function applyAnswerBlob(args: {
+  dbStore: ServerStore;
+  userId: string;
+  body: AnswerBody;
+}): Promise<{ nodeId: string; mastery: MasteryState; achievementsGranted: string[]; answeredAt: string }> {
+  const { dbStore, userId, body } = args;
+  const stored = (await dbStore.getProfile(userId)) ?? emptyProfile(userId);
+  const mastery =
+    stored.studyMastery && typeof stored.studyMastery === 'object'
+      ? (stored.studyMastery as Record<string, MasteryState>)
+      : {};
+  const nextState = updateMastery(mastery[body.nodeId], body.isCorrect, body.errorTag);
+  const nextMastery = { ...mastery, [body.nodeId]: nextState };
+
+  const achievements = Array.isArray(stored.achievements) ? [...(stored.achievements as string[])] : [];
+  const granted: string[] = [];
+  if (nextState.mastery >= MASTERY_EXPERT_THRESHOLD && !achievements.includes('mastery-expert')) {
+    achievements.push('mastery-expert');
+    granted.push('mastery-expert');
+  }
+
+  await dbStore.setProfile(userId, {
+    ...stored,
+    studyMastery: nextMastery,
+    achievements,
+    updatedAt: new Date().toISOString(),
+  });
+
+  const answeredAt = new Date().toISOString();
+  const history = await dbStore.getStudyAnswers(userId);
+  history.push({
+    questionId: body.questionId,
+    subthemeId: body.nodeId,
+    nodeId: body.nodeId,
+    isCorrect: body.isCorrect,
+    answeredAt,
+    errorTag: body.isCorrect ? undefined : body.errorTag,
+  });
+  await dbStore.setStudyAnswers(userId, history.slice(-5000));
+
+  return { nodeId: body.nodeId, mastery: nextState, achievementsGranted: granted, answeredAt };
 }

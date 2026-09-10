@@ -8,12 +8,14 @@
 import type { Transaction } from '../shared/context';
 import type {
   AchievementRepository,
+  AnswerHistoryRepository,
   ProgressionRepositories,
   ProgressionStateRepository,
   ThemeStatsRepository,
 } from './repository';
 import type {
   AchievementGrantRecord,
+  AnswerHistoryEntry,
   GrantAchievementInput,
   ProgressionStatePatch,
   ProgressionStateRecord,
@@ -55,6 +57,7 @@ export function createInMemoryProgressionRepositories(
   const states = new Map<string, ProgressionStateRecord>();
   const grants = new Map<string, AchievementGrantRecord>(); // `${userId}\0${achievementId}`
   const themeStats = new Map<string, ThemeStatRecord>(); // `${userId}\0${themeId}`
+  const answerRows: AnswerHistoryEntry[] = [];
   const iso = (): string => now().toISOString();
 
   const state: ProgressionStateRepository = {
@@ -142,5 +145,22 @@ export function createInMemoryProgressionRepositories(
     },
   };
 
-  return { state, achievements, themeStats: themeStatsRepo };
+  const answers: AnswerHistoryRepository = {
+    async list(userId, limit, tx) {
+      rejectTx(tx);
+      return answerRows
+        .filter((r) => r.userId === userId)
+        .slice(-Math.max(0, limit))
+        .map((r) => ({ ...r.payload }));
+    },
+    async append(entry: AnswerHistoryEntry, tx) {
+      rejectTx(tx);
+      const dup = answerRows.some(
+        (r) => r.userId === entry.userId && r.idempotencyKey === entry.idempotencyKey,
+      );
+      if (!dup) answerRows.push({ ...entry });
+    },
+  };
+
+  return { state, achievements, themeStats: themeStatsRepo, answers };
 }

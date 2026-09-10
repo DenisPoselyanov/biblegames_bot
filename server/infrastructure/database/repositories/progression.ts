@@ -11,12 +11,14 @@ import { and, desc, eq, sql } from 'drizzle-orm';
 import type { Transaction as OpaqueTx } from '../../../domains/shared/context';
 import type {
   AchievementRepository,
+  AnswerHistoryRepository,
   ProgressionRepositories,
   ProgressionStateRepository,
   ThemeStatsRepository,
 } from '../../../domains/progression/repository';
 import type {
   AchievementGrantRecord,
+  AnswerHistoryEntry,
   GrantAchievementInput,
   ProgressionStatePatch,
   ProgressionStateRecord,
@@ -24,7 +26,12 @@ import type {
   ThemeStatRecord,
 } from '../../../domains/progression/types';
 import type { Database, Transaction } from '../client';
-import { achievementGrants, playerThemeStats, progressionState } from '../schema/progression';
+import {
+  achievementGrants,
+  playerThemeStats,
+  progressionState,
+  studyAnswers,
+} from '../schema/progression';
 
 type Executor = Database | Transaction;
 
@@ -200,5 +207,38 @@ export function createSqlProgressionRepositories(db: Database): ProgressionRepos
     },
   };
 
-  return { state, achievements, themeStats };
+  const answers: AnswerHistoryRepository = {
+    async list(userId, limit, tx) {
+      // Most-recent `limit`, returned oldest-first (matches the legacy blob order).
+      const rows = await asExecutor(db, tx)
+        .select({ payload: studyAnswers.payload })
+        .from(studyAnswers)
+        .where(eq(studyAnswers.userId, userId))
+        .orderBy(desc(studyAnswers.answeredAt))
+        .limit(Math.max(0, limit));
+      return rows.map((r) => r.payload).reverse();
+    },
+
+    async append(entry: AnswerHistoryEntry, tx) {
+      await asExecutor(db, tx)
+        .insert(studyAnswers)
+        .values({
+          userId: entry.userId,
+          questionId: entry.questionId,
+          subthemeId: entry.subthemeId,
+          isCorrect: entry.isCorrect,
+          answeredAt: entry.answeredAt,
+          idempotencyKey: entry.idempotencyKey,
+          payload: entry.payload,
+        })
+        // `uq_study_answers_idem` is a partial index — the conflict target must
+        // carry the same predicate for Postgres to infer it.
+        .onConflictDoNothing({
+          target: [studyAnswers.userId, studyAnswers.idempotencyKey],
+          where: sql`${studyAnswers.idempotencyKey} is not null`,
+        });
+    },
+  };
+
+  return { state, achievements, themeStats, answers };
 }

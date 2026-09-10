@@ -77,3 +77,16 @@ export interface RecordThemePlayInput {
   /** Points earned this play — added to `total_points`. */
   points: number;
 }
+
+/** One appended study-answer row (spaced-repetition input). */
+export interface AnswerHistoryEntry {
+  userId: string;
+  questionId: string;
+  subthemeId: string;
+  isCorrect: boolean;
+  answeredAt: string;
+  /** Client retry key — `(userId, idempotencyKey)` is unique, so a retry is a no-op. */
+  idempotencyKey: string;
+  /** Opaque payload returned verbatim by `GET /me/study/answers`. */
+  payload: Record<string, unknown>;
+}
