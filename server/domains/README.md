@@ -47,6 +47,20 @@ contract tests exist (§25 "moving files without defining ownership").
   `server/infrastructure/database/repositories/economy.ts`. Table:
   `entitlements`. `wallet_ledger` keeps its home under `server/wallet/`
   (predates this layout).
+- **`learning/`** (Phase 3 WS1, ADR-017) — `repository.ts` (`LearningPlanRepository`,
+  `LearningModuleRepository`, `LearningObjectiveRepository`, `LessonRepository`,
+  `LessonBlockRepository`), `types.ts` (incl. `LESSON_BLOCK_TYPES`, §11.3),
+  `inMemoryRepository.ts`. SQL adapter:
+  `server/infrastructure/database/repositories/learning.ts`. Contract:
+  `learning/__tests__/repositoryContract.ts` (in-memory + pglite). Tables:
+  `learning_plans` / `learning_modules` (self-referencing `parentModuleId`) /
+  `learning_objectives` / `lessons` / `lesson_blocks`. Populated by
+  `scripts/migrate/map-learning-content.ts` from `data/topics-db/*.json`
+  (`source = 'topic-tree'`); rows land `legacy_unreviewed`, never `published` —
+  WS2 builds the read API and the promotion policy. Does not own question
+  publication (stays in `content`); does not yet own practice/review sessions or
+  answer attempts (still `progression`/`me.ts` — moving that is WS2 scope per the
+  ownership map below).
 
 ## Map
 

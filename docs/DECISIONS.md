@@ -1077,6 +1077,135 @@ cutover мав власне rollout-свідчення.
 
 ---
 
+# ADR-017 — Learning domain: greenfield схема, topic-tree як джерело даних для Phase 3, авторинг — Phase 4
+
+**Дата:** 2026-09-14
+**Статус:** accepted, implementation у Phase 3 WS1 (гілка `phase-3/ws1-learning-domain`).
+
+## Контекст
+
+Phase 3 DoD (§25.3–25.5) вимагає, щоб Learn показував реальні plans/modules/
+lessons/objectives, а lesson-сесії резюмувались і завершувались authoritative.
+`server/domains/README.md` вже резервує домен `learning` («plans, modules,
+lessons, objectives, practice/review sessions, answer attempts, mastery inputs»)
+із чіткою межею: **не** володіє publication lifecycle питань (це `content`).
+У репозиторії, однак, немає жодної таблиці чи domain-модуля для цього — Phase 2
+збудувала `content`/`progression`/`economy`, але не `learning`.
+
+Це залишає відкритим питання, яке майстер-спек не фіксує числом: **скільки з
+«авторингу» Learning-контенту робить Phase 3, а скільки — Phase 4 (Content
+Studio)?** Phase 4 явно володіє reviewed AI-pipeline і staging/review UI; без
+рішення WS1 міг би або (a) чекати Phase 4 і лишити Learn порожнім, або
+(b) винайти власний тимчасовий authoring UI, що Phase 4 потім викидає.
+
+Наявні дані: `data/topics-db/*.json` — 17 файлів-тем (той самий `themeId`
+vocabulary, що вже на `question_revisions.theme_id`/`topic_node_id`), 585 вузлів
+дерева, 460 листків. Глибина дерева **не однакова**: 13 тем мають листки на
+глибині 2 (тема→книга→листок), 3 теми (`gospels`, `judges`, `kings`) мають
+**мішану** глибину 2 і 3 в різних гілках, і 1 тема (`pentateuch`) — суцільну
+глибину 3 (тема→книга→період→листок). Жорстке «глибина N = модуль, N+1 =
+об'єктив» не покриває дані без спецвипадків.
+
+## Рішення
+
+**(1) Межа Phase 3 / Phase 4.** Phase 3 WS1 будує тільки схему + один
+repeatable/idempotent mapping-скрипт
+(`scripts/migrate/map-learning-content.ts`), що виводить plans/modules/
+objectives/lessons з існуючого topic-tree. Phase 4 будує людський
+authoring/review UI, що з часом додає/редагує `source = 'authored'` рядки поряд
+із `source = 'topic-tree'`. Схема не змінює форму між ними — тільки `source` і,
+згодом, хто пише.
+
+**(2) Depth-agnostic mapping**, а не фіксована глибина:
+
+- **Plan** = корінь файлу теми (`id` = `themeId`, той самий vocabulary, що
+  `question_revisions.theme_id` — жодного нового id space).
+- **Objective** = кожен листок дерева (`id` = topic-tree node id — той самий,
+  що вже на `question_revisions.topic_node_id`/`topic_path`, тож published-
+  питання вже «доказ» для об'єктиву без окремої join-таблиці).
+- **Lesson** = обгортка 1:1 навколо кожного об'єктиву (`id` = `lesson_<objectiveId>`).
+  Не моделюємо lesson↔objective many-to-many зараз — Phase 4 може розщепити/
+  об'єднати уроки пізніше без зміни схеми (`lessons.objectiveId` не unique-
+  constrained на рівні БД саме тому).
+- **Module** = кожен нелистковий вузол, крім кореня. `learningModules.
+  parentModuleId` — self-referencing FK: `null`, якщо батько — сам корінь плану;
+  інакше вказує на батьківський модуль. Це покриває довільну глибину без
+  спецкейсів для Pentateuch чи змішаних гілок Gospels/Judges/Kings.
+
+Перевірено на реальних даних (`node` walk, без БД): 17 планів, 108 модулів,
+460 об'єктивів, 460 уроків, 0 дублікатів id, інваріант «кожен листок має хоча б
+одного модуля-предка» тримається на всіх 17 файлах.
+
+**(3) Статус.** Усі рядки, які пише mapping-скрипт, мають `status =
+'legacy_unreviewed'` (та сама закрита вокабулярія `ContentStatus`, що на
+`question_revisions.status`) — ніколи `published`, за тим самим правилом, що
+content import (ADR-004). Скрипт рахує published-question coverage на об'єктив
+(`question_revisions` за `topic_node_id`) і репортить прогалини, але **не**
+приймає рішення про публікацію — це залишається WS2/продуктовій політиці.
+
+**(4) Lesson blocks.** `lesson_blocks.blockType` — одна з `LESSON_BLOCK_TYPES`
+(`heading | text | scripture | explanation | glossary | image | reflection |
+question | summary | next_step`, §11.3). Mapping-скрипт генерує лише
+`heading` + (якщо є опис вузла) `explanation` + (якщо є published-питання)
+`question`-заглушку з лічильником — мінімальний, чесний набір, не вигадана
+Scripture-цитата чи reflection-текст. `replaceForLesson` — full swap за
+`lessonId`, тож повторний запуск скрипта ідемпотентний без diff по позиціях.
+
+## Alternatives
+
+- **(a) Чекати Phase 4** і не давати WS1 нічого писати в БД — Learn лишається
+  порожнім, DoD §25.3 не закривається, і Phase 3 не може довести
+  `lesson → practice → review → mastery → progress` цикл.
+- **(b) Фіксована глибина** (`тема→книга→листок` завжди) — найпростіше, але
+  ламається на `pentateuch` (глибина 4) і на змішаних гілках
+  `gospels`/`judges`/`kings`, де в одній темі співіснують листки різної глибини.
+  Довелося б або спотворити дані (штучно вирівняти Pentateuch до 3 рівнів), або
+  писати спецкод для кожного винятку — крихко й недовго-живе, зважаючи, що
+  Phase 4 однаково перепише цей шар.
+- **(c) Lesson ≠ objective 1:1 одразу** (групувати кілька об'єктивів в один
+  урок за евристикою тривалості/кількості питань) — реальніший продукт, але
+  вимагає редакційного рішення, яке правильно віддати Phase 4 review UI, а не
+  вгадувати скриптом.
+
+## Наслідки
+
+- Нові таблиці: `learning_plans`, `learning_modules` (self-FK),
+  `learning_objectives`, `lessons`, `lesson_blocks` (міграція
+  `0007_learning_domain`). `schemaParity` allowlist +5.
+- Новий домен `server/domains/learning/` (`repository.ts`, `types.ts`,
+  `inMemoryRepository.ts`, contract test на in-memory + pglite — 6 тестів,
+  зелені).
+- Новий скрипт `npm run migrate:map-learning-content -- [--dry] [--theme=<id>]`
+  (той самий `--dry`-патерн, що `backfill-progression`). Потребує
+  `DATABASE_URL` (published-question coverage рахується з `question_revisions`).
+- **Не чіпає** `content` домен, `question_revisions`, чи будь-який існуючий
+  route — read API (WS2), review-scheduler і практика/answer-attempts
+  (`learning`-домен по README мав би їх зрештою прийняти від `progression`/
+  `me.ts`) лишаються відкритими для WS2.
+- `drizzle-kit generate` не запустився в поточному середовищі («Please install
+  latest version of drizzle-orm», той самий клас проблем, що вже занотовано в
+  [node_modules corrupted]-пам'яті) — міграція написана вручну за форматом
+  `0000`–`0006` і **перевірена наскрізно**: pglite (реальний Postgres у WASM)
+  застосовує `0007_learning_domain.sql` і весь repository-контракт зелений
+  (`server/domains/learning/__tests__/repository.test.ts`). Знімок
+  `meta/0007_snapshot.json` для майбутнього `drizzle-kit generate`/`check` не
+  згенеровано — це borrowed risk, той самий клас, що WS6 лишив на «чистий
+  `npm ci`» (PHASE_STATUS.md). Регенерувати снапшот у чистому середовищі —
+  зробити перед наступною міграцією поверх Learning-таблиць.
+
+## Rollback
+
+Схема й скрипт нічого не видаляють і не чіпають існуючі таблиці — rollback це
+просто не мерджити/не запускати `migrate:map-learning-content`. Якщо скрипт уже
+запущено проти prod: усі рядки мають `source = 'topic-tree'` і `status =
+'legacy_unreviewed'`, тож видалення безпечне (`delete from lesson_blocks;
+delete from lessons; delete from learning_objectives; delete from
+learning_modules; delete from learning_plans;` — жоден інший домен на них не
+посилається, поки WS2 не почне читати). Повторний запуск після відкату —
+ідемпотентний (ті самі id).
+
+---
+
 # Як додавати нові рішення
 
 Кожен новий ADR містить:
