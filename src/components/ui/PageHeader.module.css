@@ -1,0 +1,64 @@
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-top: var(--space-sm);
+}
+
+.headerMain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.kicker {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-spiritual);
+  margin: 0;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: var(--lh-tight);
+  overflow-wrap: break-word;
+}
+
+.description {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: var(--lh-normal);
+}
+
+.backButton {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.backButton:active {
+  transform: scale(0.94);
+}
+
+.action {
+  flex-shrink: 0;
+}

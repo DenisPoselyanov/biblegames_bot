@@ -1,0 +1,59 @@
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-soft);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  text-align: left;
+  transition: border-color var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out);
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.option--selected {
+  border-color: var(--brand-primary);
+  background: var(--bg-surface-subtle);
+}
+
+.option--correct {
+  border-color: var(--state-success);
+  background: var(--state-success-bg);
+  color: var(--state-success-text);
+}
+
+.option--wrong {
+  border-color: var(--state-danger);
+  background: var(--state-danger-bg);
+  color: var(--state-danger-text);
+}
+
+.option--hidden {
+  opacity: 0.5;
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+}
+
+.stateIcon {
+  flex-shrink: 0;
+  display: flex;
+}
+
+.stateIcon--correct {
+  color: var(--state-success);
+}
+
+.stateIcon--wrong {
+  color: var(--state-danger);
+}

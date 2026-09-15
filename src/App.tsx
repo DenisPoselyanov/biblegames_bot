@@ -83,6 +83,12 @@ const Communities = lazy(() =>
 const CommunityDetails = lazy(() =>
   import('./pages/social/CommunityDetails').then((m) => ({ default: m.CommunityDetails })),
 );
+// Dev-only WS3 visual QA harness (DESIGN_RULES §20.3) — tree-shaken out of production builds.
+const DesignSystemFixture = import.meta.env.DEV
+  ? lazy(() =>
+      import('./pages/dev/DesignSystemFixture').then((m) => ({ default: m.DesignSystemFixture })),
+    )
+  : null;
 
 function LazyPage({ children }: { children: ReactNode }) {
   return <Suspense fallback={<AppSkeleton />}>{children}</Suspense>;
@@ -170,6 +176,10 @@ export default function App() {
             <Route path="play/kahoot/playlists/:playlistId/edit" element={<ErrorBoundary><LazyPage><KahootPlaylistEditor /></LazyPage></ErrorBoundary>} />
             <Route path="play/kahoot/room/:code" element={<ErrorBoundary><LazyPage><KahootRoom /></LazyPage></ErrorBoundary>} />
             <Route path="play/kahoot/display/:code" element={<ErrorBoundary><LazyPage><KahootDisplay /></LazyPage></ErrorBoundary>} />
+
+            {DesignSystemFixture && (
+              <Route path="dev/design-system" element={<LazyPage><DesignSystemFixture /></LazyPage>} />
+            )}
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

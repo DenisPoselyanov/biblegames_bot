@@ -45,6 +45,83 @@
   --info: #5b8fc9;
   --info-bg: rgba(91, 143, 201, 0.15);
 
+  /*
+   * ─── Semantic design tokens (ADR-009, Phase 3 WS3) ───
+   * Runtime values come from `applyCosmeticTheme()` (src/lib/cosmeticTheme.ts),
+   * which sets these as inline styles on <html> and always wins over the
+   * static fallbacks below. The fallbacks only cover the brief pre-hydration
+   * window and simply alias the existing classic-theme tokens above, so they
+   * never drift out of sync by hand.
+   * State tokens (--state-*) are a permanent alias, not a fallback: success/
+   * danger/warning/info meaning never changes per theme (DESIGN_RULES §5.6).
+   */
+  --bg-app: var(--bg);
+  --bg-surface: var(--surface);
+  --bg-surface-subtle: var(--nested-surface);
+  --bg-elevated: var(--surface-hover);
+  --bg-inverse: var(--text);
+  --bg-scrim: rgba(0, 0, 0, 0.6);
+
+  --text-primary: var(--text);
+  --text-secondary: var(--text-muted);
+  --text-muted: var(--text-dim);
+  --text-inverse: var(--on-primary);
+  --text-link: var(--gold);
+
+  --brand-primary: var(--gold);
+  --brand-primary-hover: var(--gold-light);
+  --brand-primary-pressed: var(--gold-dark);
+  --on-brand-primary: var(--on-primary);
+  --accent-spiritual: var(--gold-light);
+  --accent-spiritual-soft: var(--gold-light);
+  --accent-spiritual-bg: var(--accent-bg);
+  --on-accent-spiritual: var(--on-primary);
+
+  --border-soft: var(--border);
+  --border-default: var(--border-light);
+  --border-strong: var(--border-light);
+  --border-focus: var(--gold);
+  --focus-ring: var(--gold-glow);
+
+  --card-bg: var(--surface);
+  --card-border: var(--border);
+  --card-shadow: var(--shadow-md);
+
+  --button-primary-bg: var(--cta-bg);
+  --button-primary-text: var(--on-primary);
+  --button-secondary-bg: var(--surface);
+  --button-secondary-text: var(--gold);
+  --button-secondary-border: var(--border);
+
+  --nav-bg: var(--surface);
+  --nav-active: var(--gold);
+  --nav-inactive: var(--text-muted);
+
+  --progress-track: var(--border-light);
+  --progress-fill: var(--gold);
+
+  --input-bg: var(--surface);
+  --input-border: var(--border);
+
+  --hero-overlay-start: var(--overlay-bg-strong);
+  --hero-overlay-end: rgba(0, 0, 0, 0);
+  --hero-image-opacity: 1;
+  --illustration-tint: var(--accent-bg);
+
+  --skeleton-base: var(--nested-surface);
+  --skeleton-highlight: var(--surface-hover);
+
+  --state-success: var(--success);
+  --state-success-bg: var(--success-bg);
+  --state-success-text: var(--success-text);
+  --state-danger: var(--danger);
+  --state-danger-bg: var(--danger-bg);
+  --state-danger-text: var(--danger-text);
+  --state-warning: var(--warning);
+  --state-warning-bg: var(--warning-bg);
+  --state-info: var(--info);
+  --state-info-bg: var(--info-bg);
+
   /* ─── Mastery heatmap scale (GitHub-style, fixed - not themized) ─── */
   --mastery-1: #0e4429;
   --mastery-2: #006d32;
@@ -88,6 +165,8 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.45);
   --shadow-gold: 0 4px 16px var(--gold-glow);
+  --shadow-floating: 0 12px 32px rgba(0, 0, 0, 0.4);
+  --shadow-modal: 0 20px 56px rgba(0, 0, 0, 0.5);
 
   /* ─── Transitions ─── */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
