@@ -7,12 +7,14 @@ export * from './identity';
 export * from './progression';
 export * from './economy';
 export * from './content';
+export * from './learning';
 export * from './platform';
 
 import * as identity from './identity';
 import * as progression from './progression';
 import * as economy from './economy';
 import * as content from './content';
+import * as learning from './learning';
 import * as platform from './platform';
 
 /** Every table, for `drizzle(pool, { schema })` and query-builder relations. */
@@ -21,5 +23,6 @@ export const schema = {
   ...progression,
   ...economy,
   ...content,
+  ...learning,
   ...platform,
 } as const;

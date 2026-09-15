@@ -63,6 +63,12 @@ describe('Drizzle schema ↔ server/db/schema.sql parity', () => {
         'player_theme_stats',
         'progression_backfill_records',
         'entitlements',
+        // Phase 3 WS1 / ADR-017 — Learning domain
+        'learning_plans',
+        'learning_modules',
+        'learning_objectives',
+        'lessons',
+        'lesson_blocks',
       ].sort(),
     );
   });

@@ -61,7 +61,8 @@
     "db:check": "npx --yes drizzle-kit@^0.31.10 check",
     "content:import-legacy": "tsx scripts/content/import-legacy-questions.ts",
     "migrate:backfill-preferences": "tsx scripts/migrate/backfill-preferences.ts",
-    "migrate:backfill-progression": "tsx scripts/migrate/backfill-progression.ts"
+    "migrate:backfill-progression": "tsx scripts/migrate/backfill-progression.ts",
+    "migrate:map-learning-content": "tsx scripts/migrate/map-learning-content.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.0",
