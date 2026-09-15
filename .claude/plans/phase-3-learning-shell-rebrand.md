@@ -78,12 +78,13 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
 - **Depends on**: WS3.
 - **DoD tie-in**: §25.12.
 
-### WS5 — App shell & route migration — **code complete, PR open (2026-09-15)**
-- **Branch**: `phase-3/ws5-app-shell`, PR [#21](https://github.com/DenisPoselyanov/biblegames_bot/pull/21)
+### WS5 — App shell & route migration — **done (2026-09-15)**
+- **Branch**: `phase-3/ws5-app-shell`, PR [#21](https://github.com/DenisPoselyanov/biblegames_bot/pull/21), merged to `main` (`0a685ad`)
 - Landed: route metadata registry (`src/lib/routes/routeMeta.ts`) driving active-tab/fullscreen decisions instead of string matching; compatibility redirects (`src/lib/routes/legacyRedirects.ts`) for every legacy path in §5.2, with a `RouteCompatibilityNotice` shown (not a silent bounce to Home) when a legacy id has no resolvable destination; route analytics (§5.3) via new `TelemetryEventName`s + `src/lib/routes/routeAnalytics.ts`; `AppShellV2` (bottom nav wired from WS3's standalone `BottomNavigation`, opacity-only route transitions matching WS4's design, offline banner, skip link, focus restoration — Telegram chrome sync and modal/sheet portals already handled elsewhere app-wide, not duplicated).
+- Tab bar is the 5 primary tabs from §4.1 exactly: Today/Головна, Learn/Навчання, **Play/Гра**, Progress/Прогрес, Profile/Профіль — Practice/Review/Millionaire/Survival/Kahoot all map to the Play tab (they're listed *inside* Play's purpose in §4.1, not their own tab). A pre-merge fix corrected an initial "Practice" tab that had been reasoned only from DESIGN_RULES §14.2 in isolation, without re-checking §4.1 — caught before merge, not after.
 - Feature flag: `learningShellV2` — default off, zero change to current production behavior (same dual-write pattern as WS3/WS4); `App.tsx` has two parallel `<Routes>` trees gated on the flag.
 - New canonical routes (§5.1) without a real WS6-9 implementation render a `ComingSoon` placeholder; routes with an existing equivalent (Learn→StudyHub, Progress→ProgressDashboard, Play/Shop/Social/game modes) reuse it directly.
-- Verified: `tsc -b` clean, 405/405 tests (9 new), `eslint` clean on changed files, live browser QA (all 5 tabs, silent + failed-mapping redirects, fullscreen nav-hiding on kahoot room) — see PR body for the full checklist.
+- Verified: `tsc -b` clean, 405/405 tests (10 new), `eslint` clean on changed files, live browser QA (all 5 tabs incl. the Play-tab fix, silent + failed-mapping redirects, fullscreen nav-hiding on kahoot room).
 - **Depends on**: WS3, WS4.
 - **DoD tie-in**: §25.1, §25.13.
 
