@@ -78,12 +78,12 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
 - **Depends on**: WS3.
 - **DoD tie-in**: §25.12.
 
-### WS5 — App shell & route migration — **in progress (2026-09-15)**
-- **Branch**: `phase-3/ws5-app-shell`
-- New route model + compatibility redirects for every legacy path in §5.2, route-metadata-driven fullscreen/tab logic (not string matching in `Layout.tsx`), route analytics (§5.3).
-- App shell (§6): safe-area, Telegram header/background sync, bottom nav, transition container, toast/offline banner, modal/sheet portals, focus restoration.
-- Feature flag: `learningShellV2` — new shell/routes only render when on; default off, zero change to current production behavior (same dual-write pattern as WS3/WS4).
-- New canonical routes (§5.1) that don't have a real WS6-9 implementation yet render a `ComingSoon` placeholder rather than fake content.
+### WS5 — App shell & route migration — **code complete, PR open (2026-09-15)**
+- **Branch**: `phase-3/ws5-app-shell`, PR [#21](https://github.com/DenisPoselyanov/biblegames_bot/pull/21)
+- Landed: route metadata registry (`src/lib/routes/routeMeta.ts`) driving active-tab/fullscreen decisions instead of string matching; compatibility redirects (`src/lib/routes/legacyRedirects.ts`) for every legacy path in §5.2, with a `RouteCompatibilityNotice` shown (not a silent bounce to Home) when a legacy id has no resolvable destination; route analytics (§5.3) via new `TelemetryEventName`s + `src/lib/routes/routeAnalytics.ts`; `AppShellV2` (bottom nav wired from WS3's standalone `BottomNavigation`, opacity-only route transitions matching WS4's design, offline banner, skip link, focus restoration — Telegram chrome sync and modal/sheet portals already handled elsewhere app-wide, not duplicated).
+- Feature flag: `learningShellV2` — default off, zero change to current production behavior (same dual-write pattern as WS3/WS4); `App.tsx` has two parallel `<Routes>` trees gated on the flag.
+- New canonical routes (§5.1) without a real WS6-9 implementation render a `ComingSoon` placeholder; routes with an existing equivalent (Learn→StudyHub, Progress→ProgressDashboard, Play/Shop/Social/game modes) reuse it directly.
+- Verified: `tsc -b` clean, 405/405 tests (9 new), `eslint` clean on changed files, live browser QA (all 5 tabs, silent + failed-mapping redirects, fullscreen nav-hiding on kahoot room) — see PR body for the full checklist.
 - **Depends on**: WS3, WS4.
 - **DoD tie-in**: §25.1, §25.13.
 
