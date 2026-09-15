@@ -53,12 +53,12 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
 - **Depends on**: ADR-017 (§1 above) being written and accepted first.
 - **DoD tie-in**: §25.3, §25.18 (docs/contracts synced).
 
-### WS2 — Learning & session APIs
+### WS2 — Learning & session APIs — **done (2026-09-15)**
 - **Branch**: `phase-3/ws2-learning-api`
-- `GET /api/v1/learning/today` → `TodayView` contract (§9.1), priority-ordered (§9.2), all states in §9.3.
-- Plan/module/lesson read endpoints + lesson session start/progress/complete (idempotent, event-authoritative per §11.4).
-- Review scheduler contract + due-items endpoint (§12.5) — `ReviewQueue.tsx` currently has no server scheduler to consume; this is new, not a wire-up.
-- Practice/review session create+answer: extend/reuse Phase 1/2 `/progression/completions` & `/progression/answers` rather than forking a parallel authority path (§12.1–12.2, ties to ADR-003).
+- Landed: `contracts/api/learning.ts` (zod, mirrors `progression.ts`'s pattern); `GET /api/v1/learning/today` (`TodayView`, priority-ordered per §9.2 — `optionalChallenge` typed but never populated, no spec-defined data source); plan/module/lesson read endpoints (published-only, per WS1's schema doc comment); resumable lesson-session lifecycle (migration `0008_learning_sessions`, `lesson_sessions` table — start resumes an existing in-progress session instead of duplicating, progress/complete, no reward on completion — flagged as a deliberate gap, spec doesn't define lesson-completion reward math); server-tracked practice/review sessions (`practice_sessions` table, pinned question-revision ids so a reload doesn't re-roll and content edits mid-session can't retro-change what was shown; server computes correctness from the pinned revision instead of trusting a client `isCorrect`, unlike the legacy `/progression/answers` path — §12.1 "no answer key for future questions"); review-due scheduler is a **computed, not stored** Leitner-style ladder (`server/domains/learning/reviewScheduler.ts`, `[1,2,4,7,14,30]` day boxes) over the existing `studyMastery` map — no new scheduler table.
+- Practice-session answers reuse `progressionService.applyAnswer` / the blob fallback for mastery+achievements — relocated to `server/progression/applyAnswerBlob.ts` so `/progression/answers` and Learning share one authority function instead of forking one (ties to ADR-003 as planned).
+- Not yet done / flagged: **no content is actually `published` yet** — WS1's mapping script lands everything `legacy_unreviewed`, and WS2's read API only serves `published` rows by design, so `/learning/plans|modules|lessons` currently return empty/404 for all mapped content until a publish step exists (next gap before WS6 has anything to render — not invented here, flagged instead). `meta/0008_snapshot.json` has the same `drizzle-kit generate`-in-this-environment gap already tracked for 0007. No per-user timezone is stored anywhere (checked identity/preferences) — `TodayView.timezone` is UTC-only.
+- Verified: 261 tests green (up from 115 at WS1) — 9 new integration tests in `server/__tests__/integration/learning.test.ts` running the full HTTP surface against pglite, including the real transactional `progressionService.applyAnswer` path (not just the blob fallback); `schemaParity` allowlist updated for `lesson_sessions`/`practice_sessions`. Root `tsc -b` has pre-existing, unrelated `framer-motion` type errors in `src/components/motion/*`/`src/pages/*` (not touched by WS2, not new).
 - **Depends on**: WS1.
 - **DoD tie-in**: §25.4, §25.5.
 

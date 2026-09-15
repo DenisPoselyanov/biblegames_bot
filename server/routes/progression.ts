@@ -32,9 +32,8 @@ import {
 } from '../progression/completionOutcome';
 import { emptyProfile } from '../services/profileService';
 import { recordThemePlay } from '../progression/globalStats';
-import { updateMastery, MASTERY_EXPERT_THRESHOLD } from '../progression/masteryMath';
-import type { MasteryState } from '../../src/types/index';
 import type { ProgressionService } from '../services/progressionService';
+import { applyAnswerBlob, type AnswerBody } from '../progression/applyAnswerBlob';
 
 export interface ProgressionRouterDeps {
   dbStore: ServerStore;
@@ -97,14 +96,6 @@ function readCompletionBody(body: unknown): { input: CompletionInput; idempotenc
       score: b.score as number | undefined,
     },
   };
-}
-
-interface AnswerBody {
-  questionId: string;
-  idempotencyKey: string;
-  isCorrect: boolean;
-  nodeId: string;
-  errorTag: string;
 }
 
 function readAnswerBody(body: unknown): AnswerBody {
@@ -263,45 +254,3 @@ async function applyCompletionBlob(args: {
   };
 }
 
-async function applyAnswerBlob(args: {
-  dbStore: ServerStore;
-  userId: string;
-  body: AnswerBody;
-}): Promise<{ nodeId: string; mastery: MasteryState; achievementsGranted: string[]; answeredAt: string }> {
-  const { dbStore, userId, body } = args;
-  const stored = (await dbStore.getProfile(userId)) ?? emptyProfile(userId);
-  const mastery =
-    stored.studyMastery && typeof stored.studyMastery === 'object'
-      ? (stored.studyMastery as Record<string, MasteryState>)
-      : {};
-  const nextState = updateMastery(mastery[body.nodeId], body.isCorrect, body.errorTag);
-  const nextMastery = { ...mastery, [body.nodeId]: nextState };
-
-  const achievements = Array.isArray(stored.achievements) ? [...(stored.achievements as string[])] : [];
-  const granted: string[] = [];
-  if (nextState.mastery >= MASTERY_EXPERT_THRESHOLD && !achievements.includes('mastery-expert')) {
-    achievements.push('mastery-expert');
-    granted.push('mastery-expert');
-  }
-
-  await dbStore.setProfile(userId, {
-    ...stored,
-    studyMastery: nextMastery,
-    achievements,
-    updatedAt: new Date().toISOString(),
-  });
-
-  const answeredAt = new Date().toISOString();
-  const history = await dbStore.getStudyAnswers(userId);
-  history.push({
-    questionId: body.questionId,
-    subthemeId: body.nodeId,
-    nodeId: body.nodeId,
-    isCorrect: body.isCorrect,
-    answeredAt,
-    errorTag: body.isCorrect ? undefined : body.errorTag,
-  });
-  await dbStore.setStudyAnswers(userId, history.slice(-5000));
-
-  return { nodeId: body.nodeId, mastery: nextState, achievementsGranted: granted, answeredAt };
-}

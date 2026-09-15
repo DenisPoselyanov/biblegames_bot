@@ -13,6 +13,8 @@ import type {
   LearningRepositories,
   LessonBlockRepository,
   LessonRepository,
+  LessonSessionRepository,
+  PracticeSessionRepository,
 } from './repository';
 import type {
   LearningModuleRecord,
@@ -20,6 +22,8 @@ import type {
   LearningPlanRecord,
   LessonBlockRecord,
   LessonRecord,
+  LessonSessionRecord,
+  PracticeSessionRecord,
 } from './types';
 
 function rejectTx(tx?: Transaction): void {
@@ -36,6 +40,8 @@ export function createInMemoryLearningRepositories(
   const objectives = new Map<string, LearningObjectiveRecord>();
   const lessons = new Map<string, LessonRecord>();
   const blocksByLesson = new Map<string, LessonBlockRecord[]>();
+  const lessonSessions = new Map<string, LessonSessionRecord>();
+  const practiceSessions = new Map<string, PracticeSessionRecord>();
 
   const iso = (): string => now().toISOString();
 
@@ -166,6 +172,11 @@ export function createInMemoryLearningRepositories(
         .sort((a, b) => a.position - b.position)
         .map((r) => ({ ...r }));
     },
+    async getByObjectiveId(objectiveId, tx) {
+      rejectTx(tx);
+      const r = [...lessons.values()].find((l) => l.objectiveId === objectiveId);
+      return r ? { ...r } : null;
+    },
   };
 
   const blockRepo: LessonBlockRepository = {
@@ -195,11 +206,126 @@ export function createInMemoryLearningRepositories(
     },
   };
 
+  const lessonSessionRepo: LessonSessionRepository = {
+    async start(input, tx) {
+      rejectTx(tx);
+      const ts = iso();
+      const row: LessonSessionRecord = {
+        id: input.id,
+        userId: input.userId,
+        lessonId: input.lessonId,
+        planId: input.planId,
+        moduleId: input.moduleId,
+        status: 'in_progress',
+        contentRevision: input.contentRevision,
+        checkpointBlockId: null,
+        startedAt: ts,
+        lastActivityAt: ts,
+        completedAt: null,
+      };
+      lessonSessions.set(row.id, row);
+      return { ...row };
+    },
+    async getById(id, tx) {
+      rejectTx(tx);
+      const r = lessonSessions.get(id);
+      return r ? { ...r } : null;
+    },
+    async getActiveForUser(userId, lessonId, tx) {
+      rejectTx(tx);
+      const r = [...lessonSessions.values()]
+        .filter((s) => s.userId === userId && s.lessonId === lessonId && s.status === 'in_progress')
+        .sort((a, b) => Date.parse(b.lastActivityAt) - Date.parse(a.lastActivityAt))[0];
+      return r ? { ...r } : null;
+    },
+    async getMostRecentActive(userId, tx) {
+      rejectTx(tx);
+      const r = [...lessonSessions.values()]
+        .filter((s) => s.userId === userId && s.status === 'in_progress')
+        .sort((a, b) => Date.parse(b.lastActivityAt) - Date.parse(a.lastActivityAt))[0];
+      return r ? { ...r } : null;
+    },
+    async getMostRecentCompleted(userId, tx) {
+      rejectTx(tx);
+      const r = [...lessonSessions.values()]
+        .filter((s) => s.userId === userId && s.status === 'completed' && s.completedAt !== null)
+        .sort((a, b) => Date.parse(b.completedAt as string) - Date.parse(a.completedAt as string))[0];
+      return r ? { ...r } : null;
+    },
+    async updateCheckpoint(id, checkpointBlockId, tx) {
+      rejectTx(tx);
+      const existing = lessonSessions.get(id);
+      if (!existing) throw new Error(`lesson session ${id} not found`);
+      const row: LessonSessionRecord = { ...existing, checkpointBlockId, lastActivityAt: iso() };
+      lessonSessions.set(id, row);
+      return { ...row };
+    },
+    async complete(id, tx) {
+      rejectTx(tx);
+      const existing = lessonSessions.get(id);
+      if (!existing) throw new Error(`lesson session ${id} not found`);
+      const ts = iso();
+      const row: LessonSessionRecord = { ...existing, status: 'completed', lastActivityAt: ts, completedAt: ts };
+      lessonSessions.set(id, row);
+      return { ...row };
+    },
+    async countCompletedSince(userId, sinceIso, tx) {
+      rejectTx(tx);
+      const sinceMs = Date.parse(sinceIso);
+      return [...lessonSessions.values()].filter(
+        (s) =>
+          s.userId === userId &&
+          s.status === 'completed' &&
+          s.completedAt !== null &&
+          Date.parse(s.completedAt) >= sinceMs,
+      ).length;
+    },
+  };
+
+  const practiceSessionRepo: PracticeSessionRepository = {
+    async create(input, tx) {
+      rejectTx(tx);
+      const row: PracticeSessionRecord = {
+        id: input.id,
+        userId: input.userId,
+        mode: input.mode,
+        objectiveId: input.objectiveId,
+        questionRevisionIds: [...input.questionRevisionIds],
+        currentIndex: 0,
+        status: 'active',
+        createdAt: iso(),
+        expiresAt: input.expiresAt,
+      };
+      practiceSessions.set(row.id, row);
+      return { ...row, questionRevisionIds: [...row.questionRevisionIds] };
+    },
+    async getById(id, tx) {
+      rejectTx(tx);
+      const r = practiceSessions.get(id);
+      return r ? { ...r, questionRevisionIds: [...r.questionRevisionIds] } : null;
+    },
+    async advance(id, tx) {
+      rejectTx(tx);
+      const existing = practiceSessions.get(id);
+      if (!existing) throw new Error(`practice session ${id} not found`);
+      const nextIndex = existing.currentIndex + 1;
+      const row: PracticeSessionRecord = {
+        ...existing,
+        currentIndex: nextIndex,
+        status: nextIndex >= existing.questionRevisionIds.length ? 'completed' : existing.status,
+      };
+      practiceSessions.set(id, row);
+      return { ...row, questionRevisionIds: [...row.questionRevisionIds] };
+    },
+  };
+
   return {
     plans: planRepo,
     modules: moduleRepo,
     objectives: objectiveRepo,
     lessons: lessonRepo,
     blocks: blockRepo,
+    lessonSessions: lessonSessionRepo,
+    practiceSessions: practiceSessionRepo,
   };
 }
