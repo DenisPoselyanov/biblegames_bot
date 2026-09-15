@@ -1,9 +1,14 @@
 /**
- * Learning domain value types (Phase 3 WS1, ADR-017). Domain-owned: no `pg`, no
- * Drizzle `InferSelectModel`, no HTTP types. Repository interfaces speak only
- * these and `@contracts` types.
+ * Learning domain value types (Phase 3 WS1/WS2, ADR-017). Domain-owned: no
+ * `pg`, no Drizzle `InferSelectModel`, no HTTP types. Repository interfaces
+ * speak only these and `@contracts` types.
  */
-import type { ContentStatus } from '../../../contracts/index';
+import type {
+  ContentStatus,
+  LessonSessionStatus,
+  PracticeSessionMode,
+  PracticeSessionStatus,
+} from '../../../contracts/index';
 
 /** Where a row came from — the mapping script today, Content Studio in Phase 4. */
 export type LearningContentSource = 'topic-tree' | 'authored';
@@ -143,4 +148,54 @@ export interface LessonBlockUpsert {
   schemaVersion?: number;
   payload?: Record<string, unknown>;
   status?: ContentStatus;
+}
+
+// --- Session tracking (Phase 3 WS2, §11.4/§12.1). Ids are always caller-
+// supplied (a UUID minted by the service layer), matching the content-mapping
+// upsert convention above rather than a DB-generated key. --------------------
+
+export interface LessonSessionRecord {
+  id: string;
+  userId: string;
+  lessonId: string;
+  planId: string;
+  moduleId: string;
+  status: LessonSessionStatus;
+  /** The lesson's `updatedAt` at session-start — lets a resuming client detect the content shifted under it. */
+  contentRevision: string;
+  checkpointBlockId: string | null;
+  startedAt: string;
+  lastActivityAt: string;
+  completedAt: string | null;
+}
+
+export interface LessonSessionStart {
+  id: string;
+  userId: string;
+  lessonId: string;
+  planId: string;
+  moduleId: string;
+  contentRevision: string;
+}
+
+export interface PracticeSessionRecord {
+  id: string;
+  userId: string;
+  mode: PracticeSessionMode;
+  objectiveId: string;
+  /** Pinned revision ids, in presentation order — not question ids, so a mid-session content edit can't change what's already shown (§12.6). */
+  questionRevisionIds: string[];
+  currentIndex: number;
+  status: PracticeSessionStatus;
+  createdAt: string;
+  expiresAt: string;
+}
+
+export interface PracticeSessionCreate {
+  id: string;
+  userId: string;
+  mode: PracticeSessionMode;
+  objectiveId: string;
+  questionRevisionIds: string[];
+  expiresAt: string;
 }

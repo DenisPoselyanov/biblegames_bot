@@ -30,7 +30,9 @@ import { createSqlProgressionRepositories } from './infrastructure/database/repo
 import { createSqlEconomyRepositories } from './infrastructure/database/repositories/economy';
 import { createSqlRateLimitStore } from './infrastructure/database/repositories/rateLimitStore';
 import { createSqlContentRepositories } from './infrastructure/database/repositories/content';
+import { createSqlLearningRepositories } from './infrastructure/database/repositories/learning';
 import { createProgressionService } from './services/progressionService';
+import { createLearningService } from './services/learningService';
 import { createLegacyBlobMirror } from './services/legacyBlobMirror';
 import type { ProgressionCutover } from './services/profileService';
 import { createContentQueryService } from './services/contentQuery';
@@ -46,6 +48,7 @@ import { createQuestionsAdminRouter } from './routes/questionsAdmin';
 import { createClientErrorsRouter } from './routes/clientErrors';
 import { createMeRouter } from './routes/me';
 import { createProgressionRouter } from './routes/progression';
+import { createLearningRouter } from './routes/learning';
 import { createShopRouter } from './routes/shop';
 import { createDemoRouter } from './routes/demo';
 import { questionsRouter } from './routes/questions';
@@ -162,6 +165,21 @@ export function createApp(deps: AppDeps): Express {
           now: () => new Date(),
         })
       : undefined;
+
+  // --- Learning domain (Phase 3 WS2) — SQL-only, like the RBAC admin surface
+  // below: there is no legacy-blob equivalent for lesson/practice content, so
+  // the whole surface is simply absent without a database. ---
+  const learningService = deps.database
+    ? createLearningService({
+        learningRepos: createSqlLearningRepositories(deps.database),
+        contentRepositories,
+        dbStore,
+        walletLedger,
+        preferences: preferencesCutover,
+        progression: progressionCutover,
+        progressionService,
+      })
+    : undefined;
   const roleResolver =
     deps.roleResolver ??
     (identity
@@ -296,6 +314,14 @@ export function createApp(deps: AppDeps): Express {
     rl('progression', 60_000, 60),
     createProgressionRouter({ dbStore, walletLedger, idempotency, service: progressionService }),
   );
+  if (learningService) {
+    app.use(
+      '/api/v1/learning',
+      ...authed,
+      rl('learning', 60_000, 60),
+      createLearningRouter({ service: learningService, idempotency }),
+    );
+  }
   app.use(
     '/api/v1/shop',
     ...authed,

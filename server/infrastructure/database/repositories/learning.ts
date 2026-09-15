@@ -5,8 +5,13 @@
  * The opaque `Transaction` from `ServiceContext` is narrowed to the Drizzle
  * executor here and nowhere else (`asExecutor`), same pattern as `content.ts`.
  */
-import { asc, eq, sql } from 'drizzle-orm';
-import type { ContentStatus } from '../../../../contracts/index';
+import { and, asc, desc, eq, gte, sql } from 'drizzle-orm';
+import type {
+  ContentStatus,
+  LessonSessionStatus,
+  PracticeSessionMode,
+  PracticeSessionStatus,
+} from '../../../../contracts/index';
 import type { Transaction as OpaqueTx } from '../../../domains/shared/context';
 import type {
   LearningModuleRepository,
@@ -15,6 +20,8 @@ import type {
   LearningRepositories,
   LessonBlockRepository,
   LessonRepository,
+  LessonSessionRepository,
+  PracticeSessionRepository,
 } from '../../../domains/learning/repository';
 import type {
   LearningModuleRecord,
@@ -23,9 +30,12 @@ import type {
   LessonBlockRecord,
   LessonBlockType,
   LessonRecord,
+  LessonSessionRecord,
+  PracticeSessionRecord,
 } from '../../../domains/learning/types';
 import type { Database, Transaction } from '../client';
 import { learningModules, learningObjectives, learningPlans, lessonBlocks, lessons } from '../schema/learning';
+import { lessonSessions, practiceSessions } from '../schema/learningSessions';
 
 type Executor = Database | Transaction;
 
@@ -38,6 +48,8 @@ type ModuleRow = typeof learningModules.$inferSelect;
 type ObjectiveRow = typeof learningObjectives.$inferSelect;
 type LessonRow = typeof lessons.$inferSelect;
 type BlockRow = typeof lessonBlocks.$inferSelect;
+type LessonSessionRow = typeof lessonSessions.$inferSelect;
+type PracticeSessionRow = typeof practiceSessions.$inferSelect;
 
 const toPlan = (r: PlanRow): LearningPlanRecord => ({
   id: r.id,
@@ -101,6 +113,32 @@ const toBlock = (r: BlockRow): LessonBlockRecord => ({
   status: r.status as ContentStatus,
   createdAt: r.createdAt,
   updatedAt: r.updatedAt,
+});
+
+const toLessonSession = (r: LessonSessionRow): LessonSessionRecord => ({
+  id: r.id,
+  userId: r.userId,
+  lessonId: r.lessonId,
+  planId: r.planId,
+  moduleId: r.moduleId,
+  status: r.status as LessonSessionStatus,
+  contentRevision: r.contentRevision,
+  checkpointBlockId: r.checkpointBlockId,
+  startedAt: r.startedAt,
+  lastActivityAt: r.lastActivityAt,
+  completedAt: r.completedAt,
+});
+
+const toPracticeSession = (r: PracticeSessionRow): PracticeSessionRecord => ({
+  id: r.id,
+  userId: r.userId,
+  mode: r.mode as PracticeSessionMode,
+  objectiveId: r.objectiveId,
+  questionRevisionIds: r.questionRevisionIds,
+  currentIndex: r.currentIndex,
+  status: r.status as PracticeSessionStatus,
+  createdAt: r.createdAt,
+  expiresAt: r.expiresAt,
 });
 
 export function createSqlLearningRepositories(db: Database): LearningRepositories {
@@ -290,6 +328,14 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
         .orderBy(asc(lessons.position));
       return rows.map(toLesson);
     },
+    async getByObjectiveId(objectiveId, tx) {
+      const [row] = await asExecutor(db, tx)
+        .select()
+        .from(lessons)
+        .where(eq(lessons.objectiveId, objectiveId))
+        .limit(1);
+      return row ? toLesson(row) : null;
+    },
   };
 
   const blocks: LessonBlockRepository = {
@@ -323,5 +369,144 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
     },
   };
 
-  return { plans, modules, objectives, lessons: lessonRepo, blocks };
+  const lessonSessionRepo: LessonSessionRepository = {
+    async start(input, tx) {
+      const [row] = await asExecutor(db, tx)
+        .insert(lessonSessions)
+        .values({
+          id: input.id,
+          userId: input.userId,
+          lessonId: input.lessonId,
+          planId: input.planId,
+          moduleId: input.moduleId,
+          status: 'in_progress',
+          contentRevision: input.contentRevision,
+          checkpointBlockId: null,
+        })
+        .returning();
+      return toLessonSession(row);
+    },
+    async getById(id, tx) {
+      const [row] = await asExecutor(db, tx)
+        .select()
+        .from(lessonSessions)
+        .where(eq(lessonSessions.id, id))
+        .limit(1);
+      return row ? toLessonSession(row) : null;
+    },
+    async getActiveForUser(userId, lessonId, tx) {
+      const [row] = await asExecutor(db, tx)
+        .select()
+        .from(lessonSessions)
+        .where(
+          and(
+            eq(lessonSessions.userId, userId),
+            eq(lessonSessions.lessonId, lessonId),
+            eq(lessonSessions.status, 'in_progress'),
+          ),
+        )
+        .orderBy(desc(lessonSessions.lastActivityAt))
+        .limit(1);
+      return row ? toLessonSession(row) : null;
+    },
+    async getMostRecentActive(userId, tx) {
+      const [row] = await asExecutor(db, tx)
+        .select()
+        .from(lessonSessions)
+        .where(and(eq(lessonSessions.userId, userId), eq(lessonSessions.status, 'in_progress')))
+        .orderBy(desc(lessonSessions.lastActivityAt))
+        .limit(1);
+      return row ? toLessonSession(row) : null;
+    },
+    async getMostRecentCompleted(userId, tx) {
+      const [row] = await asExecutor(db, tx)
+        .select()
+        .from(lessonSessions)
+        .where(and(eq(lessonSessions.userId, userId), eq(lessonSessions.status, 'completed')))
+        .orderBy(desc(lessonSessions.completedAt))
+        .limit(1);
+      return row ? toLessonSession(row) : null;
+    },
+    async updateCheckpoint(id, checkpointBlockId, tx) {
+      const [row] = await asExecutor(db, tx)
+        .update(lessonSessions)
+        .set({ checkpointBlockId, lastActivityAt: sql`now()` })
+        .where(eq(lessonSessions.id, id))
+        .returning();
+      if (!row) throw new Error(`lesson session ${id} not found`);
+      return toLessonSession(row);
+    },
+    async complete(id, tx) {
+      const [row] = await asExecutor(db, tx)
+        .update(lessonSessions)
+        .set({ status: 'completed', lastActivityAt: sql`now()`, completedAt: sql`now()` })
+        .where(eq(lessonSessions.id, id))
+        .returning();
+      if (!row) throw new Error(`lesson session ${id} not found`);
+      return toLessonSession(row);
+    },
+    async countCompletedSince(userId, sinceIso, tx) {
+      const rows = await asExecutor(db, tx)
+        .select({ count: sql<number>`count(*)::int` })
+        .from(lessonSessions)
+        .where(
+          and(
+            eq(lessonSessions.userId, userId),
+            eq(lessonSessions.status, 'completed'),
+            gte(lessonSessions.completedAt, sinceIso),
+          ),
+        );
+      return rows[0]?.count ?? 0;
+    },
+  };
+
+  const practiceSessionRepo: PracticeSessionRepository = {
+    async create(input, tx) {
+      const [row] = await asExecutor(db, tx)
+        .insert(practiceSessions)
+        .values({
+          id: input.id,
+          userId: input.userId,
+          mode: input.mode,
+          objectiveId: input.objectiveId,
+          questionRevisionIds: input.questionRevisionIds,
+          currentIndex: 0,
+          status: 'active',
+          expiresAt: input.expiresAt,
+        })
+        .returning();
+      return toPracticeSession(row);
+    },
+    async getById(id, tx) {
+      const [row] = await asExecutor(db, tx)
+        .select()
+        .from(practiceSessions)
+        .where(eq(practiceSessions.id, id))
+        .limit(1);
+      return row ? toPracticeSession(row) : null;
+    },
+    async advance(id, tx) {
+      const exec = asExecutor(db, tx);
+      const [existing] = await exec.select().from(practiceSessions).where(eq(practiceSessions.id, id)).limit(1);
+      if (!existing) throw new Error(`practice session ${id} not found`);
+      const nextIndex = existing.currentIndex + 1;
+      const nextStatus = nextIndex >= existing.questionRevisionIds.length ? 'completed' : existing.status;
+      const [row] = await exec
+        .update(practiceSessions)
+        .set({ currentIndex: nextIndex, status: nextStatus })
+        .where(eq(practiceSessions.id, id))
+        .returning();
+      return toPracticeSession(row);
+    },
+  };
+
+  return {
+    plans,
+    modules,
+    objectives,
+    lessons: lessonRepo,
+    blocks,
+    lessonSessions: lessonSessionRepo,
+    practiceSessions: practiceSessionRepo,
+  };
 }

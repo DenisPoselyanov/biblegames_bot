@@ -74,3 +74,18 @@ export const CONTENT_STATUS_VALUES = [
 ] as const;
 export const contentStatusSchema = z.enum(CONTENT_STATUS_VALUES);
 export type ContentStatus = z.infer<typeof contentStatusSchema>;
+
+/** Lesson-session lifecycle (Phase 3 WS2 §11.4). */
+export const LESSON_SESSION_STATUS_VALUES = ['in_progress', 'completed', 'abandoned'] as const;
+export const lessonSessionStatusSchema = z.enum(LESSON_SESSION_STATUS_VALUES);
+export type LessonSessionStatus = z.infer<typeof lessonSessionStatusSchema>;
+
+/** Practice/review session intent (Phase 3 WS2 §12.1). */
+export const PRACTICE_SESSION_MODE_VALUES = ['practice', 'review', 'mistakes'] as const;
+export const practiceSessionModeSchema = z.enum(PRACTICE_SESSION_MODE_VALUES);
+export type PracticeSessionMode = z.infer<typeof practiceSessionModeSchema>;
+
+/** Practice/review session lifecycle (Phase 3 WS2 §12.1). */
+export const PRACTICE_SESSION_STATUS_VALUES = ['active', 'completed', 'expired'] as const;
+export const practiceSessionStatusSchema = z.enum(PRACTICE_SESSION_STATUS_VALUES);
+export type PracticeSessionStatus = z.infer<typeof practiceSessionStatusSchema>;

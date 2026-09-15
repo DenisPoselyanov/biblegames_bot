@@ -16,10 +16,14 @@ import type {
   LessonBlockRecord,
   LessonBlockUpsert,
   LessonRecord,
+  LessonSessionRecord,
+  LessonSessionStart,
   LessonUpsert,
   ModuleUpsert,
   ObjectiveUpsert,
   PlanUpsert,
+  PracticeSessionCreate,
+  PracticeSessionRecord,
 } from './types';
 
 export interface LearningPlanRepository {
@@ -47,6 +51,8 @@ export interface LessonRepository {
   upsert(input: LessonUpsert, tx?: Transaction): Promise<LessonRecord>;
   getById(id: string, tx?: Transaction): Promise<LessonRecord | null>;
   listByModule(moduleId: string, tx?: Transaction): Promise<LessonRecord[]>;
+  /** The 1:1 lesson for an objective (schema comment on `lessons` documents this assumption for WS1/WS2). */
+  getByObjectiveId(objectiveId: string, tx?: Transaction): Promise<LessonRecord | null>;
 }
 
 export interface LessonBlockRepository {
@@ -64,10 +70,46 @@ export interface LessonBlockRepository {
   listByLesson(lessonId: string, tx?: Transaction): Promise<LessonBlockRecord[]>;
 }
 
+/**
+ * A resumable lesson-session lifecycle (§11.4): one row per lesson attempt,
+ * `status`/`checkpointBlockId` tracked server-side so a client reload resumes
+ * instead of restarting. `tx` support is required (WS2 completion may run
+ * inside a caller's transaction later); the in-memory adapter still rejects it,
+ * same rule as every other repository here.
+ */
+export interface LessonSessionRepository {
+  start(input: LessonSessionStart, tx?: Transaction): Promise<LessonSessionRecord>;
+  getById(id: string, tx?: Transaction): Promise<LessonSessionRecord | null>;
+  /** The caller's own in-progress session for this lesson, if any — resume instead of duplicating. */
+  getActiveForUser(userId: string, lessonId: string, tx?: Transaction): Promise<LessonSessionRecord | null>;
+  /** Most recently active in-progress session across any lesson — Today's `activeLesson` (§9.1). */
+  getMostRecentActive(userId: string, tx?: Transaction): Promise<LessonSessionRecord | null>;
+  /** Most recently completed session across any lesson — Today's `recentOutcome` (§9.1). */
+  getMostRecentCompleted(userId: string, tx?: Transaction): Promise<LessonSessionRecord | null>;
+  updateCheckpoint(id: string, checkpointBlockId: string, tx?: Transaction): Promise<LessonSessionRecord>;
+  complete(id: string, tx?: Transaction): Promise<LessonSessionRecord>;
+  /** Count of sessions completed at/after `sinceIso` — the daily-goal counter (§9.4, authoritative completion events only). */
+  countCompletedSince(userId: string, sinceIso: string, tx?: Transaction): Promise<number>;
+}
+
+/**
+ * A server-tracked practice/review session (§12.1): pins the ordered question
+ * revisions shown so a reload doesn't re-roll the set, and tracks
+ * `currentIndex` so "no answer key for future questions" is enforceable.
+ */
+export interface PracticeSessionRepository {
+  create(input: PracticeSessionCreate, tx?: Transaction): Promise<PracticeSessionRecord>;
+  getById(id: string, tx?: Transaction): Promise<PracticeSessionRecord | null>;
+  /** Bumps `currentIndex`; flips to `completed` once every pinned question has been answered. */
+  advance(id: string, tx?: Transaction): Promise<PracticeSessionRecord>;
+}
+
 export interface LearningRepositories {
   plans: LearningPlanRepository;
   modules: LearningModuleRepository;
   objectives: LearningObjectiveRepository;
   lessons: LessonRepository;
   blocks: LessonBlockRepository;
+  lessonSessions: LessonSessionRepository;
+  practiceSessions: PracticeSessionRepository;
 }

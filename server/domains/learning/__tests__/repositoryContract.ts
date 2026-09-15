@@ -112,4 +112,96 @@ export function runLearningRepositoryContract(makeHarness: () => Promise<Contrac
     expect(second.map((b) => b.blockType)).toEqual(['scripture']);
     expect((await blocks.listByLesson(lesson.id)).map((b) => b.id)).toEqual(['b3']);
   });
+
+  it('resolves a lesson by its objective id (§11.1, 1:1 for now)', async () => {
+    const { plans, modules, objectives, lessons } = await setup();
+    await plans.upsert({ id: 'ruth', themeId: 'ruth', title: 'Рут' });
+    await modules.upsert({ id: 'ruth-sub-1', planId: 'ruth', title: 'Наомі', position: 0 });
+    await objectives.upsert({ id: 'ruth-sub-1-sub-1', planId: 'ruth', title: 'Повернення', position: 0 });
+    const lesson = await lessons.upsert({
+      id: 'lesson_ruth-sub-1-sub-1',
+      planId: 'ruth',
+      moduleId: 'ruth-sub-1',
+      objectiveId: 'ruth-sub-1-sub-1',
+      title: 'Повернення',
+      position: 0,
+    });
+
+    const found = await lessons.getByObjectiveId('ruth-sub-1-sub-1');
+    expect(found?.id).toBe(lesson.id);
+    expect(await lessons.getByObjectiveId('does-not-exist')).toBeNull();
+  });
+
+  it('starts, resumes, checkpoints, completes and counts a lesson session (§11.4)', async () => {
+    const { plans, modules, objectives, lessons, lessonSessions } = await setup();
+    await plans.upsert({ id: 'exodus', themeId: 'exodus', title: 'Вихід' });
+    await modules.upsert({ id: 'exodus-sub-1', planId: 'exodus', title: 'Мойсей', position: 0 });
+    await objectives.upsert({ id: 'exodus-sub-1-sub-1', planId: 'exodus', title: 'Палаючий кущ', position: 0 });
+    const lesson = await lessons.upsert({
+      id: 'lesson_exodus-sub-1-sub-1',
+      planId: 'exodus',
+      moduleId: 'exodus-sub-1',
+      objectiveId: 'exodus-sub-1-sub-1',
+      title: 'Палаючий кущ',
+      position: 0,
+    });
+
+    expect(await lessonSessions.getActiveForUser('user-1', lesson.id)).toBeNull();
+    expect(await lessonSessions.getMostRecentActive('user-1')).toBeNull();
+
+    const started = await lessonSessions.start({
+      id: 'lsess-1',
+      userId: 'user-1',
+      lessonId: lesson.id,
+      planId: 'exodus',
+      moduleId: 'exodus-sub-1',
+      contentRevision: lesson.updatedAt,
+    });
+    expect(started.status).toBe('in_progress');
+    expect(started.checkpointBlockId).toBeNull();
+
+    expect((await lessonSessions.getActiveForUser('user-1', lesson.id))?.id).toBe(started.id);
+    expect((await lessonSessions.getMostRecentActive('user-1'))?.id).toBe(started.id);
+
+    const checkpointed = await lessonSessions.updateCheckpoint(started.id, 'block-2');
+    expect(checkpointed.checkpointBlockId).toBe('block-2');
+
+    expect(await lessonSessions.countCompletedSince('user-1', new Date(0).toISOString())).toBe(0);
+    expect(await lessonSessions.getMostRecentCompleted('user-1')).toBeNull();
+    const completed = await lessonSessions.complete(started.id);
+    expect(completed.status).toBe('completed');
+    expect(completed.completedAt).not.toBeNull();
+    expect(await lessonSessions.countCompletedSince('user-1', new Date(0).toISOString())).toBe(1);
+    expect(await lessonSessions.getActiveForUser('user-1', lesson.id)).toBeNull();
+    expect((await lessonSessions.getMostRecentCompleted('user-1'))?.id).toBe(started.id);
+  });
+
+  it('creates and advances a practice session to completion (§12.1)', async () => {
+    const { plans, modules, objectives, practiceSessions } = await setup();
+    await plans.upsert({ id: 'psalms', themeId: 'psalms', title: 'Псалми' });
+    await modules.upsert({ id: 'psalms-sub-1', planId: 'psalms', title: 'Хвала', position: 0 });
+    await objectives.upsert({ id: 'psalms-sub-1-sub-1', planId: 'psalms', title: 'Псалом 23', position: 0 });
+
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+    const session = await practiceSessions.create({
+      id: 'psess-1',
+      userId: 'user-1',
+      mode: 'practice',
+      objectiveId: 'psalms-sub-1-sub-1',
+      questionRevisionIds: ['rev-1', 'rev-2'],
+      expiresAt,
+    });
+    expect(session.currentIndex).toBe(0);
+    expect(session.status).toBe('active');
+
+    const afterFirst = await practiceSessions.advance(session.id);
+    expect(afterFirst.currentIndex).toBe(1);
+    expect(afterFirst.status).toBe('active');
+
+    const afterSecond = await practiceSessions.advance(session.id);
+    expect(afterSecond.currentIndex).toBe(2);
+    expect(afterSecond.status).toBe('completed');
+
+    expect((await practiceSessions.getById(session.id))?.status).toBe('completed');
+  });
 }
