@@ -1,4 +1,5 @@
-export { MotionProvider } from './MotionProvider';
+export { MotionProvider, useMotionCapabilities } from './MotionProvider';
+export type { MotionCapabilities } from './MotionProvider';
 export { MotionPage } from './MotionPage';
 export { MotionSheet } from './MotionSheet';
 export { MotionDialog } from './MotionDialog';

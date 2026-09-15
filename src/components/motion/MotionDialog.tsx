@@ -6,6 +6,9 @@ import {
   reducedTransition,
   transitionUi,
 } from '../../lib/motion';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
+import { useBodyScrollLock } from '../../hooks/useBodyScrollLock';
+import { useOverlayDismiss } from '../../hooks/useOverlayDismiss';
 
 interface MotionDialogProps {
   open: boolean;
@@ -17,6 +20,12 @@ interface MotionDialogProps {
   closeOnBackdrop?: boolean;
 }
 
+/**
+ * Centered dialog motion/portal primitive — also owns the §20.3 functional
+ * contract shared by every dialog: focus trap + restoration, body scroll
+ * lock, and Escape/Telegram-BackButton dismiss (skipped when `onClose` is
+ * not provided, e.g. a blocking dialog with no dismiss action).
+ */
 export function MotionDialog({
   open,
   onClose,
@@ -27,6 +36,9 @@ export function MotionDialog({
   closeOnBackdrop = true,
 }: MotionDialogProps) {
   const reduced = useReducedMotion();
+  const focusTrapRef = useFocusTrap(open);
+  useBodyScrollLock(open);
+  useOverlayDismiss(open, onClose);
 
   if (typeof document === 'undefined') return null;
 
@@ -46,6 +58,7 @@ export function MotionDialog({
           onClick={closeOnBackdrop ? onClose : undefined}
         >
           <motion.div
+            ref={focusTrapRef}
             className={modalClassName}
             variants={dialogVariants}
             transition={reducedTransition(transitionUi, !!reduced)}

@@ -168,16 +168,22 @@
   --shadow-floating: 0 12px 32px rgba(0, 0, 0, 0.4);
   --shadow-modal: 0 20px 56px rgba(0, 0, 0, 0.5);
 
-  /* ─── Transitions ─── */
+  /* ─── Transitions — mirrors src/lib/motion.ts (docs/MOTION_SYSTEM.md §5) ─── */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in: cubic-bezier(0.4, 0, 0.68, 0.06);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-micro: 100ms;
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --duration-instant: 80ms;
+  --duration-micro: 120ms;
   --duration-fast: 160ms;
   --duration-normal: 240ms;
   --duration-page: 280ms;
+  --duration-progress: 400ms;
+  --duration-emphasis: 520ms;
   --duration-slow: 440ms;
+  --duration-celebration: 900ms;
+  --duration-ceremony: 1400ms;
 
   /* ─── Glassmorphism ─── */
   --glass-bg: linear-gradient(145deg, rgba(24, 36, 48, 0.88), rgba(16, 24, 32, 0.65));

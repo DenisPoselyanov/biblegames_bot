@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useFocusTrap } from '../hooks/useFocusTrap';
 import { ConfirmModal } from './ConfirmModal';
 import { haptic } from '../lib/telegram';
 import {
@@ -30,7 +29,6 @@ export function QuestionEditModal({
   onSave,
   onDelete,
 }: QuestionEditModalProps) {
-  const focusTrapRef = useFocusTrap(open);
   const [text, setText] = useState(question.text);
   const [options, setOptions] = useState<string[]>([...question.options]);
   const [correctIndex, setCorrectIndex] = useState(question.correctIndex);
@@ -78,7 +76,7 @@ export function QuestionEditModal({
         className={styles.modal}
         aria-labelledby="edit-question-title"
       >
-        <article ref={focusTrapRef}>
+        <article>
           <header className={styles.header}>
             <span className={styles.kicker}>Редагування</span>
             <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Закрити">

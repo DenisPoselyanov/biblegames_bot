@@ -142,6 +142,36 @@ export function hideBackButton(onClick: () => void): void {
   }
 }
 
+/**
+ * Stack of back handlers so an open sheet/dialog can claim the native BackButton
+ * (and the browser/Telegram "back" gesture it represents) without fighting the
+ * route-level handler underneath it (`useTelegramBackButton`). Only the top of the
+ * stack is ever registered with the native API — pushing hides+unregisters
+ * whatever was on top, popping restores it. See MOTION_SYSTEM.md §20.3.
+ */
+const backHandlerStack: Array<() => void> = [];
+
+function syncNativeBackButton(previousTop: (() => void) | undefined): void {
+  const nextTop = backHandlerStack[backHandlerStack.length - 1];
+  if (nextTop === previousTop) return;
+  if (previousTop) hideBackButton(previousTop);
+  if (nextTop) showBackButton(nextTop);
+}
+
+/** Push a back handler to the top of the stack; returns a function that pops it. Safe to call for nested overlays. */
+export function pushBackHandler(onBack: () => void): () => void {
+  const previousTop = backHandlerStack[backHandlerStack.length - 1];
+  backHandlerStack.push(onBack);
+  syncNativeBackButton(previousTop);
+
+  return () => {
+    const beforeRemovalTop = backHandlerStack[backHandlerStack.length - 1];
+    const index = backHandlerStack.lastIndexOf(onBack);
+    if (index !== -1) backHandlerStack.splice(index, 1);
+    syncNativeBackButton(beforeRemovalTop);
+  };
+}
+
 /** Show/hide Telegram MainButton with text and callback */
 export function showMainButton(text: string, onClick: () => void): void {
   try {

@@ -9,6 +9,7 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from './Icon';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import styles from './InfoTooltip.module.css';
 
 const VIEWPORT_PAD = 12;
@@ -91,14 +92,7 @@ export function InfoTooltip({ label, text, className }: InfoTooltipProps) {
     return () => cancelAnimationFrame(frame);
   }, [open, text, updatePosition]);
 
-  useEffect(() => {
-    if (!open) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [open]);
+  useBodyScrollLock(open);
 
   useEffect(() => {
     if (!open) return;
