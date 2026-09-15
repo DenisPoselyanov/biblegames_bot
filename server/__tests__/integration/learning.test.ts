@@ -257,6 +257,106 @@ describe('practice sessions (§12)', () => {
   });
 });
 
+describe('GET /api/v1/learning/search (§10.2/§10.3)', () => {
+  async function seedSearchFixtures() {
+    const repos = createSqlLearningRepositories(tdb.db);
+    await repos.plans.upsert({
+      id: 'genesis',
+      themeId: 'genesis',
+      title: 'Буття',
+      description: 'Початок творіння',
+      status: 'published',
+      testament: 'old_testament',
+    });
+    await repos.plans.upsert({
+      id: 'matthew',
+      themeId: 'matthew',
+      title: 'Матвія',
+      description: 'Євангеліє від Матвія',
+      status: 'published',
+      testament: 'new_testament',
+    });
+    await repos.plans.upsert({
+      id: 'draft-plan',
+      themeId: 'draft-plan',
+      title: 'Буття (чернетка)',
+      status: 'legacy_unreviewed',
+    });
+    await repos.objectives.upsert({
+      id: 'genesis-creation',
+      planId: 'genesis',
+      title: 'Створення світу',
+      topicPath: 'Буття › Створення',
+      status: 'published',
+      testament: 'old_testament',
+    });
+  }
+
+  it('matches published plans/objectives by title or description, excludes unpublished', async () => {
+    await seedSearchFixtures();
+    const app = makeApp();
+
+    const byTitle = await get(app, '/api/v1/learning/search?q=' + encodeURIComponent('Буття'), 'u1');
+    expect(byTitle.status).toBe(200);
+    const kinds = byTitle.body.items.map((i: { kind: string; id: string }) => [i.kind, i.id]);
+    expect(kinds).toContainEqual(['plan', 'genesis']);
+    expect(kinds).not.toContainEqual(['plan', 'draft-plan']);
+
+    const byDescription = await get(app, '/api/v1/learning/search?q=' + encodeURIComponent('Євангеліє'), 'u1');
+    expect(byDescription.body.items.map((i: { id: string }) => i.id)).toEqual(['matthew']);
+  });
+
+  it('filters by testament and respects the limit', async () => {
+    await seedSearchFixtures();
+    const app = makeApp();
+
+    const filtered = await get(
+      app,
+      `/api/v1/learning/search?q=${encodeURIComponent('Буття')}&testament=new_testament`,
+      'u1',
+    );
+    expect(filtered.body.items).toEqual([]);
+
+    // 'Буття' matches both the genesis plan (title) and the genesis-creation
+    // objective (topicPath) — two hits, so limit=1 has something to truncate.
+    const limited = await get(app, `/api/v1/learning/search?q=${encodeURIComponent('Буття')}&limit=1`, 'u1');
+    expect(limited.body.items.length).toBe(1);
+  });
+
+  it('400s on a too-short query', async () => {
+    const app = makeApp();
+    const res = await get(app, '/api/v1/learning/search?q=a', 'u1');
+    expect(res.status).toBe(400);
+  });
+});
+
+describe('GET /api/v1/learning/plans?testament (§10.3)', () => {
+  it('narrows the published list by testament', async () => {
+    const repos = createSqlLearningRepositories(tdb.db);
+    await repos.plans.upsert({
+      id: 'genesis',
+      themeId: 'genesis',
+      title: 'Буття',
+      status: 'published',
+      testament: 'old_testament',
+    });
+    await repos.plans.upsert({
+      id: 'matthew',
+      themeId: 'matthew',
+      title: 'Матвія',
+      status: 'published',
+      testament: 'new_testament',
+    });
+    const app = makeApp();
+
+    const all = await get(app, '/api/v1/learning/plans', 'u1');
+    expect(all.body.plans.map((p: { id: string }) => p.id).sort()).toEqual(['genesis', 'matthew']);
+
+    const ot = await get(app, '/api/v1/learning/plans?testament=old_testament', 'u1');
+    expect(ot.body.plans.map((p: { id: string }) => p.id)).toEqual(['genesis']);
+  });
+});
+
 describe('review due (§12.5)', () => {
   it('surfaces a practiced objective once its interval elapses, empty before that', async () => {
     await seedPublishedLesson();

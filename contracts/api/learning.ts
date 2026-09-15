@@ -5,6 +5,7 @@ import {
   lessonSessionStatusSchema,
   practiceSessionModeSchema,
   practiceSessionStatusSchema,
+  testamentSchema,
 } from '../enums/index';
 import { entityId, idempotencyKey, isoTimestamp, nonNegativeInt } from '../schemas/primitives';
 import { masteryState } from '../schemas/snapshots';
@@ -27,6 +28,8 @@ export const planSummary = z.object({
   description: z.string().nullable(),
   status: contentStatusSchema,
   position: z.number().int().min(0),
+  /** Explicit content metadata (§10.3), nullable — unpopulated until Phase 4 content-ops tags it. */
+  testament: testamentSchema.nullable(),
 });
 export type PlanSummary = z.infer<typeof planSummary>;
 
@@ -49,6 +52,7 @@ export const objectiveSummary = z.object({
   topicPath: z.string().nullable(),
   status: contentStatusSchema,
   position: z.number().int().min(0),
+  testament: testamentSchema.nullable(),
 });
 export type ObjectiveSummary = z.infer<typeof objectiveSummary>;
 
@@ -258,3 +262,42 @@ export const reviewDueResponse = z.object({
   items: z.array(reviewCard),
 });
 export type ReviewDueResponse = z.infer<typeof reviewDueResponse>;
+
+// --- Search (§10.2, §10.3) ------------------------------------------------------
+
+/**
+ * A matched plan. Search operates on published indexed content only — same
+ * `status='published'` gate as every other learning read (§10.2).
+ */
+export const learningSearchPlanResult = z.object({
+  kind: z.literal('plan'),
+  id: entityId,
+  title: z.string().min(1),
+  description: z.string().nullable(),
+  testament: testamentSchema.nullable(),
+});
+export type LearningSearchPlanResult = z.infer<typeof learningSearchPlanResult>;
+
+/** A matched objective — carries `planId` so the client can deep-link to the parent plan. */
+export const learningSearchObjectiveResult = z.object({
+  kind: z.literal('objective'),
+  id: entityId,
+  planId: entityId,
+  title: z.string().min(1),
+  description: z.string().nullable(),
+  topicPath: z.string().nullable(),
+  testament: testamentSchema.nullable(),
+});
+export type LearningSearchObjectiveResult = z.infer<typeof learningSearchObjectiveResult>;
+
+export const learningSearchResultItem = z.discriminatedUnion('kind', [
+  learningSearchPlanResult,
+  learningSearchObjectiveResult,
+]);
+export type LearningSearchResultItem = z.infer<typeof learningSearchResultItem>;
+
+/** `GET /api/v1/learning/search?q=&testament=&limit=` (§10.2/§10.3). `q` is required — bare browsing uses `GET /plans`. */
+export const learningSearchResponse = z.object({
+  items: z.array(learningSearchResultItem),
+});
+export type LearningSearchResponse = z.infer<typeof learningSearchResponse>;

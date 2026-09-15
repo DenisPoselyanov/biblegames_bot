@@ -21,7 +21,11 @@ export const queryKeys = {
   learning: {
     root: () => ['learning'] as const,
     today: (userId: string) => ['learning', 'today', userId] as const,
+    plans: (testament?: string) => ['learning', 'plans', testament ?? null] as const,
     plan: (planId: string) => ['learning', 'plan', planId] as const,
+    module: (moduleId: string) => ['learning', 'module', moduleId] as const,
+    lesson: (lessonId: string) => ['learning', 'lesson', lessonId] as const,
+    search: (q: string, testament?: string) => ['learning', 'search', q, testament ?? null] as const,
   },
   practice: {
     root: () => ['practice'] as const,

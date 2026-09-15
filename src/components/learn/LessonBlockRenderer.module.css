@@ -1,0 +1,126 @@
+.heading {
+  font-family: var(--font-serif);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: var(--lh-tight);
+}
+
+.text,
+.explanation,
+.summary,
+.nextStep,
+.reflection {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  color: var(--text-primary);
+  line-height: var(--lh-normal);
+  margin: 0;
+}
+
+.explanation {
+  color: var(--text-secondary);
+}
+
+.reflection {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.scripture {
+  margin: 0;
+  padding: var(--space-lg);
+  border-left: 3px solid var(--accent-spiritual);
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+}
+
+.scriptureText {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
+  line-height: var(--lh-relaxed, 1.6);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-sm);
+}
+
+.scriptureMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.translation {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.paraphraseTag {
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: var(--card-border);
+  font-size: var(--fs-xs);
+}
+
+.glossary {
+  margin: 0;
+  padding: var(--space-md);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+}
+
+.glossary dt {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.glossary dd {
+  margin: var(--space-xs) 0 0;
+  color: var(--text-secondary);
+}
+
+.image {
+  margin: 0;
+}
+
+.image img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  display: block;
+}
+
+.image figcaption {
+  margin-top: var(--space-xs);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.question {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.prompt {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.unknown {
+  padding: var(--space-md);
+  border: 1px dashed var(--card-border);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}

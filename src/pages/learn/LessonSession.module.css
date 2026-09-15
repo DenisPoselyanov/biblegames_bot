@@ -1,0 +1,12 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.blockCard {
+  flex: 1;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+}

@@ -16,6 +16,7 @@
 import { createHash, randomUUID } from 'node:crypto';
 import type {
   DailyGoalView,
+  LearningSearchResponse,
   LessonDetail,
   LessonResumeCard,
   LessonSessionCompleteResponse,
@@ -34,11 +35,12 @@ import type {
   ReviewDueResponse,
   TodayView,
 } from '../../contracts/api/learning';
-import type { ContentStatus, Difficulty, PracticeSessionMode } from '../../contracts/index';
+import type { ContentStatus, Difficulty, PracticeSessionMode, Testament } from '../../contracts/index';
 import type { MasteryState } from '../../src/types/index';
 import type { LearningRepositories } from '../domains/learning/repository';
 import type {
   LearningModuleRecord,
+  LearningObjectiveRecord,
   LearningPlanRecord,
   LessonBlockRecord,
   LessonRecord,
@@ -74,7 +76,8 @@ export interface LearningServiceDeps {
 
 export interface LearningService {
   getToday(userId: string): Promise<TodayView>;
-  listPlans(): Promise<PlanSummary[]>;
+  /** `testament` narrows the published list (§10.3) — omit for the unfiltered browse list. */
+  listPlans(testament?: Testament): Promise<PlanSummary[]>;
   getPlan(planId: string): Promise<PlanDetail | null>;
   getModule(moduleId: string): Promise<ModuleDetail | null>;
   getLesson(lessonId: string): Promise<LessonDetail | null>;
@@ -95,6 +98,8 @@ export interface LearningService {
     sessionId: string,
     input: { chosenIndex: number; idempotencyKey: string },
   ): Promise<PracticeSessionAnswerResponse>;
+  /** Bounded text search over published plans/objectives (§10.2/§10.3). */
+  search(input: { q: string; testament?: Testament; limit: number }): Promise<LearningSearchResponse>;
 }
 
 function eventId(userId: string, sourceId: string): string {
@@ -109,6 +114,7 @@ function toPlanSummary(r: LearningPlanRecord): PlanSummary {
     description: r.description,
     status: r.status,
     position: r.position,
+    testament: r.testament,
   };
 }
 
@@ -179,6 +185,22 @@ function toPracticeSessionView(s: PracticeSessionRecord): PracticeSessionView {
 
 function toReviewCard(objectiveId: string, lesson: LessonRecord, dueAt: string, reason: ReviewCard['reason']): ReviewCard {
   return { objectiveId, lessonId: lesson.id, title: lesson.title, dueAt, reason };
+}
+
+function toSearchPlanResult(r: LearningPlanRecord): LearningSearchResponse['items'][number] {
+  return { kind: 'plan', id: r.id, title: r.title, description: r.description, testament: r.testament };
+}
+
+function toSearchObjectiveResult(r: LearningObjectiveRecord): LearningSearchResponse['items'][number] {
+  return {
+    kind: 'objective',
+    id: r.id,
+    planId: r.planId,
+    title: r.title,
+    description: r.description,
+    topicPath: r.topicPath,
+    testament: r.testament,
+  };
 }
 
 /** Fisher-Yates — freshness matters here, not reproducibility (unlike the seeded quiz picker). */
@@ -291,9 +313,11 @@ export function createLearningService(deps: LearningServiceDeps): LearningServic
       };
     },
 
-    async listPlans() {
+    async listPlans(testament) {
       const plans = await learningRepos.plans.listAll();
-      return plans.filter((p) => p.status === PUBLISHED).map(toPlanSummary);
+      return plans
+        .filter((p) => p.status === PUBLISHED && (!testament || p.testament === testament))
+        .map(toPlanSummary);
     },
 
     async getPlan(planId) {
@@ -452,6 +476,19 @@ export function createLearningService(deps: LearningServiceDeps): LearningServic
         achievementsGranted: answerOutcome.achievementsGranted,
         eventId: eventId(userId, `learning.practice-answer:${sessionId}:${input.idempotencyKey}`),
       };
+    },
+
+    async search(input) {
+      const query = { q: input.q, testament: input.testament ?? null, limit: input.limit };
+      const [planRows, objectiveRows] = await Promise.all([
+        learningRepos.plans.searchPublished(query),
+        learningRepos.objectives.searchPublished(query),
+      ]);
+      const items = [...planRows.map(toSearchPlanResult), ...objectiveRows.map(toSearchObjectiveResult)].slice(
+        0,
+        input.limit,
+      );
+      return { items };
     },
   };
 }
