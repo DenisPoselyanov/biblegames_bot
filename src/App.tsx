@@ -9,10 +9,19 @@ import { CosmeticThemeSync } from './components/CosmeticThemeSync';
 import { VantProvider } from './components/VantProvider';
 import { TopicHierarchyProvider } from './context/TopicHierarchyContext';
 import { Layout } from './components/Layout';
+import { AppShellV2 } from './components/shell/AppShellV2';
+import { ComingSoon } from './components/shell/ComingSoon';
+import { LegacyRedirect } from './components/shell/LegacyRedirect';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AppSkeleton } from './components/skeletons';
 import { useTelegramBackButton } from './hooks/useTelegram';
+import { isFeatureEnabled } from './lib/flags';
+import { LEGACY_REDIRECTS } from './lib/routes/legacyRedirects';
+
+// Static per session (env-driven, see `lib/flags.ts`) — computed once, mirrors
+// `Layout.tsx`'s existing `learningFirstNav` pattern.
+const learningShellV2Enabled = isFeatureEnabled('learningShellV2');
 
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const Themes = lazy(() => import('./pages/Themes').then((m) => ({ default: m.Themes })));
@@ -124,58 +133,140 @@ export default function App() {
       >
           <TelegramBackButtonSync />
           <Routes>
-            <Route element={<Layout />}>
-              <Route index element={<ErrorBoundary><LazyPage><Home /></LazyPage></ErrorBoundary>} />
-              <Route path="play" element={<ErrorBoundary><LazyPage><PlayHub /></LazyPage></ErrorBoundary>} />
-              <Route path="play/study" element={<ErrorBoundary><LazyPage><StudyHub /></LazyPage></ErrorBoundary>} />
-              <Route path="play/study/themes" element={<ErrorBoundary><LazyPage><Themes /></LazyPage></ErrorBoundary>} />
-              <Route path="play/study/themes/:themeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
-              <Route path="play/study/themes/:themeId/:nodeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
-              <Route path="play/study/theme/:themeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
-              <Route path="play/study/lesson/:themeId/:nodeId" element={<ErrorBoundary><LazyPage><Lesson /></LazyPage></ErrorBoundary>} />
-              <Route path="play/study/review-queue/:themeId" element={<ErrorBoundary><LazyPage><ReviewQueue /></LazyPage></ErrorBoundary>} />
-              <Route path="profile" element={<ErrorBoundary><LazyPage><Profile /></LazyPage></ErrorBoundary>} />
-              <Route path="profile/progress" element={<ErrorBoundary><LazyPage><ProgressDashboard /></LazyPage></ErrorBoundary>} />
-              <Route path="admin" element={<ErrorBoundary><LazyPage><AdminPanel /></LazyPage></ErrorBoundary>} />
-              <Route path="shop" element={<ErrorBoundary><LazyPage><Shop /></LazyPage></ErrorBoundary>} />
-              <Route path="stats" element={<ErrorBoundary><LazyPage><GlobalStats /></LazyPage></ErrorBoundary>} />
-              <Route path="social/challenges" element={<ErrorBoundary><LazyPage><Challenges /></LazyPage></ErrorBoundary>} />
-              <Route path="social/challenges/:challengeId" element={<ErrorBoundary><LazyPage><ChallengeDetails /></LazyPage></ErrorBoundary>} />
-              <Route path="social/communities" element={<ErrorBoundary><LazyPage><Communities /></LazyPage></ErrorBoundary>} />
-              <Route path="social/communities/:communityId" element={<ErrorBoundary><LazyPage><CommunityDetails /></LazyPage></ErrorBoundary>} />
+            {learningShellV2Enabled ? (
+              <Route element={<AppShellV2 />}>
+                <Route index element={<ErrorBoundary><LazyPage><Home /></LazyPage></ErrorBoundary>} />
 
-              <Route path="themes" element={<Navigate to="/play/study" replace />} />
-              <Route path="themes/:themeId" element={<LegacyThemeRedirect />} />
-              <Route path="play/solo" element={<Navigate to="/play/study" replace />} />
-              <Route path="play/solo/themes/:themeId" element={<LegacyThemeRedirect />} />
-            </Route>
+                {/* Learn (§5.1) — /learn reuses the existing study hub; plan/module/lesson
+                    detail have no WS6 renderer yet, so they're explicit placeholders. */}
+                <Route path="learn" element={<ErrorBoundary><LazyPage><StudyHub /></LazyPage></ErrorBoundary>} />
+                <Route
+                  path="learn/plans/:planId"
+                  element={<ComingSoon icon="book" title="План навчання" description="Перегляд планів з'явиться найближчим часом." />}
+                />
+                <Route
+                  path="learn/plans/:planId/modules/:moduleId"
+                  element={<ComingSoon icon="book" title="Модуль" description="Перегляд модулів з'явиться найближчим часом." />}
+                />
+                <Route
+                  path="learn/lessons/:lessonId"
+                  element={<ComingSoon icon="book" title="Урок" description="Новий формат уроку ще будується." />}
+                />
 
-            <Route path="play/study/quiz/:themeId/:difficulty/stage/:stageIndex" element={<ErrorBoundary><LazyPage><Quiz mode="practice" /></LazyPage></ErrorBoundary>} />
-            <Route path="play/study/quiz/:themeId/:difficulty/stage/:stageIndex/:nodeId" element={<ErrorBoundary><LazyPage><Quiz mode="practice" /></LazyPage></ErrorBoundary>} />
-            <Route path="play/study/quiz/:themeId/:difficulty" element={<ErrorBoundary><LazyPage><Quiz mode="practice" /></LazyPage></ErrorBoundary>} />
-            <Route path="play/study/quiz/:themeId/:difficulty/:nodeId" element={<ErrorBoundary><LazyPage><Quiz mode="practice" /></LazyPage></ErrorBoundary>} />
-            <Route path="play/study/review" element={<ErrorBoundary><LazyPage><Quiz mode="review" /></LazyPage></ErrorBoundary>} />
-            <Route path="play/study/sprint" element={<Navigate to="/play/study" replace />} />
-            <Route path="play/study/adaptive/:themeId/:nodeId" element={<Navigate to="/play/study" replace />} />
-            <Route path="play/study/adaptive" element={<Navigate to="/play/study" replace />} />
-            <Route path="play/study/micro/:themeId/:nodeId" element={<Navigate to="/play/study" replace />} />
-            <Route path="play/study/micro" element={<Navigate to="/play/study" replace />} />
-            <Route path="play/study/millionaire" element={<ErrorBoundary><LazyPage><Millionaire /></LazyPage></ErrorBoundary>} />
-            <Route path="play/study/survival" element={<ErrorBoundary><LazyPage><Survival /></LazyPage></ErrorBoundary>} />
-            <Route path="play/solo/quiz/:themeId/:difficulty" element={<LegacyQuizRedirect />} />
-            <Route path="play/solo/millionaire" element={<Navigate to="/play/study/millionaire" replace />} />
-            <Route path="play/solo/survival" element={<Navigate to="/play/study/survival" replace />} />
-            <Route path="quiz/:themeId/:difficulty" element={<ErrorBoundary><LazyPage><Quiz mode="practice" /></LazyPage></ErrorBoundary>} />
+                {/* Practice / Review (§5.1) — session creation & scheduler UI are WS7. */}
+                <Route
+                  path="practice"
+                  element={<ComingSoon icon="brain" title="Практика" description="Новий розділ практики ще будується." />}
+                />
+                <Route
+                  path="practice/session/:sessionId"
+                  element={<ComingSoon icon="brain" title="Сесія практики" description="Новий формат сесії ще будується." />}
+                />
+                <Route
+                  path="review"
+                  element={<ComingSoon icon="clock" title="Повторення" description="Новий розділ повторення ще будується." />}
+                />
 
-            <Route path="play/kahoot" element={<ErrorBoundary><LazyPage><KahootHub /></LazyPage></ErrorBoundary>} />
-            <Route path="play/kahoot/create" element={<ErrorBoundary><LazyPage><KahootCreate /></LazyPage></ErrorBoundary>} />
-            <Route path="play/kahoot/join" element={<ErrorBoundary><LazyPage><KahootJoin /></LazyPage></ErrorBoundary>} />
-            <Route path="play/kahoot/playlists" element={<ErrorBoundary><LazyPage><KahootPlaylists /></LazyPage></ErrorBoundary>} />
-            <Route path="play/kahoot/playlists/new" element={<ErrorBoundary><LazyPage><KahootPlaylistEditor /></LazyPage></ErrorBoundary>} />
-            <Route path="play/kahoot/playlists/:playlistId" element={<ErrorBoundary><LazyPage><KahootPlaylistDetails /></LazyPage></ErrorBoundary>} />
-            <Route path="play/kahoot/playlists/:playlistId/edit" element={<ErrorBoundary><LazyPage><KahootPlaylistEditor /></LazyPage></ErrorBoundary>} />
-            <Route path="play/kahoot/room/:code" element={<ErrorBoundary><LazyPage><KahootRoom /></LazyPage></ErrorBoundary>} />
-            <Route path="play/kahoot/display/:code" element={<ErrorBoundary><LazyPage><KahootDisplay /></LazyPage></ErrorBoundary>} />
+                <Route path="play" element={<ErrorBoundary><LazyPage><PlayHub /></LazyPage></ErrorBoundary>} />
+                <Route path="play/millionaire" element={<ErrorBoundary><LazyPage><Millionaire /></LazyPage></ErrorBoundary>} />
+                <Route path="play/survival" element={<ErrorBoundary><LazyPage><Survival /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot" element={<ErrorBoundary><LazyPage><KahootHub /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/create" element={<ErrorBoundary><LazyPage><KahootCreate /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/join" element={<ErrorBoundary><LazyPage><KahootJoin /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/playlists" element={<ErrorBoundary><LazyPage><KahootPlaylists /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/playlists/new" element={<ErrorBoundary><LazyPage><KahootPlaylistEditor /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/playlists/:playlistId" element={<ErrorBoundary><LazyPage><KahootPlaylistDetails /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/playlists/:playlistId/edit" element={<ErrorBoundary><LazyPage><KahootPlaylistEditor /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/room/:code" element={<ErrorBoundary><LazyPage><KahootRoom /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/display/:code" element={<ErrorBoundary><LazyPage><KahootDisplay /></LazyPage></ErrorBoundary>} />
+
+                <Route path="progress" element={<ErrorBoundary><LazyPage><ProgressDashboard /></LazyPage></ErrorBoundary>} />
+
+                <Route path="profile" element={<ErrorBoundary><LazyPage><Profile /></LazyPage></ErrorBoundary>} />
+                <Route
+                  path="profile/settings"
+                  element={<ComingSoon icon="settings" title="Налаштування" description="Окремий екран налаштувань ще будується." />}
+                />
+                <Route
+                  path="profile/themes"
+                  element={<ComingSoon icon="star" title="Оформлення" description="Вибір теми оформлення ще будується." />}
+                />
+
+                <Route path="shop" element={<ErrorBoundary><LazyPage><Shop /></LazyPage></ErrorBoundary>} />
+                <Route path="admin" element={<ErrorBoundary><LazyPage><AdminPanel /></LazyPage></ErrorBoundary>} />
+                <Route path="stats" element={<ErrorBoundary><LazyPage><GlobalStats /></LazyPage></ErrorBoundary>} />
+                <Route path="social/challenges" element={<ErrorBoundary><LazyPage><Challenges /></LazyPage></ErrorBoundary>} />
+                <Route path="social/challenges/:challengeId" element={<ErrorBoundary><LazyPage><ChallengeDetails /></LazyPage></ErrorBoundary>} />
+                <Route path="social/communities" element={<ErrorBoundary><LazyPage><Communities /></LazyPage></ErrorBoundary>} />
+                <Route path="social/communities/:communityId" element={<ErrorBoundary><LazyPage><CommunityDetails /></LazyPage></ErrorBoundary>} />
+
+                {/* Compatibility redirects (§5.2) for every legacy path, data-driven from
+                    `lib/routes/legacyRedirects.ts` so the mapping table and the route
+                    registration can't drift apart. */}
+                {Object.values(LEGACY_REDIRECTS).map((entry) => (
+                  <Route
+                    key={entry.id}
+                    path={entry.pattern.slice(1)}
+                    element={<LegacyRedirect entryId={entry.id} />}
+                  />
+                ))}
+              </Route>
+            ) : (
+              <>
+                <Route element={<Layout />}>
+                  <Route index element={<ErrorBoundary><LazyPage><Home /></LazyPage></ErrorBoundary>} />
+                  <Route path="play" element={<ErrorBoundary><LazyPage><PlayHub /></LazyPage></ErrorBoundary>} />
+                  <Route path="play/study" element={<ErrorBoundary><LazyPage><StudyHub /></LazyPage></ErrorBoundary>} />
+                  <Route path="play/study/themes" element={<ErrorBoundary><LazyPage><Themes /></LazyPage></ErrorBoundary>} />
+                  <Route path="play/study/themes/:themeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
+                  <Route path="play/study/themes/:themeId/:nodeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
+                  <Route path="play/study/theme/:themeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
+                  <Route path="play/study/lesson/:themeId/:nodeId" element={<ErrorBoundary><LazyPage><Lesson /></LazyPage></ErrorBoundary>} />
+                  <Route path="play/study/review-queue/:themeId" element={<ErrorBoundary><LazyPage><ReviewQueue /></LazyPage></ErrorBoundary>} />
+                  <Route path="profile" element={<ErrorBoundary><LazyPage><Profile /></LazyPage></ErrorBoundary>} />
+                  <Route path="profile/progress" element={<ErrorBoundary><LazyPage><ProgressDashboard /></LazyPage></ErrorBoundary>} />
+                  <Route path="admin" element={<ErrorBoundary><LazyPage><AdminPanel /></LazyPage></ErrorBoundary>} />
+                  <Route path="shop" element={<ErrorBoundary><LazyPage><Shop /></LazyPage></ErrorBoundary>} />
+                  <Route path="stats" element={<ErrorBoundary><LazyPage><GlobalStats /></LazyPage></ErrorBoundary>} />
+                  <Route path="social/challenges" element={<ErrorBoundary><LazyPage><Challenges /></LazyPage></ErrorBoundary>} />
+                  <Route path="social/challenges/:challengeId" element={<ErrorBoundary><LazyPage><ChallengeDetails /></LazyPage></ErrorBoundary>} />
+                  <Route path="social/communities" element={<ErrorBoundary><LazyPage><Communities /></LazyPage></ErrorBoundary>} />
+                  <Route path="social/communities/:communityId" element={<ErrorBoundary><LazyPage><CommunityDetails /></LazyPage></ErrorBoundary>} />
+
+                  <Route path="themes" element={<Navigate to="/play/study" replace />} />
+                  <Route path="themes/:themeId" element={<LegacyThemeRedirect />} />
+                  <Route path="play/solo" element={<Navigate to="/play/study" replace />} />
+                  <Route path="play/solo/themes/:themeId" element={<LegacyThemeRedirect />} />
+                </Route>
+
+                <Route path="play/study/quiz/:themeId/:difficulty/stage/:stageIndex" element={<ErrorBoundary><LazyPage><Quiz mode="practice" /></LazyPage></ErrorBoundary>} />
+                <Route path="play/study/quiz/:themeId/:difficulty/stage/:stageIndex/:nodeId" element={<ErrorBoundary><LazyPage><Quiz mode="practice" /></LazyPage></ErrorBoundary>} />
+                <Route path="play/study/quiz/:themeId/:difficulty" element={<ErrorBoundary><LazyPage><Quiz mode="practice" /></LazyPage></ErrorBoundary>} />
+                <Route path="play/study/quiz/:themeId/:difficulty/:nodeId" element={<ErrorBoundary><LazyPage><Quiz mode="practice" /></LazyPage></ErrorBoundary>} />
+                <Route path="play/study/review" element={<ErrorBoundary><LazyPage><Quiz mode="review" /></LazyPage></ErrorBoundary>} />
+                <Route path="play/study/sprint" element={<Navigate to="/play/study" replace />} />
+                <Route path="play/study/adaptive/:themeId/:nodeId" element={<Navigate to="/play/study" replace />} />
+                <Route path="play/study/adaptive" element={<Navigate to="/play/study" replace />} />
+                <Route path="play/study/micro/:themeId/:nodeId" element={<Navigate to="/play/study" replace />} />
+                <Route path="play/study/micro" element={<Navigate to="/play/study" replace />} />
+                <Route path="play/study/millionaire" element={<ErrorBoundary><LazyPage><Millionaire /></LazyPage></ErrorBoundary>} />
+                <Route path="play/study/survival" element={<ErrorBoundary><LazyPage><Survival /></LazyPage></ErrorBoundary>} />
+                <Route path="play/solo/quiz/:themeId/:difficulty" element={<LegacyQuizRedirect />} />
+                <Route path="play/solo/millionaire" element={<Navigate to="/play/study/millionaire" replace />} />
+                <Route path="play/solo/survival" element={<Navigate to="/play/study/survival" replace />} />
+                <Route path="quiz/:themeId/:difficulty" element={<ErrorBoundary><LazyPage><Quiz mode="practice" /></LazyPage></ErrorBoundary>} />
+
+                <Route path="play/kahoot" element={<ErrorBoundary><LazyPage><KahootHub /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/create" element={<ErrorBoundary><LazyPage><KahootCreate /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/join" element={<ErrorBoundary><LazyPage><KahootJoin /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/playlists" element={<ErrorBoundary><LazyPage><KahootPlaylists /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/playlists/new" element={<ErrorBoundary><LazyPage><KahootPlaylistEditor /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/playlists/:playlistId" element={<ErrorBoundary><LazyPage><KahootPlaylistDetails /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/playlists/:playlistId/edit" element={<ErrorBoundary><LazyPage><KahootPlaylistEditor /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/room/:code" element={<ErrorBoundary><LazyPage><KahootRoom /></LazyPage></ErrorBoundary>} />
+                <Route path="play/kahoot/display/:code" element={<ErrorBoundary><LazyPage><KahootDisplay /></LazyPage></ErrorBoundary>} />
+              </>
+            )}
 
             {DesignSystemFixture && (
               <Route path="dev/design-system" element={<LazyPage><DesignSystemFixture /></LazyPage>} />

@@ -1,0 +1,15 @@
+.banner {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-toast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  padding-top: max(var(--space-sm), env(safe-area-inset-top, 0px));
+  background: var(--state-warning-bg);
+  color: var(--state-warning);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
