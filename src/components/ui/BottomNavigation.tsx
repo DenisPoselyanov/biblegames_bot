@@ -11,7 +11,8 @@ export interface BottomNavigationItem<T extends string> {
 
 interface BottomNavigationProps<T extends string> {
   items: BottomNavigationItem<T>[];
-  active: T;
+  /** `null` when the current route has no matching tab — items render with no active state. */
+  active: T | null;
   onSelect: (key: T) => void;
   /** Also renders a same-height spacer so fixed nav doesn't cover page content — mirrors react-vant's `placeholder`. */
   withPlaceholder?: boolean;

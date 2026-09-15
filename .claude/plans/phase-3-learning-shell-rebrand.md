@@ -62,25 +62,28 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
 - **Depends on**: WS1.
 - **DoD tie-in**: §25.4, §25.5.
 
-### WS3 — Design-system foundation
-- **Branch**: `phase-3/ws3-design-tokens`
-- Semantic tokens (§7.1) implementing ADR-009: surfaces, text, brand, accent, borders, semantic states, CTA, progress, nav, overlay, shadow/elevation, focus, skeleton.
-- Theme schema (§7.2) + `light` theme asset set + default-theme migration rules (§7.3) — but the *flip* to default happens in WS8's rollout, not here; WS3 only builds the theme and keeps `classic` as-is.
-- Shared components (§7.4): `AppPage`, `PageHeader`, `SectionHeader`, `BottomNavigation`, `HeroCard`, `ContentCard`, `ListRow`, `SearchField`, `SegmentedControl`, buttons, `ProgressBar`/`ProgressRing`, `MetricTile`, `AchievementBadge`, `AnswerOption`/`AnswerFeedback`, `Skeleton`, Empty/Error/Offline states, `BottomSheet`/`Dialog`, `ThemePreview`, `AnimatedNumber`, `CelebrationLayer`.
-- **Independent of WS1/WS2** — build against fixtures/storybook-style harness first.
-- **DoD tie-in**: §25.9, §25.10, §25.11.
+### WS3 — Design-system foundation — **code complete, pending visual QA (2026-09-15)**
+- **Branch**: `phase-3/ws3-design-tokens`, PR [#19](https://github.com/DenisPoselyanov/biblegames_bot/pull/19)
+- Landed: full semantic token set (§7.1/ADR-009) added to `applyCosmeticTheme()` (`src/lib/cosmeticTheme.ts`) — `deriveSemanticPalette()` generically derives all ~40 new tokens from each theme's existing 5-color `preview`, with an optional `theme.semantic` override for pinned exact values. Old 28 legacy vars untouched (dual-write, zero visual regression). `light` ("Світло") added as a 6th free `CosmeticTheme` in `src/data/cosmetics.ts` with owner-pinned ADR-009 hex values; `DEFAULT_COSMETIC_THEME_ID` still `classic` — flip is WS8. Static `:root` fallbacks in `src/index.css` alias the new token names to the already-existing classic values (no duplicated magic numbers, no drift risk). State tokens (`--state-*`) are pure static aliases to the existing theme-invariant success/danger/warning/info tokens.
+- Shared components landed under `src/components/ui/` (barrel `index.ts`): `AppPage`, `PageHeader`, `SectionHeader`, `BottomNavigation` (standalone, not yet wired into `Layout.tsx` — that's WS5), `HeroCard`, `ContentCard`, `ListRow`, `SearchField`, `SegmentedControl`, `Button`/`IconButton`, `ProgressBar`/`ProgressRing`, `MetricTile`, `AchievementBadge`, `AnswerOption` (composes the existing `AnswerOptionButton` motion primitive) + `AnswerFeedback`, `ErrorState`/`OfflineState` (built on the existing `EmptyState`, not duplicated), `BottomSheet`/`Dialog` (wrap the existing `MotionSheet`/`MotionDialog`), `ThemePreview`, `AnimatedNumber`, `CelebrationLayer` (presentational only — no event-dedup, that's WS4/ADR-010's job).
+- Dev-only `/dev/design-system` fixture route (`src/pages/dev/DesignSystemFixture.tsx`, gated by `import.meta.env.DEV`, tree-shaken from prod) exercises every component across all 6 themes — this repo has no Storybook equivalent.
+- Verified: `tsc --noEmit` clean on every new/changed file (remaining errors are the pre-existing framer-motion type-resolution mismatch already present repo-wide before this change, see [node_modules corrupted](../../../memory/biblegames-node-modules-corrupted.md)-adjacent env issue). **Not verified**: live browser/visual QA — `npm run dev` fails in this dev environment (`Cannot find module '.../node_modules/rolldown/parseAst'`), a pre-existing corrupt install unrelated to this change. Needs `npm ci` on a clean machine, then owner review of `/dev/design-system` against the ADR-009 reference palette.
+- **Independent of WS1/WS2** — built against the fixture harness, no product page migrated.
+- **DoD tie-in**: §25.9, §25.10, §25.11 (partial — visual regression/owner review still pending the environment fix above).
 
-### WS4 — Motion-system foundation
-- **Branch**: `phase-3/ws4-motion-system`
-- Implements ADR-010: motion tokens/easings, one package (`framer-motion`), route/tab/fullscreen presets, hardened `MotionSheet`/`MotionDialog` (focus/scroll/back handling), reduced/minimal motion support + low-end capability hook, event-consumption dedup (so a level-up doesn't replay on remount/reload — §13 "Level and rank"), shared progress/number/celebration primitives.
-- **Depends on**: WS3 (uses the same semantic state colors for motion cues).
+### WS4 — Motion-system foundation — **done (2026-09-15)**
+- **Branch**: `phase-3/ws4-motion-system`, PR [#20](https://github.com/DenisPoselyanov/biblegames_bot/pull/20)
+- Landed: `MotionProvider`/`useMotionCapabilities` (systemReducedMotion override, intensity full/reduced/minimal, device-tier heuristic, derived particles/haptic/sound-allowed flags), event-consumption dedup (`eventDedup.ts` + `useEventOnce`), hardened `MotionSheet`/`MotionDialog` (`useBodyScrollLock`, `useOverlayDismiss`).
+- Deliberately not in this PR: §7.2 directional route/tab/fullscreen presets — needs WS5's route-direction metadata first.
+- **Depends on**: WS3.
 - **DoD tie-in**: §25.12.
 
-### WS5 — App shell & route migration
-- **Branch**: `phase-3/ws5-app-shell`
-- New route model + compatibility redirects for every legacy path in §5.2, route-metadata-driven fullscreen/tab logic (not string matching in `Layout.tsx`), route analytics (§5.3).
-- App shell (§6): safe-area, Telegram header/background sync, bottom nav, transition container, toast/offline banner, modal/sheet portals, focus restoration.
-- Feature flag: `learningShellV2`.
+### WS5 — App shell & route migration — **code complete, PR open (2026-09-15)**
+- **Branch**: `phase-3/ws5-app-shell`, PR [#21](https://github.com/DenisPoselyanov/biblegames_bot/pull/21)
+- Landed: route metadata registry (`src/lib/routes/routeMeta.ts`) driving active-tab/fullscreen decisions instead of string matching; compatibility redirects (`src/lib/routes/legacyRedirects.ts`) for every legacy path in §5.2, with a `RouteCompatibilityNotice` shown (not a silent bounce to Home) when a legacy id has no resolvable destination; route analytics (§5.3) via new `TelemetryEventName`s + `src/lib/routes/routeAnalytics.ts`; `AppShellV2` (bottom nav wired from WS3's standalone `BottomNavigation`, opacity-only route transitions matching WS4's design, offline banner, skip link, focus restoration — Telegram chrome sync and modal/sheet portals already handled elsewhere app-wide, not duplicated).
+- Feature flag: `learningShellV2` — default off, zero change to current production behavior (same dual-write pattern as WS3/WS4); `App.tsx` has two parallel `<Routes>` trees gated on the flag.
+- New canonical routes (§5.1) without a real WS6-9 implementation render a `ComingSoon` placeholder; routes with an existing equivalent (Learn→StudyHub, Progress→ProgressDashboard, Play/Shop/Social/game modes) reuse it directly.
+- Verified: `tsc -b` clean, 405/405 tests (9 new), `eslint` clean on changed files, live browser QA (all 5 tabs, silent + failed-mapping redirects, fullscreen nav-hiding on kahoot room) — see PR body for the full checklist.
 - **Depends on**: WS3, WS4.
 - **DoD tie-in**: §25.1, §25.13.
 

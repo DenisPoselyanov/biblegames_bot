@@ -1,0 +1,34 @@
+.shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-app);
+}
+
+.skipLink {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: var(--z-toast);
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.skipLink:focus {
+  top: max(var(--space-sm), env(safe-area-inset-top, 0px));
+  left: var(--space-sm);
+}
+
+.main {
+  flex: 1;
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main {
+    animation: none;
+  }
+}

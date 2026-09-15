@@ -5,7 +5,14 @@ export type TelemetryEventName =
   | 'practice_stage_completed'
   | 'study_path_advanced'
   | 'daily_task_completed'
-  | 'bible_translation_changed';
+  | 'bible_translation_changed'
+  // Route analytics (§5.3, WS5) — old route usage, redirect destination, failed
+  // mapping, exit after redirect, completion of the new flow.
+  | 'legacy_route_visited'
+  | 'route_redirect_issued'
+  | 'route_redirect_mapping_failed'
+  | 'route_redirect_exit'
+  | 'route_new_flow_completed';
 
 export interface TelemetryEvent {
   name: TelemetryEventName;
