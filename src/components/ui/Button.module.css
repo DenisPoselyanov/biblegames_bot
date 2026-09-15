@@ -1,0 +1,65 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 48px;
+  padding: 0 var(--space-xl);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  font-weight: 700;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button--fullWidth {
+  width: 100%;
+}
+
+.button--primary {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+.button--secondary {
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border-color: var(--button-secondary-border);
+}
+
+.button--tertiary {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 var(--space-sm);
+  background: none;
+  color: var(--text-link);
+  font-weight: 600;
+}
+
+.button--gold {
+  background: var(--accent-spiritual);
+  color: var(--on-accent-spiritual);
+}
+
+.button--danger {
+  background: var(--state-danger);
+  color: var(--text-inverse);
+}
+
+.button--sm {
+  min-height: 40px;
+  padding: 0 var(--space-lg);
+  font-size: var(--fs-sm);
+}

@@ -1,0 +1,33 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+
+.value {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.track {
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--progress-track);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--progress-fill);
+  transition: width var(--duration-slow) var(--ease-out);
+}

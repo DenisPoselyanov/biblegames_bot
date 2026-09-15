@@ -1,3 +1,29 @@
+/**
+ * Optional pinned overrides for the extended semantic palette (ADR-009,
+ * docs/PHASE_3_REBRANDING_AND_THEME_SYSTEM.md §5). Keys are the camelCase
+ * names of `SemanticPalette` (see `../lib/cosmeticTheme`); values here win
+ * over the generic per-theme derivation. Only the canonical `light` theme
+ * needs this today — its palette is owner-approved and must hit the exact
+ * pinned hex values, not a generic mix formula. Other themes derive their
+ * whole semantic palette from the 5-color `preview` below.
+ */
+export type SemanticPaletteOverrides = Partial<Record<
+  | 'bgApp' | 'bgSurface' | 'bgSurfaceSubtle' | 'bgElevated' | 'bgInverse' | 'bgScrim'
+  | 'textPrimary' | 'textSecondary' | 'textMuted' | 'textInverse' | 'textLink'
+  | 'brandPrimary' | 'brandPrimaryHover' | 'brandPrimaryPressed' | 'onBrandPrimary'
+  | 'accentSpiritual' | 'accentSpiritualSoft' | 'accentSpiritualBg' | 'onAccentSpiritual'
+  | 'borderSoft' | 'borderDefault' | 'borderStrong' | 'borderFocus' | 'focusRing'
+  | 'cardBg' | 'cardBorder' | 'cardShadow'
+  | 'buttonPrimaryBg' | 'buttonPrimaryText'
+  | 'buttonSecondaryBg' | 'buttonSecondaryText' | 'buttonSecondaryBorder'
+  | 'navBg' | 'navActive' | 'navInactive'
+  | 'progressTrack' | 'progressFill'
+  | 'inputBg' | 'inputBorder'
+  | 'heroOverlayStart' | 'heroOverlayEnd' | 'heroImageOpacity' | 'illustrationTint'
+  | 'skeletonBase' | 'skeletonHighlight',
+  string
+>>;
+
 export interface CosmeticTheme {
   id: string;
   title: string;
@@ -12,6 +38,8 @@ export interface CosmeticTheme {
     accent: string;
     text: string;
   };
+  /** Pinned semantic-palette overrides — see `SemanticPaletteOverrides`. */
+  semantic?: SemanticPaletteOverrides;
 }
 
 export const DEFAULT_COSMETIC_THEME_ID = 'classic';
@@ -89,6 +117,41 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       primary: '#c9a227',
       accent: '#6c63ff',
       text: '#24242e',
+    },
+  },
+  {
+    // Canonical Phase 3 default theme (ADR-009). Free, always-available,
+    // cannot be removed from the catalog. NOT yet wired as
+    // `DEFAULT_COSMETIC_THEME_ID` — that flip is WS8's rollout, gated on
+    // migration/fallback/rollback testing. See
+    // docs/PHASE_3_REBRANDING_AND_THEME_SYSTEM.md §4.
+    id: 'light',
+    title: 'Світло',
+    description: 'Теплий ivory canvas, глибокий navy і стримане золото.',
+    price: 0,
+    isLight: true,
+    onPrimary: '#ffffff',
+    preview: {
+      background: '#f7f4ee',
+      surface: '#fffefc',
+      primary: '#132f57',
+      accent: '#c59a3d',
+      text: '#13294b',
+    },
+    semantic: {
+      bgApp: '#F7F4EE',
+      bgSurface: '#FFFEFC',
+      bgSurfaceSubtle: '#F1EDE6',
+      bgElevated: '#FFFFFF',
+      textPrimary: '#13294B',
+      textSecondary: '#667085',
+      textMuted: '#8A8F98',
+      brandPrimary: '#132F57',
+      accentSpiritual: '#C59A3D',
+      accentSpiritualSoft: '#D8B96B',
+      borderSoft: '#E7E1D8',
+      borderStrong: '#D8D0C4',
+      cardShadow: '0 8px 24px rgba(35, 43, 57, 0.07)',
     },
   },
 ];

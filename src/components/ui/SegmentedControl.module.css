@@ -1,0 +1,34 @@
+.control {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--bg-surface-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.option {
+  flex: 1;
+  min-height: 40px;
+  padding: 0 var(--space-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.option--active {
+  background: var(--card-bg);
+  color: var(--brand-primary);
+  box-shadow: var(--shadow-sm);
+}

@@ -1,0 +1,40 @@
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  min-width: 0;
+}
+
+.iconRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--accent-spiritual);
+}
+
+.value {
+  font-family: var(--font-serif);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: var(--lh-tight);
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-sm);
+}

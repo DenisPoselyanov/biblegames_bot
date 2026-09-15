@@ -1,0 +1,29 @@
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--card-shadow);
+  padding: var(--space-xl);
+}
+
+.card--compact {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+}
+
+.card--interactive {
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out);
+  text-align: left;
+  width: 100%;
+  display: block;
+}
+
+.card--interactive:active {
+  transform: scale(0.985);
+}
+
+.card--flush {
+  padding: 0;
+  overflow: hidden;
+}
