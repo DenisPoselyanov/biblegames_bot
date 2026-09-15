@@ -7,17 +7,22 @@ describe('routeMeta', () => {
     expect(getActiveTab('/learn')).toBe('learn');
     expect(getActiveTab('/learn/plans/p1')).toBe('learn');
     expect(getActiveTab('/learn/plans/p1/modules/m1')).toBe('learn');
-    expect(getActiveTab('/practice')).toBe('practice');
-    expect(getActiveTab('/review')).toBe('practice');
     expect(getActiveTab('/progress')).toBe('progress');
     expect(getActiveTab('/profile/settings')).toBe('profile');
   });
 
-  it('returns null for routes outside the tab bar (Play/Shop/Social — DESIGN_RULES §14.2)', () => {
-    expect(getActiveTab('/play')).toBeNull();
-    expect(getActiveTab('/play/millionaire')).toBeNull();
+  it('maps Practice/Review/Millionaire/Survival/Kahoot to the Play tab (§4.1: they are inside Play\'s purpose, not their own tab)', () => {
+    expect(getActiveTab('/play')).toBe('play');
+    expect(getActiveTab('/practice')).toBe('play');
+    expect(getActiveTab('/review')).toBe('play');
+    expect(getActiveTab('/play/millionaire')).toBe('play');
+    expect(getActiveTab('/play/kahoot')).toBe('play');
+  });
+
+  it('returns null for secondary routes outside the tab bar (§4.2 / DESIGN_RULES §14.2)', () => {
     expect(getActiveTab('/shop')).toBeNull();
     expect(getActiveTab('/social/communities')).toBeNull();
+    expect(getActiveTab('/social/challenges')).toBeNull();
   });
 
   it('returns null for an unregistered path instead of matching by accident', () => {

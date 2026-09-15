@@ -11,7 +11,7 @@ import styles from './AppShellV2.module.css';
 const TAB_ROOT_PATH: Record<TabKey, string> = {
   home: '/',
   learn: '/learn',
-  practice: '/practice',
+  play: '/play',
   progress: '/progress',
   profile: '/profile',
 };
@@ -19,7 +19,7 @@ const TAB_ROOT_PATH: Record<TabKey, string> = {
 const TAB_ICON: Record<TabKey, IconName> = {
   home: 'home',
   learn: 'study',
-  practice: 'brain',
+  play: 'play',
   progress: 'stats',
   profile: 'profile',
 };
@@ -27,7 +27,7 @@ const TAB_ICON: Record<TabKey, IconName> = {
 const TAB_LABEL: Record<TabKey, string> = {
   home: 'Головна',
   learn: 'Навчання',
-  practice: 'Практика',
+  play: 'Гра',
   progress: 'Прогрес',
   profile: 'Профіль',
 };

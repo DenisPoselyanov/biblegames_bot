@@ -1,13 +1,17 @@
 import { matchPath } from 'react-router-dom';
 
 /**
- * Bottom-nav tabs for the v2 shell (learningShellV2). Per DESIGN_RULES §14.2,
- * Shop is explicitly NOT a core tab ("Крамниця не займає core learning tab");
- * Play/Shop/Social are reached from Home/Profile, not the tab bar.
+ * Bottom-nav tabs for the v2 shell (learningShellV2) — the exact 5 primary tabs
+ * named in the spec's §4.1 "Target information architecture": Today/Головна,
+ * Learn/Навчання, Play/Гра, Progress/Прогрес, Profile/Профіль. Practice/Review
+ * are explicitly *inside* Play's purpose per §4.1 ("Play / Гра: Practice; Review
+ * mistakes; Millionaire; Survival; Kahoot..."), not their own tab. Shop/
+ * Communities/Challenges/Settings are §4.2 "secondary routes" that "do not need
+ * permanent bottom-tab slots" — matches DESIGN_RULES §14.2 excluding Shop too.
  */
-export type TabKey = 'home' | 'learn' | 'practice' | 'progress' | 'profile';
+export type TabKey = 'home' | 'learn' | 'play' | 'progress' | 'profile';
 
-export const TAB_ORDER: TabKey[] = ['home', 'learn', 'practice', 'progress', 'profile'];
+export const TAB_ORDER: TabKey[] = ['home', 'learn', 'play', 'progress', 'profile'];
 
 export interface RouteMeta {
   /** Stable id used for analytics + lookups — not shown to users. */
@@ -54,30 +58,30 @@ export const ROUTE_REGISTRY: RouteMeta[] = [
     analyticsId: 'learn_lesson_session',
   },
 
-  { id: 'practice', pattern: '/practice', tab: 'practice', fullscreen: false, analyticsId: 'practice_hub' },
+  { id: 'practice', pattern: '/practice', tab: 'play', fullscreen: false, analyticsId: 'practice_hub' },
   {
     id: 'practiceSession',
     pattern: '/practice/session/:sessionId',
-    tab: 'practice',
+    tab: 'play',
     fullscreen: true,
     analyticsId: 'practice_session',
   },
-  { id: 'review', pattern: '/review', tab: 'practice', fullscreen: false, analyticsId: 'review_queue' },
+  { id: 'review', pattern: '/review', tab: 'play', fullscreen: false, analyticsId: 'review_queue' },
 
-  { id: 'play', pattern: '/play', tab: null, fullscreen: false, analyticsId: 'play_hub' },
-  { id: 'playMillionaire', pattern: '/play/millionaire', tab: null, fullscreen: false, analyticsId: 'play_millionaire' },
-  { id: 'playSurvival', pattern: '/play/survival', tab: null, fullscreen: false, analyticsId: 'play_survival' },
-  { id: 'playKahootHub', pattern: '/play/kahoot', tab: null, fullscreen: false, analyticsId: 'play_kahoot_hub' },
-  { id: 'playKahootCreate', pattern: '/play/kahoot/create', tab: null, fullscreen: false, analyticsId: 'play_kahoot_create' },
-  { id: 'playKahootJoin', pattern: '/play/kahoot/join', tab: null, fullscreen: false, analyticsId: 'play_kahoot_join' },
-  { id: 'playKahootPlaylists', pattern: '/play/kahoot/playlists', tab: null, fullscreen: false, analyticsId: 'play_kahoot_playlists' },
-  { id: 'playKahootPlaylistNew', pattern: '/play/kahoot/playlists/new', tab: null, fullscreen: false, analyticsId: 'play_kahoot_playlist_editor' },
-  { id: 'playKahootPlaylistDetail', pattern: '/play/kahoot/playlists/:playlistId', tab: null, fullscreen: false, analyticsId: 'play_kahoot_playlist_detail' },
-  { id: 'playKahootPlaylistEdit', pattern: '/play/kahoot/playlists/:playlistId/edit', tab: null, fullscreen: false, analyticsId: 'play_kahoot_playlist_editor' },
+  { id: 'play', pattern: '/play', tab: 'play', fullscreen: false, analyticsId: 'play_hub' },
+  { id: 'playMillionaire', pattern: '/play/millionaire', tab: 'play', fullscreen: false, analyticsId: 'play_millionaire' },
+  { id: 'playSurvival', pattern: '/play/survival', tab: 'play', fullscreen: false, analyticsId: 'play_survival' },
+  { id: 'playKahootHub', pattern: '/play/kahoot', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_hub' },
+  { id: 'playKahootCreate', pattern: '/play/kahoot/create', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_create' },
+  { id: 'playKahootJoin', pattern: '/play/kahoot/join', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_join' },
+  { id: 'playKahootPlaylists', pattern: '/play/kahoot/playlists', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_playlists' },
+  { id: 'playKahootPlaylistNew', pattern: '/play/kahoot/playlists/new', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_playlist_editor' },
+  { id: 'playKahootPlaylistDetail', pattern: '/play/kahoot/playlists/:playlistId', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_playlist_detail' },
+  { id: 'playKahootPlaylistEdit', pattern: '/play/kahoot/playlists/:playlistId/edit', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_playlist_editor' },
   // Fullscreen parity with the v1 Layout (`hideNav` matched `/kahoot/room/`) — an active
   // multiplayer round hides the tab bar; the display/spectator screen does not.
-  { id: 'playKahootRoom', pattern: '/play/kahoot/room/:code', tab: null, fullscreen: true, analyticsId: 'play_kahoot_room' },
-  { id: 'playKahootDisplay', pattern: '/play/kahoot/display/:code', tab: null, fullscreen: false, analyticsId: 'play_kahoot_display' },
+  { id: 'playKahootRoom', pattern: '/play/kahoot/room/:code', tab: 'play', fullscreen: true, analyticsId: 'play_kahoot_room' },
+  { id: 'playKahootDisplay', pattern: '/play/kahoot/display/:code', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_display' },
 
   { id: 'progress', pattern: '/progress', tab: 'progress', fullscreen: false, analyticsId: 'progress' },
 
