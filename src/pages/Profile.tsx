@@ -7,7 +7,6 @@ import { usePreferences } from '../hooks/usePreferences';
 import { useTelegram } from '../hooks/useTelegram';
 import { useToast } from '../components/Toast';
 import { Icon } from '../components/Icon';
-import { useFocusTrap } from '../hooks/useFocusTrap';
 import { haptic, WebApp } from '../lib/telegram';
 import { DIFFICULTY_LABELS, type TopicHierarchyMap, type TopicNode } from '../types';
 import { ACHIEVEMENTS } from '../data/achievements';
@@ -75,7 +74,6 @@ export function Profile() {
   const [masteryOpen, setMasteryOpen] = useState(false);
   const [topicHierarchies, setTopicHierarchies] = useState<TopicHierarchyMap>({});
   const [loadingTopicMap, setLoadingTopicMap] = useState(true);
-  const settingsRef = useFocusTrap(settingsOpen);
 
   useEffect(() => {
     loadAllTopicHierarchies().then((hierarchies) => {
@@ -184,7 +182,7 @@ export function Profile() {
         modalClassName={styles.settingsModal}
         aria-labelledby="profile-settings-title"
       >
-        <div ref={settingsRef} onClick={(e) => e.stopPropagation()}>
+        <div onClick={(e) => e.stopPropagation()}>
           <div className={styles.settingsHeader}>
             <h2 id="profile-settings-title">Налаштування</h2>
             <button className={styles.settingsClose} onClick={() => setSettingsOpen(false)} aria-label="Закрити">

@@ -1,15 +1,15 @@
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { DURATION, EASE_SMOOTH } from '../../lib/motion';
+import { useMotionCapabilities } from '../motion';
 import styles from './CelebrationLayer.module.css';
 
 interface CelebrationLayerProps {
   /**
    * Purely presentational — renders one restrained radiant burst while
    * `active` is true. It does NOT decide *when* a celebration is warranted
-   * or guard against replaying on remount/reload: that authoritative-event,
-   * stable-ID dedup contract is WS4's job (ADR-010, MOTION_SYSTEM.md
-   * "event-consumption dedup"). Callers must gate `active` on a real,
-   * once-only authoritative event themselves.
+   * or guard against replaying on remount/reload: callers gate `active` on a
+   * real, once-only authoritative event via `useEventOnce` (ADR-010,
+   * MOTION_SYSTEM.md "event-consumption dedup").
    */
   active: boolean;
   className?: string;
@@ -19,9 +19,9 @@ const PARTICLE_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
 
 /** Restrained celebration burst — a soft radial glow + a few outward particles, never a full confetti shower. */
 export function CelebrationLayer({ active, className }: CelebrationLayerProps) {
-  const reduced = useReducedMotion();
+  const { particlesAllowed } = useMotionCapabilities();
 
-  if (reduced) return null;
+  if (!particlesAllowed) return null;
 
   return (
     <div className={className ? `${styles.layer} ${className}` : styles.layer} aria-hidden="true">

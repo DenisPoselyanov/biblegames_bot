@@ -1,5 +1,4 @@
 import type { Question } from '../types';
-import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
 import { normalizeBollsTranslation } from '../lib/bollsConstants';
 import { MotionSheet } from './motion';
@@ -22,7 +21,6 @@ export function ExplanationModal({
 }: ExplanationModalProps) {
   const profile = useResolvedProfile();
   const translation = normalizeBollsTranslation(profile.bibleTranslation);
-  const focusTrapRef = useFocusTrap(open);
 
   const answer = question.options[question.correctIndex];
   const explanationText =
@@ -38,7 +36,7 @@ export function ExplanationModal({
       className={styles.modal}
       aria-labelledby="explanation-title"
     >
-      <article ref={focusTrapRef}>
+      <article>
         <header className={styles.header}>
           <span className={styles.kicker}>Пояснення</span>
           <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Закрити">

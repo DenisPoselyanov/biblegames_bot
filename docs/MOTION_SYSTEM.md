@@ -314,6 +314,24 @@ system reduced motion
 → default full motion
 ```
 
+### 6.1.1. Стан реалізації (WS4, крок 3)
+
+`MotionProvider`/`useMotionCapabilities` реалізовані в `src/components/motion/MotionProvider.tsx`:
+
+- `systemReducedMotion` — `useReducedMotion()` з `framer-motion`, завжди перекриває `intensity`;
+- `intensity`/`setIntensity` — user preference, персистується через `src/lib/motionIntensity.ts` (client-only `localStorage`; серверне поле в `/me/preferences` — задача WS8);
+- `effectiveIntensity` — `intensity`, форсований у `minimal` коли `systemReducedMotion`;
+- `deviceTier` — статична евристика (`deviceMemory`/`hardwareConcurrency`) з `src/lib/deviceTier.ts` при монтуванні, з реактивним підвищенням до `low-end` через семплінг frame-jank (`sampleFrameJank`) під час сесії; тільки в бік `low-end`, ніколи назад;
+- похідні `particlesAllowed`/`hapticAllowed`/`soundAllowed` — див. §25/§26;
+- `testOverride` — фіксує `intensity`/`deviceTier` для тестів/фікстур, минаючи persisted preference й frame-jank sampling.
+
+Event-consumption dedup (§4.3, §21) реалізовано окремо від provider'а: `src/lib/eventDedup.ts` (localStorage-backed `consumeEventOnce`, переживає reload/reconnect, не лише remount) + хук `src/hooks/useEventOnce.ts` (`useEventOnce(eventId)`), яким celebration/reward-компоненти гейтять `active` за stable event ID. `CelebrationLayer` (`src/components/ui/CelebrationLayer.tsx`) вже переведено на `particlesAllowed` замість голого `useReducedMotion()`.
+
+Відомі обмеження:
+
+- `intensity` поки без UI-перемикача і без серверного поля — потребує Profile-налаштування (WS8);
+- `hapticAllowed`/`soundAllowed` розраховуються, але існуючі виклики `haptic.*` (≈10 місць) ще їх не читають — retrofit поза межами цього кроку.
+
 ## 6.2. `AnimatedNumber`
 
 Використовується для:
