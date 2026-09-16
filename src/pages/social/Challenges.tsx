@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useResolvedProfile } from '../../hooks/domain/useProfileWriter';
 import { THEMES } from '../../data/themes';
 import { useTelegram } from '../../hooks/useTelegram';
@@ -8,6 +8,7 @@ import { type Difficulty } from '../../types';
 import { Icon } from '../../components/Icon';
 import { MotionStagger, MotionStaggerItem } from '../../components/motion';
 import { useMotionEntrance } from '../../hooks/useMotionEntrance';
+import { AppPage, PageHeader } from '../../components/ui';
 import styles from './Social.module.css';
 
 const CHALLENGE_DIFFICULTIES = [
@@ -21,6 +22,7 @@ function getThemeTitle(id: string) {
 }
 
 export function Challenges() {
+  const navigate = useNavigate();
   const { shouldEnter } = useMotionEntrance('challenges');
   const { userId, displayName } = useTelegram();
   const profile = useResolvedProfile();
@@ -78,24 +80,18 @@ export function Challenges() {
   };
 
   return (
-    <section className={styles.page}>
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <Link to="/profile" className={styles.backBtn} aria-label="Назад">
-            <Icon name="back" size={20} />
-          </Link>
-          <div>
-            <h1 className={styles.title}>Виклики друзів</h1>
-            <p className={styles.muted}>Кинь виклик або прийми отриманий</p>
-          </div>
-        </div>
-        <div className={styles.headerRight}>
+    <AppPage>
+      <PageHeader
+        onBack={() => navigate('/profile')}
+        title="Виклики друзів"
+        description="Кинь виклик або прийми отриманий"
+        action={
           <div className={styles.trophyWidget}>
             <Icon name="trophy" size={14} />
             <span>{data.stats.wins}</span>
           </div>
-        </div>
-      </div>
+        }
+      />
 
       <section className={styles.card}>
         <div className={styles.row}>
@@ -282,6 +278,6 @@ export function Challenges() {
           </MotionStagger>
         )}
       </section>
-    </section>
+    </AppPage>
   );
 }
