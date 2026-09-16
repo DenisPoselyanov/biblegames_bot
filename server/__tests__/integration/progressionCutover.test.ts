@@ -57,6 +57,17 @@ const level = (o: Record<string, unknown> = {}) => ({
 const post = (app: ReturnType<typeof makeApp>, path: string, uid: string, body: unknown) =>
   request(app).post(path).set('x-user-id', uid).send(body);
 
+/** A real, stable question from the bundled static pool (`data/question-db/acts.json`). */
+const REAL_QUESTION_ID = 'new-testament-child-ai-00007';
+const REAL_QUESTION_CORRECT_INDEX = 0;
+
+/** Builds an all-correct survival answer trail of the given length against the real static pool. */
+const survivalAnswers = (count: number) =>
+  Array.from({ length: count }, () => ({
+    questionId: REAL_QUESTION_ID,
+    selectedIndex: REAL_QUESTION_CORRECT_INDEX,
+  }));
+
 describe('progression cutover — transactional write path', () => {
   it('a completion writes progression_state + wallet_ledger + achievement_grants + player_theme_stats in one commit', async () => {
     const app = makeApp();
@@ -136,7 +147,7 @@ describe('progression cutover — transactional write path', () => {
         kind: 'survival',
         idempotencyKey: 'sv',
         runId: 'sv',
-        score: 40,
+        answers: survivalAnswers(40),
       }),
     ]);
 
@@ -186,12 +197,12 @@ describe('progression cutover — /answers', () => {
 describe('progression cutover — shop purchases', () => {
   it('a purchase writes an entitlements row + a wallet spend in one transaction', async () => {
     const app = makeApp();
-    // fund: survival score == coins
+    // fund: 40 correct 'child'-difficulty answers = 40 * 10 coins = 400
     await post(app, '/api/v1/progression/completions', '7', {
       kind: 'survival',
       idempotencyKey: 'fund',
       runId: 'fund',
-      score: 400,
+      answers: survivalAnswers(40),
     });
 
     const buy = await post(app, '/api/v1/shop/purchases', '7', {

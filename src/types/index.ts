@@ -240,6 +240,38 @@ export const DIFFICULTY_POINTS: Record<Difficulty, number> = {
 
 export const QUESTIONS_PER_LEVEL = 7;
 
+/**
+ * Prize coins per Millionaire level (1–12 low, 13–15 meaningful) and the
+ * "safe haven" levels a loss falls back to instead of losing everything.
+ * Shared between client display (`millionaireSession.ts`) and the
+ * server-authoritative reward computation (`completionOutcome.ts`) so the
+ * two never drift (WS9, §15.2).
+ */
+export const MILLIONAIRE_LEVEL_POINTS = [2, 3, 4, 5, 6, 8, 10, 12, 14, 16, 18, 25, 55, 85, 120];
+export const MILLIONAIRE_SAFE_LEVELS = [5, 10];
+export const MILLIONAIRE_WIN_BONUS = 150;
+
+/** Coins earned on a Millionaire loss, given how many levels were cleared. */
+export function getMillionaireSafePoints(reachedLevel: number): number {
+  const safeLevels = [...MILLIONAIRE_SAFE_LEVELS].sort((a, b) => b - a);
+  for (const safeLevel of safeLevels) {
+    if (reachedLevel >= safeLevel) return MILLIONAIRE_LEVEL_POINTS[safeLevel - 1];
+  }
+  return 0;
+}
+
+/** Survival: starting lives and coins per correct answer by question difficulty. */
+export const SURVIVAL_STARTING_LIVES = 3;
+export const SURVIVAL_POINTS_BY_DIFFICULTY: Record<Difficulty, number> = {
+  baby: 5,
+  child: 10,
+  youth: 15,
+  student: 20,
+  preacher: 25,
+  teacher: 30,
+  theologian: 40,
+};
+
 export const DIFFICULTY_ORDER: Record<Difficulty, number> = {
   baby: 0,
   child: 1,

@@ -100,6 +100,31 @@
   line-height: var(--lh-normal);
 }
 
+/* ── Mode disclosure meta (§15.1: solo/group, duration, reward, mastery, availability) ── */
+
+.cardMeta {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+}
+
+.cardMetaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.cardMetaItem :global(svg) {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
 /* ── Right Art Panel ── */
 
 .cardArt {

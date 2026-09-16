@@ -1,5 +1,6 @@
 import { getMixedQuestionsByDifficulty } from '../../data/questions';
 import { fetchQuestionsByIds } from '../../repos/questionsRepo';
+import { MILLIONAIRE_LEVEL_POINTS } from '../../types';
 import type { Difficulty, Question } from '../../types';
 import {
   buildMillionaireSessionKey,
@@ -8,7 +9,7 @@ import {
 } from '../../lib/gameSession';
 
 /** Prize coins per level (1–12 low, 13–15 meaningful). */
-export const LEVEL_POINTS = [2, 3, 4, 5, 6, 8, 10, 12, 14, 16, 18, 25, 55, 85, 120];
+export const LEVEL_POINTS = MILLIONAIRE_LEVEL_POINTS;
 
 export const MILLIONAIRE_MAX_LEVELS = LEVEL_POINTS.length;
 

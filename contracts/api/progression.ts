@@ -25,6 +25,23 @@ export const completionRequest = z
     reachedLevel: z.number().int().min(0).max(15).optional(),
     runLength: z.number().int().min(0).max(10_000).optional(),
     score: z.number().int().min(0).max(10_000_000).optional(),
+    /**
+     * Per-question answer trail for `millionaire`/`survival` completions — the
+     * server recomputes correctness (and therefore the reward) from this against
+     * the real answer key; `reachedLevel`/`score` above are never trusted for
+     * those two kinds (WS9, §15.2/§15.3).
+     */
+    answers: z
+      .array(
+        z
+          .object({
+            questionId: z.string().trim().min(1).max(128),
+            selectedIndex: z.number().int().min(0).max(7),
+          })
+          .strict(),
+      )
+      .max(200)
+      .optional(),
   })
   .strict();
 export type CompletionRequest = z.infer<typeof completionRequest>;

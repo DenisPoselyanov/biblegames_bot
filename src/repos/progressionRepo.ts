@@ -103,6 +103,8 @@ export interface CompletionCommand {
   reachedLevel?: number;
   runLength?: number;
   score?: number;
+  /** Per-question answer trail for millionaire/survival — the server recomputes the reward from this, never from `score`/`reachedLevel` directly (WS9, §15.2/§15.3). */
+  answers?: { questionId: string; selectedIndex: number }[];
 }
 
 export interface AnswerOutcome {

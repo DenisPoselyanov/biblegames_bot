@@ -95,7 +95,7 @@ export function createProgressionService(deps: ProgressionServiceDeps): Progress
         const previous = stateToSnapshot(state, grants);
         previous.coins = await walletLedger.getBalance(userId, tx);
 
-        const { next, delta } = computeCompletion(input, previous, now());
+        const { next, delta } = await computeCompletion(input, previous, now());
 
         let balanceAfter = previous.coins;
         if (delta.coins !== 0) {

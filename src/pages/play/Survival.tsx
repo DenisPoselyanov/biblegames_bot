@@ -9,7 +9,7 @@ import { ExplanationModal } from '../../components/ExplanationModal';
 import { ConfirmModal } from '../../components/ConfirmModal';
 import { QuizPoolSkeleton } from '../../components/skeletons';
 import { haptic } from '../../lib/telegram';
-import { DIFFICULTY_LABELS } from '../../types';
+import { DIFFICULTY_LABELS, SURVIVAL_POINTS_BY_DIFFICULTY, SURVIVAL_STARTING_LIVES } from '../../types';
 import type { Difficulty, Question } from '../../types';
 import { Icon } from '../../components/Icon';
 import {
@@ -34,18 +34,10 @@ import {
 } from '../../lib/motion';
 import styles from './Survival.module.css';
 
-const STARTING_LIVES = 3;
+const STARTING_LIVES = SURVIVAL_STARTING_LIVES;
 const TIME_PER_QUESTION = 20;
 const SURVIVAL_SESSION_KEY = buildSurvivalSessionKey();
-const POINTS_BY_DIFFICULTY: Record<Difficulty, number> = {
-  baby: 5,
-  child: 10,
-  youth: 15,
-  student: 20,
-  preacher: 25,
-  teacher: 30,
-  theologian: 40,
-};
+const POINTS_BY_DIFFICULTY = SURVIVAL_POINTS_BY_DIFFICULTY;
 
 function getDifficultyForScore(score: number): Difficulty {
   if (score <= 5) return 'baby';
@@ -84,6 +76,7 @@ export function Survival() {
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState<boolean | null>(null);
   const [explanationOpen, setExplanationOpen] = useState(false);
   const [exitConfirmOpen, setExitConfirmOpen] = useState(false);
+  const [answers, setAnswers] = useState<{ questionId: string; selectedIndex: number }[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -102,6 +95,7 @@ export function Survival() {
           setSelected(saved.selected);
           setStatus(saved.status);
           setLastAnswerCorrect(saved.lastAnswerCorrect);
+          setAnswers(saved.answers ?? []);
           setReady(true);
           return;
         }
@@ -128,8 +122,20 @@ export function Survival() {
       selected,
       status,
       lastAnswerCorrect,
+      answers,
     }),
-    [seenQuestionIds, question, lives, score, points, timeLeft, selected, status, lastAnswerCorrect],
+    [
+      seenQuestionIds,
+      question,
+      lives,
+      score,
+      points,
+      timeLeft,
+      selected,
+      status,
+      lastAnswerCorrect,
+      answers,
+    ],
   );
 
   const { clear: clearSession } = usePersistedRun({
@@ -148,8 +154,8 @@ export function Survival() {
   );
 
   const finishRun = useCallback(
-    (finalScore: number, finalPoints: number) => {
-      saveSurvivalRun(finalScore, finalPoints);
+    (finalScore: number, finalPoints: number, finalAnswers: { questionId: string; selectedIndex: number }[]) => {
+      saveSurvivalRun(finalScore, finalPoints, finalAnswers);
       if (finalScore >= 30) {
         unlockAchievement('iron-shield');
         haptic.notification('success');
@@ -167,7 +173,7 @@ export function Survival() {
       const nextQuestion = pickSurvivalQuestion(nextScore, seenQuestionIds);
 
       if (!nextQuestion) {
-        finishRun(nextScore, pointsEarned);
+        finishRun(nextScore, pointsEarned, answers);
         return;
       }
 
@@ -179,21 +185,26 @@ export function Survival() {
       setTimeLeft(TIME_PER_QUESTION);
       setStatus('playing');
     },
-    [finishRun, seenQuestionIds],
+    [finishRun, seenQuestionIds, answers],
   );
 
-  const loseLife = useCallback(() => {
-    if (lives <= 0) return;
-    const nextLives = lives - 1;
-    setLives(nextLives);
-    if (nextLives <= 0) {
-      finishRun(score, points);
-      return;
-    }
-    haptic.notification('warning');
-    setStatus('answered');
-    setLastAnswerCorrect(false);
-  }, [finishRun, lives, points, score]);
+  const loseLife = useCallback(
+    (selectedIndex: number = -1) => {
+      if (lives <= 0 || !question) return;
+      const nextLives = lives - 1;
+      const nextAnswers = [...answers, { questionId: question.id, selectedIndex }];
+      setAnswers(nextAnswers);
+      setLives(nextLives);
+      if (nextLives <= 0) {
+        finishRun(score, points, nextAnswers);
+        return;
+      }
+      haptic.notification('warning');
+      setStatus('answered');
+      setLastAnswerCorrect(false);
+    },
+    [finishRun, lives, points, question, score, answers],
+  );
 
   useEffect(() => {
     if (status !== 'playing' || exitConfirmOpen || !ready) return;
@@ -225,10 +236,11 @@ export function Survival() {
       setPoints((value) => value + earned);
       setLastAnswerCorrect(true);
       setStatus('answered');
+      setAnswers((prev) => [...prev, { questionId: question.id, selectedIndex: optionIndex }]);
       return;
     }
 
-    loseLife();
+    loseLife(optionIndex);
   };
 
   const handleNext = () => {
@@ -250,6 +262,7 @@ export function Survival() {
     setLastAnswerCorrect(null);
     setExplanationOpen(false);
     setStatus('playing');
+    setAnswers([]);
   };
 
   const exitGame = () => {
