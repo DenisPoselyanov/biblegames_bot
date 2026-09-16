@@ -1,0 +1,32 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.sectionLabel {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.rankFooter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.wisdomLabel {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.achievements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}

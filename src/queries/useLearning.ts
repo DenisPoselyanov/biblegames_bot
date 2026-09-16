@@ -7,7 +7,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { newRequestId } from '../lib/apiClient';
 import { learningRepo } from '../repos/learningRepo';
-import type { Testament } from '../../contracts/index';
+import type { Difficulty, PracticeSessionMode, Testament } from '../../contracts/index';
 import { queryKeys } from './keys';
 
 export function useTodayView(userId: string) {
@@ -89,5 +89,35 @@ export function useCompleteLessonSession(sessionId: string, userId: string) {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: queryKeys.learning.today(userId) });
     },
+  });
+}
+
+/** §12.5 — due count + reason, no numeric confidence score. */
+export function useReviewDue(userId: string) {
+  return useQuery({
+    queryKey: queryKeys.learning.reviewDue(userId),
+    queryFn: () => learningRepo.getReviewDue(),
+    enabled: Boolean(userId),
+    staleTime: 30_000,
+  });
+}
+
+/**
+ * Practice-session lifecycle (§12.1-§12.2). There is no `GET` by session id
+ * (WS2 doesn't expose one) — the caller must cache `data` itself (e.g. via
+ * `queryClient.setQueryData(queryKeys.practice.session(id), data)`) to hand
+ * it to the session view; a hard reload cannot resume an in-progress session.
+ */
+export function useCreatePracticeSession() {
+  return useMutation({
+    mutationFn: (input: { objectiveId: string; mode: PracticeSessionMode; difficulty?: Difficulty }) =>
+      learningRepo.createPracticeSession(input, newRequestId()),
+  });
+}
+
+export function useAnswerPracticeSession(sessionId: string) {
+  return useMutation({
+    mutationFn: (chosenIndex: number) =>
+      learningRepo.answerPracticeSession(sessionId, chosenIndex, newRequestId()),
   });
 }

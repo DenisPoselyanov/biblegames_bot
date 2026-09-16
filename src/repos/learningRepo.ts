@@ -17,9 +17,12 @@ import type {
   ModuleDetail,
   PlanDetail,
   PlanSummary,
+  PracticeSessionAnswerResponse,
+  PracticeSessionCreateResponse,
+  ReviewDueResponse,
   TodayView,
 } from '../../contracts/api/learning';
-import type { Testament } from '../../contracts/index';
+import type { Difficulty, PracticeSessionMode, Testament } from '../../contracts/index';
 import { ApiError, apiRequest, type ApiRequestOptions } from '../lib/apiClient';
 
 /** A failed learning command/read. Carries the server's §7.5 envelope fields. */
@@ -122,6 +125,38 @@ export const learningRepo = {
       { idempotencyKey },
       idempotencyKey,
       learningContract.lessonSessionCompleteResponse as unknown as ZodType<LessonSessionCompleteResponse>,
+    );
+  },
+
+  getReviewDue(): Promise<ReviewDueResponse> {
+    return call<ReviewDueResponse>('/learning/review/due', {
+      schema: learningContract.reviewDueResponse as unknown as ZodType<ReviewDueResponse>,
+      onInvalidResponse: 'warn',
+    });
+  },
+
+  createPracticeSession(
+    input: { objectiveId: string; mode: PracticeSessionMode; difficulty?: Difficulty; questionCount?: number },
+    idempotencyKey: string,
+  ): Promise<PracticeSessionCreateResponse> {
+    return post(
+      '/learning/practice-sessions',
+      { ...input, idempotencyKey },
+      idempotencyKey,
+      learningContract.practiceSessionCreateResponse as unknown as ZodType<PracticeSessionCreateResponse>,
+    );
+  },
+
+  answerPracticeSession(
+    sessionId: string,
+    chosenIndex: number,
+    idempotencyKey: string,
+  ): Promise<PracticeSessionAnswerResponse> {
+    return post(
+      `/learning/practice-sessions/${encodeURIComponent(sessionId)}/answers`,
+      { chosenIndex, idempotencyKey },
+      idempotencyKey,
+      learningContract.practiceSessionAnswerResponse as unknown as ZodType<PracticeSessionAnswerResponse>,
     );
   },
 };

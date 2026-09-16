@@ -32,6 +32,15 @@ const todayDashboardEnabled = isFeatureEnabled('today_dashboard');
 const learningPlansEnabled = isFeatureEnabled('learning_plans');
 const lessonExperienceV2Enabled = isFeatureEnabled('lesson_experience_v2');
 
+// WS7 (Practice/review + Progress). `practiceSessionV2` is a new flag — the
+// three practice/review routes are one coupled feature (review launches a
+// practice session) so they share a single gate rather than each reusing a
+// different pre-existing dead flag. `progress_dashboard_v2` is reused
+// (pre-existing, previously dead) — same overlap pattern as WS6's Today/Learn
+// flags: it also gates an unrelated legacy `Profile.tsx` section.
+const practiceSessionV2Enabled = isFeatureEnabled('practiceSessionV2');
+const progressDashboardV2Enabled = isFeatureEnabled('progress_dashboard_v2');
+
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const Themes = lazy(() => import('./pages/Themes').then((m) => ({ default: m.Themes })));
 const ThemeDetail = lazy(() =>
@@ -58,6 +67,16 @@ const ModuleDetail = lazy(() =>
 );
 const LessonSession = lazy(() =>
   import('./pages/learn/LessonSession').then((m) => ({ default: m.LessonSession })),
+);
+const PracticeIntent = lazy(() =>
+  import('./pages/practice/PracticeIntent').then((m) => ({ default: m.PracticeIntent })),
+);
+const PracticeSession = lazy(() =>
+  import('./pages/practice/PracticeSession').then((m) => ({ default: m.PracticeSession })),
+);
+const ReviewHub = lazy(() => import('./pages/practice/ReviewHub').then((m) => ({ default: m.ReviewHub })));
+const ProgressV2 = lazy(() =>
+  import('./pages/progress/ProgressV2').then((m) => ({ default: m.ProgressV2 })),
 );
 const Profile = lazy(() => import('./pages/Profile').then((m) => ({ default: m.Profile })));
 const GlobalStats = lazy(() =>
@@ -211,18 +230,37 @@ export default function App() {
                   }
                 />
 
-                {/* Practice / Review (§5.1) — session creation & scheduler UI are WS7. */}
+                {/* Practice / Review (§5.1, §12, WS7) — session creation by
+                    intent + scheduler UI, behind `practiceSessionV2`. */}
                 <Route
                   path="practice"
-                  element={<ComingSoon icon="brain" title="Практика" description="Новий розділ практики ще будується." />}
+                  element={
+                    practiceSessionV2Enabled ? (
+                      <ErrorBoundary><LazyPage><PracticeIntent /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ComingSoon icon="brain" title="Практика" description="Новий розділ практики ще будується." />
+                    )
+                  }
                 />
                 <Route
                   path="practice/session/:sessionId"
-                  element={<ComingSoon icon="brain" title="Сесія практики" description="Новий формат сесії ще будується." />}
+                  element={
+                    practiceSessionV2Enabled ? (
+                      <ErrorBoundary><LazyPage><PracticeSession /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ComingSoon icon="brain" title="Сесія практики" description="Новий формат сесії ще будується." />
+                    )
+                  }
                 />
                 <Route
                   path="review"
-                  element={<ComingSoon icon="clock" title="Повторення" description="Новий розділ повторення ще будується." />}
+                  element={
+                    practiceSessionV2Enabled ? (
+                      <ErrorBoundary><LazyPage><ReviewHub /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ComingSoon icon="clock" title="Повторення" description="Новий розділ повторення ще будується." />
+                    )
+                  }
                 />
 
                 <Route path="play" element={<ErrorBoundary><LazyPage><PlayHub /></LazyPage></ErrorBoundary>} />
@@ -238,7 +276,16 @@ export default function App() {
                 <Route path="play/kahoot/room/:code" element={<ErrorBoundary><LazyPage><KahootRoom /></LazyPage></ErrorBoundary>} />
                 <Route path="play/kahoot/display/:code" element={<ErrorBoundary><LazyPage><KahootDisplay /></LazyPage></ErrorBoundary>} />
 
-                <Route path="progress" element={<ErrorBoundary><LazyPage><ProgressDashboard /></LazyPage></ErrorBoundary>} />
+                <Route
+                  path="progress"
+                  element={
+                    progressDashboardV2Enabled ? (
+                      <ErrorBoundary><LazyPage><ProgressV2 /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ErrorBoundary><LazyPage><ProgressDashboard /></LazyPage></ErrorBoundary>
+                    )
+                  }
+                />
 
                 <Route path="profile" element={<ErrorBoundary><LazyPage><Profile /></LazyPage></ErrorBoundary>} />
                 <Route
