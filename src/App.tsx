@@ -23,6 +23,15 @@ import { LEGACY_REDIRECTS } from './lib/routes/legacyRedirects';
 // `Layout.tsx`'s existing `learningFirstNav` pattern.
 const learningShellV2Enabled = isFeatureEnabled('learningShellV2');
 
+// WS6 reuses these three pre-existing (previously dead) flags rather than the
+// plan doc's `todayV1`/`lessonRendererV1` names. They are also read by legacy
+// v1 pages (`Home.tsx`, `ThemeDetail.tsx`) that WS6 does not touch — flipping
+// one on additionally reveals that legacy section, a documented, harmless
+// overlap (see the WS6 plan's "Flags" note), not a functional regression.
+const todayDashboardEnabled = isFeatureEnabled('today_dashboard');
+const learningPlansEnabled = isFeatureEnabled('learning_plans');
+const lessonExperienceV2Enabled = isFeatureEnabled('lesson_experience_v2');
+
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const Themes = lazy(() => import('./pages/Themes').then((m) => ({ default: m.Themes })));
 const ThemeDetail = lazy(() =>
@@ -37,6 +46,19 @@ const ProgressDashboard = lazy(() =>
 );
 const Quiz = lazy(() => import('./pages/Quiz').then((m) => ({ default: m.Quiz })));
 const StudyHub = lazy(() => import('./pages/StudyHub').then((m) => ({ default: m.StudyHub })));
+const Today = lazy(() => import('./pages/learn/Today').then((m) => ({ default: m.Today })));
+const LearningHub = lazy(() =>
+  import('./pages/learn/LearningHub').then((m) => ({ default: m.LearningHub })),
+);
+const PlanDetail = lazy(() =>
+  import('./pages/learn/PlanDetail').then((m) => ({ default: m.PlanDetail })),
+);
+const ModuleDetail = lazy(() =>
+  import('./pages/learn/ModuleDetail').then((m) => ({ default: m.ModuleDetail })),
+);
+const LessonSession = lazy(() =>
+  import('./pages/learn/LessonSession').then((m) => ({ default: m.LessonSession })),
+);
 const Profile = lazy(() => import('./pages/Profile').then((m) => ({ default: m.Profile })));
 const GlobalStats = lazy(() =>
   import('./pages/GlobalStats').then((m) => ({ default: m.GlobalStats })),
@@ -135,22 +157,58 @@ export default function App() {
           <Routes>
             {learningShellV2Enabled ? (
               <Route element={<AppShellV2 />}>
-                <Route index element={<ErrorBoundary><LazyPage><Home /></LazyPage></ErrorBoundary>} />
+                <Route
+                  index
+                  element={
+                    todayDashboardEnabled ? (
+                      <ErrorBoundary><LazyPage><Today /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ErrorBoundary><LazyPage><Home /></LazyPage></ErrorBoundary>
+                    )
+                  }
+                />
 
-                {/* Learn (§5.1) — /learn reuses the existing study hub; plan/module/lesson
-                    detail have no WS6 renderer yet, so they're explicit placeholders. */}
-                <Route path="learn" element={<ErrorBoundary><LazyPage><StudyHub /></LazyPage></ErrorBoundary>} />
+                {/* Learn (§5.1, WS6) — real screens behind their flags; each falls back to
+                    the prior behavior (existing study hub / ComingSoon) when off. */}
+                <Route
+                  path="learn"
+                  element={
+                    learningPlansEnabled ? (
+                      <ErrorBoundary><LazyPage><LearningHub /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ErrorBoundary><LazyPage><StudyHub /></LazyPage></ErrorBoundary>
+                    )
+                  }
+                />
                 <Route
                   path="learn/plans/:planId"
-                  element={<ComingSoon icon="book" title="План навчання" description="Перегляд планів з'явиться найближчим часом." />}
+                  element={
+                    lessonExperienceV2Enabled ? (
+                      <ErrorBoundary><LazyPage><PlanDetail /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ComingSoon icon="book" title="План навчання" description="Перегляд планів з'явиться найближчим часом." />
+                    )
+                  }
                 />
                 <Route
                   path="learn/plans/:planId/modules/:moduleId"
-                  element={<ComingSoon icon="book" title="Модуль" description="Перегляд модулів з'явиться найближчим часом." />}
+                  element={
+                    lessonExperienceV2Enabled ? (
+                      <ErrorBoundary><LazyPage><ModuleDetail /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ComingSoon icon="book" title="Модуль" description="Перегляд модулів з'явиться найближчим часом." />
+                    )
+                  }
                 />
                 <Route
                   path="learn/lessons/:lessonId"
-                  element={<ComingSoon icon="book" title="Урок" description="Новий формат уроку ще будується." />}
+                  element={
+                    lessonExperienceV2Enabled ? (
+                      <ErrorBoundary><LazyPage><LessonSession /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ComingSoon icon="book" title="Урок" description="Новий формат уроку ще будується." />
+                    )
+                  }
                 />
 
                 {/* Practice / Review (§5.1) — session creation & scheduler UI are WS7. */}

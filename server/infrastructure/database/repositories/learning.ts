@@ -5,12 +5,13 @@
  * The opaque `Transaction` from `ServiceContext` is narrowed to the Drizzle
  * executor here and nowhere else (`asExecutor`), same pattern as `content.ts`.
  */
-import { and, asc, desc, eq, gte, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gte, ilike, or, sql } from 'drizzle-orm';
 import type {
   ContentStatus,
   LessonSessionStatus,
   PracticeSessionMode,
   PracticeSessionStatus,
+  Testament,
 } from '../../../../contracts/index';
 import type { Transaction as OpaqueTx } from '../../../domains/shared/context';
 import type {
@@ -59,6 +60,7 @@ const toPlan = (r: PlanRow): LearningPlanRecord => ({
   status: r.status as ContentStatus,
   position: r.position,
   source: r.source as LearningPlanRecord['source'],
+  testament: r.testament as Testament | null,
   createdAt: r.createdAt,
   updatedAt: r.updatedAt,
 });
@@ -85,6 +87,7 @@ const toObjective = (r: ObjectiveRow): LearningObjectiveRecord => ({
   status: r.status as ContentStatus,
   position: r.position,
   source: r.source as LearningObjectiveRecord['source'],
+  testament: r.testament as Testament | null,
   createdAt: r.createdAt,
   updatedAt: r.updatedAt,
 });
@@ -155,6 +158,7 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
           status: input.status ?? 'legacy_unreviewed',
           position: input.position ?? 0,
           source: input.source ?? 'topic-tree',
+          testament: input.testament ?? null,
         })
         .onConflictDoUpdate({
           target: learningPlans.id,
@@ -165,6 +169,7 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
             ...(input.status ? { status: input.status } : {}),
             ...(input.position !== undefined ? { position: input.position } : {}),
             ...(input.source ? { source: input.source } : {}),
+            ...(input.testament !== undefined ? { testament: input.testament } : {}),
             updatedAt: sql`now()`,
           },
         })
@@ -181,6 +186,22 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
     },
     async listAll(tx) {
       const rows = await asExecutor(db, tx).select().from(learningPlans).orderBy(asc(learningPlans.position));
+      return rows.map(toPlan);
+    },
+    async searchPublished(query, tx) {
+      const pattern = `%${query.q}%`;
+      const rows = await asExecutor(db, tx)
+        .select()
+        .from(learningPlans)
+        .where(
+          and(
+            eq(learningPlans.status, 'published'),
+            or(ilike(learningPlans.title, pattern), ilike(learningPlans.description, pattern)),
+            query.testament ? eq(learningPlans.testament, query.testament) : undefined,
+          ),
+        )
+        .orderBy(asc(learningPlans.position))
+        .limit(query.limit);
       return rows.map(toPlan);
     },
   };
@@ -248,6 +269,7 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
           status: input.status ?? 'legacy_unreviewed',
           position: input.position ?? 0,
           source: input.source ?? 'topic-tree',
+          testament: input.testament ?? null,
         })
         .onConflictDoUpdate({
           target: learningObjectives.id,
@@ -259,6 +281,7 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
             ...(input.status ? { status: input.status } : {}),
             ...(input.position !== undefined ? { position: input.position } : {}),
             ...(input.source ? { source: input.source } : {}),
+            ...(input.testament !== undefined ? { testament: input.testament } : {}),
             updatedAt: sql`now()`,
           },
         })
@@ -279,6 +302,26 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
         .from(learningObjectives)
         .where(eq(learningObjectives.planId, planId))
         .orderBy(asc(learningObjectives.position));
+      return rows.map(toObjective);
+    },
+    async searchPublished(query, tx) {
+      const pattern = `%${query.q}%`;
+      const rows = await asExecutor(db, tx)
+        .select()
+        .from(learningObjectives)
+        .where(
+          and(
+            eq(learningObjectives.status, 'published'),
+            or(
+              ilike(learningObjectives.title, pattern),
+              ilike(learningObjectives.description, pattern),
+              ilike(learningObjectives.topicPath, pattern),
+            ),
+            query.testament ? eq(learningObjectives.testament, query.testament) : undefined,
+          ),
+        )
+        .orderBy(asc(learningObjectives.position))
+        .limit(query.limit);
       return rows.map(toObjective);
     },
   };

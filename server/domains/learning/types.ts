@@ -8,6 +8,7 @@ import type {
   LessonSessionStatus,
   PracticeSessionMode,
   PracticeSessionStatus,
+  Testament,
 } from '../../../contracts/index';
 
 /** Where a row came from — the mapping script today, Content Studio in Phase 4. */
@@ -21,6 +22,8 @@ export interface LearningPlanRecord {
   status: ContentStatus;
   position: number;
   source: LearningContentSource;
+  /** Content metadata (§10.3), nullable — unpopulated until Phase 4 content-ops tags it. */
+  testament: Testament | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -47,6 +50,8 @@ export interface LearningObjectiveRecord {
   status: ContentStatus;
   position: number;
   source: LearningContentSource;
+  /** Content metadata (§10.3), nullable — unpopulated until Phase 4 content-ops tags it. */
+  testament: Testament | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -104,6 +109,7 @@ export interface PlanUpsert {
   status?: ContentStatus;
   position?: number;
   source?: LearningContentSource;
+  testament?: Testament | null;
 }
 
 export interface ModuleUpsert {
@@ -126,6 +132,7 @@ export interface ObjectiveUpsert {
   status?: ContentStatus;
   position?: number;
   source?: LearningContentSource;
+  testament?: Testament | null;
 }
 
 export interface LessonUpsert {

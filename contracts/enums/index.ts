@@ -89,3 +89,14 @@ export type PracticeSessionMode = z.infer<typeof practiceSessionModeSchema>;
 export const PRACTICE_SESSION_STATUS_VALUES = ['active', 'completed', 'expired'] as const;
 export const practiceSessionStatusSchema = z.enum(PRACTICE_SESSION_STATUS_VALUES);
 export type PracticeSessionStatus = z.infer<typeof practiceSessionStatusSchema>;
+
+/**
+ * Old/New Testament content classification (Phase 3 WS6 §10.3) — explicit
+ * content metadata on plans/objectives, never inferred from a display string.
+ * Ships unpopulated in WS6 (nullable column, nothing writes it yet); a Phase 4
+ * content-ops tool is the eventual writer, same shape as `ContentStatus`
+ * shipping `legacy_unreviewed` ahead of a real publish workflow.
+ */
+export const TESTAMENT_VALUES = ['old_testament', 'new_testament'] as const;
+export const testamentSchema = z.enum(TESTAMENT_VALUES);
+export type Testament = z.infer<typeof testamentSchema>;

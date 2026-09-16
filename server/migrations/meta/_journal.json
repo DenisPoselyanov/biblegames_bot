@@ -64,6 +64,13 @@
       "when": 1789405332000,
       "tag": "0008_learning_sessions",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789491732000,
+      "tag": "0009_learning_testament",
+      "breakpoints": true
     }
   ]
 }

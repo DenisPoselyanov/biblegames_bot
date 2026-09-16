@@ -43,12 +43,15 @@ export const learningPlans = pgTable(
     position: integer('position').notNull().default(0),
     /** `'topic-tree' | 'authored'`. */
     source: text('source').notNull().default('topic-tree'),
+    /** `Testament`, nullable — content metadata (§10.3), unpopulated until Phase 4 tags it. */
+    testament: text('testament'),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
   (t) => [
     index('idx_learning_plans_theme').on(t.themeId),
     index('idx_learning_plans_status').on(t.status),
+    index('idx_learning_plans_testament').on(t.testament),
   ],
 );
 
@@ -104,10 +107,15 @@ export const learningObjectives = pgTable(
     status: text('status').notNull().default('legacy_unreviewed'),
     position: integer('position').notNull().default(0),
     source: text('source').notNull().default('topic-tree'),
+    /** `Testament`, nullable — content metadata (§10.3), unpopulated until Phase 4 tags it. */
+    testament: text('testament'),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
-  (t) => [index('idx_learning_objectives_plan').on(t.planId, t.position)],
+  (t) => [
+    index('idx_learning_objectives_plan').on(t.planId, t.position),
+    index('idx_learning_objectives_testament').on(t.testament),
+  ],
 );
 
 /**

@@ -14,6 +14,11 @@ describe('queryKeys', () => {
   it('matches the §13.2 domain shapes', () => {
     expect(queryKeys.learning.today('u1')).toEqual(['learning', 'today', 'u1']);
     expect(queryKeys.learning.plan('p9')).toEqual(['learning', 'plan', 'p9']);
+    expect(queryKeys.learning.module('m9')).toEqual(['learning', 'module', 'm9']);
+    expect(queryKeys.learning.lesson('l9')).toEqual(['learning', 'lesson', 'l9']);
+    expect(queryKeys.learning.plans()).toEqual(['learning', 'plans', null]);
+    expect(queryKeys.learning.plans('old_testament')).toEqual(['learning', 'plans', 'old_testament']);
+    expect(queryKeys.learning.search('світло')).toEqual(['learning', 'search', 'світло', null]);
     expect(queryKeys.practice.session('s3')).toEqual(['practice', 'session', 's3']);
     expect(queryKeys.content.publishedVersion()).toEqual(['content', 'publishedVersion']);
     expect(queryKeys.kahoot.room('r7')).toEqual(['kahoot', 'room', 'r7']);

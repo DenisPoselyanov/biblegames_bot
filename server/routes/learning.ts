@@ -7,7 +7,7 @@
  * isn't double-scored).
  */
 import { Router, type Request } from 'express';
-import { learningContract } from '../../contracts/index';
+import { TESTAMENT_VALUES, learningContract, type Testament } from '../../contracts/index';
 import type {
   LessonSessionCompleteRequest,
   LessonSessionProgressRequest,
@@ -21,6 +21,22 @@ import { AppError, UnauthorizedError } from '../lib/errors';
 import { metrics } from '../lib/metrics';
 import type { IdempotencyStore } from '../lib/idempotency';
 import type { LearningService } from '../services/learningService';
+
+const SEARCH_LIMIT_DEFAULT = 10;
+const SEARCH_LIMIT_MAX = 20;
+
+function parseTestament(value: unknown): Testament | undefined {
+  if (typeof value === 'string' && (TESTAMENT_VALUES as readonly string[]).includes(value)) {
+    return value as Testament;
+  }
+  return undefined;
+}
+
+function parseLimit(value: unknown, fallback: number, max: number): number {
+  const n = typeof value === 'string' ? Number(value) : NaN;
+  if (!Number.isInteger(n) || n < 1) return fallback;
+  return Math.min(n, max);
+}
 
 export interface LearningRouterDeps {
   service: LearningService;
@@ -62,8 +78,21 @@ export function createLearningRouter({ service, idempotency }: LearningRouterDep
 
   router.get(
     '/plans',
-    asyncHandler(async (_req, res) => {
-      res.json({ plans: await service.listPlans() });
+    asyncHandler(async (req, res) => {
+      res.json({ plans: await service.listPlans(parseTestament(req.query.testament)) });
+    }),
+  );
+
+  router.get(
+    '/search',
+    asyncHandler(async (req, res) => {
+      const q = typeof req.query.q === 'string' ? req.query.q.trim() : '';
+      if (q.length < 2 || q.length > 100) {
+        throw new AppError('invalid_query', '`q` must be 2-100 characters', 400);
+      }
+      const testament = parseTestament(req.query.testament);
+      const limit = parseLimit(req.query.limit, SEARCH_LIMIT_DEFAULT, SEARCH_LIMIT_MAX);
+      res.json(await service.search({ q, testament, limit }));
     }),
   );
 

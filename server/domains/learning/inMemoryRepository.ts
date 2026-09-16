@@ -57,6 +57,7 @@ export function createInMemoryLearningRepositories(
         status: input.status ?? existing?.status ?? 'legacy_unreviewed',
         position: input.position ?? existing?.position ?? 0,
         source: input.source ?? existing?.source ?? 'topic-tree',
+        testament: input.testament !== undefined ? input.testament : (existing?.testament ?? null),
         createdAt: existing?.createdAt ?? iso(),
         updatedAt: iso(),
       };
@@ -71,6 +72,20 @@ export function createInMemoryLearningRepositories(
     async listAll(tx) {
       rejectTx(tx);
       return [...plans.values()].map((r) => ({ ...r }));
+    },
+    async searchPublished(query, tx) {
+      rejectTx(tx);
+      const needle = query.q.toLowerCase();
+      return [...plans.values()]
+        .filter(
+          (p) =>
+            p.status === 'published' &&
+            (!query.testament || p.testament === query.testament) &&
+            (p.title.toLowerCase().includes(needle) || (p.description ?? '').toLowerCase().includes(needle)),
+        )
+        .sort((a, b) => a.position - b.position)
+        .slice(0, query.limit)
+        .map((r) => ({ ...r }));
     },
   };
 
@@ -120,6 +135,7 @@ export function createInMemoryLearningRepositories(
         status: input.status ?? existing?.status ?? 'legacy_unreviewed',
         position: input.position ?? existing?.position ?? 0,
         source: input.source ?? existing?.source ?? 'topic-tree',
+        testament: input.testament !== undefined ? input.testament : (existing?.testament ?? null),
         createdAt: existing?.createdAt ?? iso(),
         updatedAt: iso(),
       };
@@ -136,6 +152,22 @@ export function createInMemoryLearningRepositories(
       return [...objectives.values()]
         .filter((o) => o.planId === planId)
         .sort((a, b) => a.position - b.position)
+        .map((r) => ({ ...r }));
+    },
+    async searchPublished(query, tx) {
+      rejectTx(tx);
+      const needle = query.q.toLowerCase();
+      return [...objectives.values()]
+        .filter(
+          (o) =>
+            o.status === 'published' &&
+            (!query.testament || o.testament === query.testament) &&
+            (o.title.toLowerCase().includes(needle) ||
+              (o.description ?? '').toLowerCase().includes(needle) ||
+              (o.topicPath ?? '').toLowerCase().includes(needle)),
+        )
+        .sort((a, b) => a.position - b.position)
+        .slice(0, query.limit)
         .map((r) => ({ ...r }));
     },
   };

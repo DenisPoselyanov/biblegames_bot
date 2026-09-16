@@ -204,4 +204,53 @@ export function runLearningRepositoryContract(makeHarness: () => Promise<Contrac
 
     expect((await practiceSessions.getById(session.id))?.status).toBe('completed');
   });
+
+  it('searches published plans and objectives, gated by status/testament/limit (§10.2/§10.3)', async () => {
+    const { plans, objectives } = await setup();
+    await plans.upsert({
+      id: 'genesis',
+      themeId: 'genesis',
+      title: 'Буття',
+      description: 'Початок творіння',
+      status: 'published',
+      testament: 'old_testament',
+    });
+    await plans.upsert({
+      id: 'matthew',
+      themeId: 'matthew',
+      title: 'Матвія',
+      description: 'Євангеліє від Матвія',
+      status: 'published',
+      testament: 'new_testament',
+    });
+    await plans.upsert({
+      id: 'unreviewed-genesis-like',
+      themeId: 'unreviewed',
+      title: 'Буття (чернетка)',
+      status: 'legacy_unreviewed',
+    });
+    await objectives.upsert({
+      id: 'genesis-creation',
+      planId: 'genesis',
+      title: 'Створення світу',
+      topicPath: 'Буття › Створення',
+      status: 'published',
+      testament: 'old_testament',
+    });
+
+    const byTitle = await plans.searchPublished({ q: 'Буття', limit: 10 });
+    expect(byTitle.map((p) => p.id)).toEqual(['genesis']);
+
+    const byDescription = await plans.searchPublished({ q: 'Євангеліє', limit: 10 });
+    expect(byDescription.map((p) => p.id)).toEqual(['matthew']);
+
+    const testamentFiltered = await plans.searchPublished({ q: 'Буття', testament: 'new_testament', limit: 10 });
+    expect(testamentFiltered).toEqual([]);
+
+    const objectiveMatches = await objectives.searchPublished({ q: 'Створення', limit: 10 });
+    expect(objectiveMatches.map((o) => o.id)).toEqual(['genesis-creation']);
+
+    const limited = await plans.searchPublished({ q: '', limit: 1 });
+    expect(limited.length).toBeLessThanOrEqual(1);
+  });
 }

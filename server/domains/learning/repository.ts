@@ -8,6 +8,7 @@
  * `tx` is the opaque `Transaction` from `ServiceContext` (§11); a call with no
  * `tx` runs on the pooled connection. The SQL adapter narrows it internally.
  */
+import type { Testament } from '../../../contracts/index';
 import type { Transaction } from '../shared/context';
 import type {
   LearningModuleRecord,
@@ -26,12 +27,21 @@ import type {
   PracticeSessionRecord,
 } from './types';
 
+/** Bounded text search over published content (§10.2/§10.3) — `q` is matched against title/description (and, for objectives, `topicPath`) case-insensitively. */
+export interface LearningSearchQuery {
+  q: string;
+  testament?: Testament | null;
+  limit: number;
+}
+
 export interface LearningPlanRepository {
   /** Insert or update by `id` — the mapping script's idempotency boundary. */
   upsert(input: PlanUpsert, tx?: Transaction): Promise<LearningPlanRecord>;
   getById(id: string, tx?: Transaction): Promise<LearningPlanRecord | null>;
   /** Every plan regardless of status — mapping-script reporting and future admin use. */
   listAll(tx?: Transaction): Promise<LearningPlanRecord[]>;
+  /** Published plans matching `query.q` (§10.2), optionally narrowed by testament. */
+  searchPublished(query: LearningSearchQuery, tx?: Transaction): Promise<LearningPlanRecord[]>;
 }
 
 export interface LearningModuleRepository {
@@ -45,6 +55,8 @@ export interface LearningObjectiveRepository {
   upsert(input: ObjectiveUpsert, tx?: Transaction): Promise<LearningObjectiveRecord>;
   getById(id: string, tx?: Transaction): Promise<LearningObjectiveRecord | null>;
   listByPlan(planId: string, tx?: Transaction): Promise<LearningObjectiveRecord[]>;
+  /** Published objectives matching `query.q` (§10.2), optionally narrowed by testament. */
+  searchPublished(query: LearningSearchQuery, tx?: Transaction): Promise<LearningObjectiveRecord[]>;
 }
 
 export interface LessonRepository {
