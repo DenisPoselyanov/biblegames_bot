@@ -68,7 +68,50 @@ export function AppShellV2() {
     }
     // Don't steal focus while a dialog/sheet has it trapped.
     if (document.activeElement?.closest('[role="dialog"]')) return;
-    mainRef.current?.focus({ preventScroll: true });
+    const container = mainRef.current;
+    if (!container) return;
+
+    // §17: focus moves to the screen's heading, not just the landmark — most
+    // routes render one <h1> via PageHeader; routes without one (ComingSoon,
+    // fullscreen game modes, legacy pages) fall back to <main>. The entering
+    // route's content isn't in the DOM synchronously with this effect —
+    // AnimatePresence mode="wait" keeps the OLD page mounted through its exit
+    // animation first — so a plain querySelector('h1') right now would match
+    // the outgoing heading, which gets unmounted a moment later and drops
+    // focus to <body>. Watch for a newly *inserted* h1 instead of guessing a
+    // delay tied to the current transition duration.
+    const findInsertedHeading = (mutations: MutationRecord[]): HTMLElement | null => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (!(node instanceof HTMLElement)) continue;
+          if (node.tagName === 'H1') return node;
+          const nested = node.querySelector<HTMLElement>('h1');
+          if (nested) return nested;
+        }
+      }
+      return null;
+    };
+
+    const observer = new MutationObserver((mutations) => {
+      const heading = findInsertedHeading(mutations);
+      if (!heading) return;
+      observer.disconnect();
+      window.clearTimeout(fallbackTimeout);
+      heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    });
+    observer.observe(container, { childList: true, subtree: true });
+    // Routes with no heading (ComingSoon, legacy pages) never satisfy the
+    // observer — fall back to focusing <main> once the transition has had
+    // time to settle instead of waiting indefinitely.
+    const fallbackTimeout = window.setTimeout(() => {
+      observer.disconnect();
+      container.focus({ preventScroll: true });
+    }, 500);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallbackTimeout);
+    };
   }, [location.pathname]);
 
   return (

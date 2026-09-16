@@ -181,8 +181,10 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
 - **DoD tie-in**: §25.17 (no client-authoritative rewards reintroduced).
 
 ### WS10 — Hardening, rollout, DoD sign-off — **in progress**
-- **Branch**: `phase-3/ws10-hardening-rollout` (a11y work split onto `phase-3/ws10-a11y-gold-contrast`,
-  not yet merged)
+- **Branch**: `phase-3/ws10-hardening-rollout` (a11y work split across sub-branches, one PR each,
+  stacked/merged individually rather than as one big WS10 PR — `phase-3/ws10-a11y-gold-contrast`
+  merged as [#27](https://github.com/DenisPoselyanov/biblegames_bot/pull/27); route/dialog-heading
+  focus continues on `phase-3/ws10-focus-management`, not yet merged).
 - Accessibility audit (§17: touch targets, focus, contrast incl. gold-on-ivory, reduced motion, ARIA live dedup).
   - **Gold-on-ivory contrast fixed** for the new semantic-token layer: added `accentSpiritualText`
     (`--accent-spiritual-text`), a WCAG-safe darkened variant of `accentSpiritual` for text/icon roles only,
@@ -205,11 +207,27 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
     a clickable `<div>`/`role="button"` — confirmed via grep, zero hits), so nothing bypasses native focus
     handling. The few `outline: none` overrides (`SearchField` input, `AppShellV2` `<main>`) each have a
     working visible replacement (focus-within ring, or are the deliberate route-focus target) — not gaps.
+  - **Route-heading focus done** (`phase-3/ws10-focus-management`): `AppShellV2`'s route-change effect now
+    focuses the entering screen's `<h1>` (set `tabindex="-1"` first so it's programmatically focusable
+    without joining the natural tab order — same pattern as GOV.UK's route-focus convention), falling back
+    to `<main>` for routes with no heading (ComingSoon, legacy pages, fullscreen game modes). Non-obvious
+    bug caught by live QA, not by typecheck/tests: a naive `mainRef.current.querySelector('h1')` at effect
+    time matches the *outgoing* page's heading, not the incoming one — `AnimatePresence mode="wait"` keeps
+    the old page mounted through its exit animation before the new one mounts, so focusing "whatever h1 is
+    there right now" grabs the element that's about to unmount, which silently drops focus to `<body>` a
+    moment later. Fixed with a `MutationObserver` that watches for a newly **inserted** `<h1>` specifically
+    (via `mutation.addedNodes`, not a live requery), with a 500ms fallback timeout to `<main>` for headingless
+    routes so the wait never hangs. Verified live: reload → click a nav tab → `document.activeElement` is
+    the new page's `<h1>` with `tabindex="-1"`; navigating to a headingless route correctly falls back to
+    `<main>`. `tsc -b` clean, `eslint` clean, full suite 440/440.
+  - **Dialog/sheet focus assessed, not a gap**: `Dialog`/`BottomSheet` both set `aria-labelledby` (pointing
+    at their `<h2>` title) on the outer `role="dialog"` element wrapping `useFocusTrap`'s container: this is
+    the WAI-ARIA APG-recommended pattern (focus the first focusable descendant; screen readers announce the
+    dialog's accessible name from `aria-labelledby` as focus enters that role/aria-modal boundary, regardless
+    of which descendant gets focus first) — moving initial focus off real actionable controls and onto a
+    static heading instead would be a regression, not a fix. Left as-is.
   - **Still open**: text-scaling-to-200% check, ARIA live regions (currently only 1 occurrence app-wide,
-    admin-only — ARIA live is essentially greenfield for core screens), route/dialog-heading focus
-    management (`AppShellV2` already moves focus to `<main>` on route change via `mainRef`, but not to the
-    new screen's heading specifically per §17's wording; `useFocusTrap` focuses first interactive element,
-    not the heading, inside dialogs/sheets).
+    admin-only — ARIA live is essentially greenfield for core screens).
   - Motion reduced/minimal (already verified real/wired, not a stub — `MotionProvider.tsx`) and most
     icon-button `aria-label` coverage (via `IconButton`, already required-prop) need no further work.
 - Performance budget (§18: no full question-bank load on core routes, code-split, image/font budget) — **not started**.
