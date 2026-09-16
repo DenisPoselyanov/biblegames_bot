@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { applyCosmeticThemeById } from '../lib/cosmeticTheme';
 import { usePlayerProfileStore } from '../stores/playerProfileStore';
 import { resolveDefaultCosmeticThemeId } from '../data/cosmetics';
+import { trackEvent } from '../lib/telemetry';
 
 /**
  * Applies the active cosmetic theme to the document whenever it changes. Mounted
@@ -15,6 +16,7 @@ export function CosmeticThemeSync(): null {
 
   useEffect(() => {
     applyCosmeticThemeById(activeTheme);
+    trackEvent('theme_applied', { themeId: activeTheme });
   }, [activeTheme]);
 
   return null;

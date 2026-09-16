@@ -6,10 +6,11 @@
  * caches it for the current render. Resuming a lesson jumps back to the
  * server's `checkpointBlockId` instead of restarting at block 0.
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthSession } from '../../context/AuthSessionContext';
 import { useEventOnce } from '../../hooks/useEventOnce';
+import { trackEvent } from '../../lib/telemetry';
 import {
   useCompleteLessonSession,
   useProgressLessonSession,
@@ -55,6 +56,35 @@ export function LessonSession() {
   const complete = useCompleteLessonSession(sessionId, userId);
   const celebrateComplete = useEventOnce(complete.isSuccess && sessionId ? `lesson-complete:${sessionId}` : null);
 
+  // §19 lesson analytics. `completedRef` gates the abandon event on unmount —
+  // it must not fire after a normal completion. `indexRef` keeps the unmount
+  // closure below reading the current block index instead of the one from
+  // whenever the effect last ran.
+  const trackedSessionRef = useRef<string | null>(null);
+  const completedRef = useRef(false);
+  const indexRef = useRef(index);
+  indexRef.current = index;
+  useEffect(() => {
+    if (!lessonId || !session || trackedSessionRef.current === session.id) return;
+    trackedSessionRef.current = session.id;
+    if (session.checkpointBlockId) {
+      trackEvent('lesson_resumed', { lessonId, checkpointBlockId: session.checkpointBlockId });
+    } else {
+      trackEvent('lesson_started', { lessonId });
+    }
+  }, [lessonId, session]);
+
+  useEffect(() => {
+    return () => {
+      if (lessonId && trackedSessionRef.current && !completedRef.current) {
+        trackEvent('lesson_abandoned', { lessonId, blockIndex: indexRef.current });
+      }
+    };
+    // Mount/unmount only — reading the latest index via `indexRef` instead of
+    // a dependency avoids re-firing this cleanup on every block advance.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lessonId]);
+
   if (start.isError) {
     return (
       <AppPage noBottomNav>
@@ -75,7 +105,13 @@ export function LessonSession() {
   function advance() {
     if (!currentBlock) return;
     if (isLast) {
-      complete.mutate(undefined, { onSuccess: () => navigate('/', { replace: true }) });
+      complete.mutate(undefined, {
+        onSuccess: () => {
+          completedRef.current = true;
+          if (lessonId) trackEvent('lesson_completed', { lessonId, blockCount: blocks.length });
+          navigate('/', { replace: true });
+        },
+      });
       return;
     }
     progress.mutate(currentBlock.id);

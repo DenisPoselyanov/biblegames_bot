@@ -11,11 +11,12 @@
  * page (`PracticeIntent`/`ReviewHub`) writes before navigating here. A hard
  * reload loses that seed — a known, flagged gap, not a fabricated resume.
  */
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAnswerPracticeSession } from '../../queries/useLearning';
 import { useEventOnce } from '../../hooks/useEventOnce';
+import { trackEvent } from '../../lib/telemetry';
 import { queryKeys } from '../../queries/keys';
 import type {
   PracticeQuestionView,
@@ -55,6 +56,32 @@ export function PracticeSession() {
   const celebrate = useEventOnce(
     result && result.achievementsGranted.length > 0 ? `practice-answer:${result.eventId}` : null,
   );
+
+  // §19 practice/review analytics — `finishedRef` gates the abandon event on
+  // unmount so it never fires after a normal completion.
+  const trackedSeedRef = useRef<PracticeSessionCreateResponse | undefined>(undefined);
+  const finishedRef = useRef(false);
+  const indexRef = useRef(index);
+  indexRef.current = index;
+  useEffect(() => {
+    if (!seed || trackedSeedRef.current === seed) return;
+    trackedSeedRef.current = seed;
+    trackEvent('practice_session_started', { mode: seed.session.mode, objectiveId: seed.session.objectiveId });
+    return () => {
+      if (!finishedRef.current) {
+        trackEvent('practice_session_abandoned', { mode: seed.session.mode, index: indexRef.current });
+      }
+    };
+    // Mount/unmount only, keyed on the seed identity — reading the latest
+    // index via `indexRef` avoids re-firing this cleanup on every answer.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seed]);
+
+  useEffect(() => {
+    if (!finished || !seed) return;
+    finishedRef.current = true;
+    trackEvent('practice_session_completed', { mode: seed.session.mode, questionCount: seed.session.questionCount });
+  }, [finished, seed]);
 
   const backTo = () => navigate('/practice');
 
