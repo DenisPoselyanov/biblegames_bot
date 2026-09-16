@@ -16,7 +16,7 @@
   justify-content: center;
   background: var(--accent-spiritual-bg);
   border: 2px solid var(--accent-spiritual);
-  color: var(--accent-spiritual);
+  color: var(--accent-spiritual-text);
 }
 
 .frame--locked {

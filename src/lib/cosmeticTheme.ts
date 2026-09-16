@@ -89,6 +89,14 @@ export interface SemanticPalette {
   accentSpiritualSoft: string;
   accentSpiritualBg: string;
   onAccentSpiritual: string;
+  /**
+   * WCAG-safe variant of `accentSpiritual` for text/icon glyph roles.
+   * On dark themes this equals `accentSpiritual` (already light-on-dark, no
+   * contrast risk). On light themes the raw accent is a mid-tone gold that
+   * fails 4.5:1 against an ivory/white canvas, so this is darkened. Never
+   * used for backgrounds/borders — those keep `accentSpiritual` (§17).
+   */
+  accentSpiritualText: string;
   borderSoft: string;
   borderDefault: string;
   borderStrong: string;
@@ -135,6 +143,7 @@ const SEMANTIC_CSS_VAR_ENTRIES: Array<[keyof SemanticPalette, string]> = [
   ['brandPrimaryPressed', '--brand-primary-pressed'],
   ['onBrandPrimary', '--on-brand-primary'],
   ['accentSpiritual', '--accent-spiritual'],
+  ['accentSpiritualText', '--accent-spiritual-text'],
   ['accentSpiritualSoft', '--accent-spiritual-soft'],
   ['accentSpiritualBg', '--accent-spiritual-bg'],
   ['onAccentSpiritual', '--on-accent-spiritual'],
@@ -218,6 +227,7 @@ export function deriveSemanticPalette(theme: CosmeticTheme): SemanticPalette {
     onBrandPrimary: onPrimary,
 
     accentSpiritual: preview.accent,
+    accentSpiritualText: isLight ? mixColor(preview.accent, '#000000', 0.35) : preview.accent,
     accentSpiritualSoft: mixColor(preview.accent, '#ffffff', 0.25),
     accentSpiritualBg: withAlpha(preview.accent, isLight ? 0.1 : 0.12),
     onAccentSpiritual: deriveOnPrimary(preview.accent),

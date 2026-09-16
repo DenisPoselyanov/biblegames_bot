@@ -13,7 +13,7 @@ export type SemanticPaletteOverrides = Partial<Record<
   | 'bgApp' | 'bgSurface' | 'bgSurfaceSubtle' | 'bgElevated' | 'bgInverse' | 'bgScrim'
   | 'textPrimary' | 'textSecondary' | 'textMuted' | 'textInverse' | 'textLink'
   | 'brandPrimary' | 'brandPrimaryHover' | 'brandPrimaryPressed' | 'onBrandPrimary'
-  | 'accentSpiritual' | 'accentSpiritualSoft' | 'accentSpiritualBg' | 'onAccentSpiritual'
+  | 'accentSpiritual' | 'accentSpiritualText' | 'accentSpiritualSoft' | 'accentSpiritualBg' | 'onAccentSpiritual'
   | 'borderSoft' | 'borderDefault' | 'borderStrong' | 'borderFocus' | 'focusRing'
   | 'cardBg' | 'cardBorder' | 'cardShadow'
   | 'buttonPrimaryBg' | 'buttonPrimaryText'
@@ -167,6 +167,11 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       textMuted: '#8A8F98',
       brandPrimary: '#132F57',
       accentSpiritual: '#C59A3D',
+      // Darkened for text/icon glyph roles — the raw accent above is
+      // ~2.4:1 against the ivory canvas, well under WCAG AA (§17 audit,
+      // Phase 3 WS10). ~5.1:1 against bgApp/bgElevated. Background/border
+      // uses keep `accentSpiritual` unchanged.
+      accentSpiritualText: '#816322',
       accentSpiritualSoft: '#D8B96B',
       borderSoft: '#E7E1D8',
       borderStrong: '#D8D0C4',

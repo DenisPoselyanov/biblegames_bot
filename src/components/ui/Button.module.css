@@ -59,7 +59,8 @@
 }
 
 .button--sm {
-  min-height: 40px;
+  /* 44px floor per §17 (WCAG 2.5.5 touch target) even at the "sm" visual size */
+  min-height: 44px;
   padding: 0 var(--space-lg);
   font-size: var(--fs-sm);
 }
