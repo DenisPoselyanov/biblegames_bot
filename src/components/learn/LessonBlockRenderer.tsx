@@ -94,10 +94,20 @@ function BlockByType({ blockType, payload }: { blockType: keyof typeof LESSON_BL
       );
     }
     case 'image': {
-      const { src, alt, caption } = payload as z.infer<typeof LESSON_BLOCK_PAYLOAD_SCHEMAS.image>;
+      const { src, alt, caption, width, height } = payload as z.infer<typeof LESSON_BLOCK_PAYLOAD_SCHEMAS.image>;
       return (
         <figure className={styles.image}>
-          <img src={src} alt={alt} loading="lazy" onError={(e) => (e.currentTarget.style.display = 'none')} />
+          <img
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+            // Real ratio when known; otherwise the CSS default (16/9) still
+            // reserves a box so the image can never cause layout shift.
+            style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
+            loading="lazy"
+            onError={(e) => (e.currentTarget.style.display = 'none')}
+          />
           {caption && <figcaption>{caption}</figcaption>}
         </figure>
       );

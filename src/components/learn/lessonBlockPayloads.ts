@@ -22,6 +22,10 @@ export const imagePayload = z.object({
   src: z.string().min(1),
   alt: z.string().min(1),
   caption: z.string().optional(),
+  // Optional — reserves layout space (§18 CLS) when the author supplies real
+  // dimensions; the renderer falls back to a fixed aspect ratio otherwise.
+  width: z.number().int().positive().optional(),
+  height: z.number().int().positive().optional(),
 });
 export const reflectionPayload = z.object({ prompt: z.string().min(1) });
 export const questionPayload = z.object({

@@ -88,6 +88,10 @@
 
 .image img {
   width: 100%;
+  height: auto;
+  /* Reserves the box before the image loads (§18 CLS); overridden inline
+     with the real ratio when the author supplies width/height. */
+  aspect-ratio: 16 / 9;
   border-radius: var(--radius-lg);
   display: block;
 }

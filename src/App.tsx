@@ -180,7 +180,6 @@ export default function App() {
       <PlayerDataBootstrap>
       <CosmeticThemeSync />
       <VantProvider>
-      <TopicHierarchyProvider>
       <ToastProvider>
       <BrowserRouter
         basename={import.meta.env.BASE_URL.replace(/\/$/, '') || undefined}
@@ -356,7 +355,14 @@ export default function App() {
                   <Route index element={<ErrorBoundary><LazyPage><Home /></LazyPage></ErrorBoundary>} />
                   <Route path="play" element={<ErrorBoundary><LazyPage><PlayHub /></LazyPage></ErrorBoundary>} />
                   <Route path="play/study" element={<ErrorBoundary><LazyPage><StudyHub /></LazyPage></ErrorBoundary>} />
-                  <Route path="play/study/themes" element={<ErrorBoundary><LazyPage><Themes /></LazyPage></ErrorBoundary>} />
+                  <Route
+                    path="play/study/themes"
+                    element={
+                      <TopicHierarchyProvider>
+                        <ErrorBoundary><LazyPage><Themes /></LazyPage></ErrorBoundary>
+                      </TopicHierarchyProvider>
+                    }
+                  />
                   <Route path="play/study/themes/:themeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
                   <Route path="play/study/themes/:themeId/:nodeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
                   <Route path="play/study/theme/:themeId" element={<ErrorBoundary><LazyPage><ThemeDetail /></LazyPage></ErrorBoundary>} />
@@ -415,7 +421,6 @@ export default function App() {
           </Routes>
       </BrowserRouter>
       </ToastProvider>
-      </TopicHierarchyProvider>
       </VantProvider>
       </PlayerDataBootstrap>
       </MotionProvider>

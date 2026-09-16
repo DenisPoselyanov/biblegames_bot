@@ -3,17 +3,23 @@ import { createTopicHierarchyLoader } from './topicDbLoader.core';
 
 export * from './topicDbLoader.shared';
 
-/** Vite replaces import.meta.glob at build time — must not be behind a runtime typeof check. */
-const mergedTopics = import.meta.glob('../../data/topics-db/topics-db.json', {
-  eager: true,
-  import: 'default',
-}) as Record<string, TopicNode>;
+/**
+ * Not `eager: true` — `topicDbLoader.ts` is reached via a static import chain
+ * from `App.tsx` (`TopicHierarchyContext.tsx`), so an eager glob would inline
+ * this 242KB file into the main entry chunk for every route. Deferred to a
+ * real async chunk instead, fetched only when `loadRoot()` actually runs
+ * (i.e. when `TopicHierarchyProvider` mounts on the Themes route).
+ */
+const mergedTopicsLoaders = import.meta.glob('../../data/topics-db/topics-db.json');
 
 const perThemeLoaders = import.meta.glob('../../data/topics-db/*.json');
 
 const loader = createTopicHierarchyLoader({
   async loadRoot() {
-    return Object.values(mergedTopics)[0] ?? null;
+    const [loadFile] = Object.values(mergedTopicsLoaders);
+    if (!loadFile) return null;
+    const mod = (await loadFile()) as { default: TopicNode };
+    return mod.default ?? (mod as unknown as TopicNode);
   },
   async loadThemeFile(themeId) {
     const entry = Object.entries(perThemeLoaders).find(([path]) => {
