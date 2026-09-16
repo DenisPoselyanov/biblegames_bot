@@ -110,7 +110,7 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
 - **DoD tie-in**: §25.5, §25.6, §25.7.
 
 ### WS8 — Profile/settings + theme rollout — **code complete (2026-09-16)**
-- **Branch**: `phase-3/ws8-profile-theme-rollout`, not yet opened as a PR.
+- **Branch**: `phase-3/ws8-profile-theme-rollout`, PR [#24](https://github.com/DenisPoselyanov/biblegames_bot/pull/24).
 - Two flags: `profileSettingsV2` (new Profile/Settings/Themes screens) and one flag
   `lightThemeDefault` for the default-theme flip — deliberately not the spec's suggested second
   `rebrandThemeV2`, since WS3 already shipped the underlying tokens unconditionally.
@@ -152,7 +152,7 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
   a clean typecheck had missed: a missing `ThemePicker.module.css` file (TS can't verify CSS module
   files exist on disk) and a copy/data bug where "Мова інтерфейсу" showed the Bible-translation
   label instead of "Українська".
-- **Not done**: PR not yet opened (pending user go-ahead per commit policy); `index.html`'s static
+- **Not done**: `index.html`'s static
   `<meta name="color-scheme">`/`theme-color` deliberately left at the dark/classic default —
   intentional, revisit at full-rollout time when `FLAG_DEFAULTS.lightThemeDefault` actually flips.
 - **Depends on**: WS3/WS4, Phase 2 preference endpoints (already existed, just needed wiring).
