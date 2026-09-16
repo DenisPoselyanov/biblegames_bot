@@ -1,3 +1,5 @@
+import { isFeatureEnabled } from '../lib/flags';
+
 /**
  * Optional pinned overrides for the extended semantic palette (ADR-009,
  * docs/PHASE_3_REBRANDING_AND_THEME_SYSTEM.md §5). Keys are the camelCase
@@ -43,6 +45,23 @@ export interface CosmeticTheme {
 }
 
 export const DEFAULT_COSMETIC_THEME_ID = 'classic';
+
+/** Canonical Phase 3 default (ADR-009) — id of the `light`/"Світло" theme below. */
+const REBRAND_DEFAULT_COSMETIC_THEME_ID = 'light';
+
+/**
+ * The theme id to fall back to when a profile has no stored `activeTheme`
+ * (WS8, `docs/phases/PHASE_3_LEARNING_PRODUCT_REBRAND_AND_MOTION.md` §7.3).
+ * Only ever consulted when nothing is stored — an existing user's saved
+ * choice, including one that was itself defaulted to `classic` in the past,
+ * is never touched by this flag. Lazily reads the flag (not module-level)
+ * so `.env.local` overrides and tests can flip it without a reload.
+ */
+export function resolveDefaultCosmeticThemeId(): string {
+  return isFeatureEnabled('lightThemeDefault')
+    ? REBRAND_DEFAULT_COSMETIC_THEME_ID
+    : DEFAULT_COSMETIC_THEME_ID;
+}
 
 export const COSMETIC_THEMES: CosmeticTheme[] = [
   {

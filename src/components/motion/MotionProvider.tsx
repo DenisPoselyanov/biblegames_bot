@@ -14,6 +14,8 @@ import {
   saveMotionIntensity,
   type MotionIntensity,
 } from '../../lib/motionIntensity';
+import { hasApi } from '../../repos/apiClient';
+import { progressionRepo } from '../../repos/progressionRepo';
 
 export interface MotionCapabilities {
   /** OS/browser `prefers-reduced-motion` — always overrides `intensity` (§24). */
@@ -70,6 +72,11 @@ export function MotionProvider({ children, testOverride }: MotionProviderProps) 
   const setIntensity = useCallback((next: MotionIntensity) => {
     setIntensityState(next);
     saveMotionIntensity(next);
+    // Local apply is instant/offline-safe above; this is a best-effort
+    // cross-device sync only — never blocks or reverts the local choice.
+    if (hasApi()) {
+      progressionRepo.savePreferences({ motionIntensity: next }).catch(() => {});
+    }
   }, []);
 
   const value = useMemo<MotionCapabilities>(() => {

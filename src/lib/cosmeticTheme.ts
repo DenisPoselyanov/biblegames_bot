@@ -1,6 +1,6 @@
 import {
-  DEFAULT_COSMETIC_THEME_ID,
   getCosmeticThemeById,
+  resolveDefaultCosmeticThemeId,
   type CosmeticTheme,
 } from '../data/cosmetics';
 import { syncTelegramChromeColors } from './telegram';
@@ -392,6 +392,6 @@ export function applyCosmeticThemeById(themeId: string): void {
     applyCosmeticTheme(theme);
     return;
   }
-  const fallback = getCosmeticThemeById(DEFAULT_COSMETIC_THEME_ID);
+  const fallback = getCosmeticThemeById(resolveDefaultCosmeticThemeId());
   if (fallback) applyCosmeticTheme(fallback);
 }

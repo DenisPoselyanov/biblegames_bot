@@ -109,11 +109,53 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
 - **Depends on**: WS2 (scheduler/session endpoints), existing Phase 2 progression tables.
 - **DoD tie-in**: §25.5, §25.6, §25.7.
 
-### WS8 — Profile/settings + theme rollout
-- **Branch**: `phase-3/ws8-profile-theme-rollout`
-- Profile/settings screens (§14) behind `profileSettingsV2`, using bounded Phase 2 preference endpoints (`/me/preferences`) — no new whole-profile writes.
-- `Світло` becomes default for new/invalid profiles behind `lightThemeDefault`/`rebrandThemeV2`, preserving existing user choice and entitlements (§7.3, §21 migration rules); startup fallback is `light`, never a dark→light flash.
-- **Depends on**: WS3/WS4, Phase 2 preference endpoints (already exist).
+### WS8 — Profile/settings + theme rollout — **code complete (2026-09-16)**
+- **Branch**: `phase-3/ws8-profile-theme-rollout`, PR [#24](https://github.com/DenisPoselyanov/biblegames_bot/pull/24).
+- Two flags: `profileSettingsV2` (new Profile/Settings/Themes screens) and one flag
+  `lightThemeDefault` for the default-theme flip — deliberately not the spec's suggested second
+  `rebrandThemeV2`, since WS3 already shipped the underlying tokens unconditionally.
+- **Theme default flip**: `resolveDefaultCosmeticThemeId()` (`src/data/cosmetics.ts`) swapped in at
+  every `DEFAULT_COSMETIC_THEME_ID` fallback read site (`main.tsx`, `CosmeticThemeSync`,
+  `VantProvider`, `usePreferences`, `profileMigrations.fillDefaults`, `cosmeticTheme.ts`'s
+  invalid-id fallback — 6 sites total, one (`VantProvider`) found only during this workstream, not
+  in the original WS3/WS4 sweep). No backfill/migration needed — the existing fallback-only-on-unset
+  design already satisfies "existing user choice remains" by construction; only genuinely-new
+  profiles see the new default. Fixed a real pre-existing gap while there: `?? DEFAULT_...` doesn't
+  catch `''` (the server's `emptyProfile().activeTheme`), only `null`/`undefined` — switched those
+  sites to `||`. Also fixed: `sanitizePreferences`/`usePreferences.setActiveTheme` required a theme
+  to already be in `unlockedThemes` even for `price: 0` catalog themes (`light` included) — a real
+  theme selection was silently rejected for `light` no user had ever been granted an entitlement
+  for. Now any `price === 0` catalog theme is always selectable.
+- **Server**: extended `contracts/api/me.ts` `preferencesRequest` +
+  `profileService.ts` (`sanitizePreferences`/`writePreferences`/`readProfile`) to whitelist
+  `locale`/`timezone`/`motionIntensity` — the repository layer (`PreferencesRecord`/
+  `PREFERENCE_KEYS`) and SQL columns already existed from Phase 2, just weren't wired through the
+  contract/service layer yet.
+- **New pages** (`src/pages/profile/`): `ProfileV2.tsx` (full §14.1 reskin — header/rank card/nav
+  rows into Settings/Themes/Communities/Shop/Progress, stats grid + achievements ported from the
+  legacy page; mastery-map/theme-progress list deliberately NOT duplicated, links to WS7's
+  `/progress` and Learn instead of a second competing view), `Settings.tsx` (§14.2 groups — real
+  plumbing for account/translation/theme/motion-intensity/privacy; locale/notifications/text-size/
+  data-export/logout render as visible disabled "Скоро" rows per user decision, not hidden or
+  fabricated), `ThemePicker.tsx` (`/profile/themes` grid, unowned paid themes route to `/shop`
+  instead of a fake local purchase per ADR-009).
+- Legacy `src/pages/Profile.tsx` completely untouched — still serves the v1 tree and the v2
+  flag-off fallback.
+- **Verified**: `tsc -b` + `tsc -p server/tsconfig.json` clean; `eslint` clean (only the
+  pre-existing `socialVersion` escape-hatch warning, same pattern as the legacy page already had);
+  full suite 438/438 (4 new tests added: 2 for the WS8 preference fields round-trip + free-theme
+  selectability in `preferencesCutover.test.ts`, 2 for `resolveDefaultCosmeticThemeId()` flag
+  on/off in `src/data/cosmetics.test.ts`). **Live browser QA** (dev server, `.env.local` flags) —
+  all 4 scenarios (flags off / `profileSettingsV2` only / `lightThemeDefault` only on a cleared
+  profile / both together) confirmed correct, including live theme-switch round-trip
+  (classic ↔ light) and motion-intensity persistence across reload. QA caught and fixed 2 real bugs
+  a clean typecheck had missed: a missing `ThemePicker.module.css` file (TS can't verify CSS module
+  files exist on disk) and a copy/data bug where "Мова інтерфейсу" showed the Bible-translation
+  label instead of "Українська".
+- **Not done**: `index.html`'s static
+  `<meta name="color-scheme">`/`theme-color` deliberately left at the dark/classic default —
+  intentional, revisit at full-rollout time when `FLAG_DEFAULTS.lightThemeDefault` actually flips.
+- **Depends on**: WS3/WS4, Phase 2 preference endpoints (already existed, just needed wiring).
 - **DoD tie-in**: §25.8, §25.9, §25.10.
 
 ### WS9 — Existing game-mode reskin — **MERGED [#25](https://github.com/DenisPoselyanov/biblegames_bot/pull/25) (2026-09-16), main `1c050f7`**

@@ -3,7 +3,7 @@ import {
   normalizeBollsTranslation,
   type BollsTranslation,
 } from '../lib/bollsConstants';
-import { DEFAULT_COSMETIC_THEME_ID, getCosmeticThemeById } from '../data/cosmetics';
+import { getCosmeticThemeById, resolveDefaultCosmeticThemeId } from '../data/cosmetics';
 import { trackEvent } from '../lib/telemetry';
 import { loadProfile } from '../lib/storage';
 import { usePlayerProfileStore } from '../stores/playerProfileStore';
@@ -32,8 +32,10 @@ export function usePreferences(): PreferencesValue {
   const { userId, displayName } = useAuthSession();
   const persistProfile = usePersistProfile(userId);
 
+  // `||`, not `??` — a fresh server-synced profile's `activeTheme` is `''`
+  // (server `emptyProfile()`), not `undefined`, and must still fall back.
   const activeTheme =
-    usePlayerProfileStore((s) => s.profile?.activeTheme) ?? DEFAULT_COSMETIC_THEME_ID;
+    usePlayerProfileStore((s) => s.profile?.activeTheme) || resolveDefaultCosmeticThemeId();
   const avatar = usePlayerProfileStore((s) => s.profile?.avatar) ?? '';
   const bibleTranslation = normalizeBollsTranslation(
     usePlayerProfileStore((s) => s.profile?.bibleTranslation),
@@ -44,9 +46,11 @@ export function usePreferences(): PreferencesValue {
   const setActiveTheme = useCallback(
     (themeId: string) => {
       const profile = loadProfile(userId, displayName);
-      if (!getCosmeticThemeById(themeId) || !profile.unlockedThemes.includes(themeId)) {
-        return false;
-      }
+      const catalogTheme = getCosmeticThemeById(themeId);
+      // A free theme (e.g. `light`, ADR-009) is always selectable even before
+      // it's ever been recorded in `unlockedThemes` — it was never a purchase.
+      const owned = catalogTheme?.price === 0 || profile.unlockedThemes.includes(themeId);
+      if (!catalogTheme || !owned) return false;
       persistProfile({ ...profile, activeTheme: themeId });
       return true;
     },

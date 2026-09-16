@@ -1,9 +1,10 @@
 /** User-selected motion intensity (MOTION_SYSTEM.md §25) — a separate axis from
- * the OS/browser `prefers-reduced-motion` signal. No server preference field
- * exists yet (Phase 2's `/me/preferences` doesn't cover it) — WS8 owns wiring
- * a settings-screen control to a persisted field; until then this is a
- * client-only, localStorage-backed default so the mechanism isn't blocked on
- * that backend work. */
+ * the OS/browser `prefers-reduced-motion` signal. This localStorage copy is
+ * the instant, offline-safe source of truth for rendering (read
+ * synchronously at `MotionProvider` mount); `/me/preferences`' `motionIntensity`
+ * (WS8) is a best-effort cross-device backup only — it never overrides an
+ * explicit local choice, see `MotionProvider.setIntensity` and
+ * `hasStoredMotionIntensity` below. */
 export type MotionIntensity = 'full' | 'reduced' | 'minimal';
 
 const STORAGE_KEY = 'bible-game-motion-intensity';
@@ -15,6 +16,19 @@ export function loadMotionIntensity(): MotionIntensity {
     return (VALID as readonly string[]).includes(raw ?? '') ? (raw as MotionIntensity) : 'full';
   } catch {
     return 'full';
+  }
+}
+
+/** True once the user (this device) has ever set an intensity explicitly —
+ * distinguishes "never chosen, showing the `full` fallback" from a real
+ * choice, so a Settings screen can safely hydrate from a server value only
+ * in the former case. */
+export function hasStoredMotionIntensity(): boolean {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return (VALID as readonly string[]).includes(raw ?? '');
+  } catch {
+    return false;
   }
 }
 

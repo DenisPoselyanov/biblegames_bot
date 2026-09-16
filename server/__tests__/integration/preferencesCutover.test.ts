@@ -86,3 +86,53 @@ describe('typed-preferences cutover (§18.2)', () => {
     expect(profile.body.activeTheme).toBe('gennesaret-sea');
   });
 });
+
+describe('WS8 preference fields (locale/timezone/motionIntensity)', () => {
+  it('round-trips through the typed store and the read overlay', async () => {
+    const { app, identity } = makeApp();
+
+    const res = await patchPrefs(app, {
+      locale: 'uk-UA',
+      timezone: 'Europe/Kyiv',
+      motionIntensity: 'reduced',
+    });
+    expect(res.status).toBe(200);
+    expect(res.body.locale).toBe('uk-UA');
+    expect(res.body.timezone).toBe('Europe/Kyiv');
+    expect(res.body.motionIntensity).toBe('reduced');
+
+    const stored = await identity.preferences.get('500');
+    expect(stored?.locale).toBe('uk-UA');
+    expect(stored?.timezone).toBe('Europe/Kyiv');
+    expect(stored?.motionIntensity).toBe('reduced');
+
+    const profile = await request(app).get('/api/v1/me/profile').set('x-user-id', '500');
+    expect(profile.body.motionIntensity).toBe('reduced');
+  });
+
+  it('rejects an invalid motionIntensity value', async () => {
+    const { app, identity } = makeApp();
+
+    const res = await patchPrefs(app, { motionIntensity: 'ludicrous' });
+    expect(res.status).toBe(400);
+    expect(await identity.preferences.get('500')).toBeNull();
+  });
+
+  it('accepts a free catalog theme as activeTheme even before it is in unlockedThemes', async () => {
+    const { app, dbStore } = makeApp();
+    await dbStore.setProfile('500', { userId: '500', unlockedThemes: [], displayName: 'x' });
+
+    const res = await patchPrefs(app, { activeTheme: 'light' });
+    expect(res.status).toBe(200);
+    expect(res.body.activeTheme).toBe('light');
+  });
+
+  it('still rejects an unowned paid theme', async () => {
+    const { app, dbStore } = makeApp();
+    await dbStore.setProfile('500', { userId: '500', unlockedThemes: [], displayName: 'x' });
+
+    const res = await patchPrefs(app, { activeTheme: 'gennesaret-sea' });
+    expect(res.status).toBe(200);
+    expect(res.body.activeTheme).not.toBe('gennesaret-sea');
+  });
+});

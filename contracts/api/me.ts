@@ -28,6 +28,9 @@ export const preferencesRequest = z
     bibleTranslation: z.string().trim().min(1).max(32).optional(),
     activeTheme: z.string().trim().max(64).optional(),
     avatar: z.string().trim().max(64).optional(),
+    locale: z.string().trim().min(1).max(32).optional(),
+    timezone: z.string().trim().min(1).max(64).optional(),
+    motionIntensity: z.enum(['full', 'reduced', 'minimal']).optional(),
   })
   .strip();
 export type PreferencesRequest = z.infer<typeof preferencesRequest>;
