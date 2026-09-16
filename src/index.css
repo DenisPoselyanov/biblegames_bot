@@ -73,6 +73,7 @@
   --brand-primary-pressed: var(--gold-dark);
   --on-brand-primary: var(--on-primary);
   --accent-spiritual: var(--gold-light);
+  --accent-spiritual-text: var(--gold-light);
   --accent-spiritual-soft: var(--gold-light);
   --accent-spiritual-bg: var(--accent-bg);
   --on-accent-spiritual: var(--on-primary);
