@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../../components/Icon';
+import { FullscreenMotion, MotionStagger, MotionStaggerItem } from '../../../components/motion';
 import { playlistManager } from '../../../lib/playlists';
 import { THEMES } from '../../../data/themes';
 import { useTelegram } from '../../../hooks/useTelegram';
@@ -38,6 +39,7 @@ export function KahootPlaylists() {
   };
 
   return (
+    <FullscreenMotion motionKey="kahoot-playlists">
     <section className={styles.page}>
       <div className={styles.topRow}>
         <Link to="/play/kahoot" className={styles.backBtn} aria-label="Назад">
@@ -82,11 +84,11 @@ export function KahootPlaylists() {
           </p>
         </div>
       ) : (
-        <ul className={styles.playlistList}>
+        <MotionStagger as="ul" className={styles.playlistList}>
           {list.map((p) => {
             const isMine = p.creatorId === userId;
             return (
-              <li key={p.id} className={styles.playlistCard}>
+              <MotionStaggerItem as="li" key={p.id} className={styles.playlistCard}>
                 <div className={styles.playlistMeta}>
                   <Link to={`/play/kahoot/playlists/${p.id}`} className={styles.playlistTitle}>
                     {p.name}
@@ -122,12 +124,13 @@ export function KahootPlaylists() {
                     </button>
                   )}
                 </div>
-              </li>
+              </MotionStaggerItem>
             );
           })}
-        </ul>
+        </MotionStagger>
       )}
     </section>
+    </FullscreenMotion>
   );
 }
 

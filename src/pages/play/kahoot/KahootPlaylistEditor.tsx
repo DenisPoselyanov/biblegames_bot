@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '../../../components/Icon';
+import { FullscreenMotion } from '../../../components/motion';
 import { ThemePicker } from '../../../components/ThemePicker';
 import { playlistManager } from '../../../lib/playlists';
 import { getQuestionCountByDifficulty } from '../../../data/questions';
@@ -122,6 +123,7 @@ export function KahootPlaylistEditor() {
   const backTo = existing ? `/play/kahoot/playlists/${existing.id}` : '/play/kahoot/playlists';
 
   return (
+    <FullscreenMotion motionKey="kahoot-playlist-editor">
     <section className={styles.page}>
       <div className={styles.topRow}>
         <Link to={backTo} className={styles.backBtn} aria-label="Назад">
@@ -218,6 +220,7 @@ export function KahootPlaylistEditor() {
         {existing ? 'Оновити плейлист' : 'Зберегти плейлист'}
       </button>
     </section>
+    </FullscreenMotion>
   );
 }
 
