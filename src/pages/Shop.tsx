@@ -8,6 +8,7 @@ import { Icon } from '../components/Icon';
 import { haptic } from '../lib/telegram';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
+import { AppPage, PageHeader } from '../components/ui';
 import styles from './Shop.module.css';
 
 export function Shop() {
@@ -36,16 +37,16 @@ export function Shop() {
   };
 
   return (
-    <section className={styles.page}>
-      <header className={styles.header}>
-        <h1>Крамниця</h1>
-        <div className={styles.balanceRow}>
+    <AppPage>
+      <PageHeader
+        title="Крамниця"
+        action={
           <span className={styles.balancePill}>
             <Icon name="coins" size={16} />
             {profile.coins}
           </span>
-        </div>
-      </header>
+        }
+      />
 
       <section className={styles.section}>
         <h2>Біблійні теми</h2>
@@ -97,6 +98,6 @@ export function Shop() {
           })}
         </MotionStagger>
       </section>
-    </section>
+    </AppPage>
   );
 }

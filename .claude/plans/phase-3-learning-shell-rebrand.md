@@ -116,7 +116,7 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
 - **Depends on**: WS3/WS4, Phase 2 preference endpoints (already exist).
 - **DoD tie-in**: §25.8, §25.9, §25.10.
 
-### WS9 — Existing game-mode reskin — **mostly done, PR [#25](https://github.com/DenisPoselyanov/biblegames_bot/pull/25) open (2026-09-16)**
+### WS9 — Existing game-mode reskin — **MERGED [#25](https://github.com/DenisPoselyanov/biblegames_bot/pull/25) (2026-09-16), main `1c050f7`**
 - **Branch**: `phase-3/ws9-game-mode-reskin`
 - Verified the flagged bug: both Millionaire *and* Survival trusted a client-submitted `score`/
   `reachedLevel`, only range-clamping it — fixed by having the client submit a per-question answer
@@ -127,7 +127,14 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
   `FullscreenMotion`/`MotionStagger` (§15.4) — purely additive, no realtime logic touched.
   Millionaire/Survival's "shared shell" was assessed as already adequately met (WS4 motion +
   semantic tokens already in place) and not force-converted to `components/ui/*`.
-- **Not done**: §15.5 (social/shop preview shell) — separate follow-up, not started.
+- **§15.5 (social/shop preview shell) — done as a WS9 follow-up** (branch `phase-3/ws9-social-shop-shell`,
+  not yet merged): Shop, GlobalStats, Challenges, ChallengeDetails, Communities, CommunityDetails all
+  rewrapped in `AppPage`/`PageHeader` (+ `ErrorState` for the two not-found branches), converging them on
+  the same shell as the Learn/Practice hubs. Also fixed two pre-existing §15.5 violations found during the
+  pass (not introduced by WS9): `GlobalStats.tsx` hardcoded four fictional players (`VIRTUAL_PLAYERS`) into
+  the ranking — removed, ranking now honestly shows only the real profile with copy explaining the global
+  leaderboard isn't backed yet; `CommunityDetails.tsx` rendered a "Лідерборд" section that was pure zeros
+  (`score:0, gamesPlayed:0`) with raw ids as display names — removed rather than faked.
 - **Depends on**: WS3/WS4/WS5.
 - **DoD tie-in**: §25.17 (no client-authoritative rewards reintroduced).
 

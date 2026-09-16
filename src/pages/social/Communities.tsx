@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTelegram } from '../../hooks/useTelegram';
 import { communityManager } from '../../lib/communities';
 import { Icon } from '../../components/Icon';
+import { AppPage, PageHeader } from '../../components/ui';
 import styles from './Social.module.css';
 
 export function Communities() {
@@ -47,18 +48,12 @@ export function Communities() {
   };
 
   return (
-    <section className={styles.page}>
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <Link to="/profile" className={styles.backBtn} aria-label="Назад">
-            <Icon name="back" size={20} />
-          </Link>
-          <div>
-            <h1 className={styles.title}>Спільноти</h1>
-            <p className={styles.muted}>Створи власну або приєднайся до публічної</p>
-          </div>
-        </div>
-      </div>
+    <AppPage>
+      <PageHeader
+        onBack={() => navigate('/profile')}
+        title="Спільноти"
+        description="Створи власну або приєднайся до публічної"
+      />
 
       <section className={styles.card}>
         <h2 className={styles.title} style={{ fontSize: '1.1rem' }}>
@@ -200,6 +195,6 @@ export function Communities() {
           </ul>
         )}
       </section>
-    </section>
+    </AppPage>
   );
 }

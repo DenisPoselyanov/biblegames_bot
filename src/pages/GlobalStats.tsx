@@ -7,100 +7,10 @@ import { useAuthSession } from '../context/AuthSessionContext';
 import type { PlayerProfile } from '../types';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
+import { AppPage, PageHeader } from '../components/ui';
 import styles from './GlobalStats.module.css';
 
 type RankingTab = 'total' | 'survival' | 'millionaire';
-
-import { getDefaultPlayerRank } from '../lib/practiceProgression';
-
-const DEFAULT_VIRTUAL_RANK = getDefaultPlayerRank();
-
-const VIRTUAL_PLAYERS: PlayerProfile[] = [
-  {
-    userId: 'virtual-apollos',
-    displayName: 'Аполлос',
-    coins: 2420,
-    themePoints: { paul: 760, 'new-testament': 520, gospels: 430, psalms: 220 },
-    completedLevels: [],
-    survivalHighScore: 42,
-    millionaireWins: 2,
-    millionaireMaxLevel: 15,
-    unlockedThemes: ['classic', 'heavenly-jerusalem'],
-    activeTheme: 'heavenly-jerusalem',
-    achievements: ['biblical-millionaire', 'iron-shield', 'aesthete'],
-    avatar: 'default',
-    unlockedAvatars: ['default'],
-    streakDays: 4,
-    lastActiveAt: new Date().toISOString(),
-    studyMastery: {},
-    practiceTracks: [],
-    playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
-    reviewSchedules: {},
-  },
-  {
-    userId: 'virtual-moses',
-    displayName: 'Мойсей',
-    coins: 2180,
-    themePoints: { pentateuch: 920, commandments: 540, geography: 310 },
-    completedLevels: [],
-    survivalHighScore: 35,
-    millionaireWins: 1,
-    millionaireMaxLevel: 14,
-    unlockedThemes: ['classic', 'sinai-revelation'],
-    activeTheme: 'sinai-revelation',
-    achievements: ['iron-shield', 'cartographer'],
-    avatar: 'default',
-    unlockedAvatars: ['default'],
-    streakDays: 6,
-    lastActiveAt: new Date().toISOString(),
-    studyMastery: {},
-    practiceTracks: [],
-    playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
-    reviewSchedules: {},
-  },
-  {
-    userId: 'virtual-miriam',
-    displayName: 'Маріам',
-    coins: 1740,
-    themePoints: { psalms: 610, 'old-testament': 420, patriarchs: 260 },
-    completedLevels: [],
-    survivalHighScore: 28,
-    millionaireWins: 0,
-    millionaireMaxLevel: 12,
-    unlockedThemes: ['classic', 'eden-garden'],
-    activeTheme: 'eden-garden',
-    achievements: ['aesthete'],
-    avatar: 'default',
-    unlockedAvatars: ['default'],
-    streakDays: 2,
-    lastActiveAt: new Date().toISOString(),
-    studyMastery: {},
-    practiceTracks: [],
-    playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
-    reviewSchedules: {},
-  },
-  {
-    userId: 'virtual-luke',
-    displayName: 'Лука',
-    coins: 1510,
-    themePoints: { gospels: 700, miracles: 480, 'new-testament': 190 },
-    completedLevels: [],
-    survivalHighScore: 24,
-    millionaireWins: 1,
-    millionaireMaxLevel: 15,
-    unlockedThemes: ['classic', 'gennesaret-sea'],
-    activeTheme: 'gennesaret-sea',
-    achievements: ['biblical-millionaire'],
-    avatar: 'default',
-    unlockedAvatars: ['default'],
-    streakDays: 7,
-    lastActiveAt: new Date().toISOString(),
-    studyMastery: {},
-    practiceTracks: [],
-    playerRank: { ...DEFAULT_VIRTUAL_RANK, tier: 'student', plaque: 4, wisdomPoints: 80, unlockedTier: 'preacher' },
-    reviewSchedules: {},
-  },
-];
 
 function getRankValue(profile: PlayerProfile, tab: RankingTab): number {
   if (tab === 'survival') return profile.survivalHighScore;
@@ -124,16 +34,7 @@ export function GlobalStats() {
   const [activeTab, setActiveTab] = useState<RankingTab>('total');
   const [selectedProfile, setSelectedProfile] = useState<PlayerProfile | null>(null);
 
-  const players = useMemo(() => [profile, ...VIRTUAL_PLAYERS], [profile]);
-  const rankedPlayers = useMemo(
-    () =>
-      [...players].sort(
-        (a, b) =>
-          getRankValue(b, activeTab) - getRankValue(a, activeTab) ||
-          b.coins - a.coins,
-      ),
-    [activeTab, players],
-  );
+  const rankedPlayers = useMemo(() => [profile], [profile]);
 
   const grandTotal = THEMES.reduce(
     (sum, theme) => sum + (globalStats.themes[theme.id]?.totalPoints ?? 0),
@@ -141,14 +42,17 @@ export function GlobalStats() {
   );
 
   return (
-    <section className={styles.page}>
-      <header className={styles.header}>
-        <h1>Рейтинг гравців</h1>
-        <p>Локальна таблиця з твоїм профілем і віртуальними біблійними суперниками</p>
-        <button type="button" className={styles.refresh} onClick={refreshStats}>
-          Оновити
-        </button>
-      </header>
+    <AppPage>
+      <PageHeader
+        kicker="Прогрес"
+        title="Рейтинг гравців"
+        description="Поки що тут лише твій профіль — глобальний рейтинг з'явиться після підключення бекенду."
+        action={
+          <button type="button" className={styles.refresh} onClick={refreshStats}>
+            Оновити
+          </button>
+        }
+      />
 
       <article className={styles.grandTotal}>
         <span>Очок у статистиці тем</span>
@@ -210,8 +114,8 @@ export function GlobalStats() {
       </MotionStagger>
 
       <p className={styles.note}>
-        Це локальна демонстрація рейтингу. Пізніше її можна під’єднати до backend API
-        для справжньої глобальної таблиці.
+        Рейтинг поки що локальний і показує тільки твій профіль. Порівняння з іншими
+        гравцями з'явиться, коли буде підключено бекенд.
       </p>
 
       {selectedProfile && (
@@ -221,6 +125,6 @@ export function GlobalStats() {
           onClose={() => setSelectedProfile(null)}
         />
       )}
-    </section>
+    </AppPage>
   );
 }

@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTelegram } from '../../hooks/useTelegram';
 import { communityManager } from '../../lib/communities';
+import { AppPage, ErrorState, PageHeader } from '../../components/ui';
 import styles from './Social.module.css';
 
 export function CommunityDetails() {
@@ -19,12 +20,10 @@ export function CommunityDetails() {
 
   if (!community) {
     return (
-      <section className={styles.page}>
-        <Link to="/social/communities" className={styles.btnSecondary}>
-          ← Спільноти
-        </Link>
-        <p className={styles.error}>Спільноту не знайдено</p>
-      </section>
+      <AppPage>
+        <PageHeader onBack={() => navigate('/social/communities')} title="Спільнота" />
+        <ErrorState title="Спільноту не знайдено" />
+      </AppPage>
     );
   }
 
@@ -53,29 +52,21 @@ export function CommunityDetails() {
     setVersion((v) => v + 1);
   };
 
-  const leaderboard = useMemo(() => {
-    return community.memberIds.map((id) => ({
-      userId: id,
-      displayName: id,
-      score: 0,
-      gamesPlayed: 0,
-      accuracy: 0,
-    }));
-  }, [community.memberIds]);
-
   return (
-    <section className={styles.page}>
-      <Link to="/social/communities" className={styles.btnSecondary}>
-        ← Спільноти
-      </Link>
+    <AppPage>
+      <PageHeader
+        onBack={() => navigate('/social/communities')}
+        title={community.name}
+        action={
+          community.isPublic ? (
+            <span className={styles.badge}>PUBLIC</span>
+          ) : (
+            <span className={styles.badge}>PRIVATE</span>
+          )
+        }
+      />
 
       <section className={styles.card}>
-        <div className={styles.row}>
-          <h1 className={styles.title} style={{ fontSize: '1.25rem' }}>
-            {community.name}
-          </h1>
-          {community.isPublic ? <span className={styles.badge}>PUBLIC</span> : <span className={styles.badge}>PRIVATE</span>}
-        </div>
         <p className={styles.muted}>{community.description}</p>
         <p className={styles.muted}>Учасників: {community.memberIds.length}</p>
 
@@ -113,23 +104,7 @@ export function CommunityDetails() {
           ))}
         </ul>
       </section>
-
-      <section className={styles.card}>
-        <h2 className={styles.title} style={{ fontSize: '1.1rem' }}>
-          Лідерборд
-        </h2>
-        <ul className={styles.list}>
-          {leaderboard.map((e, i) => (
-            <li key={e.userId} className={styles.row}>
-              <span>
-                {i + 1}. {e.displayName}
-              </span>
-              <span className={styles.badge}>{e.score}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </section>
+    </AppPage>
   );
 }
 

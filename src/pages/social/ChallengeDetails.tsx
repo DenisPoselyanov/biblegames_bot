@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTelegram } from '../../hooks/useTelegram';
 import { friendChallengeManager } from '../../lib/friendChallenges';
+import { AppPage, ErrorState, PageHeader } from '../../components/ui';
 import styles from './Social.module.css';
 
 export function ChallengeDetails() {
@@ -18,12 +19,10 @@ export function ChallengeDetails() {
 
   if (!challenge) {
     return (
-      <section className={styles.page}>
-        <Link to="/social/challenges" className={styles.btnSecondary}>
-          ← Виклики
-        </Link>
-        <p className={styles.error}>Виклик не знайдено</p>
-      </section>
+      <AppPage>
+        <PageHeader onBack={() => navigate('/social/challenges')} title="Виклик" />
+        <ErrorState title="Виклик не знайдено" />
+      </AppPage>
     );
   }
 
@@ -53,19 +52,14 @@ export function ChallengeDetails() {
   };
 
   return (
-    <section className={styles.page}>
-      <Link to="/social/challenges" className={styles.btnSecondary}>
-        ← Виклики
-      </Link>
+    <AppPage>
+      <PageHeader
+        onBack={() => navigate('/social/challenges')}
+        title={`${challenge.challengerName} vs ${challenge.challengedName}`}
+        action={<span className={styles.badge}>{challenge.status.toUpperCase()}</span>}
+      />
 
       <section className={styles.card}>
-        <div className={styles.row}>
-          <h1 className={styles.title} style={{ fontSize: '1.25rem' }}>
-            {challenge.challengerName} vs {challenge.challengedName}
-          </h1>
-          <span className={styles.badge}>{challenge.status.toUpperCase()}</span>
-        </div>
-
         <p className={styles.muted}>
           Створено: {new Date(challenge.createdAt).toLocaleString()} · Діє до: {new Date(challenge.expiresAt).toLocaleString()}
         </p>
@@ -111,7 +105,7 @@ export function ChallengeDetails() {
       {!isChallenger && !isChallenged && (
         <p className={styles.muted}>Цей виклик не належить твоєму профілю</p>
       )}
-    </section>
+    </AppPage>
   );
 }
 
