@@ -120,6 +120,10 @@ export interface PlayerProfile {
   playerRank: PlayerRank;
   /** SM-2-lite review schedule per learning objective, keyed by learningObjectiveId (Phase 6, review_scheduler_v2). */
   reviewSchedules: Record<LearningObjectiveId, ReviewScheduleState>;
+  /** WS8 settings — server-synced, no client-local default; absent until explicitly set. */
+  locale?: string;
+  timezone?: string;
+  motionIntensity?: 'full' | 'reduced' | 'minimal';
 }
 
 export interface MasteryState {

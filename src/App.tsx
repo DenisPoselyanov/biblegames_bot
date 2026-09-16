@@ -41,6 +41,10 @@ const lessonExperienceV2Enabled = isFeatureEnabled('lesson_experience_v2');
 const practiceSessionV2Enabled = isFeatureEnabled('practiceSessionV2');
 const progressDashboardV2Enabled = isFeatureEnabled('progress_dashboard_v2');
 
+// WS8 (Profile/settings + default-theme rollout). New flag — no legacy page
+// reads it, so there's no overlap to document (unlike the flags above).
+const profileSettingsV2Enabled = isFeatureEnabled('profileSettingsV2');
+
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const Themes = lazy(() => import('./pages/Themes').then((m) => ({ default: m.Themes })));
 const ThemeDetail = lazy(() =>
@@ -79,6 +83,15 @@ const ProgressV2 = lazy(() =>
   import('./pages/progress/ProgressV2').then((m) => ({ default: m.ProgressV2 })),
 );
 const Profile = lazy(() => import('./pages/Profile').then((m) => ({ default: m.Profile })));
+const ProfileV2 = lazy(() =>
+  import('./pages/profile/ProfileV2').then((m) => ({ default: m.ProfileV2 })),
+);
+const Settings = lazy(() =>
+  import('./pages/profile/Settings').then((m) => ({ default: m.Settings })),
+);
+const ThemePicker = lazy(() =>
+  import('./pages/profile/ThemePicker').then((m) => ({ default: m.ThemePicker })),
+);
 const GlobalStats = lazy(() =>
   import('./pages/GlobalStats').then((m) => ({ default: m.GlobalStats })),
 );
@@ -287,14 +300,35 @@ export default function App() {
                   }
                 />
 
-                <Route path="profile" element={<ErrorBoundary><LazyPage><Profile /></LazyPage></ErrorBoundary>} />
+                <Route
+                  path="profile"
+                  element={
+                    profileSettingsV2Enabled ? (
+                      <ErrorBoundary><LazyPage><ProfileV2 /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ErrorBoundary><LazyPage><Profile /></LazyPage></ErrorBoundary>
+                    )
+                  }
+                />
                 <Route
                   path="profile/settings"
-                  element={<ComingSoon icon="settings" title="Налаштування" description="Окремий екран налаштувань ще будується." />}
+                  element={
+                    profileSettingsV2Enabled ? (
+                      <ErrorBoundary><LazyPage><Settings /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ComingSoon icon="settings" title="Налаштування" description="Окремий екран налаштувань ще будується." />
+                    )
+                  }
                 />
                 <Route
                   path="profile/themes"
-                  element={<ComingSoon icon="star" title="Оформлення" description="Вибір теми оформлення ще будується." />}
+                  element={
+                    profileSettingsV2Enabled ? (
+                      <ErrorBoundary><LazyPage><ThemePicker /></LazyPage></ErrorBoundary>
+                    ) : (
+                      <ComingSoon icon="star" title="Оформлення" description="Вибір теми оформлення ще будується." />
+                    )
+                  }
                 />
 
                 <Route path="shop" element={<ErrorBoundary><LazyPage><Shop /></LazyPage></ErrorBoundary>} />

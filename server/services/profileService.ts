@@ -17,6 +17,7 @@
 import type { ServerStore } from '../db/store';
 import { migrateProfileWallet, type ProfileWithLegacyWallet } from '../../src/lib/storage';
 import { isBollsTranslation } from '../../src/lib/bollsConstants';
+import { getCosmeticThemeById } from '../../src/data/cosmetics';
 import type { WalletLedger } from '../wallet';
 import type { PreferencesRepository } from '../domains/identity/repository';
 import type { EntitlementRepository } from '../domains/economy/entitlements';
@@ -76,11 +77,16 @@ export function emptyProfile(userId: string): Record<string, unknown> {
   };
 }
 
+const VALID_MOTION_INTENSITIES = ['full', 'reduced', 'minimal'] as const;
+
 export interface ProfilePreferences {
   displayName?: string;
   bibleTranslation?: string;
   activeTheme?: string;
   avatar?: string;
+  locale?: string;
+  timezone?: string;
+  motionIntensity?: string;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -106,14 +112,33 @@ export function sanitizePreferences(
     out.bibleTranslation = body.bibleTranslation;
   }
   const unlockedThemes = Array.isArray(stored.unlockedThemes) ? (stored.unlockedThemes as string[]) : [];
-  if (typeof body.activeTheme === 'string' && unlockedThemes.includes(body.activeTheme)) {
-    out.activeTheme = body.activeTheme;
+  if (typeof body.activeTheme === 'string') {
+    // A free catalog theme (e.g. `light`, ADR-009) is always selectable even
+    // before it's ever been recorded in `unlockedThemes` — it was never a
+    // purchase. Anything already in `unlockedThemes` stays accepted as
+    // before, regardless of whether it's still in the live catalog.
+    const isFreeCatalogTheme = getCosmeticThemeById(body.activeTheme)?.price === 0;
+    if (isFreeCatalogTheme || unlockedThemes.includes(body.activeTheme)) {
+      out.activeTheme = body.activeTheme;
+    }
   }
   const unlockedAvatars = Array.isArray(stored.unlockedAvatars)
     ? (stored.unlockedAvatars as string[])
     : [];
   if (body.avatar === '' || (typeof body.avatar === 'string' && unlockedAvatars.includes(body.avatar))) {
     out.avatar = body.avatar as string;
+  }
+  if (typeof body.locale === 'string' && body.locale.trim()) {
+    out.locale = body.locale.trim().slice(0, 32);
+  }
+  if (typeof body.timezone === 'string' && body.timezone.trim()) {
+    out.timezone = body.timezone.trim().slice(0, 64);
+  }
+  if (
+    typeof body.motionIntensity === 'string' &&
+    (VALID_MOTION_INTENSITIES as readonly string[]).includes(body.motionIntensity)
+  ) {
+    out.motionIntensity = body.motionIntensity;
   }
   return out;
 }
@@ -137,6 +162,9 @@ export async function readProfile(
       if (typed.activeTheme !== null) merged.activeTheme = typed.activeTheme;
       if (typed.avatar !== null) merged.avatar = typed.avatar;
       if (typed.bibleTranslation !== null) merged.bibleTranslation = typed.bibleTranslation;
+      if (typed.locale !== null) merged.locale = typed.locale;
+      if (typed.timezone !== null) merged.timezone = typed.timezone;
+      if (typed.motionIntensity !== null) merged.motionIntensity = typed.motionIntensity;
     }
   }
 
@@ -190,6 +218,9 @@ export async function writePreferences(
     if (prefs.activeTheme !== undefined) typedPatch.activeTheme = prefs.activeTheme;
     if (prefs.avatar !== undefined) typedPatch.avatar = prefs.avatar;
     if (prefs.bibleTranslation !== undefined) typedPatch.bibleTranslation = prefs.bibleTranslation;
+    if (prefs.locale !== undefined) typedPatch.locale = prefs.locale;
+    if (prefs.timezone !== undefined) typedPatch.timezone = prefs.timezone;
+    if (prefs.motionIntensity !== undefined) typedPatch.motionIntensity = prefs.motionIntensity;
     if (Object.keys(typedPatch).length > 0) {
       await preferences.repo.upsert(userId, typedPatch);
     }

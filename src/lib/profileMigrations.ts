@@ -1,5 +1,5 @@
 import type { Difficulty, PlayerProfile } from '../types';
-import { DEFAULT_COSMETIC_THEME_ID } from '../data/cosmetics';
+import { resolveDefaultCosmeticThemeId } from '../data/cosmetics';
 import { DEFAULT_BOLLS_TRANSLATION, normalizeBollsTranslation } from './bollsConstants';
 import { getDefaultPlayerRank } from './practiceProgression';
 
@@ -62,8 +62,8 @@ function fillDefaults(profile: StoredProfile, userId: string, displayName: strin
     survivalHighScore: profile.survivalHighScore ?? 0,
     millionaireWins: profile.millionaireWins ?? 0,
     millionaireMaxLevel: profile.millionaireMaxLevel ?? 0,
-    unlockedThemes: profile.unlockedThemes?.length ? profile.unlockedThemes : [DEFAULT_COSMETIC_THEME_ID],
-    activeTheme: profile.activeTheme ?? DEFAULT_COSMETIC_THEME_ID,
+    unlockedThemes: profile.unlockedThemes?.length ? profile.unlockedThemes : [resolveDefaultCosmeticThemeId()],
+    activeTheme: profile.activeTheme || resolveDefaultCosmeticThemeId(),
     achievements: profile.achievements ?? [],
     avatar: profile.avatar ?? '',
     coins: profile.coins ?? 0,

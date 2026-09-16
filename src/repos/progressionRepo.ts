@@ -164,6 +164,9 @@ export const progressionRepo = {
     bibleTranslation?: string;
     activeTheme?: string;
     avatar?: string;
+    locale?: string;
+    timezone?: string;
+    motionIntensity?: 'full' | 'reduced' | 'minimal';
   }): Promise<PlayerProfile> {
     return patch<PlayerProfile>('/me/preferences', prefs);
   },

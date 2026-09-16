@@ -7,7 +7,9 @@ export type FlagName =
   | 'review_scheduler_v2'
   | 'progress_dashboard_v2'
   | 'learningShellV2'
-  | 'practiceSessionV2';
+  | 'practiceSessionV2'
+  | 'profileSettingsV2'
+  | 'lightThemeDefault';
 
 const FLAG_DEFAULTS: Record<FlagName, boolean> = {
   learning_first_navigation: false,
@@ -19,6 +21,8 @@ const FLAG_DEFAULTS: Record<FlagName, boolean> = {
   progress_dashboard_v2: false,
   learningShellV2: false,
   practiceSessionV2: false,
+  profileSettingsV2: false,
+  lightThemeDefault: false,
 };
 
 /**

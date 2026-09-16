@@ -1,0 +1,86 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.avatarBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-soft);
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--space-md);
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
+}
+
+.sectionLabel {
+  margin: var(--space-sm) 0 var(--space-xs);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.socialQuickStats {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+.socialQuickStats div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.socialQuickStats span {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.socialQuickStats strong {
+  font-size: var(--fs-lg);
+  color: var(--text-primary);
+}
+
+.inviteBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--fs-base);
+  cursor: pointer;
+}
+
+.achievements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.achModalList {
+  display: flex;
+  flex-direction: column;
+}
+
+.empty {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
