@@ -149,10 +149,25 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
   - **Found but deferred**: the same bug exists in ~62 places across 21 pre-WS3 files using the legacy
     `--gold-light` token directly (Millionaire, Survival, Kahoot, Quiz, Home, Profile, etc.) — flagged as a
     separate background task (`task_7ea52d9a`), not yet started.
-  - **Still open**: touch-target sweep, focus-visible audit, text-scaling-to-200% check, ARIA live regions
-    (currently only 1 occurrence app-wide, admin-only — ARIA live is essentially greenfield for core
-    screens), route/dialog-heading focus management (`useFocusTrap` focuses first interactive element, not
-    the heading — no route-change focus handling exists at all).
+  - **Touch-target sweep done**: audited every `src/components/ui/*` primitive's clickable-element
+    dimensions (the only ones exercised by real WS6-9 pages, not just the dev fixture) against the 44×44
+    CSS px floor. Found and fixed 3 violations, all below 44px on core interactive elements: `Button`'s
+    `sm` variant (40px — used by `ErrorState`/`OfflineState`'s retry button and `RouteCompatibilityNotice`,
+    both real error-path UI), `SearchField`'s clear button (32×32 — used on `LearningHub`'s search), and
+    `SegmentedControl`'s per-option hit area (40px — same `LearningHub` filter). `IconButton` (44×44),
+    `ListRow`/`BottomNavigation` (56px rows, decorative sub-icons only) were already correct. Verified via
+    `tsc -b` clean, full suite 434/434, and live browser QA on `/dev/design-system` (light theme) confirming
+    the enlarged clear button and segmented control render correctly with no layout breakage.
+  - **Focus-visible audit done**: global `button/a/input/select:focus-visible` outline in `src/index.css`
+    covers everything; every `components/ui/*` primitive with an `onClick` renders a real `<button>` (never
+    a clickable `<div>`/`role="button"` — confirmed via grep, zero hits), so nothing bypasses native focus
+    handling. The few `outline: none` overrides (`SearchField` input, `AppShellV2` `<main>`) each have a
+    working visible replacement (focus-within ring, or are the deliberate route-focus target) — not gaps.
+  - **Still open**: text-scaling-to-200% check, ARIA live regions (currently only 1 occurrence app-wide,
+    admin-only — ARIA live is essentially greenfield for core screens), route/dialog-heading focus
+    management (`AppShellV2` already moves focus to `<main>` on route change via `mainRef`, but not to the
+    new screen's heading specifically per §17's wording; `useFocusTrap` focuses first interactive element,
+    not the heading, inside dialogs/sheets).
   - Motion reduced/minimal (already verified real/wired, not a stub — `MotionProvider.tsx`) and most
     icon-button `aria-label` coverage (via `IconButton`, already required-prop) need no further work.
 - Performance budget (§18: no full question-bank load on core routes, code-split, image/font budget) — **not started**.

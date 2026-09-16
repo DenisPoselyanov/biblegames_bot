@@ -8,7 +8,8 @@
 
 .option {
   flex: 1;
-  min-height: 40px;
+  /* 44px touch target per §17 */
+  min-height: 44px;
   padding: 0 var(--space-sm);
   display: flex;
   align-items: center;
