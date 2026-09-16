@@ -138,13 +138,27 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
 - **Depends on**: WS3/WS4/WS5.
 - **DoD tie-in**: §25.17 (no client-authoritative rewards reintroduced).
 
-### WS10 — Hardening, rollout, DoD sign-off
-- **Branch**: `phase-3/ws10-hardening-rollout`
+### WS10 — Hardening, rollout, DoD sign-off — **in progress**
+- **Branch**: `phase-3/ws10-hardening-rollout` (a11y work split onto `phase-3/ws10-a11y-gold-contrast`,
+  not yet merged)
 - Accessibility audit (§17: touch targets, focus, contrast incl. gold-on-ivory, reduced motion, ARIA live dedup).
-- Performance budget (§18: no full question-bank load on core routes, code-split, image/font budget).
-- Analytics instrumentation (§19) and privacy checks (no raw Scripture-reflection tracking).
-- Full test suite: unit/component, integration, E2E/manual matrix (§23), visual regression baseline for the screens listed in §23.
-- Staged flag rollout per §20 (fixtures → design review → shell-behind-flag → migrated internal users → alpha → new-users-first if migration risk high → percentage → full → remove old shell after window), redirect retirement only after the retention window (§5.3).
+  - **Gold-on-ivory contrast fixed** for the new semantic-token layer: added `accentSpiritualText`
+    (`--accent-spiritual-text`), a WCAG-safe darkened variant of `accentSpiritual` for text/icon roles only,
+    pinned to `#816322` for the `light` theme (~5.1:1/~5.6:1 vs bgApp/bgElevated; original `#C59A3D` was only
+    ~2.37:1). Wired into `PageHeader`/`AchievementBadge`/`HeroCard`/`MetricTile`.
+  - **Found but deferred**: the same bug exists in ~62 places across 21 pre-WS3 files using the legacy
+    `--gold-light` token directly (Millionaire, Survival, Kahoot, Quiz, Home, Profile, etc.) — flagged as a
+    separate background task (`task_7ea52d9a`), not yet started.
+  - **Still open**: touch-target sweep, focus-visible audit, text-scaling-to-200% check, ARIA live regions
+    (currently only 1 occurrence app-wide, admin-only — ARIA live is essentially greenfield for core
+    screens), route/dialog-heading focus management (`useFocusTrap` focuses first interactive element, not
+    the heading — no route-change focus handling exists at all).
+  - Motion reduced/minimal (already verified real/wired, not a stub — `MotionProvider.tsx`) and most
+    icon-button `aria-label` coverage (via `IconButton`, already required-prop) need no further work.
+- Performance budget (§18: no full question-bank load on core routes, code-split, image/font budget) — **not started**.
+- Analytics instrumentation (§19) and privacy checks (no raw Scripture-reflection tracking) — **not started**.
+- Full test suite: unit/component, integration, E2E/manual matrix (§23), visual regression baseline for the screens listed in §23 — **not started**.
+- Staged flag rollout per §20 (fixtures → design review → shell-behind-flag → migrated internal users → alpha → new-users-first if migration risk high → percentage → full → remove old shell after window), redirect retirement only after the retention window (§5.3) — **not started, needs product-owner/production-ops decisions this agent can't make alone**.
 - Rollback drill per §26; Phase 4 handoff doc per §27.
 - **DoD tie-in**: closes §25 items 14–19.
 
