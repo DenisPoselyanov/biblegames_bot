@@ -224,6 +224,19 @@ body {
   min-height: 100dvh;
 }
 
+/* Visually hidden but announced by screen readers (§17 ARIA live messages) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ─── Glassmorphism utility ─── */
 .glass-card {
   background: var(--glass-bg);

@@ -835,6 +835,11 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
                   aria-hidden
                 />
               )}
+              {showResult && (
+                <span className="sr-only" role="status">
+                  {selected === current.correctIndex ? 'Правильно' : 'Неправильно'}
+                </span>
+              )}
               {mode === 'practice' && (
                 <button
                   type="button"
