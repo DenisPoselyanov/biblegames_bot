@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ThemePicker } from '../../../components/ThemePicker';
+import { FullscreenMotion, MotionStagger, MotionStaggerItem } from '../../../components/motion';
 import { getThemeById } from '../../../data/themes';
 import { useKahootRoom } from '../../../hooks/useKahootRoom';
 import { hasApi, apiUrl } from '../../../repos/apiClient';
@@ -144,20 +145,24 @@ export function KahootRoom() {
 
   if (!connected) {
     return (
+      <FullscreenMotion motionKey="kahoot-room-connecting">
       <section className={styles.page}>
         <p className={styles.warn}>Підключення до сервера…</p>
       </section>
+      </FullscreenMotion>
     );
   }
 
   if (!room) {
     return (
+      <FullscreenMotion motionKey="kahoot-room-missing">
       <section className={styles.page}>
         <p className={styles.error}>Кімната {urlCode} недоступна</p>
         <Link to="/play/kahoot/join" className={styles.btnSecondary}>
           Приєднатися знову
         </Link>
       </section>
+      </FullscreenMotion>
     );
   }
 
@@ -203,6 +208,7 @@ export function KahootRoom() {
 
   if (room.phase === 'lobby') {
     return (
+      <FullscreenMotion motionKey="kahoot-room-lobby">
       <section className={styles.page}>
         <div className={styles.lobbyTop}>
           <button type="button" className={styles.leaveBtn} onClick={handleLeave}>
@@ -274,14 +280,14 @@ export function KahootRoom() {
             <p className={styles.themeList}>Джерело: плейлист</p>
           ) : null)}
 
-        <ul className={styles.playerList}>
+        <MotionStagger as="ul" className={styles.playerList}>
           {room.players.map((p) => (
-            <li key={p.id}>
+            <MotionStaggerItem as="li" key={p.id}>
               <span>{p.name}</span>
               {p.id === room.hostId && <em>ведучий</em>}
-            </li>
+            </MotionStaggerItem>
           ))}
-        </ul>
+        </MotionStagger>
 
         <p className={styles.muted}>
           {room.settings.questionCount || KAHOOT_DEFAULTS.questionCount} питань ·{' '}
@@ -306,11 +312,13 @@ export function KahootRoom() {
           <p className={styles.waiting}>⏳ Очікування старту…</p>
         )}
       </section>
+      </FullscreenMotion>
     );
   }
 
   if (room.phase === 'finished') {
     return (
+      <FullscreenMotion motionKey="kahoot-room-finished">
       <section className={styles.page}>
         <h1 className={styles.title}>Гра завершена!</h1>
         <ol className={styles.leaderboard}>
@@ -338,6 +346,7 @@ export function KahootRoom() {
           До меню Kahoot
         </button>
       </section>
+      </FullscreenMotion>
     );
   }
 
@@ -345,12 +354,15 @@ export function KahootRoom() {
     const top = room.players.slice(0, 5);
     if (controlOnly && !isHost) {
       return (
+        <FullscreenMotion motionKey="kahoot-room-leaderboard-control">
         <section className={styles.page}>
           <p className={styles.muted}>Режим керування — очікування ведучого…</p>
         </section>
+        </FullscreenMotion>
       );
     }
     return (
+      <FullscreenMotion motionKey={`kahoot-room-leaderboard${room.question ? `-${room.question.index}` : ''}`}>
       <section className={`${styles.page} ${styles.gamePage}`}>
         <h2 className={styles.title}>Таблиця лідерів</h2>
         <ol className={styles.leaderboard}>
@@ -372,6 +384,7 @@ export function KahootRoom() {
           <p className={styles.muted}>Наступне питання незабаром…</p>
         )}
       </section>
+      </FullscreenMotion>
     );
   }
 
@@ -379,6 +392,7 @@ export function KahootRoom() {
 
   if (room.phase === 'think' && q) {
     return (
+      <FullscreenMotion motionKey={`kahoot-room-think${q.index}`}>
       <section className={`${styles.page} ${styles.gamePage}`}>
         <div className={styles.gameTop}>
           <span>
@@ -390,11 +404,13 @@ export function KahootRoom() {
         <h2 className={styles.questionLive}>{q.text}</h2>
         <p className={styles.muted}>Варіанти з&apos;являться незабаром…</p>
       </section>
+      </FullscreenMotion>
     );
   }
 
   if (room.phase === 'reveal' && q) {
     return (
+      <FullscreenMotion motionKey={`kahoot-room-reveal${q.index}`}>
       <section className={`${styles.page} ${styles.gamePage}`}>
         <div className={styles.revealHeader}>
           <span>
@@ -438,6 +454,7 @@ export function KahootRoom() {
         </ul>
         {!controlOnly && hostManualPanel}
       </section>
+      </FullscreenMotion>
     );
   }
 
@@ -446,6 +463,7 @@ export function KahootRoom() {
     const hostSpectating = isHost && !canAnswer;
 
     return (
+      <FullscreenMotion motionKey={`kahoot-room-question${q.index}`}>
       <section className={`${styles.page} ${styles.gamePage}`}>
         <div className={styles.gameTop}>
           <span>
@@ -496,12 +514,15 @@ export function KahootRoom() {
           </Link>
         )}
       </section>
+      </FullscreenMotion>
     );
   }
 
   return (
+    <FullscreenMotion motionKey="kahoot-room-loading">
     <section className={styles.page}>
       <p className={styles.muted}>Завантаження…</p>
     </section>
+    </FullscreenMotion>
   );
 }

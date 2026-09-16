@@ -71,11 +71,17 @@ export interface ProgressionActions {
     questionIds?: string[],
   ) => Promise<PracticeStageResult>;
   isLevelDone: (themeId: string, difficulty: Difficulty) => boolean;
-  saveSurvivalRun: (score: number, pointsEarned: number, runId?: string) => Promise<void>;
+  saveSurvivalRun: (
+    score: number,
+    pointsEarned: number,
+    answers: { questionId: string; selectedIndex: number }[],
+    runId?: string,
+  ) => Promise<void>;
   saveMillionaireRun: (
     reachedLevel: number,
     pointsEarned: number,
     runLength: number,
+    answers: { questionId: string; selectedIndex: number }[],
     runId?: string,
   ) => Promise<void>;
   unlockAchievement: (achievementId: string) => boolean;
@@ -428,13 +434,19 @@ export function useProgression(): ProgressionActions {
   );
 
   const saveSurvivalRun = useCallback(
-    async (score: number, pointsEarned: number, runId?: string) => {
+    async (
+      score: number,
+      pointsEarned: number,
+      answers: { questionId: string; selectedIndex: number }[],
+      runId?: string,
+    ) => {
       const rid = runId ?? `survival:${Date.now()}`;
       const done = await runCompletion({
         kind: 'survival',
         runId: rid,
         idempotencyKey: rid,
         score,
+        answers,
       });
       if (done) return;
       updateProfile((current) => ({
@@ -447,7 +459,13 @@ export function useProgression(): ProgressionActions {
   );
 
   const saveMillionaireRun = useCallback(
-    async (reachedLevel: number, pointsEarned: number, runLength: number, runId?: string) => {
+    async (
+      reachedLevel: number,
+      pointsEarned: number,
+      runLength: number,
+      answers: { questionId: string; selectedIndex: number }[],
+      runId?: string,
+    ) => {
       const rid = runId ?? `millionaire:${Date.now()}`;
       const done = await runCompletion({
         kind: 'millionaire',
@@ -455,6 +473,7 @@ export function useProgression(): ProgressionActions {
         idempotencyKey: rid,
         reachedLevel,
         runLength,
+        answers,
       });
       if (done) return;
       const completedRun = runLength > 0 && reachedLevel >= runLength;

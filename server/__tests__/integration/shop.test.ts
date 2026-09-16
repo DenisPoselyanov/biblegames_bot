@@ -31,12 +31,25 @@ const buyTheme = (overrides: Record<string, unknown> = {}) => ({
   ...overrides,
 });
 
+/**
+ * Earns coins through a survival completion — an answer trail of real,
+ * correctly-answered 'child'-difficulty questions (10 coins each, WS9 §15.3
+ * server-authoritative scoring), so `amount` must be a multiple of 10.
+ */
 async function fund(app: ReturnType<typeof makeApp>['app'], amount: number) {
-  // Earn coins through a survival completion (score == coins).
+  if (amount % 10 !== 0) throw new Error('fund() amount must be a multiple of 10');
   await request(app)
     .post('/api/v1/progression/completions')
     .set('x-user-id', '7')
-    .send({ kind: 'survival', runId: 'fund', idempotencyKey: 'fund', score: amount });
+    .send({
+      kind: 'survival',
+      runId: 'fund',
+      idempotencyKey: 'fund',
+      answers: Array.from({ length: amount / 10 }, () => ({
+        questionId: 'new-testament-child-ai-00007',
+        selectedIndex: 0,
+      })),
+    });
 }
 
 describe('POST /api/v1/shop/purchases', () => {

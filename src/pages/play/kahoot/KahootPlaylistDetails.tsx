@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { FullscreenMotion } from '../../../components/motion';
 import { playlistManager } from '../../../lib/playlists';
 import { THEMES } from '../../../data/themes';
 import { useTelegram } from '../../../hooks/useTelegram';
@@ -55,6 +56,7 @@ export function KahootPlaylistDetails() {
   };
 
   return (
+    <FullscreenMotion motionKey={`kahoot-playlist-${playlist.id}`}>
     <section className={styles.page}>
       <Link to="/play/kahoot/playlists" className={styles.back}>
         ← Плейлисти
@@ -96,5 +98,6 @@ export function KahootPlaylistDetails() {
         </p>
       </article>
     </section>
+    </FullscreenMotion>
   );
 }

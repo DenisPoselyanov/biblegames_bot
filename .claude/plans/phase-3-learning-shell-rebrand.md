@@ -116,9 +116,18 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
 - **Depends on**: WS3/WS4, Phase 2 preference endpoints (already exist).
 - **DoD tie-in**: §25.8, §25.9, §25.10.
 
-### WS9 — Existing game-mode reskin
+### WS9 — Existing game-mode reskin — **mostly done, PR [#25](https://github.com/DenisPoselyanov/biblegames_bot/pull/25) open (2026-09-16)**
 - **Branch**: `phase-3/ws9-game-mode-reskin`
-- Play Hub cards disclose mastery/XP/leaderboard impact per mode (§15.1). Millionaire/Survival/Kahoot get shared shell/typography/motion only — **no reward-authority changes**; Survival stops trusting client-submitted final score as authoritative if it currently does (verify — this may itself be a Phase 1/2-adjacent bug worth flagging separately if found).
+- Verified the flagged bug: both Millionaire *and* Survival trusted a client-submitted `score`/
+  `reachedLevel`, only range-clamping it — fixed by having the client submit a per-question answer
+  trail and the server replay it against the real answer key; also corrected two adjacent
+  reward-accuracy bugs (server was paying a flat rate, not Millionaire's real per-level table or
+  Survival's real difficulty-weighted points). Play Hub cards now disclose solo/group, duration,
+  reward policy, mastery impact, availability (§15.1). Kahoot's 7 non-Hub screens gained
+  `FullscreenMotion`/`MotionStagger` (§15.4) — purely additive, no realtime logic touched.
+  Millionaire/Survival's "shared shell" was assessed as already adequately met (WS4 motion +
+  semantic tokens already in place) and not force-converted to `components/ui/*`.
+- **Not done**: §15.5 (social/shop preview shell) — separate follow-up, not started.
 - **Depends on**: WS3/WS4/WS5.
 - **DoD tie-in**: §25.17 (no client-authoritative rewards reintroduced).
 

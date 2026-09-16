@@ -59,11 +59,19 @@ describe('typed-preferences cutover (§18.2)', () => {
     // stale typed value that would otherwise mask the purchase
     await identity.preferences.upsert('500', { activeTheme: 'dawn' });
 
-    // fund via a survival completion (score == coins)
+    // fund: 40 correct 'child'-difficulty answers from the real static pool = 400 coins
     await request(app)
       .post('/api/v1/progression/completions')
       .set('x-user-id', '500')
-      .send({ kind: 'survival', runId: 'f', idempotencyKey: 'f', score: 500 });
+      .send({
+        kind: 'survival',
+        runId: 'f',
+        idempotencyKey: 'f',
+        answers: Array.from({ length: 40 }, () => ({
+          questionId: 'new-testament-child-ai-00007',
+          selectedIndex: 0,
+        })),
+      });
 
     const buy = await request(app)
       .post('/api/v1/shop/purchases')

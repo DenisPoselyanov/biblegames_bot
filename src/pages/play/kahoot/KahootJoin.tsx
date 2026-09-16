@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Icon } from '../../../components/Icon';
+import { FullscreenMotion } from '../../../components/motion';
 import { useKahootRoom } from '../../../hooks/useKahootRoom';
 import { randomKahootNickname } from '../../../lib/kahootNicknames';
 import { getTelegramStartParam, parseKahootCodeFromStartParam } from '../../../lib/telegram';
@@ -44,6 +45,7 @@ export function KahootJoin() {
   };
 
   return (
+    <FullscreenMotion motionKey="kahoot-join">
     <section className={styles.page}>
       <div className={styles.topRow}>
         <Link to="/play/kahoot" className={styles.backBtn} aria-label="Назад">
@@ -114,5 +116,6 @@ export function KahootJoin() {
         </button>
       </div>
     </section>
+    </FullscreenMotion>
   );
 }

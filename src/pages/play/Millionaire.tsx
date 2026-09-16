@@ -8,6 +8,7 @@ import { ConfirmModal } from '../../components/ConfirmModal';
 import { QuizPoolSkeleton } from '../../components/skeletons';
 import { Icon } from '../../components/Icon';
 import { haptic } from '../../lib/telegram';
+import { getMillionaireSafePoints } from '../../types';
 import type { Question } from '../../types';
 import {
   AnswerOptionButton,
@@ -47,12 +48,6 @@ function segmentHasSafeLevel(segmentIndex: number, totalLevels: number): boolean
   return false;
 }
 
-function getSafePoints(reachedLevel: number): number {
-  if (reachedLevel >= 10) return LEVEL_POINTS[9];
-  if (reachedLevel >= 5) return LEVEL_POINTS[4];
-  return 0;
-}
-
 function emptyMillionaireState() {
   return {
     index: 0,
@@ -66,6 +61,7 @@ function emptyMillionaireState() {
     status: 'playing' as const,
     notice: null as string | null,
     result: null as MillionaireRunSession['result'],
+    answers: [] as { questionId: string; selectedIndex: number }[],
   };
 }
 
@@ -88,6 +84,7 @@ export function Millionaire() {
   const [notice, setNotice] = useState<string | null>(null);
   const [explanationOpen, setExplanationOpen] = useState(false);
   const [result, setResult] = useState<MillionaireRunSession['result']>(null);
+  const [answers, setAnswers] = useState<{ questionId: string; selectedIndex: number }[]>([]);
 
   const [exitConfirmOpen, setExitConfirmOpen] = useState(false);
   const [takeConfirmOpen, setTakeConfirmOpen] = useState(false);
@@ -112,6 +109,7 @@ export function Millionaire() {
         setStatus(session.status);
         setNotice(session.notice);
         setResult(session.result);
+        setAnswers(session.answers ?? []);
       } else {
         setQuestions(buildMillionaireQuestions());
         const empty = emptyMillionaireState();
@@ -126,6 +124,7 @@ export function Millionaire() {
         setStatus(empty.status);
         setNotice(empty.notice);
         setResult(empty.result);
+        setAnswers(empty.answers);
       }
       setReady(true);
     })();
@@ -148,6 +147,7 @@ export function Millionaire() {
       status,
       notice,
       result,
+      answers,
     }),
     [
       questions,
@@ -162,6 +162,7 @@ export function Millionaire() {
       status,
       notice,
       result,
+      answers,
     ],
   );
 
@@ -194,8 +195,8 @@ export function Millionaire() {
   }, [currentLevel, totalLevels]);
 
   const finishGame = useCallback(
-    (title: string, points: number, reachedLevel: number) => {
-      saveMillionaireRun(reachedLevel, points, totalLevels);
+    (title: string, points: number, reachedLevel: number, finalAnswers: { questionId: string; selectedIndex: number }[]) => {
+      saveMillionaireRun(reachedLevel, points, totalLevels, finalAnswers);
       if (totalLevels > 0 && reachedLevel >= totalLevels) {
         unlockAchievement('biblical-millionaire');
         haptic.notification('success');
@@ -226,6 +227,7 @@ export function Millionaire() {
     setExplanationOpen(false);
     setStatus(empty.status);
     setResult(empty.result);
+    setAnswers(empty.answers);
   }, [clearSession]);
 
   const useFiftyFifty = () => {
@@ -290,13 +292,16 @@ export function Millionaire() {
       haptic.notification('error');
       setStatus('answered');
       const reachedLevel = Math.max(0, index);
-      finishGame('Гру завершено', getSafePoints(reachedLevel), reachedLevel);
+      const finalAnswers = [...answers, { questionId: current.id, selectedIndex: optionIndex }];
+      setAnswers(finalAnswers);
+      finishGame('Гру завершено', getMillionaireSafePoints(reachedLevel), reachedLevel, finalAnswers);
       return;
     }
 
     haptic.notification('success');
     setStatus('answered');
     setNotice(null);
+    setAnswers((prev) => [...prev, { questionId: current.id, selectedIndex: optionIndex }]);
   };
 
   const handleNext = () => {
@@ -305,7 +310,7 @@ export function Millionaire() {
     haptic.impact('light');
 
     if (index >= questions.length - 1) {
-      finishGame('Перемога у Мільйонері!', currentPrize, totalLevels);
+      finishGame('Перемога у Мільйонері!', currentPrize, totalLevels, answers);
       return;
     }
 
@@ -321,7 +326,7 @@ export function Millionaire() {
 
   const takePoints = () => {
     haptic.notification('success');
-    finishGame('Бали збережено', earnedBeforeCurrent, index);
+    finishGame('Бали збережено', earnedBeforeCurrent, index, answers);
   };
 
   const exitGame = () => {

@@ -25,6 +25,7 @@ import type { IdempotencyStore } from '../lib/idempotency';
 import {
   computeCompletion,
   snapshotFromProfile,
+  type CompletionAnswer,
   type CompletionInput,
   type CompletionKind,
   type CompletionResult,
@@ -76,6 +77,14 @@ function readCompletionBody(body: unknown): { input: CompletionInput; idempotenc
   if (!runId) throw new AppError('invalid_completion', 'runId required', 400);
 
   const stagePart = b.stageIndex !== undefined ? `:${Number(b.stageIndex)}` : '';
+  const answers: CompletionAnswer[] | undefined = Array.isArray(b.answers)
+    ? (b.answers as Array<Record<string, unknown>>)
+        .slice(0, 200)
+        .map((a) => ({
+          questionId: String(a.questionId ?? '').slice(0, 128),
+          selectedIndex: Number(a.selectedIndex),
+        }))
+    : undefined;
   return {
     idempotencyKey,
     sourceId: `${kind}:${runId}${stagePart}`,
@@ -94,6 +103,7 @@ function readCompletionBody(body: unknown): { input: CompletionInput; idempotenc
       reachedLevel: b.reachedLevel as number | undefined,
       runLength: b.runLength as number | undefined,
       score: b.score as number | undefined,
+      answers,
     },
   };
 }
@@ -197,7 +207,7 @@ async function applyCompletionBlob(args: {
   const { dbStore, walletLedger, userId, input, sourceId } = args;
   const stored = (await dbStore.getProfile(userId)) ?? emptyProfile(userId);
   const previous = snapshotFromProfile(stored);
-  const { next, delta } = computeCompletion(input, previous);
+  const { next, delta } = await computeCompletion(input, previous);
 
   let balanceAfter: number;
   if (delta.coins !== 0) {

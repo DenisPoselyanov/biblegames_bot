@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useKahootRoom } from '../../../hooks/useKahootRoom';
+import { FullscreenMotion } from '../../../components/motion';
 import { useResolvedProfile } from '../../../hooks/domain/useProfileWriter';
 import { normalizeBollsTranslation } from '../../../lib/bollsConstants';
 import { ScripturePanel } from '../../../components/ScripturePanel';
@@ -51,20 +52,24 @@ export function KahootDisplay() {
 
   if (!connected) {
     return (
+      <FullscreenMotion motionKey="kahoot-display-connecting">
       <section className={styles.displayPage}>
         <p className={styles.warn}>Підключення…</p>
       </section>
+      </FullscreenMotion>
     );
   }
 
   if (error || !room) {
     return (
+      <FullscreenMotion motionKey="kahoot-display-error">
       <section className={styles.displayPage}>
         <p className={styles.error}>{error || `Кімната ${code} недоступна`}</p>
         <Link to="/play/kahoot" className={styles.btnSecondary}>
           Назад
         </Link>
       </section>
+      </FullscreenMotion>
     );
   }
 
@@ -73,6 +78,7 @@ export function KahootDisplay() {
 
   if (room.phase === 'lobby') {
     return (
+      <FullscreenMotion motionKey="kahoot-display-lobby">
       <section className={styles.displayPage}>
         <h1 className={styles.displayTitle}>{room.settings.roomTitle || 'Біблійна гра Kahoot'}</h1>
         <p className={styles.displaySubtitle}>Приєднуйся!</p>
@@ -82,11 +88,13 @@ export function KahootDisplay() {
         )}
         <p className={styles.displayPlayers}>{room.players.length} гравців у лобі</p>
       </section>
+      </FullscreenMotion>
     );
   }
 
   if (room.phase === 'finished') {
     return (
+      <FullscreenMotion motionKey="kahoot-display-finished">
       <section className={styles.displayPage}>
         <h1 className={styles.displayTitle}>Фінал!</h1>
         <ol className={styles.displayLeaderboard}>
@@ -99,11 +107,13 @@ export function KahootDisplay() {
           ))}
         </ol>
       </section>
+      </FullscreenMotion>
     );
   }
 
   if (room.phase === 'leaderboard') {
     return (
+      <FullscreenMotion motionKey="kahoot-display-leaderboard">
       <section className={styles.displayPage}>
         <h2 className={styles.displayTitle}>Таблиця лідерів</h2>
         <ol className={styles.displayLeaderboard}>
@@ -116,11 +126,13 @@ export function KahootDisplay() {
           ))}
         </ol>
       </section>
+      </FullscreenMotion>
     );
   }
 
   if ((room.phase === 'think' || room.phase === 'question') && q) {
     return (
+      <FullscreenMotion motionKey={`kahoot-display-q${q.index}-${room.phase}`}>
       <section className={styles.displayPage}>
         <div className={styles.displayTopBar}>
           <span>
@@ -142,11 +154,13 @@ export function KahootDisplay() {
           </ul>
         )}
       </section>
+      </FullscreenMotion>
     );
   }
 
   if (room.phase === 'reveal' && q) {
     return (
+      <FullscreenMotion motionKey={`kahoot-display-reveal${q.index}`}>
       <section className={styles.displayPage}>
         <h2 className={styles.displayQuestion}>{q.text}</h2>
         {room.answerCounts && (
@@ -177,12 +191,15 @@ export function KahootDisplay() {
           </>
         )}
       </section>
+      </FullscreenMotion>
     );
   }
 
   return (
+    <FullscreenMotion motionKey="kahoot-display-waiting">
     <section className={styles.displayPage}>
       <p className={styles.muted}>Очікування…</p>
     </section>
+    </FullscreenMotion>
   );
 }

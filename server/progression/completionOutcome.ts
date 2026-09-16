@@ -11,27 +11,42 @@ import {
   DIFFICULTIES,
   DIFFICULTY_ORDER,
   DIFFICULTY_POINTS,
+  getMillionaireSafePoints,
+  MILLIONAIRE_LEVEL_POINTS,
+  MILLIONAIRE_WIN_BONUS,
+  SURVIVAL_POINTS_BY_DIFFICULTY,
+  SURVIVAL_STARTING_LIVES,
   type Difficulty,
   type MasteryState,
   type PracticeStageResult,
   type PracticeTrackProgress,
+  type Question,
 } from '../../src/types/index';
 import { AppError } from '../lib/errors';
 import { recomputeStreak } from '../lib/streak';
 import { advancePlayerRank, computeStageWisdom, getDefaultPlayerRank } from './rankMath';
 import { applyPracticeStage } from './practiceTracks';
+import { getQuestionsByIds } from '../services/questionService';
 
 export type CompletionKind = 'level' | 'practice_stage' | 'millionaire' | 'survival';
 
 export const MAX_QUESTIONS = 100;
 export const SURVIVAL_MAX_SCORE = 1000;
-export const SURVIVAL_COINS_PER_POINT = 1;
-export const MILLIONAIRE_MAX_LEVEL = 20;
-export const MILLIONAIRE_COINS_PER_LEVEL = 25;
-export const MILLIONAIRE_WIN_BONUS = 150;
+export const MILLIONAIRE_MAX_LEVEL = MILLIONAIRE_LEVEL_POINTS.length;
 export const PRACTICE_PASS_MIN_CORRECT = 7;
 /** Survival correct-answer count that earns the `iron-shield` achievement (src/pages/play/Survival.tsx). */
 export const SURVIVAL_IRON_SHIELD_MIN = 30;
+
+/** A single answer in a millionaire/survival run's validated trail (WS9, §15.2/§15.3). */
+export interface CompletionAnswer {
+  questionId: string;
+  selectedIndex: number;
+}
+
+/** Looks up the real questions (incl. `correctIndex`) behind a submitted answer trail. Injectable for tests. */
+export type QuestionLookup = (ids: string[]) => Promise<Pick<Question, 'id' | 'correctIndex' | 'difficulty'>[]>;
+
+const defaultLookupQuestions: QuestionLookup = (ids) => getQuestionsByIds(ids);
 
 export interface CompletionInput {
   kind: CompletionKind;
@@ -47,6 +62,7 @@ export interface CompletionInput {
   reachedLevel?: number;
   runLength?: number;
   score?: number;
+  answers?: CompletionAnswer[];
 }
 
 export interface ProgressionSnapshot {
@@ -140,11 +156,12 @@ export function snapshotFromProfile(profile: Record<string, unknown>): Progressi
   };
 }
 
-export function computeCompletion(
+export async function computeCompletion(
   input: CompletionInput,
   current: ProgressionSnapshot,
   now: Date = new Date(),
-): CompletionResult {
+  lookupQuestions: QuestionLookup = defaultLookupQuestions,
+): Promise<CompletionResult> {
   const next: ProgressionSnapshot = {
     ...current,
     completedLevels: [...current.completedLevels],
@@ -276,16 +293,36 @@ export function computeCompletion(
     }
 
     case 'millionaire': {
-      const reached = Number(input.reachedLevel);
-      const runLength = Number(input.runLength);
-      if (!Number.isInteger(reached) || reached < 0 || reached > MILLIONAIRE_MAX_LEVEL) {
-        bad('reachedLevel out of range');
+      // The client sends what it played (an answer per level, in order); the
+      // server replays it against the real answer key and decides what it's
+      // worth — `input.reachedLevel`/`runLength` are display hints only, never
+      // trusted for the payout (WS9, §15.2 — a client can no longer just POST
+      // a `reachedLevel` number and collect the coins for levels it never
+      // cleared).
+      const answers = input.answers ?? [];
+      if (answers.length === 0 || answers.length > MILLIONAIRE_MAX_LEVEL) {
+        bad('answers out of range for millionaire completion');
       }
-      if (!Number.isInteger(runLength) || runLength <= 0 || runLength > MILLIONAIRE_MAX_LEVEL) {
-        bad('runLength out of range');
+      const questions = await lookupQuestions(answers.map((a) => a.questionId));
+      const byId = new Map(questions.map((q) => [q.id, q]));
+
+      let reached = 0;
+      for (const answer of answers) {
+        const question = byId.get(answer.questionId);
+        if (!question) bad('unknown question in millionaire answers');
+        if (answer.selectedIndex !== question.correctIndex) break;
+        reached += 1;
       }
-      const won = reached >= runLength;
-      coinsDelta = reached * MILLIONAIRE_COINS_PER_LEVEL + (won ? MILLIONAIRE_WIN_BONUS : 0);
+
+      const lostOnAWrongAnswer = reached < answers.length;
+      const won = reached >= MILLIONAIRE_MAX_LEVEL;
+      coinsDelta = lostOnAWrongAnswer
+        ? getMillionaireSafePoints(reached)
+        : reached > 0
+          ? MILLIONAIRE_LEVEL_POINTS[reached - 1]
+          : 0;
+      if (won) coinsDelta += MILLIONAIRE_WIN_BONUS;
+
       next.millionaireMaxLevel = Math.max(current.millionaireMaxLevel, reached);
       if (won) {
         next.millionaireWins = current.millionaireWins + 1;
@@ -295,10 +332,33 @@ export function computeCompletion(
     }
 
     case 'survival': {
-      const score = Number(input.score);
-      if (!Number.isFinite(score) || score < 0) bad('score out of range');
-      const bounded = Math.min(Math.floor(score), SURVIVAL_MAX_SCORE);
-      coinsDelta = bounded * SURVIVAL_COINS_PER_POINT;
+      // Same principle as millionaire above: replay the submitted answer
+      // trail against the real answer key, tracking lives exactly like the
+      // client's own game loop does, instead of trusting a bare
+      // client-submitted `score` (WS9, §15.3 — explicitly called out in the
+      // Phase 3 spec as a bug to fix, not just a reskin).
+      const answers = input.answers ?? [];
+      if (answers.length === 0) bad('answers required for survival completion');
+      const questions = await lookupQuestions(answers.map((a) => a.questionId));
+      const byId = new Map(questions.map((q) => [q.id, q]));
+
+      let lives = SURVIVAL_STARTING_LIVES;
+      let score = 0;
+      let points = 0;
+      for (const answer of answers) {
+        if (lives <= 0) break; // anything submitted after game-over is ignored, not trusted
+        const question = byId.get(answer.questionId);
+        if (!question) bad('unknown question in survival answers');
+        if (answer.selectedIndex === question.correctIndex) {
+          score += 1;
+          points += SURVIVAL_POINTS_BY_DIFFICULTY[question.difficulty];
+        } else {
+          lives -= 1;
+        }
+      }
+
+      const bounded = Math.min(score, SURVIVAL_MAX_SCORE);
+      coinsDelta = points;
       next.survivalHighScore = Math.max(current.survivalHighScore, bounded);
       if (bounded >= SURVIVAL_IRON_SHIELD_MIN) grant('iron-shield');
       break;

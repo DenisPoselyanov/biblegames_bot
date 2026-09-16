@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Icon } from '../../../components/Icon';
+import { FullscreenMotion } from '../../../components/motion';
 import { ThemePicker } from '../../../components/ThemePicker';
 import { useKahootRoom } from '../../../hooks/useKahootRoom';
 import { useTelegram } from '../../../hooks/useTelegram';
@@ -155,6 +156,7 @@ export function KahootCreate() {
   };
 
   return (
+    <FullscreenMotion motionKey="kahoot-create">
     <section className={styles.page}>
       <div className={styles.topRow}>
         <Link to="/play/kahoot" className={styles.backBtn} aria-label="Назад">
@@ -374,5 +376,6 @@ export function KahootCreate() {
         {loading ? 'Створення…' : 'Створити кімнату'}
       </button>
     </section>
+    </FullscreenMotion>
   );
 }

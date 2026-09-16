@@ -28,6 +28,11 @@ export interface QuizRunSession {
   newRankLabel?: string;
 }
 
+export interface RunAnswer {
+  questionId: string;
+  selectedIndex: number;
+}
+
 export interface MillionaireRunSession {
   questionIds: string[];
   index: number;
@@ -41,6 +46,8 @@ export interface MillionaireRunSession {
   status: 'playing' | 'answered' | 'finished';
   notice: string | null;
   result: { title: string; points: number; reachedLevel: number } | null;
+  /** Per-level answer trail submitted to the server so it can recompute the reward itself (WS9, §15.2). */
+  answers: RunAnswer[];
 }
 
 export interface SurvivalRunSession {
@@ -53,6 +60,8 @@ export interface SurvivalRunSession {
   selected: number | null;
   status: 'playing' | 'answered' | 'finished';
   lastAnswerCorrect: boolean | null;
+  /** Answer trail submitted to the server so it can recompute the reward itself (WS9, §15.3). */
+  answers: RunAnswer[];
 }
 
 export function buildQuizSessionKey(

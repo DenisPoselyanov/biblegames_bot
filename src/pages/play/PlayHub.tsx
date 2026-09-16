@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { GAME_MODES } from '../../types/gameModes';
+import type { GameMode } from '../../types/gameModes';
 import { Icon } from '../../components/Icon';
 import type { IconName } from '../../components/Icon';
 import { MotionStagger, MotionStaggerItem } from '../../components/motion';
@@ -37,6 +38,37 @@ function badgeClass(badge?: string) {
   return styles.badgeDefault;
 }
 
+/** Play Hub card disclosure (§15.1): purpose is `description`; this covers the rest. */
+function ModeMeta({ mode }: { mode: GameMode }) {
+  return (
+    <ul className={styles.cardMeta} aria-label="Деталі режиму">
+      <li className={styles.cardMetaItem} title={mode.social === 'solo' ? 'Гра наодинці' : 'Гра з друзями'}>
+        <Icon name={mode.social === 'solo' ? 'profile' : 'community'} size={13} />
+        <span>{mode.social === 'solo' ? 'Соло' : 'Разом'}</span>
+      </li>
+      <li className={styles.cardMetaItem} title={mode.duration}>
+        <Icon name="clock" size={13} />
+        <span>{mode.duration}</span>
+      </li>
+      <li className={styles.cardMetaItem} title={mode.rewardPolicy}>
+        <Icon name="coins" size={13} />
+        <span>{mode.rewardShort}</span>
+      </li>
+      <li
+        className={styles.cardMetaItem}
+        title={mode.affectsMastery ? 'Впливає на прогрес тем' : 'Не впливає на прогрес тем'}
+      >
+        <Icon name="brain" size={13} />
+        <span>{mode.affectsMastery ? 'Прогрес тем' : 'Без прогресу тем'}</span>
+      </li>
+      <li className={styles.cardMetaItem} title={mode.availability}>
+        <Icon name="info" size={13} />
+        <span>{mode.availability.startsWith('Працює офлайн') ? 'Офлайн доступно' : 'Потрібен інтернет'}</span>
+      </li>
+    </ul>
+  );
+}
+
 export function PlayHub() {
   const { shouldEnter } = useMotionEntrance('play-hub');
   return (
@@ -68,6 +100,7 @@ export function PlayHub() {
                       )}
                     </div>
                     <p className={styles.cardDesc}>{mode.description}</p>
+                    <ModeMeta mode={mode} />
                   </div>
                   <div
                     className={`${styles.cardArt}${featured ? ` ${styles.cardArtFeatured}` : ''}`}
@@ -84,6 +117,7 @@ export function PlayHub() {
                       <span className={`${styles.badge} ${styles.badgeSoon}`}>Незабаром</span>
                     </div>
                     <p className={styles.cardDesc}>{mode.description}</p>
+                    <ModeMeta mode={mode} />
                   </div>
                   <div className={styles.cardArt}>
                     <div className={`${styles.cardArtBg} ${art.artBgClass}`} />

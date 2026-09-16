@@ -46,10 +46,19 @@ describe('canonical contracts (Phase 2 WS1)', () => {
 
   it('a shop purchase response satisfies purchaseResponse', async () => {
     const { app } = makeApp();
+    // fund: 40 correct 'child'-difficulty answers from the real static pool = 400 coins
     await request(app)
       .post('/api/v1/progression/completions')
       .set('x-user-id', '7')
-      .send({ kind: 'survival', runId: 'fund', idempotencyKey: 'fund-key', score: 500 });
+      .send({
+        kind: 'survival',
+        runId: 'fund',
+        idempotencyKey: 'fund-key',
+        answers: Array.from({ length: 40 }, () => ({
+          questionId: 'new-testament-child-ai-00007',
+          selectedIndex: 0,
+        })),
+      });
     const res = await request(app)
       .post('/api/v1/shop/purchases')
       .set('x-user-id', '7')
