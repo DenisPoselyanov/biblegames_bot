@@ -1,0 +1,276 @@
+/*
+ * Prototype design layer (proto/design-v2).
+ *
+ * Isolated on purpose:
+ *  - Tailwind preflight is NOT imported, so nothing here resets the legacy app.
+ *  - Every base rule is scoped under `.proto-root`.
+ *  - Utility scanning is limited to `src/proto`.
+ */
+@layer theme;
+
+@import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' source('./');
+
+/* ---------------------------------------------------------------- tokens */
+
+@theme inline {
+  --color-canvas: var(--p-canvas);
+  --color-ink: var(--p-ink);
+  --color-muted: var(--p-muted);
+  --color-faint: var(--p-faint);
+  --color-surface: var(--p-surface);
+  --color-surface-2: var(--p-surface-2);
+  --color-line: var(--p-line);
+  --color-line-strong: var(--p-line-strong);
+  --color-gold: var(--p-gold);
+  --color-gold-ink: var(--p-gold-ink);
+  --color-indigo: var(--p-indigo);
+  --color-violet: var(--p-violet);
+  --color-success: var(--p-success);
+  --color-danger: var(--p-danger);
+  --color-parchment: var(--p-parchment);
+  --color-parchment-ink: var(--p-parchment-ink);
+
+  --font-display: 'Literata', 'Georgia', 'Times New Roman', serif;
+  --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-card: 28px;
+  --radius-tile: 20px;
+  --radius-control: 16px;
+
+  --shadow-lift: 0 18px 40px -18px var(--p-shadow);
+  --shadow-halo: 0 0 0 1px color-mix(in srgb, var(--p-gold) 38%, transparent),
+    0 14px 34px -16px color-mix(in srgb, var(--p-gold) 55%, transparent);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Dark — the default identity: night sky, glass, warm gold light. */
+.proto-root {
+  --p-canvas: #0a0918;
+  --p-ink: #f6f4ff;
+  --p-muted: rgba(246, 244, 255, 0.64);
+  --p-faint: rgba(246, 244, 255, 0.4);
+  --p-surface: rgba(255, 255, 255, 0.055);
+  --p-surface-2: rgba(255, 255, 255, 0.1);
+  --p-line: rgba(255, 255, 255, 0.09);
+  --p-line-strong: rgba(255, 255, 255, 0.18);
+  --p-gold: #f0c05a;
+  --p-gold-ink: #f7d896;
+  --p-indigo: #6366f1;
+  --p-violet: #a855f7;
+  --p-success: #4ade80;
+  --p-danger: #fb7185;
+  --p-parchment: rgba(255, 252, 244, 0.94);
+  --p-parchment-ink: #211b33;
+  --p-shadow: rgba(3, 2, 12, 0.85);
+  --p-aurora-1: rgba(99, 102, 241, 0.55);
+  --p-aurora-2: rgba(168, 85, 247, 0.42);
+  --p-aurora-3: rgba(240, 192, 90, 0.22);
+  --p-veil: rgba(10, 9, 24, 0.72);
+}
+
+/* Light — the same system, lit from above: warm paper, violet ink, deep gold. */
+.proto-root[data-proto-theme='light'] {
+  --p-canvas: #f7f5ff;
+  --p-ink: #1a1430;
+  --p-muted: rgba(26, 20, 48, 0.66);
+  --p-faint: rgba(26, 20, 48, 0.44);
+  --p-surface: rgba(255, 255, 255, 0.82);
+  --p-surface-2: rgba(255, 255, 255, 0.96);
+  --p-line: rgba(26, 20, 48, 0.09);
+  --p-line-strong: rgba(26, 20, 48, 0.16);
+  --p-gold: #9a6b0f;
+  --p-gold-ink: #7d560b;
+  --p-indigo: #4f46e5;
+  --p-violet: #7c3aed;
+  --p-success: #15803d;
+  --p-danger: #be123c;
+  --p-parchment: #fffbf2;
+  --p-parchment-ink: #2a2140;
+  --p-shadow: rgba(76, 56, 140, 0.22);
+  --p-aurora-1: rgba(99, 102, 241, 0.2);
+  --p-aurora-2: rgba(168, 85, 247, 0.16);
+  --p-aurora-3: rgba(240, 192, 90, 0.26);
+  --p-veil: rgba(247, 245, 255, 0.72);
+}
+
+/* ------------------------------------------------------------- base (scoped) */
+
+:where(.proto-root),
+:where(.proto-root) *,
+:where(.proto-root) *::before,
+:where(.proto-root) *::after {
+  box-sizing: border-box;
+  border: 0 solid var(--p-line);
+}
+
+:where(.proto-root) h1,
+:where(.proto-root) h2,
+:where(.proto-root) h3,
+:where(.proto-root) h4,
+:where(.proto-root) p,
+:where(.proto-root) figure,
+:where(.proto-root) blockquote,
+:where(.proto-root) ul,
+:where(.proto-root) ol {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+:where(.proto-root) ul,
+:where(.proto-root) ol {
+  list-style: none;
+}
+
+:where(.proto-root) button,
+:where(.proto-root) input,
+:where(.proto-root) select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  outline: none;
+}
+
+:where(.proto-root) button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(.proto-root) :focus-visible {
+  outline: 2px solid var(--p-gold);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+:where(.proto-root) img,
+:where(.proto-root) svg {
+  display: block;
+  max-width: 100%;
+}
+
+.proto-root {
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--p-ink);
+  background: var(--p-canvas);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss01' 1;
+}
+
+/* ------------------------------------------------------------- app surfaces */
+
+.proto-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.proto-aurora::before,
+.proto-aurora::after {
+  content: '';
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(72px);
+}
+
+.proto-aurora::before {
+  width: 130%;
+  aspect-ratio: 1;
+  top: -46%;
+  left: -32%;
+  background: radial-gradient(circle at 30% 30%, var(--p-aurora-1), transparent 62%);
+  animation: proto-drift 26s var(--ease-out-soft) infinite alternate;
+}
+
+.proto-aurora::after {
+  width: 110%;
+  aspect-ratio: 1;
+  bottom: -40%;
+  right: -34%;
+  background: radial-gradient(circle at 60% 60%, var(--p-aurora-2), transparent 64%);
+  animation: proto-drift 34s var(--ease-out-soft) infinite alternate-reverse;
+}
+
+.proto-aurora-warm {
+  position: absolute;
+  width: 78%;
+  aspect-ratio: 1;
+  top: 18%;
+  right: -26%;
+  border-radius: 999px;
+  filter: blur(80px);
+  background: radial-gradient(circle, var(--p-aurora-3), transparent 66%);
+  animation: proto-drift 30s var(--ease-out-soft) infinite alternate;
+}
+
+@keyframes proto-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(4%, 6%, 0) scale(1.12);
+  }
+}
+
+/* Fine grain keeps large gradients from banding on OLED phones. */
+.proto-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+.proto-scroll {
+  scrollbar-width: none;
+}
+
+.proto-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Desktop review mode: the mini app sits in a phone frame instead of stretching. */
+.proto-stage {
+  min-height: 100dvh;
+  background: var(--p-canvas);
+}
+
+@media (min-width: 900px) {
+  .proto-stage {
+    display: grid;
+    place-items: center;
+    padding: 32px 0;
+    background:
+      radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--p-indigo) 22%, transparent), transparent 55%),
+      var(--p-canvas);
+  }
+
+  .proto-device {
+    width: 390px;
+    height: min(844px, calc(100dvh - 64px));
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 0 0 10px color-mix(in srgb, var(--p-ink) 12%, transparent),
+      0 50px 120px -40px rgba(0, 0, 0, 0.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proto-root *,
+  .proto-root *::before,
+  .proto-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

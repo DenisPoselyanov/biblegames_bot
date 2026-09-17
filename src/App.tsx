@@ -147,6 +147,11 @@ const CommunityDetails = lazy(() =>
   import('./pages/social/CommunityDetails').then((m) => ({ default: m.CommunityDetails })),
 );
 // Dev-only WS3 visual QA harness (DESIGN_RULES §20.3) — tree-shaken out of production builds.
+// Design prototype (branch `proto/design-v2`). Mounted before every provider so
+// the legacy shell, cosmetic theme sync and API bootstrap never run for it.
+const ProtoApp = lazy(() => import('./proto/ProtoApp'));
+const PROTO_BASE = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/proto`;
+
 const DesignSystemFixture = import.meta.env.DEV
   ? lazy(() =>
       import('./pages/dev/DesignSystemFixture').then((m) => ({ default: m.DesignSystemFixture })),
@@ -173,6 +178,14 @@ function TelegramBackButtonSync() {
 }
 
 export default function App() {
+  if (typeof window !== 'undefined' && window.location.pathname.startsWith(PROTO_BASE)) {
+    return (
+      <Suspense fallback={null}>
+        <ProtoApp />
+      </Suspense>
+    );
+  }
+
   return (
     <AuthSessionProvider>
       <QueryClientProvider client={queryClient}>
