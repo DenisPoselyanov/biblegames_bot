@@ -417,6 +417,13 @@ export function KahootRoom() {
             Питання {q.index + 1} / {q.total}
           </span>
         </div>
+        <span className="sr-only" role="status">
+          {selectedAnswer == null
+            ? 'Час вийшов'
+            : selectedAnswer === room.correctIndex
+              ? 'Правильно'
+              : 'Неправильно'}
+        </span>
         <h2 className={styles.questionReveal}>{q.text}</h2>
         {room.answerCounts && (
           <AnswerBars

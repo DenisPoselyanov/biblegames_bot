@@ -180,7 +180,7 @@ export function KahootDisplay() {
           </ul>
         )}
         {room.correctIndex != null && (
-          <p className={styles.displayCorrect}>
+          <p className={styles.displayCorrect} role="status">
             ✅ {q.options[room.correctIndex]}
           </p>
         )}

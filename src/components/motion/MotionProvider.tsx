@@ -16,6 +16,7 @@ import {
 } from '../../lib/motionIntensity';
 import { hasApi } from '../../repos/apiClient';
 import { progressionRepo } from '../../repos/progressionRepo';
+import { trackEvent } from '../../lib/telemetry';
 
 export interface MotionCapabilities {
   /** OS/browser `prefers-reduced-motion` — always overrides `intensity` (§24). */
@@ -72,6 +73,7 @@ export function MotionProvider({ children, testOverride }: MotionProviderProps) 
   const setIntensity = useCallback((next: MotionIntensity) => {
     setIntensityState(next);
     saveMotionIntensity(next);
+    trackEvent('motion_intensity_changed', { intensity: next });
     // Local apply is instant/offline-safe above; this is a best-effort
     // cross-device sync only — never blocks or reverts the local choice.
     if (hasApi()) {

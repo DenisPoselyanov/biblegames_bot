@@ -472,7 +472,7 @@ export function Millionaire() {
             </button>
           </div>
 
-          {notice && <p className={styles.notice}>{notice}</p>}
+          {notice && <p className={styles.notice} role="status">{notice}</p>}
 
           <AnimatePresence mode="wait">
             <motion.div
@@ -537,7 +537,7 @@ export function Millionaire() {
                 exit="exit"
                 transition={reducedTransition(transitionUi, !!reduced)}
               >
-                <span className={`${styles.feedbackBadge} ${styles.feedbackCorrect}`}>
+                <span className={`${styles.feedbackBadge} ${styles.feedbackCorrect}`} role="status">
                   ✅ Правильна відповідь.
                 </span>
                 <button

@@ -462,6 +462,7 @@ export function Survival() {
                   >
                     <span
                       className={`${styles.feedbackBadge} ${lastAnswerCorrect ? styles.feedbackCorrect : styles.feedbackWrong}`}
+                      role="status"
                     >
                       {lastAnswerCorrect ? '🎉 Правильно!' : '💔 Життя втрачено.'}
                     </span>
