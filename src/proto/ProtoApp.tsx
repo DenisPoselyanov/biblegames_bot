@@ -22,6 +22,12 @@ import { PracticeResult } from './screens/PracticeResult';
 import { Play } from './screens/Play';
 import { Progress } from './screens/Progress';
 import { Profile } from './screens/Profile';
+import { Millionaire } from './screens/Millionaire';
+import { Survival } from './screens/Survival';
+import { KahootHub, KahootRoom } from './screens/Kahoot';
+import { Social } from './screens/Social';
+import { Shop } from './screens/Shop';
+import { ModuleDetail } from './screens/ModuleDetail';
 
 const BASE = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/proto`;
 
@@ -34,7 +40,7 @@ const TABS = [
 ];
 
 /** Routes that take over the whole screen — no tab bar, no distractions. */
-const IMMERSIVE = ['/lesson', '/practice'];
+const IMMERSIVE = ['/lesson', '/practice', '/play/millionaire', '/play/survival', '/play/kahoot'];
 
 function TabBar() {
   const { pathname } = useLocation();
@@ -109,10 +115,17 @@ function Shell() {
             <Route path="/" element={<Today />} />
             <Route path="/learn" element={<Learn />} />
             <Route path="/learn/:planId" element={<PlanDetail />} />
+            <Route path="/learn/:planId/:moduleId" element={<ModuleDetail />} />
             <Route path="/lesson" element={<LessonReader />} />
             <Route path="/practice" element={<Practice />} />
             <Route path="/practice/result" element={<PracticeResult />} />
             <Route path="/play" element={<Play />} />
+            <Route path="/play/millionaire" element={<Millionaire />} />
+            <Route path="/play/survival" element={<Survival />} />
+            <Route path="/play/kahoot" element={<KahootHub />} />
+            <Route path="/play/kahoot/room" element={<KahootRoom />} />
+            <Route path="/social" element={<Social />} />
+            <Route path="/shop" element={<Shop />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<Navigate to="/" replace />} />

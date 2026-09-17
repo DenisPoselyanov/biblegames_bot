@@ -4,6 +4,14 @@ import { GAMES } from '../lib/mock';
 import { Button, Card, Cover, Pill, SectionTitle } from '../ui/kit';
 import { cn } from '../ui/cn';
 
+/** Every tile leads somewhere — "скоро" marks scope, not a dead end. */
+const GAME_ROUTES: Record<string, string> = {
+  millionaire: '/play/millionaire',
+  survival: '/play/survival',
+  kahoot: '/play/kahoot',
+  challenge: '/social',
+};
+
 export function Play() {
   const navigate = useNavigate();
   const [featured, ...rest] = GAMES;
@@ -42,7 +50,7 @@ export function Play() {
               Рекорд: 11 питань
             </span>
           </div>
-          <Button variant="onColor" size="lg" full className="mt-4" onClick={() => navigate('/practice')}>
+          <Button variant="onColor" size="lg" full className="mt-4" onClick={() => navigate('/play/millionaire')}>
             <PlayIcon size={17} /> Почати гру
           </Button>
         </div>
@@ -54,11 +62,10 @@ export function Play() {
           {rest.map((game) => (
             <button
               key={game.id}
-              disabled={!game.ready}
-              onClick={() => navigate('/practice')}
+              onClick={() => navigate(GAME_ROUTES[game.id] ?? '/play')}
               className={cn(
-                'overflow-hidden rounded-tile border border-line bg-surface text-left backdrop-blur-xl transition-transform',
-                game.ready ? 'active:scale-[0.98]' : 'opacity-60',
+                'overflow-hidden rounded-tile border border-line bg-surface text-left backdrop-blur-xl transition-transform active:scale-[0.98]',
+                !game.ready && 'opacity-75',
               )}
             >
               <Cover hue={game.hue} glyph={game.id === 'kahoot' ? 'wave' : 'path'} className="h-20 w-full" />
@@ -77,7 +84,10 @@ export function Play() {
         </div>
       </section>
 
-      <Card tone="outline" className="flex items-center gap-3 p-4">
+      <button
+        onClick={() => navigate('/social')}
+        className="flex w-full items-center gap-3 rounded-card border border-line p-4 text-left active:scale-[0.99]"
+      >
         <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[color-mix(in_srgb,var(--p-indigo)_18%,transparent)]">
           <Swords size={18} />
         </span>
@@ -85,8 +95,8 @@ export function Play() {
           <p className="text-[14px] font-bold">Виклик у спільноті</p>
           <p className="text-[12px] text-faint">Створіть поєдинок для своєї групи</p>
         </div>
-        <Pill>Фаза 5</Pill>
-      </Card>
+        <Pill>Спільнота</Pill>
+      </button>
     </div>
   );
 }

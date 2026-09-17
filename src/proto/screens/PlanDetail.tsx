@@ -55,7 +55,7 @@ export function PlanDetail() {
             variant="primary"
             full
             className="mt-4"
-            onClick={() => navigate('/lesson')}
+            onClick={() => navigate(`/learn/${plan.id}/luke-6`)}
           >
             <Play size={16} /> Продовжити модуль 6
           </Button>
@@ -70,7 +70,7 @@ export function PlanDetail() {
               key={module.id}
               module={module}
               index={index}
-              onOpen={() => module.state !== 'locked' && navigate('/lesson')}
+              onOpen={() => module.state !== 'locked' && navigate(`/learn/${plan.id}/${module.id}`)}
             />
           ))}
         </ol>

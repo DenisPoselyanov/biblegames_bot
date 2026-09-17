@@ -104,8 +104,10 @@ export function SectionTitle({
 }) {
   return (
     <div className="mb-3 flex items-end justify-between gap-3">
-      <h2 className="font-display text-[19px] leading-tight font-semibold">{children}</h2>
-      {action}
+      <h2 className="font-display min-w-0 text-[19px] leading-tight font-semibold">{children}</h2>
+      {action && (
+        <div className="max-w-[54%] shrink-0 text-right leading-tight">{action}</div>
+      )}
     </div>
   );
 }

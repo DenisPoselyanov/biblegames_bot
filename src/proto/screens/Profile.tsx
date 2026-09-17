@@ -7,8 +7,10 @@ import {
   Palette,
   RotateCcw,
   ShieldCheck,
+  Store,
   Zap,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { levelProgress, useProto } from '../lib/useProto';
 import type { ProtoTheme } from '../lib/protoContext';
 import { Card, Cover, Ring, SectionTitle, Segmented } from '../ui/kit';
@@ -22,6 +24,7 @@ const COSMETIC_THEMES = [
 ];
 
 export function Profile() {
+  const navigate = useNavigate();
   const { theme, setTheme, xp, coins, streak, reset } = useProto();
   const level = levelProgress(xp);
 
@@ -50,7 +53,9 @@ export function Profile() {
 
           <div className="mt-4 grid grid-cols-3 gap-2">
             <MiniStat icon={<Zap size={14} />} value={String(xp)} label="XP" />
-            <MiniStat icon={<Coins size={14} />} value={String(coins)} label="монет" />
+            <button onClick={() => navigate('/shop')} className="block w-full text-left">
+              <MiniStat icon={<Coins size={14} />} value={String(coins)} label="монет" />
+            </button>
             <MiniStat icon={<span className="text-[13px]">🔥</span>} value={String(streak)} label="днів" />
           </div>
         </div>
@@ -101,6 +106,12 @@ export function Profile() {
           <SettingRow icon={<Palette size={17} />} label="Розмір тексту" value="Стандартний" />
           <SettingRow icon={<Download size={17} />} label="Офлайн-уроки" value="Увімкнено" />
           <SettingRow icon={<ShieldCheck size={17} />} label="Приватність" value="" />
+          <SettingRow
+            icon={<Store size={17} />}
+            label="Магазин"
+            value={`${coins} монет`}
+            onClick={() => navigate('/shop')}
+          />
         </Card>
       </section>
 
@@ -140,13 +151,15 @@ function SettingRow({
   icon,
   label,
   value,
+  onClick,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
+  onClick?: () => void;
 }) {
   return (
-    <button className="flex w-full items-center gap-3 px-4 py-3.5 text-left">
+    <button onClick={onClick} className="flex w-full items-center gap-3 px-4 py-3.5 text-left">
       <span className="text-faint">{icon}</span>
       <span className="flex-1 text-[14px] font-semibold">{label}</span>
       {value && <span className="text-[13px] text-faint">{value}</span>}

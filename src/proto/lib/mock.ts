@@ -291,3 +291,140 @@ export const GAMES = [
     ready: false,
   },
 ];
+
+/* ------------------------------------------------------- iteration 2 fixtures */
+
+/** Millionaire ladder — coins, with the three guaranteed steps marked. */
+export const LADDER = [
+  { level: 1, prize: 10 },
+  { level: 2, prize: 20 },
+  { level: 3, prize: 40 },
+  { level: 4, prize: 80 },
+  { level: 5, prize: 150, safe: true },
+  { level: 6, prize: 250 },
+  { level: 7, prize: 400 },
+  { level: 8, prize: 600 },
+  { level: 9, prize: 900 },
+  { level: 10, prize: 1300, safe: true },
+  { level: 11, prize: 1800 },
+  { level: 12, prize: 2500 },
+  { level: 13, prize: 3500 },
+  { level: 14, prize: 5000 },
+  { level: 15, prize: 8000, safe: true },
+];
+
+export interface ModuleObjective {
+  id: string;
+  title: string;
+  mastery: number;
+}
+
+export interface ModuleLesson {
+  id: string;
+  title: string;
+  reference: string;
+  minutes: number;
+  state: 'done' | 'active' | 'locked';
+}
+
+export const MODULE_DETAIL = {
+  summary:
+    'Чотири притчі, у яких Ісус пояснює, як діє Царство: непомітно, поступово і завжди через серце, що слухає.',
+  objectives: [
+    { id: 'o1', title: 'Назвати чотири ґрунти й що вони означають', mastery: 0.62 },
+    { id: 'o2', title: 'Пояснити, чому Ісус говорив притчами', mastery: 0.3 },
+    { id: 'o3', title: 'Знайти паралельні місця в Матвія і Марка', mastery: 0.12 },
+    { id: 'o4', title: 'Переказати притчу про гірчичне зерно', mastery: 0 },
+    { id: 'o5', title: 'Застосувати притчу до власного тижня', mastery: 0 },
+  ] as ModuleObjective[],
+  lessons: [
+    { id: 'l1', title: 'Притча про сіяча', reference: 'Луки 8:4–15', minutes: 6, state: 'active' },
+    { id: 'l2', title: 'Світильник під посудиною', reference: 'Луки 8:16–18', minutes: 4, state: 'locked' },
+    { id: 'l3', title: 'Гірчичне зерно і закваска', reference: 'Луки 13:18–21', minutes: 5, state: 'locked' },
+    { id: 'l4', title: 'Перевірка модуля', reference: '10 запитань', minutes: 7, state: 'locked' },
+  ] as ModuleLesson[],
+};
+
+export const KAHOOT_PLAYLISTS = [
+  { id: 'k1', title: 'Різдвяна вікторина', questions: 18, plays: 42, hue: 168 },
+  { id: 'k2', title: 'Життя апостола Павла', questions: 24, plays: 17, hue: 268 },
+  { id: 'k3', title: 'Молодіжна група · вересень', questions: 12, plays: 8, hue: 38 },
+];
+
+export const KAHOOT_ROOM = {
+  code: '482 915',
+  playlist: 'Різдвяна вікторина',
+  players: [
+    { id: 'p1', name: 'Марія', ready: true },
+    { id: 'p2', name: 'Олег', ready: true },
+    { id: 'p3', name: 'Софія', ready: false },
+    { id: 'p4', name: 'Тарас', ready: true },
+    { id: 'p5', name: 'Іван', ready: false },
+    { id: 'p6', name: 'Анна', ready: true },
+  ],
+};
+
+export const CHALLENGES = [
+  {
+    id: 'c1',
+    opponent: 'Олег',
+    topic: 'Євангелія',
+    myScore: 7,
+    theirScore: 5,
+    state: 'your-turn' as const,
+    endsIn: '11 год',
+  },
+  {
+    id: 'c2',
+    opponent: 'Марія',
+    topic: 'П’ятикнижжя',
+    myScore: 6,
+    theirScore: 6,
+    state: 'waiting' as const,
+    endsIn: '2 дні',
+  },
+  {
+    id: 'c3',
+    opponent: 'Софія',
+    topic: 'Псалми',
+    myScore: 9,
+    theirScore: 4,
+    state: 'won' as const,
+    endsIn: 'завершено',
+  },
+];
+
+export const COMMUNITIES = [
+  { id: 'g1', title: 'Молодіжна група «Джерело»', members: 24, hue: 258, role: 'Учасник', weekly: 1820 },
+  { id: 'g2', title: 'Домашня група · четвер', members: 9, hue: 168, role: 'Лідер', weekly: 940 },
+];
+
+export const LEADERBOARD = [
+  { id: 'u1', name: 'Марія К.', xp: 2410, you: false },
+  { id: 'u2', name: 'Денис', xp: 2012, you: true },
+  { id: 'u3', name: 'Олег П.', xp: 1870, you: false },
+  { id: 'u4', name: 'Софія Л.', xp: 1640, you: false },
+  { id: 'u5', name: 'Тарас М.', xp: 1180, you: false },
+];
+
+export const SHOP_SECTIONS = [
+  {
+    id: 'themes',
+    title: 'Оформлення',
+    note: 'лише вигляд',
+    items: [
+      { id: 's1', title: 'Море', subtitle: 'Кольорова тема', price: 150, hue: 198, owned: false },
+      { id: 's2', title: 'Олива', subtitle: 'Кольорова тема', price: 150, hue: 96, owned: false },
+      { id: 's3', title: 'Світанок', subtitle: 'Кольорова тема', price: 150, hue: 28, owned: true },
+    ],
+  },
+  {
+    id: 'helpers',
+    title: 'Помічники',
+    note: 'лише в іграх',
+    items: [
+      { id: 's4', title: '5 підказок', subtitle: 'Для «Мільйонера»', price: 90, hue: 268, owned: false },
+      { id: 's5', title: 'Друге життя', subtitle: 'Для «Виживання»', price: 120, hue: 348, owned: false },
+    ],
+  },
+];
