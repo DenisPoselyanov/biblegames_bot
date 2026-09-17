@@ -47,3 +47,8 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      # Phase 3 §18: guards the initial (pre-route) JS/CSS payload against
+      # silent regressions. Budgets in scripts/check-bundle-size.mjs.
+      - name: Bundle-size budget
+        run: npm run check:bundle-size
