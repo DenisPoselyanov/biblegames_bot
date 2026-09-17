@@ -17,25 +17,32 @@ export function Play() {
         </p>
       </header>
 
-      <Card className="overflow-hidden p-0">
-        <div className="relative">
-          <Cover hue={featured.hue} glyph="rays" className="h-40 w-full" />
-          <div className="absolute inset-x-4 bottom-3">
-            <Pill tone="gold">
-              <Crown size={12} /> Гра тижня
-            </Pill>
-          </div>
-        </div>
-        <div className="p-4">
-          <h2 className="font-display text-[22px] leading-tight font-semibold">{featured.title}</h2>
-          <p className="mt-1 text-[13px] text-muted">{featured.tagline}</p>
+      <Card className="relative overflow-hidden p-0">
+        <Cover
+          hue={featured.hue}
+          glyph="rays"
+          fade={false}
+          scrim
+          className="absolute inset-0 h-full w-full"
+        />
+        <div className="relative flex min-h-[276px] flex-col justify-end p-4">
+          <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3 py-1 text-[12px] font-semibold text-white backdrop-blur-md">
+            <Crown size={12} /> Гра тижня
+          </span>
+
+          <h2 className="font-display text-[24px] leading-tight font-semibold text-white">
+            {featured.title}
+          </h2>
+          <p className="mt-1 text-[13px] text-white/72">{featured.tagline}</p>
           <div className="mt-3 flex gap-2">
-            <Pill>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/20 px-3 py-1 text-[12px] font-semibold text-white/85 backdrop-blur-md">
               <Users size={12} /> {featured.players}
-            </Pill>
-            <Pill>Рекорд: 11 питань</Pill>
+            </span>
+            <span className="inline-flex items-center rounded-full border border-white/20 bg-black/20 px-3 py-1 text-[12px] font-semibold text-white/85 backdrop-blur-md">
+              Рекорд: 11 питань
+            </span>
           </div>
-          <Button variant="gold" size="lg" full className="mt-4" onClick={() => navigate('/practice')}>
+          <Button variant="onColor" size="lg" full className="mt-4" onClick={() => navigate('/practice')}>
             <PlayIcon size={17} /> Почати гру
           </Button>
         </div>

@@ -13,7 +13,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { PLANS, REVIEW_DUE, TODAY_LESSON, VERSE_OF_DAY, WEEK } from '../lib/mock';
 import { levelProgress, useProto } from '../lib/useProto';
-import { Button, Card, Cover, Meter, Pill, Ring, SectionTitle } from '../ui/kit';
+import { Button, Card, Cover, Meter, Ring, SectionTitle } from '../ui/kit';
 import { cn } from '../ui/cn';
 
 const TODAY_INDEX = 3; // Чт — fixed so the prototype always looks mid-week.
@@ -95,41 +95,53 @@ export function Today() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Card className="overflow-hidden p-0">
-          <div className="relative">
-            <Cover hue={plan.hue} glyph="rays" className="h-36 w-full" />
-            <div className="absolute inset-x-4 bottom-3 flex items-center gap-2">
-              <Pill tone="gold">
+        {/* The day's single decision. The whole card carries the plan's colour,
+            so it stays the loudest object on the light theme too. */}
+        <Card className="relative overflow-hidden p-0">
+          <Cover
+            hue={plan.hue}
+            glyph="rays"
+            fade={false}
+            scrim
+            className="absolute inset-0 h-full w-full"
+          />
+          <div className="relative flex min-h-[286px] flex-col justify-end p-4">
+            <div className="absolute inset-x-4 top-4 flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3 py-1 text-[12px] font-semibold text-white backdrop-blur-md">
                 <Crown size={12} /> Урок дня
-              </Pill>
-              <Pill>
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/20 px-3 py-1 text-[12px] font-semibold text-white/85 backdrop-blur-md">
                 <Clock size={12} /> {TODAY_LESSON.minutes} хв
-              </Pill>
+              </span>
             </div>
-          </div>
-          <div className="p-4">
-            <p className="text-[12px] font-semibold text-faint">
+
+            <p className="text-[12px] font-semibold text-white/72">
               {plan.title} · {TODAY_LESSON.moduleTitle}
             </p>
-            <h2 className="font-display mt-1 text-[22px] leading-tight font-semibold">
+            <h2 className="font-display mt-1 text-[24px] leading-tight font-semibold text-white">
               {TODAY_LESSON.title}
             </h2>
-            <p className="mt-1 text-[13px] text-muted">{TODAY_LESSON.reference}</p>
+            <p className="mt-1 text-[13px] text-white/70">{TODAY_LESSON.reference}</p>
 
             {started && (
               <div className="mt-4">
-                <div className="mb-1.5 flex justify-between text-[11px] font-semibold text-faint">
+                <div className="mb-1.5 flex justify-between text-[11px] font-semibold text-white/70">
                   <span>Прочитано</span>
                   <span>
                     {lessonBlock} з {TODAY_LESSON.blocks.length}
                   </span>
                 </div>
-                <Meter value={lessonBlock / TODAY_LESSON.blocks.length} />
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/20">
+                  <div
+                    className="h-full rounded-full bg-white"
+                    style={{ width: `${(lessonBlock / TODAY_LESSON.blocks.length) * 100}%` }}
+                  />
+                </div>
               </div>
             )}
 
             <Button
-              variant={lessonDone ? 'ghost' : 'primary'}
+              variant="onColor"
               size="lg"
               full
               className="mt-4"

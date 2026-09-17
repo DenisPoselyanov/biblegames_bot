@@ -56,7 +56,7 @@ export function LessonReader() {
                 className={cn(
                   'h-1 flex-1 rounded-full transition-colors duration-300',
                   index < visible
-                    ? 'bg-[linear-gradient(90deg,var(--p-violet),var(--p-gold))]'
+                    ? 'bg-[linear-gradient(90deg,var(--p-violet),var(--p-ramp-end))]'
                     : 'bg-line-strong',
                 )}
               />
@@ -88,46 +88,62 @@ export function LessonReader() {
           ))}
         </div>
 
-        <AnimatePresence>
-          {finished && (
+        <div ref={bottomRef} />
+      </div>
+
+      <AnimatePresence>
+        {finished && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 z-40 mx-auto flex w-full max-w-[390px] flex-col justify-center bg-[color-mix(in_srgb,var(--p-canvas)_82%,transparent)] px-4 backdrop-blur-xl"
+          >
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 18, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-              className="mt-6"
             >
-              <Card tone="solid" className="overflow-hidden p-0">
-                <Cover hue={268} glyph="rays" className="h-24 w-full" />
-                <div className="-mt-10 grid place-items-center px-5 pb-5 text-center">
-                  <Ring value={1} size={72} stroke={6}>
-                    <Check size={26} className="text-gold-ink" strokeWidth={2.6} />
+              <Card tone="solid" className="relative overflow-hidden p-0">
+                <Cover hue={268} glyph="rays" fade={false} scrim className="absolute inset-0 h-full w-full" />
+                <div className="relative grid place-items-center px-5 py-7 text-center">
+                  <Ring value={1} size={84} stroke={7}>
+                    <Check size={30} className="text-white" strokeWidth={2.6} />
                   </Ring>
-                  <h2 className="font-display mt-3 text-[20px] font-semibold">Урок завершено</h2>
-                  <p className="mt-1 text-[13px] text-muted">
+                  <h2 className="font-display mt-4 text-[23px] font-semibold text-white">
+                    Урок завершено
+                  </h2>
+                  <p className="mt-1.5 text-[13px] text-white/75">
                     Закріпіть прочитане практикою, поки воно свіже
                   </p>
-                  <div className="mt-3 flex gap-2">
-                    <span className="rounded-full bg-[color-mix(in_srgb,var(--p-violet)_18%,transparent)] px-3 py-1 text-[12px] font-bold">
+                  <div className="mt-4 flex gap-2">
+                    <span className="rounded-full border border-white/20 bg-white/12 px-3 py-1 text-[12px] font-bold text-white">
                       +40 XP
                     </span>
-                    <span className="rounded-full bg-[color-mix(in_srgb,var(--p-gold)_16%,transparent)] px-3 py-1 text-[12px] font-bold text-gold-ink">
+                    <span className="rounded-full border border-white/20 bg-white/12 px-3 py-1 text-[12px] font-bold text-white">
                       +15 монет
                     </span>
                   </div>
-                  <Button variant="gold" full className="mt-5" onClick={() => navigate('/practice')}>
+                  <Button
+                    variant="onColor"
+                    size="lg"
+                    full
+                    className="mt-6"
+                    onClick={() => navigate('/practice')}
+                  >
                     <Sparkles size={16} /> До практики
                   </Button>
-                  <Button variant="quiet" full className="mt-1" onClick={() => navigate('/')}>
+                  <button
+                    onClick={() => navigate('/')}
+                    className="mt-2 w-full py-2 text-[13px] font-semibold text-white/70"
+                  >
                     Пізніше
-                  </Button>
+                  </button>
                 </div>
               </Card>
             </motion.div>
-          )}
-        </AnimatePresence>
-
-        <div ref={bottomRef} />
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {!finished && (
         <div className="fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-[390px] bg-[linear-gradient(180deg,transparent,var(--p-canvas)_36%)] px-4 pt-8 pb-[max(16px,env(safe-area-inset-bottom))]">

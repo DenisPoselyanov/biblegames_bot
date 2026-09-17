@@ -30,7 +30,7 @@ export function Card({
 
 type ButtonProps = {
   children: ReactNode;
-  variant?: 'primary' | 'gold' | 'ghost' | 'quiet';
+  variant?: 'primary' | 'onColor' | 'ghost' | 'quiet';
   size?: 'md' | 'lg';
   full?: boolean;
 } & ComponentPropsWithoutRef<'button'>;
@@ -49,7 +49,9 @@ export function Button({
   const variants = {
     primary:
       'text-white bg-[linear-gradient(135deg,var(--p-indigo),var(--p-violet))] shadow-[0_16px_34px_-16px_var(--p-violet)]',
-    gold: 'text-[#241a05] bg-[linear-gradient(135deg,var(--p-gold-ink),var(--p-gold))] shadow-halo',
+    // On a coloured card the gradient loses contrast, so the same action
+    // inverts to plain white. Gold stays an accent, never a button fill.
+    onColor: 'bg-white text-[#1a1430] shadow-[0_14px_30px_-14px_rgba(0,0,0,0.6)]',
     ghost: 'border border-line-strong bg-surface backdrop-blur-xl text-ink',
     quiet: 'text-muted hover:text-ink',
   } as const;
@@ -112,7 +114,7 @@ export function Meter({ value, className }: { value: number; className?: string 
   return (
     <div className={cn('h-1.5 w-full overflow-hidden rounded-full bg-line-strong', className)}>
       <motion.div
-        className="h-full rounded-full bg-[linear-gradient(90deg,var(--p-indigo),var(--p-violet),var(--p-gold))]"
+        className="h-full rounded-full bg-[linear-gradient(90deg,var(--p-indigo),var(--p-violet),var(--p-ramp-end))]"
         initial={{ width: 0 }}
         animate={{ width: `${Math.round(value * 100)}%` }}
         transition={{ type: 'spring', stiffness: 120, damping: 20 }}
@@ -141,7 +143,7 @@ export function Ring({
           <linearGradient id="protoRing" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="var(--p-indigo)" />
             <stop offset="55%" stopColor="var(--p-violet)" />
-            <stop offset="100%" stopColor="var(--p-gold)" />
+            <stop offset="100%" stopColor="var(--p-ramp-end)" />
           </linearGradient>
         </defs>
         <circle
@@ -219,14 +221,24 @@ export function Cover({
   hue,
   className,
   glyph = 'rays',
+  fade = true,
+  scrim = false,
 }: {
   hue: number;
   className?: string;
   glyph?: 'rays' | 'path' | 'wave';
+  /** Bottom fade into the canvas — off when the cover fills a whole card. */
+  fade?: boolean;
+  /** Darkens the lower half so light text stays readable on top of the art. */
+  scrim?: boolean;
 }) {
   const id = `cov${hue}${glyph}`;
+  // Callers that stretch the cover behind a whole card pass `absolute`; adding
+  // our own `relative` would fight it (class order in the file, not in the
+  // attribute, decides the winner) and drop the art back into the flow.
+  const stretched = className?.includes('absolute');
   return (
-    <div className={cn('relative overflow-hidden', className)}>
+    <div className={cn(!stretched && 'relative', 'overflow-hidden', className)}>
       <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
         <defs>
           <linearGradient id={`${id}-bg`} x1="0" y1="0" x2="1" y2="1">
@@ -263,7 +275,12 @@ export function Cover({
             ))}
         </g>
       </svg>
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_38%,color-mix(in_srgb,var(--p-canvas)_78%,transparent))]" />
+      {fade && (
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_38%,color-mix(in_srgb,var(--p-canvas)_78%,transparent))]" />
+      )}
+      {scrim && (
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,7,24,0.18)_0%,rgba(9,7,24,0.62)_58%,rgba(9,7,24,0.88)_100%)]" />
+      )}
     </div>
   );
 }

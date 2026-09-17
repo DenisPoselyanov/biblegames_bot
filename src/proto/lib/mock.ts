@@ -227,9 +227,18 @@ export const REVIEW_DUE = 8;
 
 export const WEEK = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
 
-/** Practice history for the progress screen — index 0 is 20 days ago. */
+/** The prototype's fixed "today" — a Thursday, so the week always looks mid-run. */
+export const TODAY_DATE = { year: 2026, month: 8, day: 17 }; // month is 0-based
+
+/**
+ * Three full Mon–Sun weeks ending with the current one. Index 0 is Monday,
+ * 31 Aug 2026; the value is how many sessions that day held.
+ */
+export const ACTIVITY_START = { year: 2026, month: 7, day: 31 };
 export const ACTIVITY: number[] = [
-  2, 3, 0, 4, 5, 1, 3, 4, 4, 0, 2, 5, 5, 3, 4, 2, 0, 3, 5, 4, 3,
+  2, 3, 0, 4, 5, 1, 3, // 31 сер – 6 вер
+  4, 4, 0, 2, 5, 5, 3, // 7–13 вер
+  4, 2, 0, 3, 0, 0, 0, // 14–20 вер (18–20 ще попереду)
 ];
 
 export const MASTERY_BY_THEME = [

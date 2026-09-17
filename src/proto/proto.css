@@ -70,6 +70,7 @@
   --p-aurora-2: rgba(168, 85, 247, 0.42);
   --p-aurora-3: rgba(240, 192, 90, 0.22);
   --p-veil: rgba(10, 9, 24, 0.72);
+  --p-ramp-end: var(--p-gold);
 }
 
 /* Light — the same system, lit from above: warm paper, violet ink, deep gold. */
@@ -95,6 +96,7 @@
   --p-aurora-2: rgba(168, 85, 247, 0.16);
   --p-aurora-3: rgba(240, 192, 90, 0.26);
   --p-veil: rgba(247, 245, 255, 0.72);
+  --p-ramp-end: #4c1d95;
 }
 
 /* ------------------------------------------------------------- base (scoped) */

@@ -1,6 +1,14 @@
 import { motion } from 'framer-motion';
+import { Fragment } from 'react';
 import { Award, BookOpen, Flame, Moon, Sparkles, Target, Zap } from 'lucide-react';
-import { ACHIEVEMENTS, ACTIVITY, MASTERY_BY_THEME } from '../lib/mock';
+import {
+  ACHIEVEMENTS,
+  ACTIVITY,
+  ACTIVITY_START,
+  MASTERY_BY_THEME,
+  TODAY_DATE,
+  WEEK,
+} from '../lib/mock';
 import { levelProgress, useProto } from '../lib/useProto';
 import { Card, Meter, Ring, SectionTitle } from '../ui/kit';
 import { cn } from '../ui/cn';
@@ -13,9 +21,52 @@ const ICONS: Record<string, React.ReactNode> = {
   moon: <Moon size={18} />,
 };
 
+const MONTHS = ['січ', 'лют', 'бер', 'кві', 'тра', 'чер', 'лип', 'сер', 'вер', 'жов', 'лис', 'гру'];
+
+interface Day {
+  date: Date;
+  count: number;
+  future: boolean;
+  today: boolean;
+}
+
+/** Turns the flat activity array into three Mon–Sun rows with real dates. */
+function buildWeeks(): Day[][] {
+  const start = new Date(ACTIVITY_START.year, ACTIVITY_START.month, ACTIVITY_START.day);
+  const today = new Date(TODAY_DATE.year, TODAY_DATE.month, TODAY_DATE.day);
+  const days: Day[] = ACTIVITY.map((count, index) => {
+    const date = new Date(start);
+    date.setDate(start.getDate() + index);
+    return {
+      date,
+      count,
+      future: date > today,
+      today: date.getTime() === today.getTime(),
+    };
+  });
+  return [days.slice(0, 7), days.slice(7, 14), days.slice(14, 21)];
+}
+
+function rangeLabel(week: Day[]): string {
+  const from = week[0].date;
+  const to = week[6].date;
+  return from.getMonth() === to.getMonth()
+    ? `${from.getDate()}–${to.getDate()} ${MONTHS[to.getMonth()]}`
+    : `${from.getDate()} ${MONTHS[from.getMonth()]} – ${to.getDate()} ${MONTHS[to.getMonth()]}`;
+}
+
+function levelClass(count: number): string {
+  if (count === 0) return 'bg-line text-faint';
+  if (count <= 2) return 'bg-[color-mix(in_srgb,var(--p-violet)_30%,transparent)] text-ink';
+  if (count <= 3) return 'bg-[color-mix(in_srgb,var(--p-violet)_55%,transparent)] text-white';
+  return 'bg-[var(--p-ramp-end)] text-white';
+}
+
 export function Progress() {
   const { xp, streak, coins } = useProto();
   const level = levelProgress(xp);
+  const weeks = buildWeeks();
+  const activeDays = ACTIVITY.filter((count) => count > 0).length;
 
   return (
     <div className="space-y-5">
@@ -40,37 +91,57 @@ export function Progress() {
 
       <section>
         <SectionTitle
-          action={<span className="text-[11px] font-semibold text-faint">останні 3 тижні</span>}
+          action={<span className="text-[11px] font-semibold text-faint">{activeDays} активних днів</span>}
         >
           Активність
         </SectionTitle>
         <Card className="p-4">
-          <div className="grid grid-cols-7 gap-1.5">
-            {ACTIVITY.map((value, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0, scale: 0.7 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.012, duration: 0.25 }}
-                title={`${value} сесій`}
-                className={cn(
-                  'aspect-square rounded-[7px]',
-                  value === 0 && 'bg-line',
-                  value === 1 && 'bg-[color-mix(in_srgb,var(--p-violet)_26%,transparent)]',
-                  value === 2 && 'bg-[color-mix(in_srgb,var(--p-violet)_45%,transparent)]',
-                  value === 3 && 'bg-[color-mix(in_srgb,var(--p-violet)_65%,transparent)]',
-                  value >= 4 &&
-                    'bg-[linear-gradient(135deg,var(--p-violet),var(--p-gold))] shadow-[0_0_14px_-4px_var(--p-gold)]',
-                )}
-              />
+          <div className="grid grid-cols-[4.5rem_repeat(7,1fr)] items-center gap-x-1.5 gap-y-1.5">
+            <span />
+            {WEEK.map((day) => (
+              <span key={day} className="text-center text-[10px] font-bold text-faint">
+                {day}
+              </span>
+            ))}
+
+            {weeks.map((week) => (
+              <Fragment key={week[0].date.toISOString()}>
+                <span className="text-[9px] leading-tight font-semibold whitespace-nowrap text-faint">
+                  {rangeLabel(week)}
+                </span>
+                {week.map((day, index) => (
+                  <motion.span
+                    key={day.date.toISOString()}
+                    initial={{ opacity: 0, scale: 0.75 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.015, duration: 0.22 }}
+                    title={
+                      day.future
+                        ? 'Ще попереду'
+                        : `${day.date.getDate()} ${MONTHS[day.date.getMonth()]} — ${day.count} сесій`
+                    }
+                    className={cn(
+                      'grid aspect-square place-items-center rounded-[9px] text-[11px] font-bold tabular-nums',
+                      day.future
+                        ? 'border border-dashed border-line-strong text-faint opacity-50'
+                        : levelClass(day.count),
+                      day.today &&
+                        'ring-2 ring-[var(--p-gold)] ring-offset-2 ring-offset-[var(--p-canvas)]',
+                    )}
+                  >
+                    {day.date.getDate()}
+                  </motion.span>
+                ))}
+              </Fragment>
             ))}
           </div>
-          <div className="mt-3 flex items-center justify-between text-[11px] text-faint">
-            <span>менше</span>
-            <span className="font-semibold text-gold-ink">
-              {ACTIVITY.filter((value) => value > 0).length} активних днів
-            </span>
-            <span>більше</span>
+
+          <div className="mt-3.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-line pt-3 text-[10px] font-semibold text-faint">
+            <Legend className="bg-line">немає</Legend>
+            <Legend className="bg-[color-mix(in_srgb,var(--p-violet)_30%,transparent)]">1–2</Legend>
+            <Legend className="bg-[color-mix(in_srgb,var(--p-violet)_55%,transparent)]">3</Legend>
+            <Legend className="bg-[var(--p-ramp-end)]">4+</Legend>
+            <Legend className="ring-2 ring-[var(--p-gold)]">сьогодні</Legend>
           </div>
         </Card>
       </section>
@@ -125,6 +196,15 @@ export function Progress() {
         </div>
       </section>
     </div>
+  );
+}
+
+function Legend({ className, children }: { className: string; children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span className={cn('size-3 rounded-[4px]', className)} />
+      {children}
+    </span>
   );
 }
 

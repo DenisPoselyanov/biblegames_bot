@@ -210,7 +210,7 @@ export function Practice() {
               </p>
               <Button
                 data-proto-next
-                variant={isCorrect ? 'gold' : 'primary'}
+                variant="primary"
                 size="lg"
                 full
                 className="mt-4"
