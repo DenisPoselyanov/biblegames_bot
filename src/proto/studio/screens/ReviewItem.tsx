@@ -17,12 +17,14 @@ import {
   Avatar,
   Badge,
   Button,
+  Disclosure,
   EmptyState,
   KeyVal,
   Mono,
   Page,
   Panel,
   Status,
+  Term,
 } from '../ui/kit';
 import { cn } from '../../ui/cn';
 
@@ -34,11 +36,16 @@ const DIFF_CLASS: Record<DiffField['kind'], string> = {
 };
 
 const CHECK_KIND_LABEL = {
-  deterministic: 'детермінований',
-  ai: 'AI-підказка',
-  human: 'людина',
+  deterministic: 'однаковий результат щоразу',
+  ai: 'підказка AI, нічого не блокує',
+  human: 'рішення людини',
 } as const;
 
+/**
+ * Level three. One column, in reading order: what the player will see, then
+ * what the machine found, then what changed, then who said what. Everything
+ * except the first block starts folded.
+ */
 export function ReviewItem() {
   const { draftId } = useParams();
   const { role } = useStudio();
@@ -52,7 +59,7 @@ export function ReviewItem() {
           <EmptyState
             icon={<FileQuestion size={18} />}
             title="Такої чернетки немає"
-            body="Можливо, її вже опубліковано або замінено новішою ревізією."
+            body="Можливо, її вже опубліковано або замінено новішою версією."
             action={
               <Link to="../review">
                 <Button variant="ghost">← До черги</Button>
@@ -65,12 +72,15 @@ export function ReviewItem() {
   }
 
   const blocking = draft.checks.filter((c) => c.severity === 'fail');
+  const warnings = draft.checks.filter((c) => c.severity === 'warn');
+  const passed = draft.checks.filter((c) => c.severity === 'pass');
   const scripture = SCRIPTURE_CHECKS.filter((s) => draft.scriptureIds.includes(s.id));
+  const scriptureProblem = scripture.some((s) => s.verdict !== 'match');
 
   const approveDenied = !can('review.approve')
     ? `Роль «${ROLE_LABEL[role]}» не схвалює контент`
     : blocking.length > 0
-      ? `Заблоковано: ${blocking.length} ${plural(blocking.length, 'перевірка не пройдена', 'перевірки не пройдені', 'перевірок не пройдено')}`
+      ? `Спершу треба усунути ${blocking.length} ${plural(blocking.length, 'помилку', 'помилки', 'помилок')} перевірки`
       : null;
 
   const publishDenied = !can('content.publish')
@@ -81,262 +91,260 @@ export function ReviewItem() {
 
   return (
     <Page
-      wide
       title={draft.title}
-      subtitle={
-        <span className="flex items-center gap-2">
-          <Mono>{draft.id}</Mono>
-          <span>·</span>
-          <span>{draft.topicPath}</span>
-          <span>·</span>
-          <span>ревізія {draft.revision}</span>
-        </span>
-      }
+      subtitle={draft.topicPath}
       actions={
-        <>
-          <Link to="../review">
-            <Button variant="quiet">
-              <ArrowLeft size={14} />
-              До черги
-            </Button>
-          </Link>
-          <Button
-            variant="ghost"
-            denied={can('draft.repair') ? null : 'Потрібне право draft.repair'}
-          >
-            <Wrench size={14} />
-            Запустити ремонт
+        <Link to="../review">
+          <Button variant="quiet">
+            <ArrowLeft size={14} />
+            До черги
           </Button>
-          <Button
-            variant="ghost"
-            denied={can('review.comment') ? null : 'Потрібне право review.comment'}
-          >
-            <CornerUpLeft size={14} />
-            Повернути на доопрацювання
-          </Button>
-          <Button variant="primary" denied={approveDenied}>
-            <Check size={14} />
-            Схвалити
-          </Button>
-          <Button variant="ghost" denied={publishDenied}>
-            <Rocket size={14} />
-            Опублікувати
-          </Button>
-        </>
+        </Link>
       }
     >
-      <div className="mb-4 flex items-center gap-2">
+      {/* Status line ------------------------------------------------------- */}
+      <div className="mb-4 flex flex-wrap items-center gap-2">
         <Status value={draft.status} />
-        {blocking.length > 0 && (
-          <Badge tone="danger">
-            Публікацію заблоковано · {blocking.length}
-          </Badge>
-        )}
-        <Badge>{draft.provider} / {draft.model}</Badge>
+        <Badge>
+          <Term k="revision" align="start">
+            ревізія {draft.revision}
+          </Term>
+        </Badge>
         {draft.jobId && (
           <Link to={`../jobs/${draft.jobId}`}>
-            <Badge tone="info">джоб {draft.jobId} →</Badge>
+            <Badge tone="info">створено запуском {draft.jobId} →</Badge>
           </Link>
         )}
       </div>
 
-      <div className="grid grid-cols-[1fr_380px] items-start gap-4">
-        {/* Content + diff --------------------------------------------------- */}
-        <div className="flex flex-col gap-4">
-          {draft.question && (
-            <Panel
-              title="Як це побачить гравець"
-              subtitle="Рендер тим самим компонентом, що й у застосунку"
-            >
-              <p className="font-display text-[17px] leading-snug font-semibold">
-                {draft.question.prompt}
-              </p>
-              <ul className="mt-3 grid gap-2">
-                {draft.question.options.map((option, i) => {
-                  const correct = i === draft.question!.correctIndex;
-                  return (
-                    <li
-                      key={option}
-                      className={cn(
-                        'flex items-center gap-2.5 rounded-[var(--s-radius-sm)] border px-3 py-2 text-[13.5px]',
-                        correct
-                          ? 'border-[color-mix(in_srgb,var(--p-success)_45%,transparent)] bg-[color-mix(in_srgb,var(--p-success)_12%,transparent)]'
-                          : 'border-line bg-[var(--s-panel-2)]',
-                      )}
-                    >
-                      <span
-                        className={cn(
-                          'grid h-5 w-5 shrink-0 place-items-center rounded-full border text-[11px] font-bold',
-                          correct
-                            ? 'border-success text-success'
-                            : 'border-line-strong text-faint',
-                        )}
-                      >
-                        {String.fromCharCode(65 + i)}
-                      </span>
-                      <span className="flex-1">{option}</span>
-                      {correct && <Badge tone="success">correctIndex {i}</Badge>}
-                    </li>
-                  );
-                })}
-              </ul>
-              <div className="mt-3 rounded-[var(--s-radius-sm)] border border-line bg-[var(--s-panel-2)] p-3">
-                <p className="text-[12px] font-semibold tracking-[0.02em] text-faint uppercase">
-                  Пояснення
-                </p>
-                <p className="mt-1 text-[13.5px] leading-relaxed text-muted">
-                  {draft.question.explanation}
-                </p>
-                <p className="mt-2 flex items-center gap-1.5 text-[12.5px] text-gold-ink">
-                  <BookMarked size={13} />
-                  {draft.question.reference}
-                </p>
-              </div>
-            </Panel>
-          )}
-
-          <Panel
-            title="Зміни щодо опублікованої ревізії"
-            subtitle={`Ревізія ${Math.max(draft.revision - 1, 0)} → ${draft.revision}`}
-            flush
-          >
-            <div className="grid grid-cols-[132px_1fr_1fr] border-b border-line bg-[var(--s-panel)] px-4 py-2 text-[11px] font-semibold tracking-[0.04em] text-faint uppercase">
-              <span>Поле</span>
-              <span>Було</span>
-              <span>Стало</span>
-            </div>
-            {draft.diff.map((row) => (
-              <div
-                key={row.field}
-                className="grid grid-cols-[132px_1fr_1fr] gap-3 border-b border-line px-4 py-2.5 last:border-b-0"
-              >
-                <Mono className="pt-0.5">{row.field}</Mono>
-                <span
+      {/* 1 · what the player sees ------------------------------------------- */}
+      {draft.question && (
+        <Panel className="mb-3" title="Як це побачить гравець">
+          <p className="font-display text-[17px] leading-snug font-semibold">
+            {draft.question.prompt}
+          </p>
+          <ul className="mt-3 grid gap-2">
+            {draft.question.options.map((option, i) => {
+              const correct = i === draft.question!.correctIndex;
+              return (
+                <li
+                  key={option}
                   className={cn(
-                    'rounded-[6px] px-2 py-1 text-[13px] leading-relaxed',
-                    row.before === null ? 'text-faint italic' : 'text-muted',
-                    row.kind === 'removed' && DIFF_CLASS.removed,
+                    'flex items-center gap-2.5 rounded-[var(--s-radius-sm)] border px-3 py-2 text-[13.5px]',
+                    correct
+                      ? 'border-[color-mix(in_srgb,var(--p-success)_45%,transparent)] bg-[color-mix(in_srgb,var(--p-success)_10%,transparent)]'
+                      : 'border-line bg-[var(--s-panel-2)]',
                   )}
                 >
-                  {row.before ?? '— поля не було —'}
-                </span>
-                <span
-                  className={cn(
-                    'rounded-[6px] px-2 py-1 text-[13px] leading-relaxed',
-                    DIFF_CLASS[row.kind],
-                  )}
-                >
-                  {row.after}
-                </span>
-              </div>
-            ))}
-          </Panel>
-        </div>
-
-        {/* Rail ------------------------------------------------------------- */}
-        <div className="flex flex-col gap-4">
-          <Panel title="Перевірки" subtitle="Детерміновані гейти йдуть першими" flush>
-            {draft.checks.map((check) => (
-              <div key={check.id} className="border-b border-line px-4 py-2.5 last:border-b-0">
-                <div className="flex items-center gap-2">
-                  <span className="flex-1 text-[13px] font-medium">{check.label}</span>
-                  <Status value={check.severity} />
-                </div>
-                <p className="mt-1 text-[12.5px] leading-relaxed text-faint">{check.detail}</p>
-                <Mono className="mt-1 block">{CHECK_KIND_LABEL[check.kind]}</Mono>
-              </div>
-            ))}
-          </Panel>
-
-          <Panel
-            title="Писання"
-            subtitle={scripture.length ? 'Evidence зберігається з ревізією' : undefined}
-            flush
-          >
-            {scripture.length === 0 && (
-              <p className="px-4 py-6 text-center text-[12.5px] text-faint">
-                Позиція не посилається на Писання.
-              </p>
-            )}
-            {scripture.map((s) => (
-              <div key={s.id} className="border-b border-line px-4 py-3 last:border-b-0">
-                <div className="flex items-center gap-2">
-                  <span className="flex-1 font-display text-[14px] font-semibold">
-                    {s.reference}
+                  <span
+                    className={cn(
+                      'grid h-5 w-5 shrink-0 place-items-center rounded-full border text-[11px] font-bold',
+                      correct ? 'border-success text-success' : 'border-line-strong text-faint',
+                    )}
+                  >
+                    {String.fromCharCode(65 + i)}
                   </span>
-                  <Status value={s.verdict} />
-                </div>
-                <Mono className="mt-0.5 block">
-                  {s.normalized} · {s.translation}
-                </Mono>
-                <p className="mt-2 text-[11px] font-semibold tracking-[0.04em] text-faint uppercase">
-                  У чернетці
-                </p>
-                <p className="font-display text-[13.5px] leading-relaxed text-muted italic">
-                  «{s.quoted}»
-                </p>
-                <p className="mt-2 text-[11px] font-semibold tracking-[0.04em] text-faint uppercase">
-                  У джерелі
-                </p>
-                <p
-                  className={cn(
-                    'font-display text-[13.5px] leading-relaxed italic',
-                    s.source ? 'text-muted' : 'text-danger',
-                  )}
-                >
-                  {s.source ? `«${s.source}»` : 'вірша не існує'}
-                </p>
-                <p className="mt-2 text-[12.5px] leading-relaxed text-faint">{s.note}</p>
-              </div>
-            ))}
-          </Panel>
+                  <span className="flex-1">{option}</span>
+                  {correct && <Badge tone="success">правильна відповідь</Badge>}
+                </li>
+              );
+            })}
+          </ul>
+          <div className="mt-3 rounded-[var(--s-radius-sm)] border border-line bg-[var(--s-panel-2)] p-3">
+            <p className="text-[12px] font-semibold tracking-[0.02em] text-faint uppercase">
+              Пояснення
+            </p>
+            <p className="mt-1 text-[13.5px] leading-relaxed text-muted">
+              {draft.question.explanation}
+            </p>
+            <p className="mt-2 flex items-center gap-1.5 text-[12.5px] text-gold-ink">
+              <BookMarked size={13} />
+              {draft.question.reference}
+            </p>
+          </div>
+        </Panel>
+      )}
 
-          <Panel title="Коментарі ревʼю" flush>
-            {draft.comments.length === 0 && (
-              <p className="px-4 py-6 text-center text-[12.5px] text-faint">
-                Коментарів ще немає.
-              </p>
-            )}
-            {draft.comments.map((c) => (
-              <div key={c.id} className="border-b border-line px-4 py-3 last:border-b-0">
-                <div className="flex items-center gap-2">
-                  <Avatar initials={c.author.slice(0, 2)} />
-                  <span className="text-[12.5px] font-semibold">{c.author}</span>
-                  <Badge>{ROLE_LABEL[c.role]}</Badge>
-                  <Mono className="ml-auto">{c.at.slice(11)}</Mono>
+      {/* 2 · what the machine found ----------------------------------------- */}
+      <Disclosure
+        className="mb-3"
+        defaultOpen={blocking.length > 0 || warnings.length > 0}
+        label="Перевірки"
+        help={<Term k="check" align="end" iconOnly />}
+        hint={
+          <span className="studio-num">
+            <span className="text-success">{passed.length} гаразд</span>
+            {warnings.length > 0 && <span className="text-gold-ink"> · {warnings.length} увага</span>}
+            {blocking.length > 0 && <span className="text-danger"> · {blocking.length} помилка</span>}
+          </span>
+        }
+      >
+        {draft.checks.map((check) => (
+          <div
+            key={check.id}
+            className="flex gap-3 border-b border-line px-4 py-2.5 last:border-b-0"
+          >
+            <span className="mt-0.5 w-[92px] shrink-0">
+              <Status value={check.severity} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[13px] font-medium">{check.label}</span>
+              <span className="block text-[12.5px] leading-relaxed text-faint">{check.detail}</span>
+            </span>
+            <span className="shrink-0 text-[11.5px] text-faint">
+              {CHECK_KIND_LABEL[check.kind]}
+            </span>
+          </div>
+        ))}
+      </Disclosure>
+
+      {/* 3 · Scripture ------------------------------------------------------- */}
+      {scripture.length > 0 && (
+        <Disclosure
+          className="mb-3"
+          defaultOpen={scriptureProblem}
+          label="Перевірка Писання"
+          hint={scripture.map((s) => s.reference).join(' · ')}
+        >
+          {scripture.map((s) => (
+            <div key={s.id} className="border-b border-line px-4 py-3 last:border-b-0">
+              <div className="mb-2 flex items-center gap-2">
+                <span className="font-display text-[14px] font-semibold">{s.reference}</span>
+                <Status value={s.verdict} />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <p className="text-[11.5px] font-semibold text-faint uppercase">У чернетці</p>
+                  <p className="mt-1 font-display text-[13.5px] leading-relaxed text-muted italic">
+                    «{s.quoted}»
+                  </p>
                 </div>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{c.body}</p>
+                <div>
+                  <p className="text-[11.5px] font-semibold text-faint uppercase">У перекладі</p>
+                  <p
+                    className={cn(
+                      'mt-1 font-display text-[13.5px] leading-relaxed italic',
+                      s.source ? 'text-muted' : 'text-danger',
+                    )}
+                  >
+                    {s.source ? `«${s.source}»` : 'вірша не існує'}
+                  </p>
+                </div>
               </div>
-            ))}
-            <div className="p-3">
-              <textarea
-                rows={2}
-                placeholder="Коментар до ревізії…"
-                className="w-full resize-none rounded-[var(--s-radius-sm)] border border-line-strong bg-[var(--s-panel-2)] px-3 py-2 text-[13px]"
-              />
-              <div className="mt-2 flex justify-end">
-                <Button
-                  variant="ghost"
-                  denied={can('review.comment') ? null : 'Потрібне право review.comment'}
-                >
-                  <MessageSquare size={13} />
-                  Додати коментар
-                </Button>
-              </div>
+              <p className="mt-2 text-[12.5px] leading-relaxed text-faint">{s.note}</p>
             </div>
-          </Panel>
+          ))}
+        </Disclosure>
+      )}
 
-          <Panel title="Походження">
-            <dl>
-              <KeyVal k="Автор" v={draft.author} />
-              <KeyVal k="Провайдер" v={`${draft.provider} / ${draft.model}`} />
-              <KeyVal k="Джоб" v={draft.jobId ? <Mono>{draft.jobId}</Mono> : 'ручна правка'} />
-              <KeyVal k="Створено" v={draft.createdAt} />
-              <KeyVal k="Оновлено" v={draft.updatedAt} />
-              <KeyVal k="Ревізія" v={`${draft.revision} (immutable)`} />
-            </dl>
-          </Panel>
+      {/* 4 · what changed ---------------------------------------------------- */}
+      <Disclosure
+        className="mb-3"
+        label="Що змінилось"
+        hint={`${draft.diff.length} ${plural(draft.diff.length, 'поле', 'поля', 'полів')}`}
+      >
+        <div className="grid grid-cols-[120px_1fr_1fr] border-b border-line px-4 py-2 text-[11px] font-semibold tracking-[0.04em] text-faint uppercase">
+          <span>Поле</span>
+          <span>Було</span>
+          <span>Стало</span>
         </div>
+        {draft.diff.map((row) => (
+          <div
+            key={row.field}
+            className="grid grid-cols-[120px_1fr_1fr] gap-3 border-b border-line px-4 py-2.5 last:border-b-0"
+          >
+            <Mono className="pt-0.5">{row.field}</Mono>
+            <span
+              className={cn(
+                'rounded-[6px] px-2 py-1 text-[13px] leading-relaxed',
+                row.before === null ? 'text-faint italic' : 'text-muted',
+                row.kind === 'removed' && DIFF_CLASS.removed,
+              )}
+            >
+              {row.before ?? '— поля не було —'}
+            </span>
+            <span
+              className={cn('rounded-[6px] px-2 py-1 text-[13px] leading-relaxed', DIFF_CLASS[row.kind])}
+            >
+              {row.after}
+            </span>
+          </div>
+        ))}
+      </Disclosure>
+
+      {/* 5 · people ---------------------------------------------------------- */}
+      <Panel className="mb-3" title="Обговорення" flush>
+        {draft.comments.length === 0 && (
+          <p className="px-4 py-5 text-center text-[12.5px] text-faint">Коментарів ще немає.</p>
+        )}
+        {draft.comments.map((c) => (
+          <div key={c.id} className="border-b border-line px-4 py-3 last:border-b-0">
+            <div className="flex items-center gap-2">
+              <Avatar initials={c.author.slice(0, 2)} />
+              <span className="text-[12.5px] font-semibold">{c.author}</span>
+              <Badge>{ROLE_LABEL[c.role]}</Badge>
+              <Mono className="ml-auto">{c.at}</Mono>
+            </div>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{c.body}</p>
+          </div>
+        ))}
+        <div className="p-3">
+          <textarea
+            rows={2}
+            placeholder="Коментар до цієї версії…"
+            className="w-full resize-none rounded-[var(--s-radius-sm)] border border-line-strong bg-[var(--s-panel-2)] px-3 py-2 text-[13px]"
+          />
+          <div className="mt-2 flex justify-end">
+            <Button
+              variant="ghost"
+              denied={can('review.comment') ? null : 'Потрібне право коментувати'}
+            >
+              <MessageSquare size={13} />
+              Додати
+            </Button>
+          </div>
+        </div>
+      </Panel>
+
+      <Disclosure label="Звідки ця позиція" className="mb-4">
+        <dl className="px-4 py-2">
+          <KeyVal k="Автор" v={draft.author} />
+          <KeyVal k={<Term k="provider">Провайдер</Term>} v={`${draft.provider} / ${draft.model}`} />
+          <KeyVal k="Створено" v={draft.createdAt} />
+          <KeyVal k="Оновлено" v={draft.updatedAt} />
+          <KeyVal
+            k={<Term k="revision">Ревізія</Term>}
+            v={`${draft.revision} — попередні збережено`}
+          />
+        </dl>
+      </Disclosure>
+
+      {/* Decision bar — always last, never above the thing being decided. */}
+      <div className="sticky bottom-0 -mx-6 flex items-center gap-2 border-t border-line bg-[var(--s-chrome)] px-6 py-3">
+        <Button variant="primary" size="md" denied={approveDenied}>
+          <Check size={14} />
+          Схвалити
+        </Button>
+        <Button
+          variant="ghost"
+          size="md"
+          denied={can('review.comment') ? null : 'Потрібне право коментувати'}
+        >
+          <CornerUpLeft size={14} />
+          Повернути на доопрацювання
+        </Button>
+        <Button
+          variant="ghost"
+          size="md"
+          denied={can('draft.repair') ? null : 'Потрібне право виправляти'}
+        >
+          <Wrench size={14} />
+          Виправити через AI
+        </Button>
+        <Button variant="ghost" size="md" className="ml-auto" denied={publishDenied}>
+          <Rocket size={14} />
+          Опублікувати
+        </Button>
       </div>
     </Page>
   );

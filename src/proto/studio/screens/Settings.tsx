@@ -2,20 +2,34 @@ import { KeyRound, Lock } from 'lucide-react';
 import { PROMPTS, PROVIDERS, ROLE_LABEL, ROLE_PERMISSIONS } from '../lib/mock';
 import { useCan, useStudio } from '../lib/useStudio';
 import type { Permission, Role } from '../lib/types';
-import { Badge, Bar, Button, Grid, KeyVal, Mono, Page, Panel, Status } from '../ui/kit';
+import {
+  Badge,
+  Bar,
+  Button,
+  Disclosure,
+  Grid,
+  Mono,
+  Note,
+  Page,
+  Panel,
+  Status,
+  Term,
+} from '../ui/kit';
 
-const ALL_PERMISSIONS: Permission[] = [
-  'job.run',
-  'job.cancel',
-  'draft.edit',
-  'draft.repair',
-  'review.comment',
-  'review.approve',
-  'content.publish',
-  'content.rollback',
-  'settings.write',
-];
+/** Plain-language names for the permissions; the enum stays visible as a hint. */
+const PERMISSION_LABEL: Record<Permission, string> = {
+  'job.run': 'Запускати AI',
+  'job.cancel': 'Зупиняти запуск',
+  'draft.edit': 'Редагувати чернетку',
+  'draft.repair': 'Виправляти через AI',
+  'review.comment': 'Коментувати',
+  'review.approve': 'Схвалювати',
+  'content.publish': 'Публікувати в гру',
+  'content.rollback': 'Відкочувати випуск',
+  'settings.write': 'Змінювати налаштування',
+};
 
+const ALL_PERMISSIONS = Object.keys(PERMISSION_LABEL) as Permission[];
 const ROLES: Role[] = ['author', 'reviewer', 'admin'];
 
 export function Settings() {
@@ -24,112 +38,73 @@ export function Settings() {
   const denied = can('settings.write') ? null : `Роль «${ROLE_LABEL[role]}» не змінює налаштування`;
 
   return (
-    <Page
-      wide
-      title="Налаштування"
-      subtitle="Провайдери, бюджети, промпти й права. Усе, що раніше жило у вкладці «Налаштування» лаунчера й у .env."
-    >
-      <div className="mb-4 grid grid-cols-2 gap-4">
+    <Page wide title="Налаштування">
+      <Panel className="mb-3" title={<Term k="provider">Провайдери AI</Term>} flush>
+        <Grid head cols="150px 130px 1fr 190px 130px">
+          <span>Сервіс</span>
+          <span>Стан</span>
+          <span>Для чого</span>
+          <span>Витрати за місяць</span>
+          <span />
+        </Grid>
         {PROVIDERS.map((p) => (
-          <Panel
-            key={p.id}
-            title={p.label}
-            subtitle={p.note}
-            action={<Status value={p.status} />}
-          >
-            <dl>
-              <KeyVal k="Модель за замовчуванням" v={<Mono className="text-muted">{p.defaultModel}</Mono>} />
-              <KeyVal k="Доступні моделі" v={p.models.length} />
-              <KeyVal
-                k="Затримка"
-                v={
-                  p.latencyMs === null ? (
-                    '—'
-                  ) : (
-                    <span className={p.latencyMs > 2000 ? 'text-gold-ink' : undefined}>
-                      {p.latencyMs} мс
-                    </span>
-                  )
-                }
-              />
-              <KeyVal
-                k="Змінні середовища"
-                v={
-                  p.envKeys.length ? (
-                    <span className="flex flex-wrap justify-end gap-1">
-                      {p.envKeys.map((k) => (
-                        <Mono key={k} className="text-muted">
-                          {k}
-                        </Mono>
-                      ))}
-                    </span>
-                  ) : (
-                    'не потрібні'
-                  )
-                }
-              />
-            </dl>
-
-            <div className="mt-3 border-t border-line pt-3">
-              <div className="mb-1.5 flex items-baseline justify-between">
-                <span className="text-[12px] text-faint">Витрати за місяць</span>
-                <span className="studio-num text-[12.5px] font-semibold">
-                  {p.monthly.costLimitUsd > 0
-                    ? `$${p.monthly.costUsd.toFixed(2)} / $${p.monthly.costLimitUsd}`
-                    : 'локально, без тарифікації'}
-                </span>
-              </div>
-              <Bar value={p.monthly.costUsd} max={p.monthly.costLimitUsd} />
-            </div>
-
-            <div className="mt-3 flex gap-2">
+          <Grid key={p.id} cols="150px 130px 1fr 190px 130px">
+            <span className="min-w-0">
+              <span className="block truncate font-medium">{p.label}</span>
+              <Mono>{p.defaultModel}</Mono>
+            </span>
+            <Status value={p.status} />
+            <span className="truncate text-[12.5px] text-faint" title={p.note}>
+              {p.note}
+            </span>
+            <span className="min-w-0">
+              {p.monthly.costLimitUsd > 0 ? (
+                <>
+                  <Bar value={p.monthly.costUsd} max={p.monthly.costLimitUsd} />
+                  <span className="studio-num mt-1 block text-[12px] text-faint">
+                    ${p.monthly.costUsd.toFixed(2)} з ${p.monthly.costLimitUsd}
+                  </span>
+                </>
+              ) : (
+                <span className="text-[12.5px] text-faint">безкоштовно</span>
+              )}
+            </span>
+            <span className="justify-self-end">
               <Button variant="ghost" denied={denied}>
                 <KeyRound size={13} />
-                Змінити ключ
+                Ключ
               </Button>
-              <Button variant="ghost" denied={denied}>
-                Перевірити зʼєднання
-              </Button>
-            </div>
-          </Panel>
-        ))}
-      </div>
-
-      <Panel
-        className="mb-4"
-        title="Промпти"
-        subtitle="Версіонуються. Джоб записує, якою версією його виконано."
-        flush
-      >
-        <Grid head cols="220px 80px 1fr 150px 130px">
-          <span>Назва</span>
-          <span>Версія</span>
-          <span>Початок</span>
-          <span>Використовує</span>
-          <span className="text-right">Оновлено</span>
-        </Grid>
-        {PROMPTS.map((p) => (
-          <Grid key={p.id} cols="220px 80px 1fr 150px 130px">
-            <Mono className="text-muted">{p.name}</Mono>
-            <Badge tone="info">{p.version}</Badge>
-            <span className="truncate text-[12.5px] text-faint" title={p.excerpt}>
-              {p.excerpt}
-            </span>
-            <Mono>{p.usedBy.join(', ')}</Mono>
-            <span className="text-right text-[12px] text-faint">
-              {p.updatedAt} · {p.updatedBy}
             </span>
           </Grid>
         ))}
       </Panel>
 
-      <Panel
-        title="Ролі й права"
-        subtitle="Матриця RBAC. Перемикач ролі в шапці показує студію очима кожної."
-        flush
+      <Disclosure
+        className="mb-3"
+        label="Інструкції для AI"
+        hint={`${PROMPTS.length} шт., з версіями`}
       >
-        <Grid head cols="220px repeat(3, 1fr)">
-          <span>Операція</span>
+        {PROMPTS.map((p) => (
+          <div key={p.id} className="border-b border-line px-4 py-3 last:border-b-0">
+            <div className="flex items-center gap-2">
+              <Mono className="text-muted">{p.name}</Mono>
+              <Badge tone="info">{p.version}</Badge>
+              <span className="ml-auto text-[12px] text-faint">
+                {p.updatedAt} · {p.updatedBy}
+              </span>
+            </div>
+            <p className="mt-1.5 text-[12.5px] leading-relaxed text-faint">{p.excerpt}</p>
+          </div>
+        ))}
+      </Disclosure>
+
+      <Disclosure
+        label="Хто що може"
+        help={<Term k="rbac" align="end" iconOnly />}
+        hint="перемикач ролі — у шапці"
+      >
+        <Grid head cols="240px repeat(3, 1fr)">
+          <span>Дія</span>
           {ROLES.map((r) => (
             <span key={r} className={role === r ? 'text-ink' : undefined}>
               {ROLE_LABEL[r]}
@@ -137,32 +112,31 @@ export function Settings() {
           ))}
         </Grid>
         {ALL_PERMISSIONS.map((permission) => (
-          <Grid key={permission} cols="220px repeat(3, 1fr)">
-            <Mono className="text-muted">{permission}</Mono>
-            {ROLES.map((r) => {
-              const allowed = ROLE_PERMISSIONS[r].includes(permission);
-              return (
-                <span key={r} className="text-[13px]">
-                  {allowed ? (
-                    <span className="text-success">дозволено</span>
-                  ) : (
-                    <span className="flex items-center gap-1 text-faint">
-                      <Lock size={11} />
-                      ні
-                    </span>
-                  )}
-                </span>
-              );
-            })}
+          <Grid key={permission} cols="240px repeat(3, 1fr)">
+            <span className="min-w-0">
+              <span className="block truncate text-[13px]">{PERMISSION_LABEL[permission]}</span>
+              <Mono>{permission}</Mono>
+            </span>
+            {ROLES.map((r) => (
+              <span key={r} className="text-[13px]">
+                {ROLE_PERMISSIONS[r].includes(permission) ? (
+                  <span className="text-success">так</span>
+                ) : (
+                  <span className="flex items-center gap-1 text-faint">
+                    <Lock size={11} />
+                    ні
+                  </span>
+                )}
+              </span>
+            ))}
           </Grid>
         ))}
-      </Panel>
+      </Disclosure>
 
-      <div className="mt-4 rounded-[var(--s-radius)] border border-dashed border-line-strong p-4 text-[12.5px] leading-relaxed text-faint">
-        Feature flag не замінює авторизацію. Якщо студія вимкнена прапорцем, її
-        endpoint усе одно має відповідати 403 для ролі без права — інакше це не
-        захист, а маскування.
-      </div>
+      <Note className="mt-3">
+        Схована кнопка — не захист. Роль перевіряється на сервері: без права запит
+        просто не виконається, навіть якщо кнопку намалювати.
+      </Note>
     </Page>
   );
 }

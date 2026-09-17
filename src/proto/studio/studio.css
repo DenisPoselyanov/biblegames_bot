@@ -12,19 +12,32 @@
 .studio-root {
   --s-radius: 12px;
   --s-radius-sm: 8px;
-  --s-row: 40px;
   --s-mono: 'JetBrains Mono', 'Cascadia Mono', Consolas, ui-monospace, monospace;
 
-  /* Productivity surfaces read better opaque than glassy: a data grid behind
-     blur costs legibility for nothing. */
+  /* Three surfaces, and only three: the chrome around the work, the panel the
+     work sits on, and the tile inside a panel. */
+  --s-chrome: color-mix(in srgb, var(--p-surface) 55%, var(--p-canvas));
   --s-panel: color-mix(in srgb, var(--p-surface-2) 62%, var(--p-canvas));
   --s-panel-2: color-mix(in srgb, var(--p-surface) 55%, var(--p-canvas));
   --s-hover: color-mix(in srgb, var(--p-ink) 6%, transparent);
+  --s-console: color-mix(in srgb, var(--p-canvas) 70%, black);
+  --s-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.75);
 
   font-size: 14px;
   line-height: 1.45;
   color: var(--p-ink);
   background: var(--p-canvas);
+}
+
+/* Light — paper, not a dimmed version of the dark theme: panels go pure white
+   so a data grid reads at full contrast, and the chrome steps back instead. */
+.studio-root[data-proto-theme='light'] {
+  --s-chrome: #efecfa;
+  --s-panel: #ffffff;
+  --s-panel-2: #f7f5ff;
+  --s-hover: color-mix(in srgb, var(--p-indigo) 7%, transparent);
+  --s-console: #f3f1fb;
+  --s-shadow: 0 24px 60px -30px rgba(76, 56, 140, 0.35);
 }
 
 /* A single static wash instead of the drifting aurora — no ambient motion in a
@@ -37,6 +50,12 @@
   background:
     radial-gradient(1100px 420px at 16% -10%, color-mix(in srgb, var(--p-indigo) 20%, transparent), transparent 70%),
     radial-gradient(900px 380px at 88% -6%, color-mix(in srgb, var(--p-violet) 14%, transparent), transparent 72%);
+}
+
+.studio-root[data-proto-theme='light'] .studio-wash {
+  background:
+    radial-gradient(1100px 420px at 16% -10%, color-mix(in srgb, var(--p-indigo) 9%, transparent), transparent 70%),
+    radial-gradient(900px 380px at 88% -6%, color-mix(in srgb, var(--p-violet) 7%, transparent), transparent 72%);
 }
 
 .studio-mono {
@@ -91,6 +110,7 @@
   line-height: 1.7;
   white-space: pre-wrap;
   word-break: break-word;
+  background: var(--s-console);
 }
 
 /* An indeterminate sweep for work that is genuinely running. The spec forbids
@@ -151,9 +171,82 @@
   box-shadow: inset 2px 0 0 var(--p-gold);
 }
 
+/* Level two: the drawer ----------------------------------------------------- */
+
+.studio-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--p-veil);
+  animation: studio-fade 160ms var(--ease-out-soft);
+}
+
+.studio-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 41;
+  width: min(440px, 92vw);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--p-line-strong);
+  background: var(--s-panel);
+  box-shadow: var(--s-shadow);
+  animation: studio-slide 220ms var(--ease-out-soft);
+}
+
+@keyframes studio-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes studio-slide {
+  from {
+    transform: translateX(16px);
+    opacity: 0;
+  }
+}
+
+/* Level zero: the `?` popover ----------------------------------------------- */
+
+.studio-pop {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 280px;
+  padding: 12px;
+  border-radius: var(--s-radius);
+  border: 1px solid var(--p-line-strong);
+  background: var(--s-panel);
+  box-shadow: var(--s-shadow);
+  animation: studio-fade 140ms var(--ease-out-soft);
+
+  /* The `?` often sits inside a small uppercase label; the explanation must not
+     inherit that styling. */
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--p-ink);
+}
+
+/* Near the right edge the popover would leave the viewport. */
+.studio-pop[data-align='end'] {
+  left: auto;
+  right: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .studio-live::after,
-  .studio-pulse {
+  .studio-pulse,
+  .studio-drawer,
+  .studio-overlay,
+  .studio-pop {
     animation: none;
   }
 

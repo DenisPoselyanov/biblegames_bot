@@ -1,5 +1,7 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { useEffect, useRef, useState, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { ChevronDown, HelpCircle, X } from 'lucide-react';
 import { cn } from '../../ui/cn';
+import { GLOSSARY } from '../lib/glossary';
 
 /* ------------------------------------------------------------------ status */
 
@@ -9,38 +11,41 @@ type Tone = 'neutral' | 'info' | 'gold' | 'success' | 'danger';
  * One vocabulary for every state the studio shows — draft lifecycle, job
  * lifecycle, check severity, Scripture verdict, provider health. Same word in
  * two places always gets the same colour, so a red dot never needs a legend.
+ *
+ * Labels are plain Ukrainian, not the internal enum: the enum is visible in the
+ * `?` explanation and in ids, where it belongs.
  */
 const STATUS_META: Record<string, { label: string; tone: Tone }> = {
   // draft lifecycle
   draft: { label: 'Чернетка', tone: 'neutral' },
   generated: { label: 'Згенеровано', tone: 'info' },
-  validation_failed: { label: 'Валідація провалена', tone: 'danger' },
-  ready_for_review: { label: 'На ревʼю', tone: 'gold' },
-  changes_requested: { label: 'Потребує змін', tone: 'gold' },
+  validation_failed: { label: 'Є помилка', tone: 'danger' },
+  ready_for_review: { label: 'Чекає перевірки', tone: 'gold' },
+  changes_requested: { label: 'На доопрацюванні', tone: 'gold' },
   approved: { label: 'Схвалено', tone: 'success' },
   scheduled: { label: 'Заплановано', tone: 'info' },
-  published: { label: 'Опубліковано', tone: 'success' },
+  published: { label: 'У грі', tone: 'success' },
   superseded: { label: 'Замінено', tone: 'neutral' },
   archived: { label: 'В архіві', tone: 'neutral' },
   rolled_back: { label: 'Відкочено', tone: 'danger' },
   // jobs
   queued: { label: 'У черзі', tone: 'neutral' },
-  running: { label: 'Виконується', tone: 'info' },
+  running: { label: 'Працює', tone: 'info' },
   cancelled: { label: 'Скасовано', tone: 'neutral' },
   failed: { label: 'Помилка', tone: 'danger' },
-  completed: { label: 'Завершено', tone: 'success' },
+  completed: { label: 'Готово', tone: 'success' },
   partial: { label: 'Частково', tone: 'gold' },
   // checks
-  pass: { label: 'Пройдено', tone: 'success' },
+  pass: { label: 'Гаразд', tone: 'success' },
   warn: { label: 'Увага', tone: 'gold' },
-  fail: { label: 'Провал', tone: 'danger' },
+  fail: { label: 'Помилка', tone: 'danger' },
   // scripture
   match: { label: 'Збіг', tone: 'success' },
   paraphrase: { label: 'Переказ', tone: 'gold' },
-  mismatch: { label: 'Невідповідність', tone: 'danger' },
+  mismatch: { label: 'Не той текст', tone: 'danger' },
   not_found: { label: 'Вірша немає', tone: 'danger' },
   // providers
-  connected: { label: 'Підключено', tone: 'success' },
+  connected: { label: 'Працює', tone: 'success' },
   degraded: { label: 'Збої', tone: 'gold' },
   offline: { label: 'Офлайн', tone: 'danger' },
   not_configured: { label: 'Не налаштовано', tone: 'neutral' },
@@ -108,6 +113,85 @@ export function Badge({
   );
 }
 
+/* ---------------------------------------------------------------- glossary */
+
+/**
+ * A word plus a `?` that explains it where it stands. The studio may use a term
+ * like «checkpoint» only with this next to it — the alternative is a newcomer
+ * guessing, or a glossary nobody opens.
+ */
+export function Term({
+  k,
+  children,
+  align = 'start',
+  iconOnly,
+  className,
+}: {
+  k: keyof typeof GLOSSARY;
+  children?: ReactNode;
+  align?: 'start' | 'end';
+  /** Just the `?`, for labels that already say the word. */
+  iconOnly?: boolean;
+  className?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const host = useRef<HTMLSpanElement>(null);
+  const entry = GLOSSARY[k];
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (!host.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  return (
+    <span ref={host} className={cn('relative inline-flex items-center gap-1', className)}>
+      {!iconOnly && <span>{children ?? entry.term}</span>}
+      <button
+        type="button"
+        aria-label={`Що таке «${entry.term}»`}
+        aria-expanded={open}
+        onClick={(e) => {
+          /* The `?` frequently sits inside a <label> or next to a toggle — it
+             must never activate whatever it is standing in. */
+          e.preventDefault();
+          e.stopPropagation();
+          setOpen((v) => !v);
+        }}
+        className={cn(
+          'grid h-4 w-4 shrink-0 place-items-center rounded-full border transition-colors',
+          open
+            ? 'border-indigo text-indigo'
+            : 'border-line-strong text-faint hover:border-[var(--p-indigo)] hover:text-indigo',
+        )}
+      >
+        <HelpCircle size={11} strokeWidth={2.2} />
+      </button>
+      {open && (
+        <span className="studio-pop" data-align={align}>
+          <span className="block font-display text-[14px] font-semibold">{entry.term}</span>
+          <span className="mt-1 block text-[12.5px] leading-relaxed text-muted">{entry.short}</span>
+          {entry.more && (
+            <span className="mt-2 block border-t border-line pt-2 text-[12px] leading-relaxed text-faint">
+              {entry.more}
+            </span>
+          )}
+        </span>
+      )}
+    </span>
+  );
+}
+
 /* ----------------------------------------------------------------- surface */
 
 export function Panel({
@@ -138,7 +222,11 @@ export function Panel({
       {(title || action) && (
         <header className="flex items-center justify-between gap-3 border-b border-line px-4 py-2.5">
           <div className="min-w-0">
-            {title && <h2 className="truncate text-[13px] font-bold tracking-[-0.01em]">{title}</h2>}
+            {title && (
+              <h2 className="flex items-center gap-1.5 truncate text-[13px] font-bold tracking-[-0.01em]">
+                {title}
+              </h2>
+            )}
             {subtitle && <p className="truncate text-[12px] text-faint">{subtitle}</p>}
           </div>
           {action && <div className="flex shrink-0 items-center gap-2">{action}</div>}
@@ -149,9 +237,81 @@ export function Panel({
   );
 }
 
-export function Toolbar({ children, className }: { children: ReactNode; className?: string }) {
+/**
+ * Everything that is not needed to make the next decision goes in here. The
+ * label says what is inside, so opening it is a choice, not a lottery.
+ */
+export function Disclosure({
+  label,
+  hint,
+  help,
+  children,
+  defaultOpen,
+  className,
+}: {
+  label: ReactNode;
+  hint?: ReactNode;
+  /** A `<Term iconOnly>`; rendered beside the toggle, never inside it. */
+  help?: ReactNode;
+  children: ReactNode;
+  defaultOpen?: boolean;
+  className?: string;
+}) {
+  const [open, setOpen] = useState(Boolean(defaultOpen));
   return (
-    <div className={cn('flex flex-wrap items-center gap-2', className)}>{children}</div>
+    <section
+      className={cn(
+        'overflow-hidden rounded-[var(--s-radius)] border border-line bg-[var(--s-panel)]',
+        className,
+      )}
+    >
+      <div className="studio-row flex items-center gap-2 px-4 py-2.5">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          className="flex min-w-0 flex-1 items-center gap-2.5 text-left"
+        >
+          <ChevronDown
+            size={15}
+            className={cn('shrink-0 text-faint transition-transform', open && 'rotate-180')}
+          />
+          <span className="text-[13px] font-bold">{label}</span>
+          {hint && <span className="ml-auto pl-3 text-[12px] font-normal text-faint">{hint}</span>}
+        </button>
+        {help}
+      </div>
+      {open && <div className="border-t border-line">{children}</div>}
+    </section>
+  );
+}
+
+export function Toolbar({ children, className }: { children: ReactNode; className?: string }) {
+  return <div className={cn('flex flex-wrap items-center gap-2', className)}>{children}</div>;
+}
+
+/** A short explanation that belongs to the screen rather than to one control. */
+export function Note({
+  children,
+  tone = 'neutral',
+  className,
+}: {
+  children: ReactNode;
+  tone?: 'neutral' | 'danger';
+  className?: string;
+}) {
+  return (
+    <p
+      className={cn(
+        'rounded-[var(--s-radius)] border border-dashed px-4 py-3 text-[12.5px] leading-relaxed',
+        tone === 'danger'
+          ? 'border-[color-mix(in_srgb,var(--p-danger)_35%,transparent)] bg-[color-mix(in_srgb,var(--p-danger)_8%,transparent)] text-muted'
+          : 'border-line-strong text-faint',
+        className,
+      )}
+    >
+      {children}
+    </p>
   );
 }
 
@@ -209,7 +369,7 @@ export function Mono({ children, className }: { children: ReactNode; className?:
 export function KeyVal({ k, v }: { k: ReactNode; v: ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-line py-1.5 last:border-b-0">
-      <dt className="shrink-0 text-[12px] text-faint">{k}</dt>
+      <dt className="flex shrink-0 items-center gap-1 text-[12px] text-faint">{k}</dt>
       <dd className="min-w-0 text-right text-[12.5px] font-medium">{v}</dd>
     </div>
   );
@@ -222,7 +382,7 @@ export function Metric({
   hint,
   tone = 'neutral',
 }: {
-  label: string;
+  label: ReactNode;
   value: ReactNode;
   delta?: string;
   hint?: string;
@@ -235,11 +395,10 @@ export function Metric({
     neutral: 'text-muted',
   }[tone];
   return (
-    <div
-      className="rounded-[var(--s-radius)] border border-line bg-[var(--s-panel)] p-3"
-      title={hint}
-    >
-      <p className="text-[11.5px] font-semibold tracking-[0.02em] text-faint uppercase">{label}</p>
+    <div className="rounded-[var(--s-radius)] border border-line bg-[var(--s-panel)] p-3" title={hint}>
+      <p className="flex items-center gap-1 text-[11.5px] font-semibold tracking-[0.02em] text-faint uppercase">
+        {label}
+      </p>
       <p className="studio-num mt-1 font-display text-[24px] leading-none font-semibold">{value}</p>
       {delta && <p className={cn('mt-1.5 text-[12px] font-medium', accent)}>{delta}</p>}
     </div>
@@ -250,18 +409,9 @@ export function Metric({
  * Budget usage. Deliberately not a progress bar for work done — the spec bans
  * invented percentages, and a budget really is a known fraction of a known cap.
  */
-export function Bar({
-  value,
-  max,
-  className,
-}: {
-  value: number;
-  max: number;
-  className?: string;
-}) {
+export function Bar({ value, max, className }: { value: number; max: number; className?: string }) {
   const share = max > 0 ? Math.min(value / max, 1) : 0;
-  const tone =
-    share >= 1 ? 'var(--p-danger)' : share > 0.8 ? 'var(--p-gold)' : 'var(--p-indigo)';
+  const tone = share >= 1 ? 'var(--p-danger)' : share > 0.8 ? 'var(--p-gold)' : 'var(--p-indigo)';
   return (
     <div className={cn('h-1.5 w-full overflow-hidden rounded-full bg-line-strong', className)}>
       <div
@@ -350,14 +500,14 @@ export function Field({
   children,
   className,
 }: {
-  label: string;
+  label: ReactNode;
   hint?: string;
   children: ReactNode;
   className?: string;
 }) {
   return (
     <label className={cn('block', className)}>
-      <span className="mb-1 block text-[11.5px] font-semibold tracking-[0.02em] text-faint uppercase">
+      <span className="mb-1 flex items-center gap-1 text-[11.5px] font-semibold tracking-[0.02em] text-faint uppercase">
         {label}
       </span>
       {children}
@@ -416,6 +566,102 @@ export function Chip({
   );
 }
 
+/** Two or three views of the same subject — never used for unrelated screens. */
+export function Tabs<T extends string>({
+  value,
+  onChange,
+  items,
+}: {
+  value: T;
+  onChange: (value: T) => void;
+  items: Array<{ value: T; label: string; count?: number }>;
+}) {
+  return (
+    <div className="inline-flex gap-1 rounded-full border border-line bg-[var(--s-panel-2)] p-1">
+      {items.map((item) => (
+        <button
+          key={item.value}
+          type="button"
+          onClick={() => onChange(item.value)}
+          className={cn(
+            'inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-semibold transition-colors',
+            item.value === value
+              ? 'bg-[var(--s-panel)] text-ink shadow-[0_1px_2px_rgba(0,0,0,0.12)]'
+              : 'text-faint hover:text-muted',
+          )}
+        >
+          {item.label}
+          {item.count !== undefined && <span className="studio-num text-faint">{item.count}</span>}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------- level two: drawer */
+
+/**
+ * The middle level: enough to decide without leaving the list. Anything that
+ * needs the whole screen lives behind «Відкрити повністю».
+ */
+export function Drawer({
+  open,
+  onClose,
+  title,
+  subtitle,
+  status,
+  footer,
+  children,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title: ReactNode;
+  subtitle?: ReactNode;
+  status?: ReactNode;
+  footer?: ReactNode;
+  children: ReactNode;
+}) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <>
+      <div className="studio-overlay" onClick={onClose} />
+      <aside className="studio-drawer" role="dialog" aria-modal="true">
+        <header className="flex items-start gap-3 border-b border-line px-4 py-3">
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-[16px] leading-tight font-semibold">{title}</h2>
+            {subtitle && <p className="mt-0.5 text-[12px] text-faint">{subtitle}</p>}
+          </div>
+          {status}
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Закрити"
+            className="shrink-0 text-faint hover:text-ink"
+          >
+            <X size={16} />
+          </button>
+        </header>
+        <div className="studio-scroll flex-1 overflow-y-auto p-4">{children}</div>
+        {footer && (
+          <footer className="flex flex-wrap items-center gap-2 border-t border-line px-4 py-3">
+            {footer}
+          </footer>
+        )}
+      </aside>
+    </>
+  );
+}
+
 /* -------------------------------------------------------------------- page */
 
 export function Page({
@@ -433,7 +679,7 @@ export function Page({
   wide?: boolean;
 }) {
   return (
-    <div className={cn('mx-auto px-6 py-5', wide ? 'max-w-[1560px]' : 'max-w-[1180px]')}>
+    <div className={cn('mx-auto px-6 py-5', wide ? 'max-w-[1360px]' : 'max-w-[1040px]')}>
       <div className="mb-5 flex items-start justify-between gap-4">
         <div className="min-w-0">
           <h1 className="font-display text-[22px] leading-tight font-semibold tracking-[-0.01em]">
