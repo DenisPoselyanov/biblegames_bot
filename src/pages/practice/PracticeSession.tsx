@@ -62,7 +62,9 @@ export function PracticeSession() {
   const trackedSeedRef = useRef<PracticeSessionCreateResponse | undefined>(undefined);
   const finishedRef = useRef(false);
   const indexRef = useRef(index);
-  indexRef.current = index;
+  useEffect(() => {
+    indexRef.current = index;
+  }, [index]);
   useEffect(() => {
     if (!seed || trackedSeedRef.current === seed) return;
     trackedSeedRef.current = seed;
@@ -74,7 +76,6 @@ export function PracticeSession() {
     };
     // Mount/unmount only, keyed on the seed identity — reading the latest
     // index via `indexRef` avoids re-firing this cleanup on every answer.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seed]);
 
   useEffect(() => {

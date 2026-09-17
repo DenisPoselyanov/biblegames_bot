@@ -63,7 +63,9 @@ export function LessonSession() {
   const trackedSessionRef = useRef<string | null>(null);
   const completedRef = useRef(false);
   const indexRef = useRef(index);
-  indexRef.current = index;
+  useEffect(() => {
+    indexRef.current = index;
+  }, [index]);
   useEffect(() => {
     if (!lessonId || !session || trackedSessionRef.current === session.id) return;
     trackedSessionRef.current = session.id;
@@ -82,7 +84,6 @@ export function LessonSession() {
     };
     // Mount/unmount only — reading the latest index via `indexRef` instead of
     // a dependency avoids re-firing this cleanup on every block advance.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lessonId]);
 
   if (start.isError) {
