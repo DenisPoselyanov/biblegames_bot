@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+/* Font stylesheet is loaded via a preconnected <link> in index.html (§18
+   performance) — a CSS @import here would force fetch+parse of this file
+   before the browser even discovers the font stylesheet, serializing what
+   can otherwise start in parallel. */
 
 :root {
   color-scheme: dark;
