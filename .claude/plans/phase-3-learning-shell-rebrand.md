@@ -230,8 +230,49 @@ WS1/WS2 (backend) and WS3/WS4 (design/motion foundation) are independent and can
     admin-only — ARIA live is essentially greenfield for core screens).
   - Motion reduced/minimal (already verified real/wired, not a stub — `MotionProvider.tsx`) and most
     icon-button `aria-label` coverage (via `IconButton`, already required-prop) need no further work.
-- Performance budget (§18: no full question-bank load on core routes, code-split, image/font budget) — **not started**.
-- Analytics instrumentation (§19) and privacy checks (no raw Scripture-reflection tracking) — **not started**.
+- **Performance budget (§18) — done** (`93126ac` + this session's follow-up, `phase-3/ws10-focus-management`).
+  Route code-splitting, lazy per-theme question-bank loading, provider re-render scoping, and motion
+  transforms (opacity/translate only, never layout properties) were already compliant — verified, no
+  changes needed there. Two real gaps closed: `TopicHierarchyProvider` wrapped the whole app and eagerly
+  (`import.meta.glob(..., { eager: true })`) inlined `topics-db.json` (242KB) into the main chunk on every
+  route even though only the legacy Themes screen reads it — moved the provider to just that route and
+  dropped `eager: true`, so it's now a real on-demand chunk. Lesson `image` blocks had no reserved
+  width/height, so a real image would cause CLS — added optional `width`/`height` to the block payload
+  schema, reserved via `aspect-ratio` (real ratio when known, 16:9 default otherwise). This session's own
+  follow-up pass (independent investigation via two Explore agents) found and closed two more: the font
+  stylesheet was a render-blocking `@import` as `src/index.css`'s first line with no `preconnect` hint,
+  forcing a serial fetch-CSS → discover-fonts-stylesheet → fetch-fonts waterfall on every route including
+  Today — replaced with `<link rel="preconnect">`×2 + a real `<link rel="stylesheet">` in `index.html`;
+  and `ToastProvider`'s context value was a fresh object literal every render (the one un-memoized provider
+  in the tree) — wrapped in `useMemo`. Telegram Android/iOS on-device memory behavior is **not** verified
+  here — needs a real device, deferred to Phase 7's final hardening pass per this doc's own framing.
+- **Analytics instrumentation (§19) — done** (`5d46ebc` + this session's fix, `phase-3/ws10-focus-management`).
+  All 8 spec categories now have a call site: `today_viewed`/`today_action_selected`
+  (`src/pages/learn/Today.tsx`), `lesson_started`/`resumed`/`completed`/`abandoned`
+  (`src/pages/learn/LessonSession.tsx` — abandon fires on unmount when the session never completed),
+  `practice_session_started`/`completed`/`abandoned` (`src/pages/practice/PracticeSession.tsx`, covers both
+  practice and review via the existing session `mode`), `theme_applied` (`CosmeticThemeSync.tsx`),
+  `motion_intensity_changed` (`MotionProvider.tsx`) — redirect usage and errors already had their own
+  pipes (`routeAnalytics.ts`, `errorReporter.ts`) and needed no changes. Privacy: `trackEvent` is now
+  generic over a `TelemetryPayloadMap` so a call site's payload shape is a compile-time check, and the
+  server (`server/middleware/validateBody.ts`) allowlists payload keys per event name so an unrecognized
+  field can never reach storage even from a future regression — closes the "no raw Scripture-reflection
+  tracking" concern structurally rather than by convention (there's no live violation today either: the
+  `reflection` lesson block is a display-only author prompt, no free-text user input exists yet per
+  `lessonBlockPayloads.ts`). This session's fix: the abandon-tracking pattern in `LessonSession.tsx`/
+  `PracticeSession.tsx` set a ref's `.current` directly in the render body (`indexRef.current = index`) to
+  let an unmount closure read the latest value — a real bug (`react-hooks/refs`: "Cannot access refs during
+  render"), caught by `eslint`, not by `tsc` or the test suite. Fixed by moving the assignment into its own
+  `useEffect`. Verified: `tsc -b` + server `tsc` clean, `eslint` clean on every touched/verified file (two
+  pre-existing `react-refresh/only-export-components` errors on `Toast.tsx`/`MotionProvider.tsx` confirmed
+  via `git stash` to predate this work, matching [[biblegames-preexisting-gate-debt]]), full suite 440/440,
+  and live browser QA (dev server + backend in JSON-store/`AUTH_MODE=development` mode): `theme_applied`
+  and `motion_intensity_changed` both confirmed firing with correct payloads end-to-end into the telemetry
+  store; font `<link>` tags confirmed present and no console errors beyond the pre-existing "no published
+  learning content yet" 404 on `/learning/today` (a documented WS2 limitation, not a regression). The
+  lesson/practice/review start-resume-complete-abandon happy path could not be exercised live — no
+  published learning content exists in this dev environment (same gap WS2/WS6/WS7 already documented) —
+  correctness there rests on the full integration test suite plus structural code review.
 - Full test suite: unit/component, integration, E2E/manual matrix (§23), visual regression baseline for the screens listed in §23 — **not started**.
 - Staged flag rollout per §20 (fixtures → design review → shell-behind-flag → migrated internal users → alpha → new-users-first if migration risk high → percentage → full → remove old shell after window), redirect retirement only after the retention window (§5.3) — **not started, needs product-owner/production-ops decisions this agent can't make alone**.
 - Rollback drill per §26; Phase 4 handoff doc per §27.
