@@ -28,6 +28,7 @@ import { KahootHub, KahootRoom } from './screens/Kahoot';
 import { Social } from './screens/Social';
 import { Shop } from './screens/Shop';
 import { ModuleDetail } from './screens/ModuleDetail';
+import { StudioApp } from './studio/StudioApp';
 
 const BASE = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/proto`;
 
@@ -138,11 +139,22 @@ function Shell() {
   );
 }
 
+/**
+ * The Content Studio is a different product on the same design system: a
+ * desktop tool, not a mini app. It takes over the whole viewport instead of
+ * living inside the phone frame, so it is switched here rather than routed
+ * inside `Shell`.
+ */
+function Root() {
+  const { pathname } = useLocation();
+  return pathname.startsWith('/studio') ? <StudioApp /> : <Shell />;
+}
+
 export default function ProtoApp() {
   return (
     <ProtoStoreProvider>
       <BrowserRouter basename={BASE}>
-        <Shell />
+        <Root />
       </BrowserRouter>
     </ProtoStoreProvider>
   );
