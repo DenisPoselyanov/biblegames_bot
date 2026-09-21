@@ -1,0 +1,46 @@
+/* ── Phase 3.5 §6 WS4 — designSystemV2 re-skin ── */
+
+.dueCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.dueIcon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--accent-spiritual-bg);
+  color: var(--accent-spiritual-text);
+}
+
+.dueCount {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: var(--lh-tight);
+}
+
+.dueLabel {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.reasonIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+}
