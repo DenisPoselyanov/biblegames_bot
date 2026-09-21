@@ -11,18 +11,26 @@ export type FlagName =
   | 'profileSettingsV2'
   | 'lightThemeDefault';
 
+// Phase 3 full rollout (2026-09-21, WS10 §20 close-out): the v2 shell and every
+// screen that ships behind it are the sole production path now — the legacy
+// `Layout`/`Home`/`ThemeDetail`/`Profile` tree is unreachable once
+// `learningShellV2` is on (see `App.tsx`'s route-tree switch) and is kept only
+// as the rollback target (flip these back to `false` to restore it instantly,
+// per §26). `learning_first_navigation`/`daily_plan_v2`/`review_scheduler_v2`
+// only gate sections of that now-unreachable legacy tree, so they stay `false`
+// — flipping them would have no effect and would only add rollback surface.
 const FLAG_DEFAULTS: Record<FlagName, boolean> = {
   learning_first_navigation: false,
-  today_dashboard: false,
+  today_dashboard: true,
   daily_plan_v2: false,
-  learning_plans: false,
-  lesson_experience_v2: false,
+  learning_plans: true,
+  lesson_experience_v2: true,
   review_scheduler_v2: false,
-  progress_dashboard_v2: false,
-  learningShellV2: false,
-  practiceSessionV2: false,
-  profileSettingsV2: false,
-  lightThemeDefault: false,
+  progress_dashboard_v2: true,
+  learningShellV2: true,
+  practiceSessionV2: true,
+  profileSettingsV2: true,
+  lightThemeDefault: true,
 };
 
 /**
