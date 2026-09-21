@@ -115,6 +115,15 @@ export interface SemanticPalette {
   navInactive: string;
   progressTrack: string;
   progressFill: string;
+  /**
+   * End color of a progress-ramp gradient (Phase 3.5 §4). Gold is a locked
+   * owner decision only for dark themes — light themes must NOT end their
+   * ramp in gold (`PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md` §4). Defaults to
+   * `accentSpiritual` for every pre-existing theme, which reproduces today's
+   * de-facto behavior (nothing reads this token yet) and keeps the default
+   * harmless until a consumer opts in.
+   */
+  progressRampEnd: string;
   inputBg: string;
   inputBorder: string;
   heroOverlayStart: string;
@@ -165,6 +174,7 @@ const SEMANTIC_CSS_VAR_ENTRIES: Array<[keyof SemanticPalette, string]> = [
   ['navInactive', '--nav-inactive'],
   ['progressTrack', '--progress-track'],
   ['progressFill', '--progress-fill'],
+  ['progressRampEnd', '--progress-ramp-end'],
   ['inputBg', '--input-bg'],
   ['inputBorder', '--input-border'],
   ['heroOverlayStart', '--hero-overlay-start'],
@@ -256,6 +266,7 @@ export function deriveSemanticPalette(theme: CosmeticTheme): SemanticPalette {
 
     progressTrack: withAlpha(preview.text, isLight ? 0.1 : 0.12),
     progressFill: preview.accent,
+    progressRampEnd: preview.accent,
 
     inputBg: preview.surface,
     inputBorder: borderDefault,

@@ -1206,6 +1206,122 @@ learning_modules; delete from learning_plans;` — жоден інший дом�
 
 ---
 
+# ADR-018 — Phase 3.5 design-v2: без Tailwind v4 і lucide-react; framer-motion лишається як є
+
+**Дата:** 2026-09-21
+**Статус:** accepted, implementation у Phase 3.5 WS1.
+**Деталі:** [`phases/PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md`](./phases/PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md) §2, §6 WS1
+
+## Контекст
+
+`src/proto/README.md`'s (гілка `proto/design-v2`) таблиця рішень записує стек
+прототипу як «Tailwind v4 + власні примітиви, framer-motion, lucide».
+`PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md` §2 характеризує всі три як «нову
+залежність» і вимагає ADR перед WS1 («New dependency decision required before
+implementation... this needs an ADR before WS1 — it is not a detail to decide
+mid-implementation»).
+
+Перевірка поточного `package.json` і `src/` показує, що передумова невірна для
+однієї з трьох:
+
+- **`framer-motion`** (`^12.40.0`) вже є production `dependencies` — той самий
+  рядок версії (`^12.40.0`), що й на `proto/design-v2`. ADR-010 вже зробив
+  його канонічною motion-системою проєкту (`MOTION_SYSTEM.md`,
+  `MotionProvider`/`MotionSheet`/`MotionDialog`/`MotionPage`/`MotionStagger`,
+  `useMotionCapabilities`), використаною у ~20 production-файлах. Тут немає
+  реального вибору — лише хибна передумова в плановому документі.
+- **`tailwindcss` / `@tailwindcss/vite`** (`^4.3.3` на прототипі) — production
+  не має жодного Tailwind/PostCSS конфіга. Уся стилізація сьогодні — CSS
+  custom properties (`deriveSemanticPalette()` → `--*` на `:root`,
+  `src/lib/cosmeticTheme.ts`) + CSS Modules по компоненту
+  (`src/components/ui/*.module.css`, ~24 компоненти, WS3/ADR-009).
+- **`lucide-react`** (`^1.46.0` на прототипі) — production не імпортує жодної
+  icon-бібліотеки. Є один рукописний `src/components/Icon.tsx` (37 inline
+  SVG-шляхів під `IconName`-union), який уже споживають `BottomNavigation`,
+  `IconButton` та інші.
+
+## Рішення
+
+1. **framer-motion — не нова залежність, нового рішення не потрібно.**
+   Design-v2 екрани продовжують використовувати наявні
+   `MotionProvider`/`MotionSheet`/`MotionDialog`/`MotionPage`/`MotionStagger`
+   примітиви й `MOTION_SYSTEM.md`-контракт (authoritative event dedup,
+   `prefers-reduced-motion`, intensity levels) без нових motion-примітивів —
+   §4's «medium intensity, spring transitions» вже покривається наявними
+   рівнями інтенсивності.
+2. **Tailwind v4 — не приймається.** Виробнича стилізація лишається на
+   наявному пайплайні: `deriveSemanticPalette()`-токени + CSS Modules. Нові
+   значення з `proto.css` (`--p-canvas`, `--p-ink`, `--p-indigo`, `--p-violet`,
+   `--p-ramp-end`, ...) переносяться як нові поля `SemanticPalette` та/або
+   пінові `theme.semantic`-оверрайди в `src/lib/cosmeticTheme.ts` /
+   `src/data/cosmetics.ts`, а не як Tailwind `@theme`-токени. Візуальні
+   патерни прототипу, виражені Tailwind-утилітами (full-bleed hero-картки,
+   glass-поверхні, aurora-фон), відтворюються звичайним CSS у наявних
+   `*.module.css` / `src/index.css` — той самий підхід, що вже дав ADR-009's
+   semantic-token систему.
+3. **lucide-react — не приймається.** Нові іконки, потрібні для design-v2,
+   додаються як нові записи в `Icon.tsx`'s `PATHS`/`IconName`, зберігаючи один
+   icon-механізм у застосунку замість двох паралельних.
+
+## Alternatives considered
+
+### Прийняти Tailwind v4 project-wide
+
+Відхилено: (a) вводить другу, паралельну систему стилізації поряд із CSS
+Modules + custom properties на ~24 наявних компонентах, хоча план §2 явно
+залишає component-контракти «reused as-is» — змішування двох styling-підходів
+у одному шарі є джерелом неузгодженості, не спрощення; (b) новий
+build-time dependency (`@tailwindcss/vite`) чіпає vite-конфіг і вимагав би
+повторного проходу WS10 §18 performance-budget gate заради залежності, чия
+єдина функція (утилітарні класи) вже покривається наявним CSS-пайплайном;
+(c) відповідає принципу ADR-001 (не вводити tooling overhead без реальної
+multi-consumer/незалежної причини) і прецеденту ADR-015 (рукописний SigV4
+замість `aws-sdk`) — не додавати залежність, коли наявний примітив вже
+покриває потребу.
+
+### Прийняти lucide-react
+
+Відхилено: `Icon.tsx` уже легкий (37 записів SVG-шляхів, один файл, без
+build-залежності) і design-v2's icon-потреби — той самий клас «невеликий
+фіксований набір glyphs», що вже вирішено. Друга icon-бібліотека паралельно
+до наявної створює два джерела правди для того самого домену без реального
+reuse-приводу (та сама логіка, що відхилила `aws-sdk` в ADR-015).
+
+### Реалізувати Tailwind лише в `/proto`-подібному ізольованому шарі, а production вибірково імпортує з нього
+
+Відхилено: сам `/proto` явно документує свою cascade-layer ізоляцію
+(`.proto-root`, окремий `@source`) як «prototyping safety measure, not an
+architecture to keep» (`PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md` §2). Часткова
+інтеграція відтворила б саме ту межу, яку phase-документ прямо забороняє
+(«forbidden shortcuts», §10: «shipping `/proto`'s isolated cascade-layer
+implementation into production»).
+
+## Наслідки
+
+- Жодних нових production-залежностей від цього ADR (`framer-motion` вже є;
+  Tailwind і lucide відхилені).
+- WS10 §18 performance-budget gate (bundle-boundary тест) не потребує
+  ре-базлайну через нові build-tool залежності — лишається валідним без змін.
+- `MOTION_SYSTEM.md` не потребує оновлення (жодних нових motion-примітивів) —
+  знімає умовний пункт §8 у `PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md`.
+- WS1 (Palette/token foundation) переносить hex/rgba-значення з `proto.css` у
+  нові поля `SemanticPalette` та/або `theme.semantic`-оверрайди, не в Tailwind
+  `@theme`-блок.
+- Візуальні патерни прототипу (aurora-фон, glass-картки, full-bleed hero)
+  відтворюються рукописним CSS у component-модулях — трохи більше ручної
+  роботи, ніж копіювання готових Tailwind-класів, але зберігає єдиний
+  styling-механізм застосунку.
+
+## Rollback
+
+Ліквідувати нічого не потрібно — це рішення «не приймати» нові залежності,
+тож немає build-кроку для відкату. Якщо майбутня фаза дасть реальний
+multi-consumer привід для Tailwind (наприклад, суттєвий design-system reuse із
+зовнішнім продуктом) — потрібен новий ADR, що явно скасовує це рішення й
+описує міграційний план з наявного CSS-модуля пайплайна.
+
+---
+
 # Як додавати нові рішення
 
 Кожен новий ADR містить:

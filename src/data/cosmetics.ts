@@ -19,7 +19,7 @@ export type SemanticPaletteOverrides = Partial<Record<
   | 'buttonPrimaryBg' | 'buttonPrimaryText'
   | 'buttonSecondaryBg' | 'buttonSecondaryText' | 'buttonSecondaryBorder'
   | 'navBg' | 'navActive' | 'navInactive'
-  | 'progressTrack' | 'progressFill'
+  | 'progressTrack' | 'progressFill' | 'progressRampEnd'
   | 'inputBg' | 'inputBorder'
   | 'heroOverlayStart' | 'heroOverlayEnd' | 'heroImageOpacity' | 'illustrationTint'
   | 'skeletonBase' | 'skeletonHighlight',
@@ -50,14 +50,26 @@ export const DEFAULT_COSMETIC_THEME_ID = 'classic';
 const REBRAND_DEFAULT_COSMETIC_THEME_ID = 'light';
 
 /**
+ * Canonical Phase 3.5 default (ADR-018) — id of the `aurora` theme below.
+ * Only takes effect once `designSystemV2` flips to `true` (WS7 full rollout);
+ * see `resolveDefaultCosmeticThemeId()`.
+ */
+const DESIGN_V2_DEFAULT_COSMETIC_THEME_ID = 'aurora';
+
+/**
  * The theme id to fall back to when a profile has no stored `activeTheme`
  * (WS8, `docs/phases/PHASE_3_LEARNING_PRODUCT_REBRAND_AND_MOTION.md` §7.3).
  * Only ever consulted when nothing is stored — an existing user's saved
- * choice, including one that was itself defaulted to `classic` in the past,
- * is never touched by this flag. Lazily reads the flag (not module-level)
- * so `.env.local` overrides and tests can flip it without a reload.
+ * choice, including one that was itself defaulted to `classic` or `light` in
+ * the past, is never touched by this flag. Lazily reads the flags (not
+ * module-level) so `.env.local` overrides and tests can flip them without a
+ * reload. `designSystemV2` (Phase 3.5) takes precedence over
+ * `lightThemeDefault` (Phase 3) — the two are never both live in production,
+ * but layering them this way means flipping `designSystemV2` off falls back
+ * exactly to today's Phase 3 behavior, not a fresh decision.
  */
 export function resolveDefaultCosmeticThemeId(): string {
+  if (isFeatureEnabled('designSystemV2')) return DESIGN_V2_DEFAULT_COSMETIC_THEME_ID;
   return isFeatureEnabled('lightThemeDefault')
     ? REBRAND_DEFAULT_COSMETIC_THEME_ID
     : DEFAULT_COSMETIC_THEME_ID;
@@ -176,6 +188,105 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       borderSoft: '#E7E1D8',
       borderStrong: '#D8D0C4',
       cardShadow: '0 8px 24px rgba(35, 43, 57, 0.07)',
+    },
+  },
+  {
+    // Canonical Phase 3.5 default theme (ADR-018,
+    // docs/phases/PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md §4). Free,
+    // always-available, cannot be removed from the catalog — same status
+    // `light` has for Phase 3. NOT yet wired as `DEFAULT_COSMETIC_THEME_ID`;
+    // see `resolveDefaultCosmeticThemeId()`. Values pinned from the
+    // `proto/design-v2` branch's `src/proto/proto.css` (`.proto-root`,
+    // dark block) — the owner-approved locked palette, not a fresh pick.
+    id: 'aurora',
+    title: 'Небесна аврора',
+    description: 'Індиго та фіолет нічного неба з теплим золотим сяйвом.',
+    price: 0,
+    isLight: false,
+    onPrimary: '#ffffff',
+    preview: {
+      background: '#0a0918',
+      surface: '#17162a',
+      primary: '#6366f1',
+      accent: '#f0c05a',
+      text: '#f6f4ff',
+    },
+    semantic: {
+      bgApp: '#0A0918',
+      bgSurface: 'rgba(255, 255, 255, 0.055)',
+      bgElevated: 'rgba(255, 255, 255, 0.1)',
+      textPrimary: '#F6F4FF',
+      textSecondary: 'rgba(246, 244, 255, 0.64)',
+      textMuted: 'rgba(246, 244, 255, 0.4)',
+      brandPrimary: '#6366F1',
+      onBrandPrimary: '#FFFFFF',
+      accentSpiritual: '#F0C05A',
+      // Brighter "ink" variant for text/icon glyph roles, same distinction
+      // `proto.css` draws between `--p-gold` and `--p-gold-ink` — on this
+      // dark canvas the base gold already passes contrast, this is the
+      // prototype's own chosen glyph tone, not a contrast workaround.
+      accentSpiritualText: '#F7D896',
+      borderSoft: 'rgba(255, 255, 255, 0.09)',
+      borderStrong: 'rgba(255, 255, 255, 0.18)',
+      borderFocus: '#F0C05A',
+      focusRing: 'rgba(240, 192, 90, 0.4)',
+      cardBg: 'rgba(255, 255, 255, 0.055)',
+      cardBorder: 'rgba(255, 255, 255, 0.09)',
+      cardShadow: '0 18px 40px -18px rgba(3, 2, 12, 0.85)',
+      // One primary button per screen, indigo→violet (§4 locked decision).
+      buttonPrimaryBg: 'linear-gradient(135deg, #6366F1 0%, #A855F7 100%)',
+      buttonPrimaryText: '#FFFFFF',
+      navBg: 'rgba(255, 255, 255, 0.055)',
+      progressFill: '#6366F1',
+      // Gold ramp end is a dark-theme-only locked rule (§4) — the light
+      // variant below overrides this to a non-gold value.
+      progressRampEnd: '#F0C05A',
+    },
+  },
+  {
+    // Light companion of `aurora` — same identity, lit from above (§4: "dark
+    // by default, light available, switch lives in Profile"). Values pinned
+    // from `proto.css`'s `.proto-root[data-proto-theme='light']` block.
+    id: 'aurora-light',
+    title: 'Небесна аврора · Світла',
+    description: 'Та сама духовна преміум-палітра, освітлена вдень.',
+    price: 0,
+    isLight: true,
+    onPrimary: '#ffffff',
+    preview: {
+      background: '#f7f5ff',
+      surface: '#fdfcff',
+      primary: '#4f46e5',
+      accent: '#9a6b0f',
+      text: '#1a1430',
+    },
+    semantic: {
+      bgApp: '#F7F5FF',
+      bgSurface: 'rgba(255, 255, 255, 0.82)',
+      bgElevated: 'rgba(255, 255, 255, 0.96)',
+      textPrimary: '#1A1430',
+      textSecondary: 'rgba(26, 20, 48, 0.66)',
+      textMuted: 'rgba(26, 20, 48, 0.44)',
+      brandPrimary: '#4F46E5',
+      onBrandPrimary: '#FFFFFF',
+      accentSpiritual: '#9A6B0F',
+      // Darkened further for text/icon glyph roles — same contrast-driven
+      // pattern as `light`'s `accentSpiritualText` (§17 audit precedent).
+      accentSpiritualText: '#7D560B',
+      borderSoft: 'rgba(26, 20, 48, 0.09)',
+      borderStrong: 'rgba(26, 20, 48, 0.16)',
+      borderFocus: '#9A6B0F',
+      focusRing: 'rgba(154, 107, 15, 0.35)',
+      cardBg: 'rgba(255, 255, 255, 0.82)',
+      cardBorder: 'rgba(26, 20, 48, 0.09)',
+      cardShadow: '0 18px 40px -18px rgba(76, 56, 140, 0.22)',
+      buttonPrimaryBg: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
+      buttonPrimaryText: '#FFFFFF',
+      navBg: 'rgba(255, 255, 255, 0.82)',
+      progressFill: '#4F46E5',
+      // Locked rule (§4): the light theme's ramp does NOT get the gold
+      // endpoint — deep violet instead, exactly as `proto.css` pins it.
+      progressRampEnd: '#4C1D95',
     },
   },
 ];

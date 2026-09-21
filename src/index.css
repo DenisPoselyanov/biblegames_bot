@@ -103,6 +103,7 @@
 
   --progress-track: var(--border-light);
   --progress-fill: var(--gold);
+  --progress-ramp-end: var(--gold-light);
 
   --input-bg: var(--surface);
   --input-border: var(--border);

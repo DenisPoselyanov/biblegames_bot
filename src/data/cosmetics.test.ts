@@ -17,3 +17,17 @@ describe('resolveDefaultCosmeticThemeId (WS8 §7.3)', () => {
     expect(resolveDefaultCosmeticThemeId()).toBe('light');
   });
 });
+
+describe('resolveDefaultCosmeticThemeId (Phase 3.5 §4, ADR-018)', () => {
+  it('resolves to aurora when designSystemV2 is on, regardless of lightThemeDefault', () => {
+    vi.stubEnv('VITE_FLAG_DESIGNSYSTEMV2', 'true');
+    vi.stubEnv('VITE_FLAG_LIGHTTHEMEDEFAULT', 'true');
+    expect(resolveDefaultCosmeticThemeId()).toBe('aurora');
+  });
+
+  it('falls back to the Phase 3 default when designSystemV2 is off', () => {
+    vi.stubEnv('VITE_FLAG_DESIGNSYSTEMV2', 'false');
+    vi.stubEnv('VITE_FLAG_LIGHTTHEMEDEFAULT', 'true');
+    expect(resolveDefaultCosmeticThemeId()).toBe('light');
+  });
+});

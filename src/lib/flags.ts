@@ -9,7 +9,8 @@ export type FlagName =
   | 'learningShellV2'
   | 'practiceSessionV2'
   | 'profileSettingsV2'
-  | 'lightThemeDefault';
+  | 'lightThemeDefault'
+  | 'designSystemV2';
 
 // Phase 3 full rollout (2026-09-21, WS10 §20 close-out): the v2 shell and every
 // screen that ships behind it are the sole production path now — the legacy
@@ -31,6 +32,11 @@ const FLAG_DEFAULTS: Record<FlagName, boolean> = {
   practiceSessionV2: true,
   profileSettingsV2: true,
   lightThemeDefault: true,
+  // Phase 3.5 (design-v2 / ADR-018): OFF until WS7 flips full rollout.
+  // Landing the `aurora`/`aurora-light` catalog entries in WS1 does not by
+  // itself change any existing screen's look — this flag only controls
+  // `resolveDefaultCosmeticThemeId()` (src/data/cosmetics.ts).
+  designSystemV2: false,
 };
 
 /**
