@@ -1,6 +1,6 @@
 # DESIGN_RULES — канонічна дизайн-система Bible Games
 
-> **Статус:** активне domain-джерело правди для UI, UX, themes і visual QA  
+> **Статус:** активне domain-джерело правди для UI, UX, themes і visual QA — **заплановане до повного переписання в [Phase 3.5](./phases/PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md)**: напрям `proto/design-v2` (Hallow-style, `src/proto/README.md`) затверджено як фінальний production-напрям 2026-09-21 і замінить `Світло`/premium spiritual minimalism нижче. Поки Phase 3.5 не виконано, цей документ лишається чинним для вже зданого коду.  
 > **Канонічна фаза:** Phase 3 — Learning-First Product Rebuild  
 > **Основна тема:** `Світло`  
 > **Повна Phase 3 специфікація:** [`PHASE_3_REBRANDING_AND_THEME_SYSTEM.md`](./PHASE_3_REBRANDING_AND_THEME_SYSTEM.md)  

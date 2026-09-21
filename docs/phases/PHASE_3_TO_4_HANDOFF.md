@@ -43,10 +43,17 @@ Per §27, in the order the spec lists them:
    extended through WS3–10) is the existing pipe; no new Phase-3-specific
    content-error channel was invented — Phase 4 should route "this question
    is wrong" user reports through it rather than building a parallel path.
-6. **Protected admin route boundary** — `/admin` (`AdminPanel.tsx`) sits behind
-   the same RBAC/audit middleware from Phase 1 (`server/domains/identity`),
-   untouched by Phase 3; Content Studio can extend this boundary rather than
-   replace it.
+6. **Protected admin route boundary** — `/admin` (`AdminPanel.tsx` +
+   `src/pages/admin/ScripturePreview.tsx`) sits behind the same RBAC/audit
+   middleware from Phase 1 (`server/domains/identity`), untouched by Phase 3.
+   **Update (2026-09-21): Content Studio replaces this boundary, it does not
+   extend it.** The `proto/design-v2` Content Studio prototype (chosen
+   2026-09-17, `src/proto/studio/README.md` + `ROADMAP.md`, not yet built
+   against real data) maps every `AdminPanel.tsx` function onto a Studio
+   screen; the old route is deleted once the equivalent Studio screen ships,
+   not kept running as a second admin surface. See
+   [`PHASE_4_CONTENT_AI_AND_CONTENT_STUDIO.md`](PHASE_4_CONTENT_AI_AND_CONTENT_STUDIO.md)
+   §10.
 7. **Shared design/motion components suitable for Content Studio** —
    `src/components/ui/*` (WS3: `AppPage`, `PageHeader`, `ContentCard`,
    `ListRow`, `Button`, `BottomSheet`/`Dialog`, etc.) and

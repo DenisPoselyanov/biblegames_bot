@@ -2,7 +2,8 @@
 
 > **Priority:** P1/P2  
 > **Depends on:** Phase 1 security/RBAC, Phase 2 content repository/job foundation, Phase 3 objective-based learning UI  
-> **Canonical parent:** [`../BIBLE_GAMES_MASTER_SPECIFICATION.md`](../BIBLE_GAMES_MASTER_SPECIFICATION.md)
+> **Canonical parent:** [`../BIBLE_GAMES_MASTER_SPECIFICATION.md`](../BIBLE_GAMES_MASTER_SPECIFICATION.md)  
+> **Design/IA reference (2026-09-21):** the `proto/design-v2` branch's `/proto/studio` clickable prototype (`src/proto/studio/README.md` + `src/proto/studio/ROADMAP.md`) is the concrete screen-by-screen design for Content Studio (§10, §15) and the retirement path for legacy `/admin`. See the note under §10.
 
 ---
 
@@ -420,6 +421,24 @@ Read-only analysis scripts may remain separate when useful, but they must consum
 
 ## 10. Protected Content Studio
 
+> **Visual/IA reference.** The `proto/design-v2` branch's `/proto/studio`
+> prototype is the concrete design for everything in this section — built,
+> reviewed and simplified once already (13 menu entries → 7, after a
+> "too much at once" pass), not a first draft. Where this section and the
+> prototype disagree on a *detail* (exact screen name, which tab a feature
+> lives under), the prototype wins. Where they disagree on a *principle*
+> (§3's non-negotiables, RBAC boundaries, audit, "no fake progress"), this
+> spec wins — the prototype exists to satisfy those principles visually, not
+> to renegotiate them; its own README documents each principle it encodes.
+> `src/proto/studio/ROADMAP.md` breaks the gap between the clickable
+> prototype and a real Studio into WS1–WS9, each line mapped to an
+> acceptance-criteria item from this document — treat it as the concrete
+> execution breakdown for this section rather than re-deriving one.
+>
+> The prototype is a **read-only click-through over synthetic data** (no
+> write goes anywhere real) evaluated at desktop widths only (≥1100px) — it
+> proves screens, IA and motion, not the backend behind them.
+
 ## 10.1 Deployment/security boundary
 
 Content Studio is a protected surface and may be:
@@ -440,7 +459,40 @@ Required:
 - production CSP/security headers;
 - no privileged secrets in the browser.
 
+**Legacy `/admin` is retired, not redesigned in place.** `src/pages/AdminPanel.tsx`
+and `src/pages/admin/ScripturePreview.tsx` stay live and RBAC-protected exactly
+as Phase 1 built them until each of their functions has a Studio equivalent —
+the prototype's own "Вебадмінка → куди переїжджає" table
+(`src/proto/studio/README.md`) is the mapping: theme tree → `library`,
+question/quarantine tab → `review` filtered "З помилками", quality reports →
+`review/:id` checks + `library` "Якість", `ScripturePreview` → `review`
+"Писання" tab, approve/reject/release buttons → separate permissioned actions
+in `review/:id`. Once Studio covers all of it, `AdminPanel.tsx` is deleted
+rather than kept running as a second, competing admin surface.
+
 ## 10.2 Studio modules
+
+> The module names below are this spec's functional groupings. The prototype
+> collapses them into a single 7-item sidebar over 10 routes:
+>
+> | Module below | Prototype route(s) |
+> |---|---|
+> | Dashboard | `/proto/studio` ("Огляд") |
+> | Draft/import workspace | `jobs/new` |
+> | Job dashboard | `jobs`, `jobs/:jobId` |
+> | Review queue | `review` |
+> | Review editor | `review/:draftId` |
+> | Publication | `releases` |
+> | Content history | `releases` → "Журнал" tab |
+>
+> Two prototype screens don't map 1:1 to a module below but are required:
+> `library` (theme tree + content-quality tabs, folds in "Якість" and topic
+> detail) and `settings` (providers, prompt versions, permission matrix).
+> A third, `guide` ("Як це працює"), is onboarding, not a working module —
+> the content pipeline, three roles and glossary explained in one screen for
+> a first-time Studio user; keep it, it is cheap and the prototype's own
+> README notes real editors will not otherwise self-discover the three
+> depth levels (list → drawer → full page).
 
 ### Dashboard
 
@@ -639,7 +691,25 @@ Reports do not directly change content or reveal other users.
 
 ## 15. Content Studio motion and UX
 
-Use shared Phase 3 design/motion with a restrained productivity tone.
+Use shared Phase 3 design/motion (tokens, fonts, palette) with a restrained
+productivity tone — **denser, not decorative**. The prototype
+(`src/proto/studio/README.md`, "Чому «та сама мова, але щільніше»") already
+made the density trade-offs concrete and reviewed; implement against these
+rather than re-deriving them:
+
+- 14px base type (mini app: 15px); 12/8px radii (mini app: 28/20px);
+- opaque panels, not the mini app's glass/blur — a data grid loses
+  readability under blur for no benefit;
+- one static background tint instead of the mini app's moving aurora —
+  motion on a working surface should signal "something happened," not run
+  as ambient background;
+- monospace for ids, hashes and log lines;
+- scrollbars stay visible (not auto-hiding) — a long table should read as
+  long;
+- theme follows the OS by default with a manual system/light/dark override
+  that keeps listening to the OS rather than reading it once; light is a
+  real light surface (panels go white for full-contrast data grids), not a
+  dimmed dark theme.
 
 Allowed:
 
