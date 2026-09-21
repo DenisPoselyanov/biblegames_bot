@@ -150,7 +150,7 @@
 }
 
 .kicker {
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-size: var(--fs-sm);
   font-weight: 800;
   text-transform: uppercase;
@@ -170,7 +170,7 @@
   border: 1px solid var(--accent-border-strong);
   border-radius: var(--radius-lg);
   background: var(--accent-bg);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-weight: 700;
   font-size: var(--fs-base);
   cursor: pointer;
@@ -197,7 +197,7 @@
   border: 1px solid var(--accent-border-strong);
   border-radius: var(--radius-md);
   background: var(--accent-bg-strong);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-size: var(--fs-base);
   font-weight: 700;
 }
@@ -269,7 +269,7 @@
   border: 1px solid var(--accent-border-strong);
   border-radius: var(--radius-lg);
   background: var(--accent-bg-strong);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-weight: 700;
   font-size: var(--fs-md);
   cursor: pointer;
@@ -360,7 +360,7 @@
 .resultCard h1 {
   margin: 0 0 var(--space-sm);
   font-family: var(--font-serif);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .resultScore {

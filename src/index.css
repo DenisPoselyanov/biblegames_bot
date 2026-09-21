@@ -436,7 +436,7 @@ input:focus, select:focus, textarea:focus {
 .app-toast--warning {
   border-color: var(--warning);
   background: var(--warning-bg);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .app-toast--info {

@@ -50,7 +50,7 @@
 .tabs .activeTab {
   border-color: var(--accent-border-strong);
   background: var(--accent-bg-strong);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .list {

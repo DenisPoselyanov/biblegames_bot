@@ -26,7 +26,7 @@
   font-family: var(--font-serif);
   font-size: 1.35rem;
   font-weight: 700;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .wisdom {
@@ -89,7 +89,7 @@
 
 .roadStepCurrent {
   border-color: var(--accent-border-strong);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   background: var(--accent-bg-strong);
 }
 

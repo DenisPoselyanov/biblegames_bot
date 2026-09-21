@@ -77,7 +77,7 @@
 
 .heroKahoot h1 {
   font-family: var(--font-serif);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   margin: 0 0 0.35rem;
 }
 
@@ -91,7 +91,7 @@
   font-family: var(--font-serif);
   font-size: 1.5rem;
   margin: 0;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .sub {
@@ -268,7 +268,7 @@
 .chipActive {
   background: var(--accent-bg-strong);
   border-color: var(--gold);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   box-shadow: 0 0 8px var(--accent-bg-strong);
 }
 
@@ -442,7 +442,7 @@
 }
 
 .playlistLink:hover {
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .hint {
@@ -800,7 +800,7 @@
   margin: 0;
   font-family: var(--font-serif);
   font-size: 1.6rem;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .segmentControl {
@@ -917,7 +917,7 @@
 .playlistTitle {
   display: inline-block;
   text-decoration: none;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-weight: 700;
   font-size: 1.05rem;
   margin-bottom: 0.25rem;
@@ -1080,7 +1080,7 @@
 
 .thinkHint {
   text-align: center;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-weight: 600;
   margin: 0.5rem 0;
 }
@@ -1102,7 +1102,7 @@
 .displayTitle {
   font-size: clamp(1.75rem, 5vw, 2.75rem);
   margin: 0;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .displaySubtitle {
