@@ -14,6 +14,7 @@ import {
   saveMotionIntensity,
   type MotionIntensity,
 } from '../../lib/motionIntensity';
+import { deriveMotionCapabilities } from '../../lib/motionCapabilities';
 import { hasApi } from '../../repos/apiClient';
 import { progressionRepo } from '../../repos/progressionRepo';
 import { trackEvent } from '../../lib/telemetry';
@@ -82,16 +83,13 @@ export function MotionProvider({ children, testOverride }: MotionProviderProps) 
   }, []);
 
   const value = useMemo<MotionCapabilities>(() => {
-    const effectiveIntensity: MotionIntensity = systemReducedMotion ? 'minimal' : intensity;
+    const derived = deriveMotionCapabilities(systemReducedMotion, intensity, deviceTier);
     return {
       systemReducedMotion,
       intensity,
       setIntensity,
-      effectiveIntensity,
       deviceTier,
-      particlesAllowed: effectiveIntensity === 'full' && deviceTier !== 'low-end',
-      hapticAllowed: effectiveIntensity !== 'minimal',
-      soundAllowed: effectiveIntensity === 'full',
+      ...derived,
     };
   }, [systemReducedMotion, intensity, setIntensity, deviceTier]);
 
