@@ -25,8 +25,50 @@
   color: var(--text-secondary);
 }
 
+.rankFooterOnColor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.wisdomLabelOnColor {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.78);
+}
+
 .achievements {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-md);
+}
+
+.lessonCard {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  align-items: flex-start;
+}
+
+.lessonCover {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: var(--radius-lg);
+}
+
+.lessonMain {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.lessonTitle {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: var(--lh-tight);
 }

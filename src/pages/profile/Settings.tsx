@@ -8,7 +8,7 @@
  */
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AppPage, ListRow, PageHeader, SectionHeader, SegmentedControl } from '../../components/ui';
+import { AppPage, ListRow, PageHeader, SectionHeader, SegmentedControl, ThemeSwatch } from '../../components/ui';
 import { Icon } from '../../components/Icon';
 import { useAuthSession } from '../../context/AuthSessionContext';
 import { useResolvedProfile } from '../../hooks/domain/useProfileWriter';
@@ -20,6 +20,7 @@ import { hasStoredMotionIntensity } from '../../lib/motionIntensity';
 import { getCosmeticThemeById } from '../../data/cosmetics';
 import { communityManager } from '../../lib/communities';
 import { haptic } from '../../lib/telegram';
+import { isFeatureEnabled } from '../../lib/flags';
 import {
   BOLLS_TRANSLATIONS,
   normalizeBollsTranslation,
@@ -105,7 +106,9 @@ export function Settings() {
       }
     })();
 
-  const activeThemeTitle = getCosmeticThemeById(activeTheme)?.title ?? activeTheme;
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
+  const activeThemeData = getCosmeticThemeById(activeTheme);
+  const activeThemeTitle = activeThemeData?.title ?? activeTheme;
 
   return (
     <AppPage className={styles.page}>
@@ -149,7 +152,13 @@ export function Settings() {
         <SectionHeader title="Вигляд і рух" />
         <div className={styles.card}>
           <ListRow
-            leading={<Icon name="star" size={20} />}
+            leading={
+              designSystemV2 && activeThemeData ? (
+                <ThemeSwatch theme={activeThemeData} />
+              ) : (
+                <Icon name="star" size={20} />
+              )
+            }
             title="Тема оформлення"
             subtitle={activeThemeTitle}
             navigates

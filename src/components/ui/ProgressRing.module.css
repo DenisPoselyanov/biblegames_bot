@@ -27,3 +27,17 @@
   font-weight: 600;
   color: var(--text-primary);
 }
+
+/* ── onColor (Phase 3.5 §4/§6 — for use on a HeroCard tone="cover") ── */
+
+.wrapper--onColor .track {
+  stroke: rgba(255, 255, 255, 0.28);
+}
+
+.wrapper--onColor .fill {
+  stroke: #ffffff;
+}
+
+.wrapper--onColor .center {
+  color: #ffffff;
+}

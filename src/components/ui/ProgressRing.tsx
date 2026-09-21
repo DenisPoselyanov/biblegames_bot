@@ -11,9 +11,19 @@ interface ProgressRingProps {
   centerLabel?: ReactNode;
   label?: string;
   className?: string;
+  /** Fixed white/frosted stroke + text — for placement on a `HeroCard tone="cover"` (Phase 3.5 §4). */
+  onColor?: boolean;
 }
 
-export function ProgressRing({ value, size = 72, strokeWidth = 6, centerLabel, label, className }: ProgressRingProps) {
+export function ProgressRing({
+  value,
+  size = 72,
+  strokeWidth = 6,
+  centerLabel,
+  label,
+  className,
+  onColor,
+}: ProgressRingProps) {
   const pct = Math.max(0, Math.min(100, value));
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -21,7 +31,7 @@ export function ProgressRing({ value, size = 72, strokeWidth = 6, centerLabel, l
 
   return (
     <div
-      className={cx(styles.wrapper, className)}
+      className={cx(styles.wrapper, onColor && styles['wrapper--onColor'], className)}
       style={{ width: size, height: size }}
       role="progressbar"
       aria-valuenow={Math.round(pct)}

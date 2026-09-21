@@ -16,12 +16,14 @@ import { useResolvedProfile } from '../../hooks/domain/useProfileWriter';
 import { useReviewDue, useTodayView } from '../../queries/useLearning';
 import { computeWisdomProgress, formatRankLabel } from '../../lib/practiceProgression';
 import { ACHIEVEMENTS } from '../../data/achievements';
+import { isFeatureEnabled } from '../../lib/flags';
 import {
   AchievementBadge,
   AnimatedNumber,
   AppPage,
   Button,
   ContentCard,
+  CoverArt,
   HeroCard,
   MetricTile,
   MetricTileGrid,
@@ -37,6 +39,7 @@ export function ProgressV2() {
   const profile = useResolvedProfile();
   const reviewDue = useReviewDue(userId);
   const today = useTodayView(userId);
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
 
   const wisdom = computeWisdomProgress(profile.playerRank);
   const rankLabel = formatRankLabel(profile.playerRank.tier, profile.playerRank.plaque);
@@ -48,29 +51,66 @@ export function ProgressV2() {
     <AppPage className={styles.page}>
       <PageHeader kicker="Прогрес" title="Твій шлях" />
 
-      {/* §13.5: level/rank summary — server-authoritative playerRank. */}
-      <HeroCard
-        kicker={rankLabel}
-        title={`${profile.streakDays} дн. поспіль`}
-        footer={
-          <div className={styles.rankFooter}>
-            <ProgressRing value={wisdomPct} centerLabel={<AnimatedNumber value={wisdom.current} />} />
-            <p className={styles.wisdomLabel}>
-              {wisdom.label}: {wisdom.current}/{wisdom.required}
-            </p>
-          </div>
-        }
-      />
+      {/* §13.5: level/rank summary — server-authoritative playerRank.
+          Phase 3.5 §6 WS5: `tone="cover"` reuses WS3's hero-card pattern
+          (§4 "screen's main object" rule) instead of the flat surface card;
+          same data, no new fields. */}
+      {designSystemV2 ? (
+        <HeroCard
+          tone="cover"
+          coverSeed={profile.playerRank.tier}
+          coverGlyph="rays"
+          kicker={rankLabel}
+          title={`${profile.streakDays} дн. поспіль`}
+          footer={
+            <div className={styles.rankFooterOnColor}>
+              <ProgressRing onColor value={wisdomPct} centerLabel={<AnimatedNumber value={wisdom.current} />} />
+              <p className={styles.wisdomLabelOnColor}>
+                {wisdom.label}: {wisdom.current}/{wisdom.required}
+              </p>
+            </div>
+          }
+        />
+      ) : (
+        <HeroCard
+          kicker={rankLabel}
+          title={`${profile.streakDays} дн. поспіль`}
+          footer={
+            <div className={styles.rankFooter}>
+              <ProgressRing value={wisdomPct} centerLabel={<AnimatedNumber value={wisdom.current} />} />
+              <p className={styles.wisdomLabel}>
+                {wisdom.label}: {wisdom.current}/{wisdom.required}
+              </p>
+            </div>
+          }
+        />
+      )}
 
       {/* §13.1/§13.2: current path + objective progress — no per-user
           aggregation endpoint exists yet, so this links into Learn instead
-          of fabricating a completion bar. */}
-      {activeLesson && (
-        <ContentCard onClick={() => navigate(`/learn/lessons/${activeLesson.lesson.id}`)}>
-          <p className={styles.sectionLabel}>Продовжити навчання</p>
-          <p>{activeLesson.lesson.title}</p>
-        </ContentCard>
-      )}
+          of fabricating a completion bar. Phase 3.5 §6 WS5: CoverArt list-card
+          treatment mirrors LearningHub's plan card / WS4's PracticeIntent. */}
+      {activeLesson &&
+        (designSystemV2 ? (
+          <ContentCard
+            flush
+            onClick={() => navigate(`/learn/lessons/${activeLesson.lesson.id}`)}
+            aria-label={activeLesson.lesson.title}
+          >
+            <div className={styles.lessonCard}>
+              <CoverArt seed={activeLesson.lesson.id} glyph="path" className={styles.lessonCover} />
+              <div className={styles.lessonMain}>
+                <p className={styles.sectionLabel}>Продовжити навчання</p>
+                <p className={styles.lessonTitle}>{activeLesson.lesson.title}</p>
+              </div>
+            </div>
+          </ContentCard>
+        ) : (
+          <ContentCard onClick={() => navigate(`/learn/lessons/${activeLesson.lesson.id}`)}>
+            <p className={styles.sectionLabel}>Продовжити навчання</p>
+            <p>{activeLesson.lesson.title}</p>
+          </ContentCard>
+        ))}
 
       <MetricTileGrid>
         <MetricTile

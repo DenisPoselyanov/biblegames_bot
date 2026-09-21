@@ -20,6 +20,7 @@ import {
   PageHeader,
   SectionHeader,
   SegmentedControl,
+  ThemeSwatch,
 } from '../../components/ui';
 import { Icon } from '../../components/Icon';
 import { useResolvedProfile } from '../../hooks/domain/useProfileWriter';
@@ -58,7 +59,8 @@ export function ProfileV2() {
   const unlockedAchievements = ACHIEVEMENTS.filter((a) => profile.achievements.includes(a.id));
   const lockedAchievements = ACHIEVEMENTS.filter((a) => !profile.achievements.includes(a.id));
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
-  const activeThemeTitle = getCosmeticThemeById(activeTheme)?.title ?? activeTheme;
+  const activeThemeData = getCosmeticThemeById(activeTheme);
+  const activeThemeTitle = activeThemeData?.title ?? activeTheme;
 
   const handleAppearanceModeChange = (mode: 'dark' | 'light') => {
     haptic.selection();
@@ -121,7 +123,13 @@ export function ProfileV2() {
           onClick={() => navigate('/profile/settings')}
         />
         <ListRow
-          leading={<Icon name="star" size={20} />}
+          leading={
+            designSystemV2 && activeThemeData ? (
+              <ThemeSwatch theme={activeThemeData} />
+            ) : (
+              <Icon name="star" size={20} />
+            )
+          }
           title="Оформлення"
           subtitle={activeThemeTitle}
           navigates

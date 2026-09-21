@@ -25,7 +25,7 @@ export { ErrorState } from './ErrorState';
 export { OfflineState } from './OfflineState';
 export { BottomSheet } from './BottomSheet';
 export { Dialog } from './Dialog';
-export { ThemePreview } from './ThemePreview';
+export { ThemePreview, ThemeSwatch } from './ThemePreview';
 export { AnimatedNumber } from './AnimatedNumber';
 export { CelebrationLayer } from './CelebrationLayer';
 export { cx } from './cx';
