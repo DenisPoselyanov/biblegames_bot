@@ -23,7 +23,8 @@ export type SemanticPaletteOverrides = Partial<Record<
   | 'inputBg' | 'inputBorder'
   | 'heroOverlayStart' | 'heroOverlayEnd' | 'heroImageOpacity' | 'illustrationTint'
   | 'skeletonBase' | 'skeletonHighlight'
-  | 'auroraColor1' | 'auroraColor2' | 'auroraColor3',
+  | 'auroraColor1' | 'auroraColor2' | 'auroraColor3'
+  | 'fontSerif' | 'fontSans',
   string
 >>;
 
@@ -247,6 +248,9 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       auroraColor1: 'rgba(99, 102, 241, 0.55)',
       auroraColor2: 'rgba(168, 85, 247, 0.42)',
       auroraColor3: 'rgba(240, 192, 90, 0.22)',
+      // Typography (§4 locked decision): Literata for headings/Scripture, Manrope for UI.
+      fontSerif: "'Literata', Georgia, serif",
+      fontSans: "'Manrope', system-ui, sans-serif",
     },
   },
   {
@@ -298,6 +302,8 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       auroraColor1: 'rgba(99, 102, 241, 0.2)',
       auroraColor2: 'rgba(168, 85, 247, 0.16)',
       auroraColor3: 'rgba(240, 192, 90, 0.26)',
+      fontSerif: "'Literata', Georgia, serif",
+      fontSans: "'Manrope', system-ui, sans-serif",
     },
   },
 ];

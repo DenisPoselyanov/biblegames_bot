@@ -1,0 +1,113 @@
+.bannerSection {
+  margin: calc(var(--space-lg) * -1) calc(var(--space-lg) * -1) 0;
+}
+
+.bannerWrap {
+  position: relative;
+}
+
+.banner {
+  height: 208px;
+  width: 100%;
+}
+
+.backButton {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top, 0px));
+  left: var(--space-lg);
+}
+
+.overlapContent {
+  position: relative;
+  margin-top: -48px;
+  padding: 0 var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: var(--lh-tight);
+}
+
+.description {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: var(--lh-relaxed);
+}
+
+.pillRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.moduleList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.moduleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+  padding: var(--space-md);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  text-align: left;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.moduleRow:active {
+  transform: scale(0.985);
+}
+
+.moduleBadge {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-strong);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.moduleMain {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.moduleTitle {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.moduleDescription {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -10,3 +10,21 @@
   display: flex;
   align-items: center;
 }
+
+.segments {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.segment,
+.segmentFilled {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--progress-track);
+  transition: background var(--duration-normal) var(--ease-out);
+}
+
+.segmentFilled {
+  background: linear-gradient(90deg, var(--progress-fill), var(--progress-ramp-end));
+}

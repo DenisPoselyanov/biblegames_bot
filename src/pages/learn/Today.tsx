@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthSession } from '../../context/AuthSessionContext';
 import { useOnlineStatus } from '../../hooks/useOnlineStatus';
 import { useEventOnce } from '../../hooks/useEventOnce';
+import { isFeatureEnabled } from '../../lib/flags';
 import { trackEvent } from '../../lib/telemetry';
 import { useTodayView } from '../../queries/useLearning';
 import {
@@ -26,6 +27,7 @@ import {
   MetricTileGrid,
   OfflineState,
   PageHeader,
+  Pill,
 } from '../../components/ui';
 import { Icon } from '../../components/Icon';
 import { ListPageSkeleton } from '../../components/skeletons';
@@ -36,6 +38,7 @@ export function Today() {
   const online = useOnlineStatus();
   const navigate = useNavigate();
   const { data, isLoading, isError, refetch } = useTodayView(userId);
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
 
   const allDoneToday = Boolean(data && data.dailyGoal.completed >= data.dailyGoal.target);
   const celebrate = useEventOnce(allDoneToday && data ? `daily-goal:${data.date}` : null);
@@ -89,10 +92,19 @@ export function Today() {
       {/* §9.2 priority 1: continue active lesson */}
       {activeLesson && (
         <HeroCard
+          tone={designSystemV2 ? 'cover' : 'surface'}
+          coverSeed={activeLesson.lesson.id}
+          badges={
+            <Pill tone="onColor" icon={<Icon name="crown" size={12} />}>
+              Урок дня
+            </Pill>
+          }
           kicker="Продовжити"
           title={activeLesson.lesson.title}
           footer={
             <Button
+              variant={designSystemV2 ? 'onColor' : 'primary'}
+              fullWidth={designSystemV2}
               onClick={() => {
                 trackEvent('today_action_selected', { action: 'continue_lesson' });
                 navigate(`/learn/lessons/${activeLesson.lesson.id}`);
@@ -107,10 +119,19 @@ export function Today() {
       {/* §9.2 priority 2: due review, shown only when no active lesson is already the hero */}
       {!activeLesson && dueReview && (
         <HeroCard
+          tone={designSystemV2 ? 'cover' : 'surface'}
+          coverSeed={dueReview.lessonId}
+          badges={
+            <Pill tone="onColor" icon={<Icon name="refresh" size={12} />}>
+              Повторення
+            </Pill>
+          }
           kicker="Час повторити"
           title={dueReview.title}
           footer={
             <Button
+              variant={designSystemV2 ? 'onColor' : 'primary'}
+              fullWidth={designSystemV2}
               onClick={() => {
                 trackEvent('today_action_selected', { action: 'review' });
                 navigate(`/learn/lessons/${dueReview.lessonId}`);
@@ -125,11 +146,20 @@ export function Today() {
       {/* §9.3 first-time / no active plan yet */}
       {!activeLesson && !dueReview && dailyGoal.completed === 0 && (
         <HeroCard
+          tone={designSystemV2 ? 'cover' : 'surface'}
+          coverSeed="start-learning"
+          badges={
+            <Pill tone="onColor" icon={<Icon name="book" size={12} />}>
+              Початок
+            </Pill>
+          }
           kicker="Початок"
           title="Розпочни навчання"
           description="Обери план у розділі «Навчання», щоб побачити тут свій прогрес."
           footer={
             <Button
+              variant={designSystemV2 ? 'onColor' : 'primary'}
+              fullWidth={designSystemV2}
               onClick={() => {
                 trackEvent('today_action_selected', { action: 'start_learning' });
                 navigate('/learn');

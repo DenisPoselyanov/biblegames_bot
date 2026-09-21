@@ -4,6 +4,8 @@ export { SectionHeader } from './SectionHeader';
 export { BottomNavigation } from './BottomNavigation';
 export type { BottomNavigationItem } from './BottomNavigation';
 export { HeroCard } from './HeroCard';
+export { CoverArt } from './CoverArt';
+export { Pill } from './Pill';
 export { ContentCard } from './ContentCard';
 export { ListRow } from './ListRow';
 export { SearchField } from './SearchField';

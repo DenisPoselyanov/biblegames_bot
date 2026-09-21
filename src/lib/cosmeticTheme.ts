@@ -142,6 +142,15 @@ export interface SemanticPalette {
   auroraColor1: string;
   auroraColor2: string;
   auroraColor3: string;
+  /**
+   * Typography (Phase 3.5 §4, ADR-018 gap fix). Full `font-family` stacks,
+   * not bare names — consumed verbatim by `--font-serif`/`--font-sans`.
+   * Generic default reproduces today's global Cormorant/Source Sans stack
+   * exactly (same no-op-by-default pattern as `progressRampEnd`); only
+   * `aurora`/`aurora-light` pin the locked Literata/Manrope pair.
+   */
+  fontSerif: string;
+  fontSans: string;
 }
 
 /** camelCase key -> `--kebab-case` custom property name, in declaration order. */
@@ -196,6 +205,8 @@ const SEMANTIC_CSS_VAR_ENTRIES: Array<[keyof SemanticPalette, string]> = [
   ['auroraColor1', '--aurora-1'],
   ['auroraColor2', '--aurora-2'],
   ['auroraColor3', '--aurora-3'],
+  ['fontSerif', '--font-serif'],
+  ['fontSans', '--font-sans'],
 ];
 
 const SEMANTIC_CSS_VAR_NAMES = SEMANTIC_CSS_VAR_ENTRIES.map(([, name]) => name);
@@ -295,6 +306,9 @@ export function deriveSemanticPalette(theme: CosmeticTheme): SemanticPalette {
     auroraColor1: 'transparent',
     auroraColor2: 'transparent',
     auroraColor3: 'transparent',
+
+    fontSerif: "'Cormorant Garamond', Georgia, serif",
+    fontSans: "'Source Sans 3', system-ui, sans-serif",
   };
 
   return theme.semantic ? { ...generic, ...theme.semantic } : generic;

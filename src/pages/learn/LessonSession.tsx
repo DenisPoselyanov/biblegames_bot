@@ -10,6 +10,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthSession } from '../../context/AuthSessionContext';
 import { useEventOnce } from '../../hooks/useEventOnce';
+import { isFeatureEnabled } from '../../lib/flags';
 import { trackEvent } from '../../lib/telemetry';
 import {
   useCompleteLessonSession,
@@ -21,11 +22,23 @@ import { AppPage, Button, CelebrationLayer, ContentCard, ErrorState, PageHeader,
 import { AppSkeleton } from '../../components/skeletons';
 import styles from './LessonSession.module.css';
 
+/** Segmented per-block progress (Phase 3.5 §6 WS3) — one span per real block, filled up to the current index. Same `index`/`blocks.length` data the legacy linear `ProgressBar` already used, just a different shell. */
+function SegmentedProgress({ count, filled }: { count: number; filled: number }) {
+  return (
+    <div className={styles.segments} role="progressbar" aria-valuenow={filled} aria-valuemin={0} aria-valuemax={count}>
+      {Array.from({ length: count }, (_, i) => (
+        <span key={i} className={i < filled ? styles.segmentFilled : styles.segment} />
+      ))}
+    </div>
+  );
+}
+
 export function LessonSession() {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
   const { userId } = useAuthSession();
 
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
   const start = useStartLessonSession(lessonId ?? '');
   // `null` until the user advances past the resumed position — while null, the
   // effective index is derived from the server's checkpoint below instead of
@@ -122,7 +135,11 @@ export function LessonSession() {
   return (
     <AppPage noBottomNav className={styles.page}>
       <PageHeader onBack={() => navigate('/learn')} title={lesson.title} />
-      <ProgressBar value={pct} />
+      {designSystemV2 ? (
+        <SegmentedProgress count={blocks.length} filled={index + 1} />
+      ) : (
+        <ProgressBar value={pct} />
+      )}
       <CelebrationLayer active={celebrateComplete} />
 
       <ContentCard className={styles.blockCard}>

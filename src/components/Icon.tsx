@@ -5,7 +5,7 @@ export type IconName =
   | 'book' | 'brain' | 'trophy' | 'fire' | 'coins' | 'star'
   | 'info' | 'warning' | 'error' | 'success' | 'menu' | 'settings'
   | 'diamond'
-  | 'search' | 'chevron-right' | 'chevron-down' | 'lock' | 'refresh' | 'wifi-off';
+  | 'search' | 'chevron-right' | 'chevron-down' | 'lock' | 'refresh' | 'wifi-off' | 'crown';
 
 const PATHS: Record<IconName, string> = {
   home: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
@@ -45,6 +45,7 @@ const PATHS: Record<IconName, string> = {
   lock: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 10-8 0v2h8z',
   refresh: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
   'wifi-off': 'M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01M3 8.111a15.945 15.945 0 016.363-3.485m4.474 0A15.933 15.933 0 0121 8.111M1 1l22 22m-9.121-9.121a5.5 5.5 0 00-3.758 1.621m-2.5-2.5a9 9 0 012.6-1.797',
+  crown: 'M3 8l4 3 5-6 5 6 4-3-2 11H5L3 8z M5 21h14',
 };
 
 interface IconProps {
