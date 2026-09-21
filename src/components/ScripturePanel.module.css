@@ -15,7 +15,7 @@
 }
 
 .kicker {
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -73,7 +73,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--bg);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-size: 0.8rem;
   font-weight: 700;
   text-decoration: none;

@@ -39,7 +39,7 @@
 }
 
 .triggerActive {
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   background: var(--accent-bg-strong);
   border-color: var(--accent-border-strong);
 }
@@ -105,7 +105,7 @@
   border: 1px solid var(--accent-border-strong);
   border-radius: 10px;
   background: var(--accent-bg-strong);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font: inherit;
   font-size: 0.78rem;
   font-weight: 700;

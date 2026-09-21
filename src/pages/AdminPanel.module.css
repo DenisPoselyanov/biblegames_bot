@@ -13,7 +13,7 @@
   font-family: var(--font-serif);
   font-size: var(--fs-xl);
   margin: 0;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .backBtn {
@@ -69,7 +69,7 @@
 .tabActive {
   border-color: var(--accent-border-strong);
   background: var(--accent-bg-strong);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .tabContent {
@@ -134,7 +134,7 @@
   font-size: var(--fs-sm);
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .badgeGreen {
@@ -229,7 +229,7 @@
 
 .issueMed {
   background: var(--accent-bg-strong);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   border: 1px solid var(--accent-border-strong);
 }
 
@@ -264,7 +264,7 @@
 .poolCard h3 {
   margin: 0 0 0.5rem;
   font-size: var(--fs-md);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .poolCount {
@@ -311,7 +311,7 @@
 .poolOverlap h3 {
   margin: 0 0 0.25rem;
   font-size: var(--fs-md);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .themeBreakdown {
@@ -360,7 +360,7 @@
 .sectionTitle {
   margin: 0 0 0.75rem;
   font-size: var(--fs-md);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .scripturePreviewForm {

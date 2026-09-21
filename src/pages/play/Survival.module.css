@@ -316,7 +316,7 @@
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--fs-xl);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .resultSubtitle {
@@ -379,7 +379,7 @@
   border-radius: var(--radius-full);
   background: var(--accent-bg-strong);
   border: 1px solid var(--accent-border-strong);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-size: var(--fs-sm);
   font-weight: 700;
   animation: pulseRecord 2s var(--ease-in-out) infinite;
@@ -433,7 +433,7 @@
 .resultCard h1 {
   margin: 0 0 var(--space-sm);
   font-family: var(--font-serif);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .resultCard p {

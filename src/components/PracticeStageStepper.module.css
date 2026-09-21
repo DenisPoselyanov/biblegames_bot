@@ -31,7 +31,7 @@
 
 .stageCurrent {
   border-color: var(--accent-border-strong);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   background: var(--accent-bg-strong);
 }
 
@@ -43,7 +43,7 @@
 
 .stagePerfect {
   border-color: color-mix(in srgb, var(--gold) 55%, var(--accent-border-strong));
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   background: color-mix(in srgb, var(--gold) 14%, var(--accent-bg-strong));
 }
 
