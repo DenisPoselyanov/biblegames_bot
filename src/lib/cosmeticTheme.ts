@@ -132,6 +132,16 @@ export interface SemanticPalette {
   illustrationTint: string;
   skeletonBase: string;
   skeletonHighlight: string;
+  /**
+   * Ambient background blob colors for the WS2 aurora shell treatment
+   * (`PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md` §6 WS2, `ShellAurora`).
+   * `transparent` by default so every pre-existing theme renders the blob
+   * layer invisibly — only `aurora`/`aurora-light` pin real values; the
+   * layer itself is gated by the `designSystemV2` flag, not by these tokens.
+   */
+  auroraColor1: string;
+  auroraColor2: string;
+  auroraColor3: string;
 }
 
 /** camelCase key -> `--kebab-case` custom property name, in declaration order. */
@@ -183,6 +193,9 @@ const SEMANTIC_CSS_VAR_ENTRIES: Array<[keyof SemanticPalette, string]> = [
   ['illustrationTint', '--illustration-tint'],
   ['skeletonBase', '--skeleton-base'],
   ['skeletonHighlight', '--skeleton-highlight'],
+  ['auroraColor1', '--aurora-1'],
+  ['auroraColor2', '--aurora-2'],
+  ['auroraColor3', '--aurora-3'],
 ];
 
 const SEMANTIC_CSS_VAR_NAMES = SEMANTIC_CSS_VAR_ENTRIES.map(([, name]) => name);
@@ -278,6 +291,10 @@ export function deriveSemanticPalette(theme: CosmeticTheme): SemanticPalette {
 
     skeletonBase: mixColor(preview.surface, preview.text, isLight ? 0.06 : 0.08),
     skeletonHighlight: mixColor(preview.surface, preview.background, isLight ? 0.4 : 0.3),
+
+    auroraColor1: 'transparent',
+    auroraColor2: 'transparent',
+    auroraColor3: 'transparent',
   };
 
   return theme.semantic ? { ...generic, ...theme.semantic } : generic;

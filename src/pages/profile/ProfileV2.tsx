@@ -19,6 +19,7 @@ import {
   MetricTileGrid,
   PageHeader,
   SectionHeader,
+  SegmentedControl,
 } from '../../components/ui';
 import { Icon } from '../../components/Icon';
 import { useResolvedProfile } from '../../hooks/domain/useProfileWriter';
@@ -31,15 +32,21 @@ import { getAvatarById, getCosmeticThemeById } from '../../data/cosmetics';
 import { communityManager } from '../../lib/communities';
 import { friendChallengeManager } from '../../lib/friendChallenges';
 import { PlayerRankCard } from '../../components/PlayerRankCard';
+import { isFeatureEnabled } from '../../lib/flags';
 import styles from './ProfileV2.module.css';
+
+const AURORA_DARK_THEME_ID = 'aurora';
+const AURORA_LIGHT_THEME_ID = 'aurora-light';
 
 export function ProfileV2() {
   const navigate = useNavigate();
   const profile = useResolvedProfile();
-  const { activeTheme } = usePreferences();
+  const { activeTheme, setActiveTheme } = usePreferences();
   const { displayName, userId } = useTelegram();
   const { showToast } = useToast();
   const [showAllAchievements, setShowAllAchievements] = useState(false);
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
+  const appearanceMode = activeTheme === AURORA_LIGHT_THEME_ID ? 'light' : 'dark';
 
   const socialProfile = useMemo(() => communityManager.getSocialProfile(userId), [userId]);
   const challengeStats = useMemo(() => friendChallengeManager.getUserStats(userId), [userId]);
@@ -52,6 +59,14 @@ export function ProfileV2() {
   const lockedAchievements = ACHIEVEMENTS.filter((a) => !profile.achievements.includes(a.id));
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
   const activeThemeTitle = getCosmeticThemeById(activeTheme)?.title ?? activeTheme;
+
+  const handleAppearanceModeChange = (mode: 'dark' | 'light') => {
+    haptic.selection();
+    const themeId = mode === 'light' ? AURORA_LIGHT_THEME_ID : AURORA_DARK_THEME_ID;
+    if (!setActiveTheme(themeId)) {
+      showToast('Не вдалося застосувати тему', 'error');
+    }
+  };
 
   const handleInvite = () => {
     haptic.impact('light');
@@ -82,6 +97,21 @@ export function ProfileV2() {
       />
 
       <PlayerRankCard playerRank={profile.playerRank} />
+
+      {designSystemV2 && (
+        <section>
+          <SectionHeader title="Вигляд" />
+          <SegmentedControl
+            label="Режим оформлення"
+            value={appearanceMode}
+            onChange={handleAppearanceModeChange}
+            options={[
+              { value: 'dark', label: '🌙 Темний' },
+              { value: 'light', label: '☀️ Світлий' },
+            ]}
+          />
+        </section>
+      )}
 
       <div className={styles.card}>
         <ListRow

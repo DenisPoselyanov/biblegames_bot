@@ -1,0 +1,77 @@
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob1,
+.blob2,
+.blob3 {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(72px);
+  animation: shell-aurora-drift 28s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+.blob1 {
+  width: 130%;
+  aspect-ratio: 1;
+  top: -46%;
+  left: -32%;
+  background: radial-gradient(circle at 30% 30%, var(--aurora-1), transparent 62%);
+  animation-duration: 26s;
+}
+
+.blob2 {
+  width: 110%;
+  aspect-ratio: 1;
+  bottom: -40%;
+  right: -34%;
+  background: radial-gradient(circle at 60% 60%, var(--aurora-2), transparent 64%);
+  animation-duration: 34s;
+  animation-direction: alternate-reverse;
+}
+
+.blob3 {
+  width: 78%;
+  aspect-ratio: 1;
+  top: 18%;
+  right: -26%;
+  filter: blur(80px);
+  background: radial-gradient(circle, var(--aurora-3), transparent 66%);
+  animation-duration: 30s;
+}
+
+.blob1[data-still],
+.blob2[data-still],
+.blob3[data-still] {
+  animation: none;
+}
+
+@keyframes shell-aurora-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(4%, 6%, 0) scale(1.12);
+  }
+}
+
+/* Fine grain keeps large gradients from banding on OLED phones. */
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob1,
+  .blob2,
+  .blob3 {
+    animation: none;
+  }
+}

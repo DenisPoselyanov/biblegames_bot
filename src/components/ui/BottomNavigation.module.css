@@ -50,3 +50,32 @@
   height: 56px;
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* WS2 aurora variant — floating glass pill (ported from proto/design-v2's
+   TabBar) instead of an edge-to-edge bar. Reuses the already-themed
+   `--nav-bg`/`--card-shadow` tokens rather than new ones. */
+.nav--aurora {
+  background: transparent;
+  border-top: none;
+  padding: 0 var(--space-md) max(14px, env(safe-area-inset-bottom, 0px));
+}
+
+.nav--aurora .inner {
+  gap: var(--space-xs);
+  padding: 6px;
+  border-radius: 26px;
+  border: 1px solid var(--border-soft);
+  background: var(--nav-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--card-shadow);
+}
+
+.nav--aurora .item {
+  border-radius: 20px;
+  min-height: 52px;
+}
+
+.nav--aurora .item--active {
+  background: var(--bg-elevated);
+}

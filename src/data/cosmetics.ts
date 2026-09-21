@@ -22,7 +22,8 @@ export type SemanticPaletteOverrides = Partial<Record<
   | 'progressTrack' | 'progressFill' | 'progressRampEnd'
   | 'inputBg' | 'inputBorder'
   | 'heroOverlayStart' | 'heroOverlayEnd' | 'heroImageOpacity' | 'illustrationTint'
-  | 'skeletonBase' | 'skeletonHighlight',
+  | 'skeletonBase' | 'skeletonHighlight'
+  | 'auroraColor1' | 'auroraColor2' | 'auroraColor3',
   string
 >>;
 
@@ -241,6 +242,11 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       // Gold ramp end is a dark-theme-only locked rule (§4) — the light
       // variant below overrides this to a non-gold value.
       progressRampEnd: '#F0C05A',
+      // WS2 `ShellAurora` blob colors — indigo/violet/warm-gold, pinned from
+      // `proto.css`'s `.proto-root` dark block (`--p-aurora-1/2/3`).
+      auroraColor1: 'rgba(99, 102, 241, 0.55)',
+      auroraColor2: 'rgba(168, 85, 247, 0.42)',
+      auroraColor3: 'rgba(240, 192, 90, 0.22)',
     },
   },
   {
@@ -287,6 +293,11 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       // Locked rule (§4): the light theme's ramp does NOT get the gold
       // endpoint — deep violet instead, exactly as `proto.css` pins it.
       progressRampEnd: '#4C1D95',
+      // Same `ShellAurora` blobs, lit-from-above intensities — pinned from
+      // `proto.css`'s `.proto-root[data-proto-theme='light']` block.
+      auroraColor1: 'rgba(99, 102, 241, 0.2)',
+      auroraColor2: 'rgba(168, 85, 247, 0.16)',
+      auroraColor3: 'rgba(240, 192, 90, 0.26)',
     },
   },
 ];
