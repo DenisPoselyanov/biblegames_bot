@@ -98,13 +98,16 @@ WS1 and WS2 are the foundation everything else reads from — no other workstrea
 - **Depends on**: WS2/WS3 (runs as part of the same validation pass).
 - **DoD tie-in**: §23.7.
 
-### WS5 — RBAC hardening for Studio
-- Extend Phase 1's `content_reviewer`/`content_publisher` roles with the specific permission set from §11 (`content.draft.create`, `content.import`, `content.ai.run`, `content.review`, `content.approve`, `content.publish`, `content.rollback`, `content.audit.read`).
-- Every Studio endpoint fail-closed (403 without permission, independent of whether the UI hid the control) — feature flags never substitute for authorization.
-- Studio ships as a separate route/bundle, not inside the user-facing chunk (§10.1) — verify with a bundle-boundary test, same pattern as Phase 3 WS10 §18's question-bank bundle test.
-- Environment/session binding so a staging session cannot publish to production.
+### WS5 — RBAC hardening for Studio — **code complete (2026-09-22), scoped**
+- Extended `server/authz/roles.ts`'s `PERMISSIONS`/`ROLE_PERMISSIONS` with spec §11's full set (colon-separated to match the existing `content:draft:create`/`content:review`/`content:publish` naming, not the spec's dotted prose notation): `content:import`, `content:ai:run`, `content:approve`, `content:rollback`, `content:audit:read`. `content_reviewer` gets everything except publish/rollback; `content_publisher` is a strict superset plus those two — the separation-of-duties rule spec §11 asks for, now asserted in `roles.test.ts`.
+- **`questions:admin` deliberately stays admin-only** — ADR-004/ADR-011 already say it moves to `content_publisher` "when Phase 4 Content Studio appears," and Studio doesn't exist yet (WS8). Granting it now, while `AdminPanel.tsx`'s direct-mutation routes are the only consumer, would hand `content_publisher` a review-free shortcut into exactly the legacy path Content Studio exists to retire. The grant belongs with the WS8 cutover.
+- **"Every Studio endpoint fail-closed" needs no new middleware** — Phase 1's `policies.requirePermission(...)` (`server/authz/policy.ts`) already denies-by-default and audits every denial; it works for any `Permission` value, including the ones just added. WS8's routes get fail-closed enforcement for free by using it with the new content permissions — nothing to build ahead of there being a route to guard.
+- **Deliberately deferred, not silently dropped** (each needs a concrete caller that doesn't exist before its owning workstream):
+  - the bundle-boundary test ("Studio ships as a separate route/bundle") — moves to WS8, which is what actually creates the bundle to test, mirroring Phase 3 WS10 §18's question-bank bundle test;
+  - environment/session binding ("a staging session cannot publish to production") — moves to WS6, which builds the actual publish/rollback actions the guard would wrap. Today's auth is per-request Telegram-initData verification (no long-lived session token that could carry a stale environment claim) and each deployment (staging/production) already runs as a separate process against its own DB — WS6 is where a concrete binding check has a real thing to check.
+- Tests: 4 new cases in `roles.test.ts` (separation of duties, superset relationship, AI/import parity, general-audit exclusion) — all green; full suite 589/589, `tsc -b` and `eslint` clean.
 - **Depends on**: WS2 (permissions gate content actions).
-- **DoD tie-in**: §23.4.
+- **DoD tie-in**: §23.4 (partial — RBAC vocabulary + fail-closed mechanism ready; full DoD closes with WS6/WS8).
 
 ### WS6 — Publication, release, rollback
 - Immutable, versioned published-set snapshot (item revision IDs, objective/topic mapping, localization version, asset hashes, schema-compat version, actor+timestamp) per §13.1.

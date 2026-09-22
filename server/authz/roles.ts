@@ -23,8 +23,18 @@ export type Role = (typeof ROLES)[number];
 
 export const PERMISSIONS = [
   'content:draft:create',
+  /** Import legacy/external content as draft revisions (Phase 4 WS5, spec §11 `content.import`). */
+  'content:import',
+  /** Run an AI content-generation job (Phase 4 WS5, spec §11 `content.ai.run`). */
+  'content:ai:run',
   'content:review',
+  /** Approve a reviewed revision — a distinct act from leaving review comments (Phase 4 WS5, spec §11 `content.approve`). */
+  'content:approve',
   'content:publish',
+  /** Roll a published set back to a prior version (Phase 4 WS5, spec §11 `content.rollback`). */
+  'content:rollback',
+  /** Read the content-specific audit trail (Phase 4 WS5, spec §11 `content.audit.read`) — narrower than the general `audit:read` support grant. */
+  'content:audit:read',
   'users:manage',
   'groups:manage',
   'audit:read',
@@ -33,7 +43,11 @@ export const PERMISSIONS = [
   /**
    * Mutate the live question bank. Admin-only in Phase 1 — live question
    * mutation stays minimally protected until Phase 4 Content Studio exists
-   * (ADR-004). `content_publisher` gains this in Phase 4.
+   * (ADR-004). Still admin-only as of Phase 4 WS5: granting it to
+   * `content_publisher` before Studio (WS8) replaces `AdminPanel.tsx` would
+   * hand that role a review-free shortcut into the exact legacy direct-write
+   * path Content Studio exists to retire — the grant belongs with the WS8
+   * cutover, not RBAC hardening in isolation.
    */
   'questions:admin',
 ] as const;
@@ -43,8 +57,24 @@ export type Permission = (typeof PERMISSIONS)[number];
 const NON_ADMIN_ROLE_PERMISSIONS: Record<Exclude<Role, 'admin'>, readonly Permission[]> = {
   user: [],
   group_leader: ['groups:manage', 'kahoot:host', 'sessions:export'],
-  content_reviewer: ['content:draft:create', 'content:review'],
-  content_publisher: ['content:draft:create', 'content:review', 'content:publish'],
+  content_reviewer: [
+    'content:draft:create',
+    'content:import',
+    'content:ai:run',
+    'content:review',
+    'content:approve',
+    'content:audit:read',
+  ],
+  content_publisher: [
+    'content:draft:create',
+    'content:import',
+    'content:ai:run',
+    'content:review',
+    'content:approve',
+    'content:publish',
+    'content:rollback',
+    'content:audit:read',
+  ],
   support: ['users:manage', 'audit:read'],
 };
 
