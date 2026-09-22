@@ -1,32 +1,15 @@
 /**
- * Stable content hashing (Phase 2 §14 — "a published content set has a stable
- * version/hash"). Domain-owned, dependency-free (`node:crypto` only).
- *
- * The hash is over a canonical JSON form with sorted object keys, so two
- * revisions with the same body but different field order / whitespace collide —
- * that is what makes it a dedup key. It deliberately excludes identity and
- * lifecycle fields (`id`, `status`, `createdAt`, …).
+ * Question-revision-body hashing (Phase 2 §14 — "a published content set has
+ * a stable version/hash"). It deliberately excludes identity and lifecycle
+ * fields (`id`, `status`, `createdAt`, …). `stableHash` itself now lives in
+ * `server/domains/shared/stableHash.ts` (Phase 4 WS2, ADR-019 §4) — shared
+ * with `learning`'s lesson-revision hashing — and is re-exported here for
+ * existing callers.
  */
-import { createHash } from 'node:crypto';
 import type { ScriptureRef } from './types';
+import { stableHash } from '../shared/stableHash';
 
-function canonicalize(value: unknown): unknown {
-  if (Array.isArray(value)) return value.map(canonicalize);
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value as Record<string, unknown>)
-        .filter(([, v]) => v !== undefined)
-        .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
-        .map(([k, v]) => [k, canonicalize(v)]),
-    );
-  }
-  return value;
-}
-
-/** sha-256 hex of the canonical JSON of `value`. */
-export function stableHash(value: unknown): string {
-  return createHash('sha256').update(JSON.stringify(canonicalize(value))).digest('hex');
-}
+export { stableHash };
 
 export interface RevisionHashInput {
   themeId: string;

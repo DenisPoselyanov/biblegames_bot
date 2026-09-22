@@ -26,7 +26,7 @@ describe('learning repositories — SQL adapter (pglite)', () => {
     repos: createSqlLearningRepositories(tdb.db),
     reset: async () => {
       await tdb.raw.execute(
-        sql`truncate table lesson_sessions, practice_sessions, lesson_blocks, lessons, learning_objectives, learning_modules, learning_plans restart identity cascade`,
+        sql`truncate table lesson_sessions, practice_sessions, lesson_revisions, lesson_blocks, lessons, learning_objectives, learning_modules, learning_plans restart identity cascade`,
       );
     },
   }));

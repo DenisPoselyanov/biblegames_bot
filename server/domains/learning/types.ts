@@ -157,6 +157,65 @@ export interface LessonBlockUpsert {
   status?: ContentStatus;
 }
 
+// --- Lesson revisions (Phase 4 WS2, ADR-019 §2). An additive, immutable layer
+// over the mutable `lessons`/`lesson_blocks` rows above — mirrors
+// `content`'s `QuestionRevisionRecord`/`RevisionDraft` shape. `publishRevision`
+// writes the snapshot through to the mutable rows so Learn hub reads (which
+// query `lessons`/`lesson_blocks` directly) are unaffected by drafts. -------
+
+/** One ordered block inside a lesson revision's denormalized snapshot. */
+export interface LessonRevisionBlock {
+  id: string;
+  blockType: LessonBlockType;
+  schemaVersion: number;
+  payload: Record<string, unknown>;
+}
+
+/** One stored, immutable lesson revision. */
+export interface LessonRevisionRecord {
+  id: string;
+  /** No FK — a draft for a brand-new lesson may exist before any `lessons` row does (parity with `questionId`). */
+  lessonId: string;
+  revisionNumber: number;
+  status: ContentStatus;
+  planId: string;
+  moduleId: string;
+  objectiveId: string;
+  title: string;
+  description: string | null;
+  blocks: LessonRevisionBlock[];
+  contentHash: string;
+  source: string;
+  createdAt: string;
+  createdBy: string | null;
+  supersededAt: string | null;
+  quarantineReason: string | null;
+}
+
+/** Body a caller supplies to create a new lesson revision (hash + numbering derived). */
+export interface LessonRevisionDraft {
+  lessonId: string;
+  planId: string;
+  moduleId: string;
+  objectiveId: string;
+  title: string;
+  description?: string | null;
+  blocks: LessonRevisionBlock[];
+  source?: string;
+  createdBy?: string | null;
+  /** Starting lifecycle state — never `published` directly (ADR-019 §3). */
+  status?: Extract<ContentStatus, 'legacy_unreviewed' | 'draft'>;
+}
+
+export type AppendLessonRevisionOutcome =
+  | { kind: 'created'; revision: LessonRevisionRecord }
+  | { kind: 'unchanged'; revision: LessonRevisionRecord };
+
+export interface LessonQuarantineInput {
+  lessonId: string;
+  reason: string;
+}
+
 // --- Session tracking (Phase 3 WS2, §11.4/§12.1). Ids are always caller-
 // supplied (a UUID minted by the service layer), matching the content-mapping
 // upsert convention above rather than a DB-generated key. --------------------

@@ -27,9 +27,11 @@ contract tests exist (§25 "moving files without defining ownership").
   `types.ts`, `inMemoryRepository.ts`. SQL adapter:
   `server/infrastructure/database/repositories/identity.ts`. Contract:
   `identity/__tests__/repositoryContract.ts` (runs vs in-memory + pglite).
-- **`content/`** (WS3 part 1, §14) — `repository.ts`
+- **`content/`** (WS3 part 1, §14; diff Phase 4 WS2, ADR-019) — `repository.ts`
   (`QuestionRevisionRepository`, `ContentSetRepository`), `types.ts`,
-  `contentHash.ts` (stable sha-256 body/set hashing), `inMemoryRepository.ts`.
+  `contentHash.ts` (stable sha-256 body/set hashing — `stableHash` itself now
+  lives in `shared/stableHash.ts`, shared with `learning`), `diff.ts`
+  (field-level diff for the review editor), `inMemoryRepository.ts`.
   SQL adapter: `server/infrastructure/database/repositories/content.ts`.
   Contract: `content/__tests__/repositoryContract.ts`. Read contract in
   `@contracts` `schemas/content.ts`. The legacy `questions` bank stays
@@ -47,20 +49,25 @@ contract tests exist (§25 "moving files without defining ownership").
   `server/infrastructure/database/repositories/economy.ts`. Table:
   `entitlements`. `wallet_ledger` keeps its home under `server/wallet/`
   (predates this layout).
-- **`learning/`** (Phase 3 WS1, ADR-017) — `repository.ts` (`LearningPlanRepository`,
-  `LearningModuleRepository`, `LearningObjectiveRepository`, `LessonRepository`,
-  `LessonBlockRepository`), `types.ts` (incl. `LESSON_BLOCK_TYPES`, §11.3),
-  `inMemoryRepository.ts`. SQL adapter:
+- **`learning/`** (Phase 3 WS1, ADR-017; lesson revisions Phase 4 WS2, ADR-019) —
+  `repository.ts` (`LearningPlanRepository`, `LearningModuleRepository`,
+  `LearningObjectiveRepository`, `LessonRepository`, `LessonBlockRepository`,
+  `LessonRevisionRepository`), `types.ts` (incl. `LESSON_BLOCK_TYPES`, §11.3),
+  `lessonHash.ts`, `diff.ts`, `inMemoryRepository.ts`. SQL adapter:
   `server/infrastructure/database/repositories/learning.ts`. Contract:
   `learning/__tests__/repositoryContract.ts` (in-memory + pglite). Tables:
   `learning_plans` / `learning_modules` (self-referencing `parentModuleId`) /
-  `learning_objectives` / `lessons` / `lesson_blocks`. Populated by
-  `scripts/migrate/map-learning-content.ts` from `data/topics-db/*.json`
-  (`source = 'topic-tree'`); rows land `legacy_unreviewed`, never `published` —
-  WS2 builds the read API and the promotion policy. Does not own question
-  publication (stays in `content`); does not yet own practice/review sessions or
-  answer attempts (still `progression`/`me.ts` — moving that is WS2 scope per the
-  ownership map below).
+  `learning_objectives` / `lessons` / `lesson_blocks` / `lesson_revisions`.
+  Populated by `scripts/migrate/map-learning-content.ts` from
+  `data/topics-db/*.json` (`source = 'topic-tree'`); rows land
+  `legacy_unreviewed`, never `published` — WS2 builds the read API and the
+  promotion policy. `lesson_revisions` is an additive immutable layer over the
+  mutable `lessons`/`lesson_blocks` rows (Content Studio's authoring path,
+  `source = 'authored'`); `publishRevision` writes the snapshot through to
+  those mutable rows so existing reads are unaffected by drafts. Does not own
+  question publication (stays in `content`); does not yet own practice/review
+  sessions or answer attempts (still `progression`/`me.ts` — moving that is
+  WS2 scope per the ownership map below).
 
 ## Map
 

@@ -6,6 +6,8 @@
  * for production writes (same rule as `content`/`progression`).
  */
 import type { Transaction } from '../shared/context';
+import { assertAiWriteAllowed } from '../shared/contentWriteGuard';
+import { hashLessonRevisionBody } from './lessonHash';
 import type {
   LearningModuleRepository,
   LearningObjectiveRepository,
@@ -13,6 +15,7 @@ import type {
   LearningRepositories,
   LessonBlockRepository,
   LessonRepository,
+  LessonRevisionRepository,
   LessonSessionRepository,
   PracticeSessionRepository,
 } from './repository';
@@ -22,6 +25,7 @@ import type {
   LearningPlanRecord,
   LessonBlockRecord,
   LessonRecord,
+  LessonRevisionRecord,
   LessonSessionRecord,
   PracticeSessionRecord,
 } from './types';
@@ -42,8 +46,12 @@ export function createInMemoryLearningRepositories(
   const blocksByLesson = new Map<string, LessonBlockRecord[]>();
   const lessonSessions = new Map<string, LessonSessionRecord>();
   const practiceSessions = new Map<string, PracticeSessionRecord>();
+  const lessonRevisions = new Map<string, LessonRevisionRecord>();
+  const lessonRevIdsByLesson = new Map<string, Set<string>>();
 
   const iso = (): string => now().toISOString();
+  let revSeq = 0;
+  const nextRevId = (): string => `lrev_${(++revSeq).toString(36).padStart(6, '0')}`;
 
   const planRepo: LearningPlanRepository = {
     async upsert(input, tx) {
@@ -351,12 +359,135 @@ export function createInMemoryLearningRepositories(
     },
   };
 
+  const byLesson = (lessonId: string): LessonRevisionRecord[] =>
+    [...(lessonRevIdsByLesson.get(lessonId) ?? [])]
+      .map((id) => lessonRevisions.get(id)!)
+      .sort((a, b) => b.revisionNumber - a.revisionNumber);
+
+  const putLessonRevision = (r: LessonRevisionRecord): void => {
+    lessonRevisions.set(r.id, r);
+    let ids = lessonRevIdsByLesson.get(r.lessonId);
+    if (!ids) lessonRevIdsByLesson.set(r.lessonId, (ids = new Set()));
+    ids.add(r.id);
+  };
+
+  const lessonRevisionRepo: LessonRevisionRepository = {
+    async getById(id, tx) {
+      rejectTx(tx);
+      const r = lessonRevisions.get(id);
+      return r ? { ...r, blocks: r.blocks.map((b) => ({ ...b, payload: { ...b.payload } })) } : null;
+    },
+    async getPublished(lessonId, tx) {
+      rejectTx(tx);
+      const r = byLesson(lessonId).find((x) => x.status === 'published');
+      return r ? { ...r, blocks: r.blocks.map((b) => ({ ...b, payload: { ...b.payload } })) } : null;
+    },
+    async listRevisions(lessonId, tx) {
+      rejectTx(tx);
+      return byLesson(lessonId).map((r) => ({ ...r, blocks: r.blocks.map((b) => ({ ...b, payload: { ...b.payload } })) }));
+    },
+    async appendRevision(draft, tx) {
+      rejectTx(tx);
+      assertAiWriteAllowed(draft.source, draft.status);
+      const contentHash = hashLessonRevisionBody({
+        planId: draft.planId,
+        moduleId: draft.moduleId,
+        objectiveId: draft.objectiveId,
+        title: draft.title,
+        description: draft.description ?? null,
+        blocks: draft.blocks,
+      });
+      const existing = byLesson(draft.lessonId);
+      if (existing[0]?.contentHash === contentHash) {
+        return { kind: 'unchanged', revision: { ...existing[0] } };
+      }
+      const row: LessonRevisionRecord = {
+        id: nextRevId(),
+        lessonId: draft.lessonId,
+        revisionNumber: (existing[0]?.revisionNumber ?? 0) + 1,
+        status: draft.status ?? 'legacy_unreviewed',
+        planId: draft.planId,
+        moduleId: draft.moduleId,
+        objectiveId: draft.objectiveId,
+        title: draft.title,
+        description: draft.description ?? null,
+        blocks: draft.blocks.map((b) => ({ ...b, payload: { ...b.payload } })),
+        contentHash,
+        source: draft.source ?? 'authored',
+        createdAt: iso(),
+        createdBy: draft.createdBy ?? null,
+        supersededAt: null,
+        quarantineReason: null,
+      };
+      putLessonRevision(row);
+      return { kind: 'created', revision: { ...row } };
+    },
+    async publishRevision(revisionId, tx) {
+      rejectTx(tx);
+      const target = lessonRevisions.get(revisionId);
+      if (!target) throw new Error(`lesson revision ${revisionId} not found`);
+      const ts = iso();
+      for (const r of byLesson(target.lessonId)) {
+        if (r.id !== revisionId && r.status === 'published') {
+          lessonRevisions.set(r.id, { ...r, status: 'archived', supersededAt: ts });
+        }
+      }
+      const published: LessonRevisionRecord = {
+        ...target,
+        status: 'published',
+        supersededAt: null,
+        quarantineReason: null,
+      };
+      lessonRevisions.set(revisionId, published);
+
+      // Write-through: keep the mutable `lessons`/`lesson_blocks` rows (Learn
+      // hub's read path) in sync with the published snapshot (ADR-019 §2).
+      const existingLesson = lessons.get(target.lessonId);
+      await lessonRepo.upsert({
+        id: target.lessonId,
+        planId: target.planId,
+        moduleId: target.moduleId,
+        objectiveId: target.objectiveId,
+        title: target.title,
+        description: target.description,
+        status: 'published',
+        position: existingLesson?.position ?? 0,
+        source: 'authored',
+      });
+      await blockRepo.replaceForLesson(
+        target.lessonId,
+        published.blocks.map((b, position) => ({
+          id: b.id,
+          lessonId: target.lessonId,
+          position,
+          blockType: b.blockType,
+          schemaVersion: b.schemaVersion,
+          payload: b.payload,
+          status: 'published',
+        })),
+      );
+
+      return { ...published };
+    },
+    async quarantine(input, tx) {
+      rejectTx(tx);
+      let count = 0;
+      for (const r of byLesson(input.lessonId)) {
+        if (r.status === 'archived' || r.status === 'quarantined') continue;
+        lessonRevisions.set(r.id, { ...r, status: 'quarantined', quarantineReason: input.reason });
+        count += 1;
+      }
+      return count;
+    },
+  };
+
   return {
     plans: planRepo,
     modules: moduleRepo,
     objectives: objectiveRepo,
     lessons: lessonRepo,
     blocks: blockRepo,
+    lessonRevisions: lessonRevisionRepo,
     lessonSessions: lessonSessionRepo,
     practiceSessions: practiceSessionRepo,
   };

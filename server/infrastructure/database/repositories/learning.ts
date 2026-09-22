@@ -5,7 +5,7 @@
  * The opaque `Transaction` from `ServiceContext` is narrowed to the Drizzle
  * executor here and nowhere else (`asExecutor`), same pattern as `content.ts`.
  */
-import { and, asc, desc, eq, gte, ilike, or, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gte, ilike, inArray, or, sql } from 'drizzle-orm';
 import type {
   ContentStatus,
   LessonSessionStatus,
@@ -14,6 +14,8 @@ import type {
   Testament,
 } from '../../../../contracts/index';
 import type { Transaction as OpaqueTx } from '../../../domains/shared/context';
+import { assertAiWriteAllowed } from '../../../domains/shared/contentWriteGuard';
+import { hashLessonRevisionBody } from '../../../domains/learning/lessonHash';
 import type {
   LearningModuleRepository,
   LearningObjectiveRepository,
@@ -21,6 +23,7 @@ import type {
   LearningRepositories,
   LessonBlockRepository,
   LessonRepository,
+  LessonRevisionRepository,
   LessonSessionRepository,
   PracticeSessionRepository,
 } from '../../../domains/learning/repository';
@@ -31,11 +34,20 @@ import type {
   LessonBlockRecord,
   LessonBlockType,
   LessonRecord,
+  LessonRevisionBlock,
+  LessonRevisionRecord,
   LessonSessionRecord,
   PracticeSessionRecord,
 } from '../../../domains/learning/types';
 import type { Database, Transaction } from '../client';
-import { learningModules, learningObjectives, learningPlans, lessonBlocks, lessons } from '../schema/learning';
+import {
+  learningModules,
+  learningObjectives,
+  learningPlans,
+  lessonBlocks,
+  lessonRevisions,
+  lessons,
+} from '../schema/learning';
 import { lessonSessions, practiceSessions } from '../schema/learningSessions';
 
 type Executor = Database | Transaction;
@@ -51,6 +63,30 @@ type LessonRow = typeof lessons.$inferSelect;
 type BlockRow = typeof lessonBlocks.$inferSelect;
 type LessonSessionRow = typeof lessonSessions.$inferSelect;
 type PracticeSessionRow = typeof practiceSessions.$inferSelect;
+type LessonRevisionRow = typeof lessonRevisions.$inferSelect;
+
+let revSeq = 0;
+const nextRevId = (prefix: string): string =>
+  `${prefix}_${Date.now().toString(36)}${(++revSeq).toString(36).padStart(3, '0')}`;
+
+const toLessonRevision = (r: LessonRevisionRow): LessonRevisionRecord => ({
+  id: r.id,
+  lessonId: r.lessonId,
+  revisionNumber: r.revisionNumber,
+  status: r.status as ContentStatus,
+  planId: r.planId,
+  moduleId: r.moduleId,
+  objectiveId: r.objectiveId,
+  title: r.title,
+  description: r.description,
+  blocks: r.blocks as LessonRevisionBlock[],
+  contentHash: r.contentHash,
+  source: r.source,
+  createdAt: r.createdAt,
+  createdBy: r.createdBy,
+  supersededAt: r.supersededAt,
+  quarantineReason: r.quarantineReason,
+});
 
 const toPlan = (r: PlanRow): LearningPlanRecord => ({
   id: r.id,
@@ -543,12 +579,168 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
     },
   };
 
+  const lessonRevisionRepo: LessonRevisionRepository = {
+    async getById(id, tx) {
+      const [row] = await asExecutor(db, tx)
+        .select()
+        .from(lessonRevisions)
+        .where(eq(lessonRevisions.id, id))
+        .limit(1);
+      return row ? toLessonRevision(row) : null;
+    },
+    async getPublished(lessonId, tx) {
+      const [row] = await asExecutor(db, tx)
+        .select()
+        .from(lessonRevisions)
+        .where(and(eq(lessonRevisions.lessonId, lessonId), eq(lessonRevisions.status, 'published')))
+        .limit(1);
+      return row ? toLessonRevision(row) : null;
+    },
+    async listRevisions(lessonId, tx) {
+      const rows = await asExecutor(db, tx)
+        .select()
+        .from(lessonRevisions)
+        .where(eq(lessonRevisions.lessonId, lessonId))
+        .orderBy(desc(lessonRevisions.revisionNumber));
+      return rows.map(toLessonRevision);
+    },
+    async appendRevision(draft, tx) {
+      assertAiWriteAllowed(draft.source, draft.status);
+      const exec = asExecutor(db, tx);
+      const contentHash = hashLessonRevisionBody({
+        planId: draft.planId,
+        moduleId: draft.moduleId,
+        objectiveId: draft.objectiveId,
+        title: draft.title,
+        description: draft.description ?? null,
+        blocks: draft.blocks,
+      });
+
+      const [latest] = await exec
+        .select()
+        .from(lessonRevisions)
+        .where(eq(lessonRevisions.lessonId, draft.lessonId))
+        .orderBy(desc(lessonRevisions.revisionNumber))
+        .limit(1);
+
+      if (latest?.contentHash === contentHash) {
+        return { kind: 'unchanged', revision: toLessonRevision(latest) };
+      }
+
+      const id = nextRevId('lrev');
+      const [row] = await exec
+        .insert(lessonRevisions)
+        .values({
+          id,
+          lessonId: draft.lessonId,
+          revisionNumber: (latest?.revisionNumber ?? 0) + 1,
+          status: draft.status ?? 'legacy_unreviewed',
+          planId: draft.planId,
+          moduleId: draft.moduleId,
+          objectiveId: draft.objectiveId,
+          title: draft.title,
+          description: draft.description ?? null,
+          blocks: draft.blocks,
+          contentHash,
+          source: draft.source ?? 'authored',
+          createdBy: draft.createdBy ?? null,
+        })
+        .returning();
+      return { kind: 'created', revision: toLessonRevision(row) };
+    },
+    async publishRevision(revisionId, tx) {
+      const exec = asExecutor(db, tx);
+      const [target] = await exec
+        .select()
+        .from(lessonRevisions)
+        .where(eq(lessonRevisions.id, revisionId))
+        .limit(1);
+      if (!target) throw new Error(`lesson revision ${revisionId} not found`);
+      const nowIso = new Date().toISOString();
+      await exec
+        .update(lessonRevisions)
+        .set({ status: 'archived', supersededAt: nowIso })
+        .where(
+          and(eq(lessonRevisions.lessonId, target.lessonId), eq(lessonRevisions.status, 'published')),
+        );
+      const [row] = await exec
+        .update(lessonRevisions)
+        .set({ status: 'published', supersededAt: null, quarantineReason: null })
+        .where(eq(lessonRevisions.id, revisionId))
+        .returning();
+
+      // Write-through: keep the mutable `lessons`/`lesson_blocks` rows (Learn
+      // hub's read path) in sync with the published snapshot (ADR-019 §2).
+      const blocksSnapshot = row.blocks as LessonRevisionBlock[];
+      await exec
+        .insert(lessons)
+        .values({
+          id: target.lessonId,
+          planId: target.planId,
+          moduleId: target.moduleId,
+          objectiveId: target.objectiveId,
+          title: target.title,
+          description: target.description,
+          status: 'published',
+          source: 'authored',
+        })
+        .onConflictDoUpdate({
+          target: lessons.id,
+          set: {
+            planId: target.planId,
+            moduleId: target.moduleId,
+            objectiveId: target.objectiveId,
+            title: target.title,
+            description: target.description,
+            status: 'published',
+            source: 'authored',
+            updatedAt: sql`now()`,
+          },
+        });
+      await exec.delete(lessonBlocks).where(eq(lessonBlocks.lessonId, target.lessonId));
+      if (blocksSnapshot.length) {
+        await exec.insert(lessonBlocks).values(
+          blocksSnapshot.map((b, position) => ({
+            id: b.id,
+            lessonId: target.lessonId,
+            position,
+            blockType: b.blockType,
+            schemaVersion: b.schemaVersion,
+            payload: b.payload,
+            status: 'published',
+          })),
+        );
+      }
+
+      return toLessonRevision(row);
+    },
+    async quarantine(input, tx) {
+      const rows = await asExecutor(db, tx)
+        .update(lessonRevisions)
+        .set({ status: 'quarantined', quarantineReason: input.reason })
+        .where(
+          and(
+            eq(lessonRevisions.lessonId, input.lessonId),
+            inArray(lessonRevisions.status, [
+              'legacy_unreviewed',
+              'draft',
+              'ready_for_review',
+              'published',
+            ]),
+          ),
+        )
+        .returning({ id: lessonRevisions.id });
+      return rows.length;
+    },
+  };
+
   return {
     plans,
     modules,
     objectives,
     lessons: lessonRepo,
     blocks,
+    lessonRevisions: lessonRevisionRepo,
     lessonSessions: lessonSessionRepo,
     practiceSessions: practiceSessionRepo,
   };

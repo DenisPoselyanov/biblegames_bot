@@ -1322,6 +1322,153 @@ multi-consumer привід для Tailwind (наприклад, суттєви�
 
 ---
 
+# ADR-019 — Phase 4 WS2: `ContentStatus` лишається 6-станим; lesson-ревізії — новий адитивний шар над `lessons`/`lesson_blocks`
+
+**Дата:** 2026-09-22
+**Статус:** accepted, implementation у Phase 4 WS2 (гілка `phase-4/ws2-content-lifecycle`).
+**Деталі:** [`.claude/plans/phase-4-content-ai-studio.md`](../.claude/plans/phase-4-content-ai-studio.md) §1.1, §1.4, WS2.
+
+## Контекст
+
+Спека Phase 4 (§4) описує ~12-станий publication lifecycle (`draft →
+validating → ready_for_review → in_review → changes_requested → approved →
+scheduled → published → superseded → quarantined → archived`, плюс
+паралельні review-стани). Репозиторій уже має `ContentStatus` — закриту
+6-station vocabulary (`legacy_unreviewed | draft | ready_for_review | published
+| quarantined | archived`), яку читають `question_revisions.status` (Phase 2
+WS3), і всі п'ять `learning`-таблиць (Phase 3 WS1, ADR-017) — розширення
+enum чіпає кожен рядок і кожен читач одразу в двох доменах.
+
+Друге відкрите питання: Phase 3 WS1 (ADR-017) навмисно **не** дав `lessons`/
+`lesson_blocks` ревізійної моделі — рядки мутуються on-write через
+`upsert`/`replaceForLesson`, `status` живе прямо на живому рядку. WS8's
+review editor (§23.9) потребує side-by-side diff і "review → approve →
+publish", що для мутованого-на-місці рядка означає втрату історії — саме
+те, що `question_revisions` уже вирішує immutable-нумерованими ревізіями.
+
+## Рішення
+
+**(1) `ContentStatus` лишається 6-станим** (план §1.1 варіант (b), тепер
+default, не просто рекомендація). Додаткові спекові стани не персистяться
+як окремі значення enum:
+
+- `validating` / `in_review` — представлені фактом, що ревізія має статус
+  `ready_for_review` **і** відкритий job/validation-run над нею (WS1's
+  `content.ai_generate` та WS3's майбутні validation-job типи) — не колонка.
+- `changes_requested` / `approved` — рецензентське рішення, що WS7's
+  audit-подія фіксує (`review_decision: 'changes_requested' | 'approved'`)
+  без переведення `status` у новий стан; ревізія залишається
+  `ready_for_review` до фактичного publish/archive.
+- `scheduled` — WS6's публікаційний job має `scheduledFor`; доки job не
+  виконався, ревізія залишається в поточному персистованому стані.
+- `superseded` — вже покрито існуючим `supersededAt` + `status: 'archived'`
+  на попередній published-ревізії (`question_revisions` робить це відколи
+  існує `publishRevision`).
+
+Це той самий підхід, що вже неявно застосовано в
+`server/domains/content/repository.ts`'s `publishRevision`/`quarantine` —
+WS2 просто робить його явним рішенням, а не мовчазним default.
+
+**(2) Lesson-ревізії — новий, адитивний шар, не заміна `lessons`/
+`lesson_blocks`.** Нова таблиця `lesson_revisions` (+ вбудований jsonb-масив
+блоків, не окрема `lesson_block_revisions`-таблиця — та сама денормалізована
+snapshot-модель, що вже виправдала себе на `question_revisions`) дзеркалить
+`question_revisions` 1:1 по формі: `id`, `lessonId` (без FK — той самий
+"loose key" патерн, що `question_revisions.questionId`, бо чернетка нового
+уроку може існувати до того, як мутований `lessons`-рядок узагалі створено),
+`revisionNumber`, `status`, `planId`/`moduleId`/`objectiveId` (FK — Studio в
+WS2 не створює нові plan/module/objective, тільки уроки під наявними),
+`title`, `description`, `blocks` (jsonb `LessonRevisionBlock[]`),
+`contentHash`, `source`, `createdBy`, `supersededAt`, `quarantineReason`.
+Один published-revision на `lessonId` (частковий unique index, як
+`uq_question_revisions_published`).
+
+`publishRevision` для lesson-ревізії пише crew-through у той самий
+`exec`/`tx`: upsert `lessons` (title/description/status/planId/moduleId/
+objectiveId) + `replaceForLesson`-еквівалент на `lesson_blocks` — так Learn
+hub's існуючі читання (`lessons`/`lesson_blocks` напряму, Phase 3 WS2)
+лишаються незмінними, а Content Studio стає **другим writer'ом** тих самих
+мутованих таблиць поряд із topic-tree mapping-скриптом
+(`source = 'authored'` замість `'topic-tree'` — той самий розрізняльник,
+що ADR-017 вже заклав). Драфт-ревізія (`draft`/`legacy_unreviewed`,
+`ready_for_review`) **не** видима Learn hub, доки `publishRevision` не
+пройде — той самий "review gate", що вже діє на питаннях.
+
+**(3) DB-level AI write restriction (§3.2/§22).** `RevisionDraft.status`
+(і новий `LessonRevisionDraft.status`) вже типово обмежені до
+`'legacy_unreviewed' | 'draft'` — але це компайл-тайм гарантія, яку можна
+обійти кастом/JSON-тілом запиту. WS2 додає runtime-guard
+(`server/domains/shared/contentWriteGuard.ts`,
+`assertAiWriteAllowed(source, status)`), викликаний на початку
+`appendRevision` в обох (question + lesson) репозиторіях, обох адаптерах
+(in-memory + SQL): якщо `source === 'ai'` і запитаний `status` не
+`draft`/`legacy_unreviewed` — кидає. Endpoint-рівня permission matrix
+(§11's `content.publish` тощо) лишається WS5's scope; це — останній рубіж
+на самому write-path, не заміна RBAC.
+
+**(4) Field-level diff — спільна утиліта, не дублювання per-domain.**
+`server/domains/shared/revisionDiff.ts`'s `diffFields()` — генерична
+(`before: T | null, after: T, fields: (keyof T)[]`), порівнює по глибокій
+JSON-рівності за полем. `content/diff.ts`'s `diffQuestionRevisions()` і
+`learning/diff.ts`'s `diffLessonRevisions()` — тонкі обгортки з конкретним
+списком полів (без `id`/`createdAt`/lifecycle-бухгалтерії) — те, що WS8's
+review editor рендерить side-by-side.
+
+## Alternatives
+
+- **(a) Розширити `ContentStatus` до повного 12-станого lifecycle** —
+  ближче до спеки буквально, але вимагає міграції, що чіпає кожен рядок у
+  двох доменах (question_revisions + 5 learning-таблиць), і кожен читач
+  (`listPublished`, Learn hub search, admin panel), заради станів, які й так
+  виводяться з job/review-record метаданих. Відкладено — переглянути, якщо
+  WS3's validation pipeline чи WS8's review UI виявить, що `ready_for_review`
+  недостатньо гранулярний для реального review-флоу (WS3/WS8 issue, не WS2).
+- **(b) `lesson_block_revisions` як окрема таблиця** (по одному рядку на
+  блок на ревізію, дзеркалячи `scripture_references`) — точніше для
+  block-рівня diff, але `lesson_blocks` і так є "replace-all" семантикою
+  (ADR-017), і block-рівня diff все одно рахується з denormalized масиву на
+  клієнті/сервісному шарі WS8 rendered, не з окремих SQL-рядків. Jsonb-масив
+  простіший і достатній для §23.1/§23.3; переглянути, якщо WS8 потребує
+  per-block SQL-запитів (навряд).
+- **(c) Мутувати `lessons`/`lesson_blocks` напряму замість ревізійного шару**
+  (той самий підхід, що вже є) — найпростіше, нуль нових таблиць, але
+  ламає WS8's вимогу "side-by-side diff, review, publish з можливістю
+  відкату" — мутація на місці не лишає "before" для diff і не має
+  published-vs-draft розрізнення без ще одного окремого прапорця.
+
+## Наслідки
+
+- Нова таблиця `lesson_revisions` (міграція `0010_lesson_revisions.sql`).
+  `schemaParity` allowlist +1.
+- `server/domains/learning/`: `types.ts` (+`LessonRevisionRecord`/
+  `LessonRevisionDraft`/`LessonRevisionBlock`/`AppendLessonRevisionOutcome`),
+  `repository.ts` (+`LessonRevisionRepository`), `diff.ts` (нове),
+  `inMemoryRepository.ts` (+lessonRevisions, ділить Maps із `lessons`/
+  `blocks` для publish-crew-through). SQL:
+  `server/infrastructure/database/repositories/learning.ts`.
+- `server/domains/shared/`: `revisionDiff.ts`, `contentWriteGuard.ts` (нові,
+  дефолт-нейтральні, без залежностей від жодного домену).
+- `server/domains/content/`: `diff.ts` (нове); `appendRevision` (in-memory +
+  SQL) тепер викликає `assertAiWriteAllowed`.
+- Не чіпає `contracts/enums/index.ts`'s `CONTENT_STATUS_VALUES` — жодної
+  зміни персистованого enum, жодної міграції існуючих рядків.
+- Не чіпає Learn hub read-шлях (`lessons`/`lesson_blocks` — читання
+  лишаються прямими SELECT, як у Phase 3 WS2) — Studio-публікація лише додає
+  другого writer'а до тих самих таблиць.
+
+## Rollback
+
+Схема нічого не видаляє з існуючих таблиць — rollback це не мерджити/не
+застосовувати `0010_lesson_revisions.sql`. Якщо вже застосовано і потрібно
+відкотити: `lesson_revisions` не має вихідних FK з інших таблиць (сама лише
+посилається на `learning_plans`/`learning_modules`/`learning_objectives`),
+тож `drop table lesson_revisions;` безпечний, якщо жоден Studio-write-шлях
+ще не викликав `publishRevision` (перевірити `source = 'authored'` рядки в
+`lessons` перед дропом — вони лишаться в мутованій таблиці без ревізійної
+історії, але функціонально коректні для Learn hub).
+
+---
+
 # Як додавати нові рішення
 
 Кожен новий ADR містить:

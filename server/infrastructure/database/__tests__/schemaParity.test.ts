@@ -72,6 +72,8 @@ describe('Drizzle schema ↔ server/db/schema.sql parity', () => {
         // Phase 3 WS2 — lesson/practice session tracking
         'lesson_sessions',
         'practice_sessions',
+        // Phase 4 WS2 / ADR-019 — lesson revision model
+        'lesson_revisions',
       ].sort(),
     );
   });

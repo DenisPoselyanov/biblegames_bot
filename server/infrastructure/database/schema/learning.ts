@@ -15,6 +15,7 @@
  * `legacy_unreviewed`, never `published`, by the same rule content import uses.
  * WS2's read API only serves `published` rows.
  */
+import { sql } from 'drizzle-orm';
 import {
   index,
   integer,
@@ -24,7 +25,7 @@ import {
   uniqueIndex,
   type AnyPgColumn,
 } from 'drizzle-orm/pg-core';
-import { createdAt, updatedAt } from './_shared';
+import { createdAt, tstz, updatedAt } from './_shared';
 
 /**
  * A learning plan — one per content theme for topic-tree-derived plans
@@ -176,5 +177,60 @@ export const lessonBlocks = pgTable(
   (t) => [
     uniqueIndex('uq_lesson_blocks_lesson_position').on(t.lessonId, t.position),
     index('idx_lesson_blocks_type').on(t.blockType),
+  ],
+);
+
+// --- Lesson revisions (Phase 4 WS2, ADR-019 §2) ------------------------------
+
+/**
+ * An immutable lesson revision — the `lessons`/`lesson_blocks` analogue of
+ * `question_revisions` (`server/infrastructure/database/schema/content.ts`).
+ * `blocks` is a denormalized ordered snapshot (`LessonRevisionBlock[]`), not a
+ * separate per-block table — `lesson_blocks` is already replace-all semantics
+ * (ADR-017), so block-level diff is computed from this array, not from rows.
+ * `lessonId` deliberately carries no FK: a draft for a brand-new lesson can
+ * exist before any `lessons` row does (parity with `question_revisions.question_id`).
+ * At most one revision per `lessonId` is `published` (partial unique index).
+ */
+export const lessonRevisions = pgTable(
+  'lesson_revisions',
+  {
+    id: text('id').primaryKey(),
+    lessonId: text('lesson_id').notNull(),
+    revisionNumber: integer('revision_number').notNull(),
+    /** `ContentStatus` — same closed vocabulary as `question_revisions.status`. */
+    status: text('status').notNull().default('legacy_unreviewed'),
+    planId: text('plan_id')
+      .notNull()
+      .references(() => learningPlans.id, { onDelete: 'restrict' }),
+    moduleId: text('module_id')
+      .notNull()
+      .references(() => learningModules.id, { onDelete: 'restrict' }),
+    objectiveId: text('objective_id')
+      .notNull()
+      .references(() => learningObjectives.id, { onDelete: 'restrict' }),
+    title: text('title').notNull(),
+    description: text('description'),
+    /** `LessonRevisionBlock[]` (`server/domains/learning/types.ts`) — ordered snapshot of the lesson's blocks. */
+    blocks: jsonb('blocks')
+      .notNull()
+      .$type<Array<{ id: string; blockType: string; schemaVersion: number; payload: Record<string, unknown> }>>()
+      .default([]),
+    /** sha-256 of the normalized revision body — dedup + version identity. */
+    contentHash: text('content_hash').notNull(),
+    source: text('source').notNull().default('authored'),
+    createdAt: createdAt(),
+    createdBy: text('created_by'),
+    supersededAt: tstz('superseded_at'),
+    /** Set when `status` = 'quarantined'. */
+    quarantineReason: text('quarantine_reason'),
+  },
+  (t) => [
+    uniqueIndex('uq_lesson_revisions_lesson_number').on(t.lessonId, t.revisionNumber),
+    index('idx_lesson_revisions_status').on(t.status),
+    index('idx_lesson_revisions_plan').on(t.planId),
+    uniqueIndex('uq_lesson_revisions_published')
+      .on(t.lessonId)
+      .where(sql`${t.status} = 'published'`),
   ],
 );
