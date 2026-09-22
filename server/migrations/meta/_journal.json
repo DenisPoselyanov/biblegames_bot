@@ -78,6 +78,13 @@
       "when": 1789578132000,
       "tag": "0010_lesson_revisions",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1789664532000,
+      "tag": "0011_content_validation_findings",
+      "breakpoints": true
     }
   ]
 }

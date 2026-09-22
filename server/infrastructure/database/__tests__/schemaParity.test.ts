@@ -74,6 +74,8 @@ describe('Drizzle schema ↔ server/db/schema.sql parity', () => {
         'practice_sessions',
         // Phase 4 WS2 / ADR-019 — lesson revision model
         'lesson_revisions',
+        // Phase 4 WS3 — validation-pipeline finding storage
+        'content_validation_findings',
       ].sort(),
     );
   });
