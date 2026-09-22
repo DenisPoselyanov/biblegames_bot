@@ -7,7 +7,7 @@ export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'gold' | 'dan
 interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
   children: ReactNode;
   variant?: ButtonVariant;
-  size?: 'md' | 'sm';
+  size?: 'md' | 'sm' | 'lg';
   fullWidth?: boolean;
   className?: string;
 }
@@ -38,6 +38,7 @@ export function Button({
         styles.button,
         styles[`button--${variant}`],
         size === 'sm' && styles['button--sm'],
+        size === 'lg' && styles['button--lg'],
         fullWidth && styles['button--fullWidth'],
         className,
       )}

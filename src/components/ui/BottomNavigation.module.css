@@ -74,8 +74,23 @@
 .nav--aurora .item {
   border-radius: 20px;
   min-height: 52px;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.005em;
 }
 
+.nav--aurora .iconBox {
+  width: 20px;
+  height: 20px;
+}
+
+/* Active tab: raised pill + gold glyph (proto/design-v2 `TabBar`). */
 .nav--aurora .item--active {
   background: var(--bg-elevated);
+  border: 1px solid var(--border-soft);
+  color: var(--nav-active);
+}
+
+.nav--aurora .item--active .iconBox {
+  color: var(--accent-spiritual-text);
 }

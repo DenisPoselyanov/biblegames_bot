@@ -8,7 +8,7 @@
 
 .card--compact {
   padding: var(--space-lg);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-tile);
 }
 
 .card--interactive {

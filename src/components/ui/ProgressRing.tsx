@@ -40,6 +40,16 @@ export function ProgressRing({
       aria-label={label}
     >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        {/* design-v2 ramp (proto `Ring`): indigo -> violet -> theme ramp end.
+            Referenced from CSS so pre-3.5 themes keep their flat fill. The id
+            is intentionally stable — every instance renders the same stops. */}
+        <defs>
+          <linearGradient id="uiProgressRingRamp" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="var(--progress-fill)" />
+            <stop offset="55%" stopColor="var(--brand-primary-hover)" />
+            <stop offset="100%" stopColor="var(--progress-ramp-end)" />
+          </linearGradient>
+        </defs>
         <circle className={styles.track} cx={size / 2} cy={size / 2} r={radius} strokeWidth={strokeWidth} fill="none" />
         <circle
           className={styles.fill}

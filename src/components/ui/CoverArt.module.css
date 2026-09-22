@@ -17,6 +17,16 @@
   background: radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.32), transparent 60%);
 }
 
+/* design-v2: the prototype's warm gold light source, not a white specular. */
+:root[data-design-v2='on'] .glow {
+  background: radial-gradient(
+    circle at 72% 18%,
+    rgba(255, 225, 170, 0.85),
+    rgba(255, 205, 120, 0.15) 55%,
+    transparent 100%
+  );
+}
+
 .glyph {
   position: absolute;
   inset: 0;

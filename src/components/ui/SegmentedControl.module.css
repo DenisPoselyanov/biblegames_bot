@@ -33,3 +33,28 @@
   color: var(--brand-primary);
   box-shadow: var(--shadow-sm);
 }
+
+/* ── design-v2 (proto `Segmented`): a pill rail on the glass surface, the
+   active option raised rather than tinted. ── */
+
+:root[data-design-v2='on'] .control {
+  gap: var(--space-xs);
+  padding: 4px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-full);
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+:root[data-design-v2='on'] .option {
+  border-radius: var(--radius-full);
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+}
+
+:root[data-design-v2='on'] .option--active {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--card-shadow);
+}

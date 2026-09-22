@@ -11,7 +11,7 @@
   padding-bottom: calc(var(--space-lg) + 5.5rem + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  gap: var(--space-section);
 }
 
 .page--noNav {

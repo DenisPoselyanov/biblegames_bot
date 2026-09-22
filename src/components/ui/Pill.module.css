@@ -11,6 +11,13 @@
   white-space: nowrap;
 }
 
+/* design-v2: 12px semibold, roomier padding (proto `Pill`). */
+:root[data-design-v2='on'] .pill {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: var(--space-xs) var(--space-md);
+}
+
 .pill--neutral {
   background: var(--card-bg);
   border-color: var(--card-border);

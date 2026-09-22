@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { isFeatureEnabled } from '../../lib/flags';
 import { cx } from './cx';
 import styles from './CoverArt.module.css';
 
@@ -14,6 +15,12 @@ interface CoverArtProps {
   fade?: boolean;
   className?: string;
   style?: CSSProperties;
+  /**
+   * Explicit hue (0–360) for the design-v2 mesh gradient, when the caller
+   * knows the content's identity color (game modes, shop items). Omitted →
+   * derived from `seed`, so every plan/lesson still reads as its own.
+   */
+  hue?: number;
 }
 
 /**
@@ -24,11 +31,22 @@ interface CoverArtProps {
  * only rotates the hue slightly so repeated plans/lessons don't look
  * identical — it never changes which two tokens anchor the gradient.
  */
-export function CoverArt({ seed, glyph = 'rays', scrim, fade, className, style }: CoverArtProps) {
+export function CoverArt({ seed, glyph = 'rays', scrim, fade, className, style, hue }: CoverArtProps) {
+  // design-v2 (Phase 3.5): the prototype's `Cover` builds its art from one hue
+  // per piece of content — a three-stop HSL mesh, not the theme's two brand
+  // tokens. Flag off keeps the token-derived gradient every pre-3.5 cosmetic
+  // theme was designed around.
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
   const hueShift = hueShiftFromSeed(seed);
+  const meshHue = hue ?? hueFromSeed(seed);
+  const baseStyle: CSSProperties = designSystemV2
+    ? {
+        background: `linear-gradient(135deg, hsl(${meshHue} 72% 32%) 0%, hsl(${meshHue + 26} 64% 22%) 60%, hsl(${meshHue + 50} 58% 16%) 100%)`,
+      }
+    : { filter: `hue-rotate(${hueShift}deg)` };
   return (
     <div className={cx(styles.cover, className)} style={style} aria-hidden="true">
-      <div className={styles.base} style={{ filter: `hue-rotate(${hueShift}deg)` }} />
+      <div className={styles.base} style={baseStyle} />
       <div className={styles.glow} />
       <svg className={styles.glyph} viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
         <g stroke="rgba(255,255,255,0.32)" strokeWidth="1" fill="none">
@@ -56,6 +74,15 @@ export function CoverArt({ seed, glyph = 'rays', scrim, fade, className, style }
       {scrim && <div className={styles.scrim} />}
     </div>
   );
+}
+
+/** Full-circle hue from the same deterministic hash — design-v2 mesh gradient. */
+function hueFromSeed(seed: string): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    hash = (hash * 31 + seed.charCodeAt(i)) % 360;
+  }
+  return hash;
 }
 
 /** Deterministic, no external hash dep — good enough for "looks different per id", not for anything security-sensitive. */

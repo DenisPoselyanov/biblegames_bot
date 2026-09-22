@@ -62,3 +62,20 @@
 .action {
   flex-shrink: 0;
 }
+
+/* ── design-v2 (Phase 3.5): the prototype's screen headers — a 27px serif
+   title over a 13px muted line, no gold eyebrow. ── */
+
+:root[data-design-v2='on'] .header {
+  padding-top: var(--space-xs);
+}
+
+:root[data-design-v2='on'] .title {
+  font-size: var(--fs-3xl);
+  line-height: 1.15;
+}
+
+:root[data-design-v2='on'] .description {
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+}

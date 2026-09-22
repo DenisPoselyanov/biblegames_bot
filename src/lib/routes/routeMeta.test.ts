@@ -35,7 +35,10 @@ describe('routeMeta', () => {
     expect(isFullscreenRoute('/practice/session/s1')).toBe(true);
     expect(isFullscreenRoute('/play/kahoot/room/ABCDEF')).toBe(true);
     expect(isFullscreenRoute('/play/kahoot/display/ABCDEF')).toBe(false);
-    expect(isFullscreenRoute('/play/millionaire')).toBe(false);
+    expect(isFullscreenRoute('/play/millionaire')).toBe(true);
+    expect(isFullscreenRoute('/play/survival')).toBe(true);
+    expect(isFullscreenRoute('/play/kahoot')).toBe(true);
+    expect(isFullscreenRoute('/play/kahoot/playlists')).toBe(false);
     expect(isFullscreenRoute('/learn')).toBe(false);
   });
 

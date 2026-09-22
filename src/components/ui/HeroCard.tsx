@@ -22,6 +22,8 @@ interface HeroCardProps {
   tone?: 'surface' | 'cover';
   coverSeed?: string;
   coverGlyph?: 'rays' | 'path' | 'wave';
+  /** Explicit design-v2 cover hue — see `CoverArt`. */
+  coverHue?: number;
   /** Top-pinned badge row — only meaningful with `tone="cover"`. */
   badges?: ReactNode;
 }
@@ -42,12 +44,13 @@ export function HeroCard({
   tone = 'surface',
   coverSeed,
   coverGlyph,
+  coverHue,
   badges,
 }: HeroCardProps) {
   if (tone === 'cover' && coverSeed) {
     return (
       <div className={cx(styles.hero, styles['hero--cover'], className)}>
-        <CoverArt seed={coverSeed} glyph={coverGlyph} scrim className={styles.coverLayer} />
+        <CoverArt seed={coverSeed} glyph={coverGlyph} hue={coverHue} scrim className={styles.coverLayer} />
         <div className={styles.coverContent}>
           {badges && <div className={styles.badgeRow}>{badges}</div>}
           {kicker && <p className={styles.coverKicker}>{kicker}</p>}

@@ -64,6 +64,12 @@
   box-shadow: 0 14px 30px -14px rgba(0, 0, 0, 0.55);
 }
 
+.button--lg {
+  min-height: 56px;
+  padding: 0 var(--space-xl);
+  font-size: var(--fs-md);
+}
+
 .button--sm {
   /* 44px floor per §17 (WCAG 2.5.5 touch target) even at the "sm" visual size */
   min-height: 44px;

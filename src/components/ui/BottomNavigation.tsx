@@ -59,7 +59,11 @@ export function BottomNavigation<T extends string>({
                 onClick={() => onSelect(item.key)}
               >
                 <span className={styles.iconBox}>
-                  <Icon name={item.icon} size={22} />
+                  <Icon
+                    name={item.icon}
+                    size={aurora ? 19 : 22}
+                    strokeWidth={aurora ? (isActive ? 2.2 : 1.8) : undefined}
+                  />
                 </span>
                 <span>{item.label}</span>
               </button>

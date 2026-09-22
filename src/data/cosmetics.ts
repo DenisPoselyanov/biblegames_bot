@@ -257,6 +257,11 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       buttonPrimaryBg: 'linear-gradient(135deg, #6063F1 0%, #9E42F6 100%)',
       buttonPrimaryText: '#FFFFFF',
       navBg: 'rgba(255, 255, 255, 0.055)',
+      // The prototype's tab bar marks the active tab with a raised pill plus
+      // an ink label and a gold glyph — not an indigo label, which is what
+      // the generic derivation (brandPrimary) would give.
+      navActive: '#F6F4FF',
+      navInactive: 'rgba(246, 244, 255, 0.5)',
       progressFill: '#6366F1',
       // Gold ramp end is a dark-theme-only locked rule (§4) — the light
       // variant below overrides this to a non-gold value.
@@ -313,6 +318,8 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       buttonPrimaryBg: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
       buttonPrimaryText: '#FFFFFF',
       navBg: 'rgba(255, 255, 255, 0.82)',
+      navActive: '#1A1430',
+      navInactive: 'rgba(26, 20, 48, 0.62)',
       progressFill: '#4F46E5',
       // Locked rule (§4): the light theme's ramp does NOT get the gold
       // endpoint — deep violet instead, exactly as `proto.css` pins it.

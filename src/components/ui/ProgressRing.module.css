@@ -17,6 +17,11 @@
   transition: stroke-dashoffset var(--duration-slow) var(--ease-out);
 }
 
+/* design-v2: the prototype's gradient ring. */
+:root[data-design-v2='on'] .fill {
+  stroke: url(#uiProgressRingRamp);
+}
+
 .center {
   position: absolute;
   inset: 0;
@@ -38,6 +43,11 @@
   stroke: #ffffff;
 }
 
-.wrapper--onColor .center {
+.wrapper--onColor /* design-v2: the prototype's gradient ring. */
+:root[data-design-v2='on'] .fill {
+  stroke: url(#uiProgressRingRamp);
+}
+
+.center {
   color: #ffffff;
 }

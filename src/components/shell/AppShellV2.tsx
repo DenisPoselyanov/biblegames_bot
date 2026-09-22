@@ -18,12 +18,30 @@ const TAB_ROOT_PATH: Record<TabKey, string> = {
   profile: '/profile',
 };
 
+// Design-v2 (Phase 3.5 §6): the prototype's tab set — lucide glyphs and the
+// shorter, warmer labels ("Сьогодні", "Грати", "Я"), not the Phase 3 ones.
+const TAB_ICON_V2: Record<TabKey, IconName> = {
+  home: 'sparkles',
+  learn: 'book-open',
+  play: 'gamepad',
+  progress: 'trending-up',
+  profile: 'user',
+};
+
 const TAB_ICON: Record<TabKey, IconName> = {
   home: 'home',
   learn: 'study',
   play: 'play',
   progress: 'stats',
   profile: 'profile',
+};
+
+const TAB_LABEL_V2: Record<TabKey, string> = {
+  home: 'Сьогодні',
+  learn: 'Навчання',
+  play: 'Грати',
+  progress: 'Прогрес',
+  profile: 'Я',
 };
 
 const TAB_LABEL: Record<TabKey, string> = {
@@ -38,6 +56,12 @@ const TAB_ITEMS: BottomNavigationItem<TabKey>[] = TAB_ORDER.map((key) => ({
   key,
   icon: TAB_ICON[key],
   label: TAB_LABEL[key],
+}));
+
+const TAB_ITEMS_V2: BottomNavigationItem<TabKey>[] = TAB_ORDER.map((key) => ({
+  key,
+  icon: TAB_ICON_V2[key],
+  label: TAB_LABEL_V2[key],
 }));
 
 /**
@@ -146,7 +170,7 @@ export function AppShellV2() {
       </main>
       {!fullscreen && (
         <BottomNavigation
-          items={TAB_ITEMS}
+          items={designSystemV2 ? TAB_ITEMS_V2 : TAB_ITEMS}
           active={activeTab}
           onSelect={(key) => navigate(TAB_ROOT_PATH[key])}
           variant={designSystemV2 ? 'aurora' : 'default'}

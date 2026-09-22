@@ -5,12 +5,36 @@
   gap: var(--space-md);
 }
 
+.main {
+  min-width: 0;
+}
+
+.note {
+  margin: 2px 0 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
 .title {
   font-family: var(--font-sans);
   font-size: var(--fs-md);
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
+}
+
+/* design-v2: section titles are serif, 19px, and carry the prototype's
+   12px gap to the block they introduce (proto `SectionTitle` is `mb-3`). */
+:root[data-design-v2='on'] .header {
+  margin-bottom: var(--space-md);
+}
+
+:root[data-design-v2='on'] .title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  line-height: var(--lh-tight);
 }
 
 .action {
