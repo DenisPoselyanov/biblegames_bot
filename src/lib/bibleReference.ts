@@ -256,6 +256,7 @@ const BOOK_ALIASES: Record<string, number> = {
   іван: 43,
   john: 43,
   jn: 43,
+  jhn: 43,
   йо: 43,
   іо: 43,
   іоан: 43,
@@ -446,6 +447,8 @@ export function parseBibleReference(input: string): ParsedBibleReference | null 
   if (!raw) return null;
 
   const match =
+    // Fully-dotted USFM-style reference with no whitespace: "JHN.3.16", "JHN.3.16-18".
+    raw.match(/^([^\s.]+)\.(\d{1,3})\.(\d{1,3})(?:-(\d{1,3}))?$/) ??
     raw.match(/^(.+?)\s+(\d{1,3})\s*:\s*(\d{1,3})(?:\s*[-–—]\s*(\d{1,3}))?/i) ??
     raw.match(/^(.+?)\.\s*(\d{1,3})\s*:\s*(\d{1,3})(?:\s*[-–—]\s*(\d{1,3}))?/i) ??
     raw.match(/^(.+?)\.\s*(\d{1,3})\s*$/i) ??

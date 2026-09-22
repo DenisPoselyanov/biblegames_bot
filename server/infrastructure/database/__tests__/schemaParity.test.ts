@@ -76,6 +76,8 @@ describe('Drizzle schema ↔ server/db/schema.sql parity', () => {
         'lesson_revisions',
         // Phase 4 WS3 — validation-pipeline finding storage
         'content_validation_findings',
+        // Phase 4 WS4 — Scripture-verification evidence storage
+        'scripture_evidence',
       ].sort(),
     );
   });
