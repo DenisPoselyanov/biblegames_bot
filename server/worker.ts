@@ -16,6 +16,7 @@ import { getPool, isDatabaseConfigured } from './db/pgPool';
 import { createDatabase } from './infrastructure/database/client';
 import { createSqlContentRepositories } from './infrastructure/database/repositories/content';
 import { createObjectStore } from './infrastructure/storage';
+import { createAiProvider } from './infrastructure/ai';
 import { createJobQueue, registerCoreJobs } from './jobs';
 import type { SweepQuery } from './jobs/sweeps';
 
@@ -39,16 +40,26 @@ async function main(): Promise<void> {
       });
     } else {
       const db = createDatabase(await getPool());
+      const aiProvider = createAiProvider(config);
       registerCoreJobs(queue, {
         query: poolQuery,
         content: {
           repos: createSqlContentRepositories(db),
           store: createObjectStore(config),
         },
+        ai: aiProvider
+          ? { provider: aiProvider, store: createObjectStore(config), budget: config.aiJobBudget }
+          : undefined,
       });
+      if (config.aiProvider !== 'off' && !aiProvider) {
+        log.warn('worker.ai_provider_unconfigured', {
+          detail: `CONTENT_AI_PROVIDER=${config.aiProvider} but its API key is missing — content.ai_generate not registered`,
+        });
+      }
       log.info('worker.schedules_registered', {
         types: (await queue.stats()).types,
         objectStorage: config.objectStorageDriver,
+        aiProvider: aiProvider?.name ?? 'none',
       });
     }
   }

@@ -18,6 +18,8 @@ export const JOB_TYPES = {
   TELEMETRY_RETENTION: 'telemetry.retention_sweep',
   /** Build a static published-content snapshot (§14, §17). Handler lands in WS5 part 2. */
   CONTENT_SNAPSHOT: 'content.snapshot',
+  /** One AI generation call → a raw artifact in object storage (Phase 4 §7, §8, WS1). Not a draft/revision yet — WS2 consumes the artifact. */
+  AI_CONTENT_GENERATE: 'content.ai_generate',
 } as const;
 
 export type JobType = (typeof JOB_TYPES)[keyof typeof JOB_TYPES];
@@ -33,6 +35,15 @@ export const JOB_PAYLOAD_SCHEMAS = {
   [JOB_TYPES.TELEMETRY_RETENTION]: retentionPayload,
   [JOB_TYPES.CONTENT_SNAPSHOT]: z
     .object({ setId: z.string().min(1), filter: contentSetFilter.optional() })
+    .strict(),
+  [JOB_TYPES.AI_CONTENT_GENERATE]: z
+    .object({
+      /** e.g. "question.generate.v1" — links the artifact back to its prompt version (§7.3). */
+      promptVersion: z.string().min(1),
+      prompt: z.string().min(1),
+      /** Free-form label for what this batch is for (theme id, topic id, …) — not interpreted by the job. */
+      label: z.string().min(1).optional(),
+    })
     .strict(),
 } satisfies Record<string, z.ZodType>;
 
