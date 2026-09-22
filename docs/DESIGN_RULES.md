@@ -537,17 +537,40 @@ padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
 
 ## 10.1. Radius (реальні токени)
 
+Базова шкала (flag off / pre-3.5 теми):
+
 ```css
 --radius-sm: 6px;
 --radius-md: 10px;
 --radius-lg: 14px;
 --radius-xl: 20px;
+--radius-tile: var(--radius-lg);
 --radius-full: 9999px;
 ```
 
+Design-v2 (WS9): `CosmeticThemeSync` ставить `data-design-v2="on"` на `<html>`,
+коли ввімкнено `designSystemV2`, і `src/index.css` перевизначає шкалу на
+прототипні значення (`proto.css` `@theme inline`):
+
+```css
+:root[data-design-v2='on'] {
+  --radius-md: 12px;
+  --radius-lg: 16px;   /* control: кнопки, segmented, inputs */
+  --radius-tile: 20px; /* tile: quick-tiles, answer options, list rows */
+  --radius-xl: 28px;   /* card: ContentCard / HeroCard */
+}
+```
+
+Той самий блок несе `--space-section` (20px — відстань між верхньорівневими
+блоками екрана, `/proto`'s `space-y-5`; поза design-v2 = `--space-lg`) і
+design-v2 type scale (`--fs-*`: 11/12/13/15/17/19/24/27 px
+при базових 15 px) — це єдине місце, де живуть «некольорові» рішення
+прототипу. Flag off → селектор не збігається → Phase 3 шкала недоторкана.
+
 Aurora-специфічні винятки: floating nav pill `26px` (`.nav--aurora .inner`),
-nav item `20px` (`.nav--aurora .item`) — обидва трохи більші за `--radius-xl`,
-навмисно для "floating glass pill" ефекту (§4.4 hero card / §11.5 glass).
+nav item `20px` (`.nav--aurora .item`) — обидва трохи більші за базовий
+`--radius-xl`, навмисно для "floating glass pill" ефекту (§4.4 hero card /
+§11.5 glass).
 
 Pill використовується лише коли форма має зміст: filter chip, compact
 status, segmented item.
@@ -728,18 +751,27 @@ Floating glass pill (`BottomNavigation` `variant="aurora"`, WS2):
 
 - transparent outer `.nav`, inner pill has `border-radius: 26px`,
   `backdrop-filter: blur(24px)`, `--card-shadow`;
-- item min-height 52px (pill) / 56px (edge-to-edge legacy);
-- active item gets `--bg-elevated` fill + `--nav-active` (indigo) color;
-- inactive — `--nav-inactive` (= `textSecondary`);
+- item min-height 52px (pill) / 56px (edge-to-edge legacy), label 10px,
+  icon 19px (stroke 2.2 активний / 1.8 неактивний) — значення з `/proto`'s
+  `TabBar`;
+- active item gets `--bg-elevated` fill + `1px` `--border-soft` hairline,
+  ink label (`--nav-active`, запінений на обох aurora-темах, не indigo) і
+  **золотий гліф** (`--accent-spiritual-text`) — WS9;
+- inactive — `--nav-inactive`;
 - safe-area bottom;
 - no layout shift on selection.
 
 ## 14.2. Product structure
 
 IA не змінена цією фазою (Phase 3.5 §3 — explicitly out of scope). П'ять
-табів Phase 3's shipped route model (Сьогодні/Навчання/Гра/Прогрес/Профіль)
-= `/proto`'s п'ять табів один-в-один — жодної маршрутної міграції не
-потрібно.
+табів Phase 3's shipped route model = `/proto`'s п'ять табів один-в-один —
+жодної маршрутної міграції не потрібно. WS9 привів до прототипу лише
+**підписи і гліфи** (презентація, не маршрути): `Сьогодні · Навчання ·
+Грати · Прогрес · Я` з `sparkles`/`book-open`/`gamepad`/`trending-up`/`user`
+(flag off лишає Phase 3 набір `Головна … Профіль`).
+
+Fullscreen-маршрути (§5.4 route metadata): урок, practice-сесія, Kahoot-room
+і — з WS9 — Мільйонер, Виживання та Kahoot-лобі, за `/proto`'s `IMMERSIVE`.
 
 Крамниця не займає core learning tab лише для монетизації.
 

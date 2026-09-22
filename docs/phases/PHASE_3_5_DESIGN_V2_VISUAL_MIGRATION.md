@@ -185,6 +185,51 @@ than inventing a new one:
    surfaces that hadn't received the hero-card/`CoverArt` treatment the rest
    of the phase established. All additions remain gated behind
    `designSystemV2` per the phase's own rollback contract (§11.4).
+9. **WS9 — Side-by-side prototype parity pass** (added 2026-09-22 after the
+   owner reviewed the flipped build against `/proto` and asked for the
+   screens to match the prototype, not merely use its tokens). WS1–WS8
+   ported the *design system*; this workstream ports the *screen
+   compositions* the prototype actually draws with it, checked by running
+   `proto/design-v2`'s `/proto` and the production app side by side at
+   390×844:
+   - **Shell.** Tab set becomes the prototype's (`Сьогодні · Навчання ·
+     Грати · Прогрес · Я`, lucide-equivalent `sparkles`/`book-open`/
+     `gamepad`/`trending-up`/`user` glyphs added to `Icon.tsx`), active tab
+     becomes a raised pill with an ink label and a gold glyph (`navActive`/
+     `navInactive` pinned on both aurora themes instead of falling back to
+     indigo). Millionaire, Survival and the Kahoot lobby join the
+     fullscreen-route set — §5.4 already listed Millionaire, and the
+     prototype's own `IMMERSIVE` set covers all three.
+   - **Non-color scale.** `data-design-v2="on"` (set by `CosmeticThemeSync`
+     from the same flag) opens a token block in `src/index.css` carrying the
+     prototype's radii (`card` 28 / `tile` 20 / `control` 16) and type scale;
+     `PageHeader`, `SectionHeader`, `Pill`, `SegmentedControl`, `MetricTile`,
+     `AnswerOption`, `ProgressRing` and `CoverArt` pick their design-v2
+     values up from it. Flag off never matches the block.
+   - **Screen compositions.** Page headers drop the gold kicker for the
+     prototype's serif title + one muted line; Today gains the streak/daily-
+     goal card (week strip derived from `streak.days`, goal ring from
+     `dailyGoal`) and the verse-of-day parchment card; Progress replaces the
+     cover hero with the prototype's rank-ring summary and adds
+     "Майстерність за темами" computed from real `studyMastery`; Profile
+     gains the in-card XP/coins/streak trio, the "Вигляд" colour-theme
+     swatch grid and prototype section order; Play features Мільйонер as
+     "Гра тижня" and drops "Дослідження" (its route only redirects to
+     Learn); Millionaire and Survival lose their empty half-screen spacer
+     for the prototype's single reading column (ladder strip, question as
+     hero, lifelines at the foot); Practice/Lesson get the thin
+     exit+progress reader header; Kahoot, Shop and the two social screens
+     get their prototype headers, grids and the shop's economy promise.
+   - **Vertical rhythm.** One `--space-section` token (20px under design-v2,
+     the prototype's `space-y-5`; `--space-lg` otherwise) drives `AppPage`'s
+     gap and every page that overrode it, and `SectionHeader` owns the 12px
+     between a section title and the block it introduces — plus an optional
+     `note` line, so pages stop inventing their own hint paragraphs and
+     margins. A section title always sits in its own `<section>` with its
+     content, otherwise the page gap and the title gap stack.
+   - **Not ported (no data source):** Progress's 21-day activity heatmap and
+     per-plan progress meters in Learn — the server exposes neither, and the
+     phase's standing rule is to show structure rather than invent progress.
 
 Sequencing is a recommendation, not a contract — same caveat every other
 phase doc in this repo carries (`README.md`'s "план не виконується сліпо").
