@@ -13,6 +13,8 @@
   width: 100%;
   max-width: 360px;
   background: var(--bg-elevated);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-modal);
   padding: var(--space-xl);
