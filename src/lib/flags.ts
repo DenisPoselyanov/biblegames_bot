@@ -32,11 +32,15 @@ const FLAG_DEFAULTS: Record<FlagName, boolean> = {
   practiceSessionV2: true,
   profileSettingsV2: true,
   lightThemeDefault: true,
-  // Phase 3.5 (design-v2 / ADR-018): OFF until WS7 flips full rollout.
-  // Landing the `aurora`/`aurora-light` catalog entries in WS1 does not by
-  // itself change any existing screen's look — this flag only controls
-  // `resolveDefaultCosmeticThemeId()` (src/data/cosmetics.ts).
-  designSystemV2: false,
+  // Phase 3.5 full rollout (2026-09-22, WS7 close-out): design-v2
+  // (`aurora`/`aurora-light`) is the sole production visual identity now —
+  // re-audited for WCAG AA contrast (§17, src/lib/paletteContrast.test.ts)
+  // and performance budget (§18, unchanged bundle — no new dependencies per
+  // ADR-018) before flipping. Flip back to `false` to restore Phase 3's
+  // `light`/`classic` default instantly (rollback target; every screen
+  // gated on this flag falls back to its pre-migration render, per §5 step
+  // 6 of docs/phases/PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md).
+  designSystemV2: true,
 };
 
 /**

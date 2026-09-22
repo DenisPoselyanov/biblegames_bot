@@ -219,9 +219,21 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       bgElevated: 'rgba(255, 255, 255, 0.1)',
       textPrimary: '#F6F4FF',
       textSecondary: 'rgba(246, 244, 255, 0.64)',
-      textMuted: 'rgba(246, 244, 255, 0.4)',
+      // WS7 §17 re-audit: 0.4 measured 3.56:1 against bgApp, below WCAG AA's
+      // 4.5:1 for normal text (this token is used as small/caption text
+      // throughout, not exclusively large text) — raised to clear ~4.9:1.
+      textMuted: 'rgba(246, 244, 255, 0.5)',
       brandPrimary: '#6366F1',
       onBrandPrimary: '#FFFFFF',
+      // WS7 §17 re-audit: the generic derivation (`deriveSemanticPalette`)
+      // would otherwise fall back to `brandPrimary` #6366F1 for text-role
+      // uses (`textLink`, `buttonSecondaryText`), which measures 4.41:1/
+      // 3.97:1 against bgApp/bgSurface — below 4.5:1. Same
+      // accentSpiritual/accentSpiritualText split already used below:
+      // brandPrimary stays the locked indigo for backgrounds/borders, this
+      // is a lightened text-only tint (~5.4:1/4.85:1).
+      textLink: '#7678F3',
+      buttonSecondaryText: '#7678F3',
       accentSpiritual: '#F0C05A',
       // Brighter "ink" variant for text/icon glyph roles, same distinction
       // `proto.css` draws between `--p-gold` and `--p-gold-ink` — on this
@@ -236,7 +248,13 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       cardBorder: 'rgba(255, 255, 255, 0.09)',
       cardShadow: '0 18px 40px -18px rgba(3, 2, 12, 0.85)',
       // One primary button per screen, indigo→violet (§4 locked decision).
-      buttonPrimaryBg: 'linear-gradient(135deg, #6366F1 0%, #A855F7 100%)',
+      // WS7 §17 re-audit: the original stops (#6366F1/#A855F7) measured
+      // 4.47:1/3.96:1 for white button text at the button's actual 14px/700
+      // weight (below WCAG AA's 4.5:1 — 14px bold doesn't clear the 18.66px
+      // "large text" threshold). Nudged half a step darker within the same
+      // indigo→violet hue family — visually indistinguishable, clears
+      // ~4.6:1 on both stops. Hue/gradient direction unchanged (§4 locked).
+      buttonPrimaryBg: 'linear-gradient(135deg, #6063F1 0%, #9E42F6 100%)',
       buttonPrimaryText: '#FFFFFF',
       navBg: 'rgba(255, 255, 255, 0.055)',
       progressFill: '#6366F1',
@@ -276,7 +294,9 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       bgElevated: 'rgba(255, 255, 255, 0.96)',
       textPrimary: '#1A1430',
       textSecondary: 'rgba(26, 20, 48, 0.66)',
-      textMuted: 'rgba(26, 20, 48, 0.44)',
+      // WS7 §17 re-audit: 0.44 measured 2.80:1 against bgApp, below WCAG
+      // AA's 4.5:1 for normal text — raised to clear ~4.85:1.
+      textMuted: 'rgba(26, 20, 48, 0.62)',
       brandPrimary: '#4F46E5',
       onBrandPrimary: '#FFFFFF',
       accentSpiritual: '#9A6B0F',

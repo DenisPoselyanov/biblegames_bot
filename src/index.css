@@ -55,8 +55,13 @@
    * static fallbacks below. The fallbacks only cover the brief pre-hydration
    * window and simply alias the existing classic-theme tokens above, so they
    * never drift out of sync by hand.
-   * State tokens (--state-*) are a permanent alias, not a fallback: success/
-   * danger/warning/info meaning never changes per theme (DESIGN_RULES §5.6).
+   * `--state-success`/`--state-success-bg`/`--state-success-text` and their
+   * danger counterparts are, as of WS7 §17, per-theme like everything else
+   * above (`deriveSemanticPalette`'s `isLight` branch) — light themes need a
+   * darker tint than dark themes to stay WCAG AA-legible. The *meaning*
+   * (green=success, red=danger) still never changes per theme; only the
+   * exact color does. `--state-warning`/`--state-info` remain the plain
+   * static aliases below (low-usage, not part of the WS7 re-audit).
    */
   --bg-app: var(--bg);
   --bg-surface: var(--surface);

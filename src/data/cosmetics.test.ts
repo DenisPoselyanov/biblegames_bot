@@ -7,12 +7,18 @@ afterEach(() => {
 
 describe('resolveDefaultCosmeticThemeId (WS8 §7.3)', () => {
   it('falls back to the legacy default when the flag is off', () => {
+    // Pin designSystemV2 off explicitly (WS7 §17 hygiene fix) — otherwise a
+    // developer's local `.env.local` (VITE_FLAG_DESIGNSYSTEMV2=true, common
+    // during Phase 3.5 visual QA) leaks into this test via Vite's ambient
+    // env loading and makes it flaky/false-failing regardless of the code.
+    vi.stubEnv('VITE_FLAG_DESIGNSYSTEMV2', 'false');
     vi.stubEnv('VITE_FLAG_LIGHTTHEMEDEFAULT', 'false');
     expect(resolveDefaultCosmeticThemeId()).toBe(DEFAULT_COSMETIC_THEME_ID);
     expect(resolveDefaultCosmeticThemeId()).toBe('classic');
   });
 
   it('resolves to the rebrand default when the flag is on', () => {
+    vi.stubEnv('VITE_FLAG_DESIGNSYSTEMV2', 'false');
     vi.stubEnv('VITE_FLAG_LIGHTTHEMEDEFAULT', 'true');
     expect(resolveDefaultCosmeticThemeId()).toBe('light');
   });
