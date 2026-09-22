@@ -9,6 +9,8 @@
  */
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useResolvedProfile } from '../../hooks/domain/useProfileWriter';
+import { formatRankLabel } from '../../lib/practiceProgression';
 import { useAuthSession } from '../../context/AuthSessionContext';
 import { useOnlineStatus } from '../../hooks/useOnlineStatus';
 import { useEventOnce } from '../../hooks/useEventOnce';
@@ -23,17 +25,43 @@ import {
   ContentCard,
   ErrorState,
   HeroCard,
-  MetricTile,
-  MetricTileGrid,
+  ContentCard as Card,
   OfflineState,
   PageHeader,
   Pill,
+  ProgressRing,
   SectionHeader,
+  MetricTile,
+  MetricTileGrid,
 } from '../../components/ui';
 import { Icon } from '../../components/Icon';
 import type { IconName } from '../../components/Icon';
 import { ListPageSkeleton } from '../../components/skeletons';
 import styles from './Today.module.css';
+
+const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'] as const;
+
+/** Monday-first index of a JS `getDay()` value. */
+function mondayIndex(date: Date): number {
+  return (date.getDay() + 6) % 7;
+}
+
+/**
+ * The week strip in the prototype's streak card. Days are marked from the
+ * server's `streak.days` counted back from today — derived from real state,
+ * never a decorative pattern. Days after today are simply "ahead".
+ */
+function weekState(streakDays: number, today: Date): Array<'done' | 'today' | 'idle'> {
+  const todayIndex = mondayIndex(today);
+  return WEEKDAYS.map((_, index) => {
+    if (index === todayIndex) return 'today';
+    if (index > todayIndex) return 'idle';
+    // How many days back from today this cell is.
+    return todayIndex - index <= streakDays - 1 ? 'done' : 'idle';
+  });
+}
+
+const DATE_FORMAT = new Intl.DateTimeFormat('uk-UA', { weekday: 'long', day: 'numeric', month: 'long' });
 
 /** Local time, not server data — a greeting is presentation, not a fact the backend needs to own. */
 function greetingForHour(hour: number): string {
@@ -48,6 +76,7 @@ export function Today() {
   const online = useOnlineStatus();
   const navigate = useNavigate();
   const { data, isLoading, isError, refetch } = useTodayView(userId);
+  const profile = useResolvedProfile();
   const designSystemV2 = isFeatureEnabled('designSystemV2');
   const greeting = `${greetingForHour(new Date().getHours())}, ${displayName}`;
 
@@ -68,7 +97,7 @@ export function Today() {
   if (isLoading) {
     return (
       <AppPage>
-        <PageHeader kicker="Сьогодні" title="Твій день" />
+        <PageHeader title="Твій день" />
         <ListPageSkeleton cards={2} />
       </AppPage>
     );
@@ -94,33 +123,81 @@ export function Today() {
   }
 
   const { activeLesson, dueReview, dailyGoal, streak, verseOfDay, recentOutcome } = data;
+  const week = weekState(streak.days, new Date());
 
   return (
     <AppPage className={styles.page}>
-      <PageHeader kicker="Сьогодні" title={designSystemV2 ? greeting : 'Твій день'} />
+      {designSystemV2 ? (
+        <header className={styles.heading}>
+          <p className={styles.date}>{DATE_FORMAT.format(new Date())}</p>
+          <h1 className={styles.greeting}>{greeting}</h1>
+        </header>
+      ) : (
+        <PageHeader kicker="Сьогодні" title="Твій день" />
+      )}
       <CelebrationLayer active={celebrate} />
+
+      {/* Streak + daily goal — the prototype's one loud gamification block
+          (proto `Today`), replacing the two flat metric tiles. */}
+      {designSystemV2 && (
+        <Card variant="compact" className={styles.streakCard}>
+          <div className={styles.streakMain}>
+            <div className={styles.streakHead}>
+              <span className={styles.streakFlame}>
+                <Icon name="fire" size={17} />
+              </span>
+              <p className={styles.streakTitle}>{streak.days} днів поспіль</p>
+            </div>
+            <div className={styles.week}>
+              {WEEKDAYS.map((day, index) => (
+                <span
+                  key={day}
+                  className={`${styles.weekDay} ${styles[`weekDay--${week[index]}`]}`}
+                >
+                  {day}
+                </span>
+              ))}
+            </div>
+          </div>
+          <ProgressRing
+            size={64}
+            strokeWidth={6}
+            value={dailyGoal.target > 0 ? (dailyGoal.completed / dailyGoal.target) * 100 : 0}
+            label="Денна ціль"
+            centerLabel={
+              <span className={styles.goalCenter}>
+                <span className={styles.goalValue}>{dailyGoal.completed}</span>
+                <span className={styles.goalCaption}>із {dailyGoal.target}</span>
+              </span>
+            }
+          />
+        </Card>
+      )}
 
       {/* §9.2 priority 1: continue active lesson */}
       {activeLesson && (
         <HeroCard
           tone={designSystemV2 ? 'cover' : 'surface'}
-          coverSeed={activeLesson.lesson.id}
+          coverSeed={activeLesson.lesson.planId}
           badges={
             <Pill tone="onColor" icon={<Icon name="crown" size={12} />}>
               Урок дня
             </Pill>
           }
-          kicker="Продовжити"
+          kicker={designSystemV2 ? undefined : 'Продовжити'}
           title={activeLesson.lesson.title}
+          description={designSystemV2 ? (activeLesson.lesson.description ?? undefined) : undefined}
           footer={
             <Button
               variant={designSystemV2 ? 'onColor' : 'primary'}
+              size={designSystemV2 ? 'lg' : 'md'}
               fullWidth={designSystemV2}
               onClick={() => {
                 trackEvent('today_action_selected', { action: 'continue_lesson' });
                 navigate(`/learn/lessons/${activeLesson.lesson.id}`);
               }}
             >
+              {designSystemV2 && <Icon name="play-solid" size={16} />}
               Продовжити урок
             </Button>
           }
@@ -189,25 +266,27 @@ export function Today() {
         </ContentCard>
       )}
 
-      <MetricTileGrid>
-        <MetricTile
-          icon={<Icon name="check" size={20} />}
-          value={<AnimatedNumber value={dailyGoal.completed} />}
-          label={`з ${dailyGoal.target} уроків сьогодні`}
-        />
-        <MetricTile
-          icon={<Icon name="fire" size={20} />}
-          value={<AnimatedNumber value={streak.days} />}
-          label="днів поспіль"
-        />
-      </MetricTileGrid>
+      {!designSystemV2 && (
+        <MetricTileGrid>
+          <MetricTile
+            icon={<Icon name="check" size={20} />}
+            value={<AnimatedNumber value={dailyGoal.completed} />}
+            label={`з ${dailyGoal.target} уроків сьогодні`}
+          />
+          <MetricTile
+            icon={<Icon name="fire" size={20} />}
+            value={<AnimatedNumber value={streak.days} />}
+            label="днів поспіль"
+          />
+        </MetricTileGrid>
+      )}
 
       {designSystemV2 && (
         <section>
           <SectionHeader title="Швидкий підхід" />
           <div className={styles.quickGrid}>
             <QuickTile
-              icon="brain"
+              icon="target"
               title="Практика"
               meta="Тренуй вивчене"
               emphasis
@@ -217,7 +296,7 @@ export function Today() {
               }}
             />
             <QuickTile
-              icon="clock"
+              icon="rotate-ccw"
               title="Повторення"
               meta={dueReview ? 'Є що повторити' : 'Заплановане повторення'}
               onClick={() => {
@@ -230,15 +309,33 @@ export function Today() {
       )}
 
       {verseOfDay && (
-        <ContentCard>
-          <p className={styles.verseText}>{verseOfDay.text}</p>
+        <ContentCard className={designSystemV2 ? styles.verseCard : undefined}>
+          {designSystemV2 && <p className={styles.verseLabel}>Вірш дня</p>}
+          <p className={styles.verseText}>
+            {designSystemV2 ? `«${verseOfDay.text}»` : verseOfDay.text}
+          </p>
           <p className={styles.verseRef}>
             {verseOfDay.reference} · {verseOfDay.translation}
           </p>
         </ContentCard>
       )}
 
-      {recentOutcome && (
+      {/* Proto `Today` closes on a quiet link into Progress. */}
+      {designSystemV2 && (
+        <button type="button" className={styles.levelRow} onClick={() => navigate('/progress')}>
+          <span className={styles.levelMain}>
+            <span className={styles.levelTitle}>
+              {formatRankLabel(profile.playerRank.tier, profile.playerRank.plaque)}
+            </span>
+            <span className={styles.levelMeta}>
+              {profile.playerRank.wisdomPoints} мудрості · {profile.coins} монет
+            </span>
+          </span>
+          <Icon name="chevron-right" size={16} className={styles.levelChevron} />
+        </button>
+      )}
+
+      {recentOutcome && !designSystemV2 && (
         <p className={styles.recentOutcome}>Востаннє: {recentOutcome.title}</p>
       )}
     </AppPage>

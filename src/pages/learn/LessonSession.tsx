@@ -155,11 +155,35 @@ export function LessonSession() {
 
   return (
     <AppPage noBottomNav className={styles.page}>
-      <PageHeader onBack={() => navigate('/learn')} title={lesson.title} />
+      {/* Proto `LessonReader`: a thin reading header — close, per-block
+          progress, position — then the lesson's own title block. The lesson
+          title belongs to the text, not to a chrome bar above it. */}
       {designSystemV2 ? (
-        <SegmentedProgress count={blocks.length} filled={index + 1} />
+        <>
+          <div className={styles.readerHeader}>
+            <button
+              type="button"
+              className={styles.closeBtn}
+              onClick={() => navigate('/learn')}
+              aria-label="Закрити урок"
+            >
+              <Icon name="close" size={16} />
+            </button>
+            <SegmentedProgress count={blocks.length} filled={index + 1} />
+            <span className={styles.readerCount}>
+              {Math.min(index + 1, blocks.length)}/{blocks.length}
+            </span>
+          </div>
+          <header className={styles.lessonHead}>
+            <h1 className={styles.lessonTitle}>{lesson.title}</h1>
+            {lesson.description && <p className={styles.lessonReference}>{lesson.description}</p>}
+          </header>
+        </>
       ) : (
-        <ProgressBar value={pct} />
+        <>
+          <PageHeader onBack={() => navigate('/learn')} title={lesson.title} />
+          <ProgressBar value={pct} />
+        </>
       )}
       <CelebrationLayer active={celebrateComplete} />
 
@@ -190,9 +214,16 @@ export function LessonSession() {
         </ContentCard>
       )}
 
-      <Button fullWidth onClick={advance} disabled={progress.isPending || complete.isPending}>
-        {isLast ? 'Завершити урок' : 'Далі'}
-      </Button>
+      <div className={designSystemV2 ? styles.readerAction : undefined}>
+        <Button
+          fullWidth
+          size={designSystemV2 ? 'lg' : 'md'}
+          onClick={advance}
+          disabled={progress.isPending || complete.isPending}
+        >
+          {isLast ? 'Завершити урок' : 'Далі'}
+        </Button>
+      </div>
 
       {designSystemV2 && (
         <Dialog open={showCompletion} className={styles.completionModal}>

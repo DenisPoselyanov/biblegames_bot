@@ -6,6 +6,7 @@ import { Icon } from '../../components/Icon';
 import { EmptyState } from '../../components/EmptyState';
 import { isFeatureEnabled } from '../../lib/flags';
 import { AppPage, Button, ContentCard, HeroCard, ListRow, PageHeader, Pill, SearchField } from '../../components/ui';
+import { SocialTabs } from './SocialTabs';
 import styles from './Social.module.css';
 
 export function Communities() {
@@ -108,10 +109,14 @@ export function Communities() {
   return (
     <AppPage>
       <PageHeader
-        onBack={() => navigate('/profile')}
-        title="Спільноти"
-        description="Створи власну або приєднайся до публічної"
+        onBack={() => navigate(designSystemV2 ? '/play' : '/profile')}
+        title={designSystemV2 ? 'Спільнота' : 'Спільноти'}
+        description={
+          designSystemV2 ? 'Разом вивчати легше, ніж самому' : 'Створи власну або приєднайся до публічної'
+        }
       />
+
+      {designSystemV2 && <SocialTabs active="communities" />}
 
       {/* §8 Phase 3.5 audit: illustrated hero banner leads the section — the
           screen had zero HeroCard/CoverArt use before this. Purely visual;
@@ -121,8 +126,8 @@ export function Communities() {
           tone="cover"
           coverSeed="communities-hero"
           coverGlyph="rays"
-          kicker="Спільноти"
-          title="Разом вивчати легше"
+          coverHue={258}
+          title="Своя група"
           description="Створи власну спільноту або приєднайся до публічної"
           footer={
             <Pill tone="onColor" icon={<Icon name="community" size={12} />}>

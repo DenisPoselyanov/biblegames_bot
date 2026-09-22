@@ -516,3 +516,17 @@
 .btnJoin:active {
   transform: scale(0.95);
 }
+
+/* design-v2: card headings follow the section-title voice (serif, ink), and
+   the countdown chip drops the neon-red treatment for a quiet accent pill. */
+:root[data-design-v2='on'] .title {
+  color: var(--text-primary);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+}
+
+:root[data-design-v2='on'] .neonBadge {
+  background: var(--accent-spiritual-bg);
+  border-color: color-mix(in srgb, var(--accent-spiritual) 36%, transparent);
+  color: var(--accent-spiritual-text);
+}

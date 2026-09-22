@@ -1212,3 +1212,120 @@
   font-size: 1.25rem;
   color: #7dffb3;
 }
+
+/* ── design-v2 hub (proto `KahootHub`) ── */
+
+.hubHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding-top: var(--space-lg);
+}
+
+.hubTitle {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  color: var(--text-primary);
+}
+
+.hubSubtitle {
+  margin: 2px 0 0;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.hubHero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--card-shadow);
+}
+
+.hubHeroCover {
+  position: absolute;
+  inset: 0;
+}
+
+.hubHeroBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 184px;
+  padding: var(--space-lg);
+}
+
+.hubHeroTitle {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.hubHeroText {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--fs-base);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.hubHeroAction {
+  display: block;
+  margin-top: var(--space-lg);
+  text-decoration: none;
+}
+
+.hubRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-tile);
+  background: var(--card-bg);
+  color: inherit;
+  text-decoration: none;
+}
+
+.hubRowIcon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  color: var(--accent-spiritual-text);
+}
+
+.hubRowMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hubRowTitle {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.hubRowMeta {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.hubRowChevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+:root[data-design-v2='on'] .stepBadge {
+  background: var(--bg-elevated);
+  color: var(--accent-spiritual-text);
+}

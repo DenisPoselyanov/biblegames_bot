@@ -57,8 +57,9 @@ export function ReviewHub() {
   return (
     <AppPage>
       <PageHeader
-        kicker="Повторення"
+        kicker={designSystemV2 ? undefined : 'Повторення'}
         title={data && !designSystemV2 ? `Готово до повторення: ${data.dueCount}` : 'Повторення'}
+        description={designSystemV2 ? 'Те, що почало забуватися — поки воно ще близько' : undefined}
       />
 
       {isLoading && <ListPageSkeleton cards={3} />}

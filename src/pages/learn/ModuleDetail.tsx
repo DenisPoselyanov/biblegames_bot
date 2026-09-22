@@ -12,7 +12,17 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { isFeatureEnabled } from '../../lib/flags';
 import { useModuleDetail } from '../../queries/useLearning';
-import { AppPage, ContentCard, CoverArt, ErrorState, IconButton, ListRow, PageHeader, Pill } from '../../components/ui';
+import {
+  AppPage,
+  ContentCard,
+  CoverArt,
+  ErrorState,
+  IconButton,
+  ListRow,
+  PageHeader,
+  Pill,
+  SectionHeader,
+} from '../../components/ui';
 import { EmptyState } from '../../components/EmptyState';
 import { ListPageSkeleton } from '../../components/skeletons';
 import styles from './ModuleDetail.module.css';
@@ -95,7 +105,9 @@ export function ModuleDetail() {
       {module_.lessons.length === 0 ? (
         <EmptyState icon="book" title="У цьому модулі ще немає уроків" />
       ) : (
-        <div className={styles.lessonList}>
+        <section>
+          <SectionHeader title="Уроки модуля" />
+          <div className={styles.lessonList}>
           {module_.lessons.map((lesson, index) => (
             <button
               key={lesson.id}
@@ -108,9 +120,10 @@ export function ModuleDetail() {
                 <span className={styles.lessonTitle}>{lesson.title}</span>
                 {lesson.description && <span className={styles.lessonDescription}>{lesson.description}</span>}
               </span>
-            </button>
-          ))}
-        </div>
+              </button>
+            ))}
+          </div>
+        </section>
       )}
     </AppPage>
   );

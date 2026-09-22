@@ -31,22 +31,11 @@ import {
   formatMillionaireCoins,
   LEVEL_POINTS,
   loadMillionaireRun,
-  MILLIONAIRE_PROGRESS_SEGMENTS,
   MILLIONAIRE_SESSION_KEY,
 } from './millionaireSession';
 import styles from './Millionaire.module.css';
 
 const SAFE_LEVELS = new Set([5, 10]);
-
-function segmentHasSafeLevel(segmentIndex: number, totalLevels: number): boolean {
-  const levelsPerSegment = Math.ceil(totalLevels / MILLIONAIRE_PROGRESS_SEGMENTS);
-  const startLevel = segmentIndex * levelsPerSegment + 1;
-  const endLevel = Math.min(totalLevels, (segmentIndex + 1) * levelsPerSegment);
-  for (const safeLevel of SAFE_LEVELS) {
-    if (safeLevel >= startLevel && safeLevel <= endLevel) return true;
-  }
-  return false;
-}
 
 function emptyMillionaireState() {
   return {
@@ -178,21 +167,6 @@ export function Millionaire() {
   const currentLevel = index + 1;
   const currentPrize = LEVEL_POINTS[index] ?? 0;
   const earnedBeforeCurrent = index > 0 ? LEVEL_POINTS[index - 1] : 0;
-
-  const progressSegments = useMemo(() => {
-    if (totalLevels < 1) return [];
-    const levelsPerSegment = Math.ceil(totalLevels / MILLIONAIRE_PROGRESS_SEGMENTS);
-    const activeSegment = Math.min(
-      MILLIONAIRE_PROGRESS_SEGMENTS - 1,
-      Math.floor((currentLevel - 1) / levelsPerSegment),
-    );
-    return Array.from({ length: MILLIONAIRE_PROGRESS_SEGMENTS }, (_, segmentIndex) => ({
-      segmentIndex,
-      completed: segmentIndex < activeSegment,
-      active: segmentIndex === activeSegment,
-      safe: segmentHasSafeLevel(segmentIndex, totalLevels),
-    }));
-  }, [currentLevel, totalLevels]);
 
   const finishGame = useCallback(
     (title: string, points: number, reachedLevel: number, finalAnswers: { questionId: string; selectedIndex: number }[]) => {
@@ -383,95 +357,63 @@ export function Millionaire() {
     <FullscreenMotion motionKey={`millionaire-${currentLevel}`} enter={!sessionRestoredRef.current}>
       <section className={styles.page}>
         <header className={styles.top}>
-          <div className={styles.topInner}>
-            <div className={styles.topRow}>
-              <button
-                type="button"
-                className={styles.backBtn}
-                onClick={() => {
-                  haptic.impact('light');
-                  setExitConfirmOpen(true);
-                }}
-                aria-label="Вийти з гри"
-              >
-                <Icon name="close" size={18} />
-              </button>
-            </div>
-            <article
-              className={styles.statusCard}
-              aria-label="Прогрес Мільйонера"
-            >
-            <div
-              className={styles.progressTrack}
-              role="progressbar"
-              aria-valuenow={currentLevel}
-              aria-valuemin={1}
-              aria-valuemax={totalLevels}
-              aria-label={`Рівень ${currentLevel} з ${totalLevels}`}
-            >
-              {progressSegments.map((segment) => (
-                <span
-                  key={segment.segmentIndex}
-                  className={[
-                    styles.progressSegment,
-                    segment.completed ? styles.progressSegmentDone : '',
-                    segment.active ? styles.progressSegmentActive : '',
-                    segment.safe ? styles.progressSegmentSafe : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                />
-              ))}
-            </div>
-            <div className={styles.statusRow}>
-              <div className={styles.statusBlock}>
-                <span className={styles.statusLabel}>Рівень</span>
-                <span className={styles.statusValue}>
-                  {currentLevel} / {totalLevels}
-                </span>
-              </div>
-              <div className={`${styles.statusBlock} ${styles.statusBlockEnd}`}>
-                <span className={styles.statusLabel}>Приз</span>
-                <span className={styles.statusValue}>
-                  {formatMillionaireCoins(currentPrize)} монет
-                </span>
-              </div>
-            </div>
-            </article>
+          <button
+            type="button"
+            className={styles.backBtn}
+            onClick={() => {
+              haptic.impact('light');
+              setExitConfirmOpen(true);
+            }}
+            aria-label="Вийти з гри"
+          >
+            <Icon name="close" size={16} />
+          </button>
+          <div className={styles.topMain}>
+            <p className={styles.kicker}>
+              Мільйонер · питання {currentLevel} з {totalLevels}
+            </p>
+            <p className={styles.banked}>
+              У банку <span>{formatMillionaireCoins(earnedBeforeCurrent)}</span> монет
+            </p>
           </div>
+          <span className={styles.prizePill}>
+            <Icon name="coins" size={13} />
+            {formatMillionaireCoins(currentPrize)}
+          </span>
         </header>
 
-        <div className={styles.spacer} aria-hidden />
+        {/* Ladder — a horizontal strip keeps the question the hero on a phone
+            (proto/design-v2 `Millionaire`). */}
+        <div
+          className={styles.ladder}
+          role="progressbar"
+          aria-valuenow={currentLevel}
+          aria-valuemin={1}
+          aria-valuemax={totalLevels}
+          aria-label={`Рівень ${currentLevel} з ${totalLevels}`}
+        >
+          {Array.from({ length: totalLevels }, (_, levelIndex) => {
+            const level = levelIndex + 1;
+            const safe = SAFE_LEVELS.has(level);
+            return (
+              <span
+                key={level}
+                className={[
+                  styles.rung,
+                  levelIndex < index ? styles.rungDone : '',
+                  levelIndex === index ? styles.rungActive : '',
+                  levelIndex > index && safe ? styles.rungSafe : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                {level}
+              </span>
+            );
+          })}
+        </div>
 
-        <footer className={styles.bottomPanel}>
-          <div className={styles.panelHeader}>
-            <span className={styles.kicker}>Питання {currentLevel} з {totalLevels}</span>
-          </div>
-
-          <div className={styles.lifelines} aria-label="Підказки">
-            <button
-              type="button"
-              onClick={useFiftyFifty}
-              disabled={usedFiftyFifty || status !== 'playing'}
-            >
-              50:50
-            </button>
-            <button
-              type="button"
-              onClick={swapQuestion}
-              disabled={usedSwap || status !== 'playing'}
-            >
-              Заміна
-            </button>
-            <button
-              type="button"
-              onClick={useSecondChance}
-              disabled={usedSecondChance || status !== 'playing'}
-            >
-              Помилка
-            </button>
-          </div>
-
+        <div className={styles.body}>
           {notice && <p className={styles.notice} role="status">{notice}</p>}
 
           <AnimatePresence mode="wait">
@@ -551,6 +493,33 @@ export function Millionaire() {
             )}
           </AnimatePresence>
 
+          <div className={styles.lifelines} aria-label="Підказки">
+            <button
+              type="button"
+              onClick={useFiftyFifty}
+              disabled={usedFiftyFifty || status !== 'playing'}
+            >
+              <Icon name="x" size={16} />
+              50:50
+            </button>
+            <button
+              type="button"
+              onClick={swapQuestion}
+              disabled={usedSwap || status !== 'playing'}
+            >
+              <Icon name="rotate-ccw" size={16} />
+              Заміна
+            </button>
+            <button
+              type="button"
+              onClick={useSecondChance}
+              disabled={usedSecondChance || status !== 'playing'}
+            >
+              <Icon name="shield" size={16} />
+              Помилка
+            </button>
+          </div>
+
           <div className={styles.actionRow}>
             {status === 'playing' && (
               <button
@@ -562,7 +531,8 @@ export function Millionaire() {
                 }}
                 disabled={index === 0}
               >
-                Забрати {formatMillionaireCoins(earnedBeforeCurrent)}
+                <Icon name="home" size={14} />
+                Забрати {formatMillionaireCoins(earnedBeforeCurrent)} монет і вийти
               </button>
             )}
 
@@ -572,7 +542,7 @@ export function Millionaire() {
               </button>
             )}
           </div>
-        </footer>
+        </div>
 
         <ExplanationModal
           question={current}

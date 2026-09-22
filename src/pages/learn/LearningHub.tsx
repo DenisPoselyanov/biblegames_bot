@@ -79,9 +79,12 @@ export function LearningHub() {
 
   return (
     <AppPage>
-      <PageHeader kicker="Навчання" title="Розділ навчання" />
+      <PageHeader
+        title="Навчання"
+        description="Плани, модулі та цілі — від першого читання до майстерності"
+      />
 
-      <SearchField value={qInput} onChange={setQInput} placeholder="Пошук планів і тем" />
+      <SearchField value={qInput} onChange={setQInput} placeholder="Пошук плану або книги" />
       <SegmentedControl options={TESTAMENT_OPTIONS} value={testament} onChange={setTestament} label="Завіт" />
 
       {searching ? (

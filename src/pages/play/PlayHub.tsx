@@ -15,6 +15,8 @@ interface ModeArt {
   icon: IconName;
   artBgClass: string;
   glyph: CoverGlyph;
+  /** design-v2 cover hue — pinned from `proto/design-v2`'s `GAMES` fixture. */
+  hue: number;
 }
 
 const MODE_ART: Record<string, ModeArt> = {
@@ -22,21 +24,25 @@ const MODE_ART: Record<string, ModeArt> = {
     icon: 'study',
     artBgClass: styles.cardArtBgStudy,
     glyph: 'rays',
+    hue: 258,
   },
   millionaire: {
     icon: 'diamond',
     artBgClass: styles.cardArtBgMillionaire,
     glyph: 'path',
+    hue: 268,
   },
   survival: {
     icon: 'survival',
     artBgClass: styles.cardArtBgSurvival,
     glyph: 'path',
+    hue: 348,
   },
   kahoot: {
     icon: 'kahoot',
     artBgClass: styles.cardArtBgKahoot,
     glyph: 'wave',
+    hue: 168,
   },
 };
 
@@ -47,10 +53,15 @@ function badgeClass(badge?: string) {
   return styles.badgeDefault;
 }
 
-/** Play Hub card disclosure (§15.1): purpose is `description`; this covers the rest. */
-function ModeMeta({ mode }: { mode: GameMode }) {
+/**
+ * Play Hub card disclosure (§15.1): purpose is `description`; this covers the
+ * rest. `hidden` keeps the full disclosure for assistive tech while the
+ * design-v2 card shows the prototype's two-pill summary instead of five
+ * wrapping meta rows — the information is not dropped, only re-presented.
+ */
+function ModeMeta({ mode, srOnly }: { mode: GameMode; srOnly?: boolean }) {
   return (
-    <ul className={styles.cardMeta} aria-label="Деталі режиму">
+    <ul className={cx(styles.cardMeta, srOnly && 'sr-only')} aria-label="Деталі режиму">
       <li className={styles.cardMetaItem} title={mode.social === 'solo' ? 'Гра наодинці' : 'Гра з друзями'}>
         <Icon name={mode.social === 'solo' ? 'profile' : 'community'} size={13} />
         <span>{mode.social === 'solo' ? 'Соло' : 'Разом'}</span>
@@ -97,17 +108,33 @@ function ModeCardV2({ mode, featured }: { mode: GameMode; featured?: boolean }) 
         tone="cover"
         coverSeed={mode.id}
         coverGlyph={art.glyph}
-        kicker="Рекомендуємо"
+        coverHue={art.hue}
+        badges={
+          <Pill tone="onColor" icon={<Icon name="crown" size={12} />}>
+            Гра тижня
+          </Pill>
+        }
         title={mode.title}
         description={mode.description}
         footer={
-          mode.available ? (
-            <Button variant="onColor" fullWidth>
-              Грати
-            </Button>
-          ) : (
-            <Pill tone="onColor">Незабаром</Pill>
-          )
+          <>
+            <div className={styles.heroPills}>
+              <Pill tone="onColor" icon={<Icon name={mode.social === 'solo' ? 'user' : 'users'} size={12} />}>
+                {mode.social === 'solo' ? '1 гравець' : 'Разом'}
+              </Pill>
+              <Pill tone="onColor" icon={<Icon name="clock" size={12} />}>
+                {mode.duration}
+              </Pill>
+            </div>
+            {mode.available ? (
+              <Button variant="onColor" size="lg" fullWidth>
+                <Icon name="play-solid" size={16} />
+                Почати гру
+              </Button>
+            ) : (
+              <Pill tone="onColor">Незабаром</Pill>
+            )}
+          </>
         }
       />
     );
@@ -120,7 +147,7 @@ function ModeCardV2({ mode, featured }: { mode: GameMode; featured?: boolean }) 
         ) : (
           hero
         )}
-        <ModeMeta mode={mode} />
+        <ModeMeta mode={mode} srOnly />
       </div>
     );
   }
@@ -128,17 +155,18 @@ function ModeCardV2({ mode, featured }: { mode: GameMode; featured?: boolean }) 
   const body = (
     <>
       <span className={styles.modeCardArt}>
-        <CoverArt seed={mode.id} glyph={art.glyph} className={styles.modeCardArtCover} />
-        <Icon name={art.icon} size={32} className={styles.modeCardArtIcon} />
+        <CoverArt seed={mode.id} glyph={art.glyph} hue={art.hue} className={styles.modeCardArtCover} />
       </span>
       <span className={styles.modeCardBody}>
         <span className={styles.modeHeader}>
           <h2>{mode.title}</h2>
-          {mode.badge && <Pill tone="accent">{mode.badge}</Pill>}
-          {!mode.available && <Pill>Незабаром</Pill>}
+          {!mode.available && <Icon name="lock" size={12} className={styles.modeLock} />}
         </span>
         <p className={styles.modeDesc}>{mode.description}</p>
-        <ModeMeta mode={mode} />
+        <p className={styles.modeFoot}>
+          {mode.available ? (mode.social === 'solo' ? '1 гравець' : 'Разом') : 'скоро'}
+        </p>
+        <ModeMeta mode={mode} srOnly />
       </span>
     </>
   );
@@ -156,11 +184,19 @@ function ModeCardV2({ mode, featured }: { mode: GameMode; featured?: boolean }) 
 export function PlayHub() {
   const { shouldEnter } = useMotionEntrance('play-hub');
   const designSystemV2 = isFeatureEnabled('designSystemV2');
-  const [featured, ...rest] = GAME_MODES;
+  // design-v2 (proto `Play`): "Дослідження" is the Learn tab's job — its route
+  // only redirects there — so the hub lists real game modes and features
+  // Мільйонер as the week's game, exactly like the prototype. Flag off keeps
+  // the pre-migration list, Дослідження first.
+  const modes = designSystemV2 ? GAME_MODES.filter((mode) => mode.id !== 'study') : GAME_MODES;
+  const [featured, ...rest] = modes;
 
   return (
     <AppPage className={styles.page}>
-      <PageHeader kicker="Гра" title="Режими гри" description="Обери, як хочеш грати сьогодні" />
+      <PageHeader
+        title="Грати"
+        description="Ті самі запитання, що й у практиці, — лише з більшою ставкою"
+      />
 
       {designSystemV2 ? (
         <div className={styles.modesV2}>
@@ -180,6 +216,17 @@ export function PlayHub() {
               ))}
             </MotionStagger>
           </section>
+
+          <Link to="/social/challenges" className={styles.communityRow}>
+            <span className={styles.communityIcon}>
+              <Icon name="challenge" size={18} />
+            </span>
+            <span className={styles.communityMain}>
+              <span className={styles.communityTitle}>Виклик у спільноті</span>
+              <span className={styles.communityMeta}>Створіть поєдинок для своєї групи</span>
+            </span>
+            <Pill>Спільнота</Pill>
+          </Link>
         </div>
       ) : (
         <MotionStagger as="ul" className={styles.modes} enter={shouldEnter}>

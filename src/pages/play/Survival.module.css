@@ -4,7 +4,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  background: var(--bg);
+  background: var(--bg-app);
 }
 
 .top {
@@ -155,36 +155,38 @@
   50% { box-shadow: inset 0 0 16px rgba(239, 111, 108, 0.35); }
 }
 
-.spacer {
-  flex: 1 1 auto;
-  min-height: 0.5rem;
-}
-
+/* The question is the hero of the screen (proto/design-v2 `Survival`) — it
+   starts right under the status header instead of being pinned to a bottom
+   sheet with an empty half-screen above it. */
 .bottomPanel {
-  flex-shrink: 0;
-  padding: 1.25rem var(--space-lg) calc(1.25rem + env(safe-area-inset-bottom));
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-xl) var(--space-lg) calc(1.25rem + env(safe-area-inset-bottom));
 }
 
-.questionCard {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.55rem 1.1rem;
-  margin-bottom:var(--space-lg);
+.roundLabel {
+  margin: 0;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .questionText {
-  font-size: var(--fs-lg);
-  line-height: 1.5;
-  margin: 0;
+  font-size: var(--fs-2xl);
+  line-height: 1.22;
+  font-weight: 600;
+  margin: var(--space-sm) 0 var(--space-xl);
   font-family: var(--font-serif);
-  color: var(--text);
+  color: var(--text-primary);
 }
 
 .options {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 10px;
   margin: 0 0 var(--space-md);
   padding: 0;
   list-style: none;
@@ -192,13 +194,14 @@
 
 .option {
   width: 100%;
-  padding: var(--space-lg) 1.1rem;
+  padding: 0.85rem var(--space-lg);
   text-align: left;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  color: var(--text);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-tile);
+  color: var(--text-primary);
   font-size: var(--fs-md);
+  font-weight: 600;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s, transform 0.1s;
 }

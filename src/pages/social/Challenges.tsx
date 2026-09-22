@@ -20,6 +20,7 @@ import {
   Pill,
   SegmentedControl,
 } from '../../components/ui';
+import { SocialTabs } from './SocialTabs';
 import styles from './Social.module.css';
 
 const CHALLENGE_DIFFICULTIES = [
@@ -142,9 +143,9 @@ export function Challenges() {
   return (
     <AppPage>
       <PageHeader
-        onBack={() => navigate('/profile')}
-        title="Виклики друзів"
-        description="Кинь виклик або прийми отриманий"
+        onBack={() => navigate(designSystemV2 ? '/play' : '/profile')}
+        title={designSystemV2 ? 'Спільнота' : 'Виклики друзів'}
+        description={designSystemV2 ? 'Разом вивчати легше, ніж самому' : 'Кинь виклик або прийми отриманий'}
         action={
           designSystemV2 ? (
             <Pill tone="accent" icon={<Icon name="trophy" size={14} />}>
@@ -159,6 +160,8 @@ export function Challenges() {
         }
       />
 
+      {designSystemV2 && <SocialTabs active="challenges" />}
+
       {/* §8 Phase 3.5 audit: illustrated hero banner leads the section — the
           screen had zero HeroCard/CoverArt use before this. Purely visual;
           the form below (unchanged) is still the actual action. */}
@@ -167,7 +170,7 @@ export function Challenges() {
           tone="cover"
           coverSeed="challenges-hero"
           coverGlyph="path"
-          kicker="Виклики друзів"
+          coverHue={38}
           title="Кинь виклик"
           description="10 запитань на вибрану тему, 48 годин на відповідь"
           footer={

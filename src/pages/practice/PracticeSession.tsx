@@ -45,6 +45,7 @@ import {
   ProgressBar,
   ProgressRing,
 } from '../../components/ui';
+import { Icon } from '../../components/Icon';
 import styles from './PracticeSession.module.css';
 
 /** Segmented per-question progress (Phase 3.5 §6 WS4) — mirrors `LessonSession`'s `SegmentedProgress`. */
@@ -196,34 +197,60 @@ export function PracticeSession() {
   }
 
   return (
-    <AppPage noBottomNav>
-      <PageHeader onBack={backTo} title="Практика" />
+    <AppPage noBottomNav className={designSystemV2 ? styles.sessionPage : undefined}>
+      {/* Proto `Practice`: the exit control and the per-question progress share
+          one thin row, so the question itself owns the first screenful. */}
       {designSystemV2 ? (
-        <SegmentedProgress count={questionCount} filled={index + (result ? 1 : 0)} />
+        <div className={styles.sessionHeader}>
+          <button type="button" className={styles.exitBtn} onClick={backTo} aria-label="Вийти з практики">
+            <Icon name="close" size={16} />
+          </button>
+          <SegmentedProgress count={questionCount} filled={index + (result ? 1 : 0)} />
+        </div>
       ) : (
-        <ProgressBar value={pct} label={`${index + 1} / ${questionCount}`} />
+        <>
+          <PageHeader onBack={backTo} title="Практика" />
+          <ProgressBar value={pct} label={`${index + 1} / ${questionCount}`} />
+        </>
       )}
       <CelebrationLayer active={celebrate} />
 
-      <ContentCard>
-        <p>{question.text}</p>
-      </ContentCard>
+      {designSystemV2 ? (
+        <div className={styles.questionBlock}>
+          <p className={styles.questionMeta}>
+            Питання {index + 1} з {questionCount}
+          </p>
+          <h1 className={styles.questionText}>{question.text}</h1>
+        </div>
+      ) : (
+        <ContentCard>
+          <p>{question.text}</p>
+        </ContentCard>
+      )}
 
-      {question.options.map((option, i) => {
-        let visualState: AnswerOptionVisualState = 'idle';
-        if (result) {
-          if (i === result.correctIndex) visualState = 'correct';
-          else if (i === selected) visualState = 'wrong';
-          else visualState = 'hidden';
-        } else if (i === selected) {
-          visualState = 'selected';
-        }
-        return (
-          <AnswerOption key={i} visualState={visualState} disabled={result !== null} onClick={() => choose(i)}>
-            {option}
-          </AnswerOption>
-        );
-      })}
+      <div className={designSystemV2 ? styles.optionList : undefined}>
+        {question.options.map((option, i) => {
+          let visualState: AnswerOptionVisualState = 'idle';
+          if (result) {
+            if (i === result.correctIndex) visualState = 'correct';
+            else if (i === selected) visualState = 'wrong';
+            else visualState = 'hidden';
+          } else if (i === selected) {
+            visualState = 'selected';
+          }
+          return (
+            <AnswerOption
+              key={i}
+              index={designSystemV2 ? i : undefined}
+              visualState={visualState}
+              disabled={result !== null}
+              onClick={() => choose(i)}
+            >
+              {option}
+            </AnswerOption>
+          );
+        })}
+      </div>
 
       {answer.isError && <p role="alert">Не вдалося надіслати відповідь. Спробуйте ще раз.</p>}
 

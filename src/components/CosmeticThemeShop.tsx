@@ -41,7 +41,11 @@ export function CosmeticThemeShop({ enter = true }: CosmeticThemeShopProps) {
   };
 
   return (
-    <MotionStagger as="div" className={styles.carousel} enter={enter}>
+    <MotionStagger
+      as="div"
+      className={designSystemV2 ? styles.grid : styles.carousel}
+      enter={enter}
+    >
       {COSMETIC_THEMES.map((theme) => {
         const isUnlocked = profile.unlockedThemes.includes(theme.id) || theme.price === 0;
         const isActive = profile.activeTheme === theme.id;
@@ -64,12 +68,12 @@ export function CosmeticThemeShop({ enter = true }: CosmeticThemeShopProps) {
                 {isActive ? (
                   <Pill tone="accent">Активна</Pill>
                 ) : isUnlocked ? (
-                  <Button size="sm" variant="secondary" onClick={() => handleSelectTheme(theme.id)}>
+                  <Button size="sm" fullWidth variant="secondary" onClick={() => handleSelectTheme(theme.id)}>
                     Застосувати
                   </Button>
                 ) : (
-                  <Button size="sm" variant="gold" onClick={() => void handleBuyTheme(theme.id)}>
-                    <Icon name="star" size={14} />
+                  <Button size="sm" fullWidth onClick={() => void handleBuyTheme(theme.id)}>
+                    <Icon name="coins" size={14} />
                     {theme.price}
                   </Button>
                 )}

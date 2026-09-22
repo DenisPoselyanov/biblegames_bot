@@ -15,7 +15,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import type { Testament } from '../../../contracts/index';
 import { isFeatureEnabled } from '../../lib/flags';
 import { usePlanDetail } from '../../queries/useLearning';
-import { AppPage, ContentCard, CoverArt, ErrorState, IconButton, ListRow, PageHeader, Pill } from '../../components/ui';
+import {
+  AppPage,
+  ContentCard,
+  CoverArt,
+  ErrorState,
+  IconButton,
+  ListRow,
+  PageHeader,
+  Pill,
+  SectionHeader,
+} from '../../components/ui';
 import { EmptyState } from '../../components/EmptyState';
 import { ListPageSkeleton } from '../../components/skeletons';
 import styles from './PlanDetail.module.css';
@@ -108,7 +118,9 @@ export function PlanDetail() {
       {plan.modules.length === 0 ? (
         <EmptyState icon="book" title="У цьому плані ще немає модулів" />
       ) : (
-        <div className={styles.moduleList}>
+        <section>
+          <SectionHeader title="Модулі" />
+          <div className={styles.moduleList}>
           {plan.modules.map((module_, index) => (
             <button
               key={module_.id}
@@ -121,9 +133,10 @@ export function PlanDetail() {
                 <span className={styles.moduleTitle}>{module_.title}</span>
                 {module_.description && <span className={styles.moduleDescription}>{module_.description}</span>}
               </span>
-            </button>
-          ))}
-        </div>
+              </button>
+            ))}
+          </div>
+        </section>
       )}
     </AppPage>
   );

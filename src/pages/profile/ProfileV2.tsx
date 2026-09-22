@@ -23,6 +23,7 @@ import {
   SectionHeader,
   SegmentedControl,
   ThemeSwatch,
+  cx,
 } from '../../components/ui';
 import { Icon } from '../../components/Icon';
 import { useResolvedProfile } from '../../hooks/domain/useProfileWriter';
@@ -31,7 +32,7 @@ import { useTelegram } from '../../hooks/useTelegram';
 import { haptic, WebApp } from '../../lib/telegram';
 import { useToast } from '../../components/Toast';
 import { ACHIEVEMENTS } from '../../data/achievements';
-import { getAvatarById, getCosmeticThemeById } from '../../data/cosmetics';
+import { COSMETIC_THEMES, getAvatarById, getCosmeticThemeById } from '../../data/cosmetics';
 import { communityManager } from '../../lib/communities';
 import { friendChallengeManager } from '../../lib/friendChallenges';
 import { PlayerRankCard } from '../../components/PlayerRankCard';
@@ -64,6 +65,15 @@ export function ProfileV2() {
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
   const activeThemeData = getCosmeticThemeById(activeTheme);
   const activeThemeTitle = activeThemeData?.title ?? activeTheme;
+  // Active theme first, then the rest of the catalog — the prototype's four
+  // swatches always start from what the player is actually wearing.
+  const themeTiles = useMemo(
+    () =>
+      [...COSMETIC_THEMES]
+        .sort((a, b) => Number(b.id === activeTheme) - Number(a.id === activeTheme))
+        .slice(0, 4),
+    [activeTheme],
+  );
   const rankProgress = computeWisdomProgress(profile.playerRank);
   const rankProgressPct =
     rankProgress.required > 0
@@ -90,6 +100,8 @@ export function ProfileV2() {
 
   return (
     <AppPage className={styles.page}>
+      {designSystemV2 && <PageHeader title="Профіль" />}
+
       {designSystemV2 ? (
         <div className={styles.hero}>
           <CoverArt seed={userId} glyph="wave" className={styles.heroCover} />
@@ -113,8 +125,24 @@ export function ProfileV2() {
             </div>
             <div className={styles.heroInfo}>
               <p className={styles.heroName}>{displayName}</p>
-              <p className={styles.heroRank}>{formatRankLabel(profile.playerRank.tier, profile.playerRank.plaque)}</p>
+              <p className={styles.heroRank}>
+                {formatRankLabel(profile.playerRank.tier, profile.playerRank.plaque)} · ще{' '}
+                {Math.max(0, rankProgress.required - rankProgress.current)} до наступної
+              </p>
             </div>
+          </div>
+
+          {/* Proto `Profile`: three quiet numbers live inside the identity
+              card, not in a separate tile grid below it. */}
+          <div className={styles.miniStats}>
+            <MiniStat icon="zap" value={profile.playerRank.wisdomPoints} label="мудрості" />
+            <MiniStat
+              icon="coins"
+              value={profile.coins}
+              label="монет"
+              onClick={() => navigate('/shop')}
+            />
+            <MiniStat icon="fire" value={profile.streakDays} label="днів" />
           </div>
         </div>
       ) : (
@@ -135,24 +163,66 @@ export function ProfileV2() {
         />
       )}
 
-      <PlayerRankCard playerRank={profile.playerRank} />
+      {/* The rank ladder is `/progress`'s job in design-v2 — the prototype's
+          Profile is identity + appearance + settings, and this screen's own
+          docblock already refuses to duplicate Progress data. */}
+      {!designSystemV2 && <PlayerRankCard playerRank={profile.playerRank} />}
 
       {designSystemV2 && (
         <section>
           <SectionHeader title="Вигляд" />
-          <SegmentedControl
-            label="Режим оформлення"
-            value={appearanceMode}
-            onChange={handleAppearanceModeChange}
-            options={[
-              { value: 'dark', label: '🌙 Темний' },
-              { value: 'light', label: '☀️ Світлий' },
-            ]}
-          />
+          <div className={styles.appearanceCard}>
+            <div>
+              <p className={styles.fieldLabel}>Режим</p>
+              <SegmentedControl
+                label="Режим оформлення"
+                value={appearanceMode}
+                onChange={handleAppearanceModeChange}
+                options={[
+                  { value: 'dark', label: '🌙 Темний' },
+                  { value: 'light', label: '☀️ Світлий' },
+                ]}
+              />
+            </div>
+            <div>
+              <p className={styles.fieldLabel}>Кольорова тема</p>
+              <div className={styles.themeGrid}>
+                {themeTiles.map((theme) => {
+                  const owned = theme.price === 0 || profile.unlockedThemes.includes(theme.id);
+                  return (
+                    <button
+                      key={theme.id}
+                      type="button"
+                      className={cx(
+                        styles.themeTile,
+                        theme.id === activeTheme && styles.themeTileActive,
+                        !owned && styles.themeTileLocked,
+                      )}
+                      onClick={() => navigate('/profile/themes')}
+                      aria-label={theme.title}
+                    >
+                      <span
+                        className={styles.themeTileArt}
+                        style={{
+                          background: `linear-gradient(135deg, ${theme.preview.background} 0%, ${theme.preview.primary} 68%, ${theme.preview.accent} 100%)`,
+                        }}
+                      />
+                      <span className={styles.themeTileLabel}>
+                        {owned ? theme.title : `${theme.title} · ${theme.price}`}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </section>
       )}
 
-      <div className={styles.card}>
+      <section>
+        {designSystemV2 && <SectionHeader title="Налаштування" />}
+
+        <div className={styles.card}>
         <ListRow
           leading={<Icon name="settings" size={20} />}
           title="Налаштування"
@@ -189,27 +259,33 @@ export function ProfileV2() {
             navigate('/shop');
           }}
         />
-        <ListRow
-          leading={<Icon name="brain" size={20} />}
-          title="Прогрес навчання"
-          navigates
-          onClick={() => navigate('/progress')}
-        />
-      </div>
+          <ListRow
+            leading={<Icon name="brain" size={20} />}
+            title="Прогрес навчання"
+            navigates
+            onClick={() => navigate('/progress')}
+          />
+        </div>
+      </section>
 
-      <MetricTileGrid>
-        <MetricTile icon={<Icon name="coins" size={20} />} value={profile.coins} label="монет" />
-        <MetricTile
-          icon={<Icon name="millionaire" size={20} />}
-          value={profile.millionaireWins}
-          label="перемог у Мільйонері"
-        />
-        <MetricTile
-          icon={<Icon name="survival" size={20} />}
-          value={profile.survivalHighScore}
-          label="рекорд Виживання"
-        />
-      </MetricTileGrid>
+      <section>
+        {designSystemV2 && <SectionHeader title="Рекорди" />}
+        <MetricTileGrid>
+          {!designSystemV2 && (
+            <MetricTile icon={<Icon name="coins" size={20} />} value={profile.coins} label="монет" />
+          )}
+          <MetricTile
+            icon={<Icon name="millionaire" size={20} />}
+            value={profile.millionaireWins}
+            label="перемог у Мільйонері"
+          />
+          <MetricTile
+            icon={<Icon name="survival" size={20} />}
+            value={profile.survivalHighScore}
+            label="рекорд Виживання"
+          />
+        </MetricTileGrid>
+      </section>
 
       <section>
         <SectionHeader title="Соціальне" />
@@ -237,9 +313,9 @@ export function ProfileV2() {
         {unlockedAchievements.length === 0 ? (
           <p className={styles.empty}>Ще немає досягнень</p>
         ) : (
-          <div className={styles.achievements}>
+          <div className={cx(styles.achievements, designSystemV2 && styles.achievementsGrid)}>
             {unlockedAchievements.map((a) => (
-              <AchievementBadge key={a.id} icon={a.icon} label={a.title} />
+              <AchievementBadge key={a.id} icon={a.icon} label={a.title} card={designSystemV2} />
             ))}
           </div>
         )}
@@ -270,5 +346,31 @@ export function ProfileV2() {
         </div>
       </Dialog>
     </AppPage>
+  );
+}
+
+function MiniStat({
+  icon,
+  value,
+  label,
+  onClick,
+}: {
+  icon: 'zap' | 'coins' | 'fire';
+  value: number;
+  label: string;
+  onClick?: () => void;
+}) {
+  const body = (
+    <>
+      <Icon name={icon} size={14} className={styles.miniStatIcon} />
+      <span className={styles.miniStatValue}>{value}</span>
+      <span className={styles.miniStatLabel}>{label}</span>
+    </>
+  );
+  if (!onClick) return <div className={styles.miniStat}>{body}</div>;
+  return (
+    <button type="button" className={styles.miniStat} onClick={onClick}>
+      {body}
+    </button>
   );
 }

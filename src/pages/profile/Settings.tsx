@@ -112,7 +112,7 @@ export function Settings() {
 
   return (
     <AppPage className={styles.page}>
-      <PageHeader kicker="Профіль" title="Налаштування" onBack={() => navigate('/profile')} />
+      <PageHeader title="Налаштування" onBack={() => navigate('/profile')} />
 
       <section>
         <SectionHeader title="Акаунт" />

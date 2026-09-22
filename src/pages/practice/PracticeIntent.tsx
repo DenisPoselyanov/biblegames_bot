@@ -148,7 +148,7 @@ export function PracticeIntent() {
 
   return (
     <AppPage>
-      <PageHeader kicker="Практика" title="Що потренуємо?" />
+      <PageHeader title="Практика" description="Коротка серія запитань за тим, що ви вже читали" />
       {plans.isLoading && <ListPageSkeleton cards={3} />}
       {plans.isError && <ErrorState title="Не вдалося завантажити плани" onRetry={() => void plans.refetch()} />}
       {plans.data && plans.data.length === 0 && (
