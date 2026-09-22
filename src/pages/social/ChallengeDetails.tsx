@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTelegram } from '../../hooks/useTelegram';
 import { friendChallengeManager } from '../../lib/friendChallenges';
-import { AppPage, ErrorState, PageHeader } from '../../components/ui';
+import { isFeatureEnabled } from '../../lib/flags';
+import { AppPage, Button, ContentCard, ErrorState, PageHeader, Pill } from '../../components/ui';
 import styles from './Social.module.css';
 
 export function ChallengeDetails() {
@@ -11,6 +12,7 @@ export function ChallengeDetails() {
   const { userId } = useTelegram();
   const [score, setScore] = useState('');
   const [version, setVersion] = useState(0);
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
 
   const challenge = useMemo(
     () => (challengeId ? friendChallengeManager.getChallenge(challengeId) : undefined),
@@ -51,56 +53,105 @@ export function ChallengeDetails() {
     navigate('/social/challenges');
   };
 
+  const details = (
+    <>
+      <p className={styles.muted}>
+        Створено: {new Date(challenge.createdAt).toLocaleString()} · Діє до: {new Date(challenge.expiresAt).toLocaleString()}
+      </p>
+      <p className={styles.muted}>
+        Рахунок: {challenge.challengerScore}:{challenge.challengedScore ?? '—'}
+      </p>
+    </>
+  );
+
   return (
     <AppPage>
       <PageHeader
         onBack={() => navigate('/social/challenges')}
         title={`${challenge.challengerName} vs ${challenge.challengedName}`}
-        action={<span className={styles.badge}>{challenge.status.toUpperCase()}</span>}
+        action={
+          designSystemV2 ? (
+            <Pill tone="accent">{challenge.status.toUpperCase()}</Pill>
+          ) : (
+            <span className={styles.badge}>{challenge.status.toUpperCase()}</span>
+          )
+        }
       />
 
-      <section className={styles.card}>
-        <p className={styles.muted}>
-          Створено: {new Date(challenge.createdAt).toLocaleString()} · Діє до: {new Date(challenge.expiresAt).toLocaleString()}
-        </p>
-        <p className={styles.muted}>
-          Рахунок: {challenge.challengerScore}:{challenge.challengedScore ?? '—'}
-        </p>
+      {designSystemV2 ? (
+        <ContentCard variant="compact">
+          {details}
 
-        {challenge.status === 'pending' && isChallenged && (
-          <div className={styles.row}>
-            <button type="button" className={styles.btnPrimary} onClick={handleAccept}>
-              Прийняти
-            </button>
-            <button type="button" className={styles.btnSecondary} onClick={handleDecline}>
-              Відхилити
-            </button>
-          </div>
-        )}
+          {challenge.status === 'pending' && isChallenged && (
+            <div className={styles.row}>
+              <Button onClick={handleAccept}>Прийняти</Button>
+              <Button variant="secondary" onClick={handleDecline}>
+                Відхилити
+              </Button>
+            </div>
+          )}
 
-        {challenge.status === 'pending' && isChallenger && (
-          <button type="button" className={styles.btnSecondary} onClick={handleDelete}>
-            Скасувати виклик
-          </button>
-        )}
+          {challenge.status === 'pending' && isChallenger && (
+            <Button variant="secondary" onClick={handleDelete}>
+              Скасувати виклик
+            </Button>
+          )}
 
-        {challenge.status === 'accepted' && isChallenged && (
-          <>
-            <label className={styles.field}>
-              <span>Твій результат</span>
-              <input
-                value={score}
-                onChange={(e) => setScore(e.target.value)}
-                placeholder="Наприклад: 1200"
-                inputMode="numeric"
-              />
-            </label>
-            <button type="button" className={styles.btnPrimary} onClick={handleComplete}>
-              Завершити
+          {challenge.status === 'accepted' && isChallenged && (
+            <>
+              <label className={styles.field}>
+                <span>Твій результат</span>
+                <input
+                  value={score}
+                  onChange={(e) => setScore(e.target.value)}
+                  placeholder="Наприклад: 1200"
+                  inputMode="numeric"
+                  className={styles.fieldInput}
+                />
+              </label>
+              <Button onClick={handleComplete}>Завершити</Button>
+            </>
+          )}
+        </ContentCard>
+      ) : (
+        <section className={styles.card}>
+          {details}
+
+          {challenge.status === 'pending' && isChallenged && (
+            <div className={styles.row}>
+              <button type="button" className={styles.btnPrimary} onClick={handleAccept}>
+                Прийняти
+              </button>
+              <button type="button" className={styles.btnSecondary} onClick={handleDecline}>
+                Відхилити
+              </button>
+            </div>
+          )}
+
+          {challenge.status === 'pending' && isChallenger && (
+            <button type="button" className={styles.btnSecondary} onClick={handleDelete}>
+              Скасувати виклик
             </button>
-          </>
-        )}
-      </section>
+          )}
+
+          {challenge.status === 'accepted' && isChallenged && (
+            <>
+              <label className={styles.field}>
+                <span>Твій результат</span>
+                <input
+                  value={score}
+                  onChange={(e) => setScore(e.target.value)}
+                  placeholder="Наприклад: 1200"
+                  inputMode="numeric"
+                />
+              </label>
+              <button type="button" className={styles.btnPrimary} onClick={handleComplete}>
+                Завершити
+              </button>
+            </>
+          )}
+        </section>
+      )}
 
       {!isChallenger && !isChallenged && (
         <p className={styles.muted}>Цей виклик не належить твоєму профілю</p>

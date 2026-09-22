@@ -1425,6 +1425,12 @@ draft
 
 Studio не входить у звичайний user bundle, якщо це створює security або deployment ризик.
 
+> Екранний і motion-дизайн Studio визначений прототипом `proto/design-v2`
+> (`/proto/studio`, `src/proto/studio/README.md`) — деталі в
+> `docs/phases/PHASE_4_CONTENT_AI_AND_CONTENT_STUDIO.md` §10. Той самий
+> напрям для головного застосунку документує
+> `docs/phases/PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md`.
+
 ## Content Studio motion
 
 Phase 4 використовує restrained productivity motion:

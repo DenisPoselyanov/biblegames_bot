@@ -4,42 +4,114 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  background: var(--bg);
+  gap: var(--space-md);
+  padding: max(var(--space-md), env(safe-area-inset-top)) var(--space-lg)
+    calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
+  background: var(--bg-app);
 }
 
 .top {
   flex-shrink: 0;
-  width: 100%;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  border-radius: 0 0 24px 24px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-  padding-top: max(var(--space-md), env(safe-area-inset-top));
-  overflow: hidden;
-}
-
-.topInner {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  padding: 0 var(--space-lg) var(--space-md);
-}
-
-.topRow {
   display: flex;
   align-items: center;
+  gap: var(--space-md);
+}
+
+.topMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.banked {
+  margin: 2px 0 0;
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.banked span {
+  color: var(--accent-spiritual-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.prizePill {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px var(--space-md);
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--accent-spiritual) 40%, transparent);
+  background: color-mix(in srgb, var(--accent-spiritual) 12%, transparent);
+  color: var(--accent-spiritual-text);
+  font-size: var(--fs-base);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ladder strip — every rung visible, the current one carries the brand gradient. */
+.ladder {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.ladder::-webkit-scrollbar {
+  display: none;
+}
+
+.rung {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  min-width: 36px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 9px;
+  border: 1px solid var(--border-soft);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.rungDone {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--state-success) 22%, transparent);
+  color: var(--state-success-text);
+}
+
+.rungActive {
+  border-color: transparent;
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+.rungSafe {
+  border-color: color-mix(in srgb, var(--accent-spiritual) 45%, transparent);
+  color: var(--accent-spiritual-text);
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--space-sm);
 }
 
 .backBtn {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
   cursor: pointer;
   transition:
     background var(--duration-fast) var(--ease-out),
@@ -150,7 +222,7 @@
 }
 
 .kicker {
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-size: var(--fs-sm);
   font-weight: 800;
   text-transform: uppercase;
@@ -158,21 +230,26 @@
 }
 
 .lifelines {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-sm);
-  margin-bottom:var(--space-lg);
+  margin-top: auto;
+  padding-top: var(--space-xl);
 }
 
 .lifelines button {
-  flex: 1;
-  min-height: 2.5rem;
-  padding: 0 var(--space-sm);
-  border: 1px solid var(--accent-border-strong);
-  border-radius: var(--radius-lg);
-  background: var(--accent-bg);
-  color: var(--gold-light);
-  font-weight: 700;
-  font-size: var(--fs-base);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 3.25rem;
+  padding: var(--space-md) var(--space-sm);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-tile);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: var(--fs-xs);
   cursor: pointer;
   transition:
     background-color var(--duration-fast) var(--ease-out),
@@ -187,33 +264,44 @@
 }
 
 .lifelines button:disabled {
-  opacity: 0.35;
+  opacity: 0.45;
   cursor: default;
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.lifelines button :global(svg) {
+  color: var(--accent-spiritual-text);
+}
+
+.lifelines button:disabled :global(svg) {
+  color: var(--text-muted);
 }
 
 .notice {
   margin: 0 0 0.85rem;
   padding: 0.65rem var(--space-md);
-  border: 1px solid var(--accent-border-strong);
-  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--accent-spiritual) 35%, transparent);
+  border-radius: var(--radius-tile);
   background: var(--accent-bg-strong);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-size: var(--fs-base);
   font-weight: 700;
 }
 
 .questionText {
-  font-size: var(--fs-lg);
-  line-height: 1.45;
-  margin: 0 0 var(--space-lg);
+  font-size: var(--fs-2xl);
+  line-height: 1.24;
+  font-weight: 600;
+  margin: var(--space-lg) 0 var(--space-xl);
   font-family: var(--font-serif);
-  color: var(--text);
+  color: var(--text-primary);
 }
 
 .options {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 10px;
   margin: 0 0 var(--space-md);
   padding: 0;
   list-style: none;
@@ -221,13 +309,14 @@
 
 .option {
   width: 100%;
-  padding: 0.95rem var(--space-lg);
+  padding: 0.85rem var(--space-lg);
   text-align: left;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  color: var(--text);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-tile);
+  color: var(--text-primary);
   font-size: var(--fs-md);
+  font-weight: 600;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s, transform 0.1s;
 }
@@ -265,13 +354,16 @@
 
 .btnTake {
   flex: 1;
-  padding: 0.85rem var(--space-lg);
-  border: 1px solid var(--accent-border-strong);
-  border-radius: var(--radius-lg);
-  background: var(--accent-bg-strong);
-  color: var(--gold-light);
-  font-weight: 700;
-  font-size: var(--fs-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: var(--fs-base);
   cursor: pointer;
   transition:
     background-color var(--duration-fast) var(--ease-out),
@@ -360,7 +452,7 @@
 .resultCard h1 {
   margin: 0 0 var(--space-sm);
   font-family: var(--font-serif);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .resultScore {

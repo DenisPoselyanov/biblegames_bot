@@ -19,10 +19,12 @@ export type SemanticPaletteOverrides = Partial<Record<
   | 'buttonPrimaryBg' | 'buttonPrimaryText'
   | 'buttonSecondaryBg' | 'buttonSecondaryText' | 'buttonSecondaryBorder'
   | 'navBg' | 'navActive' | 'navInactive'
-  | 'progressTrack' | 'progressFill'
+  | 'progressTrack' | 'progressFill' | 'progressRampEnd'
   | 'inputBg' | 'inputBorder'
   | 'heroOverlayStart' | 'heroOverlayEnd' | 'heroImageOpacity' | 'illustrationTint'
-  | 'skeletonBase' | 'skeletonHighlight',
+  | 'skeletonBase' | 'skeletonHighlight'
+  | 'auroraColor1' | 'auroraColor2' | 'auroraColor3'
+  | 'fontSerif' | 'fontSans',
   string
 >>;
 
@@ -50,14 +52,26 @@ export const DEFAULT_COSMETIC_THEME_ID = 'classic';
 const REBRAND_DEFAULT_COSMETIC_THEME_ID = 'light';
 
 /**
+ * Canonical Phase 3.5 default (ADR-018) — id of the `aurora` theme below.
+ * Only takes effect once `designSystemV2` flips to `true` (WS7 full rollout);
+ * see `resolveDefaultCosmeticThemeId()`.
+ */
+const DESIGN_V2_DEFAULT_COSMETIC_THEME_ID = 'aurora';
+
+/**
  * The theme id to fall back to when a profile has no stored `activeTheme`
  * (WS8, `docs/phases/PHASE_3_LEARNING_PRODUCT_REBRAND_AND_MOTION.md` §7.3).
  * Only ever consulted when nothing is stored — an existing user's saved
- * choice, including one that was itself defaulted to `classic` in the past,
- * is never touched by this flag. Lazily reads the flag (not module-level)
- * so `.env.local` overrides and tests can flip it without a reload.
+ * choice, including one that was itself defaulted to `classic` or `light` in
+ * the past, is never touched by this flag. Lazily reads the flags (not
+ * module-level) so `.env.local` overrides and tests can flip them without a
+ * reload. `designSystemV2` (Phase 3.5) takes precedence over
+ * `lightThemeDefault` (Phase 3) — the two are never both live in production,
+ * but layering them this way means flipping `designSystemV2` off falls back
+ * exactly to today's Phase 3 behavior, not a fresh decision.
  */
 export function resolveDefaultCosmeticThemeId(): string {
+  if (isFeatureEnabled('designSystemV2')) return DESIGN_V2_DEFAULT_COSMETIC_THEME_ID;
   return isFeatureEnabled('lightThemeDefault')
     ? REBRAND_DEFAULT_COSMETIC_THEME_ID
     : DEFAULT_COSMETIC_THEME_ID;
@@ -176,6 +190,147 @@ export const COSMETIC_THEMES: CosmeticTheme[] = [
       borderSoft: '#E7E1D8',
       borderStrong: '#D8D0C4',
       cardShadow: '0 8px 24px rgba(35, 43, 57, 0.07)',
+    },
+  },
+  {
+    // Canonical Phase 3.5 default theme (ADR-018,
+    // docs/phases/PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md §4). Free,
+    // always-available, cannot be removed from the catalog — same status
+    // `light` has for Phase 3. NOT yet wired as `DEFAULT_COSMETIC_THEME_ID`;
+    // see `resolveDefaultCosmeticThemeId()`. Values pinned from the
+    // `proto/design-v2` branch's `src/proto/proto.css` (`.proto-root`,
+    // dark block) — the owner-approved locked palette, not a fresh pick.
+    id: 'aurora',
+    title: 'Небесна аврора',
+    description: 'Індиго та фіолет нічного неба з теплим золотим сяйвом.',
+    price: 0,
+    isLight: false,
+    onPrimary: '#ffffff',
+    preview: {
+      background: '#0a0918',
+      surface: '#17162a',
+      primary: '#6366f1',
+      accent: '#f0c05a',
+      text: '#f6f4ff',
+    },
+    semantic: {
+      bgApp: '#0A0918',
+      bgSurface: 'rgba(255, 255, 255, 0.055)',
+      bgElevated: 'rgba(255, 255, 255, 0.1)',
+      textPrimary: '#F6F4FF',
+      textSecondary: 'rgba(246, 244, 255, 0.64)',
+      // WS7 §17 re-audit: 0.4 measured 3.56:1 against bgApp, below WCAG AA's
+      // 4.5:1 for normal text (this token is used as small/caption text
+      // throughout, not exclusively large text) — raised to clear ~4.9:1.
+      textMuted: 'rgba(246, 244, 255, 0.5)',
+      brandPrimary: '#6366F1',
+      onBrandPrimary: '#FFFFFF',
+      // WS7 §17 re-audit: the generic derivation (`deriveSemanticPalette`)
+      // would otherwise fall back to `brandPrimary` #6366F1 for text-role
+      // uses (`textLink`, `buttonSecondaryText`), which measures 4.41:1/
+      // 3.97:1 against bgApp/bgSurface — below 4.5:1. Same
+      // accentSpiritual/accentSpiritualText split already used below:
+      // brandPrimary stays the locked indigo for backgrounds/borders, this
+      // is a lightened text-only tint (~5.4:1/4.85:1).
+      textLink: '#7678F3',
+      buttonSecondaryText: '#7678F3',
+      accentSpiritual: '#F0C05A',
+      // Brighter "ink" variant for text/icon glyph roles, same distinction
+      // `proto.css` draws between `--p-gold` and `--p-gold-ink` — on this
+      // dark canvas the base gold already passes contrast, this is the
+      // prototype's own chosen glyph tone, not a contrast workaround.
+      accentSpiritualText: '#F7D896',
+      borderSoft: 'rgba(255, 255, 255, 0.09)',
+      borderStrong: 'rgba(255, 255, 255, 0.18)',
+      borderFocus: '#F0C05A',
+      focusRing: 'rgba(240, 192, 90, 0.4)',
+      cardBg: 'rgba(255, 255, 255, 0.055)',
+      cardBorder: 'rgba(255, 255, 255, 0.09)',
+      cardShadow: '0 18px 40px -18px rgba(3, 2, 12, 0.85)',
+      // One primary button per screen, indigo→violet (§4 locked decision).
+      // WS7 §17 re-audit: the original stops (#6366F1/#A855F7) measured
+      // 4.47:1/3.96:1 for white button text at the button's actual 14px/700
+      // weight (below WCAG AA's 4.5:1 — 14px bold doesn't clear the 18.66px
+      // "large text" threshold). Nudged half a step darker within the same
+      // indigo→violet hue family — visually indistinguishable, clears
+      // ~4.6:1 on both stops. Hue/gradient direction unchanged (§4 locked).
+      buttonPrimaryBg: 'linear-gradient(135deg, #6063F1 0%, #9E42F6 100%)',
+      buttonPrimaryText: '#FFFFFF',
+      navBg: 'rgba(255, 255, 255, 0.055)',
+      // The prototype's tab bar marks the active tab with a raised pill plus
+      // an ink label and a gold glyph — not an indigo label, which is what
+      // the generic derivation (brandPrimary) would give.
+      navActive: '#F6F4FF',
+      navInactive: 'rgba(246, 244, 255, 0.5)',
+      progressFill: '#6366F1',
+      // Gold ramp end is a dark-theme-only locked rule (§4) — the light
+      // variant below overrides this to a non-gold value.
+      progressRampEnd: '#F0C05A',
+      // WS2 `ShellAurora` blob colors — indigo/violet/warm-gold, pinned from
+      // `proto.css`'s `.proto-root` dark block (`--p-aurora-1/2/3`).
+      auroraColor1: 'rgba(99, 102, 241, 0.55)',
+      auroraColor2: 'rgba(168, 85, 247, 0.42)',
+      auroraColor3: 'rgba(240, 192, 90, 0.22)',
+      // Typography (§4 locked decision): Literata for headings/Scripture, Manrope for UI.
+      fontSerif: "'Literata', Georgia, serif",
+      fontSans: "'Manrope', system-ui, sans-serif",
+    },
+  },
+  {
+    // Light companion of `aurora` — same identity, lit from above (§4: "dark
+    // by default, light available, switch lives in Profile"). Values pinned
+    // from `proto.css`'s `.proto-root[data-proto-theme='light']` block.
+    id: 'aurora-light',
+    title: 'Небесна аврора · Світла',
+    description: 'Та сама духовна преміум-палітра, освітлена вдень.',
+    price: 0,
+    isLight: true,
+    onPrimary: '#ffffff',
+    preview: {
+      background: '#f7f5ff',
+      surface: '#fdfcff',
+      primary: '#4f46e5',
+      accent: '#9a6b0f',
+      text: '#1a1430',
+    },
+    semantic: {
+      bgApp: '#F7F5FF',
+      bgSurface: 'rgba(255, 255, 255, 0.82)',
+      bgElevated: 'rgba(255, 255, 255, 0.96)',
+      textPrimary: '#1A1430',
+      textSecondary: 'rgba(26, 20, 48, 0.66)',
+      // WS7 §17 re-audit: 0.44 measured 2.80:1 against bgApp, below WCAG
+      // AA's 4.5:1 for normal text — raised to clear ~4.85:1.
+      textMuted: 'rgba(26, 20, 48, 0.62)',
+      brandPrimary: '#4F46E5',
+      onBrandPrimary: '#FFFFFF',
+      accentSpiritual: '#9A6B0F',
+      // Darkened further for text/icon glyph roles — same contrast-driven
+      // pattern as `light`'s `accentSpiritualText` (§17 audit precedent).
+      accentSpiritualText: '#7D560B',
+      borderSoft: 'rgba(26, 20, 48, 0.09)',
+      borderStrong: 'rgba(26, 20, 48, 0.16)',
+      borderFocus: '#9A6B0F',
+      focusRing: 'rgba(154, 107, 15, 0.35)',
+      cardBg: 'rgba(255, 255, 255, 0.82)',
+      cardBorder: 'rgba(26, 20, 48, 0.09)',
+      cardShadow: '0 18px 40px -18px rgba(76, 56, 140, 0.22)',
+      buttonPrimaryBg: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
+      buttonPrimaryText: '#FFFFFF',
+      navBg: 'rgba(255, 255, 255, 0.82)',
+      navActive: '#1A1430',
+      navInactive: 'rgba(26, 20, 48, 0.62)',
+      progressFill: '#4F46E5',
+      // Locked rule (§4): the light theme's ramp does NOT get the gold
+      // endpoint — deep violet instead, exactly as `proto.css` pins it.
+      progressRampEnd: '#4C1D95',
+      // Same `ShellAurora` blobs, lit-from-above intensities — pinned from
+      // `proto.css`'s `.proto-root[data-proto-theme='light']` block.
+      auroraColor1: 'rgba(99, 102, 241, 0.2)',
+      auroraColor2: 'rgba(168, 85, 247, 0.16)',
+      auroraColor3: 'rgba(240, 192, 90, 0.26)',
+      fontSerif: "'Literata', Georgia, serif",
+      fontSans: "'Manrope', system-ui, sans-serif",
     },
   },
 ];

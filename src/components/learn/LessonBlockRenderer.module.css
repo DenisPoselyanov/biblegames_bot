@@ -65,6 +65,62 @@
   font-size: var(--fs-xs);
 }
 
+/* ── §4 Phase 3.5 audit — richBlocks: parchment scripture + insight callout ── */
+
+.scriptureParchment {
+  margin: 0;
+  padding: var(--space-lg);
+  background: color-mix(in srgb, var(--gold-light) 14%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--gold-light) 30%, var(--card-border));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.scriptureParchment .scriptureText {
+  font-style: italic;
+}
+
+.insight {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+}
+
+.insightIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent-bg-strong);
+  color: var(--gold);
+}
+
+.insightBody {
+  min-width: 0;
+}
+
+.insightKicker {
+  margin: 0;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.insightText {
+  margin: 4px 0 0;
+  font-size: var(--fs-base);
+  color: var(--text-primary);
+  line-height: var(--lh-normal);
+}
+
 .glossary {
   margin: 0;
   padding: var(--space-md);

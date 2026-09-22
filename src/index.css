@@ -55,8 +55,13 @@
    * static fallbacks below. The fallbacks only cover the brief pre-hydration
    * window and simply alias the existing classic-theme tokens above, so they
    * never drift out of sync by hand.
-   * State tokens (--state-*) are a permanent alias, not a fallback: success/
-   * danger/warning/info meaning never changes per theme (DESIGN_RULES §5.6).
+   * `--state-success`/`--state-success-bg`/`--state-success-text` and their
+   * danger counterparts are, as of WS7 §17, per-theme like everything else
+   * above (`deriveSemanticPalette`'s `isLight` branch) — light themes need a
+   * darker tint than dark themes to stay WCAG AA-legible. The *meaning*
+   * (green=success, red=danger) still never changes per theme; only the
+   * exact color does. `--state-warning`/`--state-info` remain the plain
+   * static aliases below (low-usage, not part of the WS7 re-audit).
    */
   --bg-app: var(--bg);
   --bg-surface: var(--surface);
@@ -103,6 +108,7 @@
 
   --progress-track: var(--border-light);
   --progress-fill: var(--gold);
+  --progress-ramp-end: var(--gold-light);
 
   --input-bg: var(--surface);
   --input-border: var(--border);
@@ -156,12 +162,15 @@
   --space-xl: 1.5rem;
   --space-2xl: 2rem;
   --space-3xl: 3rem;
+  /* Distance between a page's top-level blocks (AppPage's own gap). */
+  --space-section: var(--space-lg);
 
   /* ─── Border Radius ─── */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-xl: 20px;
+  --radius-tile: var(--radius-lg);
   --radius-full: 9999px;
 
   /* ─── Shadows ─── */
@@ -199,6 +208,43 @@
   --z-dropdown: 50;
   --z-modal: 100;
   --z-toast: 200;
+}
+
+/*
+ * ─── Design-v2 scale (Phase 3.5) ───
+ * `data-design-v2="on"` is set on <html> by `CosmeticThemeSync` whenever the
+ * `designSystemV2` flag is on. Colors already come from the `aurora` theme's
+ * pinned `semantic` block; what is left are the *non-color* decisions the
+ * prototype makes — radii, type scale and body size — pinned here from
+ * `proto/design-v2`'s `src/proto/proto.css` (`@theme inline`) and its screens.
+ * Flag off → this block never matches → Phase 3's scale is untouched, same
+ * rollback contract as every other WS.
+ */
+:root[data-design-v2='on'] {
+  /* proto: --radius-card / --radius-tile / --radius-control */
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 28px;
+  --radius-tile: 20px;
+
+  /* proto: every screen is one `space-y-5` column. */
+  --space-section: 1.25rem;
+
+  /* proto base is 15px with explicit per-element sizes; these map the app's
+     scale onto the prototype's actual rendered values. */
+  --fs-xs: 0.6875rem;  /* 11px — meta/labels */
+  --fs-sm: 0.75rem;    /* 12px — pills, captions */
+  --fs-base: 0.8125rem;/* 13px — body copy */
+  --fs-md: 0.9375rem;  /* 15px — row titles, buttons */
+  --fs-lg: 1.0625rem;  /* 17px */
+  --fs-xl: 1.1875rem;  /* 19px — section titles */
+  --fs-2xl: 1.5rem;    /* 24px — hero titles */
+  --fs-3xl: 1.6875rem; /* 27px — page titles */
+}
+
+:root[data-design-v2='on'] body {
+  font-size: 0.9375rem;
+  letter-spacing: -0.005em;
 }
 
 *,
@@ -436,7 +482,7 @@ input:focus, select:focus, textarea:focus {
 .app-toast--warning {
   border-color: var(--warning);
   background: var(--warning-bg);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .app-toast--info {

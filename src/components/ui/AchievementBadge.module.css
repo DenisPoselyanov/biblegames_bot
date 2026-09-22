@@ -40,3 +40,42 @@
 .label--locked {
   color: var(--text-muted);
 }
+
+/* ── design-v2 tile (proto `Progress` achievements grid) ── */
+
+.badge--card {
+  width: auto;
+  gap: var(--space-sm);
+  padding: var(--space-lg) var(--space-sm);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+}
+
+.badge--card .frame {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-spiritual) 30%, transparent),
+    color-mix(in srgb, var(--brand-primary) 30%, transparent)
+  );
+}
+
+.badge--card .label {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-tight);
+  color: var(--text-primary);
+}
+
+.badge--cardLocked {
+  background: none;
+  box-shadow: none;
+  opacity: 0.45;
+}
+
+.badge--cardLocked .frame {
+  background: var(--border-soft);
+}

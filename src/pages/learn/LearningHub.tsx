@@ -8,18 +8,22 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { Testament } from '../../../contracts/index';
+import { isFeatureEnabled } from '../../lib/flags';
 import { usePublishedPlans, useLearningSearch } from '../../queries/useLearning';
 import {
   AppPage,
   ContentCard,
+  CoverArt,
   ErrorState,
   ListRow,
   PageHeader,
+  Pill,
   SearchField,
   SegmentedControl,
 } from '../../components/ui';
 import { EmptyState } from '../../components/EmptyState';
 import { ListPageSkeleton } from '../../components/skeletons';
+import styles from './LearningHub.module.css';
 
 type TestamentFilter = 'all' | Testament;
 
@@ -37,6 +41,7 @@ const SEARCH_DEBOUNCE_MS = 300;
 
 export function LearningHub() {
   const navigate = useNavigate();
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
   const [searchParams, setSearchParams] = useSearchParams();
   const testamentParam = searchParams.get('testament');
   const testament: TestamentFilter =
@@ -74,9 +79,12 @@ export function LearningHub() {
 
   return (
     <AppPage>
-      <PageHeader kicker="Навчання" title="Розділ навчання" />
+      <PageHeader
+        title="Навчання"
+        description="Плани, модулі та цілі — від першого читання до майстерності"
+      />
 
-      <SearchField value={qInput} onChange={setQInput} placeholder="Пошук планів і тем" />
+      <SearchField value={qInput} onChange={setQInput} placeholder="Пошук плану або книги" />
       <SegmentedControl options={TESTAMENT_OPTIONS} value={testament} onChange={setTestament} label="Завіт" />
 
       {searching ? (
@@ -94,11 +102,17 @@ export function LearningHub() {
           onRetry={() => void plansQuery.refetch()}
           plans={plansQuery.data ?? []}
           onOpenPlan={(id) => navigate(`/learn/plans/${id}`)}
+          designSystemV2={designSystemV2}
         />
       )}
     </AppPage>
   );
 }
+
+const TESTAMENT_LABEL: Record<Testament, string> = {
+  old_testament: 'Старий Завіт',
+  new_testament: 'Новий Завіт',
+};
 
 function PlanBrowseList({
   isLoading,
@@ -106,30 +120,50 @@ function PlanBrowseList({
   onRetry,
   plans,
   onOpenPlan,
+  designSystemV2,
 }: {
   isLoading: boolean;
   isError: boolean;
   onRetry: () => void;
-  plans: Array<{ id: string; title: string; description: string | null }>;
+  plans: Array<{ id: string; title: string; description: string | null; testament?: Testament | null }>;
   onOpenPlan: (id: string) => void;
+  designSystemV2: boolean;
 }) {
   if (isLoading) return <ListPageSkeleton cards={4} />;
   if (isError) return <ErrorState title="Не вдалося завантажити плани" onRetry={onRetry} />;
   if (plans.length === 0) {
     return <EmptyState icon="book" title="Поки немає доступних планів" description="Нові плани з'являться найближчим часом." />;
   }
+  if (!designSystemV2) {
+    return (
+      <ContentCard flush>
+        {plans.map((plan) => (
+          <ListRow
+            key={plan.id}
+            title={plan.title}
+            subtitle={plan.description ?? undefined}
+            navigates
+            onClick={() => onOpenPlan(plan.id)}
+          />
+        ))}
+      </ContentCard>
+    );
+  }
   return (
-    <ContentCard flush>
+    <div className={styles.planList}>
       {plans.map((plan) => (
-        <ListRow
-          key={plan.id}
-          title={plan.title}
-          subtitle={plan.description ?? undefined}
-          navigates
-          onClick={() => onOpenPlan(plan.id)}
-        />
+        <ContentCard key={plan.id} flush onClick={() => onOpenPlan(plan.id)} aria-label={plan.title}>
+          <div className={styles.planCard}>
+            <CoverArt seed={plan.id} className={styles.planCover} />
+            <div className={styles.planMain}>
+              {plan.testament && <Pill>{TESTAMENT_LABEL[plan.testament]}</Pill>}
+              <h2 className={styles.planTitle}>{plan.title}</h2>
+              {plan.description && <p className={styles.planDescription}>{plan.description}</p>}
+            </div>
+          </div>
+        </ContentCard>
       ))}
-    </ContentCard>
+    </div>
   );
 }
 

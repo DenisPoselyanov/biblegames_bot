@@ -69,9 +69,12 @@ export const ROUTE_REGISTRY: RouteMeta[] = [
   { id: 'review', pattern: '/review', tab: 'play', fullscreen: false, analyticsId: 'review_queue' },
 
   { id: 'play', pattern: '/play', tab: 'play', fullscreen: false, analyticsId: 'play_hub' },
-  { id: 'playMillionaire', pattern: '/play/millionaire', tab: 'play', fullscreen: false, analyticsId: 'play_millionaire' },
-  { id: 'playSurvival', pattern: '/play/survival', tab: 'play', fullscreen: false, analyticsId: 'play_survival' },
-  { id: 'playKahootHub', pattern: '/play/kahoot', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_hub' },
+  // §5.4 lists Millionaire among the fullscreen routes, and `proto/design-v2`'s
+  // `IMMERSIVE` set covers Millionaire, Survival and the Kahoot lobby — a run in
+  // progress (and the lobby that starts one) keeps the tab bar off-screen.
+  { id: 'playMillionaire', pattern: '/play/millionaire', tab: 'play', fullscreen: true, analyticsId: 'play_millionaire' },
+  { id: 'playSurvival', pattern: '/play/survival', tab: 'play', fullscreen: true, analyticsId: 'play_survival' },
+  { id: 'playKahootHub', pattern: '/play/kahoot', tab: 'play', fullscreen: true, analyticsId: 'play_kahoot_hub' },
   { id: 'playKahootCreate', pattern: '/play/kahoot/create', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_create' },
   { id: 'playKahootJoin', pattern: '/play/kahoot/join', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_join' },
   { id: 'playKahootPlaylists', pattern: '/play/kahoot/playlists', tab: 'play', fullscreen: false, analyticsId: 'play_kahoot_playlists' },

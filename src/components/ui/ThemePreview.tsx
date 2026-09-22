@@ -9,6 +9,19 @@ interface ThemePreviewProps {
   className?: string;
 }
 
+/** Small round current-theme indicator (Phase 3.5 §6 WS5) — Profile/Settings' "theme" row leading icon. */
+export function ThemeSwatch({ theme, className }: { theme: CosmeticTheme; className?: string }) {
+  return (
+    <span
+      className={cx(styles.miniSwatch, className)}
+      style={{ background: theme.preview.background }}
+      aria-hidden="true"
+    >
+      <span className={styles.miniDot} style={{ background: theme.preview.primary }} />
+    </span>
+  );
+}
+
 /** Swatch card for a theme — background/surface/primary/accent/text dots + name (§23). */
 export function ThemePreview({ theme, active, onSelect, className }: ThemePreviewProps) {
   const { preview } = theme;

@@ -115,6 +115,15 @@ export interface SemanticPalette {
   navInactive: string;
   progressTrack: string;
   progressFill: string;
+  /**
+   * End color of a progress-ramp gradient (Phase 3.5 §4). Gold is a locked
+   * owner decision only for dark themes — light themes must NOT end their
+   * ramp in gold (`PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md` §4). Defaults to
+   * `accentSpiritual` for every pre-existing theme, which reproduces today's
+   * de-facto behavior (nothing reads this token yet) and keeps the default
+   * harmless until a consumer opts in.
+   */
+  progressRampEnd: string;
   inputBg: string;
   inputBorder: string;
   heroOverlayStart: string;
@@ -123,6 +132,43 @@ export interface SemanticPalette {
   illustrationTint: string;
   skeletonBase: string;
   skeletonHighlight: string;
+  /**
+   * Ambient background blob colors for the WS2 aurora shell treatment
+   * (`PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md` §6 WS2, `ShellAurora`).
+   * `transparent` by default so every pre-existing theme renders the blob
+   * layer invisibly — only `aurora`/`aurora-light` pin real values; the
+   * layer itself is gated by the `designSystemV2` flag, not by these tokens.
+   */
+  auroraColor1: string;
+  auroraColor2: string;
+  auroraColor3: string;
+  /**
+   * Typography (Phase 3.5 §4, ADR-018 gap fix). Full `font-family` stacks,
+   * not bare names — consumed verbatim by `--font-serif`/`--font-sans`.
+   * Generic default reproduces today's global Cormorant/Source Sans stack
+   * exactly (same no-op-by-default pattern as `progressRampEnd`); only
+   * `aurora`/`aurora-light` pin the locked Literata/Manrope pair.
+   */
+  fontSerif: string;
+  fontSans: string;
+  /**
+   * WS7 §17 re-audit fix. These were previously *static* globals in
+   * `src/index.css` (`--state-success-text`/`--state-danger-text` etc.,
+   * "a permanent alias... success/danger meaning never changes per theme",
+   * ADR-009) — true for the *meaning*, but the fixed values themselves
+   * (`#9ee0ad`/`#e8b0b0`, tuned for a dark canvas) measure ~1.2–1.3:1 against
+   * their own tinted background on any *light* theme — `light` (pre-existing
+   * production bug, not introduced here) and the new `aurora-light` alike.
+   * Promoted into the per-theme pipeline so `isLight` branches correctly;
+   * dark themes keep today's exact values (no visual change for
+   * `classic`/`aurora`), light themes get a WCAG AA-passing dark tint.
+   */
+  stateSuccess: string;
+  stateSuccessBg: string;
+  stateSuccessText: string;
+  stateDanger: string;
+  stateDangerBg: string;
+  stateDangerText: string;
 }
 
 /** camelCase key -> `--kebab-case` custom property name, in declaration order. */
@@ -165,6 +211,7 @@ const SEMANTIC_CSS_VAR_ENTRIES: Array<[keyof SemanticPalette, string]> = [
   ['navInactive', '--nav-inactive'],
   ['progressTrack', '--progress-track'],
   ['progressFill', '--progress-fill'],
+  ['progressRampEnd', '--progress-ramp-end'],
   ['inputBg', '--input-bg'],
   ['inputBorder', '--input-border'],
   ['heroOverlayStart', '--hero-overlay-start'],
@@ -173,6 +220,17 @@ const SEMANTIC_CSS_VAR_ENTRIES: Array<[keyof SemanticPalette, string]> = [
   ['illustrationTint', '--illustration-tint'],
   ['skeletonBase', '--skeleton-base'],
   ['skeletonHighlight', '--skeleton-highlight'],
+  ['auroraColor1', '--aurora-1'],
+  ['auroraColor2', '--aurora-2'],
+  ['auroraColor3', '--aurora-3'],
+  ['fontSerif', '--font-serif'],
+  ['fontSans', '--font-sans'],
+  ['stateSuccess', '--state-success'],
+  ['stateSuccessBg', '--state-success-bg'],
+  ['stateSuccessText', '--state-success-text'],
+  ['stateDanger', '--state-danger'],
+  ['stateDangerBg', '--state-danger-bg'],
+  ['stateDangerText', '--state-danger-text'],
 ];
 
 const SEMANTIC_CSS_VAR_NAMES = SEMANTIC_CSS_VAR_ENTRIES.map(([, name]) => name);
@@ -256,6 +314,7 @@ export function deriveSemanticPalette(theme: CosmeticTheme): SemanticPalette {
 
     progressTrack: withAlpha(preview.text, isLight ? 0.1 : 0.12),
     progressFill: preview.accent,
+    progressRampEnd: preview.accent,
 
     inputBg: preview.surface,
     inputBorder: borderDefault,
@@ -267,6 +326,25 @@ export function deriveSemanticPalette(theme: CosmeticTheme): SemanticPalette {
 
     skeletonBase: mixColor(preview.surface, preview.text, isLight ? 0.06 : 0.08),
     skeletonHighlight: mixColor(preview.surface, preview.background, isLight ? 0.4 : 0.3),
+
+    auroraColor1: 'transparent',
+    auroraColor2: 'transparent',
+    auroraColor3: 'transparent',
+
+    fontSerif: "'Cormorant Garamond', Georgia, serif",
+    fontSans: "'Source Sans 3', system-ui, sans-serif",
+
+    // WS7 §17 re-audit: dark-theme values are exactly today's static
+    // `--success`/`--danger` globals (unchanged for `classic`/`aurora`).
+    // Light-theme values are a darkened, WCAG AA-passing tint pair — the
+    // old static values measured ~1.2–1.3:1 against their own tinted
+    // background on any light canvas (`src/lib/paletteContrast.test.ts`).
+    stateSuccess: isLight ? '#166534' : '#4a9c5d',
+    stateSuccessBg: isLight ? 'rgba(22, 101, 52, 0.14)' : 'rgba(74, 156, 93, 0.18)',
+    stateSuccessText: isLight ? '#166534' : '#9ee0ad',
+    stateDanger: isLight ? '#9C2F2F' : '#9c4a4a',
+    stateDangerBg: isLight ? 'rgba(156, 47, 47, 0.14)' : 'rgba(156, 74, 74, 0.18)',
+    stateDangerText: isLight ? '#9C2F2F' : '#e8b0b0',
   };
 
   return theme.semantic ? { ...generic, ...theme.semantic } : generic;

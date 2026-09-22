@@ -399,9 +399,10 @@ export function Survival() {
           </div>
         </header>
 
-        <div className={styles.spacer} aria-hidden />
-
-        <footer className={styles.bottomPanel}>
+        <div className={styles.bottomPanel}>
+          <p className={styles.roundLabel}>
+            Питання {score + 1} · рекорд {profile.survivalHighScore}
+          </p>
           <AnimatePresence mode="wait">
             <motion.div
               key={question.id}
@@ -411,9 +412,7 @@ export function Survival() {
               variants={questionVariants}
               transition={reducedTransition(transitionPage, !!reduced)}
             >
-              <div className={styles.questionCard}>
-                <p className={styles.questionText}>{question.text}</p>
-              </div>
+              <p className={styles.questionText}>{question.text}</p>
 
               <MotionStagger as="ul" className={styles.options}>
                 {question.options.map((option, optionIndex) => {
@@ -483,7 +482,7 @@ export function Survival() {
               </AnimatePresence>
             </motion.div>
           </AnimatePresence>
-        </footer>
+        </div>
 
         <ExplanationModal
           question={question}

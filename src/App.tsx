@@ -292,7 +292,12 @@ export default function App() {
                   path="progress"
                   element={
                     progressDashboardV2Enabled ? (
-                      <ErrorBoundary><LazyPage><ProgressV2 /></LazyPage></ErrorBoundary>
+                      // Progress's per-topic mastery list reads the topic tree
+                      // for titles, so this route needs the hierarchy provider
+                      // — same per-route mount the legacy `Themes` route uses.
+                      <TopicHierarchyProvider>
+                        <ErrorBoundary><LazyPage><ProgressV2 /></LazyPage></ErrorBoundary>
+                      </TopicHierarchyProvider>
                     ) : (
                       <ErrorBoundary><LazyPage><ProgressDashboard /></LazyPage></ErrorBoundary>
                     )

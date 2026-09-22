@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
 import { useEconomy } from '../hooks/domain/useEconomy';
 import { usePreferences } from '../hooks/usePreferences';
@@ -8,15 +9,18 @@ import { Icon } from '../components/Icon';
 import { haptic } from '../lib/telegram';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
-import { AppPage, PageHeader } from '../components/ui';
+import { isFeatureEnabled } from '../lib/flags';
+import { AppPage, Button, ContentCard, CoverArt, PageHeader, Pill, SectionHeader } from '../components/ui';
 import styles from './Shop.module.css';
 
 export function Shop() {
+  const navigate = useNavigate();
   const { shouldEnter } = useMotionEntrance('shop');
   const profile = useResolvedProfile();
   const { purchaseAvatar } = useEconomy();
   const { setAvatar } = usePreferences();
   const { showToast } = useToast();
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
 
   const handleSelectAvatar = (avatarId: string) => {
     haptic.selection();
@@ -40,59 +44,119 @@ export function Shop() {
     <AppPage>
       <PageHeader
         title="Крамниця"
+        onBack={designSystemV2 ? () => navigate(-1) : undefined}
         action={
-          <span className={styles.balancePill}>
-            <Icon name="coins" size={16} />
-            {profile.coins}
-          </span>
+          designSystemV2 ? (
+            <Pill tone="accent" icon={<Icon name="coins" size={16} />}>
+              {profile.coins}
+            </Pill>
+          ) : (
+            <span className={styles.balancePill}>
+              <Icon name="coins" size={16} />
+              {profile.coins}
+            </span>
+          )
         }
       />
 
+      {/* Proto `Shop` opens with the economy's one promise, so the grid below
+          never has to argue for itself. Matches the app's actual rules — coins
+          come from learning, cosmetics never affect progress or ranking. */}
+      {designSystemV2 && (
+        <ContentCard className={styles.promise}>
+          <Icon name="shield" size={17} className={styles.promiseIcon} />
+          <p>
+            Монети заробляються лише навчанням. Нічого з крамниці не дає переваги у
+            вивченні чи в рейтингу — тільки вигляд і підказки в іграх.
+          </p>
+        </ContentCard>
+      )}
+
       <section className={styles.section}>
-        <h2>Біблійні теми</h2>
-        <p className={styles.sectionHint}>Змінюй оформлення гри. Оплата монетами.</p>
+        {designSystemV2 ? (
+          <SectionHeader title="Біблійні теми" note="Змінюй оформлення гри. Оплата монетами." />
+        ) : (
+          <>
+            <h2>Біблійні теми</h2>
+            <p className={styles.sectionHint}>Змінюй оформлення гри. Оплата монетами.</p>
+          </>
+        )}
         <CosmeticThemeShop enter={shouldEnter} />
       </section>
 
       <section className={styles.section}>
-        <h2>Аватари</h2>
-        <p className={styles.sectionHint}>Оплата монетами.</p>
+        {designSystemV2 ? (
+          <SectionHeader title="Аватари" note="Оплата монетами." />
+        ) : (
+          <>
+            <h2>Аватари</h2>
+            <p className={styles.sectionHint}>Оплата монетами.</p>
+          </>
+        )}
         <MotionStagger as="div" className={styles.avatarsGrid} enter={shouldEnter}>
           {AVATARS.map((avatar) => {
             const isUnlocked = profile.unlockedAvatars.includes(avatar.id);
             const isActive = profile.avatar === avatar.id;
             return (
-              <MotionStaggerItem
-                as="div"
-                key={avatar.id}
-                className={`${styles.avatarCard} ${isActive ? styles.activeCard : ''}`}
-              >
-                <div className={styles.avatarVisual}>
-                  <span className={styles.avatarEmoji}>{avatar.emoji}</span>
-                </div>
-                <div className={styles.avatarInfo}>
-                  <h3>{avatar.title}</h3>
-                  <div className={styles.action}>
-                    {isActive ? (
-                      <span className={styles.badgeActive}>Екіпіровано</span>
-                    ) : isUnlocked ? (
-                      <button
-                        className={styles.btnApply}
-                        onClick={() => handleSelectAvatar(avatar.id)}
-                      >
-                        Вибрати
-                      </button>
-                    ) : (
-                      <button
-                        className={styles.btnBuy}
-                        onClick={() => void handleBuyAvatar(avatar.id, avatar.price)}
-                      >
-                        <Icon name="coins" size={14} />
-                        {avatar.price}
-                      </button>
-                    )}
+              <MotionStaggerItem as="div" key={avatar.id}>
+                {designSystemV2 ? (
+                  <ContentCard flush className={styles.avatarCardV2}>
+                    <div className={styles.avatarCoverV2}>
+                      <CoverArt seed={avatar.id} glyph="rays" className={styles.avatarCoverArt} />
+                      <span className={styles.avatarEmojiV2}>{avatar.emoji}</span>
+                    </div>
+                    <div className={styles.avatarInfoV2}>
+                      <h3>{avatar.title}</h3>
+                      <div className={styles.action}>
+                        {isActive ? (
+                          <Pill tone="accent">Екіпіровано</Pill>
+                        ) : isUnlocked ? (
+                          <Button size="sm" variant="secondary" onClick={() => handleSelectAvatar(avatar.id)}>
+                            Вибрати
+                          </Button>
+                        ) : (
+                          <Button
+                            size="sm"
+                            fullWidth
+                            onClick={() => void handleBuyAvatar(avatar.id, avatar.price)}
+                          >
+                            <Icon name="coins" size={14} />
+                            {avatar.price}
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </ContentCard>
+                ) : (
+                  <div className={`${styles.avatarCard} ${isActive ? styles.activeCard : ''}`}>
+                    <div className={styles.avatarVisual}>
+                      <span className={styles.avatarEmoji}>{avatar.emoji}</span>
+                    </div>
+                    <div className={styles.avatarInfo}>
+                      <h3>{avatar.title}</h3>
+                      <div className={styles.action}>
+                        {isActive ? (
+                          <span className={styles.badgeActive}>Екіпіровано</span>
+                        ) : isUnlocked ? (
+                          <button
+                            className={styles.btnApply}
+                            onClick={() => handleSelectAvatar(avatar.id)}
+                          >
+                            Вибрати
+                          </button>
+                        ) : (
+                          <button
+                            className={styles.btnBuy}
+                            onClick={() => void handleBuyAvatar(avatar.id, avatar.price)}
+                          >
+                            <Icon name="coins" size={14} />
+                            {avatar.price}
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </MotionStaggerItem>
             );
           })}

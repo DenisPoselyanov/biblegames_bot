@@ -72,3 +72,66 @@
   gap: var(--space-md);
   margin-top: var(--space-xs);
 }
+
+/* ── tone="cover" (Phase 3.5 §4/§6 WS3 hero-card pattern) ── */
+
+.hero--cover {
+  padding: 0;
+  min-height: 280px;
+  border: none;
+}
+
+.coverLayer {
+  position: absolute;
+  inset: 0;
+}
+
+.coverContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 280px;
+  padding: var(--space-lg);
+  gap: var(--space-xs);
+}
+
+.badgeRow {
+  position: absolute;
+  top: var(--space-lg);
+  left: var(--space-lg);
+  right: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.coverKicker {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+}
+
+.coverTitle {
+  font-family: var(--font-serif);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  line-height: var(--lh-tight);
+}
+
+.coverDescription {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  color: rgba(255, 255, 255, 0.78);
+  margin: 0;
+  line-height: var(--lh-relaxed);
+}
+
+.coverFooter {
+  margin-top: var(--space-md);
+}

@@ -1,0 +1,103 @@
+/* ── Phase 3.5 §6 WS4 — designSystemV2 re-skin ── */
+
+.segments {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.segment,
+.segmentFilled {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--progress-track);
+  transition: background var(--duration-normal) var(--ease-out);
+}
+
+.segmentFilled {
+  background: linear-gradient(90deg, var(--progress-fill), var(--progress-ramp-end));
+}
+
+/* Result screen: sized from viewport height via AppPage's own min-height:
+   100dvh flex column, not content height (§4 locked decision — no scroll). */
+.resultWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  text-align: center;
+}
+
+.resultCount {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.resultAchievements {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--accent-spiritual-text);
+}
+
+/* ── design-v2 session view (proto `Practice`) ── */
+
+.sessionPage {
+  gap: var(--space-md);
+}
+
+.sessionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding-top: var(--space-xs);
+}
+
+.sessionHeader > :last-child {
+  flex: 1;
+}
+
+.exitBtn {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.questionBlock {
+  padding-top: var(--space-lg);
+}
+
+.questionMeta {
+  margin: 0;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.questionText {
+  margin: var(--space-sm) 0 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  line-height: 1.22;
+  color: var(--text-primary);
+}
+
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

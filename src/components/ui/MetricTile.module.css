@@ -4,7 +4,7 @@
   gap: var(--space-xs);
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-tile);
   padding: var(--space-md) var(--space-lg);
   min-width: 0;
 }
@@ -37,4 +37,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: var(--space-sm);
+}
+
+/* design-v2: numbers are bold sans, not serif (proto uses the display face
+   only for headings and Scripture). */
+:root[data-design-v2='on'] .value {
+  font-family: var(--font-sans);
+  font-size: var(--fs-2xl);
+  font-weight: 800;
 }

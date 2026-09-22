@@ -54,7 +54,7 @@
 .masteryPct {
   font-size: 0.7rem;
   font-weight: 700;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   padding: 0.15rem 0.45rem;
   border-radius: var(--radius-full);
   background: var(--accent-bg-strong);

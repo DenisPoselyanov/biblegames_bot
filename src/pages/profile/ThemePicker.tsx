@@ -32,7 +32,7 @@ export function ThemePicker() {
 
   return (
     <AppPage className={styles.page}>
-      <PageHeader kicker="Профіль" title="Оформлення" onBack={() => navigate('/profile/settings')} />
+      <PageHeader title="Оформлення" onBack={() => navigate('/profile/settings')} />
       <div className={styles.grid}>
         {COSMETIC_THEMES.map((theme) => {
           const owned = theme.price === 0 || profile.unlockedThemes.includes(theme.id);

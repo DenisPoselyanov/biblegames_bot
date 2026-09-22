@@ -261,7 +261,7 @@
 
 .resultWisdom {
   font-size: var(--fs-lg);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-weight: 700;
   margin: 0 0 0.35rem;
 }
@@ -322,7 +322,7 @@
 .emptyTitle {
   font-family: var(--font-serif);
   font-size: var(--fs-xl);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   margin: 0;
 }
 
@@ -343,7 +343,7 @@
   border-radius: var(--radius-lg);
   border: 1px solid var(--gold);
   background: transparent;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-weight: 700;
   font-size: var(--fs-md);
   text-decoration: none;
@@ -384,7 +384,7 @@
 .resultCard h1 {
   margin: 0 0 var(--space-sm);
   font-family: var(--font-serif);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .resultTheme {

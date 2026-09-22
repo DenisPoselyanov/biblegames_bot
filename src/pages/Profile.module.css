@@ -37,7 +37,7 @@
 .header h1 {
   margin: 0;
   font-family: var(--font-serif);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-size: var(--fs-xl);
 }
 
@@ -85,7 +85,7 @@
 .settingsHeader h2 {
   font-family: var(--font-serif);
   font-size: var(--fs-lg);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .settingsClose {
@@ -421,7 +421,7 @@
 
 .achBadgeLabel {
   font-size: var(--fs-xs);
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-weight: 700;
   text-align: center;
   line-height: 1.2;
@@ -550,7 +550,7 @@
 .settingsSubtitle {
   margin: 0 0 0.35rem;
   font-size: 0.95rem;
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
 }
 
 .settingsHint {
@@ -578,7 +578,7 @@
 }
 
 .translationOption strong {
-  color: var(--gold-light);
+  color: var(--accent-spiritual-text);
   font-size: 0.85rem;
 }
 

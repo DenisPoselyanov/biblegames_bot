@@ -1,7 +1,81 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-section);
+}
+
+/* ── §6 Phase 3.5 audit — hero header (avatar-in-progress-ring + rank) ── */
+
+.hero {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+}
+
+.heroCover {
+  position: relative;
+  width: 100%;
+  height: 80px;
+}
+
+.heroSettingsBtn {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.heroBody {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-sm);
+  padding: 0 var(--space-md) var(--space-md);
+  margin-top: -36px;
+}
+
+.heroAvatarWrap {
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  border: 3px solid var(--card-bg);
+  background: var(--card-bg);
+}
+
+.heroAvatarEmoji {
+  font-size: 24px;
+}
+
+.heroInfo {
+  min-width: 0;
+  padding-bottom: 2px;
+}
+
+.heroName {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.heroRank {
+  margin: 2px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
 }
 
 .avatarBtn {
@@ -83,4 +157,126 @@
 .empty {
   color: var(--text-muted);
   font-size: var(--fs-sm);
+}
+
+/* ── design-v2 (proto `Profile`) ── */
+
+.miniStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  padding: 0 var(--space-md) var(--space-md);
+}
+
+.miniStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-sm) var(--space-xs);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  text-align: center;
+  color: inherit;
+}
+
+.miniStatIcon {
+  color: var(--accent-spiritual-text);
+}
+
+.miniStatValue {
+  font-size: var(--fs-md);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.miniStatLabel {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.appearanceCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+}
+
+.fieldLabel {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.themeGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+.themeTile {
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  background: var(--bg-surface);
+  text-align: center;
+  color: inherit;
+  padding: 0;
+}
+
+.themeTileActive {
+  border-color: color-mix(in srgb, var(--accent-spiritual) 60%, transparent);
+}
+
+.themeTileLocked {
+  opacity: 0.55;
+}
+
+.themeTileArt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  height: 44px;
+}
+
+.themeTileDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+}
+
+.themeTileLabel {
+  display: block;
+  padding: 6px 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.achievementsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+/* The list card follows the prototype's rounded settings group. */
+:root[data-design-v2='on'] .card {
+  padding: 0 var(--space-lg);
+  background: var(--card-bg);
+  border-color: var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--card-shadow);
 }

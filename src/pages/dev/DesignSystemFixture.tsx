@@ -12,6 +12,7 @@ import {
   Button,
   CelebrationLayer,
   ContentCard,
+  CoverArt,
   Dialog,
   ErrorState,
   HeroCard,
@@ -21,6 +22,7 @@ import {
   MetricTileGrid,
   OfflineState,
   PageHeader,
+  Pill,
   ProgressBar,
   ProgressRing,
   SearchField,
@@ -28,6 +30,7 @@ import {
   SegmentedControl,
   ThemePreview,
 } from '../../components/ui';
+import { Icon } from '../../components/Icon';
 
 /**
  * Dev-only visual QA harness for Phase 3 WS3 (DESIGN_RULES §20.3/§25 —
@@ -74,6 +77,40 @@ export function DesignSystemFixture() {
         description="5 хвилин · 3 уроки залишилось"
         footer={<ProgressBar value={62} showValue />}
       />
+
+      <HeroCard
+        tone="cover"
+        coverSeed="fixture-hero"
+        coverGlyph="rays"
+        badges={
+          <Pill tone="onColor" icon={<Icon name="crown" size={12} />}>
+            Урок дня
+          </Pill>
+        }
+        kicker="Продовжити"
+        title="Псалом 23 — Господь мій Пастир"
+        footer={
+          <Button variant="onColor" fullWidth>
+            Продовжити урок
+          </Button>
+        }
+      />
+
+      <ContentCard>
+        <SectionHeader title="Pills / CoverArt (WS3)" />
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-sm)', marginTop: 'var(--space-sm)' }}>
+          <Pill>Новий Завіт</Pill>
+          <Pill tone="accent">4 модулі</Pill>
+          <Pill tone="onColor" icon={<Icon name="refresh" size={12} />}>
+            Повторення
+          </Pill>
+        </div>
+        <div style={{ display: 'flex', gap: 'var(--space-sm)', marginTop: 'var(--space-md)' }}>
+          <CoverArt seed="psalms" glyph="wave" style={{ width: 96, height: 96, borderRadius: 'var(--radius-lg)' }} />
+          <CoverArt seed="genesis" glyph="path" style={{ width: 96, height: 96, borderRadius: 'var(--radius-lg)' }} />
+          <CoverArt seed="luke" glyph="rays" style={{ width: 96, height: 96, borderRadius: 'var(--radius-lg)' }} />
+        </div>
+      </ContentCard>
 
       <ContentCard>
         <SectionHeader title="Кнопки" />

@@ -24,6 +24,14 @@
   font-family: var(--font-serif);
 }
 
+/* design-v2 renders the shared `SectionHeader` here — it owns its own type,
+   ink color and spacing, and the legacy gold heading rule must not win. */
+:root[data-design-v2='on'] .section h2 {
+  font-size: var(--fs-xl);
+  color: var(--text-primary);
+  margin: 0;
+}
+
 .sectionHint {
   margin: 0 0 1rem;
   font-size: var(--fs-sm);
@@ -36,6 +44,56 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 1rem;
+}
+
+/* ── Avatar card (Phase 3.5 WS6, re-skinned §7 audit): full-bleed `CoverArt`
+   top replaces the flat emoji badge — same "screen's main object" cover
+   pattern as HeroCard/PlayHub grid cards, not a bespoke look. ── */
+
+.avatarCardV2 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.avatarCoverV2 {
+  position: relative;
+  height: 84px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarCoverArt {
+  position: absolute;
+  inset: 0;
+}
+
+.avatarEmojiV2 {
+  position: relative;
+  z-index: var(--z-base);
+  font-size: 2.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
+}
+
+.avatarInfoV2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.avatarInfoV2 h3 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.3;
 }
 
 /* ── Avatar Card ── */
@@ -151,4 +209,28 @@
 
 .btnBuy {
   composes: btn-cta from global;
+}
+
+/* ── design-v2 (proto `Shop`) ── */
+
+.promise {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  background: none;
+  box-shadow: none;
+  padding: var(--space-lg);
+}
+
+.promise p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--text-secondary);
+}
+
+.promiseIcon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--accent-spiritual-text);
 }

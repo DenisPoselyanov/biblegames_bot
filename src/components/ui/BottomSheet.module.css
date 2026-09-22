@@ -14,6 +14,8 @@
   max-height: 88dvh;
   overflow-y: auto;
   background: var(--bg-elevated);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   box-shadow: var(--shadow-modal);
   padding: var(--space-md) var(--space-xl) calc(var(--space-xl) + env(safe-area-inset-bottom, 0px));

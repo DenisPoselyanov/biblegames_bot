@@ -17,6 +17,11 @@
   transition: stroke-dashoffset var(--duration-slow) var(--ease-out);
 }
 
+/* design-v2: the prototype's gradient ring. */
+:root[data-design-v2='on'] .fill {
+  stroke: url(#uiProgressRingRamp);
+}
+
 .center {
   position: absolute;
   inset: 0;
@@ -26,4 +31,23 @@
   font-family: var(--font-serif);
   font-weight: 600;
   color: var(--text-primary);
+}
+
+/* ── onColor (Phase 3.5 §4/§6 — for use on a HeroCard tone="cover") ── */
+
+.wrapper--onColor .track {
+  stroke: rgba(255, 255, 255, 0.28);
+}
+
+.wrapper--onColor .fill {
+  stroke: #ffffff;
+}
+
+.wrapper--onColor /* design-v2: the prototype's gradient ring. */
+:root[data-design-v2='on'] .fill {
+  stroke: url(#uiProgressRingRamp);
+}
+
+.center {
+  color: #ffffff;
 }

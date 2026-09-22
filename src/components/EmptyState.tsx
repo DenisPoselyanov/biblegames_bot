@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import { Empty } from 'react-vant';
 import { type IconName, Icon } from './Icon';
+import { isFeatureEnabled } from '../lib/flags';
+import styles from './EmptyState.module.css';
 
 interface EmptyStateProps {
   icon?: IconName;
@@ -10,6 +12,19 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ icon = 'info', title, description, action }: EmptyStateProps) {
+  // design-v2 (proto's "Нічого не знайшли" card): a quiet outline card sized by
+  // its own content, not react-vant's full-height `Empty` illustration slot.
+  if (isFeatureEnabled('designSystemV2')) {
+    return (
+      <div className={styles.card} role="status">
+        <Icon name={icon} size={22} className={styles.icon} />
+        <p className={styles.title}>{title}</p>
+        {description && <p className={styles.description}>{description}</p>}
+        {action && <div className={styles.action}>{action}</div>}
+      </div>
+    );
+  }
+
   return (
     <Empty
       image={

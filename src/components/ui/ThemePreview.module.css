@@ -52,3 +52,21 @@
   font-weight: 600;
   color: var(--brand-primary);
 }
+
+.miniSwatch {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.miniDot {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}

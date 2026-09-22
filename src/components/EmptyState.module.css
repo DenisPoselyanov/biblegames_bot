@@ -1,0 +1,32 @@
+.card {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-2xl) var(--space-xl);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  text-align: center;
+}
+
+.icon {
+  color: var(--text-muted);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.description {
+  margin: 0;
+  max-width: 280px;
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--text-muted);
+}
+
+.action {
+  margin-top: var(--space-sm);
+}

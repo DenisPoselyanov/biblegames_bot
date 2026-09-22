@@ -1,20 +1,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
-}
-
-.header h1 {
-  font-family: var(--font-serif);
-  font-size: var(--fs-xl);
-  margin: 0 0 0.25rem;
-  color: var(--heading);
-}
-
-.header p {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: var(--fs-md);
+  gap: var(--space-section);
 }
 
 .modes {
@@ -216,4 +203,190 @@
 .badgeDefault {
   background: var(--accent-bg-strong);
   color: var(--gold);
+}
+
+/* ── Phase 3.5 §6 WS4 — designSystemV2 re-skin ── */
+
+.modesV2 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.featuredWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.heroLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ── §5 Phase 3.5 audit — "Усі режими" 2-col grid of full-bleed cards ── */
+
+.modesGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+/* Grid children default to `min-width: auto`, so a single nowrap meta chip
+   used to blow the track out past the viewport. */
+.modesGrid > * {
+  min-width: 0;
+}
+
+.modeCard {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-tile);
+  box-shadow: var(--card-shadow);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.modeCard:active {
+  transform: scale(0.98);
+}
+
+.modeCard.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.modeCardArt {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.modeCardArtCover {
+  position: absolute;
+  inset: 0;
+}
+
+.modeCardArtIcon {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+}
+
+.modeCardBody {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-md);
+}
+
+.modeHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.modeHeader {
+  gap: var(--space-xs);
+}
+
+.modeHeader h2 {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: var(--lh-tight);
+}
+
+.modeLock {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.modeFoot {
+  margin: var(--space-sm) 0 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.modeDesc {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  line-height: var(--lh-normal);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Hero meta chips + community row (proto/design-v2 `Play`) ── */
+
+.heroPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.communityRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+  padding: var(--space-lg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.communityRow:active {
+  transform: scale(0.99);
+}
+
+.communityIcon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--brand-primary) 18%, transparent);
+  color: var(--text-primary);
+}
+
+.communityMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.communityTitle {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.communityMeta {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
 }

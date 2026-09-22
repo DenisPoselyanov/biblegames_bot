@@ -1,7 +1,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-section);
 }
 
 .doneText {
@@ -31,4 +31,249 @@
   font-size: var(--fs-sm);
   color: var(--text-secondary);
   text-align: center;
+}
+
+/* ── §1 Phase 3.5 audit — "Швидкий підхід" quick-action tiles ── */
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+
+.quickTile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--space-lg);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-tile);
+  box-shadow: var(--card-shadow);
+  text-align: left;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.quickTile:active {
+  transform: scale(0.98);
+}
+
+.quickTileEmphasis {
+  border-color: color-mix(in srgb, var(--brand-primary-hover) 38%, transparent);
+  background: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--brand-primary) 22%, transparent),
+    color-mix(in srgb, var(--brand-primary-hover) 12%, transparent)
+  );
+}
+
+.quickTileIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: var(--space-sm);
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--card-border);
+  color: var(--accent-spiritual-text);
+}
+
+.quickTileTitle {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.quickTileMeta {
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+
+/* ── design-v2 (proto `Today`) ── */
+
+.heading {
+  padding-top: var(--space-xs);
+}
+
+.date {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.greeting {
+  margin: var(--space-xs) 0 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-3xl);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+.streakCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.streakMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.streakHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.streakFlame {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--accent-spiritual) 18%, transparent);
+  color: var(--accent-spiritual-text);
+}
+
+.streakTitle {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.week {
+  display: flex;
+  gap: 6px;
+  margin-top: var(--space-md);
+}
+
+.weekDay {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  height: 28px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.weekDay--done {
+  background: color-mix(in srgb, var(--accent-spiritual) 22%, transparent);
+  color: var(--accent-spiritual-text);
+}
+
+.weekDay--today {
+  border-color: color-mix(in srgb, var(--accent-spiritual) 55%, transparent);
+  color: var(--accent-spiritual-text);
+}
+
+.weekDay--idle {
+  background: var(--border-soft);
+  color: var(--text-muted);
+}
+
+.goalCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.goalValue {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.goalCaption {
+  margin-top: 2px;
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Verse of the day — parchment tint, gold rule, serif italic. */
+.verseCard {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--accent-spiritual) 6%, transparent);
+  box-shadow: none;
+}
+
+.verseCard::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent-spiritual), transparent);
+}
+
+.verseLabel {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+:root[data-design-v2='on'] .verseCard .verseText {
+  font-size: var(--fs-lg);
+  font-style: italic;
+  line-height: 1.45;
+}
+
+:root[data-design-v2='on'] .verseCard .verseRef {
+  margin-top: var(--space-sm);
+  font-weight: 600;
+  color: var(--accent-spiritual-text);
+}
+
+.levelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-tile);
+  background: var(--card-bg);
+  text-align: left;
+  color: inherit;
+}
+
+.levelMain {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.levelTitle {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.levelMeta {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.levelChevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
 }

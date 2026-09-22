@@ -9,6 +9,7 @@
 import { useState } from 'react';
 import type { z } from 'zod';
 import type { LessonBlock } from '../../../contracts/api/learning';
+import { Icon } from '../Icon';
 import { AnswerFeedback } from '../ui/AnswerFeedback';
 import { AnswerOption } from '../ui/AnswerOption';
 import { LESSON_BLOCK_PAYLOAD_SCHEMAS, type questionPayload } from './lessonBlockPayloads';
@@ -61,7 +62,15 @@ function QuestionBlock({ payload }: { payload: z.infer<typeof questionPayload> }
   );
 }
 
-function BlockByType({ blockType, payload }: { blockType: keyof typeof LESSON_BLOCK_PAYLOAD_SCHEMAS; payload: unknown }) {
+function BlockByType({
+  blockType,
+  payload,
+  richBlocks,
+}: {
+  blockType: keyof typeof LESSON_BLOCK_PAYLOAD_SCHEMAS;
+  payload: unknown;
+  richBlocks?: boolean;
+}) {
   switch (blockType) {
     case 'heading':
       return <h2 className={styles.heading}>{(payload as z.infer<typeof LESSON_BLOCK_PAYLOAD_SCHEMAS.heading>).text}</h2>;
@@ -72,7 +81,7 @@ function BlockByType({ blockType, payload }: { blockType: keyof typeof LESSON_BL
         typeof LESSON_BLOCK_PAYLOAD_SCHEMAS.scripture
       >;
       return (
-        <blockquote className={styles.scripture}>
+        <blockquote className={richBlocks ? styles.scriptureParchment : styles.scripture}>
           <p className={styles.scriptureText}>{text}</p>
           <footer className={styles.scriptureMeta}>
             <cite>{reference}</cite>
@@ -82,8 +91,23 @@ function BlockByType({ blockType, payload }: { blockType: keyof typeof LESSON_BL
         </blockquote>
       );
     }
-    case 'explanation':
-      return <p className={styles.explanation}>{(payload as z.infer<typeof LESSON_BLOCK_PAYLOAD_SCHEMAS.explanation>).text}</p>;
+    case 'explanation': {
+      const { text } = payload as z.infer<typeof LESSON_BLOCK_PAYLOAD_SCHEMAS.explanation>;
+      if (richBlocks) {
+        return (
+          <div className={styles.insight}>
+            <span className={styles.insightIcon}>
+              <Icon name="star" size={17} />
+            </span>
+            <div className={styles.insightBody}>
+              <p className={styles.insightKicker}>Інсайт</p>
+              <p className={styles.insightText}>{text}</p>
+            </div>
+          </div>
+        );
+      }
+      return <p className={styles.explanation}>{text}</p>;
+    }
     case 'glossary': {
       const { term, definition } = payload as z.infer<typeof LESSON_BLOCK_PAYLOAD_SCHEMAS.glossary>;
       return (
@@ -123,7 +147,8 @@ function BlockByType({ blockType, payload }: { blockType: keyof typeof LESSON_BL
   }
 }
 
-export function LessonBlockRenderer({ block }: { block: LessonBlock }) {
+/** `richBlocks` (Phase 3.5 §4 audit, designSystemV2 only): scripture reads as a parchment card and `explanation` becomes an "insight" callout, instead of the plain-paragraph legacy look. */
+export function LessonBlockRenderer({ block, richBlocks }: { block: LessonBlock; richBlocks?: boolean }) {
   const schema = LESSON_BLOCK_PAYLOAD_SCHEMAS[block.blockType as keyof typeof LESSON_BLOCK_PAYLOAD_SCHEMAS];
   if (!schema) {
     logUnknownBlock(block, 'is not a recognized block type');
@@ -134,5 +159,11 @@ export function LessonBlockRenderer({ block }: { block: LessonBlock }) {
     logUnknownBlock(block, 'has an invalid payload');
     return <UnknownBlock />;
   }
-  return <BlockByType blockType={block.blockType as keyof typeof LESSON_BLOCK_PAYLOAD_SCHEMAS} payload={parsed.data} />;
+  return (
+    <BlockByType
+      blockType={block.blockType as keyof typeof LESSON_BLOCK_PAYLOAD_SCHEMAS}
+      payload={parsed.data}
+      richBlocks={richBlocks}
+    />
+  );
 }

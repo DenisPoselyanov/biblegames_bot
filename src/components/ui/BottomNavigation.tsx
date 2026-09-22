@@ -17,6 +17,13 @@ interface BottomNavigationProps<T extends string> {
   /** Also renders a same-height spacer so fixed nav doesn't cover page content — mirrors react-vant's `placeholder`. */
   withPlaceholder?: boolean;
   className?: string;
+  /**
+   * `'aurora'` (WS2, `PHASE_3_5_DESIGN_V2_VISUAL_MIGRATION.md` §6): floating
+   * glass pill instead of the edge-to-edge bar, ported from
+   * `proto/design-v2`'s `TabBar`. Defaults to `'default'` so every other
+   * consumer (fixtures, tests) keeps today's look unless it opts in.
+   */
+  variant?: 'default' | 'aurora';
 }
 
 /**
@@ -31,10 +38,15 @@ export function BottomNavigation<T extends string>({
   onSelect,
   withPlaceholder,
   className,
+  variant = 'default',
 }: BottomNavigationProps<T>) {
+  const aurora = variant === 'aurora';
   return (
     <>
-      <nav className={cx(styles.nav, className)} aria-label="Основна навігація">
+      <nav
+        className={cx(styles.nav, aurora && styles['nav--aurora'], className)}
+        aria-label="Основна навігація"
+      >
         <div className={styles.inner}>
           {items.map((item) => {
             const isActive = item.key === active;
@@ -47,7 +59,11 @@ export function BottomNavigation<T extends string>({
                 onClick={() => onSelect(item.key)}
               >
                 <span className={styles.iconBox}>
-                  <Icon name={item.icon} size={22} />
+                  <Icon
+                    name={item.icon}
+                    size={aurora ? 19 : 22}
+                    strokeWidth={aurora ? (isActive ? 2.2 : 1.8) : undefined}
+                  />
                 </span>
                 <span>{item.label}</span>
               </button>
