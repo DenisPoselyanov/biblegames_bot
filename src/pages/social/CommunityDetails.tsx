@@ -2,7 +2,9 @@ import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTelegram } from '../../hooks/useTelegram';
 import { communityManager } from '../../lib/communities';
-import { AppPage, ErrorState, PageHeader } from '../../components/ui';
+import { Icon } from '../../components/Icon';
+import { isFeatureEnabled } from '../../lib/flags';
+import { AppPage, Button, ContentCard, ErrorState, ListRow, PageHeader, Pill } from '../../components/ui';
 import styles from './Social.module.css';
 
 export function CommunityDetails() {
@@ -10,6 +12,7 @@ export function CommunityDetails() {
   const { communityId } = useParams<{ communityId: string }>();
   const { userId } = useTelegram();
   const [version, setVersion] = useState(0);
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
 
   const community = useMemo(
     () => (communityId ? communityManager.getCommunity(communityId) : undefined),
@@ -58,7 +61,11 @@ export function CommunityDetails() {
         onBack={() => navigate('/social/communities')}
         title={community.name}
         action={
-          community.isPublic ? (
+          designSystemV2 ? (
+            <Pill tone={community.isPublic ? 'accent' : 'neutral'}>
+              {community.isPublic ? 'PUBLIC' : 'PRIVATE'}
+            </Pill>
+          ) : community.isPublic ? (
             <span className={styles.badge}>PUBLIC</span>
           ) : (
             <span className={styles.badge}>PRIVATE</span>
@@ -66,44 +73,89 @@ export function CommunityDetails() {
         }
       />
 
-      <section className={styles.card}>
-        <p className={styles.muted}>{community.description}</p>
-        <p className={styles.muted}>Учасників: {community.memberIds.length}</p>
+      {designSystemV2 ? (
+        <ContentCard variant="compact">
+          <p className={styles.muted}>{community.description}</p>
+          <p className={styles.muted}>Учасників: {community.memberIds.length}</p>
 
-        {isCreator ? (
-          <button type="button" className={styles.btnSecondary} onClick={handleDelete}>
-            Видалити спільноту
-          </button>
-        ) : isMember ? (
-          <button type="button" className={styles.btnSecondary} onClick={handleLeave}>
-            Покинути
-          </button>
-        ) : community.isPublic ? (
-          <button type="button" className={styles.btnPrimary} onClick={handleJoin}>
-            Приєднатись
-          </button>
-        ) : (
-          <p className={styles.muted}>Це приватна спільнота</p>
-        )}
-      </section>
+          {isCreator ? (
+            <Button variant="danger" onClick={handleDelete}>
+              Видалити спільноту
+            </Button>
+          ) : isMember ? (
+            <Button variant="secondary" onClick={handleLeave}>
+              Покинути
+            </Button>
+          ) : community.isPublic ? (
+            <Button onClick={handleJoin}>Приєднатись</Button>
+          ) : (
+            <p className={styles.muted}>Це приватна спільнота</p>
+          )}
+        </ContentCard>
+      ) : (
+        <section className={styles.card}>
+          <p className={styles.muted}>{community.description}</p>
+          <p className={styles.muted}>Учасників: {community.memberIds.length}</p>
 
-      <section className={styles.card}>
-        <h2 className={styles.title} style={{ fontSize: '1.1rem' }}>
-          Учасники
-        </h2>
-        <ul className={styles.list}>
-          {community.memberIds.map((id) => (
-            <li key={id} className={styles.row}>
-              <span>{id}{id === community.creatorId ? ' (creator)' : ''}</span>
-              {isCreator && id !== community.creatorId && (
-                <button type="button" className={styles.miniBtn} onClick={() => handleRemoveMember(id)}>
-                  Видалити
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      </section>
+          {isCreator ? (
+            <button type="button" className={styles.btnSecondary} onClick={handleDelete}>
+              Видалити спільноту
+            </button>
+          ) : isMember ? (
+            <button type="button" className={styles.btnSecondary} onClick={handleLeave}>
+              Покинути
+            </button>
+          ) : community.isPublic ? (
+            <button type="button" className={styles.btnPrimary} onClick={handleJoin}>
+              Приєднатись
+            </button>
+          ) : (
+            <p className={styles.muted}>Це приватна спільнота</p>
+          )}
+        </section>
+      )}
+
+      {designSystemV2 ? (
+        <ContentCard variant="compact">
+          <h2 className={styles.title} style={{ fontSize: '1.1rem' }}>
+            Учасники
+          </h2>
+          <div>
+            {community.memberIds.map((id) => (
+              <ListRow
+                key={id}
+                leading={<Icon name="community" size={18} />}
+                title={id === community.creatorId ? `${id} (creator)` : id}
+                trailing={
+                  isCreator && id !== community.creatorId ? (
+                    <Button size="sm" variant="tertiary" onClick={() => handleRemoveMember(id)}>
+                      Видалити
+                    </Button>
+                  ) : undefined
+                }
+              />
+            ))}
+          </div>
+        </ContentCard>
+      ) : (
+        <section className={styles.card}>
+          <h2 className={styles.title} style={{ fontSize: '1.1rem' }}>
+            Учасники
+          </h2>
+          <ul className={styles.list}>
+            {community.memberIds.map((id) => (
+              <li key={id} className={styles.row}>
+                <span>{id}{id === community.creatorId ? ' (creator)' : ''}</span>
+                {isCreator && id !== community.creatorId && (
+                  <button type="button" className={styles.miniBtn} onClick={() => handleRemoveMember(id)}>
+                    Видалити
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </AppPage>
   );
 }

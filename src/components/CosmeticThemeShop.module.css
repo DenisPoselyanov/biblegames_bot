@@ -148,3 +148,40 @@
   border: none;
   color: var(--on-primary);
 }
+
+/* ── Phase 3.5 WS6: standard `ContentCard` surface replaces the legacy
+   glass-blur card (§11.5 — glass is a controlled exception, not the base
+   card treatment). Carousel sizing/scroll-snap stay, `ContentCard` owns
+   bg/border/shadow/padding. ── */
+
+.cardV2 {
+  flex: 0 0 240px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.cardV2 h3 {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.25;
+  width: 100%;
+}
+
+.cardV2 p {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.35;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

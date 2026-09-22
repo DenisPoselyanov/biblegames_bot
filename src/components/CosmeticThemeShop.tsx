@@ -6,6 +6,8 @@ import { Icon } from './Icon';
 import { COSMETIC_THEMES } from '../data/cosmetics';
 import { haptic } from '../lib/telegram';
 import { MotionStagger, MotionStaggerItem } from './motion';
+import { isFeatureEnabled } from '../lib/flags';
+import { Button, ContentCard, Pill } from './ui';
 import styles from './CosmeticThemeShop.module.css';
 
 interface CosmeticThemeShopProps {
@@ -18,6 +20,7 @@ export function CosmeticThemeShop({ enter = true }: CosmeticThemeShopProps) {
   const { purchaseTheme } = useEconomy();
   const { setActiveTheme } = usePreferences();
   const { showToast } = useToast();
+  const designSystemV2 = isFeatureEnabled('designSystemV2');
 
   const handleSelectTheme = (themeId: string) => {
     haptic.selection();
@@ -42,28 +45,53 @@ export function CosmeticThemeShop({ enter = true }: CosmeticThemeShopProps) {
       {COSMETIC_THEMES.map((theme) => {
         const isUnlocked = profile.unlockedThemes.includes(theme.id) || theme.price === 0;
         const isActive = profile.activeTheme === theme.id;
-        return (
-          <MotionStaggerItem as="div" key={theme.id} className={`${styles.card} ${isActive ? styles.cardActive : ''}`}>
-            <div className={styles.preview} style={{ background: theme.preview.background }}>
-              <div className={styles.previewSurface} style={{ background: theme.preview.surface }}>
-                <span style={{ color: theme.preview.text }}>Aa</span>
-                <span className={styles.accentDot} style={{ background: theme.preview.accent }} />
-              </div>
-              <span className={styles.primaryDot} style={{ background: theme.preview.primary }} />
+        const preview = (
+          <div className={styles.preview} style={{ background: theme.preview.background }}>
+            <div className={styles.previewSurface} style={{ background: theme.preview.surface }}>
+              <span style={{ color: theme.preview.text }}>Aa</span>
+              <span className={styles.accentDot} style={{ background: theme.preview.accent }} />
             </div>
-            <h3>{theme.title}</h3>
-            <p>{theme.description}</p>
-            {isActive ? (
-              <span className={styles.badgeActive}>Активна</span>
-            ) : isUnlocked ? (
-              <button type="button" className={styles.btnApply} onClick={() => handleSelectTheme(theme.id)}>
-                Застосувати
-              </button>
+            <span className={styles.primaryDot} style={{ background: theme.preview.primary }} />
+          </div>
+        );
+        return (
+          <MotionStaggerItem as="div" key={theme.id}>
+            {designSystemV2 ? (
+              <ContentCard variant="compact" className={styles.cardV2}>
+                {preview}
+                <h3>{theme.title}</h3>
+                <p>{theme.description}</p>
+                {isActive ? (
+                  <Pill tone="accent">Активна</Pill>
+                ) : isUnlocked ? (
+                  <Button size="sm" variant="secondary" onClick={() => handleSelectTheme(theme.id)}>
+                    Застосувати
+                  </Button>
+                ) : (
+                  <Button size="sm" variant="gold" onClick={() => void handleBuyTheme(theme.id)}>
+                    <Icon name="star" size={14} />
+                    {theme.price}
+                  </Button>
+                )}
+              </ContentCard>
             ) : (
-              <button type="button" className={styles.btnBuy} onClick={() => void handleBuyTheme(theme.id)}>
-                <Icon name="star" size={14} />
-                {theme.price}
-              </button>
+              <div className={`${styles.card} ${isActive ? styles.cardActive : ''}`}>
+                {preview}
+                <h3>{theme.title}</h3>
+                <p>{theme.description}</p>
+                {isActive ? (
+                  <span className={styles.badgeActive}>Активна</span>
+                ) : isUnlocked ? (
+                  <button type="button" className={styles.btnApply} onClick={() => handleSelectTheme(theme.id)}>
+                    Застосувати
+                  </button>
+                ) : (
+                  <button type="button" className={styles.btnBuy} onClick={() => void handleBuyTheme(theme.id)}>
+                    <Icon name="star" size={14} />
+                    {theme.price}
+                  </button>
+                )}
+              </div>
             )}
           </MotionStaggerItem>
         );
