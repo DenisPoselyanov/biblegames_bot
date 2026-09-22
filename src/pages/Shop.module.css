@@ -38,17 +38,36 @@
   gap: 1rem;
 }
 
-/* ── Avatar card (Phase 3.5 WS6): standard `ContentCard` surface replaces
-   the legacy glass-blur card (§11.5 — glass is a controlled exception, not
-   the base card treatment). ── */
+/* ── Avatar card (Phase 3.5 WS6, re-skinned §7 audit): full-bleed `CoverArt`
+   top replaces the flat emoji badge — same "screen's main object" cover
+   pattern as HeroCard/PlayHub grid cards, not a bespoke look. ── */
 
 .avatarCardV2 {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.65rem;
-  text-align: center;
   height: 100%;
+}
+
+.avatarCoverV2 {
+  position: relative;
+  height: 84px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarCoverArt {
+  position: absolute;
+  inset: 0;
+}
+
+.avatarEmojiV2 {
+  position: relative;
+  z-index: var(--z-base);
+  font-size: 2.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
 }
 
 .avatarInfoV2 {
@@ -56,6 +75,8 @@
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  padding: var(--space-md);
+  text-align: center;
 }
 
 .avatarInfoV2 h3 {

@@ -28,3 +28,60 @@
 .segmentFilled {
   background: linear-gradient(90deg, var(--progress-fill), var(--progress-ramp-end));
 }
+
+/* ── §4 Phase 3.5 audit — cumulative block stack (v2) ── */
+
+.blocksStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ── §4 Phase 3.5 audit — lesson completion overlay ── */
+
+.completionModal {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  max-width: 320px;
+}
+
+.completionCover {
+  position: absolute;
+  inset: 0;
+}
+
+.completionContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-sm);
+  padding: var(--space-xl) var(--space-lg) var(--space-lg);
+}
+
+.completionTitle {
+  margin: var(--space-sm) 0 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.completionDesc {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.completionLater {
+  background: none;
+  border: none;
+  padding: var(--space-sm);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}

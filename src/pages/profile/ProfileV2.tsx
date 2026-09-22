@@ -13,11 +13,13 @@ import { useNavigate } from 'react-router-dom';
 import {
   AchievementBadge,
   AppPage,
+  CoverArt,
   Dialog,
   ListRow,
   MetricTile,
   MetricTileGrid,
   PageHeader,
+  ProgressRing,
   SectionHeader,
   SegmentedControl,
   ThemeSwatch,
@@ -33,6 +35,7 @@ import { getAvatarById, getCosmeticThemeById } from '../../data/cosmetics';
 import { communityManager } from '../../lib/communities';
 import { friendChallengeManager } from '../../lib/friendChallenges';
 import { PlayerRankCard } from '../../components/PlayerRankCard';
+import { computeWisdomProgress, formatRankLabel } from '../../lib/practiceProgression';
 import { isFeatureEnabled } from '../../lib/flags';
 import styles from './ProfileV2.module.css';
 
@@ -61,6 +64,11 @@ export function ProfileV2() {
   const avatarEmoji = profile.avatar ? (getAvatarById(profile.avatar)?.emoji ?? '📖') : '📖';
   const activeThemeData = getCosmeticThemeById(activeTheme);
   const activeThemeTitle = activeThemeData?.title ?? activeTheme;
+  const rankProgress = computeWisdomProgress(profile.playerRank);
+  const rankProgressPct =
+    rankProgress.required > 0
+      ? Math.min(100, Math.round((rankProgress.current / rankProgress.required) * 100))
+      : 100;
 
   const handleAppearanceModeChange = (mode: 'dark' | 'light') => {
     haptic.selection();
@@ -82,21 +90,50 @@ export function ProfileV2() {
 
   return (
     <AppPage className={styles.page}>
-      <PageHeader
-        kicker="Профіль"
-        title={displayName}
-        description={`Обліковий запис активний · ID ${userId}`}
-        action={
+      {designSystemV2 ? (
+        <div className={styles.hero}>
+          <CoverArt seed={userId} glyph="wave" className={styles.heroCover} />
           <button
             type="button"
-            className={styles.avatarBtn}
+            className={styles.heroSettingsBtn}
             onClick={() => navigate('/profile/settings')}
             aria-label="Налаштування"
           >
-            {avatarEmoji}
+            <Icon name="settings" size={18} />
           </button>
-        }
-      />
+          <div className={styles.heroBody}>
+            <div className={styles.heroAvatarWrap}>
+              <ProgressRing
+                value={rankProgressPct}
+                size={72}
+                strokeWidth={5}
+                centerLabel={<span className={styles.heroAvatarEmoji}>{avatarEmoji}</span>}
+                label="Прогрес рангу"
+              />
+            </div>
+            <div className={styles.heroInfo}>
+              <p className={styles.heroName}>{displayName}</p>
+              <p className={styles.heroRank}>{formatRankLabel(profile.playerRank.tier, profile.playerRank.plaque)}</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <PageHeader
+          kicker="Профіль"
+          title={displayName}
+          description={`Обліковий запис активний · ID ${userId}`}
+          action={
+            <button
+              type="button"
+              className={styles.avatarBtn}
+              onClick={() => navigate('/profile/settings')}
+              aria-label="Налаштування"
+            >
+              {avatarEmoji}
+            </button>
+          }
+        />
+      )}
 
       <PlayerRankCard playerRank={profile.playerRank} />
 

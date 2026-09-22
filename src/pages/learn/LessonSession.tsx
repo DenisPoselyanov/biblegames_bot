@@ -18,7 +18,19 @@ import {
   useStartLessonSession,
 } from '../../queries/useLearning';
 import { LessonBlockRenderer } from '../../components/learn/LessonBlockRenderer';
-import { AppPage, Button, CelebrationLayer, ContentCard, ErrorState, PageHeader, ProgressBar } from '../../components/ui';
+import { Icon } from '../../components/Icon';
+import {
+  AppPage,
+  Button,
+  CelebrationLayer,
+  ContentCard,
+  CoverArt,
+  Dialog,
+  ErrorState,
+  PageHeader,
+  ProgressBar,
+  ProgressRing,
+} from '../../components/ui';
 import { AppSkeleton } from '../../components/skeletons';
 import styles from './LessonSession.module.css';
 
@@ -44,6 +56,8 @@ export function LessonSession() {
   // effective index is derived from the server's checkpoint below instead of
   // being set from an effect (avoids a setState-in-effect cascade).
   const [advancedIndex, setAdvancedIndex] = useState<number | null>(null);
+  const [showCompletion, setShowCompletion] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!lessonId) return;
@@ -79,6 +93,9 @@ export function LessonSession() {
   useEffect(() => {
     indexRef.current = index;
   }, [index]);
+  useEffect(() => {
+    if (designSystemV2) bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [index, designSystemV2]);
   useEffect(() => {
     if (!lessonId || !session || trackedSessionRef.current === session.id) return;
     trackedSessionRef.current = session.id;
@@ -123,7 +140,11 @@ export function LessonSession() {
         onSuccess: () => {
           completedRef.current = true;
           if (lessonId) trackEvent('lesson_completed', { lessonId, blockCount: blocks.length });
-          navigate('/', { replace: true });
+          if (designSystemV2) {
+            setShowCompletion(true);
+          } else {
+            navigate('/', { replace: true });
+          }
         },
       });
       return;
@@ -142,17 +163,60 @@ export function LessonSession() {
       )}
       <CelebrationLayer active={celebrateComplete} />
 
-      <ContentCard className={styles.blockCard}>
-        {currentBlock ? (
-          <LessonBlockRenderer block={currentBlock} />
-        ) : (
-          <p>У цьому уроці ще немає вмісту.</p>
-        )}
-      </ContentCard>
+      {/* §4 Phase 3.5 audit: v2 shows every block read so far cumulatively
+          (scroll down), not just the current one — v1's one-block-at-a-time
+          shell is untouched below. */}
+      {designSystemV2 ? (
+        <div className={styles.blocksStack}>
+          {blocks.slice(0, index + 1).map((block) =>
+            block.blockType === 'question' ? (
+              <ContentCard key={block.id}>
+                <LessonBlockRenderer block={block} richBlocks />
+              </ContentCard>
+            ) : (
+              <LessonBlockRenderer key={block.id} block={block} richBlocks />
+            ),
+          )}
+          {blocks.length === 0 && <p>У цьому уроці ще немає вмісту.</p>}
+          <div ref={bottomRef} />
+        </div>
+      ) : (
+        <ContentCard className={styles.blockCard}>
+          {currentBlock ? (
+            <LessonBlockRenderer block={currentBlock} />
+          ) : (
+            <p>У цьому уроці ще немає вмісту.</p>
+          )}
+        </ContentCard>
+      )}
 
       <Button fullWidth onClick={advance} disabled={progress.isPending || complete.isPending}>
         {isLast ? 'Завершити урок' : 'Далі'}
       </Button>
+
+      {designSystemV2 && (
+        <Dialog open={showCompletion} className={styles.completionModal}>
+          <CoverArt seed={lessonId ?? 'lesson-complete'} glyph="rays" scrim className={styles.completionCover} />
+          <div className={styles.completionContent}>
+            <ProgressRing value={100} size={84} strokeWidth={7} onColor centerLabel={<Icon name="check" size={30} />} label="Урок завершено" />
+            <h2 className={styles.completionTitle}>Урок завершено</h2>
+            <p className={styles.completionDesc}>Закріпи прочитане практикою, поки воно свіже</p>
+            <Button
+              variant="onColor"
+              fullWidth
+              onClick={() => {
+                if (lessonId) trackEvent('today_action_selected', { action: 'post_lesson_practice' });
+                navigate('/practice');
+              }}
+            >
+              До практики
+            </Button>
+            <button type="button" className={styles.completionLater} onClick={() => navigate('/', { replace: true })}>
+              Пізніше
+            </button>
+          </div>
+        </Dialog>
+      )}
     </AppPage>
   );
 }

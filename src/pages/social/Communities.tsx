@@ -5,7 +5,7 @@ import { communityManager } from '../../lib/communities';
 import { Icon } from '../../components/Icon';
 import { EmptyState } from '../../components/EmptyState';
 import { isFeatureEnabled } from '../../lib/flags';
-import { AppPage, Button, ContentCard, ListRow, PageHeader, Pill, SearchField } from '../../components/ui';
+import { AppPage, Button, ContentCard, HeroCard, ListRow, PageHeader, Pill, SearchField } from '../../components/ui';
 import styles from './Social.module.css';
 
 export function Communities() {
@@ -112,6 +112,25 @@ export function Communities() {
         title="Спільноти"
         description="Створи власну або приєднайся до публічної"
       />
+
+      {/* §8 Phase 3.5 audit: illustrated hero banner leads the section — the
+          screen had zero HeroCard/CoverArt use before this. Purely visual;
+          the form below (unchanged) is still the actual action. */}
+      {designSystemV2 && (
+        <HeroCard
+          tone="cover"
+          coverSeed="communities-hero"
+          coverGlyph="rays"
+          kicker="Спільноти"
+          title="Разом вивчати легше"
+          description="Створи власну спільноту або приєднайся до публічної"
+          footer={
+            <Pill tone="onColor" icon={<Icon name="community" size={12} />}>
+              {data.mine.length} приєднано
+            </Pill>
+          }
+        />
+      )}
 
       {/* Phase 3.5 WS6: `ContentCard` replaces the bespoke `.card` surface;
           the form fields themselves are token-driven already and shared

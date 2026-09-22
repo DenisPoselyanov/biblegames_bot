@@ -14,6 +14,7 @@ import {
   AppPage,
   Button,
   ContentCard,
+  HeroCard,
   ListRow,
   PageHeader,
   Pill,
@@ -157,6 +158,25 @@ export function Challenges() {
           )
         }
       />
+
+      {/* §8 Phase 3.5 audit: illustrated hero banner leads the section — the
+          screen had zero HeroCard/CoverArt use before this. Purely visual;
+          the form below (unchanged) is still the actual action. */}
+      {designSystemV2 && (
+        <HeroCard
+          tone="cover"
+          coverSeed="challenges-hero"
+          coverGlyph="path"
+          kicker="Виклики друзів"
+          title="Кинь виклик"
+          description="10 запитань на вибрану тему, 48 годин на відповідь"
+          footer={
+            <Pill tone="onColor" icon={<Icon name="challenge" size={12} />}>
+              {data.pending.length} очікують відповіді
+            </Pill>
+          }
+        />
+      )}
 
       {/* Phase 3.5 WS6: `ContentCard` replaces the bespoke `.card` surface;
           the 3-option difficulty picker becomes a `SegmentedControl`

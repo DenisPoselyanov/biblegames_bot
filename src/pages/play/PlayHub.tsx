@@ -6,7 +6,7 @@ import type { IconName } from '../../components/Icon';
 import { MotionStagger, MotionStaggerItem } from '../../components/motion';
 import { useMotionEntrance } from '../../hooks/useMotionEntrance';
 import { isFeatureEnabled } from '../../lib/flags';
-import { Button, CoverArt, HeroCard, Pill, cx } from '../../components/ui';
+import { AppPage, Button, CoverArt, HeroCard, PageHeader, Pill, SectionHeader, cx } from '../../components/ui';
 import styles from './PlayHub.module.css';
 
 type CoverGlyph = 'rays' | 'path' | 'wave';
@@ -127,11 +127,11 @@ function ModeCardV2({ mode, featured }: { mode: GameMode; featured?: boolean }) 
 
   const body = (
     <>
-      <span className={styles.modeArt}>
-        <CoverArt seed={mode.id} glyph={art.glyph} className={styles.modeArtCover} />
-        <Icon name={art.icon} size={40} className={styles.modeArtIcon} />
+      <span className={styles.modeCardArt}>
+        <CoverArt seed={mode.id} glyph={art.glyph} className={styles.modeCardArtCover} />
+        <Icon name={art.icon} size={32} className={styles.modeCardArtIcon} />
       </span>
-      <span className={styles.modeBody}>
+      <span className={styles.modeCardBody}>
         <span className={styles.modeHeader}>
           <h2>{mode.title}</h2>
           {mode.badge && <Pill tone="accent">{mode.badge}</Pill>}
@@ -145,12 +145,12 @@ function ModeCardV2({ mode, featured }: { mode: GameMode; featured?: boolean }) 
 
   if (mode.available) {
     return (
-      <Link to={mode.path} className={styles.modeRow}>
+      <Link to={mode.path} className={styles.modeCard}>
         {body}
       </Link>
     );
   }
-  return <div className={cx(styles.modeRow, styles.disabled)}>{body}</div>;
+  return <div className={cx(styles.modeCard, styles.disabled)}>{body}</div>;
 }
 
 export function PlayHub() {
@@ -159,23 +159,28 @@ export function PlayHub() {
   const [featured, ...rest] = GAME_MODES;
 
   return (
-    <section className={styles.page}>
-      <header className={styles.header}>
-        <h1>Режими гри</h1>
-        <p>Обери, як хочеш грати сьогодні</p>
-      </header>
+    <AppPage className={styles.page}>
+      <PageHeader kicker="Гра" title="Режими гри" description="Обери, як хочеш грати сьогодні" />
 
       {designSystemV2 ? (
-        <MotionStagger as="div" className={styles.modesV2} enter={shouldEnter}>
-          <MotionStaggerItem as="div">
-            <ModeCardV2 mode={featured} featured />
-          </MotionStaggerItem>
-          {rest.map((mode) => (
-            <MotionStaggerItem as="div" key={mode.id}>
-              <ModeCardV2 mode={mode} />
+        <div className={styles.modesV2}>
+          <MotionStagger as="div" enter={shouldEnter}>
+            <MotionStaggerItem as="div">
+              <ModeCardV2 mode={featured} featured />
             </MotionStaggerItem>
-          ))}
-        </MotionStagger>
+          </MotionStagger>
+
+          <section>
+            <SectionHeader title="Усі режими" />
+            <MotionStagger as="div" className={styles.modesGrid} enter={shouldEnter}>
+              {rest.map((mode) => (
+                <MotionStaggerItem as="div" key={mode.id}>
+                  <ModeCardV2 mode={mode} />
+                </MotionStaggerItem>
+              ))}
+            </MotionStagger>
+          </section>
+        </div>
       ) : (
         <MotionStagger as="ul" className={styles.modes} enter={shouldEnter}>
           {GAME_MODES.map((mode) => {
@@ -229,6 +234,6 @@ export function PlayHub() {
           })}
         </MotionStagger>
       )}
-    </section>
+    </AppPage>
   );
 }

@@ -28,17 +28,28 @@ import {
   OfflineState,
   PageHeader,
   Pill,
+  SectionHeader,
 } from '../../components/ui';
 import { Icon } from '../../components/Icon';
+import type { IconName } from '../../components/Icon';
 import { ListPageSkeleton } from '../../components/skeletons';
 import styles from './Today.module.css';
 
+/** Local time, not server data — a greeting is presentation, not a fact the backend needs to own. */
+function greetingForHour(hour: number): string {
+  if (hour < 5) return 'Доброї ночі';
+  if (hour < 12) return 'Доброго ранку';
+  if (hour < 18) return 'Доброго дня';
+  return 'Доброго вечора';
+}
+
 export function Today() {
-  const { userId } = useAuthSession();
+  const { userId, displayName } = useAuthSession();
   const online = useOnlineStatus();
   const navigate = useNavigate();
   const { data, isLoading, isError, refetch } = useTodayView(userId);
   const designSystemV2 = isFeatureEnabled('designSystemV2');
+  const greeting = `${greetingForHour(new Date().getHours())}, ${displayName}`;
 
   const allDoneToday = Boolean(data && data.dailyGoal.completed >= data.dailyGoal.target);
   const celebrate = useEventOnce(allDoneToday && data ? `daily-goal:${data.date}` : null);
@@ -86,7 +97,7 @@ export function Today() {
 
   return (
     <AppPage className={styles.page}>
-      <PageHeader kicker="Сьогодні" title="Твій день" />
+      <PageHeader kicker="Сьогодні" title={designSystemV2 ? greeting : 'Твій день'} />
       <CelebrationLayer active={celebrate} />
 
       {/* §9.2 priority 1: continue active lesson */}
@@ -191,6 +202,33 @@ export function Today() {
         />
       </MetricTileGrid>
 
+      {designSystemV2 && (
+        <section>
+          <SectionHeader title="Швидкий підхід" />
+          <div className={styles.quickGrid}>
+            <QuickTile
+              icon="brain"
+              title="Практика"
+              meta="Тренуй вивчене"
+              emphasis
+              onClick={() => {
+                trackEvent('today_action_selected', { action: 'quick_practice' });
+                navigate('/practice');
+              }}
+            />
+            <QuickTile
+              icon="clock"
+              title="Повторення"
+              meta={dueReview ? 'Є що повторити' : 'Заплановане повторення'}
+              onClick={() => {
+                trackEvent('today_action_selected', { action: 'quick_review' });
+                navigate('/review');
+              }}
+            />
+          </div>
+        </section>
+      )}
+
       {verseOfDay && (
         <ContentCard>
           <p className={styles.verseText}>{verseOfDay.text}</p>
@@ -204,5 +242,33 @@ export function Today() {
         <p className={styles.recentOutcome}>Востаннє: {recentOutcome.title}</p>
       )}
     </AppPage>
+  );
+}
+
+function QuickTile({
+  icon,
+  title,
+  meta,
+  onClick,
+  emphasis,
+}: {
+  icon: IconName;
+  title: string;
+  meta: string;
+  onClick: () => void;
+  emphasis?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      className={`${styles.quickTile}${emphasis ? ` ${styles.quickTileEmphasis}` : ''}`}
+      onClick={onClick}
+    >
+      <span className={styles.quickTileIcon}>
+        <Icon name={icon} size={18} />
+      </span>
+      <span className={styles.quickTileTitle}>{title}</span>
+      <span className={styles.quickTileMeta}>{meta}</span>
+    </button>
   );
 }

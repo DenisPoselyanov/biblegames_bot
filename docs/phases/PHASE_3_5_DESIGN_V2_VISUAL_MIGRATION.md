@@ -178,6 +178,13 @@ than inventing a new one:
 6. **WS6 — Shop/Social secondary routes.**
 7. **WS7 — Accessibility + performance re-audit, flag flip, rollback
    verification, `/proto` retirement.**
+8. **WS8 — Post-flip visual audit follow-up** (added after WS7 closed the
+   phase; not in the original plan). Closes coverage gaps a full-screen
+   sweep found after the flag flip: `Today`/`PlayHub`/`LessonSession`/
+   `ProfileV2`/`Shop`/`Communities`/`Challenges` all still had `designSystemV2`
+   surfaces that hadn't received the hero-card/`CoverArt` treatment the rest
+   of the phase established. All additions remain gated behind
+   `designSystemV2` per the phase's own rollback contract (§11.4).
 
 Sequencing is a recommendation, not a contract — same caveat every other
 phase doc in this repo carries (`README.md`'s "план не виконується сліпо").

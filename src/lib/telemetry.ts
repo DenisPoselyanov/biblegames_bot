@@ -47,7 +47,9 @@ export interface TelemetryPayloadMap {
   route_redirect_exit: Record<string, unknown>;
   route_new_flow_completed: Record<string, unknown>;
   today_viewed: { hasActiveLesson: boolean; hasDueReview: boolean; allDoneToday: boolean };
-  today_action_selected: { action: 'continue_lesson' | 'review' | 'start_learning' };
+  today_action_selected: {
+    action: 'continue_lesson' | 'review' | 'start_learning' | 'quick_practice' | 'quick_review' | 'post_lesson_practice';
+  };
   lesson_started: { lessonId: string };
   lesson_resumed: { lessonId: string; checkpointBlockId: string };
   lesson_completed: { lessonId: string; blockCount: number };

@@ -9,7 +9,7 @@ import { haptic } from '../lib/telegram';
 import { MotionStagger, MotionStaggerItem } from '../components/motion';
 import { useMotionEntrance } from '../hooks/useMotionEntrance';
 import { isFeatureEnabled } from '../lib/flags';
-import { AppPage, Button, ContentCard, PageHeader, Pill, SectionHeader } from '../components/ui';
+import { AppPage, Button, ContentCard, CoverArt, PageHeader, Pill, SectionHeader } from '../components/ui';
 import styles from './Shop.module.css';
 
 export function Shop() {
@@ -72,9 +72,10 @@ export function Shop() {
             return (
               <MotionStaggerItem as="div" key={avatar.id}>
                 {designSystemV2 ? (
-                  <ContentCard variant="compact" className={styles.avatarCardV2}>
-                    <div className={styles.avatarVisual}>
-                      <span className={styles.avatarEmoji}>{avatar.emoji}</span>
+                  <ContentCard flush className={styles.avatarCardV2}>
+                    <div className={styles.avatarCoverV2}>
+                      <CoverArt seed={avatar.id} glyph="rays" className={styles.avatarCoverArt} />
+                      <span className={styles.avatarEmojiV2}>{avatar.emoji}</span>
                     </div>
                     <div className={styles.avatarInfoV2}>
                       <h3>{avatar.title}</h3>
