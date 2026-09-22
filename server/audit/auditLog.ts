@@ -17,6 +17,17 @@ export interface AuditActor {
   authSource: string | null;
 }
 
+/**
+ * The actor for an automated action with no human at the keyboard — a job
+ * runner, a deterministic validator (Phase 4 WS7, spec §7/§14 "system actions
+ * attributed to a `system` actor distinct from human actors"). `authSource`
+ * here is intentionally not a member of the `@contracts` `AuthSource` enum:
+ * that enum is closed to real end-user authentication methods, while
+ * `AuditActor.authSource` is a plain string precisely so a non-human actor
+ * can be recorded without stretching what "authentication source" means.
+ */
+export const SYSTEM_ACTOR: AuditActor = { userId: null, authSource: 'system' };
+
 export interface AuditRecord {
   /** ISO-8601 timestamp of the action. */
   at: string;

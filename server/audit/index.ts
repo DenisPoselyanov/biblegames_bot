@@ -10,7 +10,7 @@ export type {
   AuditResult,
   AuditQuery,
 } from './auditLog';
-export { buildAuditRecord, redactAuditMetadata, createMemoryAuditLog } from './auditLog';
+export { buildAuditRecord, redactAuditMetadata, createMemoryAuditLog, SYSTEM_ACTOR } from './auditLog';
 
 /** Pick the audit adapter for the active storage provider (Phase 1 §6.4). */
 export function createAuditLog(config: ServerConfig): AuditLog {

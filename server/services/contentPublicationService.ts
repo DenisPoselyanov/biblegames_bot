@@ -12,6 +12,8 @@
  * version's membership again" so the superseded version is never deleted and
  * `getLatest()` stays the single source of truth for "what's active."
  */
+import type { AuditActor, AuditLog } from '../audit';
+import { buildAuditRecord } from '../audit';
 import type { ContentRepositories } from '../domains/content/repository';
 import type { ContentSetVersionRecord, QuestionRevisionRecord } from '../domains/content/types';
 import type { LearningRepositories } from '../domains/learning/repository';
@@ -19,6 +21,19 @@ import type { LessonRevisionRecord } from '../domains/learning/types';
 import type { ScriptureEvidenceRepository } from '../domains/shared/scriptureEvidenceRepository';
 import type { ValidationFindingRepository } from '../domains/shared/validationFindingsRepository';
 import { AppError } from '../lib/errors';
+
+/**
+ * Optional — omitted in most tests and wherever there's no request context
+ * yet (WS8's future Studio route is the real caller). When present, every
+ * publish/rollback attempt is audited, success or denied (spec §7/§14 —
+ * "publish, rollback, and denied attempts... fail-closed 403s are
+ * audit-worthy too").
+ */
+export interface ContentPublicationAuditSink {
+  log: AuditLog;
+  actor: AuditActor;
+  requestId?: string;
+}
 
 export interface ContentPublicationGates {
   findings: ValidationFindingRepository;
@@ -89,24 +104,59 @@ export interface ContentPublicationService {
   publishLessonRevision(revisionId: string): Promise<LessonRevisionRecord>;
 }
 
+async function audit(
+  sink: ContentPublicationAuditSink | undefined,
+  action: string,
+  target: string,
+  result: 'ok' | 'denied',
+  metadata?: Record<string, unknown>,
+): Promise<void> {
+  if (!sink) return;
+  await sink.log.append(
+    buildAuditRecord({ actor: sink.actor, action, target, result, requestId: sink.requestId, metadata }),
+  );
+}
+
 export function createContentPublicationService(deps: {
   content: ContentRepositories;
   learning: LearningRepositories;
   gates: ContentPublicationGates;
+  audit?: ContentPublicationAuditSink;
 }): ContentPublicationService {
   return {
     async publishQuestionRevision(revisionId) {
-      await assertPublishable(deps.gates, 'question', [revisionId]);
-      return deps.content.revisions.publishRevision(revisionId);
+      try {
+        await assertPublishable(deps.gates, 'question', [revisionId]);
+      } catch (err) {
+        if (err instanceof ContentPublicationBlockedError) {
+          await audit(deps.audit, 'content.publish_denied', revisionId, 'denied', { blockers: err.blockers });
+        }
+        throw err;
+      }
+      const revision = await deps.content.revisions.publishRevision(revisionId);
+      await audit(deps.audit, 'content.publish', revisionId, 'ok', { revisionType: 'question' });
+      return revision;
     },
 
     async publishQuestionSet(input) {
-      await assertPublishable(
-        deps.gates,
-        'question',
-        input.items.map((i) => i.revisionId),
-      );
-      return deps.content.sets.publishVersion(input);
+      try {
+        await assertPublishable(
+          deps.gates,
+          'question',
+          input.items.map((i) => i.revisionId),
+        );
+      } catch (err) {
+        if (err instanceof ContentPublicationBlockedError) {
+          await audit(deps.audit, 'content.publish_denied', input.setId, 'denied', { blockers: err.blockers });
+        }
+        throw err;
+      }
+      const version = await deps.content.sets.publishVersion(input);
+      await audit(deps.audit, 'content.publish', input.setId, 'ok', {
+        version: version.version,
+        itemCount: version.items.length,
+      });
+      return version;
     },
 
     async rollbackQuestionSet(setId, toVersion, publishedBy) {
@@ -119,18 +169,32 @@ export function createContentPublicationService(deps: {
       // that got *stricter* since then (a rule change, a new sensitivity
       // keyword) block a rollback — the one operation §24 says must always be
       // available to recover from a bad publish.
-      return deps.content.sets.publishVersion({
+      const version = await deps.content.sets.publishVersion({
         setId,
         kind: target.kind,
         filter: target.filter,
         items: target.items.map((i) => ({ questionId: i.questionId, revisionId: i.revisionId })),
         publishedBy,
       });
+      await audit(deps.audit, 'content.rollback', setId, 'ok', {
+        fromVersion: version.version,
+        toVersion,
+      });
+      return version;
     },
 
     async publishLessonRevision(revisionId) {
-      await assertPublishable(deps.gates, 'lesson', [revisionId]);
-      return deps.learning.lessonRevisions.publishRevision(revisionId);
+      try {
+        await assertPublishable(deps.gates, 'lesson', [revisionId]);
+      } catch (err) {
+        if (err instanceof ContentPublicationBlockedError) {
+          await audit(deps.audit, 'content.publish_denied', revisionId, 'denied', { blockers: err.blockers });
+        }
+        throw err;
+      }
+      const revision = await deps.learning.lessonRevisions.publishRevision(revisionId);
+      await audit(deps.audit, 'content.publish', revisionId, 'ok', { revisionType: 'lesson' });
+      return revision;
     },
   };
 }
