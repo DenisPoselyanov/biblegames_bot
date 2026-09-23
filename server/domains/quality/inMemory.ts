@@ -5,6 +5,7 @@
  */
 import { randomUUID } from 'node:crypto';
 import type { Transaction } from '../shared/context';
+import { createInMemoryAssessmentRepository } from './inMemoryAssessments';
 import {
   boundedGroupLimit,
   compareReportGroups,
@@ -179,5 +180,5 @@ export function createInMemoryQualityRepositories(options: InMemoryQualityOption
     },
   };
 
-  return { reports: reportRepo, signals: signalRepo };
+  return { reports: reportRepo, signals: signalRepo, assessments: createInMemoryAssessmentRepository(now) };
 }

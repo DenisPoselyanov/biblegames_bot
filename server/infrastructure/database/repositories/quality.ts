@@ -22,6 +22,7 @@ import type {
   ReportEntityType,
 } from '../../../domains/quality/types';
 import type { Database, Transaction } from '../client';
+import { createSqlAssessmentRepository } from './assessments';
 import { studyAnswers } from '../schema/progression';
 import { contentReports, questionOptionPicks } from '../schema/quality';
 
@@ -249,5 +250,5 @@ export function createSqlQualityRepositories(db: Database): QualityRepositories 
     },
   };
 
-  return { reports, signals };
+  return { reports, signals, assessments: createSqlAssessmentRepository(db) };
 }

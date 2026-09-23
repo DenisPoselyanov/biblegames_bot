@@ -4,6 +4,7 @@
  * the in-memory peer in `./inMemory.ts`; both pass `__tests__/*Contract.ts`.
  */
 import type { Transaction } from '../shared/context';
+import type { AssessmentRepository } from './assessment';
 import type {
   ContentReport,
   ContentReportGroup,
@@ -45,6 +46,8 @@ export interface QuestionSignalRepository {
 export interface QualityRepositories {
   reports: ContentReportRepository;
   signals: QuestionSignalRepository;
+  /** Golden labels + AI reviewer verdicts (content quality gate). */
+  assessments: AssessmentRepository;
 }
 
 export const REPORT_GROUP_DEFAULT_LIMIT = 100;
