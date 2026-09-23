@@ -12,6 +12,7 @@ export * from './learningSessions';
 export * from './platform';
 export * from './validation';
 export * from './scriptureEvidence';
+export * from './quality';
 
 import * as identity from './identity';
 import * as progression from './progression';
@@ -22,6 +23,7 @@ import * as learningSessions from './learningSessions';
 import * as platform from './platform';
 import * as validation from './validation';
 import * as scriptureEvidence from './scriptureEvidence';
+import * as quality from './quality';
 
 /** Every table, for `drizzle(pool, { schema })` and query-builder relations. */
 export const schema = {
@@ -34,4 +36,5 @@ export const schema = {
   ...platform,
   ...validation,
   ...scriptureEvidence,
+  ...quality,
 } as const;

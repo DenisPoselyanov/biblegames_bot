@@ -158,6 +158,11 @@ WS1 and WS2 are the foundation everything else reads from — no other workstrea
 - One-click "this is an outlier" → enqueues a `content.repair` job (WS1's job types) rather than a separate ad hoc path.
 - **Depends on**: WS1 (repair job type), WS7 (audit link), WS8 (surfaced in Dashboard).
 - **DoD tie-in**: §23.13, §23.18 (observability portion).
+- **Status: code complete (2026-09-23)**, migration `0013_content_quality_signals` (written, **not applied to production** — needs owner go-ahead like every schema change):
+  - Signals: correctness aggregated on read from the existing `study_answers` (no new personal data); new `question_option_picks` anonymous per-revision/per-option counters, bumped best-effort from the practice answer path → first-option bias. Pure `server/domains/quality/analytics.ts` (bands, outliers ranked by distance × evidence, min 20 answers).
+  - Reports (§14): `content_reports` table, `POST /api/v1/content-reports` (authed, 10/min, one open report per player/entity/category), `GET /mine` for acknowledgement; Studio `/api/v1/studio/quality/reports*` groups per entity without reporter ids, resolve/dismiss closes all open reports at once with an optional fixing-revision link, audited (`content.report_create`, `content.report_resolve`). Reports never mutate content.
+  - Outlier / reports → `content.ai_repair` job (new WS1-style type; prompt built API-side from the live revision + signal, handler shares the generate primitive, artifact only, audited `content.repair_request` + `content.repair`). 409 honestly without an in-process queue.
+  - UI: Library «Якість» shows the real distribution, first-option share vs chance and the outlier list with «Виправити через AI»; Review queue gains «Скарги гравців» (`/studio/review/reports`); PracticeSession gets «Повідомити про помилку» after the answer is revealed.
 
 ### WS10 — Unified CLI & legacy migration
 - `npm run ai -- <task>` single entry point sharing the WS1 runner with the Studio (§9).

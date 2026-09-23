@@ -217,6 +217,13 @@ describe('practice sessions (§12)', () => {
     // The mastery update landed through the real progression authority, not a forked one.
     const profile = await get(app, '/api/v1/me/profile', 'u1');
     expect(profile.body.studyMastery.obj1.totalAnswers).toBe(2);
+
+    // Phase 4 WS9: each answer bumps an anonymous per-option pick counter (no user id stored).
+    const picks = await tdb.client.query<{ option_index: number; picks: number }>(
+      'select option_index, picks from question_option_picks order by revision_id',
+    );
+    expect(picks.rows).toHaveLength(2);
+    expect(picks.rows.every((r) => r.option_index === 0 && r.picks === 1)).toBe(true);
   });
 
   it('replays the cached result for a repeated answer idempotency key rather than double-scoring', async () => {

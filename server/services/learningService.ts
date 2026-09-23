@@ -57,6 +57,7 @@ import type { ProgressionService } from './progressionService';
 import { applyAnswerBlob } from '../progression/applyAnswerBlob';
 import { getDailyScripture } from '../scriptureService';
 import { AppError } from '../lib/errors';
+import type { QuestionSignalRepository } from '../domains/quality/repository';
 
 const PUBLISHED: ContentStatus = 'published';
 const DAILY_LESSON_GOAL = 1;
@@ -71,6 +72,11 @@ export interface LearningServiceDeps {
   preferences?: PreferencesCutover;
   progression?: ProgressionCutover;
   progressionService?: ProgressionService;
+  /**
+   * Anonymous per-option pick counters (Phase 4 WS9 "first-option bias in the
+   * wild"). Best-effort: a failed increment never fails the player's answer.
+   */
+  questionSignals?: Pick<QuestionSignalRepository, 'recordPick'>;
   now?: () => Date;
 }
 
@@ -431,6 +437,16 @@ export function createLearningService(deps: LearningServiceDeps): LearningServic
       if (!revision) throw new AppError('question_not_found', 'Question revision not found', 404);
 
       const isCorrect = input.chosenIndex === revision.correctIndex;
+      if (deps.questionSignals && input.chosenIndex < revision.options.length) {
+        await deps.questionSignals
+          .recordPick({
+            revisionId: revision.id,
+            questionId: revision.questionId,
+            optionIndex: input.chosenIndex,
+            optionCount: revision.options.length,
+          })
+          .catch(() => undefined);
+      }
       const answerOutcome = progressionService
         ? await progressionService.applyAnswer(userId, {
             questionId: revision.questionId,

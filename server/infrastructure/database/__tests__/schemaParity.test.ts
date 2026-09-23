@@ -78,6 +78,9 @@ describe('Drizzle schema ↔ server/db/schema.sql parity', () => {
         'content_validation_findings',
         // Phase 4 WS4 — Scripture-verification evidence storage
         'scripture_evidence',
+        // Phase 4 WS9 — player content reports + anonymous option-pick counters
+        'content_reports',
+        'question_option_picks',
       ].sort(),
     );
   });

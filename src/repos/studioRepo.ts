@@ -253,6 +253,68 @@ export interface StudioSettings {
   promptVersions: Array<{ promptVersion: string; lastUsedAt: string; jobs: number }>;
 }
 
+// --- Quality feedback loop (Phase 4 WS9) ------------------------------------
+
+export type AccuracyBand = 'too_hard' | 'hard' | 'normal' | 'easy' | 'too_easy';
+export type ReportCategory = 'wrong_answer' | 'wording' | 'translation' | 'reference' | 'offensive' | 'technical';
+
+export interface QualityOutlier {
+  questionId: string;
+  attempts: number;
+  accuracy: number;
+  issue: 'too_hard' | 'too_easy';
+  severity: number;
+  revisionId: string | null;
+  text: string | null;
+  themeId: string | null;
+  status: ContentStatus | null;
+}
+
+export interface QualityResponse {
+  available: boolean;
+  analysis: {
+    sampleSize: number;
+    minAttempts: number;
+    distribution: Array<{ band: AccuracyBand; count: number }>;
+    outliers: QualityOutlier[];
+    outlierTotal: number;
+  } | null;
+  positionBias: { picks: number; firstOptionShare: number; expectedShare: number; byPosition: number[] } | null;
+  openReports: number;
+}
+
+export interface ReportGroup {
+  entityType: ReviewRevisionType;
+  entityId: string;
+  openCount: number;
+  totalCount: number;
+  categories: Partial<Record<ReportCategory, number>>;
+  latestRevisionId: string | null;
+  firstAt: string;
+  latestAt: string;
+  title: string | null;
+}
+
+export interface ReviewerReport {
+  id: string;
+  category: ReportCategory;
+  comment: string | null;
+  revisionId: string | null;
+  status: 'open' | 'resolved' | 'dismissed';
+  createdAt: string;
+  resolutionNote: string | null;
+  resolvedRevisionId: string | null;
+  resolvedBy: string | null;
+  resolvedAt: string | null;
+}
+
+export interface ReportDetail {
+  entityType: ReviewRevisionType;
+  entityId: string;
+  title: string | null;
+  reports: ReviewerReport[];
+}
+
 export interface ActivityFilter {
   action?: string;
   limit?: number;
@@ -315,6 +377,37 @@ export const studioRepo = {
 
   getSettings(): Promise<StudioSettings> {
     return call('/studio/settings');
+  },
+
+  getQuality(): Promise<QualityResponse> {
+    return call('/studio/quality');
+  },
+
+  repairOutlier(questionId: string): Promise<{ ok: true; jobId: string; revisionId: string }> {
+    return call(`/studio/quality/outliers/${encodeURIComponent(questionId)}/repair`, { method: 'POST', body: {} });
+  },
+
+  listReportGroups(includeClosed = false): Promise<{ available: boolean; groups: ReportGroup[] }> {
+    return call(`/studio/quality/reports${includeClosed ? '?closed=1' : ''}`);
+  },
+
+  getReportDetail(type: ReviewRevisionType, entityId: string): Promise<ReportDetail> {
+    return call(`/studio/quality/reports/${type}/${encodeURIComponent(entityId)}`);
+  },
+
+  resolveReports(
+    type: ReviewRevisionType,
+    entityId: string,
+    input: { status: 'resolved' | 'dismissed'; note?: string; revisionId?: string },
+  ): Promise<{ ok: true; closed: number }> {
+    return call(`/studio/quality/reports/${type}/${encodeURIComponent(entityId)}/resolve`, {
+      method: 'POST',
+      body: input,
+    });
+  },
+
+  repairFromReports(entityId: string): Promise<{ ok: true; jobId: string; revisionId: string }> {
+    return call(`/studio/quality/reports/question/${encodeURIComponent(entityId)}/repair`, { method: 'POST', body: {} });
   },
 
   getDashboard(): Promise<StudioDashboard> {

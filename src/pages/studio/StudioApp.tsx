@@ -30,6 +30,7 @@ import { NewJob } from './screens/NewJob';
 import { Library } from './screens/Library';
 import { Releases } from './screens/Releases';
 import { Settings } from './screens/Settings';
+import { Reports } from './screens/Reports';
 
 interface NavItem {
   to: string;
@@ -275,6 +276,7 @@ export function StudioApp() {
           <Route element={<StudioLayout />}>
             <Route index element={<Overview />} />
             <Route path="review" element={<Review />} />
+            <Route path="review/reports" element={<Reports />} />
             <Route path="review/:type/:revisionId" element={<ReviewItem />} />
             <Route path="jobs" element={<Jobs />} />
             <Route path="jobs/new" element={<NewJob />} />
