@@ -18,7 +18,8 @@ const lessonBody = (over: Partial<LessonBody> = {}): LessonBody => ({
   blocks: [
     block({ id: 'b1', blockType: 'heading', payload: { text: 'Створення світу' } }),
     block({ id: 'b2', blockType: 'text', payload: { text: 'На початку Бог створив небо і землю.' } }),
-    block({ id: 'b3', blockType: 'summary', payload: { text: 'Підсумок уроку.' } }),
+    block({ id: 'b3', blockType: 'reveal', payload: { front: 'Скільки днів тривало створення?', back: 'Шість, а сьомого Бог спочив.' } }),
+    block({ id: 'b4', blockType: 'summary', payload: { text: 'Підсумок уроку.' } }),
   ],
   ...over,
 });
@@ -26,6 +27,30 @@ const lessonBody = (over: Partial<LessonBody> = {}): LessonBody => ({
 describe('runLessonQualityChecks — structure', () => {
   it('returns no findings for a well-formed lesson', () => {
     expect(runLessonQualityChecks(lessonBody())).toEqual([]);
+  });
+
+  it('warns when a lesson has no interactive block', () => {
+    const findings = runLessonQualityChecks(
+      lessonBody({
+        blocks: [
+          block({ id: 'b1', blockType: 'heading', payload: { text: 'A' } }),
+          block({ id: 'b2', blockType: 'summary', payload: { text: 'B' } }),
+        ],
+      }),
+    );
+    expect(findings).toEqual([expect.objectContaining({ kind: 'missing_interactive_block', severity: 'warning' })]);
+  });
+
+  it('flags a malformed interactive payload as blocking', () => {
+    const findings = runLessonQualityChecks(
+      lessonBody({
+        blocks: [
+          block({ id: 'b1', blockType: 'order_events', payload: { prompt: 'Розстав', items: ['Один', 'Два'] } }),
+          block({ id: 'b2', blockType: 'summary', payload: { text: 'B' } }),
+        ],
+      }),
+    );
+    expect(findings).toContainEqual(expect.objectContaining({ kind: 'malformed_block_payload', severity: 'blocking' }));
   });
 
   it('flags an empty block list as blocking and skips other structural checks', () => {
