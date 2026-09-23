@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { createMemoryAuditLog } from '../../audit';
 import { createMemoryObjectStore } from '../../infrastructure/storage/memoryObjectStore';
 import { createMockAiProvider } from '../../infrastructure/ai/mockProvider';
 import { AiProviderError } from '../../domains/ai/types';
@@ -92,5 +93,48 @@ describe('content.ai_generate job (Phase 4 §7, §8, WS1)', () => {
     expect(queue.peek(id)!.checkpoint).toMatchObject({
       usage: { requests: 1, tokens: 0, costUsd: 0 },
     });
+  });
+
+  it('audits a successful generation under SYSTEM_ACTOR when an auditLog is configured (WS7)', async () => {
+    const store = createMemoryObjectStore();
+    const provider = createMockAiProvider();
+    provider.enqueue({ text: 'ok' });
+    const queue = createInMemoryJobQueue({ onEvent: () => {} });
+    const auditLog = createMemoryAuditLog();
+    registerCoreJobs(queue, {
+      query: async () => ({ rowCount: 0 }),
+      ai: { provider, store, budget: { maxRequests: 5 }, auditLog },
+    });
+
+    const { id } = await queue.enqueue(JOB_TYPES.AI_CONTENT_GENERATE, {
+      promptVersion: 'question.generate.v1',
+      prompt: 'p',
+    });
+    await queue.runDue();
+
+    expect(auditLog.records).toHaveLength(1);
+    expect(auditLog.records[0]).toMatchObject({
+      actor: { userId: null, authSource: 'system' },
+      action: 'content.generate',
+      target: id,
+      result: 'ok',
+    });
+  });
+
+  it('does not audit anything when no auditLog is configured', async () => {
+    const store = createMemoryObjectStore();
+    const provider = createMockAiProvider();
+    provider.enqueue({ text: 'ok' });
+    const queue = createInMemoryJobQueue({ onEvent: () => {} });
+    registerCoreJobs(queue, {
+      query: async () => ({ rowCount: 0 }),
+      ai: { provider, store, budget: { maxRequests: 5 } },
+    });
+    const { id } = await queue.enqueue(JOB_TYPES.AI_CONTENT_GENERATE, {
+      promptVersion: 'question.generate.v1',
+      prompt: 'p',
+    });
+    await expect(queue.runDue()).resolves.toBeDefined();
+    expect(queue.peek(id)!.status).toBe('completed');
   });
 });

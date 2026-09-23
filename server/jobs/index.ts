@@ -7,6 +7,7 @@
  * `jobSchedulesEnabled` registers the recurring sweeps — schedules must run in
  * exactly one place.
  */
+import type { AuditLog } from '../audit';
 import type { ServerConfig } from '../config/env';
 import { log } from '../lib/logger';
 import { metrics } from '../lib/metrics';
@@ -58,7 +59,7 @@ export interface CoreJobDeps {
    * is then simply not registered rather than registered with a handler that
    * always fails.
    */
-  ai?: { provider: AiProvider; store: ObjectStore; budget: AiBudget };
+  ai?: { provider: AiProvider; store: ObjectStore; budget: AiBudget; auditLog?: AuditLog };
 }
 
 export function registerCoreJobs(queue: JobQueue, deps: CoreJobDeps): void {

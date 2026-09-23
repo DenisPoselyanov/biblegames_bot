@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { createMemoryAuditLog } from '../../audit';
 import { createInMemoryContentRepositories } from '../../domains/content/inMemoryRepository';
 import { createInMemoryLearningRepositories } from '../../domains/learning/inMemoryRepository';
 import { createInMemoryScriptureEvidenceRepository } from '../../domains/shared/inMemoryScriptureEvidence';
@@ -210,5 +211,82 @@ describe('publishLessonRevision', () => {
       { revisionType: 'lesson', revisionId: revision.id, kind: 'empty_lesson', severity: 'blocking', label: 'x', detail: 'x' },
     ]);
     await expect(service.publishLessonRevision(revision.id)).rejects.toThrow(ContentPublicationBlockedError);
+  });
+});
+
+describe('audit trail (WS7)', () => {
+  const actor = { userId: 'reviewer-1', authSource: 'telegram-init-data' };
+
+  async function auditedHarness() {
+    const content = createInMemoryContentRepositories();
+    const learning = createInMemoryLearningRepositories();
+    const findings = createInMemoryValidationFindingRepository();
+    const scripture = createInMemoryScriptureEvidenceRepository();
+    const auditLog = createMemoryAuditLog();
+    const service = createContentPublicationService({
+      content,
+      learning,
+      gates: { findings, scripture },
+      audit: { log: auditLog, actor, requestId: 'req-1' },
+    });
+    return { content, findings, service, auditLog };
+  }
+
+  it('logs a successful publish with the calling actor', async () => {
+    const { content, service, auditLog } = await auditedHarness();
+    const { revision } = await content.revisions.appendRevision(questionDraft);
+    await service.publishQuestionRevision(revision.id);
+
+    expect(auditLog.records).toHaveLength(1);
+    expect(auditLog.records[0]).toMatchObject({
+      actor,
+      action: 'content.publish',
+      target: revision.id,
+      result: 'ok',
+      requestId: 'req-1',
+    });
+  });
+
+  it('logs a denied publish attempt with the blockers, and does not log a success', async () => {
+    const { content, findings, service, auditLog } = await auditedHarness();
+    const { revision } = await content.revisions.appendRevision(questionDraft);
+    await findings.record('question', revision.id, [
+      { revisionType: 'question', revisionId: revision.id, kind: 'duplicate_exact', severity: 'blocking', label: 'x', detail: 'x' },
+    ]);
+
+    await expect(service.publishQuestionRevision(revision.id)).rejects.toThrow(ContentPublicationBlockedError);
+
+    expect(auditLog.records).toHaveLength(1);
+    expect(auditLog.records[0]).toMatchObject({ action: 'content.publish_denied', result: 'denied' });
+    expect(auditLog.records[0]?.metadata?.blockers).toEqual([
+      { revisionId: revision.id, reason: 'validation_blocking' },
+    ]);
+  });
+
+  it('logs a rollback distinctly from a publish', async () => {
+    const { content, service, auditLog } = await auditedHarness();
+    const a = (await content.revisions.appendRevision({ ...questionDraft, questionId: 'qa' })).revision;
+    await service.publishQuestionSet({
+      setId: 'quiz:genesis',
+      kind: 'quiz',
+      filter: { themeIds: ['genesis'], difficulty: null, topicNodeId: null, questionIds: [] },
+      items: [{ questionId: 'qa', revisionId: a.id }],
+    });
+    await service.publishQuestionSet({
+      setId: 'quiz:genesis',
+      kind: 'quiz',
+      filter: { themeIds: ['genesis'], difficulty: null, topicNodeId: null, questionIds: [] },
+      items: [],
+    });
+    await service.rollbackQuestionSet('quiz:genesis', 1);
+
+    expect(auditLog.records.map((r) => r.action)).toEqual(['content.publish', 'content.publish', 'content.rollback']);
+  });
+
+  it('produces no audit records at all when no audit sink is configured', async () => {
+    const { content, service } = await harness();
+    const { revision } = await content.revisions.appendRevision(questionDraft);
+    // Not throwing is the assertion — an absent `audit` dep must not be a hard dependency.
+    await expect(service.publishQuestionRevision(revision.id)).resolves.toMatchObject({ status: 'published' });
   });
 });

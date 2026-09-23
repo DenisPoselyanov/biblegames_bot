@@ -9,6 +9,7 @@
  * errors so the job queue's own retry/backoff (`server/domains/jobs/inMemoryQueue.ts`)
  * decides what happens next — this handler does not implement its own retry loop.
  */
+import { buildAuditRecord, SYSTEM_ACTOR, type AuditLog } from '../audit';
 import { BudgetTracker, type AiBudget } from '../domains/ai/budget';
 import { AiProviderError, type AiProvider } from '../domains/ai/types';
 import type { JobHandler } from '../domains/jobs/queue';
@@ -19,6 +20,8 @@ export interface ContentAiDeps {
   store: ObjectStore;
   budget: AiBudget;
   now?: () => Date;
+  /** Optional — when present, a successful generation is audited under `SYSTEM_ACTOR` (Phase 4 WS7, spec §7/§14). */
+  auditLog?: AuditLog;
 }
 
 export interface ContentAiGeneratePayload {
@@ -62,5 +65,17 @@ export function contentAiGenerateHandler(deps: ContentAiDeps): JobHandler<Conten
     await deps.store.put(artifactKey, body, { contentType: 'application/json' });
 
     await ctx.checkpoint({ usage: budget.usage(), artifactKey });
+
+    if (deps.auditLog) {
+      await deps.auditLog.append(
+        buildAuditRecord({
+          actor: SYSTEM_ACTOR,
+          action: 'content.generate',
+          target: ctx.job.id,
+          result: 'ok',
+          metadata: { promptVersion, label: label ?? null, artifactKey, provider: result.meta.provider },
+        }),
+      );
+    }
   };
 }

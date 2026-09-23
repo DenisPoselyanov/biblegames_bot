@@ -9,6 +9,7 @@
  *   NODE_ENV=production STORAGE_PROVIDER=sql DATABASE_URL=… \
  *     JOB_SCHEDULES_ENABLED=true npm run worker --prefix server
  */
+import { createAuditLog } from './audit';
 import { loadConfig } from './config/env';
 import { assertProductionConfig } from './config/productionValidation';
 import { log } from './lib/logger';
@@ -41,6 +42,7 @@ async function main(): Promise<void> {
     } else {
       const db = createDatabase(await getPool());
       const aiProvider = createAiProvider(config);
+      const auditLog = createAuditLog(config);
       registerCoreJobs(queue, {
         query: poolQuery,
         content: {
@@ -48,7 +50,7 @@ async function main(): Promise<void> {
           store: createObjectStore(config),
         },
         ai: aiProvider
-          ? { provider: aiProvider, store: createObjectStore(config), budget: config.aiJobBudget }
+          ? { provider: aiProvider, store: createObjectStore(config), budget: config.aiJobBudget, auditLog }
           : undefined,
       });
       if (config.aiProvider !== 'off' && !aiProvider) {

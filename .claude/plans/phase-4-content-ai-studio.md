@@ -118,9 +118,13 @@ WS1 and WS2 are the foundation everything else reads from — no other workstrea
 - **Depends on**: WS2, WS3/WS4 (nothing publishes without passing validation), WS5 (permission vocabulary exists for WS8 to apply).
 - **DoD tie-in**: §23.6.
 
-### WS7 — Content-specific audit trail
-- Extend Phase 1's audit log (don't fork a second one) to cover content actions: generate, validate, review decision, approve, publish, rollback, and denied attempts (fail-closed 403s are audit-worthy too).
-- Append-only, exportable by period; system actions (job runner, validators) attributed to a `system` actor distinct from human actors.
+### WS7 — Content-specific audit trail — **code complete (2026-09-22)**
+- **Extended, not forked**: every new call site uses Phase 1's existing `AuditLog`/`buildAuditRecord` (`server/audit/`) — no second log. Added `SYSTEM_ACTOR` (`{userId: null, authSource: 'system'}`) to `server/audit/auditLog.ts` for "system actions attributed to a `system` actor distinct from human actors" — deliberately not a member of the `@contracts` `AuthSource` enum (that enum is closed to real end-user auth methods; `AuditActor.authSource` is a plain string precisely so a non-human actor fits without stretching it).
+- `server/services/contentPublicationService.ts` (WS6) gained an **optional** `audit` dependency — every publish/rollback call logs `content.publish` / `content.publish_denied` (with the exact blockers, matching §22's "fail-closed 403s are audit-worthy too") / `content.rollback`, attributed to the caller's own actor. Optional because there is still no route calling it (WS8) — the existing codebase convention audits at the route layer where `req.auth` lives, and threading a real per-request actor through today would mean fabricating one; every WS1-6 test harness keeps working unchanged since `audit` defaults to a no-op.
+- `server/services/contentReviewService.ts` (new) — `recordScriptureReviewerDecision()` wraps WS4's `ScriptureEvidenceRepository.recordReviewerDecision` (a plain repository write, no actor concept by design) and audits it as `content.review_decision`. This is the "review decision" action from the spec list.
+- `server/jobs/contentAi.ts` (WS1) gained an optional `auditLog` dep — a successful `content.ai_generate` run now logs `content.generate` under `SYSTEM_ACTOR`, wired for real in `server/worker.ts` via `createAuditLog(config)` (not just a test-only plumb-through).
+- Deliberately **not** in this workstream: "approve" as its own audited action (no service exists yet that records an approval decision distinct from a review comment — WS3's findings and the ADR-019 status machine don't have an `approved` persisted state or a dedicated approve call to hang an audit record on; revisit when WS8 builds the review editor's approve button), and export/query-by-period tooling (`AuditLog.query({since, limit})` already supports it — no new code needed, just a future CLI/Studio screen to call it).
+- Tests: 4 new cases in `contentPublicationService.test.ts` (success, denial-with-blockers, rollback-distinct-from-publish, no-sink-is-a-no-op), 2 in `contentReviewService.test.ts`, 2 in `contentAi.test.ts` — all green; full suite 607/607, `tsc -b` and `eslint` clean.
 - **Depends on**: WS5 (permissioned actions to log), WS6 (publish/rollback events).
 - **DoD tie-in**: §23.5, §23.14 (audit portion).
 
