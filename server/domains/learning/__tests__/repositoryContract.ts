@@ -253,4 +253,142 @@ export function runLearningRepositoryContract(makeHarness: () => Promise<Contrac
     const limited = await plans.searchPublished({ q: '', limit: 1 });
     expect(limited.length).toBeLessThanOrEqual(1);
   });
+
+  it('appends lesson revisions, numbers them, and is idempotent by body hash (Phase 4 WS2, ADR-019)', async () => {
+    const { plans, modules, objectives, lessonRevisions } = await setup();
+    await plans.upsert({ id: 'judges', themeId: 'judges', title: 'Судді' });
+    await modules.upsert({ id: 'judges-sub-1', planId: 'judges', title: 'Гедеон', position: 0 });
+    await objectives.upsert({ id: 'judges-sub-1-sub-1', planId: 'judges', title: 'Заклик Гедеона', position: 0 });
+
+    const draftInput = {
+      lessonId: 'lesson_judges-sub-1-sub-1',
+      planId: 'judges',
+      moduleId: 'judges-sub-1',
+      objectiveId: 'judges-sub-1-sub-1',
+      title: 'Заклик Гедеона',
+      blocks: [{ id: 'b1', blockType: 'heading' as const, schemaVersion: 1, payload: { text: 'Заклик Гедеона' } }],
+    };
+
+    const first = await lessonRevisions.appendRevision(draftInput);
+    expect(first.kind).toBe('created');
+    expect(first.revision.revisionNumber).toBe(1);
+    expect(first.revision.status).toBe('legacy_unreviewed');
+    expect(first.revision.contentHash).toMatch(/^[a-f0-9]{64}$/);
+
+    const same = await lessonRevisions.appendRevision(draftInput);
+    expect(same.kind).toBe('unchanged');
+    expect(same.revision.id).toBe(first.revision.id);
+
+    const changed = await lessonRevisions.appendRevision({ ...draftInput, title: 'Заклик Гедеона (оновлено)' });
+    expect(changed.kind).toBe('created');
+    expect(changed.revision.revisionNumber).toBe(2);
+
+    const all = await lessonRevisions.listRevisions(draftInput.lessonId);
+    expect(all.map((r) => r.revisionNumber)).toEqual([2, 1]);
+  });
+
+  it('publishing a lesson revision writes through to the mutable lessons/lesson_blocks rows (ADR-019 §2)', async () => {
+    const { plans, modules, objectives, lessons, blocks, lessonRevisions } = await setup();
+    await plans.upsert({ id: 'ruth', themeId: 'ruth', title: 'Рут' });
+    await modules.upsert({ id: 'ruth-sub-1', planId: 'ruth', title: 'Наомі', position: 0 });
+    await objectives.upsert({ id: 'ruth-sub-1-sub-1', planId: 'ruth', title: 'Повернення', position: 0 });
+
+    const created = (
+      await lessonRevisions.appendRevision({
+        lessonId: 'lesson_ruth-sub-1-sub-1',
+        planId: 'ruth',
+        moduleId: 'ruth-sub-1',
+        objectiveId: 'ruth-sub-1-sub-1',
+        title: 'Повернення',
+        blocks: [
+          { id: 'b1', blockType: 'heading', schemaVersion: 1, payload: { text: 'Повернення' } },
+          { id: 'b2', blockType: 'explanation', schemaVersion: 1, payload: { text: '...' } },
+        ],
+      })
+    ).revision;
+
+    expect(await lessons.getById(created.lessonId)).toBeNull();
+
+    const published = await lessonRevisions.publishRevision(created.id);
+    expect(published.status).toBe('published');
+    expect((await lessonRevisions.getPublished(created.lessonId))?.id).toBe(created.id);
+
+    const lessonRow = await lessons.getById(created.lessonId);
+    expect(lessonRow?.status).toBe('published');
+    expect(lessonRow?.title).toBe('Повернення');
+    expect(lessonRow?.source).toBe('authored');
+
+    const blockRows = await blocks.listByLesson(created.lessonId);
+    expect(blockRows.map((b) => b.blockType)).toEqual(['heading', 'explanation']);
+
+    const revised = (
+      await lessonRevisions.appendRevision({
+        lessonId: created.lessonId,
+        planId: 'ruth',
+        moduleId: 'ruth-sub-1',
+        objectiveId: 'ruth-sub-1-sub-1',
+        title: 'Повернення (v2)',
+        blocks: [{ id: 'b3', blockType: 'scripture', schemaVersion: 1, payload: { ref: 'Ruth 1:16' } }],
+      })
+    ).revision;
+    await lessonRevisions.publishRevision(revised.id);
+
+    const previous = await lessonRevisions.getById(created.id);
+    expect(previous?.status).toBe('archived');
+    expect(previous?.supersededAt).not.toBeNull();
+
+    const lessonAfter = await lessons.getById(created.lessonId);
+    expect(lessonAfter?.title).toBe('Повернення (v2)');
+    expect((await blocks.listByLesson(created.lessonId)).map((b) => b.blockType)).toEqual(['scripture']);
+  });
+
+  it('quarantine moves every live lesson revision out of selection (ADR-019 §2)', async () => {
+    const { plans, modules, objectives, lessonRevisions } = await setup();
+    await plans.upsert({ id: 'psalms', themeId: 'psalms', title: 'Псалми' });
+    await modules.upsert({ id: 'psalms-sub-1', planId: 'psalms', title: 'Хвала', position: 0 });
+    await objectives.upsert({ id: 'psalms-sub-1-sub-1', planId: 'psalms', title: 'Псалом 23', position: 0 });
+
+    const draftInput = {
+      lessonId: 'lesson_psalms-sub-1-sub-1',
+      planId: 'psalms',
+      moduleId: 'psalms-sub-1',
+      objectiveId: 'psalms-sub-1-sub-1',
+      title: 'Псалом 23',
+      blocks: [{ id: 'b1', blockType: 'heading' as const, schemaVersion: 1, payload: { text: 'Псалом 23' } }],
+    };
+    const r1 = (await lessonRevisions.appendRevision(draftInput)).revision;
+    await lessonRevisions.appendRevision({ ...draftInput, title: 'Псалом 23 (v2)' });
+    await lessonRevisions.publishRevision(r1.id);
+
+    const moved = await lessonRevisions.quarantine({ lessonId: draftInput.lessonId, reason: 'theological review' });
+    expect(moved).toBe(2);
+    expect(await lessonRevisions.getPublished(draftInput.lessonId)).toBeNull();
+    expect((await lessonRevisions.getById(r1.id))?.quarantineReason).toBe('theological review');
+  });
+
+  it('rejects an AI-originated lesson appendRevision that claims a reviewed/published status (ADR-019 §3)', async () => {
+    const { plans, modules, objectives, lessonRevisions } = await setup();
+    await plans.upsert({ id: 'exodus', themeId: 'exodus', title: 'Вихід' });
+    await modules.upsert({ id: 'exodus-sub-1', planId: 'exodus', title: 'Мойсей', position: 0 });
+    await objectives.upsert({ id: 'exodus-sub-1-sub-1', planId: 'exodus', title: 'Палаючий кущ', position: 0 });
+
+    const draftInput = {
+      lessonId: 'lesson_exodus-sub-1-sub-1',
+      planId: 'exodus',
+      moduleId: 'exodus-sub-1',
+      objectiveId: 'exodus-sub-1-sub-1',
+      title: 'Палаючий кущ',
+      blocks: [{ id: 'b1', blockType: 'heading' as const, schemaVersion: 1, payload: { text: 'Палаючий кущ' } }],
+      source: 'ai',
+    };
+    await expect(
+      lessonRevisions.appendRevision({
+        ...draftInput,
+        status: 'published' as unknown as 'draft',
+      }),
+    ).rejects.toThrow(/AI-originated/);
+    await expect(
+      lessonRevisions.appendRevision({ ...draftInput, status: 'draft' }),
+    ).resolves.toMatchObject({ kind: 'created' });
+  });
 }

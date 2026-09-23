@@ -8,6 +8,7 @@
 import { and, asc, desc, eq, inArray, sql } from 'drizzle-orm';
 import type { Difficulty } from '../../../../contracts/index';
 import type { Transaction as OpaqueTx } from '../../../domains/shared/context';
+import { assertAiWriteAllowed } from '../../../domains/shared/contentWriteGuard';
 import { hashContentSet, hashRevisionBody } from '../../../domains/content/contentHash';
 import type {
   ContentRepositories,
@@ -186,6 +187,7 @@ export function createSqlContentRepositories(db: Database): ContentRepositories 
     },
 
     async appendRevision(draft: RevisionDraft, tx) {
+      assertAiWriteAllowed(draft.source, draft.status);
       const exec = asExecutor(db, tx);
       const scriptureRefs = draft.scriptureRefs ?? [];
       const tags = draft.tags ?? [];

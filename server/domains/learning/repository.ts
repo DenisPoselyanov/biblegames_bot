@@ -11,12 +11,16 @@
 import type { Testament } from '../../../contracts/index';
 import type { Transaction } from '../shared/context';
 import type {
+  AppendLessonRevisionOutcome,
   LearningModuleRecord,
   LearningObjectiveRecord,
   LearningPlanRecord,
   LessonBlockRecord,
   LessonBlockUpsert,
+  LessonQuarantineInput,
   LessonRecord,
+  LessonRevisionDraft,
+  LessonRevisionRecord,
   LessonSessionRecord,
   LessonSessionStart,
   LessonUpsert,
@@ -116,12 +120,44 @@ export interface PracticeSessionRepository {
   advance(id: string, tx?: Transaction): Promise<PracticeSessionRecord>;
 }
 
+/**
+ * Immutable lesson revisions (Phase 4 WS2, ADR-019 §2) — the `lessons`/
+ * `lesson_blocks` analogue of `content`'s `QuestionRevisionRepository`.
+ * `publishRevision` writes the snapshot through to the mutable `lessons`/
+ * `lesson_blocks` rows in the same `tx`, so Learn hub reads are unaffected
+ * by drafts.
+ */
+export interface LessonRevisionRepository {
+  getById(id: string, tx?: Transaction): Promise<LessonRevisionRecord | null>;
+  /** The currently `published` revision for a lesson, or `null`. */
+  getPublished(lessonId: string, tx?: Transaction): Promise<LessonRevisionRecord | null>;
+  /** Every revision for a lesson, newest `revisionNumber` first. */
+  listRevisions(lessonId: string, tx?: Transaction): Promise<LessonRevisionRecord[]>;
+  /**
+   * Append a new revision from a draft. Idempotent by body hash: if the latest
+   * revision for the lesson already has the same `contentHash`, returns
+   * `{ kind: 'unchanged' }` and writes nothing.
+   */
+  appendRevision(draft: LessonRevisionDraft, tx?: Transaction): Promise<AppendLessonRevisionOutcome>;
+  /**
+   * Publish a specific revision: mark it `published`, archive the previously
+   * published revision for that lesson, and upsert the mutable `lessons` row +
+   * `replaceForLesson`-equivalent on `lesson_blocks` from the snapshot
+   * (`source: 'authored'`) — the write-through that keeps Learn hub reads
+   * correct without a second read path.
+   */
+  publishRevision(revisionId: string, tx?: Transaction): Promise<LessonRevisionRecord>;
+  /** Move every non-archived revision of a lesson to `quarantined` with a reason. */
+  quarantine(input: LessonQuarantineInput, tx?: Transaction): Promise<number>;
+}
+
 export interface LearningRepositories {
   plans: LearningPlanRepository;
   modules: LearningModuleRepository;
   objectives: LearningObjectiveRepository;
   lessons: LessonRepository;
   blocks: LessonBlockRepository;
+  lessonRevisions: LessonRevisionRepository;
   lessonSessions: LessonSessionRepository;
   practiceSessions: PracticeSessionRepository;
 }

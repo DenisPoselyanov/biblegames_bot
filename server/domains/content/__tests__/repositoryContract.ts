@@ -115,6 +115,18 @@ export function runContentRepositoryContract(makeHarness: () => Promise<Contract
     expect((await revisions.getById(r1.id))?.quarantineReason).toBe('bad answer key');
   });
 
+  it('rejects an AI-originated appendRevision that claims a reviewed/published status (ADR-019 §3)', async () => {
+    const { revisions } = await setup();
+    await expect(
+      revisions.appendRevision(
+        draft({ source: 'ai', status: 'published' as unknown as RevisionDraft['status'] }),
+      ),
+    ).rejects.toThrow(/AI-originated/);
+    await expect(revisions.appendRevision(draft({ source: 'ai', status: 'draft' }))).resolves.toMatchObject({
+      kind: 'created',
+    });
+  });
+
   it('publishVersion freezes an ordered set and is idempotent by membership', async () => {
     const { revisions, sets } = await setup();
     const a = (await revisions.appendRevision(draft({ questionId: 'qa' }))).revision;

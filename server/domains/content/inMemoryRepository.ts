@@ -6,6 +6,7 @@
  * for production writes (§10).
  */
 import type { Transaction } from '../shared/context';
+import { assertAiWriteAllowed } from '../shared/contentWriteGuard';
 import { hashContentSet, hashRevisionBody } from './contentHash';
 import type {
   ContentRepositories,
@@ -92,6 +93,7 @@ export function createInMemoryContentRepositories(
     },
     async appendRevision(draft: RevisionDraft, tx) {
       rejectTx(tx);
+      assertAiWriteAllowed(draft.source, draft.status);
       const scriptureRefs = draft.scriptureRefs ?? [];
       const tags = draft.tags ?? [];
       const contentHash = hashRevisionBody({
