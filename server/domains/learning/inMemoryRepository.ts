@@ -7,6 +7,11 @@
  */
 import type { Transaction } from '../shared/context';
 import { assertAiWriteAllowed } from '../shared/contentWriteGuard';
+import {
+  boundedStatusLimit,
+  compareNewestFirst,
+  emptyStatusCounts,
+} from '../shared/revisionStatusFilter';
 import { hashLessonRevisionBody } from './lessonHash';
 import type {
   LearningModuleRepository,
@@ -385,6 +390,21 @@ export function createInMemoryLearningRepositories(
     async listRevisions(lessonId, tx) {
       rejectTx(tx);
       return byLesson(lessonId).map((r) => ({ ...r, blocks: r.blocks.map((b) => ({ ...b, payload: { ...b.payload } })) }));
+    },
+    async listByStatus(filter, tx) {
+      rejectTx(tx);
+      const statuses = new Set(filter.statuses);
+      return [...lessonRevisions.values()]
+        .filter((r) => statuses.has(r.status))
+        .sort(compareNewestFirst)
+        .slice(0, boundedStatusLimit(filter.limit))
+        .map((r) => ({ ...r, blocks: r.blocks.map((b) => ({ ...b, payload: { ...b.payload } })) }));
+    },
+    async countByStatus(tx) {
+      rejectTx(tx);
+      const counts = emptyStatusCounts();
+      for (const r of lessonRevisions.values()) counts[r.status] += 1;
+      return counts;
     },
     async appendRevision(draft, tx) {
       rejectTx(tx);

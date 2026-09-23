@@ -46,6 +46,9 @@ import { createMigrationStore, type MigrationStore } from './migration/migration
 import { scriptureRouter } from './routes/scripture';
 import { createQuestionsAdminRouter } from './routes/questionsAdmin';
 import { createStudioRouter } from './routes/studio';
+import { createStudioReviewRouter, type StudioReviewRepositories } from './routes/studioReview';
+import { createSqlValidationFindingRepository } from './infrastructure/database/repositories/validationFindings';
+import { createSqlScriptureEvidenceRepository } from './infrastructure/database/repositories/scriptureEvidence';
 import type { JobQueue } from './domains/jobs/queue';
 import { createClientErrorsRouter } from './routes/clientErrors';
 import { createMeRouter } from './routes/me';
@@ -99,6 +102,13 @@ export interface AppDeps {
    * `available: false` instead of a fabricated empty list.
    */
   jobQueue?: JobQueue;
+  /**
+   * Revision/finding/evidence repositories for the Studio review queue (Phase
+   * 4 WS8b). Defaults to the SQL adapters when a database is wired; tests
+   * inject in-memory peers. Without either, `/api/v1/studio/review*` reports
+   * `available: false`.
+   */
+  studioReview?: StudioReviewRepositories;
 }
 
 /**
@@ -181,9 +191,10 @@ export function createApp(deps: AppDeps): Express {
   // --- Learning domain (Phase 3 WS2) — SQL-only, like the RBAC admin surface
   // below: there is no legacy-blob equivalent for lesson/practice content, so
   // the whole surface is simply absent without a database. ---
-  const learningService = deps.database
+  const learningRepos = deps.database ? createSqlLearningRepositories(deps.database) : undefined;
+  const learningService = deps.database && learningRepos
     ? createLearningService({
-        learningRepos: createSqlLearningRepositories(deps.database),
+        learningRepos,
         contentRepositories,
         dbStore,
         walletLedger,
@@ -306,6 +317,27 @@ export function createApp(deps: AppDeps): Express {
       createAdminRolesRouter({ roleService }),
     );
   }
+
+  // --- Content Studio review queue/editor (Phase 4 WS8b) — writes gated per action inside.
+  // Mounted before the generic `/api/v1/studio` router so a review request runs one
+  // auth + rate-limit chain, not both. ---
+  const studioReview: StudioReviewRepositories | undefined =
+    deps.studioReview ??
+    (deps.database && contentRepositories && learningRepos
+      ? {
+          content: contentRepositories,
+          learning: learningRepos,
+          findings: createSqlValidationFindingRepository(deps.database),
+          scripture: createSqlScriptureEvidenceRepository(deps.database),
+        }
+      : undefined);
+  app.use(
+    '/api/v1/studio/review',
+    ...authed,
+    requirePermission('content:audit:read'),
+    rl('studio_review', 60_000, 60),
+    createStudioReviewRouter({ auditLog, review: studioReview, requirePermission }),
+  );
 
   // --- Content Studio (Phase 4 WS8a) — any content role may read; cancel needs content:ai:run ---
   app.use(

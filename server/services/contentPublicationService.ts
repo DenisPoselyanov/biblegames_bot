@@ -59,7 +59,8 @@ export class ContentPublicationBlockedError extends AppError {
   }
 }
 
-async function findBlockers(
+/** Every open WS3/WS4 blocker on `revisionIds` — exported so the WS8b review editor shows exactly what the gate will check. */
+export async function findBlockers(
   gates: ContentPublicationGates,
   revisionType: 'question' | 'lesson',
   revisionIds: readonly string[],

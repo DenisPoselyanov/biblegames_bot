@@ -53,6 +53,27 @@ describe('createJsonlAuditLog', () => {
     expect((await log.query({ limit: 1 })).map((r) => r.action)).toEqual(['question.update']);
   });
 
+  it('filters by target (one entity history, Phase 4 WS8b)', async () => {
+    const log = createJsonlAuditLog(file);
+    for (const [target, at] of [
+      ['qrev_1', '2026-01-01T00:00:00.000Z'],
+      ['qrev_2', '2026-01-02T00:00:00.000Z'],
+      ['qrev_1', '2026-01-03T00:00:00.000Z'],
+    ] as const) {
+      await log.append(
+        buildAuditRecord({
+          actor: { userId: 'u1', authSource: 'telegram' },
+          action: 'content.review_decision',
+          target,
+          result: 'ok',
+          at,
+        }),
+      );
+    }
+    const history = await log.query({ target: 'qrev_1' });
+    expect(history.map((r) => r.at)).toEqual(['2026-01-03T00:00:00.000Z', '2026-01-01T00:00:00.000Z']);
+  });
+
   it('skips corrupt lines instead of throwing', async () => {
     const log = createJsonlAuditLog(file);
     await log.append(record('a.one', '2026-01-01T00:00:00.000Z'));

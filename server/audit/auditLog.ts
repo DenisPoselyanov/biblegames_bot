@@ -45,6 +45,8 @@ export interface AuditRecord {
 export interface AuditQuery {
   action?: string;
   actorUserId?: string;
+  /** Exact match on `AuditRecord.target` — one entity's history (Phase 4 WS8b review timeline). */
+  target?: string;
   /** Only records at or after this ISO timestamp. */
   since?: string;
   /** Newest-first cap. Default 100, hard max 1000. */
@@ -134,6 +136,7 @@ export function createMemoryAuditLog(): AuditLog & { records: AuditRecord[] } {
       return records
         .filter((r) => (filter.action ? r.action === filter.action : true))
         .filter((r) => (filter.actorUserId ? r.actor.userId === filter.actorUserId : true))
+        .filter((r) => (filter.target ? r.target === filter.target : true))
         .filter((r) => (filter.since ? r.at >= filter.since : true))
         .slice()
         .reverse()

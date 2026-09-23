@@ -17,6 +17,7 @@ type Tone = 'neutral' | 'info' | 'gold' | 'success' | 'danger';
  */
 const STATUS_META: Record<string, { label: string; tone: Tone }> = {
   // draft lifecycle
+  legacy_unreviewed: { label: 'Не перевірено', tone: 'neutral' },
   draft: { label: 'Чернетка', tone: 'neutral' },
   generated: { label: 'Згенеровано', tone: 'info' },
   validation_failed: { label: 'Є помилка', tone: 'danger' },
@@ -28,6 +29,7 @@ const STATUS_META: Record<string, { label: string; tone: Tone }> = {
   superseded: { label: 'Замінено', tone: 'neutral' },
   archived: { label: 'В архіві', tone: 'neutral' },
   rolled_back: { label: 'Відкочено', tone: 'danger' },
+  quarantined: { label: 'Карантин', tone: 'danger' },
   // jobs (server `JobStatus`, server/domains/jobs/types.ts)
   pending: { label: 'У черзі', tone: 'neutral' },
   active: { label: 'Працює', tone: 'info' },
@@ -39,6 +41,10 @@ const STATUS_META: Record<string, { label: string; tone: Tone }> = {
   pass: { label: 'Гаразд', tone: 'success' },
   warn: { label: 'Увага', tone: 'gold' },
   fail: { label: 'Помилка', tone: 'danger' },
+  // validation-finding severities (server `ValidationFindingSeverity`)
+  blocking: { label: 'Блокує', tone: 'danger' },
+  warning: { label: 'Увага', tone: 'gold' },
+  info: { label: 'Довідка', tone: 'neutral' },
   // scripture
   match: { label: 'Збіг', tone: 'success' },
   paraphrase: { label: 'Переказ', tone: 'gold' },

@@ -6,9 +6,13 @@
  * executor here and nowhere else (`asExecutor`).
  */
 import { and, asc, desc, eq, inArray, sql } from 'drizzle-orm';
-import type { Difficulty } from '../../../../contracts/index';
+import type { ContentStatus, Difficulty } from '../../../../contracts/index';
 import type { Transaction as OpaqueTx } from '../../../domains/shared/context';
 import { assertAiWriteAllowed } from '../../../domains/shared/contentWriteGuard';
+import {
+  boundedStatusLimit,
+  emptyStatusCounts,
+} from '../../../domains/shared/revisionStatusFilter';
 import { hashContentSet, hashRevisionBody } from '../../../domains/content/contentHash';
 import type {
   ContentRepositories,
@@ -184,6 +188,29 @@ export function createSqlContentRepositories(db: Database): ContentRepositories 
         .limit(boundedLimit(filter.limit));
       const refs = await loadRefs(exec, rows.map((r) => r.id));
       return rows.map((r) => toRevisionRecord(r, refs));
+    },
+
+    async listByStatus(filter, tx) {
+      if (filter.statuses.length === 0) return [];
+      const exec = asExecutor(db, tx);
+      const rows = await exec
+        .select()
+        .from(questionRevisions)
+        .where(inArray(questionRevisions.status, [...filter.statuses]))
+        .orderBy(desc(questionRevisions.createdAt), desc(questionRevisions.id))
+        .limit(boundedStatusLimit(filter.limit));
+      const refs = await loadRefs(exec, rows.map((r) => r.id));
+      return rows.map((r) => toRevisionRecord(r, refs));
+    },
+
+    async countByStatus(tx) {
+      const rows = await asExecutor(db, tx)
+        .select({ status: questionRevisions.status, count: sql<number>`count(*)::int` })
+        .from(questionRevisions)
+        .groupBy(questionRevisions.status);
+      const counts = emptyStatusCounts();
+      for (const row of rows) counts[row.status as ContentStatus] = row.count;
+      return counts;
     },
 
     async appendRevision(draft: RevisionDraft, tx) {

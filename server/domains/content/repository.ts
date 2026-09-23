@@ -9,6 +9,7 @@
  * `tx` runs on the pooled connection. The SQL adapter narrows it internally.
  */
 import type { Transaction } from '../shared/context';
+import type { RevisionStatusCounts, RevisionStatusFilter } from '../shared/revisionStatusFilter';
 import type {
   AppendOutcome,
   ContentSetVersionRecord,
@@ -31,6 +32,14 @@ export interface QuestionRevisionRepository {
    * drafts or quarantined revisions.
    */
   listPublished(filter: PublishedFilter, tx?: Transaction): Promise<QuestionRevisionRecord[]>;
+  /**
+   * Revisions across every question whose status is in `filter.statuses`,
+   * newest `createdAt` first (Phase 4 WS8b — the Studio review queue). Bounded:
+   * default 100, max 500.
+   */
+  listByStatus(filter: RevisionStatusFilter, tx?: Transaction): Promise<QuestionRevisionRecord[]>;
+  /** Revision count per status, every status present (zero when none). */
+  countByStatus(tx?: Transaction): Promise<RevisionStatusCounts>;
   /**
    * Append a new revision from a draft. Idempotent by body hash: if the latest
    * revision for the question already has the same `contentHash`, returns

@@ -45,6 +45,7 @@ export function createJsonlAuditLog(filePath?: string): AuditLog {
         }
         if (filter.action && record.action !== filter.action) continue;
         if (filter.actorUserId && record.actor?.userId !== filter.actorUserId) continue;
+        if (filter.target && record.target !== filter.target) continue;
         if (filter.since && record.at < filter.since) continue;
         out.push(record);
       }
