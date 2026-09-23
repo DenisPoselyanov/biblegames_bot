@@ -109,12 +109,13 @@ WS1 and WS2 are the foundation everything else reads from — no other workstrea
 - **Depends on**: WS2 (permissions gate content actions).
 - **DoD tie-in**: §23.4 (partial — RBAC vocabulary + fail-closed mechanism ready; full DoD closes with WS6/WS8).
 
-### WS6 — Publication, release, rollback
-- Immutable, versioned published-set snapshot (item revision IDs, objective/topic mapping, localization version, asset hashes, schema-compat version, actor+timestamp) per §13.1.
-- Atomic activation — no sequential multi-file production update (§13.2).
-- Rollback switches the active published set to a prior validated version without hand-editing JSON, and does not delete the superseded revision (§13.4, §22).
-- Scheduled publication gated on every included item being `approved`/validated clean.
-- **Depends on**: WS2, WS3/WS4 (nothing publishes without passing validation), WS5 (publish/rollback are permissioned actions).
+### WS6 — Publication, release, rollback — **code complete (2026-09-22)**
+- **§13.1/§13.2's immutable, atomic, content-hashed versioned set already existed** (Phase 2 §14's `ContentSetRepository.publishVersion` — freezes ordered revision ids as one version, idempotent by membership, no sequential multi-file update). WS6's actual gap, confirmed against the DoD/forbidden-shortcuts list, was that nothing gated it: a revision or a whole set could flip to `published` with open blocking findings (WS3) or unresolved Scripture problems (WS4) — exactly §22's "approving in bulk without viewing blockers."
+- `server/services/contentPublicationService.ts` — the gate. `publishQuestionRevision`/`publishLessonRevision`/`publishQuestionSet` all call `assertPublishable()` first, which checks `hasBlocking()` (WS3) and `hasUnresolvedBlocker()` (WS4) for every revision involved and throws `ContentPublicationBlockedError` (409, lists every blocked revision + reason) before anything is written — a set publish either has every member clean or nothing happens, matching §13.2's atomicity for the gate itself, not just the freeze.
+- `rollbackQuestionSet(setId, toVersion)` — reads the target version's exact membership and re-publishes it as the new latest version (`publishVersion` again, just with old items) rather than deleting or hand-editing anything (§13.4/§22). Deliberately **skips** the publish gate on rollback: the target version already passed it once, and re-checking would let a validation rule that got *stricter* since then block the one operation (§24 rollback) that must always be available to recover from a bad publish — asserted directly in a test.
+- Deliberately **not** in this workstream: an HTTP route calling this service (no Studio to call it from — WS8), the `content:publish`/`content:rollback` permission check at the call site (the service is permission-agnostic; WS8's route wires `policies.requirePermission()` from WS5's vocabulary around it), and scheduled/timed publication (§8's job system covers "when," not gating — not asked for by any DoD item this phase).
+- Tests: `contentPublicationService.test.ts` (10 cases: clean publish, WS3-blocked, WS4-blocked, paraphrase-accepted-then-publishable, set-publish-all-or-nothing, rollback-preserves-history, rollback-to-missing-version, rollback-bypasses-the-gate, lesson publish + lesson block) — all green; full suite 599/599, `tsc -b` and `eslint` clean.
+- **Depends on**: WS2, WS3/WS4 (nothing publishes without passing validation), WS5 (permission vocabulary exists for WS8 to apply).
 - **DoD tie-in**: §23.6.
 
 ### WS7 — Content-specific audit trail
