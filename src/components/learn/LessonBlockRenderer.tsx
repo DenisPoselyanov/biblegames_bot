@@ -22,6 +22,7 @@ import {
   ScenarioBlock,
   TrueFalseBlock,
 } from './InteractiveBlocks';
+import { resolveAssetSrc } from './interactiveBlockUtils';
 import { LESSON_BLOCK_PAYLOAD_SCHEMAS, type questionPayload } from './lessonBlockPayloads';
 import styles from './LessonBlockRenderer.module.css';
 
@@ -136,7 +137,7 @@ function BlockByType({
       return (
         <figure className={styles.image}>
           <img
-            src={src}
+            src={resolveAssetSrc(src)}
             alt={alt}
             width={width}
             height={height}
