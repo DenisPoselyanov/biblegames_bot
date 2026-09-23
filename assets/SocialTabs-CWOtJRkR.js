@@ -1,1 +1,0 @@
-import{H as e,Qn as t,or as n}from"./index-CciPXz-1.js";var r=t(),i={challenges:`/social/challenges`,communities:`/social/communities`};function a({active:t}){let a=n();return(0,r.jsx)(e,{label:`Розділ спільноти`,value:t,onChange:e=>{e!==t&&a(i[e])},options:[{value:`challenges`,label:`Виклики`},{value:`communities`,label:`Групи`}]})}export{a as t};
