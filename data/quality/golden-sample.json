@@ -1,0 +1,4999 @@
+{
+  "version": 1,
+  "seed": "golden-2026-09",
+  "size": 200,
+  "generatedAt": "2026-09-23T21:30:33.350Z",
+  "byStratum": {
+    "canon_mismatch": 60,
+    "reference": 30,
+    "language": 10,
+    "other_findings": 30,
+    "clean": 70
+  },
+  "items": [
+    {
+      "subject": {
+        "questionId": "kings-teacher-ai-04617",
+        "contentHash": "fc38498314fd9631b8e24f79096ddfe8a3ec895d27da26e3feb5150635e179d2",
+        "themeId": "kings",
+        "difficulty": "teacher",
+        "topicNodeId": "kings-sub-3-sub-3",
+        "text": "У якому місті перебував Єгу, коли його помазали на царювання?",
+        "options": [
+          "Самарія",
+          "Єзреел",
+          "Рамот-Ґілеад",
+          "Бетел"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Єгу був воєначальником і перебував у Рамот-Ґілеаді, де ізраїльське військо воювало проти сирійців.",
+        "explanationDeep": null,
+        "reference": "2 Цар. 9:4"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "reference_ambiguous"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-preacher-ai-02593",
+        "contentHash": "0394625bb4401868bf1441d3ca697fa5d565b05857d438882cd63e38470fede4",
+        "themeId": "wisdom-poetry",
+        "difficulty": "preacher",
+        "topicNodeId": "wisdom-poetry-sub-5-sub-2",
+        "text": "Яке дерево, крім інжиру, часто згадується як символ весняної тіні в саду?",
+        "options": [
+          "Маслина",
+          "Пальма",
+          "Гірчичне дерево",
+          "Акація"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Маслина була поширеним деревом, що давало тінь та плоди в ізраїльських садах.",
+        "explanationDeep": null,
+        "reference": "Суд. 4:5"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-student-ai-03656",
+        "contentHash": "84c8d55826f18dd270b1c60a6d69195cff3dde7c59aafd8e81a9b155dc3fee83",
+        "themeId": "pentateuch",
+        "difficulty": "student",
+        "topicNodeId": "pentateuch-sub-2-sub-4",
+        "text": "Як Господь назвав народ, коли повідомив Мойсея про їхнє гріхопадіння?",
+        "options": [
+          "Народ з твердим серцем",
+          "Народ жорстоковыйний",
+          "Забутий народ",
+          "Народ, що зрікся віри"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Бог назвав ізраїльтян жорстоковыйним народом через їхню впертість та швидке відступництво.",
+        "explanationDeep": null,
+        "reference": "Вих. 32:9"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "mixed_language"
+      ],
+      "stratum": "language"
+    },
+    {
+      "subject": {
+        "questionId": "general-epistles-youth-ai-01576",
+        "contentHash": "7fa47742564bed78eee129375030e87d1671ae696873bd7742e94d6f6db29fab",
+        "themeId": "general-epistles",
+        "difficulty": "youth",
+        "topicNodeId": "general-epistles-sub-3-sub-1",
+        "text": "Чим, згідно з 1 Петра 1:5, охороняються віруючі, які мають живу надію?",
+        "options": [
+          "Власними добрими справами",
+          "Ангелами-охоронцями",
+          "Божою силою через віру",
+          "Церковними таїнствами"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Віра є каналом, через який Божа сила оберігає нас до остаточного спасіння.",
+        "explanationDeep": null,
+        "reference": "1 Петра 1:5"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "paul-baby-ai-01074",
+        "contentHash": "26949fabdb6058b41d91bc70ca25efd2ac64db16d3d2136f071a7ed703dd08d3",
+        "themeId": "paul",
+        "difficulty": "baby",
+        "topicNodeId": "paul-sub-1-sub-3",
+        "text": "Що робили Павло та Сила у в'язниці, коли стався землетрус?",
+        "options": [
+          "Спали",
+          "Молилися і співали",
+          "Плакали",
+          "Сперечалися"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Павло і Сила опівночі молилися і співали хвалу Богові, і в'язні слухали їх.",
+        "explanationDeep": null,
+        "reference": "Дії 16:25"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "parables-child-ai-00748",
+        "contentHash": "fde230a20706d20154bf4a38dce30713e1ffd8de99229264bc5ef9f75f540b81",
+        "themeId": "parables",
+        "difficulty": "child",
+        "topicNodeId": "parables-sub-4-sub-1",
+        "text": "Як Ісус назвав митаря у своїй молитві?",
+        "options": [
+          "Святим",
+          "Грішником",
+          "Бідним",
+          "Мудрим"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Митар сам назвав себе грішним, визнаючи свою провину перед Богом.",
+        "explanationDeep": null,
+        "reference": "Луки 18:13"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-child-ai-00147",
+        "contentHash": "7dfffc4353136d54bdfe1eec1b6d37183435e23647ae1bd76269a654f7b65486",
+        "themeId": "wisdom-poetry",
+        "difficulty": "child",
+        "topicNodeId": "wisdom-poetry-sub-3-sub-3",
+        "text": "Чи є страх Господній скарбом для віруючої людини?",
+        "options": [
+          "Ні, це тягар",
+          "Так, це великий скарб",
+          "Це просто звичай",
+          "Це тільки для дорослих"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Страх Господній названий скарбом, який допомагає бути міцним у вірі.",
+        "explanationDeep": null,
+        "reference": "Іс. 33:6"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "parables-theologian-ai-02000",
+        "contentHash": "70fbd77085def555f7c7361ece965e7f4951cd3faf3cc158d670d508b6798c1e",
+        "themeId": "parables",
+        "difficulty": "theologian",
+        "topicNodeId": "parables-sub-2-sub-4",
+        "text": "Чому притча про загублену вівцю вважається взірцем пастирського служіння?",
+        "options": [
+          "Бо пастух ризикує стадом заради однієї вівці",
+          "Бо пастух демонструє індивідуальний підхід до кожного",
+          "Бо пастух використовує вівчарських собак",
+          "Бо пастух змінює професію після пошуків"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Притча ілюструє, що для справжнього пастиря цінність кожної окремої особистості є абсолютною, незалежно від кількості інших.",
+        "explanationDeep": null,
+        "reference": "Луки 15:4-7"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "geography-student-ai-08678",
+        "contentHash": "6725b439067fcffb88caf73976e19eac6ee49d12246410b25671d8678b4cbebb",
+        "themeId": "geography",
+        "difficulty": "student",
+        "topicNodeId": "geography-sub-4-sub-8",
+        "text": "Що сталося, коли хмара огорнула присутніх на горі?",
+        "options": [
+          "Почався сильний дощ",
+          "З хмари пролунав голос Божий",
+          "Усі заснули",
+          "Хмара зникла безслідно"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "З хмари пролунав голос, який свідчив: «Це Син Мій Улюблений, Його слухайте».",
+        "explanationDeep": null,
+        "reference": "Мк. 9:7"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "judges-teacher-ai-04931",
+        "contentHash": "0bb578e695f516b67d9bb7a74fb965a390410122bbab91a320a19dc84bf519f2",
+        "themeId": "judges",
+        "difficulty": "teacher",
+        "topicNodeId": "judges-sub-3-sub-4",
+        "text": "Яким чином Ісус Христос завершив Свій останній земний подвиг, вигукнувши на хресті згідно з Євангелієм від Івана?",
+        "options": [
+          "Звершилось",
+          "Отче, у руки Твої віддаю дух Мій",
+          "Боже Мій, чому Ти Мене покинув?",
+          "Прийдіть до Мене всі струджені"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Слово 'Звершилось' (грец. τετέλεσται) знаменує завершення справи спасіння людства.",
+        "explanationDeep": null,
+        "reference": "Ів. 19:30"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "paul-baby-x10",
+        "contentHash": "44f5baf8f3aa2cd3967dc92fdb44da01f42a9950d15a76bc89c2a1ae15089973",
+        "themeId": "paul",
+        "difficulty": "baby",
+        "topicNodeId": null,
+        "text": "Що Павло робив до навернення?",
+        "options": [
+          "Гонив церкву",
+          "Був рибалкою",
+          "Цар",
+          "Священик"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": null
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "missing_reference"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-baby-ai-02302",
+        "contentHash": "9c4438ee72ef3d3fa640ec1121cf8230a40dfabe7f185c59ab6c32bd4c57ac6a",
+        "themeId": "pentateuch",
+        "difficulty": "baby",
+        "topicNodeId": "pentateuch-sub-4-sub-4",
+        "text": "Скільки разів Валам намагався проклясти Ізраїль на прохання Балака?",
+        "options": [
+          "Один раз",
+          "Два рази",
+          "Три рази",
+          "Сім разів"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Валам робив три спроби проклясти Ізраїль, але кожного разу Бог перетворював прокляття на благословення.",
+        "explanationDeep": null,
+        "reference": "Чис. 23-24"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed",
+        "sensitivity_divine_judgment"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "paul-child-ai-00140",
+        "contentHash": "9c43a7a206352e1679f6ee2e617486f52ae0caba65ad24db923265ccf0d3cce0",
+        "themeId": "paul",
+        "difficulty": "child",
+        "topicNodeId": "paul-sub-1-sub-2",
+        "text": "Яким ремеслом займався апостол Павло, щоб заробляти на життя під час подорожей?",
+        "options": [
+          "Рибальство",
+          "Будівництво",
+          "Виготовлення наметів",
+          "Землеробство"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "У Коринті Павло працював разом з Акилою та Прискиллою, бо вони мали такий самий фах — чинці наметів.",
+        "explanationDeep": null,
+        "reference": "Дії 18:3"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-preacher-ai-03428",
+        "contentHash": "3305f340dcb80950ab3d238ed57ffae6f654ae855cf5e42c342544ec2dcb33b3",
+        "themeId": "patriarchs",
+        "difficulty": "preacher",
+        "topicNodeId": "patriarchs-sub-3-sub-3",
+        "text": "У чому полягала внутрішня боротьба пророка Єремії з Божим закликом?",
+        "options": [
+          "Він був занадто молодий",
+          "Він боявся переслідувань",
+          "Він не хотів бути пророком лиха",
+          "Все вищеперелічене"
+        ],
+        "correctIndex": 3,
+        "explanationShort": "Єремія висловлював сумніви, страх і незгоду, намагаючись ухилитися від пророчого служіння.",
+        "explanationDeep": null,
+        "reference": "Єр. 1:6-8"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "new-testament-youth-ai-00011",
+        "contentHash": "2cd605c4116ec18bc0e8cd1c90011dff0224d7745cbcc5d063e76daa5223e6b0",
+        "themeId": "paul",
+        "difficulty": "youth",
+        "topicNodeId": "paul",
+        "text": "Кто є автором Епістоли до Галатів?",
+        "options": [
+          "Петро (Гал. 1:1)",
+          "Яків (Гал. 1:19)",
+          "Іван (Івд. 21:24)",
+          "Павло (Гал. 1:1)"
+        ],
+        "correctIndex": 3,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Гал. 1:1"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "mixed_language"
+      ],
+      "stratum": "language"
+    },
+    {
+      "subject": {
+        "questionId": "acts-theologian-ai-03204",
+        "contentHash": "1c41d1ea005eb172b34ff0d1457ec5ccbaaf6ff083ba00f2d05e8896cc784271",
+        "themeId": "acts",
+        "difficulty": "theologian",
+        "topicNodeId": "acts-sub-4-sub-1",
+        "text": "Чому Ісус сказав, що учням не варто турбуватися про те, що говорити, коли їх приведуть на суди?",
+        "options": [
+          "Бо їм допоможуть книжники",
+          "Бо Дух Отця їхнього промовлятиме в них",
+          "Бо вони будуть навчені ангелами",
+          "Бо судді будуть прихильні до них"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Це обітниця Божественної присутності та натхнення в моменти переслідувань, що очікували учнів під час виконання місії.",
+        "explanationDeep": null,
+        "reference": "Мт. 10:20"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "acts-teacher-ai-03120",
+        "contentHash": "9147980549c3c469ff3d941f3e60fcf04752603b684bf297b07fa10d01ce66c5",
+        "themeId": "acts",
+        "difficulty": "teacher",
+        "topicNodeId": "acts-sub-2-sub-4",
+        "text": "Чому наглядач в'язниці у Филипах хотів вчинити самогубство після землетрусу?",
+        "options": [
+          "Він боявся гніву апостолів",
+          "Він думав, що всі в'язні втекли, і понесе за це покарання",
+          "Він отримав наказ від влади стратити себе",
+          "Він був вражений силою Бога і зневірився у своєму житті"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Побачивши відчинені двері, наглядач подумав, що в'язні втекли, і хотів заподіяти собі смерть, бо знав, що за це його стратять.",
+        "explanationDeep": null,
+        "reference": "Дії 16:27"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_mental_health"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "prophets-theologian-ai-05662",
+        "contentHash": "39ee6a71917f09b39f62dde76b0ddfbdc6477b103e54b12ea9b63db30fddf19b",
+        "themeId": "prophets",
+        "difficulty": "theologian",
+        "topicNodeId": "prophets-sub-1-sub-4",
+        "text": "Яке ім'я було дане Асфеназом Даниїлові при дворі Навуходоносора, згідно з вавилонською традицією?",
+        "options": [
+          "Белтешацар",
+          "Седрах",
+          "Авед-Него",
+          "Месах"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Начальник євнухів дав Даниїлові ім'я Белтешацар, що означало посвяту вавилонському божеству.",
+        "explanationDeep": null,
+        "reference": "Дан. 1:7"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "mixed_language"
+      ],
+      "stratum": "language"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-theologian-ai-12717",
+        "contentHash": "0747224c71a935316b2ab29590fa49862f40bf773ef10f685fdf0dec052155aa",
+        "themeId": "pentateuch",
+        "difficulty": "theologian",
+        "topicNodeId": "pentateuch-sub-3-sub-14",
+        "text": "Що символізує відсутність закваски під час святкування Пасхи?",
+        "options": [
+          "Бідність і нестатки",
+          "Смирення та швидкість",
+          "Нечистоту гріха",
+          "Відсутність часу для бродіння"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "У біблійній символіці закваска часто асоціюється з гріхом, тому її видалення символізувало освячення.",
+        "explanationDeep": null,
+        "reference": "Вих. 12:15"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "commandments-preacher-ai-02683",
+        "contentHash": "74e159ea3fda788f38596d988d2c8914a0c15072dbb1527ec535abb5caf1bf41",
+        "themeId": "commandments",
+        "difficulty": "preacher",
+        "topicNodeId": "commandments-sub-2-sub-2",
+        "text": "Чому самогубство (посягання на власне життя) вважається порушенням шостої заповіді в контексті біблійного світогляду?",
+        "options": [
+          "Бо людина не має влади над своїм духом",
+          "Бо це порушує права суспільства",
+          "Бо це гріх проти природи",
+          "Бо це не дозволяє покаятися"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Біблія вчить, що людина не є повним власником свого життя, бо «немає людини, що має владу над духом, щоб стримати духа».",
+        "explanationDeep": null,
+        "reference": "Еккл. 8:8"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch",
+        "sensitivity_mental_health"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-teacher-ai-02347",
+        "contentHash": "fe0092b45d817185c4788e7689dc035b54fca0c63c9d644366b11c36615b9e87",
+        "themeId": "revelation",
+        "difficulty": "teacher",
+        "topicNodeId": "revelation-sub-4-sub-3",
+        "text": "Як Ісус описує Свою постійну присутність з учнями після Свого вознесіння?",
+        "options": [
+          "Через Святого Духа в їхніх серцях",
+          "Через Своє слово в Писанні",
+          "«Я з вами по всі дні аж до кінця віку»",
+          "Через ангелів, що охороняють їх"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Це завершальні слова Ісуса в Євангелії від Матвія, що гарантують Його вічну присутність з віруючими.",
+        "explanationDeep": null,
+        "reference": "Мт. 28:20"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "judges-youth-ai-03933",
+        "contentHash": "51e8d9050f27af545c33e04720dce477afcb3937106f67b6496699cf9029310d",
+        "themeId": "judges",
+        "difficulty": "youth",
+        "topicNodeId": "judges-sub-4-sub-2",
+        "text": "Ким був батько Авімелеха, царя Герарського?",
+        "options": [
+          "Авраам",
+          "Ісак",
+          "Терах",
+          "Нахор"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Авімелех був сином Авраама, але в контексті Герарського царя, з яким стикався Ісак, він був царем філістимлян.",
+        "explanationDeep": null,
+        "reference": "Бут. 26:1"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-student-ai-02605",
+        "contentHash": "c0fe6065528659ba6dd10177bd46804f6584aac7cf79a055bb7a5ba8593b2887",
+        "themeId": "geography-nt",
+        "difficulty": "student",
+        "topicNodeId": "geography-nt-sub-3-sub-2",
+        "text": "Як ще називається Галілейське море в Біблії, що вказує на місцевість, де Ісус часто проповідував?",
+        "options": [
+          "Генисаретське озеро",
+          "Кінерет",
+          "Йорданське море",
+          "Араватська затока"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "В Євангелії від Луки Галілейське море згадується як Генисаретське озеро, де народ тиснувся до Ісуса, щоб слухати слово Боже.",
+        "explanationDeep": null,
+        "reference": "Лк. 5:1"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "general-epistles-teacher-ai-01226",
+        "contentHash": "2dc87fbe362f64b6b2be822e61dfe80ded36092132e10eec45dd5b8e8f78f425",
+        "themeId": "general-epistles",
+        "difficulty": "teacher",
+        "topicNodeId": "general-epistles-sub-1-sub-2",
+        "text": "Чому священиків за законом було багато?",
+        "options": [
+          "Бо вони були грішними людьми",
+          "Бо смерть не дозволяла їм залишатися навіки",
+          "Бо вони мали різні обов'язки",
+          "Бо закон вимагав ротації щороку"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Левитських священиків було багато, бо вони вмирали і їх замінювали нові, на відміну від вічного Первосвященика.",
+        "explanationDeep": null,
+        "reference": "Євр. 7:23"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-theologian-ai-04230",
+        "contentHash": "acd3a7a795c6cdbbb10247dad971579ba88e9092729d8e7152495c8d53d25eae",
+        "themeId": "wisdom-poetry",
+        "difficulty": "theologian",
+        "topicNodeId": "wisdom-poetry-sub-1-sub-3",
+        "text": "Яким був ключовий елемент відповіді Бога Мойсеєві, коли той запитав про Його ім'я біля палаючого куща?",
+        "options": [
+          "Я Сущий",
+          "Я Бог Авраама",
+          "Я Всемогутній",
+          "Я Той, Хто вивів вас із Єгипту"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Бог відповідає Мойсеєві ім'ям «Я Сущий» (Ягве), що вказує на Його самодостатнє та вічне буття.",
+        "explanationDeep": null,
+        "reference": "Вих. 3:14"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "kings-theologian-ai-04672",
+        "contentHash": "56b941830ad72f422875b76bcb80897abbc44844ce286e8d518a920c5e8c24f9",
+        "themeId": "kings",
+        "difficulty": "theologian",
+        "topicNodeId": "kings-sub-3-sub-3",
+        "text": "Хто почав відрізати частини від Ізраїльського царства під час днів Єгу?",
+        "options": [
+          "Ассирійський цар",
+          "Азаїл, цар сирійський",
+          "Фараон Єгипту",
+          "Цар Моаву"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "У ті дні Господь почав відрізати частини Ізраїлю, і Азаїл, цар Сирії, переміг їх у всіх межах.",
+        "explanationDeep": null,
+        "reference": "2 Цар. 10:32"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_ambiguous"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-baby-x7",
+        "contentHash": "2ba8014897df176391df5564fa125b67fbbbea53a0f6f3534a1af9defaa4c017",
+        "themeId": "patriarchs",
+        "difficulty": "baby",
+        "topicNodeId": null,
+        "text": "Скільки синів Яків?",
+        "options": [
+          "12",
+          "7",
+          "10",
+          "2"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": null
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "missing_reference"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-baby-ai-01515",
+        "contentHash": "b9810aca9bc3ac5b77c8b649f3c83b0dd04d661253fc48945b796eecfa466113",
+        "themeId": "geography-nt",
+        "difficulty": "baby",
+        "topicNodeId": "geography-nt-sub-1-sub-3",
+        "text": "Який сирійський воєначальник, що хворів на проказу, прийшов до пророка Єлисея в Самарію?",
+        "options": [
+          "Нааман",
+          "Бен-Гадад",
+          "Сіннахеріб",
+          "Навуходоносор"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Нааман приїхав у Самарію до пророка Єлисея, щоб отримати зцілення від прокази.",
+        "explanationDeep": null,
+        "reference": "4 Цар. 5:3"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "parables-youth-ai-00913",
+        "contentHash": "9d06bbe85c9b8bef5092c489bc5d015a7b1d9d64c72dd0a4a00dbb5a375c2bce",
+        "themeId": "parables",
+        "difficulty": "youth",
+        "topicNodeId": "parables-sub-1-sub-2",
+        "text": "Чи є гірчичне зерно символом Царства Божого в інших джерелах, крім Євангелій?",
+        "options": [
+          "Так, у Діяннях",
+          "Так, у Посланнях",
+          "Ні, лише в Євангеліях",
+          "У книзі Об'явлення"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Ця притча міститься лише в синоптичних Євангеліях (Матвія, Марка та Луки).",
+        "explanationDeep": null,
+        "reference": "Мт. 13, Мк. 4, Лк. 13"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-youth-ai-06413",
+        "contentHash": "a645132a25c7c6e4bbc33ec45ceb1820186e36744562d552e71ddcd6413a0431",
+        "themeId": "geography-nt",
+        "difficulty": "youth",
+        "topicNodeId": "geography-nt-sub-2-sub-4",
+        "text": "Як називався укріплений район у Єрусалимі, який Давид відібрав у євусеїв і зробив своєю резиденцією, назвавши його «Містом Давидовим»?",
+        "options": [
+          "Офел",
+          "Сіон",
+          "Міло",
+          "Акра"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Давид захопив фортецю Сіон, яка згодом стала відома як Місто Давидове.",
+        "explanationDeep": null,
+        "reference": "2 Самуїлова 5:7"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "general-epistles-student-ai-01650",
+        "contentHash": "a5c9eba71c12d333363046b16756e6960925d5ad3ce537541f6ed77b114cae1b",
+        "themeId": "general-epistles",
+        "difficulty": "student",
+        "topicNodeId": "general-epistles-sub-3-sub-2",
+        "text": "Згідно з посланням до Филип'ян, що, окрім віри в Христа, було дароване віруючим заради Нього?",
+        "options": [
+          "Здатність творити чудеса",
+          "Повна відсутність будь-яких хвороб",
+          "Страждати за Нього",
+          "Звільнення від усіх соціальних обов'язків"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Апостол Павло наголошує, що страждання за Христа є не лише випробуванням, а й почесним даром для християнина.",
+        "explanationDeep": null,
+        "reference": "Филип'янам 1:29"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "new-testament-theologian-ai-00064",
+        "contentHash": "0ccf202b1816c6c61602543489f6e01efe81f67624528406919509a3cc1ac022",
+        "themeId": "paul",
+        "difficulty": "theologian",
+        "topicNodeId": "paul",
+        "text": "У контексті есхатологічного очікування, яку специфічну метафору використовує апостол Павло в 1 Фессалонікійців 5:4-8, щоб протиставити «синів світла» та «синів ночі» в контексті духовної пильності?",
+        "options": [
+          "Порівняння з недбалим управителем, що розтратив майно пана",
+          "Метафору повного озброєння вірою, любов'ю та надією на спасіння як шоломом",
+          "Образ нареченої, що запалила світильник в очікуванні нареченого",
+          "Притчу про робітників у винограднику, які отримали платню в кінці дня"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Павло закликає віруючих, як дітей світла, бути тверезими та зодягнутися в броню віри й любові, а також у шолом надії на спасіння, що є символом готовності до приходу Господа.",
+        "explanationDeep": null,
+        "reference": "1 Фес. 5:8"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_end_times"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "paul-teacher-ai-03015",
+        "contentHash": "f7b0d3495ef9d13480a8e36d9458599041954e83ea6e8ece64b1aadda12c7696",
+        "themeId": "paul",
+        "difficulty": "teacher",
+        "topicNodeId": "paul-sub-4-sub-7",
+        "text": "У якому апокрифічному тексті ім'я 'Димас' закріпилося за покаяним розбійником?",
+        "options": [
+          "Євангеліє від Томи",
+          "Діяння Петра",
+          "Євангеліє від Никодима",
+          "Євангеліє від Юди"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Саме в апокрифічному Євангелії від Никодима (Акти Пилата) розбійник, що покаявся, вперше названий ім'ям Димас.",
+        "explanationDeep": null,
+        "reference": "Євангеліє від Никодима"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "general-epistles-student-ai-01783",
+        "contentHash": "032f269574cc85d9de46e35b2ef0ad2ea3985d8f85d878d2f69e2db9a8f9fefb",
+        "themeId": "general-epistles",
+        "difficulty": "student",
+        "topicNodeId": "general-epistles-sub-3-sub-3",
+        "text": "Яким має бути ставлення пастиря до своєї праці, згідно з 1-м посланням Петра?",
+        "options": [
+          "Вимушеним",
+          "Добровільним, з готовністю",
+          "Ради грошової винагороди",
+          "Як до тягаря"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Петро закликає пастирів пасти Божу отару добровільно, а не з примусу, і не заради брудної наживи.",
+        "explanationDeep": null,
+        "reference": "1 Пет. 5:2"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-baby-ai-01136",
+        "contentHash": "5ddb8162cea3f334b2ffef250aec29bd7847016caaee8f64d0e54dd1060738bf",
+        "themeId": "gospels",
+        "difficulty": "baby",
+        "topicNodeId": "gospels-sub-4-sub-1",
+        "text": "В який день тижня жінки прийшли до гробниці?",
+        "options": [
+          "В суботу",
+          "У п'ятницю",
+          "У перший день тижня",
+          "У понеділок"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Жінки прийшли до гробу рано-вранці в перший день тижня, тобто в неділю.",
+        "explanationDeep": null,
+        "reference": "Ів. 20:1"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-baby-ai-03804",
+        "contentHash": "839a2a359574c9a1cd598ca57f236b1dc45f2ad7bf1ade579354181d5ef9adc2",
+        "themeId": "wisdom-poetry",
+        "difficulty": "baby",
+        "topicNodeId": "wisdom-poetry-sub-3-sub-1",
+        "text": "Про що, окрім людських стосунків, Соломон виявляв глибокі знання?",
+        "options": [
+          "Про мореплавство",
+          "Про дерева та тварин",
+          "Про металургію",
+          "Про магію"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Соломон знав усе про рослинний і тваринний світ, від кедрів до дрібних істот.",
+        "explanationDeep": null,
+        "reference": "1 Царів 5:13"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-baby-ai-00001",
+        "contentHash": "b39bad42089639cd23e456e804aed3f7a571393e17c18b387d70fdcfad20ecea",
+        "themeId": "gospels",
+        "difficulty": "baby",
+        "topicNodeId": "gospels",
+        "text": "Яке євангеліє повідомляє про перше чудо Ісуса Христа, зміну води в вино на весіллі в Кані Галилейській?",
+        "options": [
+          "Маркове",
+          "Лукине",
+          "Матейське",
+          "Іоанне"
+        ],
+        "correctIndex": 2,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Ин. 2:1-11"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-child-ai-03668",
+        "contentHash": "79c15bfc619e5c63f3e4140a70dcfa2ce2846ce3383172ba0b517340dcda1a56",
+        "themeId": "wisdom-poetry",
+        "difficulty": "child",
+        "topicNodeId": "wisdom-poetry-sub-2-sub-4",
+        "text": "Як Давид називає Бога у 17-му Псалмі, говорячи про свій захист?",
+        "options": [
+          "Мій човен",
+          "Моя скеля",
+          "Мій дім",
+          "Мій сад"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Давид часто називає Бога своєю скелею, твердинею та визволителем.",
+        "explanationDeep": null,
+        "reference": "Пс. 17:3"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "paul-student-ai-02366",
+        "contentHash": "1f27dc28d20c992f765a5c32ddb9853c6a5db4c42a073a2144932649e9c57960",
+        "themeId": "paul",
+        "difficulty": "student",
+        "topicNodeId": "paul-sub-4-sub-1",
+        "text": "Яке справжнє ім'я Варнави, що означає «син потіхи»?",
+        "options": [
+          "Савл",
+          "Йосип",
+          "Сила",
+          "Марко"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Апостоли дали Йосипу прізвисько Варнава, що в перекладі з єврейської означає «син потіхи» або «син утішення».",
+        "explanationDeep": null,
+        "reference": "Дії 4:36"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "judges-student-ai-01248",
+        "contentHash": "9f4ef54042b7cc198fb8d712c043c2245d8e17ca821f8f3d7d5bc4473f14486d",
+        "themeId": "judges",
+        "difficulty": "student",
+        "topicNodeId": "judges-sub-3-sub-4",
+        "text": "Які слова вимовив Ісус, завершуючи Свій останній подвиг на хресті?",
+        "options": [
+          "Боже Мій, чому Ти Мене покинув?",
+          "Отче, в руки Твої віддаю дух Мій",
+          "Звершилось!",
+          "Прости їм, бо не знають, що роблять"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Вигуком «Звершилось!» Ісус підтвердив виконання місії викуплення людства.",
+        "explanationDeep": null,
+        "reference": "Ів. 19:30"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "parables-teacher-ai-01662",
+        "contentHash": "6092953d9b5f38c43bfe8044998418f29d43d75ecd943e0b5db005cfb9dc56af",
+        "themeId": "parables",
+        "difficulty": "teacher",
+        "topicNodeId": "parables-sub-4-sub-1",
+        "text": "Який загальний висновок зробив Ісус наприкінці притчі?",
+        "options": [
+          "Хто себе підносить — принижений буде, а хто себе принижує — піднесеться",
+          "Бог дивиться на вчинки, а не на слова",
+          "Тільки ті, хто дають десятину, будуть спасенні",
+          "Молитва в храмі важливіша за молитву вдома"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Цей принцип лежить в основі Божого суду над людським серцем.",
+        "explanationDeep": null,
+        "reference": "Луки 18:14"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-youth-ai-02375",
+        "contentHash": "a1cc9e4f423e0aa0a94d71b780de608db749f494d0702a274feff494e5fe5043",
+        "themeId": "pentateuch",
+        "difficulty": "youth",
+        "topicNodeId": "pentateuch-sub-4-sub-4",
+        "text": "Скільки разів Валак просив Валама проклясти Ізраїль на різних місцях?",
+        "options": [
+          "Двічі",
+          "Тричі",
+          "Чотири рази",
+          "Сім разів"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Валак тричі водив Валама на різні висоти, сподіваючись почути прокляття, але Бог перетворював їх на благословення.",
+        "explanationDeep": null,
+        "reference": "Чис. 23-24"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed",
+        "sensitivity_divine_judgment"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-baby-ai-14158",
+        "contentHash": "8461e4203a77e256b3b00402345fd4df2f3f3321826d22b3df8199550312ec58",
+        "themeId": "pentateuch",
+        "difficulty": "baby",
+        "topicNodeId": "pentateuch-sub-5-sub-8",
+        "text": "Про що батьки повинні пам'ятати, навчаючи дітей?",
+        "options": [
+          "Про свої помилки",
+          "Про Божі діла та чудеса",
+          "Про роботу",
+          "Про відпочинок"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Важливо розповідати дітям про великі діла, які Бог вчинив для Свого народу.",
+        "explanationDeep": null,
+        "reference": "Повт. Зак. 6:21-22"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-teacher-ai-01503",
+        "contentHash": "f441994c1d0d3ec0bb5a97eb72dd07862f31f57017c606ac32777502af968cd1",
+        "themeId": "geography-nt",
+        "difficulty": "teacher",
+        "topicNodeId": "geography-nt-sub-1-sub-2",
+        "text": "Який пророк передбачив, що Юдея буде спустошена на 70 років?",
+        "options": [
+          "Даниїл",
+          "Єремія",
+          "Ісая",
+          "Михей"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Єремія пророкував про 70-річний вавилонський полон для юдеїв.",
+        "explanationDeep": null,
+        "reference": "Єр. 25:11"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-student-ai-02652",
+        "contentHash": "f90f0439ce18084a94e7e7cc1764e19c817a04507cb239696298b48341b4585c",
+        "themeId": "patriarchs",
+        "difficulty": "student",
+        "topicNodeId": "patriarchs-sub-1-sub-2",
+        "text": "Яка головна мета заповіту Бога з людиною?",
+        "options": [
+          "Обмежити свободу людини",
+          "Встановити відносини близькості та послуху",
+          "Зібрати податки для храму",
+          "Створити ієрархію влади"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Бог укладає заповіт, щоб бути Богом для Свого народу, а вони були Його народом, живучи в близькості з Ним.",
+        "explanationDeep": null,
+        "reference": "Лев. 26:12"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "parables-student-1",
+        "contentHash": "defab364d629a1da164612e2eb89edbe0b809b23ce05cde9a1215ba6c97f837b",
+        "themeId": "parables",
+        "difficulty": "student",
+        "topicNodeId": null,
+        "text": "Скільки притч у Матфея 13?",
+        "options": [
+          "7",
+          "3",
+          "12",
+          "1"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": null
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "missing_reference"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-theologian-ai-04797",
+        "contentHash": "e753993e1268edc76147c6e5a7cf95f39442bd72e4efa00be57386218d911d0b",
+        "themeId": "patriarchs",
+        "difficulty": "theologian",
+        "topicNodeId": "patriarchs-sub-4-sub-4",
+        "text": "Що зробив фараон після того, як Мойсей та Аарон вперше звернулися до нього з вимогою відпустити народ?",
+        "options": [
+          "Збільшив норму роботи, заборонивши давати солому для цегли",
+          "Вигнав їх з палацу",
+          "Ув'язнив їх",
+          "Вимагав від них чудотворного знамення"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Фараон наказав наглядачам не давати більше соломи ізраїльтянам, але вимагати ту саму кількість цегли.",
+        "explanationDeep": null,
+        "reference": "Вих. 5:6-9"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "paul-preacher-ai-00559",
+        "contentHash": "8052903d6f53e629a2c4ac8a133553012f1aa0438838f694eed1af77bdb82881",
+        "themeId": "paul",
+        "difficulty": "preacher",
+        "topicNodeId": "paul-sub-2-sub-1",
+        "text": "Який аргумент наводить Павло, щоб довести, що закон не дає праведності, а лише пізнання гріха?",
+        "options": [
+          "Закон вимагає досконалості",
+          "Через закон приходить пізнання гріха",
+          "Закон був даний лише для євреїв",
+          "Закон не має сили над віруючими"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Павло пояснює, що закон діє як дзеркало, що виявляє гріховність людини, а не виправдовує її.",
+        "explanationDeep": null,
+        "reference": "Рим. 3:20"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-student-ai-01622",
+        "contentHash": "18107473e56de6743bf62e3c10186dd52325b434b0185a7b093733694fbf71f8",
+        "themeId": "revelation",
+        "difficulty": "student",
+        "topicNodeId": "revelation-sub-2-sub-1",
+        "text": "З чого, за описом Даниїла, було зроблено престол Божий?",
+        "options": [
+          "З вогняного полум'я",
+          "З чистого золота",
+          "З дорогоцінного каміння",
+          "З білого мармуру"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Даниїл описує престол як вогняне полум'я, а колеса його — як палаючий вогонь.",
+        "explanationDeep": null,
+        "reference": "Дан. 7:9"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-preacher-ai-02176",
+        "contentHash": "5098f4ca8a03c7e741cd6ce5e69bb312cb7404f891e011da67c8a765bf853c7d",
+        "themeId": "gospels",
+        "difficulty": "preacher",
+        "topicNodeId": "gospels-sub-2-sub-4",
+        "text": "Які саме пророки з'явилися Ісусу під час Преображення на горі?",
+        "options": [
+          "Ісая та Єремія",
+          "Мойсей та Ілля",
+          "Єнох та Ілля",
+          "Мойсей та Самуїл"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Мойсей та Ілля з'явилися в славі, щоб розмовляти з Ісусом про Його відхід, який Він мав здійснити в Єрусалимі.",
+        "explanationDeep": null,
+        "reference": "Мт. 17:3"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-youth-ai-02041",
+        "contentHash": "3e091fc73e8e40ef7f3dbe0ce9a0e16e3e7368122cb6b416d7829041ee3741f6",
+        "themeId": "geography-nt",
+        "difficulty": "youth",
+        "topicNodeId": "geography-nt-sub-2-sub-7",
+        "text": "Як Ісус назвав долю Віфсаїди у порівнянні з долею Содому?",
+        "options": [
+          "Содому буде легше",
+          "Віфсаїді буде легше",
+          "Долі однакові",
+          "Віфсаїда врятується"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Ісус сказав, що в день суду землі Содомській буде легше, ніж Віфсаїді за її невірство.",
+        "explanationDeep": null,
+        "reference": "Мт. 11:24"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-teacher-ai-03929",
+        "contentHash": "244dd853b11ae5feabc64e28a3c26fa7dcf7e07496cbf91e69df25d87713af7c",
+        "themeId": "patriarchs",
+        "difficulty": "teacher",
+        "topicNodeId": "patriarchs-sub-1-sub-2",
+        "text": "Який заповіт Бог уклав з Давидом, обіцяючи йому вічний престол?",
+        "options": [
+          "Заповіт про завоювання всіх народів",
+          "Заповіт про вічне царювання його нащадків",
+          "Заповіт про будівництво найбільшої імперії",
+          "Заповіт про прощення всіх гріхів його дому"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Бог обіцяв Давиду, що його дім і царство будуть міцними навіки через його нащадка.",
+        "explanationDeep": null,
+        "reference": "2 Сам. 7:12-16"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-teacher-ai-04726",
+        "contentHash": "56d4634818325b517b1cfb7b96640936a99daf4c624455e032b12004c88c3526",
+        "themeId": "patriarchs",
+        "difficulty": "teacher",
+        "topicNodeId": "patriarchs-sub-4-sub-3",
+        "text": "Скільки часу минуло після звільнення виночерпія, перш ніж він згадав про Йосипа, коли фараону наснилися сни?",
+        "options": [
+          "Два повних роки",
+          "Сім днів",
+          "Один місяць",
+          "Одразу наступного дня"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Лише через два повних роки, коли фараону наснилися сни, які ніхто не міг розтлумачити, виночерпій згадав про Йосипа.",
+        "explanationDeep": null,
+        "reference": "Бут. 41:1"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "paul-youth-4",
+        "contentHash": "61aadd5ac2f01454fbf5077de276d6e8c1c7080c3659b4f3ac62325df0806c43",
+        "themeId": "paul",
+        "difficulty": "youth",
+        "topicNodeId": null,
+        "text": "У якій в’язниці писав листи до филип’ян?",
+        "options": [
+          "Рим",
+          "Єрусалим",
+          "Кесарія",
+          "Коринф"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Флп. 1:7"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_explanation",
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-child-ai-01427",
+        "contentHash": "30e59ba73fa3c10535311c5703564b42d356a2dcfa55376e96b1f95f1b4a28a6",
+        "themeId": "gospels",
+        "difficulty": "child",
+        "topicNodeId": "gospels-sub-5-sub-12",
+        "text": "Куди Юда кинув 30 срібняків після того, як розкаявся?",
+        "options": [
+          "У скарбницю храму",
+          "У вогонь",
+          "У річку",
+          "На дорогу"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Юда кинув гроші в храмі, після чого пішов і покінчив життя самогубством.",
+        "explanationDeep": null,
+        "reference": "Матв. 27:5"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "sensitivity_mental_health"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "miracles-child-ai-00003",
+        "contentHash": "86def6bdf8fc379ef5a9b94664d35a80d561f71f8b2ef4c64c5e49b22072cbe8",
+        "themeId": "miracles",
+        "difficulty": "child",
+        "topicNodeId": "miracles",
+        "text": "Чим Ісус зцілив хворого, коли він був ще в Галілеї (Марк 1:40-45)?",
+        "options": [
+          "Лепрозою",
+          "Від хореї",
+          "На висипаннях",
+          "З паралічом"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Мар. 1:40"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-baby-ai-00279",
+        "contentHash": "713afaccdb3f3d80179234dfff10ac8cb1bb1a274d70ab2f17eece1cc2f91eb8",
+        "themeId": "revelation",
+        "difficulty": "baby",
+        "topicNodeId": "revelation-sub-2-sub-1",
+        "text": "Скільки старців сидять навколо престолу Божого в книзі Об'явлення?",
+        "options": [
+          "12",
+          "24",
+          "40",
+          "7"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Навколо головного престолу розташовані 24 престоли, на яких сидять 24 старці.",
+        "explanationDeep": null,
+        "reference": "Об. 4:4"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "miracles-baby-ai-00002",
+        "contentHash": "20fa81593ada1f17669099e5c9c0ff0a305f410bcb6652e549d14591013533d0",
+        "themeId": "miracles",
+        "difficulty": "baby",
+        "topicNodeId": "miracles-sub-1",
+        "text": "Який випадок згадується в Євангелії від Івана, коли Ісус використав хліб і рибу для улюбленої вечері зі своїми учнями?",
+        "options": [
+          "Чудеса Ісуса: Зцілення, воскресіння, природа. (Ін. 21:1-14)",
+          "Відділення учнів від фарисеїв та софістів (Мк. 3:7-19)",
+          "Сцена з вигнання торговців з Храму (Мк. 11:15-18)",
+          "Проповідь на горі Галілейській (Лк. 6:20-49)"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Ін. 21:1-14"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "acts-teacher-ai-03343",
+        "contentHash": "57032eedbac57198994b19a1c81bf56980913b520078c02f3434576cbd2515ff",
+        "themeId": "acts",
+        "difficulty": "teacher",
+        "topicNodeId": "acts-sub-6-sub-2",
+        "text": "Як Ісус відповів Филипу на прохання показати Отця?",
+        "options": [
+          "'Хто бачив Мене, той бачив Отця'",
+          "'Отець перебуває лише на небі'",
+          "'Я покажу вам Його пізніше'",
+          "'Це таємниця, яку ви не зрозумієте'"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Ісус відповів, що Він так довго з ними, і той, хто бачив Його, бачив і Отця.",
+        "explanationDeep": null,
+        "reference": "Івана 14:9"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "old-testament-student-ai-00046",
+        "contentHash": "a9620c8906c990af0e3c9e76b36b0bc4459cf9b71045e7687ac5ad4ce934898b",
+        "themeId": "old-testament",
+        "difficulty": "student",
+        "topicNodeId": "kings-sub-1-sub-3",
+        "text": "Кто был первым королем Израиля?",
+        "options": [
+          "Саул",
+          "Давид",
+          "Йосиф",
+          "Соломон"
+        ],
+        "correctIndex": 3,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Цар. 1:26"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "mixed_language"
+      ],
+      "stratum": "language"
+    },
+    {
+      "subject": {
+        "questionId": "parables-student-ai-01094",
+        "contentHash": "8fd3508aebaa51a1a221ecbe65901c3db90b49bdbd7bcb3810c2bc7c75e1ed81",
+        "themeId": "parables",
+        "difficulty": "student",
+        "topicNodeId": "parables-sub-1-sub-4",
+        "text": "Що запропонували зробити слуги, коли помітили, що серед пшениці виріс кукіль?",
+        "options": [
+          "Негайно вирвати його",
+          "Спалити все поле",
+          "Залишити його до жнив",
+          "Викликати сторожу"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Слуги запитали господаря, чи хочуть вони, щоб вони пішли і вибрали кукіль, але господар заборонив це робити.",
+        "explanationDeep": null,
+        "reference": "Матв. 13:28"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-student-ai-00763",
+        "contentHash": "8a89cc7d0aa7cc950e2db8654cd4ed7d08b4cd60c1308fe3b664a7a8bcbbc6c0",
+        "themeId": "revelation",
+        "difficulty": "student",
+        "topicNodeId": "revelation-sub-4-sub-3",
+        "text": "Як Мойсей відреагував на Божу присутність у палаючому кущі?",
+        "options": [
+          "Він почав співати",
+          "Він закрив своє обличчя",
+          "Він почав сперечатися",
+          "Він наблизився без вагань"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Мойсей закрив обличчя, бо боявся дивитися на Бога, усвідомлюючи Його святість.",
+        "explanationDeep": null,
+        "reference": "Вих. 3:6"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "acts-preacher-ai-02069",
+        "contentHash": "07167e95881ba5138e822d14877fb61c914d690b642bab4a4d180c1568c58419",
+        "themeId": "acts",
+        "difficulty": "preacher",
+        "topicNodeId": "acts-sub-5-sub-2",
+        "text": "Який аргумент використав пророк Міхей, стоячи перед царями Ахавом та Йосафатом, коли ті запитали про війну?",
+        "options": [
+          "Він сказав те, що хотів почути цар",
+          "Він сказав, що Господь поклав неправдивого духа в уста пророків",
+          "Він промовчав, щоб не гнівити царя",
+          "Він сказав, що перемога буде за ними"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Міхей викрив неправдивих пророків, пояснивши, що Бог допустив їхню обману для виконання суду.",
+        "explanationDeep": null,
+        "reference": "1 Царів 22:22-23"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-student-ai-05636",
+        "contentHash": "96fe4957141d56638f986b9b699222eb329bdc0e2ef824ec9d7710b18b1a0daf",
+        "themeId": "patriarchs",
+        "difficulty": "student",
+        "topicNodeId": "patriarchs-sub-5-sub-3",
+        "text": "Що Рахіль вкрала у свого батька Лавана, коли вони таємно тікали з дому?",
+        "options": [
+          "Родові коштовності",
+          "Домашніх божків (терафи)",
+          "Скриньку з грошима",
+          "Ключі від комор"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Рахіль викрала домашніх божків свого батька Лавана, коли той пішов стригти овець.",
+        "explanationDeep": null,
+        "reference": "Бут. 31:19"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "miracles-youth-ai-00007",
+        "contentHash": "477ab0f9a78b662e04fdda7df912d5c6927db15d52ebd58893e8b75369214bef",
+        "themeId": "miracles",
+        "difficulty": "youth",
+        "topicNodeId": "miracles",
+        "text": "Яке чудо Ісуса зцілило навіть не тільки людей, але і тварин?",
+        "options": [
+          "А) Чуде сиротинці (Мк. 7:31-37)",
+          "Б) Чудо прораження пшениці та ячменю (Ів. 6:9)",
+          "В) Чудо вигнання демона з небожа (Мр. 9:25-27)",
+          "Г) Чудо перетворення води в вино на весіллі у Кані Галилейській (Ів. 2:1-11)"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Мк. 7:31-37"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "kings-child-ai-03676",
+        "contentHash": "2658a09c1614c98ad9db7f391aaa92756f7ed4894ca14ad05dee2371859e946f",
+        "themeId": "kings",
+        "difficulty": "child",
+        "topicNodeId": "kings-sub-5-sub-1",
+        "text": "Який перський цар дозволив ізраїльтянам повернутися до Єрусалиму?",
+        "options": [
+          "Навуходоносор",
+          "Дарій",
+          "Кір",
+          "Артаксеркс"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Господь збудив дух перського царя Кіра, щоб він дозволив народу повернутися додому.",
+        "explanationDeep": null,
+        "reference": "Ездри 1:1-2"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-child-ai-00648",
+        "contentHash": "98d37630d8224d83f88bd481f422ed8f840e27a8582b09c1fcab1888d50a878a",
+        "themeId": "wisdom-poetry",
+        "difficulty": "child",
+        "topicNodeId": "wisdom-poetry-sub-4-sub-2",
+        "text": "Що потрібно робити, коли приходить час збирати каміння?",
+        "options": [
+          "Розкидати його",
+          "Збирати каміння",
+          "Забути про нього",
+          "Бити каміння"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Біблія вказує на циклічність дій: після розкидання настає час збирання.",
+        "explanationDeep": null,
+        "reference": "Еккл. 3:5"
+      },
+      "findings": [
+        "answer_leakage",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-preacher-x1",
+        "contentHash": "e700161fbf7741fda3a7496ea9a7933e18447c842ae0a0821893688e52ebb25d",
+        "themeId": "pentateuch",
+        "difficulty": "preacher",
+        "topicNodeId": null,
+        "text": "Скільки «законів» у Торі (традиційно)?",
+        "options": [
+          "613",
+          "10",
+          "7",
+          "40"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": null
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "missing_reference"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-theologian-ai-02438",
+        "contentHash": "5673c2a2cb99e6a4e27bd79d018a1445ecf87d664781124eee3b38b5087c1601",
+        "themeId": "revelation",
+        "difficulty": "theologian",
+        "topicNodeId": "revelation-sub-4-sub-4",
+        "text": "Яке пророче ім'я, згадане в книзі Ісаї (7:14), вказує на божественну присутність Ісуса під час Його втілення, що буквально означає «З нами Бог»?",
+        "options": [
+          "Месія",
+          "Еммануїл",
+          "Син Людський",
+          "Слово"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Ім'я Еммануїл (עִמָּנוּ אֵל) підкреслює доктрину втілення, де Бог стає людиною, перебуваючи серед Свого народу.",
+        "explanationDeep": null,
+        "reference": "Іс. 7:14; Мт. 1:23"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch",
+        "sensitivity_doctrinal"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-youth-ai-04441",
+        "contentHash": "46e32b12eb909bea11c029eec2a3ad56a45359aca7e9bf0b4b0be4fbe63f6042",
+        "themeId": "gospels",
+        "difficulty": "youth",
+        "topicNodeId": "gospels-sub-5-sub-apostles-8",
+        "text": "Коли Ісус запропонував йти до Юдеї, щоб воскресити Лазаря, що запропонував Фома іншим учням?",
+        "options": [
+          "Залишитися в безпеці",
+          "Піти й померти разом із Ним",
+          "Зачекати, доки мине небезпека",
+          "Благати Ісуса не йти туди"
+        ],
+        "correctIndex": 1,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Ів. 11:16"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "kings-youth-ai-03390",
+        "contentHash": "8cdb465e155a68e9438c64b2e01dd283a88d5cfdb7423a4bff0da42cc02d580a",
+        "themeId": "kings",
+        "difficulty": "youth",
+        "topicNodeId": "kings-sub-4-sub-2",
+        "text": "Хто з синів Вірсавії став наступником Давида на престолі?",
+        "options": [
+          "Адонія",
+          "Соломон",
+          "Авесалом",
+          "Натан"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Вірсавія домоглася, щоб її син Соломон став царем, як і обіцяв Давид.",
+        "explanationDeep": null,
+        "reference": "1 Царів 1:17"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "new-testament-preacher-ai-00260",
+        "contentHash": "4746dc157ade9384c4455eb34a3c3443717fd5c8bc1684f812f4fe301113d4fd",
+        "themeId": "new-testament",
+        "difficulty": "preacher",
+        "topicNodeId": "nt-custom-poslannia-do-maibutnikh-pokolin-sub-1",
+        "text": "Як Йов, попри втрату всього, висловив свою стійкість у вірі перед Богом?",
+        "options": [
+          "Прокляв день свого народження",
+          "Сказав, що Господь дав, Господь і взяв",
+          "Вимагав пояснень від Бога",
+          "Звинуватив своїх друзів"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Йов продемонстрував глибоку покірність і довіру до Божого суверенітету під час найважчих випробувань.",
+        "explanationDeep": null,
+        "reference": "Йов 1:21"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-preacher-ai-00431",
+        "contentHash": "dd50bcab7256b73be7d11c4862dc705bd6ce58c20df3434b9e0e30e4f502879c",
+        "themeId": "revelation",
+        "difficulty": "preacher",
+        "topicNodeId": "revelation-sub-2-sub-2",
+        "text": "Який епітет використовує апостол Петро щодо крові Христа, пов'язуючи її з образом Агнця?",
+        "options": [
+          "Кров, що очищає сумління",
+          "Дорогоцінна кров, як Агнця непорочного і чистого",
+          "Кров завіту",
+          "Кров, що говорить краще за Авелеву"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Петро підкреслює чистоту і безгрішність Ісуса, порівнюючи Його з ідеальним жертовним агнцем.",
+        "explanationDeep": null,
+        "reference": "1 Пет. 1:19"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-youth-ai-00909",
+        "contentHash": "562d0f0cf3034cf9672a20dd94c499cb49a41f52d48ab2150ced6baf3ee28117",
+        "themeId": "revelation",
+        "difficulty": "youth",
+        "topicNodeId": "revelation-sub-4-sub-1",
+        "text": "Яка перша основа стіни міста Новий Єрусалим?",
+        "options": [
+          "Яспис",
+          "Сапфір",
+          "Смарагд",
+          "Топаз"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Основи міської стіни були прикрашені всяким дорогоцінним камінням; перша основа була яспис.",
+        "explanationDeep": null,
+        "reference": "Об. 21:19"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "paul-teacher-ai-02299",
+        "contentHash": "4ba01da90fbe609fc1f432932e7d08c0a098c1362de888e83f3e4d01e99be5c7",
+        "themeId": "paul",
+        "difficulty": "teacher",
+        "topicNodeId": "paul-sub-3-sub-3",
+        "text": "Як Павло називає духовні дари в 1-му посланні до Коринтян 12:1, щоб підкреслити їхню надприродну природу?",
+        "options": [
+          "Духовні речі",
+          "Божі таланти",
+          "Духовні дари",
+          "Служіння світла"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "В оригіналі термін 'pneumatikos' вказує на духовні прояви, що походять від Духа Божого.",
+        "explanationDeep": null,
+        "reference": "1 Кор. 12:1"
+      },
+      "findings": [
+        "answer_leakage",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "miracles-student-ai-00009",
+        "contentHash": "1e3e06f73d602bb434f90a0130ba26d8a6cf78c36e8770c02eeb8185d133b136",
+        "themeId": "miracles",
+        "difficulty": "student",
+        "topicNodeId": "miracles",
+        "text": "Який з чудес Ісуса описано у Мк. 5:41?",
+        "options": [
+          "Приведення з водами, що не принагрівались (Йо. 5:4)",
+          "Воскресіння Лазаря (Ів. 11:43)",
+          "Полулення прокази (Лк. 5:12)",
+          "Зцілення синові змороженого (Мт. 8:7)"
+        ],
+        "correctIndex": 2,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Мк. 5:41"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-teacher-ai-04140",
+        "contentHash": "f1f484df7b5b0887321e8a66eb3a34fce1570ec9b28b2e3129218690eded153b",
+        "themeId": "wisdom-poetry",
+        "difficulty": "teacher",
+        "topicNodeId": "wisdom-poetry-sub-1-sub-2",
+        "text": "Чому виникла суперечка між Павлом та Варнавою перед їхньою другою місіонерською подорожжю?",
+        "options": [
+          "Через питання дотримання закону Мойсея",
+          "Через те, чи брати з собою Марка",
+          "Через фінансові питання церкви",
+          "Через лідерство в Антіохії"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Павло не хотів брати Марка, який залишив їх у Памфілії, через що між ними виникло гостре розходження.",
+        "explanationDeep": null,
+        "reference": "Дії 15:37-39"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "miracles-student-ai-00010",
+        "contentHash": "8422a54f0feed1448300be7c0f26cd213d61cdf46aa9e14a2c838279a1697a54",
+        "themeId": "miracles",
+        "difficulty": "student",
+        "topicNodeId": "miracles-sub-4-sub-2",
+        "text": "Яке чудо Ісуса відбулося у Сінеї (Іс. 63:11)?",
+        "options": [
+          "Воскресіння сина вдови (Лк. 7:14)",
+          "Зцілення лепросия (Мк. 1:40)",
+          "Получення мирського дару від Фестова (Ді. 26:25)",
+          "Рибне примноження (Ін. 21:11)"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Іс. 63:11"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "kings-preacher-ai-01391",
+        "contentHash": "5f108a44967137d0fca1c241c5d87542ca2ccc1c792e78d9c102ed9dc38738db",
+        "themeId": "kings",
+        "difficulty": "preacher",
+        "topicNodeId": "kings-sub-4-sub-2",
+        "text": "Що сталося з першою дитиною, яку народила Вірсавія від Давида?",
+        "options": [
+          "Дитина померла через сім днів",
+          "Дитина стала царем",
+          "Дитина народилася хворою",
+          "Дитина була віддана в храм"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Дитина, яку Вірсавія народила Давидові, сильно захворіла і померла на сьомий день.",
+        "explanationDeep": null,
+        "reference": "2 Сам. 12:18"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-youth-ai-03126",
+        "contentHash": "d8efcfd524917a6b9ef4e27e58c22dc88487f0a7ee238950b61e22cb27e7f157",
+        "themeId": "wisdom-poetry",
+        "difficulty": "youth",
+        "topicNodeId": "wisdom-poetry-sub-1-sub-3",
+        "text": "Як Бог відповів Гедеонові на прохання довести, що Він справді кличе його на битву?",
+        "options": [
+          "Зробив диво з вовною",
+          "З'явився йому вночі",
+          "Змінив хід сонця",
+          "Дав йому знак через блискавку"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Бог терпляче відповів на прохання Гедеона, двічі вчинивши знамення з вовною.",
+        "explanationDeep": null,
+        "reference": "Суд. 6:37-40"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "general-epistles-baby-ai-02189",
+        "contentHash": "7cb2384d74e9f132efef4b39baed82f82b364cb28dfc0365b37ce538d3854575",
+        "themeId": "general-epistles",
+        "difficulty": "baby",
+        "topicNodeId": "general-epistles-sub-5-sub-2",
+        "text": "Який цар Вавилону був покараний божевіллям за свою гординю, коли жив серед польових звірів?",
+        "options": [
+          "Навуходоносор",
+          "Валтасар",
+          "Дарій",
+          "Кір"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Навуходоносор звеличував себе, тому Бог позбавив його розуму, доки той не визнав Його владу.",
+        "explanationDeep": null,
+        "reference": "Дан. 4:30-33"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "acts-student-ai-02390",
+        "contentHash": "d8fca4a17402a605218df4cb87033a1f038a243cd41539ff579c51f84b743824",
+        "themeId": "acts",
+        "difficulty": "student",
+        "topicNodeId": "acts-sub-6-sub-2",
+        "text": "Що відповів Ісус Филипу на прохання показати Отця?",
+        "options": [
+          "Отець невидимий",
+          "Хто бачив Мене, той бачив Отця",
+          "Ви ще не готові це побачити",
+          "Отець на небесах"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Ісус дорікнув Филипу, сказавши, що Він так довго з ними, і той, хто бачив Ісуса, бачив Отця.",
+        "explanationDeep": null,
+        "reference": "Івана 14:9"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "parables-baby-x10",
+        "contentHash": "0a60ba7a3fc0049ac8c7797abf850f8063f5c00cd9ea222e1721904106cbbfee",
+        "themeId": "parables",
+        "difficulty": "baby",
+        "topicNodeId": null,
+        "text": "Скарб у полі — хто?",
+        "options": [
+          "Людина",
+          "Цар",
+          "Рибалка",
+          "Слуга"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": null
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "missing_reference"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-theologian-ai-00482",
+        "contentHash": "61a4b37754b479f07d17eb8100d978b814ccd20dd757cc9475c1647250f406c2",
+        "themeId": "geography-nt",
+        "difficulty": "theologian",
+        "topicNodeId": "geography-nt-sub-2-sub-4",
+        "text": "Де саме, за переданням та контекстом подій, відбулася Таємна вечеря Ісуса з учнями в Єрусалимі?",
+        "options": [
+          "У Храмі",
+          "У Світлиці",
+          "У Гетсиманському саду",
+          "На Оливній горі"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Ісус наказав учням приготувати пасхальну вечерю у «великій світлиці», яку вони знайшли в місті.",
+        "explanationDeep": null,
+        "reference": "Мк. 14:15"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "mosaic-law-student-ai-02379",
+        "contentHash": "527de296366313b871641199b91eb9dc7366972d18b34d43a765ad10f677f6c3",
+        "themeId": "pentateuch",
+        "difficulty": "student",
+        "topicNodeId": "pentateuch-sub-3-group-4",
+        "text": "Яке свято відзначає очищення та освячення Другого Храму після перемоги Маккавеїв?",
+        "options": [
+          "Песах",
+          "Пурім",
+          "Ханука",
+          "Шавуот"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Ханука, або свято Оновлення, відзначає диво з олією, якої вистачило на вісім днів для світильника.",
+        "explanationDeep": null,
+        "reference": "Йоан. 10:22"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-theologian-ai-00480",
+        "contentHash": "48ffb64686c13b903ab16b77faf362ce87dfeb35564285a2e80779d194eebc76",
+        "themeId": "geography-nt",
+        "difficulty": "theologian",
+        "topicNodeId": "geography-nt-sub-2-sub-4",
+        "text": "Під час правління якого правителя в Єрусалимі відбулося «осквернення святині», що стало причиною повстання Макавеїв?",
+        "options": [
+          "Антіох IV Епіфан",
+          "Олександр Македонський",
+          "Ірод Великий",
+          "Понтій Пилат"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Антіох IV встановив «мерзоту запустіння» в Храмі, що призвело до повстання євреїв.",
+        "explanationDeep": null,
+        "reference": "1 Мак. 1:41-54"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "commandments-teacher-ai-03428",
+        "contentHash": "7ce0d197085a162b36e416b9779f101392c0f096ac66a8c8c881813ce54e56cb",
+        "themeId": "commandments",
+        "difficulty": "teacher",
+        "topicNodeId": "commandments-sub-1-sub-2",
+        "text": "Що, згідно з пророком Ісаєю, є абсурдним у контексті другої заповіді?",
+        "options": [
+          "Виготовлення ідола з дерева, частину якого спалюють у вогні",
+          "Молитва до Бога в храмі",
+          "Створення золотих прикрас для одягу",
+          "Поклоніння природі"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Ісая висміює ідолопоклонство, показуючи, що людина використовує ту саму деревину і для обігріву, і для виготовлення бога.",
+        "explanationDeep": null,
+        "reference": "Іс. 44:15-17"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "general-epistles-preacher-ai-01828",
+        "contentHash": "ae6779983840e2652c70d6132ea50aedb309a75572c81bc47bafc3ed68d17327",
+        "themeId": "general-epistles",
+        "difficulty": "preacher",
+        "topicNodeId": "general-epistles-sub-4-sub-1",
+        "text": "Як апостол Іван пов'язує Божу любов із виконанням Його заповідей?",
+        "options": [
+          "Заповіді є тягарем",
+          "Заповіді не є тяжкими для тих, хто любить",
+          "Заповіді скасовані любов'ю",
+          "Заповіді важливіші за любов"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Любов до Бога полягає в дотриманні Його заповідей, які не є тяжкими.",
+        "explanationDeep": null,
+        "reference": "1 Ів. 5:3"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-student-ai-02446",
+        "contentHash": "c6d48dd8f37b7bbd8e4374fb030eaf16394da50d095bc106a18f39e623a24084",
+        "themeId": "wisdom-poetry",
+        "difficulty": "student",
+        "topicNodeId": "wisdom-poetry-sub-5-sub-1",
+        "text": "Як наречений називає свою кохану, виражаючи свою відданість?",
+        "options": [
+          "Моя сестра, наречена",
+          "Моя цариця",
+          "Моя дочка",
+          "Моя рабиня"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Наречений звертається до неї з ніжністю, називаючи її сестрою та нареченою.",
+        "explanationDeep": null,
+        "reference": "Пісн. 4:9"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "miracles-preacher-ai-00469",
+        "contentHash": "7374e13ca07f462f301e75d164fc17b5b13baba319c8ed631d16c6504ac77495",
+        "themeId": "miracles",
+        "difficulty": "preacher",
+        "topicNodeId": "miracles-sub-1-sub-4",
+        "text": "Закон Мойсеїв вважав жінку з такою хворобою ритуально нечистою. Що це означало для її контактів з людьми?",
+        "options": [
+          "Вона мала жити в пустелі",
+          "Вона не могла ні до кого торкатися",
+          "Вона мала носити особливий знак",
+          "Вона не могла виходити з дому"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Згідно з Левит, будь-хто, до кого торкалася така жінка, ставав нечистим, що робило її вчинок особливо сміливим.",
+        "explanationDeep": null,
+        "reference": "Лев. 15:25-27"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "paul-baby-ai-00004",
+        "contentHash": "896b3b77383a8f80578e27e38a3cdd9d56561ede3b978a39a79b7666f09828e2",
+        "themeId": "paul",
+        "difficulty": "baby",
+        "topicNodeId": "paul",
+        "text": "Яку повість проповідував апостол Павло в Афінах?",
+        "options": [
+          "Повість про Ісуса Христа",
+          "Про існування Бога",
+          "Про закони Мойсея",
+          "Про зміни клімату"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Дії. 17:3"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-child-ai-04562",
+        "contentHash": "7bac9e9d0d84b9fbff2c99472175792cdaeb30bc58376ba6335b535c53809262",
+        "themeId": "geography-nt",
+        "difficulty": "child",
+        "topicNodeId": "geography-nt-sub-6-sub-6",
+        "text": "Яке місто Македонії було відоме тим, що в ньому була синагога юдеїв, де проповідував Павло?",
+        "options": [
+          "Филипи",
+          "Тессалоніка",
+          "Неаполь",
+          "Самофракія"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "У Тессалоніці була синагога, де Павло згідно зі своїм звичаєм проповідував Слово Боже.",
+        "explanationDeep": null,
+        "reference": "Дії 17:1"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "general-epistles-teacher-ai-01853",
+        "contentHash": "99eefcef450cadfa7495e966bc0e9966e170efd3454e096d70852834b5853c4d",
+        "themeId": "general-epistles",
+        "difficulty": "teacher",
+        "topicNodeId": "general-epistles-sub-4-sub-1",
+        "text": "Як пророк Софонія описує ставлення Бога до Свого народу в контексті Його любові?",
+        "options": [
+          "Він буде суворо карати за кожен проступок",
+          "Він буде мовчати у Своїй любові",
+          "Він буде радіти за тебе з веселістю",
+          "Він відвернеться, поки ви не станете досконалими"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Бог не просто любить, Він виявляє радість і ніжність до Свого народу, перебуваючи посеред нього.",
+        "explanationDeep": null,
+        "reference": "Софонії 3:17"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "parables-preacher-x10",
+        "contentHash": "c6fa727171266f3a5731f3d0c42d9101ba05b2c01a50e6bf2eba5329818f0b33",
+        "themeId": "parables",
+        "difficulty": "preacher",
+        "topicNodeId": null,
+        "text": "Полин серед пшениці?",
+        "options": [
+          "Ворог",
+          "Сіяч",
+          "Цар",
+          "Сусід"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": null
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "missing_reference"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "miracles-preacher-ai-01294",
+        "contentHash": "43b9a3b70e971e16cba8e4477f1880fcb52d15ba04021c938bc3c1987e7c75e6",
+        "themeId": "miracles",
+        "difficulty": "preacher",
+        "topicNodeId": "miracles-sub-4-sub-3",
+        "text": "Яку реакцію спричинило воскресіння Лазаря серед фарисеїв та первосвящеників згідно з Євангелієм від Івана?",
+        "options": [
+          "Вони увірували в Ісуса як у Месію",
+          "Вони почали вимагати розслідування чуда",
+          "Вони зібрали синедріон і вирішили вбити Ісуса",
+          "Вони оголосили Лазаря святим пророком"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Це чудо стало останнім аргументом для релігійної верхівки, щоб ухвалити рішення про вбивство Ісуса.",
+        "explanationDeep": null,
+        "reference": "Ів. 11:47, 53"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_violence_trauma"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "miracles-child-ai-00218",
+        "contentHash": "840b25a6dd53bea311f2a06dc8be5d95748d4e9dce36ee08879f5053c02fb717",
+        "themeId": "miracles",
+        "difficulty": "child",
+        "topicNodeId": "miracles-sub-1-sub-2",
+        "text": "Чому люди зазвичай уникали прокажених?",
+        "options": [
+          "Бо вони були багаті",
+          "Бо хвороба була заразною",
+          "Бо вони багато говорили",
+          "Бо вони не вміли ходити"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Проказа була небезпечною хворобою, тому хворих відокремлювали від суспільства.",
+        "explanationDeep": null,
+        "reference": "Лев. 13:46"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "judges-baby-ai-03692",
+        "contentHash": "55daca25622d10d9cab9beb625986f9318aff66b133765ae860beebcae6835d7",
+        "themeId": "judges",
+        "difficulty": "baby",
+        "topicNodeId": "judges-sub-3-sub-4",
+        "text": "Який жест використав Юда, щоб видати Ісуса воїнам?",
+        "options": [
+          "Показав пальцем",
+          "Поцілував Його",
+          "Вклонився до землі",
+          "Назвав Його на ім'я"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Юда домовився з воїнами, що той, кого він поцілує, і є Ісус.",
+        "explanationDeep": null,
+        "reference": "Мк. 14:44-45"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "judges-theologian-ai-04970",
+        "contentHash": "6404fe419b1467093341685da990ee3ba26e224bde5ca6b590139844857eb8b1",
+        "themeId": "judges",
+        "difficulty": "theologian",
+        "topicNodeId": "judges-sub-3-sub-4",
+        "text": "Яку роль відіграло прийняття Ісусом оцту перед смертю в контексті виконання Писання?",
+        "options": [
+          "Це було полегшення болю",
+          "Це була знущання воїнів",
+          "Це було виконання пророцтва про спрагу Месії",
+          "Це була частина передсмертного ритуалу"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Ісус знав, що все вже виконано, і щоб збулося Писання, сказав: 'Прагну', після чого прийняв оцет.",
+        "explanationDeep": null,
+        "reference": "Ів. 19:28-29"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-youth-ai-04797",
+        "contentHash": "42fdcef0f392863a8203858c1a1d991fcf043e13e9094e12b01ffa04611894db",
+        "themeId": "patriarchs",
+        "difficulty": "youth",
+        "topicNodeId": "patriarchs-sub-5-sub-1",
+        "text": "Де сидів Лот, коли до нього прийшли двоє ангелів у Содомі?",
+        "options": [
+          "У своєму наметі",
+          "Біля міської брами",
+          "У храмі",
+          "На ринковій площі"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Сидіння біля міської брами було ознакою впливових громадян міста.",
+        "explanationDeep": null,
+        "reference": "Бут. 19:1"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "prophets-theologian-ai-05799",
+        "contentHash": "9f71ed296be6941614fe06b781c46feacfe77b5df64be1221ed38fac93f444f4",
+        "themeId": "prophets",
+        "difficulty": "theologian",
+        "topicNodeId": "prophets-sub-2-sub-1",
+        "text": "Яким терміном Осія характеризує поклоніння Ізраїлю ідолам у Гілґалі та Бетелі?",
+        "options": [
+          "Гординя",
+          "Блуд",
+          "Духовна сліпота",
+          "Затьмарення"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Осія часто вживає метафору блуду для опису ідолопоклонства, яке є зрадою єдиному Богу.",
+        "explanationDeep": null,
+        "reference": "Ос. 4:15"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "sensitivity_sexuality_relationships"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-preacher-ai-03446",
+        "contentHash": "98968bc4756d860add41411f2371e5fb5f282fc46c5aa310db28de2a1b68090d",
+        "themeId": "pentateuch",
+        "difficulty": "preacher",
+        "topicNodeId": "pentateuch-sub-2-sub-1",
+        "text": "Що мали зробити ізраїльтяни з кров'ю пасхального ягняти, щоб захиститися від смерті первістків?",
+        "options": [
+          "Випити її",
+          "Помазати одвірки та одвірки дверей",
+          "Вилити на поріг",
+          "Зібрати в золоту чашу"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Кров на одвірках була знаком для Господа, щоб Він пройшов повз ці доми під час ураження первістків.",
+        "explanationDeep": null,
+        "reference": "Вих. 12:7"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-preacher-ai-01463",
+        "contentHash": "7c2aee99869671429d096f84d81a3110e12f0795779935cb275182e36487b9f9",
+        "themeId": "gospels",
+        "difficulty": "preacher",
+        "topicNodeId": "gospels-sub-5-sub-apostles-1",
+        "text": "Який саме тесть був у Петра, чию тещу Ісус зцілив від гарячки?",
+        "options": [
+          "Симона",
+          "Андрія",
+          "Якова",
+          "Петра"
+        ],
+        "correctIndex": 3,
+        "explanationShort": "У Петра була теща, яка лежала в гарячці, і Ісус зцілив її, увійшовши до його дому.",
+        "explanationDeep": null,
+        "reference": "Мк. 1:29-30"
+      },
+      "findings": [
+        "answer_leakage",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-theologian-ai-04436",
+        "contentHash": "dc574b445ad9221a3f3e8b3ade1990c6cf4bd927ea0227fe8dd2a0a3075f7d96",
+        "themeId": "wisdom-poetry",
+        "difficulty": "theologian",
+        "topicNodeId": "wisdom-poetry-sub-2-sub-3",
+        "text": "У Псалмі 68:19 описується вознесіння Месії: «Ти зійшов на висоту, полонив полонених». Що це означає в есхатологічному вимірі?",
+        "options": [
+          "Перемогу над земними ворогами Давида",
+          "Тріумф Месії над силами смерті та пекла після воскресіння",
+          "Захоплення нових територій Ізраїлем",
+          "Заснування нової школи пророків"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Це пророцтво про переможне вознесіння Месії, який звільняє Свій народ від влади темряви.",
+        "explanationDeep": null,
+        "reference": "Пс. 68:19"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_end_times"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "old-testament-baby-ai-00255",
+        "contentHash": "4cc81d8d3477c382c3d15aef365a297470158238bddc54f285986045a73bd8ff",
+        "themeId": "old-testament",
+        "difficulty": "baby",
+        "topicNodeId": "pentateuch-sub-1-sub-1",
+        "text": "Яку назву Бог дав світлу, а темряві дав назву ніч?",
+        "options": [
+          "Ранок",
+          "Вечір",
+          "День",
+          "Світанок"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Бог відділив світло від темряви і назвав світло днем, а темряву — ніччю.",
+        "explanationDeep": null,
+        "reference": "Бут. 1:5"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "mosaic-law-teacher-ai-00069",
+        "contentHash": "3de675939d8b13af342c3d4cf75fbe94b26ff545b42e0b97e0477282f7ff6538",
+        "themeId": "pentateuch",
+        "difficulty": "teacher",
+        "topicNodeId": "pentateuch",
+        "text": "Які дві книги Біблії написані не євреєм?",
+        "options": [
+          "А) Ісус Навину (Дн. 24)",
+          "Б) Даниїл (Дан. 1:6)",
+          "В) Осія (Ос. 1:3)",
+          "Г) Єздра (Єзд. 1:1)"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": null
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "missing_reference"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-youth-ai-01071",
+        "contentHash": "34cabd0cd842b390ab21781471db0964bc8d85919c3ff7c08a07c2b034be72ac",
+        "themeId": "wisdom-poetry",
+        "difficulty": "youth",
+        "topicNodeId": "wisdom-poetry-sub-5-sub-1",
+        "text": "Що, за словами нареченої, є сильнішим за смерть у контексті їхньої любові?",
+        "options": [
+          "Вірність",
+          "Надія",
+          "Любов",
+          "Обітниця"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Любов описується як така, що є міцною, як смерть, і непереможною.",
+        "explanationDeep": null,
+        "reference": "Пісня Пісень 8:6"
+      },
+      "findings": [
+        "answer_leakage",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-theologian-ai-02493",
+        "contentHash": "aaf3fb321fe0c5d009b03739c86b6174a75739e35862ce55e0404d131175ff38",
+        "themeId": "gospels",
+        "difficulty": "theologian",
+        "topicNodeId": "gospels-sub-3-sub-4",
+        "text": "Який фізичний факт, зафіксований лише в Євангелії від Івана після смерті Ісуса на хресті, має глибоке сакраментальне та символічне значення?",
+        "options": [
+          "Землетрус та розрив завіси",
+          "Витікання крові та води з пробитого боку",
+          "Темрява по всій землі на три години",
+          "Воскресіння багатьох святих"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Витікання крові та води символізує повноту спокути та заснування таїнств Церкви, що є унікальним свідченням очевидця в Івана.",
+        "explanationDeep": null,
+        "reference": "Ів. 19:34"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-student-ai-05021",
+        "contentHash": "93ff0f07623ff0c3d1d49eb7babb3160e4886531867b6f0db051865f90992888",
+        "themeId": "geography-nt",
+        "difficulty": "student",
+        "topicNodeId": "geography-nt-sub-6-sub-12",
+        "text": "Скільки років ізраїльтяни жили в Єгипті згідно з книгою Вихід?",
+        "options": [
+          "200 років",
+          "350 років",
+          "430 років",
+          "500 років"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Час перебування синів Ізраїлевих в Єгипті тривав 430 років.",
+        "explanationDeep": null,
+        "reference": "Вих. 12:40"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "explanation_length_for_level",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-child-ai-00724",
+        "contentHash": "6c072b177973f810df8e9d2f397e2eb08473a16ae7de34a1612c550d8d3b56dd",
+        "themeId": "revelation",
+        "difficulty": "child",
+        "topicNodeId": "revelation-sub-4-sub-3",
+        "text": "Чим був Бог для Ізраїля вдень, щоб вести їх дорогою?",
+        "options": [
+          "Стовпом вогняним",
+          "Стовпом хмари",
+          "Сонцем",
+          "Зіркою"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Божа присутність супроводжувала народ у вигляді хмарного стовпа вдень.",
+        "explanationDeep": null,
+        "reference": "Вих. 13:21"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "commandments-youth-ai-00622",
+        "contentHash": "ac2256ad7fcd6c229dfddfd5506ff79cfe46b86295f68575c31a45da3b2ffb63",
+        "themeId": "commandments",
+        "difficulty": "youth",
+        "topicNodeId": "commandments-sub-2-sub-1",
+        "text": "Яка головна мета п'ятої заповіді у житті молодої людини?",
+        "options": [
+          "Обмежити свободу",
+          "Навчити покорі та повазі до Божого порядку",
+          "Зробити життя нудним",
+          "Змусити працювати на батьків"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Повага до батьків є фундаментом для формування характеру та мудрості в юності.",
+        "explanationDeep": null,
+        "reference": "Прип. 1:8"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "acts-baby-ai-00733",
+        "contentHash": "fe040015b81fca7fca9a466ff0dda9b14a94f296e06c38d062b0f63d7fe2fe26",
+        "themeId": "acts",
+        "difficulty": "baby",
+        "topicNodeId": "acts-sub-6-sub-1",
+        "text": "Кому люди, що каменували Стефана, поклали свій одяг?",
+        "options": [
+          "Симону",
+          "Савлу",
+          "Петру",
+          "Івану"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Свідки вбивства Стефана поклали свій верхній одяг до ніг юнака на ім'я Савло.",
+        "explanationDeep": null,
+        "reference": "Дії 7:58"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_violence_trauma"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-theologian-ai-05059",
+        "contentHash": "fe26e15c67c61b9cc8c49dfc9adb40db8407f9e183ddd34284f5e5de248cc93f",
+        "themeId": "pentateuch",
+        "difficulty": "theologian",
+        "topicNodeId": "pentateuch-sub-2-sub-4",
+        "text": "Який термін використав Господь, звертаючись до Мойсея на горі, щоб охарактеризувати народ, який створив тельця?",
+        "options": [
+          "Жорстоковыйний",
+          "Засліплений гординею",
+          "Невігласний",
+          "Зрадливий"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Бог назвав народ «жорстоковыйним», вказуючи на їхню впертість і непокірність.",
+        "explanationDeep": null,
+        "reference": "Вих. 32:9"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "mixed_language"
+      ],
+      "stratum": "language"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-youth-ai-05332",
+        "contentHash": "fc3cbb098145f94922d2d18bfd4744a6e881943342fd2706069da5841a7d2d75",
+        "themeId": "patriarchs",
+        "difficulty": "youth",
+        "topicNodeId": "patriarchs-sub-5-sub-5",
+        "text": "Як Ісус назвав Юду під час Таємної вечері, знаючи про його намір?",
+        "options": [
+          "Мій учень",
+          "Син загибелі",
+          "Вірний товариш",
+          "Зрадник"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Ісус називав Юду сином загибелі, що збулося згідно з Писанням.",
+        "explanationDeep": null,
+        "reference": "Ів. 17:12"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-child-x7",
+        "contentHash": "02c107a44d623e950fc34c204f0dfea361397f12b5b8c7d5f3945b7a1aa6eec4",
+        "themeId": "pentateuch",
+        "difficulty": "child",
+        "topicNodeId": null,
+        "text": "Яке місто — притулок вбивці?",
+        "options": [
+          "Города-втечі",
+          "Єрусалим",
+          "Сихем",
+          "Віфлеєм"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": null
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "missing_reference"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "parables-youth-ai-00577",
+        "contentHash": "a6721c6181236ff867f74f5721bc0e50b69b6d34d4f7ff21cd0fa2d5ad0049bd",
+        "themeId": "parables",
+        "difficulty": "youth",
+        "topicNodeId": "parables-sub-3-sub-2",
+        "text": "Що робили всі десять дів, поки молодий затримувався?",
+        "options": [
+          "Молилися",
+          "Співали",
+          "Дрімали та спали",
+          "Сперечалися"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Оскільки молодий забарився, усі діви знесилилися і заснули.",
+        "explanationDeep": null,
+        "reference": "Мт. 25:5"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-youth-ai-00752",
+        "contentHash": "8a940f033959eadc2ff237bdbbf9a315be1765219b11382e9201bab2ec93b5a8",
+        "themeId": "pentateuch",
+        "difficulty": "youth",
+        "topicNodeId": "pentateuch-sub-1-sub-3",
+        "text": "Чи було будівництво вежі порушенням Божого наказу?",
+        "options": [
+          "Так, бо Бог наказав розмножуватися і наповнювати землю",
+          "Ні, це було схвалено",
+          "Бог не давав наказів",
+          "Це було випробування віри"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Бог наказав людям наповнювати землю, а будівництво вежі мало на меті зосередити людей в одному місці.",
+        "explanationDeep": null,
+        "reference": "Бут. 9:1; 11:4"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-teacher-ai-02896",
+        "contentHash": "79f91b6bef0fa2a78628a3e6fb33bd0b9bf1cef35cc1f209c624bda9f4f84bf7",
+        "themeId": "gospels",
+        "difficulty": "teacher",
+        "topicNodeId": "gospels-sub-5-sub-1",
+        "text": "За що Іван Хреститель дорікав царю Іроду?",
+        "options": [
+          "За невиплату податків Риму",
+          "За те, що він забрав дружину свого брата Пилипа",
+          "За будівництво язичницьких храмів",
+          "За вбивство немовлят у Віфлеємі"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Іван відкрито викривав Ірода за перелюб, що призвело до його ув'язнення.",
+        "explanationDeep": null,
+        "reference": "Марка 6:17-18"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_sexuality_relationships"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "miracles-theologian-ai-01447",
+        "contentHash": "39145fec8b3459e3269667ba86ed622f313b5e52dc208c2467446f02f1011a69",
+        "themeId": "miracles",
+        "difficulty": "theologian",
+        "topicNodeId": "miracles-sub-1-sub-4",
+        "text": "Якою була головна причина, через яку жінка боялася зізнатися у своєму вчинку?",
+        "options": [
+          "Боялася гніву учнів",
+          "Вона була церемоніально нечистою за законом",
+          "Вона боялася, що Ісус забере зцілення назад",
+          "Боялася публічного осуду за порушення соціальних норм"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Згідно із законом Мойсея, жінка з кровотечею вважалася нечистою, і її дотик до інших людей робив їх нечистими.",
+        "explanationDeep": null,
+        "reference": "Лев. 15:25-27"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "paul-theologian-ai-03023",
+        "contentHash": "f529eb87c87697286834f14f2310772f15755aead9ec8c1edd395fb1f6359f55",
+        "themeId": "paul",
+        "difficulty": "theologian",
+        "topicNodeId": "paul-sub-4-sub-7",
+        "text": "У якому джерелі, що не входить до канону, ім'я Димас вперше чітко асоціюється з розкаяним розбійником?",
+        "options": [
+          "Євангеліє від Петра",
+          "Євангеліє від Никодима (Діяння Пилата)",
+          "Книга Еноха",
+          "Пастир Герми"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Євангеліє від Никодима дає імена обом розбійникам: Димас (розкаяний) та Гестас (нерозкаяний).",
+        "explanationDeep": null,
+        "reference": "Апокрифи НЗ"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "new-testament-youth-ai-00071",
+        "contentHash": "3253793832a32c5a3f9dd5c817381f1b1723ff3c4bc0821877edb208cb62113b",
+        "themeId": "acts",
+        "difficulty": "youth",
+        "topicNodeId": "acts",
+        "text": "В останньому розділі послання до Юди автор закликає віруючих до певної дії у відповідь на появу лжевчителів. Якою є ця головна відповідальність церкви?",
+        "options": [
+          "Вступати в публічні суперечки з кожним єретиком",
+          "Змінювати догмати, щоб вони стали більш зрозумілими для світу",
+          "Боротися за віру, яка була раз передана святим",
+          "Ігнорувати лжевчення, щоб не надавати їм уваги"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Юда закликає християн не просто спостерігати, а активно захищати та обстоювати незмінну істину Євангелія, яка була передана апостолам один раз і назавжди.",
+        "explanationDeep": null,
+        "reference": "Юди 1:3"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "prophets-child-ai-03461",
+        "contentHash": "f0d84243c8f68a694868786d00507d0389935c5e634e4748eef5c060542c19e4",
+        "themeId": "prophets",
+        "difficulty": "child",
+        "topicNodeId": "prophets-sub-1-sub-4",
+        "text": "Яке ім'я отримав Даниїл у Вавилоні від начальника євнухів?",
+        "options": [
+          "Валтасар",
+          "Седрах",
+          "Авед-Него",
+          "Мисаїл"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Начальник євнухів дав Даниїлові ім'я Валтасар.",
+        "explanationDeep": null,
+        "reference": "Дан. 1:7"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "mixed_language"
+      ],
+      "stratum": "language"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-youth-ai-00321",
+        "contentHash": "21099835ddfe9d51329f103aed591b97a332c4e770c0b7445d79080798ccdf57",
+        "themeId": "revelation",
+        "difficulty": "youth",
+        "topicNodeId": "revelation-sub-2-sub-1",
+        "text": "Хто, за словами псалмоспівця, має Престол, що стоїть навіки?",
+        "options": [
+          "Давид",
+          "Бог",
+          "Месія",
+          "Ангели"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Псалмоспівець проголошує, що престол Божий стоїть на віки вічні.",
+        "explanationDeep": null,
+        "reference": "Пс. 45:7"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-student-ai-03166",
+        "contentHash": "b1807b5d5a47d67fbaa7aacfcc2d230367ac73475c79e681b4151474351b67c2",
+        "themeId": "gospels",
+        "difficulty": "student",
+        "topicNodeId": "gospels-sub-5-sub-4",
+        "text": "Кого першим побачила Марія Магдалина біля гробу після воскресіння Ісуса?",
+        "options": [
+          "Ангелів",
+          "Петра",
+          "Ісуса",
+          "Івана"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Хоча вона спочатку прийняла Його за садівника, саме Ісус явився їй першій після воскресіння.",
+        "explanationDeep": null,
+        "reference": "Ів. 20:14"
+      },
+      "findings": [
+        "answer_leakage",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "judges-child-ai-03919",
+        "contentHash": "25d5e24f55f8b86171c975570f25fc3dfe43ad321063d285f1522b6b3e52c2d7",
+        "themeId": "judges",
+        "difficulty": "child",
+        "topicNodeId": "judges-sub-4-sub-2",
+        "text": "Як Авімелех назвав Авраама, коли віддавав йому Сарру?",
+        "options": [
+          "Слуга",
+          "Ворог",
+          "Пророк",
+          "Чужинець"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Бог назвав Авраама пророком, який має помолитися за Авімелеха.",
+        "explanationDeep": null,
+        "reference": "Бут. 20:7"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "commandments-child-ai-00309",
+        "contentHash": "fdebd2d64ce1778772c5b22a57a337b7cabb58c0345576b59ddf996a1d94a3be",
+        "themeId": "commandments",
+        "difficulty": "child",
+        "topicNodeId": "commandments-sub-1-sub-3",
+        "text": "Чи можна використовувати ім'я Бога в піснях, які не прославляють Його?",
+        "options": [
+          "Можна, якщо пісня гарна",
+          "Ні, це суперечить третій заповіді",
+          "Можна, якщо це популярна пісня",
+          "Це не має значення"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Ім'я Бога має бути пов'язане лише з прославлянням, а не з порожніми чи негідними справами.",
+        "explanationDeep": null,
+        "reference": "Пс. 66:2"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-preacher-ai-01610",
+        "contentHash": "72de48a796fb8e54d17da7ed4d3855b91bfe0f858191bb975af71cbf9dba7ddb",
+        "themeId": "geography-nt",
+        "difficulty": "preacher",
+        "topicNodeId": "geography-nt-sub-1-sub-3",
+        "text": "Який пророк звинувачував багатіїв Самарії в тому, що вони лежать на ліжках зі слонової кістки та бенкетують, не переймаючись руїною Йосипа?",
+        "options": [
+          "Михей",
+          "Йоїл",
+          "Амос",
+          "Малахія"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Амос викривав розкіш і духовну байдужість самарійської знаті перед падінням держави.",
+        "explanationDeep": null,
+        "reference": "Амос 6:4-6"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-preacher-x10",
+        "contentHash": "35850afa00ea11a252e59185458de477ca549340923542354031f12c45e0c0bf",
+        "themeId": "patriarchs",
+        "difficulty": "preacher",
+        "topicNodeId": null,
+        "text": "«Вовк» — який син?",
+        "options": [
+          "Вениамін/Іуда",
+          "Йосиф",
+          "Рувим",
+          "Симеон"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": null
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_explanation",
+        "missing_deep_explanation",
+        "missing_reference"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-preacher-ai-02679",
+        "contentHash": "a22c347aeff57905aadb6771e8985b3b9832f09c10e6e8f793794eb521fe2fe7",
+        "themeId": "patriarchs",
+        "difficulty": "preacher",
+        "topicNodeId": "patriarchs-sub-1-sub-2",
+        "text": "Яка фізична ознака була встановлена як обов'язковий знак заповіту між Богом та Авраамом і його нащадками?",
+        "options": [
+          "Омивання водою",
+          "Обряд обрізання",
+          "Носіння особливого одягу",
+          "Помазання єлеєм"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Обрізання стало знаком завіту, що свідчив про відокремлення Божого народу від інших народів.",
+        "explanationDeep": null,
+        "reference": "Бут. 17:10-11"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-youth-ai-00250",
+        "contentHash": "6f3f349bacef9f63306e9ce1b12cab87edd170a84425bfda679384caad62b8fd",
+        "themeId": "wisdom-poetry",
+        "difficulty": "youth",
+        "topicNodeId": "wisdom-poetry-sub-3-sub-3",
+        "text": "Що приносить страх Господній, окрім життя?",
+        "options": [
+          "Слабкість",
+          "Смерть",
+          "Честь",
+          "Поразку"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Нагорода за покору та страх Господній — це багатство, честь і життя.",
+        "explanationDeep": null,
+        "reference": "Прип. 22:4"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "parables-baby-ai-01803",
+        "contentHash": "bcc5bea210d51e13e5bcda1aa74ccd9af8844b65d50029d3f1130600e075adc6",
+        "themeId": "parables",
+        "difficulty": "baby",
+        "topicNodeId": "parables-sub-4-sub-3",
+        "text": "Чи є ця притча частиною Нагірної проповіді?",
+        "options": [
+          "Так",
+          "Ні",
+          "Це частина притч про Царство",
+          "Це частина прощальної бесіди"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Ця притча знаходиться в Євангелії від Луки, коли учні просили Ісуса навчити їх молитися.",
+        "explanationDeep": null,
+        "reference": "Луки 11:1"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-child-ai-00690",
+        "contentHash": "773356c84216c63e033599e5cbbba2b7290012327d722761d52f93ce658b1c35",
+        "themeId": "pentateuch",
+        "difficulty": "child",
+        "topicNodeId": "pentateuch-sub-1-sub-3",
+        "text": "Як називалося місто, де люди вирішили побудувати високу вежу до небес?",
+        "options": [
+          "Єрусалим",
+          "Вавилон",
+          "Єрихон",
+          "Назарет"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Люди оселилися в землі Шінар, де збудували місто Вавилон.",
+        "explanationDeep": null,
+        "reference": "Бут. 11:9"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-student-ai-01482",
+        "contentHash": "f95bc1c9b41f504ff8da6e21252084b4f013d3c079a427b9221c6cf266268196",
+        "themeId": "wisdom-poetry",
+        "difficulty": "student",
+        "topicNodeId": "wisdom-poetry-sub-1-sub-2",
+        "text": "Чому виникла суперечка між Павлом та Варнавою під час підготовки до другої місіонерської подорожі?",
+        "options": [
+          "Через фінансові питання",
+          "Через те, чи брати з собою Марка",
+          "Через місце призначення",
+          "Через порядок проповідування"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Павло не хотів брати Марка, бо той покинув їх раніше, тоді як Варнава наполягав на тому, щоб дати йому другий шанс.",
+        "explanationDeep": null,
+        "reference": "Дії 15:37-39"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "kings-child-ai-00455",
+        "contentHash": "329e711ff7f711324c008a24cbe095ee46c64886a8828dbdc35cbd62615ba904",
+        "themeId": "kings",
+        "difficulty": "child",
+        "topicNodeId": "kings-sub-1-sub-3",
+        "text": "Який дар попросив Соломон у Бога, коли Господь з'явився йому уві сні?",
+        "options": [
+          "Багатство",
+          "Довге життя",
+          "Мудрість",
+          "Перемогу над ворогами"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Соломон попросив у Бога мудрого серця, щоб правильно судити народ.",
+        "explanationDeep": null,
+        "reference": "1 Цар. 3:9"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_ambiguous"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "paul-youth-ai-02670",
+        "contentHash": "8d39e77900bfeb70b1f86a0f69dad8c24e12e239492eda05d1a7e891dad108db",
+        "themeId": "paul",
+        "difficulty": "youth",
+        "topicNodeId": "paul-sub-4-sub-1",
+        "text": "Під час першої місіонерської подорожі, хто супроводжував Варнаву та Павла як помічник?",
+        "options": [
+          "Тимофій",
+          "Лука",
+          "Іван, на прізвище Марко",
+          "Сила"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Іван, якого називали Марком, був супутником Варнави та Павла на початку їхньої місіонерської подорожі.",
+        "explanationDeep": null,
+        "reference": "Дії 13:5"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-child-ai-05293",
+        "contentHash": "129366b45700e42428e7bb0d5368b71ab5030dc4576fc1d068edf2017f20f18b",
+        "themeId": "patriarchs",
+        "difficulty": "child",
+        "topicNodeId": "patriarchs-sub-5-sub-5",
+        "text": "Як називали Юду в Біблії за його роль у зраді?",
+        "options": [
+          "Юда Праведний",
+          "Юда Зрадник",
+          "Юда Свідок",
+          "Юда Учень"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Юда відомий як той, хто зрадив свого Вчителя за гроші.",
+        "explanationDeep": null,
+        "reference": "Матв. 26:25"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-baby-ai-00029",
+        "contentHash": "650a7fd35cd468002082cd198e60b8cd91a076f683c2fd20471ef1922747dd38",
+        "themeId": "revelation",
+        "difficulty": "baby",
+        "topicNodeId": "revelation-sub-2-sub-2",
+        "text": "Що Агнець Божий робить із гріхами світу?",
+        "options": [
+          "Ігнорує їх",
+          "Бере їх на Себе",
+          "Карає за них",
+          "Забуває про них"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Ісус добровільно взяв на Себе тягар людських гріхів, щоб очистити нас.",
+        "explanationDeep": null,
+        "reference": "Ів. 1:29"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-preacher-ai-01511",
+        "contentHash": "5a13b1740fdcf898840db2c1e3a5073dee5468f9b93c8c896f9aeed6fb054341",
+        "themeId": "revelation",
+        "difficulty": "preacher",
+        "topicNodeId": "revelation-sub-1-sub-7",
+        "text": "Як Господь описує Свої очі, звертаючись до ангела церкви у Фіатирі?",
+        "options": [
+          "Як очі, що не сплять",
+          "Як полум'я вогню",
+          "Як зірки, що випромінюють світло",
+          "Як очі, що бачать таємниці сердець"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Опис очей як полум'я вогню підкреслює всезнання та святість Христа, що судить церкву.",
+        "explanationDeep": null,
+        "reference": "Об. 2:18"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-child-ai-00150",
+        "contentHash": "f390cbcc4e45edf08ff8ee1fdc485413465394b8f5e5440c1f2d1f98c4b002b7",
+        "themeId": "revelation",
+        "difficulty": "child",
+        "topicNodeId": "revelation-sub-4-sub-1",
+        "text": "Хто може увійти в Новий Єрусалим?",
+        "options": [
+          "Тільки ангели",
+          "Тільки праведники",
+          "Тільки багаті",
+          "Всі люди світу"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "У місто увійде лише той, хто записаний у книзі життя Агнця.",
+        "explanationDeep": null,
+        "reference": "Об. 21:27"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-child-ai-04983",
+        "contentHash": "23b7dcb7f99e954400d4bd46b4491951eca4dc971b15893988519a1f7865d2bd",
+        "themeId": "gospels",
+        "difficulty": "child",
+        "topicNodeId": "gospels-sub-5-sub-apostles-6",
+        "text": "З ким найчастіше згадується ім'я Варфоломія в списках апостолів?",
+        "options": [
+          "З Петром",
+          "З Филипом",
+          "З Юдою",
+          "З Матвієм"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "У Біблії Варфоломій часто згадується поряд з Филипом, який привів його до Ісуса.",
+        "explanationDeep": null,
+        "reference": "Івана 1:45"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-student-ai-03245",
+        "contentHash": "5a25ed8a0224e3497f0c65f9fe8680bfbe0dd1cfb0c69f0174c2209d9efcc0cc",
+        "themeId": "pentateuch",
+        "difficulty": "student",
+        "topicNodeId": "pentateuch-sub-1-sub-3",
+        "text": "Яка була причина того, що люди змогли розпочати таке масштабне будівництво?",
+        "options": [
+          "Вони мали багато рабів",
+          "Вони мали одну мову і одні слова",
+          "Вони знайшли магічні інструменти",
+          "Їх підтримували небесні сили"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Єдність мови та порозуміння давали людям можливість реалізовувати будь-які задуми.",
+        "explanationDeep": null,
+        "reference": "Бут. 11:6"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-student-ai-01404",
+        "contentHash": "0a98c0975d2b996fc63f48f2927bcfbb617df1dc4d0455841781bb8e95e5448c",
+        "themeId": "wisdom-poetry",
+        "difficulty": "student",
+        "topicNodeId": "wisdom-poetry-sub-1-sub-1",
+        "text": "Яке прокляття виголосив Йов у своїй першій промові до друзів?",
+        "options": [
+          "Він прокляв день свого народження",
+          "Він прокляв своїх ворогів",
+          "Він прокляв землю, на якій жив",
+          "Він прокляв своїх друзів"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "У момент відчаю Йов висловив жаль, що народився, і прокляв день свого приходу у світ.",
+        "explanationDeep": null,
+        "reference": "Йов 3:1-3"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_divine_judgment"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-theologian-ai-05821",
+        "contentHash": "ec83e381c8b9e9dcd31b9a03d8fb04d018209b187843f9a5591a7aba7b2343c7",
+        "themeId": "geography-nt",
+        "difficulty": "theologian",
+        "topicNodeId": "geography-nt-sub-4-sub-6",
+        "text": "У книзі Хронік згадується пустеля, названа на честь міста, де цар Йосафат здобув чудесну перемогу над моавитянами та аммонітянами через пророче слово.",
+        "options": [
+          "Пустеля Текоа",
+          "Пустеля Зіф",
+          "Пустеля Маон",
+          "Пустеля Єшимон"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Битва відбулася в пустелі Текоа, де Бог подарував перемогу Юді без бою, через спів та молитву.",
+        "explanationDeep": null,
+        "reference": "2 Хронік 20:20"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-teacher-ai-04565",
+        "contentHash": "4d7227bdbf1b1ffdc5f06cf08b4ffbef0173d30b7a2185499c9ebc235d3b5a28",
+        "themeId": "wisdom-poetry",
+        "difficulty": "teacher",
+        "topicNodeId": "wisdom-poetry-sub-3-sub-2",
+        "text": "Як Притчі 22:1 оцінюють добре ім'я порівняно з багатством?",
+        "options": [
+          "Багатство важливіше за ім'я",
+          "Добре ім'я краще за велике багатство",
+          "Вони рівнозначні",
+          "Ім'я не має значення для мудрого"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Репутація (добре ім'я) має більшу цінність, ніж матеріальні статки, бо вона свідчить про характер.",
+        "explanationDeep": null,
+        "reference": "Притчі 22:1"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-child-ai-02472",
+        "contentHash": "c5683f1831567973cf67e86c3eac80ea8b17b8a136579800b13b05c11e64578c",
+        "themeId": "patriarchs",
+        "difficulty": "child",
+        "topicNodeId": "patriarchs-sub-4-sub-4",
+        "text": "Яке лихо спіткало Єгипет за часів фараона, коли Мойсей вимагав відпустити ізраїльтян?",
+        "options": [
+          "Землетрус",
+          "Десять кар",
+          "Велика повінь",
+          "Навала ворогів"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Бог наслав десять кар на Єгипет, щоб фараон дозволив ізраїльському народу вийти з рабства.",
+        "explanationDeep": null,
+        "reference": "Вих. 7-12"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-preacher-ai-01452",
+        "contentHash": "2890f1546226c62996a20ca37daf9b7c384d742b90aa837bf184a76c9bd1ba83",
+        "themeId": "wisdom-poetry",
+        "difficulty": "preacher",
+        "topicNodeId": "wisdom-poetry-sub-1-sub-1",
+        "text": "Яке саме лихо спіткало Йова першим, згідно з описом його випробувань?",
+        "options": [
+          "Втрата всіх дітей під час бенкету",
+          "Саваїтяни забрали худобу та перебили слуг",
+          "Хвороба, що вкрила його тіло виразками",
+          "Знищення всього майна вогнем з неба"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Першим ударом стало викрадення волів та ослиць саваїтянами, а також вбивство слуг, що їх доглядали.",
+        "explanationDeep": null,
+        "reference": "Йов 1:14-15"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_violence_trauma"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "new-testament-baby-ai-00282",
+        "contentHash": "ae03176c4d77b6fa17553e8b54ccb9c5dd285e257cfbdc1a43207bf34b42a318",
+        "themeId": "new-testament",
+        "difficulty": "baby",
+        "topicNodeId": "nt-custom-poslannia-do-maibutnikh-pokolin-sub-3",
+        "text": "Що допомагає віруючим не впасти під час потрясінь?",
+        "options": [
+          "Власна сила",
+          "Єдність у вірі",
+          "Багатство",
+          "Втеча"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Скручена втроє нитка (єдність) не скоро порветься.",
+        "explanationDeep": null,
+        "reference": "Еккл. 4:12"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "acts-baby-ai-02001",
+        "contentHash": "24f44eff7bca438634c815b67c0d612d9b6fb2fcb8b4ca091f932f2bd63b23b0",
+        "themeId": "acts",
+        "difficulty": "baby",
+        "topicNodeId": "acts-sub-5-sub-2",
+        "text": "Що зробив Даниїл, коли цар Дарій видав указ, що ніхто не може молитися нікому, крім царя?",
+        "options": [
+          "Перестав молитися",
+          "Молився таємно в підвалі",
+          "Продовжував відкрито молитися Богові",
+          "Втік з міста"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Даниїл не побоявся царського указу і продовжував відкрито молитися своєму Богу, захищаючи свою віру.",
+        "explanationDeep": null,
+        "reference": "Даниїла 6:10"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "acts-theologian-ai-01499",
+        "contentHash": "0f229ca34c2473559556161966a0c7d5e32a42d65ac38037efac113278fba3b6",
+        "themeId": "acts",
+        "difficulty": "theologian",
+        "topicNodeId": "acts-sub-3-sub-1",
+        "text": "Яка була реакція юдеїв у Дамаску на проповідь Савла з часом?",
+        "options": [
+          "Вони запросили його очолити синагогу",
+          "Вони змовилися вбити його",
+          "Вони ігнорували його",
+          "Вони покликали римлян для захисту"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Після того, як Савло почав доводити месіанство Ісуса, юдеї почали планувати його вбивство через зміну його переконань.",
+        "explanationDeep": null,
+        "reference": "Дії 9:23"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_violence_trauma"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "old-testament-teacher-ai-00051",
+        "contentHash": "d4c7a1fcc76acbb960b1b2767e2b35dea85c87f9acad65a17542d411d4831ed4",
+        "themeId": "old-testament",
+        "difficulty": "teacher",
+        "topicNodeId": "kings-sub-1-sub-2",
+        "text": "Кто возвёл храм Божий в Иерусалиме?",
+        "options": [
+          "А) Авраам",
+          "Б) Мойсей",
+          "В) Салмона",
+          "Г) Давид"
+        ],
+        "correctIndex": 3,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Цар. 3:1"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "mixed_language"
+      ],
+      "stratum": "language"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-theologian-ai-05250",
+        "contentHash": "7d8b419a5842aabbeee4224dd685c38780d7245ab8408ca9e8a1b94f7402e09d",
+        "themeId": "pentateuch",
+        "difficulty": "theologian",
+        "topicNodeId": "pentateuch-sub-3-sub-3",
+        "text": "Яке значення мало свято Ханука (Оновлення), згідно з історичним контекстом пізніх пророчих книг та Маккавеїв?",
+        "options": [
+          "Встановлення закону про десятину",
+          "Очищення та повторне освячення Храму після осквернення",
+          "Святкування перемоги над вавилонянами",
+          "Закладення фундаменту другого Храму"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Ханука вшановує оновлення жертовника та освячення Храму після його осквернення Антіохом IV.",
+        "explanationDeep": null,
+        "reference": "1 Мак. 4:56-59 (історичний контекст)"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "general-epistles-child-ai-02102",
+        "contentHash": "ffb73cc0f32d9107f994512365c34cdb21800f92071da86529837ca58f43af59",
+        "themeId": "general-epistles",
+        "difficulty": "child",
+        "topicNodeId": "general-epistles-sub-5-sub-1",
+        "text": "Який пророк стояв на горі Кармел проти пророків Ваала?",
+        "options": [
+          "Ісая",
+          "Єремія",
+          "Ілля",
+          "Єлисей"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Ілля виступив за істинного Бога проти багатьох лжепророків.",
+        "explanationDeep": null,
+        "reference": "1 Цар. 18:21-24"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_ambiguous"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "parables-preacher-ai-00820",
+        "contentHash": "3f2d7b0d05ff3dbdf5b99bf74cd4122df665bccfd4b5bf01dca14ddb9e11df48",
+        "themeId": "parables",
+        "difficulty": "preacher",
+        "topicNodeId": "parables-sub-1-sub-1",
+        "text": "Що, згідно з поясненням Ісуса, є «словом Божим» у притчі про сіяча?",
+        "options": [
+          "Земля",
+          "Сіяч",
+          "Зерно",
+          "Терня"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Ісус прямо каже, що зерно — це слово Боже, яке сіється в серця людей.",
+        "explanationDeep": null,
+        "reference": "Луки 8:11"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-student-ai-02498",
+        "contentHash": "30c883b9f946282d0d24df7be16e2990edfba384ed14496bb44782988e5d5e89",
+        "themeId": "gospels",
+        "difficulty": "student",
+        "topicNodeId": "gospels-sub-4-sub-1",
+        "text": "Яке питання поставили ангели Марії Магдалині, коли вона плакала біля гробу?",
+        "options": [
+          "Чому ти тут?",
+          "Кого ти шукаєш?",
+          "Чому ти плачеш?",
+          "Хто тебе послав?"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Ангели запитали Марію, чому вона плаче, коли вона стояла біля порожнього гробу.",
+        "explanationDeep": null,
+        "reference": "Ів. 20:13"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-baby-ai-00581",
+        "contentHash": "bcd4916be7cf1ad34b6fb24d9bcf514ea75763da50d5e73989947d70fe80a2a4",
+        "themeId": "geography-nt",
+        "difficulty": "baby",
+        "topicNodeId": "geography-nt-sub-4-sub-5",
+        "text": "Хто пророкував, що від Храму на горі не залишиться каменя на камені?",
+        "options": [
+          "Ісус Христос",
+          "Даниїл",
+          "Йосип",
+          "Аарон"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Ісус передрік руйнування Храму, що стояв на Храмовій горі.",
+        "explanationDeep": null,
+        "reference": "Мт. 24:2"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-baby-ai-01298",
+        "contentHash": "e6c231e2e4eb66d3185b30b9c0356bedcac2b5325f6be6fc7b0dd6a5e4759a21",
+        "themeId": "patriarchs",
+        "difficulty": "baby",
+        "topicNodeId": "patriarchs-sub-3-sub-1",
+        "text": "Хто стояв над драбиною у сні Якова?",
+        "options": [
+          "Ангел-охоронець",
+          "Господь",
+          "Його батько",
+          "Святий дух"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Сам Господь стояв над драбиною і розмовляв з Яковом.",
+        "explanationDeep": null,
+        "reference": "Бут. 28:13"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "commandments-theologian-ai-03519",
+        "contentHash": "c521ecd16163e731f4803507d5c559d52dd7dcc168eb7f01bc8dc536ff6c898d",
+        "themeId": "commandments",
+        "difficulty": "theologian",
+        "topicNodeId": "commandments-sub-1-sub-3",
+        "text": "Яка головна теологічна мета третьої заповіді в контексті стосунків між Богом і людиною?",
+        "options": [
+          "Встановлення ритуальної чистоти мови",
+          "Виховання благоговійного ставлення до особистості та авторитету Бога",
+          "Створення списку заборонених слів",
+          "Регулювання юридичних процедур у суді"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Заповідь спрямована на формування глибокої поваги до Бога, чиє ім'я є святим і страшним.",
+        "explanationDeep": null,
+        "reference": "Пс. 111:9"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-theologian-ai-02182",
+        "contentHash": "a5d619303679f25c4a45d34f5977380906c9e74b9a991ddc6263653394a991e8",
+        "themeId": "revelation",
+        "difficulty": "theologian",
+        "topicNodeId": "revelation-sub-3-sub-4",
+        "text": "Який символічний елемент виливається з сьомої чаші гніву Божого безпосередньо перед тим, як звучить голос: «Сталося!»?",
+        "options": [
+          "Кров",
+          "Вогонь і сірка",
+          "Повітря",
+          "Град вагою в талант"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Сьома чаша виливається на повітря, що символізує повне ураження панування сатани, який є «князем, що панує в повітрі».",
+        "explanationDeep": null,
+        "reference": "Об. 16:17"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-youth-ai-05497",
+        "contentHash": "6f996f09ed742041bc79ef34fd974be3cbb4b60279e5daece51e6b8375086f13",
+        "themeId": "patriarchs",
+        "difficulty": "youth",
+        "topicNodeId": "patriarchs-sub-5-sub-6",
+        "text": "Який пророк проголосив пророцтво про повне знищення Моаву через їхню гордість?",
+        "options": [
+          "Ісая",
+          "Єремія",
+          "Софонія",
+          "Усі перелічені"
+        ],
+        "correctIndex": 3,
+        "explanationShort": "Багато пророків засуджували Моав за гордість та зневагу до народу Божого.",
+        "explanationDeep": null,
+        "reference": "Іс. 15, Єр. 48, Соф. 2:8-9"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "paul-theologian-ai-01055",
+        "contentHash": "722597eb1f7556b0c55b65defec19a2680555bd0c2b21438ebca51058886e6cf",
+        "themeId": "paul",
+        "difficulty": "theologian",
+        "topicNodeId": "paul-sub-1-sub-2",
+        "text": "Яке місто стало фінальною точкою третьої місіонерської подорожі Павла перед його арештом?",
+        "options": [
+          "Кесарія",
+          "Тир",
+          "Єрусалим",
+          "Дамаск"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Прибуття до Єрусалиму завершило третю подорож і призвело до конфлікту з ревнителями закону.",
+        "explanationDeep": null,
+        "reference": "Дії 21:17"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "old-testament-youth-3",
+        "contentHash": "d2bae2447b8f126c9ba158ee61e11800c7e3383f5bc3ced10f5f0c3027e57679",
+        "themeId": "old-testament",
+        "difficulty": "youth",
+        "topicNodeId": null,
+        "text": "Хто був «людиною за серцем Божим»?",
+        "options": [
+          "Давид",
+          "Соломон",
+          "Саул",
+          "Езекія"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Дії 13:22"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-teacher-ai-03321",
+        "contentHash": "77d7eb04cb40831519ff831e85e74dc9e71e2fa9b421086b9b3ac29cc82477a8",
+        "themeId": "gospels",
+        "difficulty": "teacher",
+        "topicNodeId": "gospels-sub-5-sub-5",
+        "text": "Яку метафору використав Ісус, пояснюючи Никодиму необхідність духовного відродження?",
+        "options": [
+          "Про зерно, що має вмерти",
+          "Про виноградну лозу",
+          "Про народження згори (від води і Духа)",
+          "Про будівництво дому на камені"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Ісус наголосив, що для входу в Боже Царство людина повинна народитися водою і Духом.",
+        "explanationDeep": null,
+        "reference": "Ів. 3:3-5"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-baby-ai-03008",
+        "contentHash": "1ded3f96194de0da587ca617197e41b7849adce771488d93b179a4512407a6a8",
+        "themeId": "wisdom-poetry",
+        "difficulty": "baby",
+        "topicNodeId": "wisdom-poetry-sub-1-sub-3",
+        "text": "Як Бог відповів пророку Ісаї, коли той запитав: «Кого Мені послати?»",
+        "options": [
+          "Ісая відповів: «Ось я, пошли мене!»",
+          "Бог покликав іншого",
+          "Ісая промовчав",
+          "Бог відповів ангелам"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Ісая почув голос Бога і відгукнувся на Його поклик.",
+        "explanationDeep": null,
+        "reference": "Іс. 6:8"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-teacher-ai-05617",
+        "contentHash": "fe983d64f44874c62e81770bf40047f8066dad8a54a7cb390fe67ed2b2113ca0",
+        "themeId": "geography-nt",
+        "difficulty": "teacher",
+        "topicNodeId": "geography-nt-sub-2-sub-14",
+        "text": "Чому Ісус суворо наказав Своїм учням у Кесарії Філіпповій нікому не казати, що Він — Христос?",
+        "options": [
+          "Бо це було таємницею для язичників",
+          "Бо час ще не настав для публічного визнання",
+          "Бо народ очікував політичного царя, а не Месію",
+          "Бо фарисеї могли Його вбити раніше часу"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Ісус знав, що народ має хибне уявлення про Месію як про земного визволителя, тому заборонив поширювати цей титул на той момент.",
+        "explanationDeep": null,
+        "reference": "Мт. 16:20"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "prophets-baby-ai-03083",
+        "contentHash": "fed23a4b89f6e5c31e99b8a919ddc6bb1de9f10df929e181f52c38db2c86682f",
+        "themeId": "prophets",
+        "difficulty": "baby",
+        "topicNodeId": "prophets-sub-1-sub-4",
+        "text": "Яке ім'я отримав Даниїл у Вавилоні?",
+        "options": [
+          "Валтасар",
+          "Седрах",
+          "Мисах",
+          "Авед-Него"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Начальник євнухів дав Даниїлу ім'я Валтасар.",
+        "explanationDeep": null,
+        "reference": "Дан. 1:7"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "mixed_language"
+      ],
+      "stratum": "language"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-child-ai-05029",
+        "contentHash": "c26596c0e44e4134374d462fe56e6d6d8d0e18b4fdea59ed8412de35639edc80",
+        "themeId": "patriarchs",
+        "difficulty": "child",
+        "topicNodeId": "patriarchs-sub-5-sub-3",
+        "text": "Чому Рахіль заздрила своїй сестрі Лії?",
+        "options": [
+          "Через одяг",
+          "Через багатство",
+          "Через дітей",
+          "Через будинок"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Рахіль заздрила Лії, бо Лія народжувала дітей, а вона — ні.",
+        "explanationDeep": null,
+        "reference": "Бут. 30:1"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "general-epistles-theologian-ai-02413",
+        "contentHash": "25f6dea00cdef7c6d0fff5d9ad8982227352c8a45742a70674cba6b1a37ba451",
+        "themeId": "general-epistles",
+        "difficulty": "theologian",
+        "topicNodeId": "general-epistles-sub-6-sub-1",
+        "text": "Якою була фізична ознака, що залишилася у Якова після боротьби з Богом біля потоку Яббок?",
+        "options": [
+          "Шрам на чолі",
+          "Пошкоджене стегно",
+          "Осліплення на одне око",
+          "Зміна кольору волосся"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Бог торкнувся суглоба стегна Якова, через що той почав кульгати.",
+        "explanationDeep": null,
+        "reference": "Бут. 32:26"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-child-ai-02658",
+        "contentHash": "9f8697d5fd75c4b64fdb8a1804c79fdba8cf3358469c116078902ceb7e733e6b",
+        "themeId": "geography-nt",
+        "difficulty": "child",
+        "topicNodeId": "geography-nt-sub-3-sub-3",
+        "text": "Як називали великі торгові судна, що ходили Середземним морем у біблійні часи?",
+        "options": [
+          "Таршішські кораблі",
+          "Кесарійські човни",
+          "Рибальські баркаси",
+          "Фінікійські плоти"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Таршішські кораблі були великими торговими суднами, здатними здійснювати тривалі подорожі Середземним морем.",
+        "explanationDeep": null,
+        "reference": "1 Цар. 10:22"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_ambiguous",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "paul-teacher-ai-02242",
+        "contentHash": "941687da5a9da92cd9ef2ac72dcb290ce4568696e8177040acf22cd1a7657b2d",
+        "themeId": "paul",
+        "difficulty": "teacher",
+        "topicNodeId": "paul-sub-3-sub-2",
+        "text": "Згідно з 1 Коринтян 12:12-13, яким чином віруючі стають частиною єдиного Тіла Христового?",
+        "options": [
+          "Через дотримання закону Мойсея",
+          "Через хрещення одним Духом",
+          "Через спільну участь у вечері Господній",
+          "Через обрізання серця та плоті"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Апостол Павло наголошує, що незалежно від походження, всі ми були хрещені в одне тіло одним Духом.",
+        "explanationDeep": null,
+        "reference": "1 Кор. 12:13"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "paul-child-ai-01108",
+        "contentHash": "004e43caae3da6c7084ffd5fa1f817315e700148d0fec2c63856f5c5e4b098a0",
+        "themeId": "paul",
+        "difficulty": "child",
+        "topicNodeId": "paul-sub-1-sub-3",
+        "text": "Хто народився в темниці у відомій біблійній історії?",
+        "options": [
+          "Ніхто",
+          "Ісус",
+          "Іван Хреститель",
+          "Мойсей"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "У Біблії немає згадок про народження дітей безпосередньо у в'язниці.",
+        "explanationDeep": null,
+        "reference": "Немає"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "old-testament-teacher-ai-00113",
+        "contentHash": "1041c47743d8e6eba625e3cdf073bc8e7a24c2041a7e70880866052e87584aa4",
+        "themeId": "old-testament",
+        "difficulty": "teacher",
+        "topicNodeId": "patriarchs-sub-4",
+        "text": "Який віруючий став першим єпископом в Антіохії?",
+        "options": [
+          "Петро",
+          "Йосип Арматіанський",
+          "Варфоломій",
+          "Іван Богослов"
+        ],
+        "correctIndex": 1,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Акт. 6:5"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_explanation",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-baby-ai-04696",
+        "contentHash": "683ca9b8455b09be966fe88ac96fd68120afa115d13ec1d42934f05595b40cc6",
+        "themeId": "patriarchs",
+        "difficulty": "baby",
+        "topicNodeId": "patriarchs-sub-5-sub-1",
+        "text": "Чи вважався Лот праведним згідно з біблійним описом?",
+        "options": [
+          "Так",
+          "Ні",
+          "Він був грішником",
+          "Він був язичником"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Біблія називає Лота праведним, який мучився, бачачи розпусне життя мешканців Содому.",
+        "explanationDeep": null,
+        "reference": "2 Петр. 2:7"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "paul-preacher-x7",
+        "contentHash": "45e4789cc48005494b78c63a98abd0e460018280120aacc14492b449ad6b8a9c",
+        "themeId": "paul",
+        "difficulty": "preacher",
+        "topicNodeId": null,
+        "text": "Хто супроводжував у 1-й подорожі?",
+        "options": [
+          "Варнава",
+          "Петро",
+          "Іоанн",
+          "Яків"
+        ],
+        "correctIndex": 0,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": null
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "missing_reference"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "old-testament-baby-ai-00028",
+        "contentHash": "3d4e7da2e9ae616068b6ae062460051261c9d4f3988a7659d33e3eb0f3c2eb04",
+        "themeId": "pentateuch",
+        "difficulty": "baby",
+        "topicNodeId": "pentateuch",
+        "text": "Кто получил Божественное заповедь на горе Синай?",
+        "options": [
+          "Мойсей",
+          "Авраам",
+          "Исаия",
+          "Давид"
+        ],
+        "correctIndex": 1,
+        "explanationShort": null,
+        "explanationDeep": null,
+        "reference": "Втор. 5:22"
+      },
+      "findings": [
+        "missing_explanation",
+        "missing_deep_explanation",
+        "mixed_language"
+      ],
+      "stratum": "language"
+    },
+    {
+      "subject": {
+        "questionId": "acts-student-ai-00955",
+        "contentHash": "37e2c91289cd5749585eb2b3e0851ef2b61b8ccd67eff8904582bb3421ef06ea",
+        "themeId": "acts",
+        "difficulty": "student",
+        "topicNodeId": "acts-sub-1-sub-2",
+        "text": "У проповіді біля Соломонового ґанку, кого Петро назвав «Начальником життя»?",
+        "options": [
+          "Мойсея",
+          "Авраама",
+          "Ісуса Христа",
+          "Давида"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Петро звинуватив юдеїв у вбивстві Начальника життя, якого Бог воскресив із мертвих.",
+        "explanationDeep": null,
+        "reference": "Дії 3:15"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_violence_trauma"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "commandments-preacher-ai-02277",
+        "contentHash": "42f31556ddb7df0113e722ce27193436591113840f9f7c0bc6d5ed52e3cf82d3",
+        "themeId": "commandments",
+        "difficulty": "preacher",
+        "topicNodeId": "commandments-sub-1-sub-1",
+        "text": "Що є «іншим богом» у контексті сучасної інтерпретації Першої заповіді?",
+        "options": [
+          "Будь-який ідол у храмі",
+          "Будь-що, що займає місце Бога в серці",
+          "Інші релігійні традиції",
+          "Мистецтво та культура"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Ідолопоклонство — це надання вищої цінності будь-чому, крім Бога (наприклад, грошам або его).",
+        "explanationDeep": null,
+        "reference": "Кол. 3:5"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "mixed_language"
+      ],
+      "stratum": "language"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-preacher-ai-05050",
+        "contentHash": "6bfe019fb26a329eadc4fbf84e2726e4e501671506b47f9934768aa58e3cc2cb",
+        "themeId": "geography-nt",
+        "difficulty": "preacher",
+        "topicNodeId": "geography-nt-sub-1-sub-1",
+        "text": "Яке місто в Галілеї, згідно з пророцтвом Ісаї, мало стати місцем, де засяє велике світло для народу, що ходить у темряві?",
+        "options": [
+          "Назарет",
+          "Капернаум",
+          "Кана",
+          "Тіверіада"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Ісус оселився в Капернаумі, що при морі, у межах Завулонових та Нафталимових, виконуючи пророцтво Ісаї про Галілею поганську.",
+        "explanationDeep": null,
+        "reference": "Мт. 4:13-16"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "acts-child-ai-02021",
+        "contentHash": "ee7d39efe67c4b70a14a6f34caff77988c4df9bc3a9aa40e5756a153204980e8",
+        "themeId": "acts",
+        "difficulty": "child",
+        "topicNodeId": "acts-sub-5-sub-2",
+        "text": "Коли Йосип постав перед фараоном, щоб пояснити сни, чи захищав він себе, чи прославляв Бога?",
+        "options": [
+          "Він хвалився своїм розумом",
+          "Він сказав, що це Бог дасть відповідь фараону",
+          "Він просив грошей",
+          "Він мовчав"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Йосип виявив смирення, сказавши, що не він, а Бог відкриє значення снів фараону.",
+        "explanationDeep": null,
+        "reference": "Бут. 41:16"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "revelation-teacher-ai-02155",
+        "contentHash": "c2f5eef620ce55ceacdd9534f0884e66fc044d1b15ba37dd2bf1a01fea8ee0e3",
+        "themeId": "revelation",
+        "difficulty": "teacher",
+        "topicNodeId": "revelation-sub-3-sub-4",
+        "text": "Яка роль 'царів зі сходу' у подіях, що ведуть до Армагеддону?",
+        "options": [
+          "Вони стають союзниками Божого народу",
+          "Вони приходять, щоб поклонитися звіру",
+          "Їм готується шлях після висихання Євфрату",
+          "Вони є тими, хто руйнує Вавилон"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Висихання річки Євфрат відкриває шлях для царів зі сходу, які прибувають для фінальної битви.",
+        "explanationDeep": null,
+        "reference": "Об. 16:12"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "geography-nt-teacher-ai-04163",
+        "contentHash": "5ff5bd24b590481576dc5a0603f34dd88c6e6a192c98097b2bf8780cd18bf93d",
+        "themeId": "geography-nt",
+        "difficulty": "teacher",
+        "topicNodeId": "geography-nt-sub-6-sub-1",
+        "text": "Хто був першим римським прокуратором Юдеї після зміщення Архелая у 6 році н.е., що ознаменувало перехід до прямого римського управління?",
+        "options": [
+          "Понтій Пилат",
+          "Копоній",
+          "Марцел",
+          "Фелікс"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Копоній був призначений імператором Августом першим префектом (прокуратором) провінції Юдея.",
+        "explanationDeep": null,
+        "reference": "Йосип Флавій, Юдейські старожитності 18:2"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_unparsed"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "kings-student-ai-01626",
+        "contentHash": "2d7f3802240b298a550c67f4a19a081db0b8ea348a2bff92f579f788d69387a4",
+        "themeId": "kings",
+        "difficulty": "student",
+        "topicNodeId": "kings-sub-5-sub-2",
+        "text": "Що зробив Неемія з іноземними жінками, на яких одружилися юдеї?",
+        "options": [
+          "Вигнав їх з міста",
+          "Змусив їх прийняти віру",
+          "Вимагав розлучення з ними",
+          "Нічого не зробив"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Неемія виступав проти змішаних шлюбів, вважаючи, що це веде народ до відступництва від Бога.",
+        "explanationDeep": null,
+        "reference": "Неем. 13:23-27"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "kings-theologian-ai-04965",
+        "contentHash": "7a4c6226cb246ea75760ac86835e6e107d0284adf42ed86122dc9f27fdf1e80c",
+        "themeId": "kings",
+        "difficulty": "theologian",
+        "topicNodeId": "kings-sub-5-sub-1",
+        "text": "Яким було ім'я перського царя, що видав указ про повернення юдеїв до Єрусалиму та відбудову храму в першому розділі книги Ездри?",
+        "options": [
+          "Артаксеркс",
+          "Дарій",
+          "Кір",
+          "Ахашверош"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Кір Великий видав указ у перший рік свого царювання, виконуючи пророцтво Єремії.",
+        "explanationDeep": null,
+        "reference": "Езд. 1:1"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "acts-preacher-ai-01968",
+        "contentHash": "1bab920a09b371f3989d6673b6255d5a82084c32f00a93edb74c45c532f1ee34",
+        "themeId": "acts",
+        "difficulty": "preacher",
+        "topicNodeId": "acts-sub-5-sub-1",
+        "text": "Згідно з Євангелієм від Луки, що сталося з Ісусом одразу після того, як Він вигнав торговців із храму?",
+        "options": [
+          "Він залишив місто",
+          "Первосвященики та книжники шукали, як Його погубити",
+          "Він почав зцілювати хворих",
+          "Він був негайно заарештований"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Його дія в храмі викликала таку лють у релігійних лідерів, що вони почали шукати спосіб Його затримання та вбивства.",
+        "explanationDeep": null,
+        "reference": "Лк. 19:47"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "sensitivity_violence_trauma"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "kings-student-ai-06947",
+        "contentHash": "606b3834993141c00ecb8adc60917bf8ac79060119fa14e7a7006b31b7985255",
+        "themeId": "kings",
+        "difficulty": "student",
+        "topicNodeId": "kings-sub-3-sub-5",
+        "text": "Як Біблія характеризує духовний стан правління Вааші?",
+        "options": [
+          "Він був праведним перед Богом",
+          "Він був наймудрішим царем",
+          "Він чинив зле в очах Господніх",
+          "Він відновив поклоніння в Єрусалимі"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Вааша чинив зле, наслідуючи гріхи Єровоама, який ввів Ізраїль у гріх ідолопоклонства.",
+        "explanationDeep": null,
+        "reference": "1 Цар. 15:34"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "reference_ambiguous"
+      ],
+      "stratum": "reference"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-baby-ai-00299",
+        "contentHash": "933a791c9e5d2556483d96b5f79cdb2c82705354e7aca53d7676abe857948475",
+        "themeId": "wisdom-poetry",
+        "difficulty": "baby",
+        "topicNodeId": "wisdom-poetry-sub-4-sub-1",
+        "text": "Кого, за словами Екклезіяста, спіткає та сама доля, що й немудрого?",
+        "options": [
+          "Тільки багатого",
+          "Тільки царя",
+          "Мудрого",
+          "Тільки молодого"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Смерть є спільною долею для мудрих і немудрих, що підкреслює марність земного життя.",
+        "explanationDeep": null,
+        "reference": "Еккл. 2:16"
+      },
+      "findings": [
+        "answer_leakage",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "pentateuch-teacher-ai-14696",
+        "contentHash": "aa2f59eecfbcf453eec679639765ce08862f9c3ab6d66499aedf26ad0a441b74",
+        "themeId": "pentateuch",
+        "difficulty": "teacher",
+        "topicNodeId": "pentateuch-sub-3-sub-7",
+        "text": "Чи можна було принести жертву за провину за гріх, скоєний свідомо і зухвало?",
+        "options": [
+          "Так, якщо принести подвійну жертву",
+          "Так, якщо розкаятися перед громадою",
+          "Закон Мойсея не передбачав жертви за зухвалий гріх",
+          "Так, але лише після посту"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Жертва за провину була призначена для випадків, коли людина вчинила неправду або помилку, а не для зухвалого повстання проти Бога.",
+        "explanationDeep": null,
+        "reference": "Левит 6:1-7"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "kings-teacher-ai-04149",
+        "contentHash": "768db8eadb59990b786b4a5e3f22c4ff2d87abcf705e8ae7700d3996cfc2ce37",
+        "themeId": "kings",
+        "difficulty": "teacher",
+        "topicNodeId": "kings-sub-1-sub-2",
+        "text": "Яку назву мала фортеця євусеїв, яку Давид захопив і перейменував на «Місто Давидове»?",
+        "options": [
+          "Сіон",
+          "Офел",
+          "Мілло",
+          "Акра"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Давид здобув Сіонську твердиню, яка стала столицею його царства.",
+        "explanationDeep": null,
+        "reference": "2 Самуїлова 5:7"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "commandments-baby-ai-01724",
+        "contentHash": "b5df6738c4c4950e1458eb6304c87e635f6584ee953bc982d3776fd0f1a63531",
+        "themeId": "commandments",
+        "difficulty": "baby",
+        "topicNodeId": "commandments-sub-4-sub-3",
+        "text": "Хто мав право переносити Ковчег Заповіту?",
+        "options": [
+          "Увесь народ",
+          "Тільки левити",
+          "Тільки царі",
+          "Будь-хто з народу"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Господь обрав левитів для того, щоб вони носили Ковчег та служили при ньому.",
+        "explanationDeep": null,
+        "reference": "1 Хронік 15:2"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "commandments-student-ai-02893",
+        "contentHash": "2ecac09721ac187566037ff9bd220d7a7442ac22f40b7c18680092dac2eee0bc",
+        "themeId": "commandments",
+        "difficulty": "student",
+        "topicNodeId": "commandments-sub-3-sub-2",
+        "text": "Яку характеристику дає Біблія людині, яка поширює неправду?",
+        "options": [
+          "Мудра",
+          "Підступна",
+          "Справедлива",
+          "Милосердна"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Бридкі для Господа уста неправдиві, а правдиві — Його втіха.",
+        "explanationDeep": null,
+        "reference": "Прип. 12:22"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-preacher-ai-01999",
+        "contentHash": "e1a688d6f8225fbe53138f8e858ba1a1506cc27d77ed9ebdcfccbfb46771021b",
+        "themeId": "wisdom-poetry",
+        "difficulty": "preacher",
+        "topicNodeId": "wisdom-poetry-sub-3-sub-1",
+        "text": "Яку саме прохання Соломона до Бога уві сні в Гаваоні Господь визнав за «добре»?",
+        "options": [
+          "Багатства",
+          "Довгого життя",
+          "Розумного серця для суду",
+          "Перемоги над ворогами"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Соломон просив не особистих благ, а здатності розрізняти добро і зло, щоб правильно судити народ.",
+        "explanationDeep": null,
+        "reference": "1 Царів 3:9-10"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-theologian-ai-04911",
+        "contentHash": "b24414b2150831d60c305bd420aef883393a7fcfcefe16dff40a2963a8b9fd27",
+        "themeId": "wisdom-poetry",
+        "difficulty": "theologian",
+        "topicNodeId": "wisdom-poetry-sub-5-sub-1",
+        "text": "Як наречена в Пісні Пісень 3:1 описує свої пошуки коханого на ложі вночі?",
+        "options": [
+          "Вона кликала його, але він не відповів",
+          "Вона шукала того, кого любить душа її, але не знайшла",
+          "Вона молилася, щоб він прийшов",
+          "Вона чекала до світанку, не заплющуючи очей"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Нічні пошуки символізують тугу душі за близькістю та неможливість знайти спокій без коханого.",
+        "explanationDeep": null,
+        "reference": "Пісн. 3:1"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "geography-teacher-ai-04044",
+        "contentHash": "4f3a47bf5997b54f41aa21fc2de53ac3bcab1fcc610dd938a3b1f51ea097d39a",
+        "themeId": "geography",
+        "difficulty": "teacher",
+        "topicNodeId": "geography-sub-3-sub-2",
+        "text": "Яку іншу назву, що вказує на приналежність до роду царя, часто вживають щодо Віфлеєма в Новому Завіті?",
+        "options": [
+          "Місто Самуїлове",
+          "Місто Давидове",
+          "Місто Соломонове",
+          "Місто Єссеєве"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Віфлеєм називають містом Давидовим, оскільки саме там народився цар Давид.",
+        "explanationDeep": null,
+        "reference": "Луки 2:11"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "judges-preacher-ai-00826",
+        "contentHash": "10b06861d4491ab208c304994ca3e4d9cba4bbaced4a39da01d9059a4feb38a8",
+        "themeId": "judges",
+        "difficulty": "preacher",
+        "topicNodeId": "judges-sub-1-sub-3",
+        "text": "Чи згадується Самегар у списку «героїв віри» в Посланні до євреїв 11?",
+        "options": [
+          "Так",
+          "Ні",
+          "Тільки як пророк",
+          "Тільки як цар"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Попри свій подвиг, ім'я Самегара не входить до переліку героїв віри в 11-му розділі Послання до євреїв.",
+        "explanationDeep": null,
+        "reference": "Євр. 11:32"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "general-epistles-child-ai-00913",
+        "contentHash": "cd5e4ce9bcd65ede14a20b0b903125c003fcf10f8c712d155411c2fafe55cf0e",
+        "themeId": "general-epistles",
+        "difficulty": "child",
+        "topicNodeId": "general-epistles-sub-6-sub-1",
+        "text": "Куди Яків переселився разом зі своєю родиною в кінці життя через великий голод?",
+        "options": [
+          "До Єгипту",
+          "До Вавилону",
+          "До Ассирії",
+          "До Риму"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Через голод у Ханаані Яків переїхав до Єгипту, де на той час правив його син Йосип.",
+        "explanationDeep": null,
+        "reference": "Бут. 46:5-6"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "acts-youth-ai-00423",
+        "contentHash": "24f0dfcb6921c27af09a4ee6c5b358e3149ecf880cc19b37fd6c233c20bfa805",
+        "themeId": "acts",
+        "difficulty": "youth",
+        "topicNodeId": "acts-sub-1-sub-3",
+        "text": "Яким було ставлення людей до віруючих після випадку з Ананієм та Сапфірою?",
+        "options": [
+          "Всі боялися до них приєднуватися",
+          "Люди почали їх зневажати",
+          "На всіх напав великий страх",
+          "Люди почали вимагати від них грошей"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Суд Божий над подружжям викликав великий страх як у всієї церкви, так і в усіх, хто про це чув.",
+        "explanationDeep": null,
+        "reference": "Дії 5:11"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_divine_judgment"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-youth-ai-02981",
+        "contentHash": "1d1653a29815f6a57f5aa6ecc20ae215b2c405ef5e76e9583525967253d30b86",
+        "themeId": "gospels",
+        "difficulty": "youth",
+        "topicNodeId": "gospels-sub-5-sub-2",
+        "text": "Яке привітання промовив ангел Гавриїл до Марії під час Благовіщення?",
+        "options": [
+          "Радуйся, благодатна, Господь з тобою!",
+          "Мир тобі, обрана серед жінок!",
+          "Не бійся, Маріє, ти знайшла благодать!",
+          "Благословенна ти між жінками!"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Ангел Гавриїл звернувся до Марії зі словами привітання, визнаючи її особливу благодать перед Богом.",
+        "explanationDeep": null,
+        "reference": "Луки 1:28"
+      },
+      "findings": [
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    },
+    {
+      "subject": {
+        "questionId": "miracles-youth-ai-00441",
+        "contentHash": "3b711906af3f9f8f37d988432f69930c33e7275a5914acb2e0f27a332ec828ca",
+        "themeId": "miracles",
+        "difficulty": "youth",
+        "topicNodeId": "miracles-sub-1-sub-4",
+        "text": "Чому жінка намагалася зцілитися непомітно, торкнувшись Ісуса ззаду?",
+        "options": [
+          "Вона боялася гніву натовпу",
+          "За законом вона вважалася нечистою",
+          "Вона соромилася своєї хвороби",
+          "Вона не хотіла відволікати Ісуса"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "Згідно з юдейським законом, жінка з такою хворобою вважалася ритуально нечистою, тому вона боялася відкрито підійти до Ісуса.",
+        "explanationDeep": null,
+        "reference": "Левит 15:25-27"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "theme_canon_mismatch"
+      ],
+      "stratum": "canon_mismatch"
+    },
+    {
+      "subject": {
+        "questionId": "acts-child-ai-01369",
+        "contentHash": "2ba8a7bbfbe3c8fdd91bebfdc7563fed0881108a2455f64ea0d9662c0097438d",
+        "themeId": "acts",
+        "difficulty": "child",
+        "topicNodeId": "acts-sub-2-sub-4",
+        "text": "Хто хотів вчинити самогубство, побачивши відчинені двері в'язниці в Филипах?",
+        "options": [
+          "Начальник в'язниці",
+          "Один із в'язнів",
+          "Римський воїн",
+          "Цар Ірод"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Тюремний сторож хотів вбити себе, бо думав, що в'язні втекли, але Павло зупинив його.",
+        "explanationDeep": null,
+        "reference": "Дії 16:27"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_mental_health"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "gospels-theologian-ai-04783",
+        "contentHash": "42b8330408663784dc4a293e5706a7dcbfedd76c9854c4955250bbd83193464a",
+        "themeId": "gospels",
+        "difficulty": "theologian",
+        "topicNodeId": "gospels-sub-5-sub-7",
+        "text": "Яке твердження Марти перед воскресінням Лазаря свідчить про її розуміння есхатології?",
+        "options": [
+          "Вона знала, що Він воскресне в останній день",
+          "Вона вірила, що Ісус може зцілити його навіть після смерті",
+          "Вона визнала Ісуса як Месію, що прийшов у світ",
+          "Вона очікувала на негайне воскресіння за законом Мойсея"
+        ],
+        "correctIndex": 0,
+        "explanationShort": "Марта висловила віру в загальне воскресіння мертвих, яке очікувалося в кінці часів.",
+        "explanationDeep": null,
+        "reference": "Ів. 11:24"
+      },
+      "findings": [
+        "missing_deep_explanation",
+        "sensitivity_end_times"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "wisdom-poetry-teacher-ai-04384",
+        "contentHash": "af868f99693cfb4a3e02cb6710d3651177331d2e84f684c343ab33f4bf2972f3",
+        "themeId": "wisdom-poetry",
+        "difficulty": "teacher",
+        "topicNodeId": "wisdom-poetry-sub-2-sub-3",
+        "text": "До якого священницького чину Псалом 110:4 відносить Месію, кажучи: «Ти священник навіки за чином Мелхиседековим»?",
+        "options": [
+          "Аароновим",
+          "Левієвим",
+          "Мелхиседековим",
+          "Садоковим"
+        ],
+        "correctIndex": 2,
+        "explanationShort": "Месія є вічним священником, чиє служіння виходить за межі левітського закону.",
+        "explanationDeep": null,
+        "reference": "Пс. 110:4"
+      },
+      "findings": [
+        "answer_leakage",
+        "missing_deep_explanation"
+      ],
+      "stratum": "other_findings"
+    },
+    {
+      "subject": {
+        "questionId": "patriarchs-theologian-ai-04393",
+        "contentHash": "7588f1740e4cd26bc9ea65e49ca6dc37966f57e36685d8ee869d4a5f04d9f888",
+        "themeId": "patriarchs",
+        "difficulty": "theologian",
+        "topicNodeId": "patriarchs-sub-3-sub-1",
+        "text": "Що Яків пообіцяв дати Богові, якщо Він благословить його подорож?",
+        "options": [
+          "Свою першу дитину",
+          "Десятину з усього, що Бог дасть йому",
+          "Сім жертовних биків",
+          "Усе своє майно"
+        ],
+        "correctIndex": 1,
+        "explanationShort": "У своїй обітниці Яків пообіцяв віддавати Богу десятину з усього, що Він йому дасть.",
+        "explanationDeep": null,
+        "reference": "Бут. 28:22"
+      },
+      "findings": [
+        "option_length_imbalance",
+        "missing_deep_explanation"
+      ],
+      "stratum": "clean"
+    }
+  ]
+}

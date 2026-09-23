@@ -144,3 +144,24 @@ export function signalBoost(signals: {
   if (signals.accuracyBand === 'too_easy') boost += 10;
   return boost;
 }
+
+/**
+ * The verdict the criteria imply — the default in the labelling form and the
+ * consistency check on AI output. A person can still pick another verdict.
+ * Core failures (wrong/unsupported key, invented content) → reject; fixable
+ * body problems → repair; metadata only (level/topic) → reclassify.
+ */
+export function impliedVerdict(criteria: Partial<AssessmentCriteria>): AssessmentVerdict {
+  if (criteria.answer_supported === 'fail' || criteria.single_correct === 'fail' || criteria.factual === 'fail') {
+    return 'reject';
+  }
+  if (criteria.distractors === 'fail' || criteria.explanation_fit === 'fail' || criteria.language === 'fail') {
+    return 'repair';
+  }
+  if (criteria.level_fit === 'fail' || criteria.topic_fit === 'fail') return 'reclassify';
+  return 'pass';
+}
+
+export const ALL_PASS: AssessmentCriteria = Object.fromEntries(
+  ASSESSMENT_CRITERIA.map((c) => [c, 'pass']),
+) as AssessmentCriteria;

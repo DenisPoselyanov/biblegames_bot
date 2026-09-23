@@ -11,6 +11,12 @@
 import type { ContentStatus } from '@contracts';
 import { ApiError, apiRequest, type ApiRequestOptions } from '../lib/apiClient';
 import type { Permission, Role } from '../pages/studio/lib/rbac';
+import type {
+  AssessmentCriteria,
+  AssessmentSubject,
+  AssessmentVerdict,
+} from '../lib/contentAssessment';
+import type { Difficulty } from '../types';
 
 export class StudioError extends Error {
   readonly code: string;
@@ -323,7 +329,58 @@ export interface ActivityFilter {
 const reviewPath = (type: ReviewRevisionType, id: string) =>
   `/studio/review/${type}/${encodeURIComponent(id)}`;
 
+// --- Content quality gate: golden labels (WS11c) -----------------------------
+
+/** Mirrors `toLabelView` in `server/routes/studioAssessments.ts`. */
+export interface AssessmentLabelView {
+  id: string;
+  verdict: AssessmentVerdict;
+  criteria: AssessmentCriteria;
+  suggestedDifficulty: Difficulty | null;
+  suggestedTopicNodeId: string | null;
+  suggestedExplanationShort: string | null;
+  suggestedExplanationDeep: string | null;
+  notes: string | null;
+  assessor: string;
+  /** The question body changed since this label was saved. */
+  stale: boolean;
+  updatedAt: string;
+}
+
+export interface GoldenItem {
+  index: number;
+  subject: AssessmentSubject;
+  findings: string[];
+  label: AssessmentLabelView | null;
+}
+
+export interface GoldenResponse {
+  available: boolean;
+  sampleMissing?: boolean;
+  seed?: string;
+  items: GoldenItem[];
+  progress: { labelled: number; total: number } | null;
+}
+
+export interface AssessmentLabelInput {
+  verdict: AssessmentVerdict;
+  criteria: AssessmentCriteria;
+  suggestedDifficulty?: Difficulty | null;
+  suggestedTopicNodeId?: string | null;
+  suggestedExplanationShort?: string | null;
+  suggestedExplanationDeep?: string | null;
+  notes?: string | null;
+}
+
 export const studioRepo = {
+  getGolden(): Promise<GoldenResponse> {
+    return call('/studio/assessments/golden');
+  },
+
+  saveGoldenLabel(questionId: string, input: AssessmentLabelInput): Promise<{ ok: true; label: AssessmentLabelView }> {
+    return call(`/studio/assessments/golden/${encodeURIComponent(questionId)}`, { method: 'PUT', body: input });
+  },
+
   getMyIdentity(): Promise<MyIdentity> {
     return call<MyIdentity>('/me');
   },

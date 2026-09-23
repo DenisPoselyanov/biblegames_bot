@@ -4,8 +4,24 @@
     {
       "name": "biblegames-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "--port", "5199", "--strictPort"],
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5199",
+        "--strictPort"
+      ],
       "port": 5199
+    },
+    {
+      "name": "studio-sandbox-api",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "studio:sandbox"
+      ],
+      "port": 3001
     }
   ]
 }

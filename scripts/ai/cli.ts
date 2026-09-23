@@ -43,6 +43,7 @@ import { buildRepairPrompt, REPAIR_PROMPT_VERSION } from '../../server/domains/q
 import { createAiProvider } from '../../server/infrastructure/ai';
 import { createObjectStore } from '../../server/infrastructure/storage';
 import { registerCoreJobs } from '../../server/jobs';
+import { createQualityTasks } from './qualityTasks';
 import { ROOT, loadLearningNodeIds, loadLegacyCorpus, loadPracticeNodeIds, loadRootEnv } from '../content/legacyCorpus';
 
 // --- args ------------------------------------------------------------------
@@ -365,6 +366,11 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
     },
   },
 };
+
+Object.assign(
+  TASKS,
+  createQualityTasks({ apply: APPLY, opt, flag, out, fail, runAudit }),
+);
 
 async function main(): Promise<void> {
   loadRootEnv();

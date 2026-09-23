@@ -9,6 +9,7 @@ import {
   type ContentStatus,
   type JobStatus,
   type ReviewRevisionType,
+  type AssessmentLabelInput,
 } from '../../../repos/studioRepo';
 import { queryKeys } from '../../../queries/keys';
 
@@ -209,4 +210,26 @@ export function useResolveReportsMutation() {
       revisionId?: string;
     }) => studioRepo.resolveReports(input.type, input.entityId, input),
   );
+}
+
+// --- Content quality gate (WS11c/d) ------------------------------------------
+
+export function useGoldenQuery() {
+  return useQuery({
+    queryKey: queryKeys.studio.golden(),
+    queryFn: () => studioRepo.getGolden(),
+  });
+}
+
+export function useSaveGoldenLabelMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { questionId: string; label: AssessmentLabelInput }) =>
+      studioRepo.saveGoldenLabel(input.questionId, input.label),
+    // Only the golden list changes — no need to refetch every Studio screen after each label.
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.studio.golden() });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.studio.calibration() });
+    },
+  });
 }

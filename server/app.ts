@@ -53,6 +53,8 @@ import { createSqlQualityRepositories } from './infrastructure/database/reposito
 import type { QualityRepositories } from './domains/quality/repository';
 import { createContentReportsRouter } from './routes/contentReports';
 import { createStudioQualityRouter } from './routes/studioQuality';
+import { createStudioAssessmentsRouter } from './routes/studioAssessments';
+import type { GoldenSample } from './domains/quality/goldenSample';
 import { createSqlScriptureEvidenceRepository } from './infrastructure/database/repositories/scriptureEvidence';
 import type { JobQueue } from './domains/jobs/queue';
 import { createClientErrorsRouter } from './routes/clientErrors';
@@ -120,6 +122,8 @@ export interface AppDeps {
    * reports answer 503 and the Studio quality screen reports `available: false`.
    */
   quality?: QualityRepositories;
+  /** The committed golden sample (content quality gate). Defaults to `data/quality/golden-sample.json`; tests inject one. */
+  goldenSample?: () => GoldenSample | null;
 }
 
 /**
@@ -372,6 +376,15 @@ export function createApp(deps: AppDeps): Express {
       jobQueue: deps.jobQueue,
       requirePermission,
     }),
+  );
+
+  // --- Content quality gate (WS11c/d) — golden labels, AI verdicts, review decisions. ---
+  app.use(
+    '/api/v1/studio/assessments',
+    ...authed,
+    requirePermission('content:audit:read'),
+    rl('studio_assessments', 60_000, 120),
+    createStudioAssessmentsRouter({ auditLog, quality, requirePermission, loadGoldenSample: deps.goldenSample }),
   );
 
   // --- Content Studio library + releases (Phase 4 WS8c) — own prefixes, so each

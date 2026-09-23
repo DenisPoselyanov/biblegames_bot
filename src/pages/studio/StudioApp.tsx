@@ -30,6 +30,7 @@ import { Library } from './screens/Library';
 import { Releases } from './screens/Releases';
 import { Settings } from './screens/Settings';
 import { Reports } from './screens/Reports';
+import { Golden } from './screens/Golden';
 import { Guide } from './screens/Guide';
 
 interface NavItem {
@@ -277,6 +278,7 @@ export function StudioApp() {
             <Route index element={<Overview />} />
             <Route path="review" element={<Review />} />
             <Route path="review/reports" element={<Reports />} />
+            <Route path="review/golden" element={<Golden />} />
             <Route path="review/:type/:revisionId" element={<ReviewItem />} />
             <Route path="jobs" element={<Jobs />} />
             <Route path="jobs/new" element={<NewJob />} />
