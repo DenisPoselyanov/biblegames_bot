@@ -15,6 +15,7 @@
 import type { AuditActor, AuditLog } from '../audit';
 import { buildAuditRecord } from '../audit';
 import type { ContentRepositories } from '../domains/content/repository';
+import { isValidatedWith } from '../domains/content/revisionValidation';
 import type { ContentSetVersionRecord, QuestionRevisionRecord } from '../domains/content/types';
 import type { LearningRepositories } from '../domains/learning/repository';
 import type { LessonRevisionRecord } from '../domains/learning/types';
@@ -42,7 +43,7 @@ export interface ContentPublicationGates {
 
 export interface PublicationBlocker {
   revisionId: string;
-  reason: 'validation_blocking' | 'scripture_unresolved';
+  reason: 'not_validated' | 'validation_blocking' | 'scripture_unresolved';
 }
 
 export class ContentPublicationBlockedError extends AppError {
@@ -67,11 +68,13 @@ export async function findBlockers(
 ): Promise<PublicationBlocker[]> {
   const blockers: PublicationBlocker[] = [];
   for (const revisionId of revisionIds) {
-    const [blocking, scriptureUnresolved] = await Promise.all([
-      gates.findings.hasBlocking(revisionType, revisionId),
+    const [findings, scriptureUnresolved] = await Promise.all([
+      gates.findings.listFor(revisionType, revisionId),
       gates.scripture.hasUnresolvedBlocker(revisionType, revisionId),
     ]);
-    if (blocking) blockers.push({ revisionId, reason: 'validation_blocking' });
+    // Questions fail closed: no run marker for the current checks = never checked, not "clean".
+    if (revisionType === 'question' && !isValidatedWith(findings)) blockers.push({ revisionId, reason: 'not_validated' });
+    if (findings.some((f) => f.severity === 'blocking')) blockers.push({ revisionId, reason: 'validation_blocking' });
     if (scriptureUnresolved) blockers.push({ revisionId, reason: 'scripture_unresolved' });
   }
   return blockers;

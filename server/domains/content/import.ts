@@ -16,6 +16,7 @@
  * `scripts/content/import-legacy-questions.ts`.
  */
 import type { ContentRepositories } from './repository';
+import { validateQuestionRevision, type RevisionValidationDeps } from './revisionValidation';
 import type { RawQuestionInput, ValidationIssue } from './validation';
 import { validateQuestion } from './validation';
 
@@ -35,6 +36,7 @@ const ANSWER_KEY_ISSUES: ReadonlySet<ValidationIssue> = new Set([
 export async function importLegacyQuestions(
   repos: ContentRepositories,
   rawQuestions: RawQuestionInput[],
+  checks?: RevisionValidationDeps,
 ): Promise<ImportReport> {
   const report: ImportReport = {
     total: rawQuestions.length,
@@ -49,6 +51,7 @@ export async function importLegacyQuestions(
 
     if (result.ok) {
       const outcome = await repos.revisions.appendRevision(result.draft);
+      if (checks) await validateQuestionRevision(checks, outcome.revision);
       if (outcome.kind === 'created') report.created += 1;
       else report.unchanged += 1;
       continue;
@@ -60,6 +63,7 @@ export async function importLegacyQuestions(
       const salvage = validateQuestion({ ...raw, correctIndex: 0, correct: undefined });
       if (salvage.ok) {
         const outcome = await repos.revisions.appendRevision(salvage.draft);
+        if (checks) await validateQuestionRevision(checks, outcome.revision);
         const moved = await repos.revisions.quarantine({
           questionId: raw.id,
           reason: `import: ${result.issues.join(', ')}`,

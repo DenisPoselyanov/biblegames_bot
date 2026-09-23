@@ -109,6 +109,15 @@ export function createInMemoryContentRepositories(
         .slice(0, boundedStatusLimit(filter.limit))
         .map((r) => ({ ...r }));
     },
+    async listPage(page, tx) {
+      rejectTx(tx);
+      const afterId = page.afterId ?? '';
+      return [...revisions.values()]
+        .filter((r) => r.id > afterId)
+        .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
+        .slice(0, boundedStatusLimit(page.limit))
+        .map((r) => ({ ...r }));
+    },
     async countByStatus(tx) {
       rejectTx(tx);
       const counts = emptyStatusCounts();

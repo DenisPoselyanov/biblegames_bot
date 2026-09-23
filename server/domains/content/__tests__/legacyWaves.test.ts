@@ -1,7 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createSqlContentRepositories } from '../../../infrastructure/database/repositories/content';
+import { createSqlValidationFindingRepository } from '../../../infrastructure/database/repositories/validationFindings';
 import { createTestDatabase, type TestDatabase } from '../../../infrastructure/database/testing';
 import { importWave, rollbackWave } from '../legacyWaves';
+import { isValidatedWith } from '../revisionValidation';
 import type { RawQuestionInput } from '../validation';
 
 const raw = (id: string, over: Partial<RawQuestionInput> = {}): RawQuestionInput => ({
@@ -46,5 +48,18 @@ describe('migration waves on real SQL adapters (Phase 4 WS10, §12.3)', () => {
     expect((await repos.revisions.listRevisions('q-1'))[0].status).toBe('quarantined');
     // The pre-existing question — and what players see — is untouched by the rollback.
     expect((await repos.revisions.getPublished('q-prior'))?.id).toBe(prior.id);
+  });
+
+  it('records quality findings + the run marker for every imported revision when checks are supplied', async () => {
+    const repos = createSqlContentRepositories(tdb.db);
+    const findings = createSqlValidationFindingRepository(tdb.db);
+    await importWave(repos, [raw('q-checked'), raw('q-offtheme', { reference: 'Дії 2:2' })], { findings });
+
+    const [checked] = await repos.revisions.listRevisions('q-checked');
+    expect(isValidatedWith(await findings.listFor('question', checked.id))).toBe(true);
+
+    const [offTheme] = await repos.revisions.listRevisions('q-offtheme');
+    const kinds = (await findings.listFor('question', offTheme.id)).map((f) => f.kind);
+    expect(kinds).toContain('theme_canon_mismatch');
   });
 });

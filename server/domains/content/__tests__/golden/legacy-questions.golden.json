@@ -39,18 +39,33 @@
     },
     {
       "name": "short explanation → weak → needs repair",
-      "raw": { "id": "g-weak", "themeId": "kings", "difficulty": "youth", "text": "Хто збудував перший храм у Єрусалимі?", "options": ["Соломон", "Давид", "Єзекія", "Йосія"], "correctIndex": 0, "reference": "1 Цар 6:14", "explanationShort": "Соломон.", "explanationDeep": "1 Цар 6." },
+      "raw": { "id": "g-weak", "themeId": "kings", "difficulty": "youth", "text": "Хто збудував перший храм у Єрусалимі?", "options": ["Соломон", "Давид", "Єзекія", "Йосія"], "correctIndex": 0, "reference": "1 Царів 6:14", "explanationShort": "Соломон.", "explanationDeep": "1 Цар 6." },
       "expect": { "classification": "needs_repair", "findings": ["weak_explanation"] }
     },
     {
       "name": "sensitive keyword → blocking for a human, still awaiting review (not repair)",
-      "raw": { "id": "g-sensitive", "themeId": "kings", "difficulty": "theologian", "text": "Яке покарання спіткало Содом і Гоморру?", "options": ["Вогонь із неба", "Потоп", "Голод", "Сарана"], "correctIndex": 0, "reference": "Бут 19:24", "explanationShort": "Господь послав на міста сірку та вогонь.", "explanationDeep": "Бут 19." },
+      "raw": { "id": "g-sensitive", "themeId": "pentateuch", "difficulty": "theologian", "text": "Яке покарання спіткало Содом і Гоморру?", "options": ["Вогонь із неба", "Потоп", "Голод", "Сарана"], "correctIndex": 0, "reference": "Бут 19:24", "explanationShort": "Господь послав на міста сірку та вогонь.", "explanationDeep": "Бут 19." },
       "expect": { "classification": "awaiting_review", "findingsInclude": ["sensitivity_divine_judgment"] }
     },
     {
       "name": "answer key out of range → invalid, quarantined, archived",
       "raw": { "id": "g-badkey", "themeId": "kings", "difficulty": "youth", "text": "Хто був першим царем Ізраїлю?", "options": ["Саул", "Давид"], "correctIndex": 5, "reference": "1 Сам 10" },
       "expect": { "classification": "invalid_quarantined", "wave": 6, "findings": ["correct_index_out_of_range"] }
+    },
+    {
+      "name": "cites a book outside its theme (Acts 2 under the Pentateuch) → theme mismatch → needs repair",
+      "raw": { "id": "g-offcanon", "themeId": "pentateuch", "difficulty": "teacher", "text": "Який звук супроводжував сходження Святого Духа в день П'ятидесятниці?", "options": ["Шум, ніби від сильного вітру", "Гуркіт землетрусу", "Звук труб", "Голос з неба"], "correctIndex": 0, "reference": "Дії 2:2", "explanationShort": "Писання описує шум, ніби від сильного вітру.", "explanationDeep": "Дії 2." },
+      "expect": { "classification": "needs_repair", "findings": ["theme_canon_mismatch"] }
+    },
+    {
+      "name": "reference is not Scripture → unparsed → needs repair",
+      "raw": { "id": "g-notscripture", "themeId": "gospels", "difficulty": "student", "text": "Від чого лікували прокажених у часи Ісуса?", "options": ["Ні від чого — їх ізолювали", "Травами", "Молоком", "Вином"], "correctIndex": 0, "reference": "Медична енциклопедія", "explanationShort": "Прокажених ізолювали від громади.", "explanationDeep": "—" },
+      "expect": { "classification": "needs_repair", "findings": ["reference_unparsed"] }
+    },
+    {
+      "name": "Russian word with no Russian-only letter → mixed language → needs repair",
+      "raw": { "id": "g-ruword", "themeId": "gospels", "difficulty": "child", "text": "Кто охрестив Ісуса?", "options": ["Іван Хреститель", "Петро", "Андрій", "Яків"], "correctIndex": 0, "reference": "Мт 3:13", "explanationShort": "Іван Хреститель охрестив Ісуса в Йордані.", "explanationDeep": "Мт 3." },
+      "expect": { "classification": "needs_repair", "findings": ["mixed_language"] }
     },
     {
       "name": "theme players cannot reach → unsupported",

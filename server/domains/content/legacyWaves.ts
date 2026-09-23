@@ -8,6 +8,7 @@
  */
 import type { RevisionStatusCounts } from '../shared/revisionStatusFilter';
 import type { ContentRepositories } from './repository';
+import { validateQuestionRevision, type RevisionValidationDeps } from './revisionValidation';
 import { validateQuestion, type RawQuestionInput } from './validation';
 
 export interface WaveImportResult {
@@ -19,7 +20,12 @@ export interface WaveImportResult {
   createdQuestionIds: string[];
 }
 
-export async function importWave(repos: ContentRepositories, raws: readonly RawQuestionInput[]): Promise<WaveImportResult> {
+/** With `checks`, every imported revision gets its quality findings recorded — without them the publish gate treats it as never checked. */
+export async function importWave(
+  repos: ContentRepositories,
+  raws: readonly RawQuestionInput[],
+  checks?: RevisionValidationDeps,
+): Promise<WaveImportResult> {
   const before = await repos.revisions.countByStatus();
   const createdQuestionIds: string[] = [];
   let created = 0;
@@ -33,6 +39,7 @@ export async function importWave(repos: ContentRepositories, raws: readonly RawQ
     }
     const hadPrior = (await repos.revisions.listRevisions(validation.draft.questionId)).length > 0;
     const outcome = await repos.revisions.appendRevision({ ...validation.draft, status: 'legacy_unreviewed' });
+    if (checks) await validateQuestionRevision(checks, outcome.revision);
     if (outcome.kind === 'created') {
       created += 1;
       if (!hadPrior) createdQuestionIds.push(validation.draft.questionId);

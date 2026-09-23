@@ -18,6 +18,7 @@ import type { AuditActor, AuditLog, AuditRecord } from '../audit';
 import { buildAuditRecord } from '../audit';
 import { diffQuestionRevisions } from '../domains/content/diff';
 import type { ContentRepositories } from '../domains/content/repository';
+import { isValidationRunMarker } from '../domains/content/revisionValidation';
 import type { QuestionRevisionRecord } from '../domains/content/types';
 import { diffLessonRevisions } from '../domains/learning/diff';
 import type { LearningRepositories } from '../domains/learning/repository';
@@ -252,10 +253,11 @@ export function createContentReviewWorkflow(deps: ContentReviewWorkflowDeps): Co
     r: AnyRevision,
     decision: ReviewDecisionRecord | null,
   ): Promise<ReviewQueueItem> => {
-    const [findings, scripture] = await Promise.all([
+    const [allFindings, scripture] = await Promise.all([
       deps.gates.findings.listFor(type, r.id),
       deps.gates.scripture.listFor(type, r.id),
     ]);
+    const findings = allFindings.filter((f) => !isValidationRunMarker(f));
     return {
       revisionType: type,
       revisionId: r.id,
@@ -347,7 +349,7 @@ export function createContentReviewWorkflow(deps: ContentReviewWorkflowDeps): Co
           ? { revisionId: baseline.id, revisionNumber: baseline.revisionNumber, status: baseline.status }
           : null,
         diff,
-        findings,
+        findings: findings.filter((f) => !isValidationRunMarker(f)),
         scripture,
         blockers,
         history,

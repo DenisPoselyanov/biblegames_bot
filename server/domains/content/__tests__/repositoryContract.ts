@@ -152,6 +152,26 @@ export function runContentRepositoryContract(makeHarness: () => Promise<Contract
     }
   });
 
+  it('listPage walks every revision once, keyset-paged by id, whatever the status', async () => {
+    const { revisions } = await setup();
+    const ids = [
+      (await revisions.appendRevision(draft({ questionId: 'qa', status: 'draft' }))).revision.id,
+      (await revisions.appendRevision(draft({ questionId: 'qb' }))).revision.id,
+      (await revisions.appendRevision(draft({ questionId: 'qc', status: 'draft' }))).revision.id,
+    ];
+    await revisions.publishRevision(ids[2]);
+
+    const seen: string[] = [];
+    let afterId: string | null = null;
+    for (;;) {
+      const page = await revisions.listPage({ afterId, limit: 2 });
+      if (page.length === 0) break;
+      seen.push(...page.map((r) => r.id));
+      afterId = page[page.length - 1].id;
+    }
+    expect(seen).toEqual([...ids].sort());
+  });
+
   it('countByStatus reports every status, zero when none (Phase 4 WS8b)', async () => {
     const { revisions } = await setup();
     const empty = await revisions.countByStatus();

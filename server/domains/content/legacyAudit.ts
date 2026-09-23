@@ -99,7 +99,11 @@ const REPAIR_KINDS = new Set([
   'missing_explanation',
   'weak_explanation',
   'mixed_language',
+  'missing_reference',
+  'reference_unparsed',
+  'theme_canon_mismatch',
 ]);
+// `reference_ambiguous` ("1 Цар.") is notation, not content — the AI reviewer resolves it from both candidate verses.
 
 /** Classes that a migration wave imports as `legacy_unreviewed` drafts. Archive-only classes stay out. */
 export const IMPORTABLE_CLASSES: ReadonlySet<LegacyClass> = new Set(['awaiting_review', 'needs_repair']);
@@ -191,6 +195,7 @@ export function auditLegacyBank(items: readonly LegacyItem[], context: LegacyAud
         correctIndex: draft.correctIndex,
         explanationShort: draft.explanationShort,
         explanationDeep: draft.explanationDeep,
+        reference: draft.reference,
       },
       // Duplicates are handled by the keys above; the orphan check by the catalog below.
       { siblings: [] },
@@ -198,7 +203,6 @@ export function auditLegacyBank(items: readonly LegacyItem[], context: LegacyAud
     const kinds = findings.map((f) => f.kind);
     bump(report.byLanguage, kinds.includes('mixed_language') ? 'mixed' : 'uk');
     for (const k of kinds) bump(report.byFinding, k);
-    if (!draft.reference) kinds.push('missing_reference');
 
     let classification: LegacyClass;
     if (duplicateOf) {
@@ -206,7 +210,7 @@ export function auditLegacyBank(items: readonly LegacyItem[], context: LegacyAud
       duplicateGroups.add(duplicateOf);
     } else if (!catalog.has(themeId)) {
       classification = 'unsupported';
-    } else if (kinds.some((k) => REPAIR_KINDS.has(k) || k === 'missing_reference')) {
+    } else if (kinds.some((k) => REPAIR_KINDS.has(k))) {
       classification = 'needs_repair';
     } else {
       classification = 'awaiting_review';

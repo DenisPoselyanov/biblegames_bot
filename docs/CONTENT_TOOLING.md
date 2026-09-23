@@ -20,6 +20,7 @@ legacy file / AI call ──► artifact or draft revision ──► WS3/WS4 che
 | `scripts` | — | prints the deprecation matrix |
 | `audit-legacy` | report only | §12.1–§12.3 inventory, classification and waves → `reports/content/legacy-audit.json`; summary in [LEGACY_CONTENT_AUDIT.md](./LEGACY_CONTENT_AUDIT.md) |
 | `validate-content` | — | canonical WS2/WS3 findings per question (`--theme`, `--class`, `--limit`) |
+| `validate-revisions` | `--apply`: `content_validation_findings` | re-runs the quality checks over every stored question revision and records them with a run marker. The publish gate refuses a question with no run for the current checker version, so run this after any check changes (bump `QUESTION_CHECKS_VERSION`) |
 | `migrate-wave --wave N` | `--apply`: `question_revisions` (`legacy_unreviewed`) | imports one wave, writes before/after report; `--rollback <report> --apply` quarantines what that wave created |
 | `import-legacy` | `--apply`: `question_revisions` | waves 1–5 at once (the Phase 2 importer) |
 | `generate-questions --prompt …` | `--apply`: AI artifact | one `content.ai_generate` job |
