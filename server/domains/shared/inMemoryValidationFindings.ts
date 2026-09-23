@@ -4,7 +4,12 @@
  * `tx` are rejected — same rule as `content`/`learning`'s in-memory repos (§10).
  */
 import type { Transaction } from './context';
-import type { ValidationFinding, ValidationRevisionType } from './validationFindings';
+import {
+  compareFindingSummaries,
+  type ValidationFinding,
+  type ValidationFindingSummary,
+  type ValidationRevisionType,
+} from './validationFindings';
 import type { ValidationFindingRepository } from './validationFindingsRepository';
 
 function rejectTx(tx?: Transaction): void {
@@ -44,6 +49,31 @@ export function createInMemoryValidationFindingRepository(
       return (byRevision.get(key(revisionType, revisionId)) ?? []).some(
         (r) => r.severity === 'blocking',
       );
+    },
+    async summarize(tx) {
+      rejectTx(tx);
+      const buckets = new Map<string, ValidationFindingSummary>();
+      const revisionIds = new Map<string, Set<string>>();
+      for (const rows of byRevision.values()) {
+        for (const r of rows) {
+          const k = `${r.revisionType}\u0000${r.kind}\u0000${r.severity}`;
+          const bucket = buckets.get(k) ?? {
+            revisionType: r.revisionType,
+            kind: r.kind,
+            severity: r.severity,
+            label: r.label,
+            revisions: 0,
+          };
+          if (r.label < bucket.label) bucket.label = r.label;
+          const ids = revisionIds.get(k) ?? new Set<string>();
+          ids.add(r.revisionId);
+          revisionIds.set(k, ids);
+          bucket.revisions = ids.size;
+          buckets.set(k, bucket);
+        }
+      }
+      return [...buckets.values()]
+        .sort(compareFindingSummaries);
     },
   };
 }

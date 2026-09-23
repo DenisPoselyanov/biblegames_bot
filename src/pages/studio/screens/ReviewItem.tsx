@@ -8,6 +8,7 @@ import {
   useReviewDetailQuery,
   useScriptureDecisionMutation,
 } from '../lib/queries';
+import { actionLabel } from '../lib/auditLabels';
 import { plural } from '../lib/plural';
 import { useCan } from '../lib/useStudio';
 import type {
@@ -63,12 +64,6 @@ function formatValue(value: unknown): string {
   return JSON.stringify(value, null, 1);
 }
 
-const ACTION_LABEL: Record<string, string> = {
-  'content.review_decision': 'Рішення',
-  'content.publish': 'Опубліковано',
-  'content.publish_denied': 'Публікацію відхилено',
-};
-
 function historyLine(entry: StudioActivityEntry): { title: string; body: string | null; tone: 'ok' | 'bad' } {
   const meta = entry.metadata ?? {};
   if (entry.action === 'content.review_decision') {
@@ -94,7 +89,7 @@ function historyLine(entry: StudioActivityEntry): { title: string; body: string 
       tone: 'bad',
     };
   }
-  return { title: ACTION_LABEL[entry.action] ?? entry.action, body: null, tone: 'ok' };
+  return { title: actionLabel(entry.action), body: null, tone: 'ok' };
 }
 
 /* ------------------------------------------------------------ previews */

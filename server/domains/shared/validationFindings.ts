@@ -39,3 +39,28 @@ export interface ValidationFinding {
 }
 
 export type NewValidationFinding = Omit<ValidationFinding, 'id' | 'checkedAt'>;
+
+/**
+ * One (revision type, check kind, severity) bucket across every stored finding
+ * — the Studio library's "Якість" summary (Phase 4 WS8c). `revisions` counts
+ * distinct revisions, not finding rows.
+ */
+export interface ValidationFindingSummary {
+  revisionType: ValidationRevisionType;
+  kind: string;
+  severity: ValidationFindingSeverity;
+  label: string;
+  revisions: number;
+}
+
+const SEVERITY_ORDER: Record<ValidationFindingSeverity, number> = { blocking: 0, warning: 1, info: 2 };
+
+/** Blocking first, then most-affected first, then kind — same order in every adapter. */
+export function compareFindingSummaries(a: ValidationFindingSummary, b: ValidationFindingSummary): number {
+  return (
+    SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity] ||
+    b.revisions - a.revisions ||
+    (a.revisionType < b.revisionType ? -1 : a.revisionType > b.revisionType ? 1 : 0) ||
+    (a.kind < b.kind ? -1 : a.kind > b.kind ? 1 : 0)
+  );
+}

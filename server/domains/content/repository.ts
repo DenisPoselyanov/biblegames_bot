@@ -13,6 +13,8 @@ import type { RevisionStatusCounts, RevisionStatusFilter } from '../shared/revis
 import type {
   AppendOutcome,
   ContentSetVersionRecord,
+  ContentSetVersionSummary,
+  ThemeStatusCount,
   PublishedFilter,
   QuarantineInput,
   QuestionRevisionRecord,
@@ -41,6 +43,11 @@ export interface QuestionRevisionRepository {
   /** Revision count per status, every status present (zero when none). */
   countByStatus(tx?: Transaction): Promise<RevisionStatusCounts>;
   /**
+   * Revision count per (theme, status), sorted by theme then status (Phase 4
+   * WS8c — the Studio library's coverage table). Only non-zero pairs.
+   */
+  countByTheme(tx?: Transaction): Promise<ThemeStatusCount[]>;
+  /**
    * Append a new revision from a draft. Idempotent by body hash: if the latest
    * revision for the question already has the same `contentHash`, returns
    * `{ kind: 'unchanged' }` and writes nothing.
@@ -66,6 +73,11 @@ export interface ContentSetRepository {
   ): Promise<ContentSetVersionRecord | null>;
   /** The latest version of a set, or `null` if never published. */
   getLatest(setId: string, tx?: Transaction): Promise<ContentSetVersionRecord | null>;
+  /**
+   * Every set's versions, newest `publishedAt` first (Phase 4 WS8c — the Studio
+   * releases list). Summaries only, no items. Default 50, max 500.
+   */
+  listVersions(options?: { limit?: number }, tx?: Transaction): Promise<ContentSetVersionSummary[]>;
   /**
    * Freeze `revisionIds` (in order) as the next version of `setId`, creating the
    * set row if needed. Idempotent by content hash: if the latest version already

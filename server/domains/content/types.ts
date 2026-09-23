@@ -94,3 +94,38 @@ export interface ContentSetVersionRecord {
   publishedAt: string;
   publishedBy: string | null;
 }
+
+/** A set version without its items — one row of the Studio releases list (Phase 4 WS8c). */
+export type ContentSetVersionSummary = Omit<ContentSetVersionRecord, 'items'> & {
+  /** True when this is the set's newest version, i.e. what players currently get. */
+  isLatest: boolean;
+};
+
+/** One (theme, status) bucket of question revisions (Phase 4 WS8c library coverage). */
+export interface ThemeStatusCount {
+  themeId: string;
+  status: ContentStatus;
+  count: number;
+}
+
+/** A set version's head fields — everything but the (potentially large) item list. */
+export function setVersionHead(v: ContentSetVersionRecord): Omit<ContentSetVersionRecord, 'items'> {
+  return {
+    setId: v.setId,
+    kind: v.kind,
+    version: v.version,
+    contentHash: v.contentHash,
+    filter: { ...v.filter },
+    questionCount: v.questionCount,
+    publishedAt: v.publishedAt,
+    publishedBy: v.publishedBy,
+  };
+}
+
+export const SET_VERSION_LIST_DEFAULT_LIMIT = 50;
+export const SET_VERSION_LIST_MAX_LIMIT = 500;
+
+export function boundedSetVersionLimit(limit: number | undefined): number {
+  if (!Number.isFinite(limit) || (limit ?? 0) <= 0) return SET_VERSION_LIST_DEFAULT_LIMIT;
+  return Math.min(Math.floor(limit as number), SET_VERSION_LIST_MAX_LIMIT);
+}

@@ -27,6 +27,9 @@ import { Overview } from './screens/Overview';
 import { Jobs } from './screens/Jobs';
 import { JobDetail } from './screens/JobDetail';
 import { NewJob } from './screens/NewJob';
+import { Library } from './screens/Library';
+import { Releases } from './screens/Releases';
+import { Settings } from './screens/Settings';
 
 interface NavItem {
   to: string;
@@ -41,7 +44,7 @@ interface NavItem {
  * inside the library, the audit log inside releases, Scripture inside the
  * review queue — each of them is a second view of the same subject, not a
  * separate place to remember. Review is live since WS8b; Library/Releases/
- * Settings are still placeholders until WS8c.
+ * Settings since WS8c; only the Guide is still a placeholder (WS8d).
  */
 function useNav(): { primary: NavItem[]; foot: NavItem[] } {
   const dashboard = useDashboardQuery();
@@ -276,9 +279,9 @@ export function StudioApp() {
             <Route path="jobs" element={<Jobs />} />
             <Route path="jobs/new" element={<NewJob />} />
             <Route path="jobs/:jobId" element={<JobDetail />} />
-            <Route path="library" element={<ComingSoon title="Бібліотека" />} />
-            <Route path="releases" element={<ComingSoon title="Випуск" />} />
-            <Route path="settings" element={<ComingSoon title="Налаштування" />} />
+            <Route path="library" element={<Library />} />
+            <Route path="releases" element={<Releases />} />
+            <Route path="settings" element={<Settings />} />
             <Route path="guide" element={<ComingSoon title="Як це працює" />} />
             <Route path="*" element={<Navigate to="/studio" replace />} />
           </Route>

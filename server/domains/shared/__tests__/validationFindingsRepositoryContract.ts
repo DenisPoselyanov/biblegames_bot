@@ -82,4 +82,22 @@ export function runValidationFindingsRepositoryContract(
     ]);
     expect(await repo.hasBlocking('question', 'qrev_1')).toBe(true);
   });
+
+  it('summarize groups by (type, kind, severity), counting distinct revisions, blocking first (Phase 4 WS8c)', async () => {
+    const repo = await setup();
+    expect(await repo.summarize()).toEqual([]);
+
+    await repo.record('question', 'qrev_1', [finding(), finding({ detail: 'другий рядок того ж правила' })]);
+    await repo.record('question', 'qrev_2', [
+      finding({ revisionId: 'qrev_2' }),
+      finding({ revisionId: 'qrev_2', kind: 'theological_sensitivity', severity: 'blocking', label: 'Чутлива тема' }),
+    ]);
+    await repo.record('lesson', 'lrev_1', [finding({ revisionType: 'lesson', revisionId: 'lrev_1' })]);
+
+    expect(await repo.summarize()).toEqual([
+      { revisionType: 'question', kind: 'theological_sensitivity', severity: 'blocking', label: 'Чутлива тема', revisions: 1 },
+      { revisionType: 'question', kind: 'weak_explanation', severity: 'warning', label: 'Слабке пояснення', revisions: 2 },
+      { revisionType: 'lesson', kind: 'weak_explanation', severity: 'warning', label: 'Слабке пояснення', revisions: 1 },
+    ]);
+  });
 }

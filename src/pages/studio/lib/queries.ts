@@ -115,3 +115,52 @@ export function useScriptureDecisionMutation() {
     studioRepo.decideScripture(input.evidenceId, input.decision),
   );
 }
+
+// --- Library + releases + settings (Phase 4 WS8c) --------------------------
+
+export function useLibraryQuery() {
+  return useQuery({
+    queryKey: queryKeys.studio.library(),
+    queryFn: () => studioRepo.getLibrary(),
+    refetchInterval: REVIEW_REFRESH_MS,
+  });
+}
+
+export function useReleasesQuery() {
+  return useQuery({
+    queryKey: queryKeys.studio.releases(),
+    queryFn: () => studioRepo.getReleases(),
+    refetchInterval: REVIEW_REFRESH_MS,
+  });
+}
+
+export function useSetVersionQuery(setId: string | undefined, version: number | undefined) {
+  return useQuery({
+    queryKey: queryKeys.studio.setVersion(setId ?? '', version ?? 0),
+    queryFn: () => studioRepo.getSetVersion(setId as string, version as number),
+    enabled: Boolean(setId && version),
+  });
+}
+
+export function useActivityQuery(action?: string) {
+  return useQuery({
+    queryKey: queryKeys.studio.activity(action),
+    queryFn: () => studioRepo.getActivity({ action, limit: 100 }),
+    refetchInterval: REVIEW_REFRESH_MS,
+  });
+}
+
+/** Env-driven config — changes only on redeploy, so no polling. */
+export function useSettingsQuery() {
+  return useQuery({
+    queryKey: queryKeys.studio.settings(),
+    queryFn: () => studioRepo.getSettings(),
+    staleTime: 5 * 60_000,
+  });
+}
+
+export function useRollbackMutation() {
+  return useStudioWrite((input: { setId: string; toVersion: number; confirmSetId: string }) =>
+    studioRepo.rollbackSet(input.setId, input.toVersion, input.confirmSetId),
+  );
+}

@@ -21,6 +21,70 @@ import { JOB_TYPES, labelForJobType } from '../domains/jobs/catalog';
 import type { JobQueue } from '../domains/jobs/queue';
 import type { JobRecord, JobStatus } from '../domains/jobs/types';
 import type { AiBudget } from '../domains/ai/budget';
+import type { AiProviderId, ServerConfig } from '../config/env';
+import { PERMISSIONS, ROLE_PERMISSIONS, type Permission, type Role } from '../authz/roles';
+
+/** One AI provider as the Settings screen shows it — never the key itself, only whether one is set. */
+export interface StudioProviderInfo {
+  id: Exclude<AiProviderId, 'off'>;
+  label: string;
+  model: string | null;
+  /** This provider is the one `CONTENT_AI_PROVIDER` selects. */
+  selected: boolean;
+  /** An API key is present (always true for `mock`). */
+  configured: boolean;
+}
+
+export interface StudioSettings {
+  providers: StudioProviderInfo[];
+  /** `CONTENT_AI_PROVIDER` resolved to `off`, or selected but missing its key. */
+  aiEnabled: boolean;
+  jobBudget: AiBudget | null;
+  /** Content roles × content permissions, straight from `server/authz/roles.ts`. */
+  roles: Array<{ role: Role; permissions: Permission[] }>;
+  permissions: Permission[];
+}
+
+/** The roles that can open Studio at all, in escalating order. */
+const STUDIO_ROLES: readonly Role[] = ['content_reviewer', 'content_publisher', 'admin'];
+
+type AiConfig = Pick<
+  ServerConfig,
+  | 'aiProvider'
+  | 'geminiApiKey'
+  | 'geminiModel'
+  | 'groqApiKey'
+  | 'groqModel'
+  | 'openRouterApiKey'
+  | 'openRouterModel'
+  | 'aiJobBudget'
+>;
+
+/** Read-only snapshot of the AI/RBAC config — env-driven, so Studio shows it and never edits it. */
+export function buildStudioSettings(config: AiConfig): StudioSettings {
+  const providers: StudioProviderInfo[] = [
+    { id: 'gemini', label: 'Google Gemini', model: config.geminiModel, configured: Boolean(config.geminiApiKey) },
+    { id: 'groq', label: 'Groq', model: config.groqModel, configured: Boolean(config.groqApiKey) },
+    {
+      id: 'openrouter',
+      label: 'OpenRouter',
+      model: config.openRouterModel,
+      configured: Boolean(config.openRouterApiKey),
+    },
+    { id: 'mock', label: 'Тестовий (mock)', model: null, configured: true },
+  ].map((p) => ({ ...p, id: p.id as StudioProviderInfo['id'], selected: config.aiProvider === p.id }));
+  const contentPermissions = PERMISSIONS.filter((p) => p.startsWith('content:'));
+  return {
+    providers,
+    aiEnabled: providers.some((p) => p.selected && p.configured),
+    jobBudget: config.aiJobBudget ?? null,
+    roles: STUDIO_ROLES.map((role) => ({
+      role,
+      permissions: ROLE_PERMISSIONS[role].filter((p) => contentPermissions.includes(p)),
+    })),
+    permissions: contentPermissions,
+  };
+}
 
 export interface StudioJobSummary {
   id: string;
@@ -86,6 +150,7 @@ export interface StudioRouterDeps {
   jobQueue?: JobQueue;
   aiJobBudget?: AiBudget;
   requireAiRun: RequestHandler;
+  settings: StudioSettings;
 }
 
 export function createStudioRouter({
@@ -93,6 +158,7 @@ export function createStudioRouter({
   jobQueue,
   aiJobBudget,
   requireAiRun,
+  settings,
 }: StudioRouterDeps): Router {
   const router = Router();
 
@@ -187,9 +253,42 @@ export function createStudioRouter({
   router.get(
     '/activity',
     asyncHandler(async (req, res) => {
-      const limit = Math.max(1, Math.min(Number(req.query.limit) || 10, 100));
-      const records = await auditLog.query({ limit });
+      const limit = Math.max(1, Math.min(Number(req.query.limit) || 10, 200));
+      const str = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : undefined);
+      const since = str(req.query.since);
+      if (since && Number.isNaN(Date.parse(since))) {
+        throw new AppError('invalid_since', 'since must be an ISO timestamp', 400);
+      }
+      const records = await auditLog.query({
+        limit,
+        action: str(req.query.action),
+        actorUserId: str(req.query.actor),
+        target: str(req.query.target),
+        since,
+      });
       res.json({ activity: records });
+    }),
+  );
+
+  router.get(
+    '/settings',
+    asyncHandler(async (_req, res) => {
+      // Prompt versions have no registry yet (§7.3) — show the ones jobs actually used, from the audit log.
+      const created = await auditLog.query({ action: 'content.job_create', limit: 500 });
+      const prompts = new Map<string, { promptVersion: string; lastUsedAt: string; jobs: number }>();
+      for (const record of created) {
+        const version = record.metadata?.promptVersion;
+        if (typeof version !== 'string') continue;
+        const entry = prompts.get(version) ?? { promptVersion: version, lastUsedAt: record.at, jobs: 0 };
+        entry.jobs += 1;
+        if (record.at > entry.lastUsedAt) entry.lastUsedAt = record.at;
+        prompts.set(version, entry);
+      }
+      res.json({
+        ...settings,
+        queueAvailable: Boolean(jobQueue),
+        promptVersions: [...prompts.values()].sort((a, b) => (a.lastUsedAt < b.lastUsedAt ? 1 : -1)),
+      });
     }),
   );
 

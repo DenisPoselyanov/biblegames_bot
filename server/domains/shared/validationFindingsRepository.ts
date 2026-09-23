@@ -8,6 +8,7 @@ import type { Transaction } from './context';
 import type {
   NewValidationFinding,
   ValidationFinding,
+  ValidationFindingSummary,
   ValidationRevisionType,
 } from './validationFindings';
 
@@ -30,4 +31,6 @@ export interface ValidationFindingRepository {
     revisionId: string,
     tx?: Transaction,
   ): Promise<boolean>;
+  /** Stored findings grouped by (type, kind, severity) — see `ValidationFindingSummary`. */
+  summarize(tx?: Transaction): Promise<ValidationFindingSummary[]>;
 }
