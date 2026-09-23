@@ -3,6 +3,7 @@ import os from 'node:os'
 import { createRequire } from 'node:module'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 /** GitHub Pages: https://denisposelyanov.github.io/biblegames_bot/ */
 const pagesBase = process.env.VITE_BASE_PATH?.replace(/\/?$/, '/') || '/'
@@ -14,7 +15,10 @@ const appVersion = process.env.VITE_BUILD_ID || `${pkgVersion}-dev`
 export default defineConfig({
   base: pagesBase,
   define: { __APP_VERSION__: JSON.stringify(appVersion) },
-  plugins: [react()],
+  // Tailwind only generates utilities for files its CSS entry `@import`s with
+  // `source(...)` (see src/pages/studio/styles/tokens.css) — scoped to the
+  // Content Studio bundle (Phase 4 WS8), not a repo-wide utility system.
+  plugins: [react(), tailwindcss()],
   cacheDir: path.join(os.tmpdir(), 'biblegames-bot-vite'),
   resolve: {
     alias: {

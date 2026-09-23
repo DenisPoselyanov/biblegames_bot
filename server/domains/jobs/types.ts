@@ -17,7 +17,8 @@ export type JobStatus =
   | 'active' // a worker is running the handler
   | 'completed' // handler resolved
   | 'retry' // handler threw, attempts remain — will run again after backoff
-  | 'failed'; // handler threw and exhausted `maxAttempts` (dead letter)
+  | 'failed' // handler threw and exhausted `maxAttempts` (dead letter)
+  | 'cancelled'; // an operator called `cancel()` before the handler finished (Phase 4 WS8)
 
 export interface JobRecord<Payload = unknown> {
   id: string;

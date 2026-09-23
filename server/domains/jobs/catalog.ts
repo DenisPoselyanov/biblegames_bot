@@ -24,6 +24,19 @@ export const JOB_TYPES = {
 
 export type JobType = (typeof JOB_TYPES)[keyof typeof JOB_TYPES];
 
+/** Ukrainian display label per type, for the Studio Jobs screen (Phase 4 WS8). */
+export const JOB_TYPE_LABELS: Record<string, string> = {
+  [JOB_TYPES.RATE_LIMIT_SWEEP]: 'Прибирання лічильників лімітів',
+  [JOB_TYPES.IDEMPOTENCY_SWEEP]: 'Прибирання ключів ідемпотентності',
+  [JOB_TYPES.TELEMETRY_RETENTION]: 'Прибирання телеметрії',
+  [JOB_TYPES.CONTENT_SNAPSHOT]: 'Знімок опублікованого контенту',
+  [JOB_TYPES.AI_CONTENT_GENERATE]: 'Генерація контенту (AI)',
+};
+
+export function labelForJobType(type: string): string {
+  return JOB_TYPE_LABELS[type] ?? type;
+}
+
 /** Retention sweeps take an optional override of the cutoff age, in days. */
 const retentionPayload = z
   .object({ olderThanDays: z.number().int().positive().max(3650).optional() })

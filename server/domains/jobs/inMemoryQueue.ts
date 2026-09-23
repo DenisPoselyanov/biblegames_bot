@@ -10,7 +10,7 @@
  * Tests can bypass the timer with `runDue()`.
  */
 import { payloadSchemaFor } from './catalog';
-import type { JobQueue, JobQueueStats, EnqueueResult } from './queue';
+import type { JobListFilter, JobQueue, JobQueueStats, EnqueueResult } from './queue';
 import type {
   EnqueueOptions,
   JobRecord,
@@ -37,7 +37,7 @@ export interface InMemoryJobQueueOptions {
 const DEFAULT_BACKOFF = (attempt: number): number =>
   Math.min(30_000, 1_000 * 5 ** (attempt - 1));
 
-const TERMINAL: ReadonlySet<JobStatus> = new Set<JobStatus>(['completed', 'failed']);
+const TERMINAL: ReadonlySet<JobStatus> = new Set<JobStatus>(['completed', 'failed', 'cancelled']);
 
 function redactError(err: unknown): string {
   const msg = err instanceof Error ? err.message : String(err);
@@ -72,6 +72,8 @@ export function createInMemoryJobQueue(
   const jobs = new Map<string, JobRecord>();
   const running = new Map<string, Promise<void>>();
   const controllers = new Map<string, AbortController>();
+  /** Jobs whose handler was told to stop by `cancel()`, not by `stop()`. */
+  const cancelRequested = new Set<string>();
 
   let pollTimer: ReturnType<typeof setInterval> | null = null;
   const scheduleTimers: ReturnType<typeof setInterval>[] = [];
@@ -169,15 +171,28 @@ export function createInMemoryJobQueue(
     try {
       await registration.handler(ctx);
       job.attempts += 1;
-      job.status = 'completed';
-      job.completedAt = now().toISOString();
-      job.error = null;
-      emit('jobs_completed_total', job.type);
-      log?.info('job.completed', { jobId: job.id, type: job.type, attempts: job.attempts });
+      if (cancelRequested.has(job.id)) {
+        job.status = 'cancelled';
+        job.completedAt = now().toISOString();
+        job.error = null;
+        emit('jobs_cancelled_total', job.type);
+        log?.info('job.cancelled', { jobId: job.id, type: job.type, attempts: job.attempts });
+      } else {
+        job.status = 'completed';
+        job.completedAt = now().toISOString();
+        job.error = null;
+        emit('jobs_completed_total', job.type);
+        log?.info('job.completed', { jobId: job.id, type: job.type, attempts: job.attempts });
+      }
     } catch (err) {
       job.attempts += 1;
       job.error = redactError(err);
-      if (job.attempts < job.maxAttempts) {
+      if (cancelRequested.has(job.id)) {
+        job.status = 'cancelled';
+        job.completedAt = now().toISOString();
+        emit('jobs_cancelled_total', job.type);
+        log?.info('job.cancelled', { jobId: job.id, type: job.type, attempts: job.attempts });
+      } else if (job.attempts < job.maxAttempts) {
         job.status = 'retry';
         job.runAfter = new Date(
           now().getTime() + backoffMs(job.attempts),
@@ -203,6 +218,7 @@ export function createInMemoryJobQueue(
       }
     } finally {
       controllers.delete(job.id);
+      cancelRequested.delete(job.id);
     }
   }
 
@@ -269,9 +285,40 @@ export function createInMemoryJobQueue(
       completed: 0,
       retry: 0,
       failed: 0,
+      cancelled: 0,
     };
     for (const job of jobs.values()) byStatus[job.status] += 1;
     return { byStatus, types: [...registrations.keys()].sort() };
+  }
+
+  async function list(filter: JobListFilter = {}): Promise<JobRecord[]> {
+    const limit = Math.max(1, Math.min(filter.limit ?? 50, 200));
+    return [...jobs.values()]
+      .filter((j) => (filter.status ? j.status === filter.status : true))
+      .filter((j) => (filter.type ? j.type === filter.type : true))
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, limit);
+  }
+
+  async function get(id: string): Promise<JobRecord | undefined> {
+    return jobs.get(id);
+  }
+
+  async function cancel(id: string): Promise<boolean> {
+    const job = jobs.get(id);
+    if (!job) return false;
+    if (job.status === 'pending' || job.status === 'retry') {
+      job.status = 'cancelled';
+      job.completedAt = now().toISOString();
+      emit('jobs_cancelled_total', job.type);
+      return true;
+    }
+    if (job.status === 'active') {
+      cancelRequested.add(id);
+      controllers.get(id)?.abort();
+      return true;
+    }
+    return false;
   }
 
   return {
@@ -280,6 +327,9 @@ export function createInMemoryJobQueue(
     start,
     stop,
     stats,
+    list,
+    get,
+    cancel,
     runDue,
     peek: (id) => jobs.get(id),
   };
