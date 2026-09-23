@@ -100,13 +100,36 @@ export function TrueFalseBlock({ payload }: BlockProps<typeof trueFalsePayload>)
 
 export function OrderEventsBlock({ blockId, payload }: BlockProps<typeof orderEventsPayload>) {
   const shuffled = useMemo(() => seededPermutation(payload.items.length, blockId), [payload.items.length, blockId]);
-  /** Authored indices in the order the reader tapped them. */
-  const [placed, setPlaced] = useState<number[]>([]);
+  /**
+   * Fixed-size, indexed by slot position — a slot holds the authored index
+   * placed there, or `null` when empty. Removing item from slot 1 must not
+   * shift slot 2's item down into slot 1; a plain "filter it out" array would
+   * do exactly that, so slots are addressed by position, not compacted.
+   */
+  const [placed, setPlaced] = useState<Array<number | null>>(() => Array(payload.items.length).fill(null));
   const [checked, setChecked] = useState(false);
 
   const pool = shuffled.filter((i) => !placed.includes(i));
-  const allPlaced = placed.length === payload.items.length;
+  const allPlaced = placed.every((item) => item !== null);
   const solved = checked && placed.every((item, position) => item === position);
+
+  function place(item: number) {
+    setPlaced((prev) => {
+      const next = [...prev];
+      const emptySlot = next.indexOf(null);
+      if (emptySlot === -1) return prev;
+      next[emptySlot] = item;
+      return next;
+    });
+  }
+
+  function unplace(position: number) {
+    setPlaced((prev) => {
+      const next = [...prev];
+      next[position] = null;
+      return next;
+    });
+  }
 
   return (
     <div className={styles.block}>
@@ -116,7 +139,7 @@ export function OrderEventsBlock({ blockId, payload }: BlockProps<typeof orderEv
       <ol className={styles.orderSlots} aria-label="Твій порядок">
         {payload.items.map((_, position) => {
           const item = placed[position];
-          if (item === undefined) {
+          if (item === null) {
             return (
               <li key={position} className={styles.orderSlotEmpty}>
                 <span className={styles.orderNum}>{position + 1}</span>
@@ -131,7 +154,7 @@ export function OrderEventsBlock({ blockId, payload }: BlockProps<typeof orderEv
                 type="button"
                 className={cx(styles.chip, styles.orderChip, right && styles.chipCorrect, wrong && styles.chipWrong)}
                 disabled={checked}
-                onClick={() => setPlaced((prev) => prev.filter((p) => p !== item))}
+                onClick={() => unplace(position)}
                 aria-label={checked ? undefined : `${payload.items[item]} — прибрати`}
               >
                 <span className={styles.orderNum}>{position + 1}</span>
@@ -147,12 +170,7 @@ export function OrderEventsBlock({ blockId, payload }: BlockProps<typeof orderEv
       {pool.length > 0 && (
         <div className={styles.pool} aria-label="Події">
           {pool.map((item) => (
-            <button
-              key={item}
-              type="button"
-              className={styles.chip}
-              onClick={() => setPlaced((prev) => [...prev, item])}
-            >
+            <button key={item} type="button" className={styles.chip} onClick={() => place(item)}>
               {payload.items[item]}
             </button>
           ))}
@@ -180,7 +198,7 @@ export function OrderEventsBlock({ blockId, payload }: BlockProps<typeof orderEv
               size="sm"
               variant="secondary"
               onClick={() => {
-                setPlaced([]);
+                setPlaced(Array(payload.items.length).fill(null));
                 setChecked(false);
               }}
             >
