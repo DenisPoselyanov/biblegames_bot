@@ -20,6 +20,7 @@ import {
   updateQuestionOnServer,
 } from '../repos/questionAdminRepo';
 import { haptic } from '../lib/telegram';
+import { newShuffleSalt, shuffleQuestionOptions } from '../lib/optionShuffle';
 import type { Question, TopicNode } from '../types';
 import {
   DIFFICULTY_LABELS,
@@ -112,6 +113,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
   const [finished, setFinished] = useState(false);
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
+  const [shuffleSalt, setShuffleSalt] = useState(newShuffleSalt);
   const [correctCount, setCorrectCount] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [earnedPoints, setEarnedPoints] = useState(0);
@@ -157,6 +159,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     setFinished(saved.finished);
     setShowResult(saved.showResult);
     setSelected(saved.selected);
+    if (saved.shuffleSalt) setShuffleSalt(saved.shuffleSalt);
     if (saved.deadlineAt != null) {
       setDeadlineAt(saved.deadlineAt);
     } else if (saved.questionTimeLeft != null) {
@@ -190,6 +193,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       nextStageUnlocked,
       rankPromoted,
       newRankLabel,
+      shuffleSalt,
     }),
     [
       questions,
@@ -206,6 +210,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       nextStageUnlocked,
       rankPromoted,
       newRankLabel,
+      shuffleSalt,
     ],
   );
 
@@ -280,6 +285,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
         const wrongQuestions = await fetchReviewQuestions(wrongIds);
         wrongQuestions.sort(() => Math.random() - 0.5);
         if (!cancelled) {
+          setShuffleSalt(newShuffleSalt());
           setQuestions(wrongQuestions);
           setLoading(false);
           questionsLoadedSessionRef.current = sessionKey;
@@ -326,6 +332,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
       });
 
       if (!cancelled) {
+        setShuffleSalt(newShuffleSalt());
         setQuestions(qs);
         setLoading(false);
         questionsLoadedSessionRef.current = sessionKey;
@@ -379,7 +386,12 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
     }, 1000);
   }, [clearQuestionTimer]);
 
-  const current = questions[index];
+  const canonicalCurrent = questions[index];
+  // Options are shown in shuffled order; the editor keeps the stored (canonical) order.
+  const current = useMemo(
+    () => canonicalCurrent && shuffleQuestionOptions(canonicalCurrent, shuffleSalt),
+    [canonicalCurrent, shuffleSalt],
+  );
   const reduced = useReducedMotion();
   const progress = questions.length
     ? ((index + (showResult ? 1 : 0)) / questions.length) * 100
@@ -931,7 +943,7 @@ export function Quiz({ mode = 'practice' }: { mode?: StudyMode }) {
 
       {mode === 'practice' && (
         <QuestionEditModal
-          question={current}
+          question={canonicalCurrent}
           open={editOpen}
           saving={editSaving}
           error={editError}

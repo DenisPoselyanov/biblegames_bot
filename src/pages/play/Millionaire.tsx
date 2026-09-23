@@ -8,6 +8,7 @@ import { ConfirmModal } from '../../components/ConfirmModal';
 import { QuizPoolSkeleton } from '../../components/skeletons';
 import { Icon } from '../../components/Icon';
 import { haptic } from '../../lib/telegram';
+import { newShuffleSalt, shuffleQuestionOptions, toCanonicalIndex } from '../../lib/optionShuffle';
 import { getMillionaireSafePoints } from '../../types';
 import type { Question } from '../../types';
 import {
@@ -74,6 +75,7 @@ export function Millionaire() {
   const [explanationOpen, setExplanationOpen] = useState(false);
   const [result, setResult] = useState<MillionaireRunSession['result']>(null);
   const [answers, setAnswers] = useState<{ questionId: string; selectedIndex: number }[]>([]);
+  const [shuffleSalt, setShuffleSalt] = useState(newShuffleSalt);
 
   const [exitConfirmOpen, setExitConfirmOpen] = useState(false);
   const [takeConfirmOpen, setTakeConfirmOpen] = useState(false);
@@ -99,6 +101,7 @@ export function Millionaire() {
         setNotice(session.notice);
         setResult(session.result);
         setAnswers(session.answers ?? []);
+        if (session.shuffleSalt) setShuffleSalt(session.shuffleSalt);
       } else {
         setQuestions(buildMillionaireQuestions());
         const empty = emptyMillionaireState();
@@ -137,6 +140,7 @@ export function Millionaire() {
       notice,
       result,
       answers,
+      shuffleSalt,
     }),
     [
       questions,
@@ -152,6 +156,7 @@ export function Millionaire() {
       notice,
       result,
       answers,
+      shuffleSalt,
     ],
   );
 
@@ -163,7 +168,13 @@ export function Millionaire() {
     enabled: ready && totalLevels > 0,
   });
 
-  const current = questions[index];
+  // Options shown shuffled: `selected`, 50/50 and blocked options are display indexes;
+  // the answer trail sent to the server is canonical.
+  const canonicalCurrent = questions[index];
+  const current = useMemo(
+    () => canonicalCurrent && shuffleQuestionOptions(canonicalCurrent, shuffleSalt),
+    [canonicalCurrent, shuffleSalt],
+  );
   const currentLevel = index + 1;
   const currentPrize = LEVEL_POINTS[index] ?? 0;
   const earnedBeforeCurrent = index > 0 ? LEVEL_POINTS[index - 1] : 0;
@@ -202,6 +213,7 @@ export function Millionaire() {
     setStatus(empty.status);
     setResult(empty.result);
     setAnswers(empty.answers);
+    setShuffleSalt(newShuffleSalt());
   }, [clearSession]);
 
   const useFiftyFifty = () => {
@@ -266,7 +278,10 @@ export function Millionaire() {
       haptic.notification('error');
       setStatus('answered');
       const reachedLevel = Math.max(0, index);
-      const finalAnswers = [...answers, { questionId: current.id, selectedIndex: optionIndex }];
+      const finalAnswers = [
+        ...answers,
+        { questionId: current.id, selectedIndex: toCanonicalIndex(current.optionOrder, optionIndex) },
+      ];
       setAnswers(finalAnswers);
       finishGame('Гру завершено', getMillionaireSafePoints(reachedLevel), reachedLevel, finalAnswers);
       return;
@@ -275,7 +290,10 @@ export function Millionaire() {
     haptic.notification('success');
     setStatus('answered');
     setNotice(null);
-    setAnswers((prev) => [...prev, { questionId: current.id, selectedIndex: optionIndex }]);
+    setAnswers((prev) => [
+      ...prev,
+      { questionId: current.id, selectedIndex: toCanonicalIndex(current.optionOrder, optionIndex) },
+    ]);
   };
 
   const handleNext = () => {

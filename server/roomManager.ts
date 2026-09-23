@@ -8,6 +8,7 @@ import type {
 } from '../src/types/kahoot';
 import { normalizeKahootSettings } from '../src/types/kahoot';
 import { buildPlayerRanks } from '../src/lib/kahootRanking';
+import { newShuffleSalt, shuffleQuestionOptions } from '../src/lib/optionShuffle';
 import {
   pickKahootQuestions,
   pickKahootQuestionsByIds,
@@ -277,7 +278,10 @@ export class RoomManager {
       throw new Error('Недостатньо питань для обраних тем');
     }
 
-    room.questions = questions;
+    // Shuffle once per game on the server so every player and the host display share one order;
+    // answers are graded within the room against the shuffled `correctIndex`.
+    const salt = newShuffleSalt();
+    room.questions = questions.map((q) => shuffleQuestionOptions(q, salt));
     room.settings.questionCount = questions.length;
     room.sessionSaved = false;
     return this.beginQuestionRound(room);

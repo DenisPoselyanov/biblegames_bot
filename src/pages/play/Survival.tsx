@@ -9,6 +9,7 @@ import { ExplanationModal } from '../../components/ExplanationModal';
 import { ConfirmModal } from '../../components/ConfirmModal';
 import { QuizPoolSkeleton } from '../../components/skeletons';
 import { haptic } from '../../lib/telegram';
+import { newShuffleSalt, shuffleQuestionOptions, toCanonicalIndex } from '../../lib/optionShuffle';
 import { DIFFICULTY_LABELS, SURVIVAL_POINTS_BY_DIFFICULTY, SURVIVAL_STARTING_LIVES } from '../../types';
 import type { Difficulty, Question } from '../../types';
 import { Icon } from '../../components/Icon';
@@ -66,6 +67,12 @@ export function Survival() {
   const [ready, setReady] = useState(false);
   const sessionRestoredRef = useRef(false);
   const [question, setQuestion] = useState<Question | null>(null);
+  const [shuffleSalt, setShuffleSalt] = useState(newShuffleSalt);
+  // Options shown shuffled; `selected` is a display index, answers sent to the server are canonical.
+  const shown = useMemo(
+    () => (question ? shuffleQuestionOptions(question, shuffleSalt) : null),
+    [question, shuffleSalt],
+  );
   const [seenQuestionIds, setSeenQuestionIds] = useState<string[]>([]);
   const [lives, setLives] = useState(STARTING_LIVES);
   const [score, setScore] = useState(0);
@@ -93,6 +100,7 @@ export function Survival() {
           setPoints(saved.points);
           setTimeLeft(saved.timeLeft);
           setSelected(saved.selected);
+          if (saved.shuffleSalt) setShuffleSalt(saved.shuffleSalt);
           setStatus(saved.status);
           setLastAnswerCorrect(saved.lastAnswerCorrect);
           setAnswers(saved.answers ?? []);
@@ -123,6 +131,7 @@ export function Survival() {
       status,
       lastAnswerCorrect,
       answers,
+      shuffleSalt,
     }),
     [
       seenQuestionIds,
@@ -135,6 +144,7 @@ export function Survival() {
       status,
       lastAnswerCorrect,
       answers,
+      shuffleSalt,
     ],
   );
 
@@ -224,11 +234,12 @@ export function Survival() {
   }, [loseLife, status, exitConfirmOpen, ready, question?.id]);
 
   const handleAnswer = (optionIndex: number) => {
-    if (!question || status !== 'playing') return;
+    if (!question || !shown || status !== 'playing') return;
 
     setSelected(optionIndex);
+    const canonicalIndex = toCanonicalIndex(shown.optionOrder, optionIndex);
 
-    if (optionIndex === question.correctIndex) {
+    if (canonicalIndex === question.correctIndex) {
       haptic.notification('success');
       const earned = POINTS_BY_DIFFICULTY[question.difficulty];
       const nextScore = score + 1;
@@ -236,11 +247,11 @@ export function Survival() {
       setPoints((value) => value + earned);
       setLastAnswerCorrect(true);
       setStatus('answered');
-      setAnswers((prev) => [...prev, { questionId: question.id, selectedIndex: optionIndex }]);
+      setAnswers((prev) => [...prev, { questionId: question.id, selectedIndex: canonicalIndex }]);
       return;
     }
 
-    loseLife(optionIndex);
+    loseLife(canonicalIndex);
   };
 
   const handleNext = () => {
@@ -263,6 +274,7 @@ export function Survival() {
     setExplanationOpen(false);
     setStatus('playing');
     setAnswers([]);
+    setShuffleSalt(newShuffleSalt());
   };
 
   const exitGame = () => {
@@ -415,8 +427,8 @@ export function Survival() {
               <p className={styles.questionText}>{question.text}</p>
 
               <MotionStagger as="ul" className={styles.options}>
-                {question.options.map((option, optionIndex) => {
-                  const isCorrect = optionIndex === question.correctIndex;
+                {shown?.options.map((option, optionIndex) => {
+                  const isCorrect = optionIndex === shown.correctIndex;
                   const isSelected = optionIndex === selected;
                   let stateClass = '';
                   let visual: AnswerOptionVisualState = 'idle';

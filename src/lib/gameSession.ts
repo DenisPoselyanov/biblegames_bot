@@ -26,6 +26,8 @@ export interface QuizRunSession {
   nextStageUnlocked?: boolean;
   rankPromoted?: boolean;
   newRankLabel?: string;
+  /** Answer-option shuffle seed for this run, so a restored run shows the same order (optionShuffle). */
+  shuffleSalt?: string;
 }
 
 export interface RunAnswer {
@@ -48,6 +50,8 @@ export interface MillionaireRunSession {
   result: { title: string; points: number; reachedLevel: number } | null;
   /** Per-level answer trail submitted to the server so it can recompute the reward itself (WS9, §15.2). */
   answers: RunAnswer[];
+  /** Answer-option shuffle seed for this run, so a restored run shows the same order (optionShuffle). */
+  shuffleSalt?: string;
 }
 
 export interface SurvivalRunSession {
@@ -62,6 +66,8 @@ export interface SurvivalRunSession {
   lastAnswerCorrect: boolean | null;
   /** Answer trail submitted to the server so it can recompute the reward itself (WS9, §15.3). */
   answers: RunAnswer[];
+  /** Answer-option shuffle seed for this run, so a restored run shows the same order (optionShuffle). */
+  shuffleSalt?: string;
 }
 
 export function buildQuizSessionKey(
