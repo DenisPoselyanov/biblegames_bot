@@ -16,7 +16,7 @@ import { runQuestionQualityChecks, type QualityCheckContext } from './qualityChe
 import type { QuestionRevisionRecord } from './types';
 
 /** Bump whenever a check is added or tightened — older runs then count as "not validated". */
-export const QUESTION_CHECKS_VERSION = 'question-checks@2';
+export const QUESTION_CHECKS_VERSION = 'question-checks@3';
 export const VALIDATION_RUN_KIND = 'validation_run';
 
 export const isValidationRunMarker = (f: Pick<ValidationFinding, 'kind'>): boolean => f.kind === VALIDATION_RUN_KIND;
@@ -33,6 +33,7 @@ export function questionRevisionFindings(
     {
       questionId: revision.questionId,
       themeId: revision.themeId,
+      difficulty: revision.difficulty,
       text: revision.text,
       options: revision.options,
       correctIndex: revision.correctIndex,

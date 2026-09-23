@@ -117,6 +117,49 @@ describe('runQuestionQualityChecks — explanations', () => {
   });
 });
 
+describe('runQuestionQualityChecks — explanations fit the level (contentLevelRubric)', () => {
+  const deep400 = 'Контекст. '.repeat(40);
+
+  it('requires explanationDeep from «Проповідник» up (warning), not below (info)', () => {
+    expect(runQuestionQualityChecks(body({ difficulty: 'preacher', explanationDeep: null }))).toContainEqual(
+      expect.objectContaining({ kind: 'missing_deep_explanation', severity: 'warning' }),
+    );
+    expect(runQuestionQualityChecks(body({ difficulty: 'child', explanationDeep: null }))).toContainEqual(
+      expect.objectContaining({ kind: 'missing_deep_explanation', severity: 'info' }),
+    );
+  });
+
+  it('flags a short explanation that is too long for «Немовля»', () => {
+    const long = 'Ной збудував ковчег за наказом Бога. '.repeat(6);
+    expect(runQuestionQualityChecks(body({ difficulty: 'baby', explanationShort: long }))).toContainEqual(
+      expect.objectContaining({ kind: 'explanation_length_for_level', severity: 'warning' }),
+    );
+  });
+
+  it('flags a deep explanation that is too thin for «Богослов»', () => {
+    expect(
+      runQuestionQualityChecks(body({ difficulty: 'theologian', explanationDeep: 'Коротко про контекст ковчега.' })),
+    ).toContainEqual(expect.objectContaining({ kind: 'deep_explanation_length_for_level' }));
+  });
+
+  it('accepts level-appropriate explanations', () => {
+    const findings = runQuestionQualityChecks(
+      body({
+        difficulty: 'teacher',
+        explanationShort: 'Ной збудував ковчег за наказом Бога, щоб він і його родина пережили потоп (Бут. 6:14).',
+        explanationDeep: deep400,
+      }),
+    );
+    expect(findings.filter((f) => f.kind.includes('explanation'))).toEqual([]);
+  });
+
+  it('skips the per-level checks when the level is unknown', () => {
+    expect(runQuestionQualityChecks(body({ explanationShort: 'Ной. '.repeat(80) }))).not.toContainEqual(
+      expect.objectContaining({ kind: 'explanation_length_for_level' }),
+    );
+  });
+});
+
 describe('runQuestionQualityChecks — language and topic', () => {
   it('flags a Russian-only letter as a possible mixed-language tell', () => {
     const findings = runQuestionQualityChecks(body({ text: 'Хто збудував ковчег вблизи гор Арарата, объясни?' }));

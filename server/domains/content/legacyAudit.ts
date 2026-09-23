@@ -190,6 +190,7 @@ export function auditLegacyBank(items: readonly LegacyItem[], context: LegacyAud
       {
         questionId: draft.questionId,
         themeId: draft.themeId,
+        difficulty: draft.difficulty,
         text: draft.text,
         options: draft.options,
         correctIndex: draft.correctIndex,

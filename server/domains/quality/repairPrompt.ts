@@ -5,11 +5,13 @@
  * artifact is a *suggestion* — it becomes a draft revision only through the
  * reviewed path (§7.1: a provider never writes repository content).
  */
+import { COMMON_QUESTION_RULES, describeLevelForPrompt } from '../../../src/lib/contentLevelRubric';
 import type { QuestionRevisionRecord } from '../content/types';
 import type { AccuracyBand } from './analytics';
 import type { ContentReportCategory } from './types';
 
-export const REPAIR_PROMPT_VERSION = 'question.repair.v1';
+/** v2: level rubric + explanationDeep at the question's level (content quality gate). */
+export const REPAIR_PROMPT_VERSION = 'question.repair.v2';
 
 export type RepairSignal =
   | { kind: 'accuracy'; issue: Extract<AccuracyBand, 'too_hard' | 'too_easy'>; accuracy: number; attempts: number }
@@ -50,14 +52,18 @@ export function buildRepairPrompt(revision: QuestionRevisionRecord, signal: Repa
     `Питання: ${revision.text}`,
     'Варіанти:',
     ...options,
-    `Пояснення: ${revision.explanationShort ?? '—'}`,
+    `Коротке пояснення: ${revision.explanationShort ?? '—'}`,
+    `Розширене пояснення: ${revision.explanationDeep ?? '—'}`,
     `Посилання: ${revision.reference ?? '—'}`,
+    '',
+    describeLevelForPrompt(revision.difficulty),
     '',
     `Проблема: ${describeSignal(signal)}`,
     '',
-    'Вимоги: зберегти тему й біблійний факт, що перевіряється; одна однозначно правильна відповідь, підтверджена посиланням;',
-    'правдоподібні неправильні варіанти схожої довжини; не вигадувати віршів. Якщо питання виправити неможливо — поясни чому.',
+    'Вимоги: зберегти тему, рівень і біблійний факт, що перевіряється; правдоподібні неправильні варіанти схожої довжини.',
+    ...COMMON_QUESTION_RULES.map((r) => `- ${r}`),
+    'Обидва пояснення пиши під цей рівень. Якщо питання виправити неможливо — поясни чому в changeNote.',
     '',
-    'Відповідь лише JSON: {"text": string, "options": string[], "correctIndex": number, "explanationShort": string, "reference": string, "changeNote": string}',
+    'Відповідь лише JSON: {"text": string, "options": string[], "correctIndex": number, "explanationShort": string, "explanationDeep": string, "reference": string, "changeNote": string}',
   ].join('\n');
 }

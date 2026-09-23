@@ -16,6 +16,9 @@
 import fs from 'node:fs';
 import { join } from 'node:path';
 import { THEMES } from '../../src/data/themes';
+import { buildQuestionGenerationPrompt, GENERATION_PROMPT_VERSION } from '../../src/lib/contentGenerationPrompt';
+import { rubricFor } from '../../src/lib/contentLevelRubric';
+import type { Difficulty } from '../../src/types';
 import { loadConfig } from '../../server/config/env';
 import { createMemoryAuditLog } from '../../server/audit';
 import {
@@ -314,11 +317,24 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
   },
 
   'generate-questions': {
-    summary: 'one AI generation → artifact (--prompt "…" [--prompt-version v] [--label l] [--apply])',
+    summary: 'one AI generation → artifact (--theme id --level l [--count n] [--focus "…"] | --prompt "…" [--prompt-version v]) [--label l] [--apply]',
     async run() {
-      const prompt = opt('prompt');
-      if (!prompt) fail('--prompt is required.');
-      const payload = { promptVersion: opt('prompt-version') ?? 'question.generate.v1', prompt, label: opt('label') };
+      let prompt = opt('prompt');
+      let promptVersion = opt('prompt-version') ?? 'question.generate.v1';
+      if (!prompt) {
+        const themeId = opt('theme');
+        const level = opt('level');
+        const theme = THEMES.find((t) => t.id === themeId);
+        if (!theme || !level || !rubricFor(level)) fail('Pass --theme <id> --level <baby…theologian> (or a free-form --prompt).');
+        prompt = buildQuestionGenerationPrompt({
+          themeTitle: theme.title,
+          level: level as Difficulty,
+          count: Number(opt('count') ?? 10),
+          focus: opt('focus'),
+        });
+        promptVersion = GENERATION_PROMPT_VERSION;
+      }
+      const payload = { promptVersion, prompt, label: opt('label') ?? (opt('theme') ? `generate:${opt('theme')}:${opt('level')}` : undefined) };
       if (!APPLY) {
         out(`[dry] would run content.ai_generate with:\n${JSON.stringify(payload, null, 2)}\nPass --apply to call the provider.`, { dryRun: true, payload });
         return;
