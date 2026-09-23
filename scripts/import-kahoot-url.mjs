@@ -5,6 +5,8 @@
  *
  * Usage: node scripts/import-kahoot-url.mjs "https://create.kahoot.it/share/..."
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 const url = process.argv[2];
 
 if (!url) {

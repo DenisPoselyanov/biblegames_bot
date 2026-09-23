@@ -13,7 +13,9 @@ export const REPAIR_PROMPT_VERSION = 'question.repair.v1';
 
 export type RepairSignal =
   | { kind: 'accuracy'; issue: Extract<AccuracyBand, 'too_hard' | 'too_easy'>; accuracy: number; attempts: number }
-  | { kind: 'reports'; categories: Partial<Record<ContentReportCategory, number>>; comments: string[] };
+  | { kind: 'reports'; categories: Partial<Record<ContentReportCategory, number>>; comments: string[] }
+  /** An editor's own note, from the CLI (`npm run ai -- repair-question --note …`). */
+  | { kind: 'manual'; note: string };
 
 const CATEGORY_UK: Record<ContentReportCategory, string> = {
   wrong_answer: 'неправильна відповідь',
@@ -25,6 +27,7 @@ const CATEGORY_UK: Record<ContentReportCategory, string> = {
 };
 
 function describeSignal(signal: RepairSignal): string {
+  if (signal.kind === 'manual') return `Зауваження редактора: ${signal.note.slice(0, 1000)}`;
   if (signal.kind === 'accuracy') {
     const pct = Math.round(signal.accuracy * 100);
     return signal.issue === 'too_hard'

@@ -7,6 +7,8 @@
  * npm run fill-practice -- --difficulty youth --max-jobs 5
  * npm run fill-practice
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import { dirname, join } from 'path';

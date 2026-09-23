@@ -58,8 +58,15 @@ export function loadProjectEnv() {
 
 export const AI_PROVIDERS = ['ollama', 'gemini', 'omniroute'];
 
+/**
+ * Default when neither `--provider` nor `AI_PROVIDER` is set. Was `ollama`
+ * until Phase 4 WS10 — Ollama is no longer installed, so that default always
+ * failed; `ollama` is still accepted when asked for explicitly.
+ */
+export const DEFAULT_PROVIDER = 'gemini';
+
 export function normalizeProvider(raw) {
-  const p = String(raw || 'ollama').trim().toLowerCase();
+  const p = String(raw || DEFAULT_PROVIDER).trim().toLowerCase();
   if (!AI_PROVIDERS.includes(p)) {
     throw new Error(`Невідомий провайдер "${raw}". Допустимо: ${AI_PROVIDERS.join(', ')}`);
   }
@@ -70,7 +77,7 @@ export function resolveProvider(opts = {}) {
   loadProjectEnv();
   const fromOpts = opts.provider ?? opts.aiProvider;
   if (fromOpts) return normalizeProvider(fromOpts);
-  return normalizeProvider(process.env.AI_PROVIDER || 'ollama');
+  return normalizeProvider(process.env.AI_PROVIDER || DEFAULT_PROVIDER);
 }
 
 export function resolveModel(provider, opts = {}) {

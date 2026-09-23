@@ -5,6 +5,8 @@
  *
  * Usage: node scripts/import-kahoot-tsv.mjs path/to/quiz.tsv [--out playlists/imported.json]
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 

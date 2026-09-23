@@ -7,6 +7,8 @@
  * npm run generate-topics -- --group old-testament
  * npm run generate-topics -- --group new-testament
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import { join, dirname } from 'path';

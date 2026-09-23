@@ -16,6 +16,8 @@
  *   npm run sort-questions -- --theme paul
  *   npm run sort-questions -- --dry-run  # лише звіт, без запису
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import { ALL_QUESTIONS } from '../src/data/questions';
 import fs from 'fs';

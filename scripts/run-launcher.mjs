@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 /** Запуск AI Launcher V3 у фоні (термінал одразу звільняється). */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 import { spawn, execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";

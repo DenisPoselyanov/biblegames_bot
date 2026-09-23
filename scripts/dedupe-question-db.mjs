@@ -2,6 +2,8 @@
 /**
  * Remove duplicate rows with the same question id from data/question-db/*.json
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 import fs from 'fs';
 import { DB_DIR, dedupeQuestionsById, loadThemeQuestions, saveThemeQuestions } from './lib/question-db.mjs';
 

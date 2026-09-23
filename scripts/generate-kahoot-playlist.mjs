@@ -4,6 +4,8 @@
  *
  * Usage: node scripts/generate-kahoot-playlist.mjs --topic geography-sub-1-sub-1 --count 10
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 import { spawn } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';

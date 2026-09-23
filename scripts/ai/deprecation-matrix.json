@@ -1,0 +1,43 @@
+{
+  "_about": "Phase 4 WS10 (spec §9) — every content/AI script mapped to the reviewed lifecycle. Single source for `npm run ai -- scripts`, the runtime warning in scripts/lib/deprecation.mjs and docs/CONTENT_TOOLING.md. status: 'deprecated' = mutates legacy files/tables directly and has a lifecycle replacement (prints a warning, keeps working until removalTarget); 'no-replacement-yet' = mutates legacy data, replacement not built, warning still printed; 'read-only' = allowed to stay separate (§9), consumes data without writing the bank; 'tooling' = not content tooling.",
+  "defaults": {
+    "owner": "Denis Poselyanov",
+    "compatibilityUntil": "Phase 5 start",
+    "removalTarget": "Phase 5 WS1 (after migration waves 1–5 are applied)",
+    "golden": "server/domains/content/__tests__/golden/legacy-questions.golden.json"
+  },
+  "scripts": [
+    { "file": "generate-questions-ai.mjs", "npm": "generate-ai", "kind": "write", "status": "deprecated", "writes": "data/question-db/*.json directly", "replacement": "npm run ai -- generate-questions (artifact → draft → Studio review)" },
+    { "file": "fix-questions-ai.mjs", "npm": "fix-questions-ai", "kind": "write", "status": "deprecated", "writes": "data/question-db/*.json in place", "replacement": "npm run ai -- repair-question / Studio «Виправити через AI» (content.ai_repair)" },
+    { "file": "fix-explanations-ai.mjs", "npm": "fix-explanations-ai", "kind": "write", "status": "deprecated", "writes": "data/question-db/*.json in place", "replacement": "npm run ai -- repair-question --note \"пояснення\"" },
+    { "file": "generate-kahoot-playlist.mjs", "npm": "generate-kahoot-playlist", "kind": "write", "status": "deprecated", "writes": "wraps generate-questions-ai.mjs", "replacement": "npm run ai -- generate-questions --label kahoot:<topic>" },
+    { "file": "balance-questions.mjs", "npm": "balance-questions", "kind": "write", "status": "deprecated", "writes": "rewrites difficulty in data/question-db", "replacement": "npm run ai -- audit-legacy (report) → Studio review" },
+    { "file": "dedupe-question-db.mjs", "npm": "questions:dedupe-db", "kind": "write", "status": "deprecated", "writes": "removes rows from data/question-db", "replacement": "npm run ai -- audit-legacy (duplicate_superseded → wave 6 archive, never imported)" },
+    { "file": "prune-untagged-questions.mjs", "npm": "prune-untagged", "kind": "write", "status": "deprecated", "writes": "deletes rows from data/question-db", "replacement": "npm run ai -- audit-legacy (classification) — nothing is deleted, only archived" },
+    { "file": "fill-practice-pools.mjs", "npm": "fill-practice", "kind": "write", "status": "deprecated", "writes": "appends AI questions to data/question-db", "replacement": "npm run ai -- generate-questions (per pool) → Studio review" },
+    { "file": "fill-practice-nodes.mjs", "npm": "fill-practice-nodes", "kind": "write", "status": "deprecated", "writes": "appends AI questions to data/question-db", "replacement": "npm run ai -- generate-questions (per node) → Studio review" },
+    { "file": "import-questions-supabase.ts", "npm": "questions:import-supabase", "kind": "write", "status": "deprecated", "writes": "legacy `questions` table", "replacement": "npm run ai -- migrate-wave --wave N --apply (canonical question_revisions, legacy_unreviewed)" },
+    { "file": "content/import-legacy-questions.ts", "npm": "content:import-legacy", "kind": "write", "status": "deprecated", "writes": "question_revisions (legacy_unreviewed), whole bank at once", "replacement": "npm run ai -- import-legacy (same importer) or wave by wave via migrate-wave" },
+    { "file": "import-kahoot-tsv.mjs", "npm": "import-kahoot-tsv", "kind": "write", "status": "no-replacement-yet", "writes": "data/question-db", "replacement": "Studio import workspace (not built) — until then import into files, then migrate-wave" },
+    { "file": "import-kahoot-url.mjs", "npm": "import-kahoot-url", "kind": "write", "status": "no-replacement-yet", "writes": "data/question-db", "replacement": "Studio import workspace (not built) — until then import into files, then migrate-wave" },
+    { "file": "sortQuestionsByCategory.ts", "npm": "sort-questions", "kind": "write", "status": "deprecated", "writes": "rewrites category/topic tags in data files", "replacement": "npm run ai -- audit-legacy + Studio library (theme coverage)" },
+    { "file": "assign-practice-stages.mjs", "npm": "assign-practice-stages", "kind": "write", "status": "no-replacement-yet", "writes": "data/practice-stage-config.json (practice structure, not questions)", "replacement": "stays until practice structure moves into learning plans" },
+    { "file": "import-practice-stages-list.mjs", "npm": "import-practice-stages-list", "kind": "write", "status": "no-replacement-yet", "writes": "data/practice-stage-config.json", "replacement": "stays until practice structure moves into learning plans" },
+    { "file": "generate-topics-ai.mjs", "npm": "generate-topics-ai", "kind": "write", "status": "no-replacement-yet", "writes": "data/topics-db (topic tree)", "replacement": "topic tree authoring is out of the Phase 4 revision model — learning plans are mapped by migrate:map-learning-content" },
+    { "file": "sort-topics-ai.mjs", "npm": "sort-topics-ai", "kind": "write", "status": "no-replacement-yet", "writes": "data/topics-db", "replacement": "as generate-topics-ai" },
+    { "file": "ai-topic-edit.mjs", "npm": "ai-topic-edit", "kind": "write", "status": "no-replacement-yet", "writes": "data/topics-db", "replacement": "as generate-topics-ai" },
+    { "file": "topic-conveyor.mjs", "npm": "topic-conveyor", "kind": "write", "status": "no-replacement-yet", "writes": "data/topics-db + question pools", "replacement": "as generate-topics-ai; its question-writing half → npm run ai -- generate-questions" },
+    { "file": "run-launcher.mjs", "npm": "ai-launcher", "kind": "launcher", "status": "deprecated", "writes": "drives the legacy write scripts (Python GUI)", "replacement": "npm run ai -- <task> / Content Studio" },
+    { "file": "analyze-questions.mjs", "npm": "questions:stats", "kind": "read", "status": "read-only", "replacement": "npm run ai -- audit-legacy (canonical inventory)" },
+    { "file": "analyzeQuestionQuality.ts", "npm": "analyze-quality", "kind": "read", "status": "read-only", "replacement": "npm run ai -- validate-content (canonical WS3 checks)" },
+    { "file": "analyzeQuestionPools.ts", "npm": "analyze-pools", "kind": "read", "status": "read-only", "replacement": "Studio library coverage / npm run ai -- audit-legacy" },
+    { "file": "analyze-explanations.mjs", "npm": "analyze-explanations", "kind": "read", "status": "read-only", "replacement": "npm run ai -- validate-content" },
+    { "file": "analyze-topics.mjs", "npm": "analyze-topics", "kind": "read", "status": "read-only", "replacement": null },
+    { "file": "scripture-audit.mjs", "npm": "scripture:audit", "kind": "read", "status": "read-only", "replacement": "WS4 Scripture evidence in Studio review" },
+    { "file": "smoke-audit.mjs", "npm": "smoke-audit", "kind": "read", "status": "read-only", "replacement": null },
+    { "file": "test-kahoot.mjs", "npm": "test-kahoot", "kind": "read", "status": "read-only", "replacement": null },
+    { "file": "testQuestionClassification.ts", "npm": "test-classification", "kind": "read", "status": "read-only", "replacement": null },
+    { "file": "export-all-questions.mjs", "npm": null, "kind": "read", "status": "read-only", "replacement": null },
+    { "file": "topic-preview-index.mjs", "npm": "topic-preview-index", "kind": "read", "status": "read-only", "replacement": null }
+  ]
+}

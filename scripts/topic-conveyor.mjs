@@ -5,6 +5,8 @@
  * npm run topic-conveyor -- --action preview-branch --covenant old-testament --title "Жертовник" --json
  * npm run topic-conveyor -- --target extensions --action preview --covenant old-testament --parent ot-custom-x --count 3 --json
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import {

@@ -1,6 +1,8 @@
 /**
  * Import embedded + data/question-db/*.json into Supabase questions table.
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 import fs from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
