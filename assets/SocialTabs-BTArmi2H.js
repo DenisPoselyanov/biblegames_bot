@@ -1,1 +1,0 @@
-import{$n as e,V as t,Xn as n}from"./index-Ck-ncq_N.js";var r=n(),i={challenges:`/social/challenges`,communities:`/social/communities`};function a({active:n}){let a=e();return(0,r.jsx)(t,{label:`Розділ спільноти`,value:n,onChange:e=>{e!==n&&a(i[e])},options:[{value:`challenges`,label:`Виклики`},{value:`communities`,label:`Групи`}]})}export{a as t};
