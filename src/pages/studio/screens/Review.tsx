@@ -26,6 +26,7 @@ import {
   Toolbar,
 } from '../ui/kit';
 import { cn } from '../ui/cn';
+import { ScriptureLookup } from './ScriptureLookup';
 
 /**
  * Persisted-status groups (ADR-019: `ContentStatus` stays 6-state). Each group
@@ -148,6 +149,8 @@ export function Review() {
               </button>
             ))}
           </Toolbar>
+
+          {typeFilter === 'scripture' && <ScriptureLookup />}
 
           {query.isError && (
             <Note tone="danger" className="mb-3">

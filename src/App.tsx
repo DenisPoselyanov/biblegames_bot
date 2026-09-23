@@ -96,9 +96,6 @@ const GlobalStats = lazy(() =>
   import('./pages/GlobalStats').then((m) => ({ default: m.GlobalStats })),
 );
 const Shop = lazy(() => import('./pages/Shop').then((m) => ({ default: m.Shop })));
-const AdminPanel = lazy(() =>
-  import('./pages/AdminPanel').then((m) => ({ default: m.AdminPanel })),
-);
 const PlayHub = lazy(() => import('./pages/play/PlayHub').then((m) => ({ default: m.PlayHub })));
 const Millionaire = lazy(() =>
   import('./pages/play/Millionaire').then((m) => ({ default: m.Millionaire })),
@@ -348,7 +345,8 @@ export default function App() {
                 />
 
                 <Route path="shop" element={<ErrorBoundary><LazyPage><Shop /></LazyPage></ErrorBoundary>} />
-                <Route path="admin" element={<ErrorBoundary><LazyPage><AdminPanel /></LazyPage></ErrorBoundary>} />
+                {/* Legacy /admin retired in Phase 4 WS8d — Content Studio replaced it (spec §10.1). */}
+                <Route path="admin" element={<Navigate to="/studio" replace />} />
                 <Route path="stats" element={<ErrorBoundary><LazyPage><GlobalStats /></LazyPage></ErrorBoundary>} />
                 <Route path="social/challenges" element={<ErrorBoundary><LazyPage><Challenges /></LazyPage></ErrorBoundary>} />
                 <Route path="social/challenges/:challengeId" element={<ErrorBoundary><LazyPage><ChallengeDetails /></LazyPage></ErrorBoundary>} />
@@ -387,7 +385,8 @@ export default function App() {
                   <Route path="play/study/review-queue/:themeId" element={<ErrorBoundary><LazyPage><ReviewQueue /></LazyPage></ErrorBoundary>} />
                   <Route path="profile" element={<ErrorBoundary><LazyPage><Profile /></LazyPage></ErrorBoundary>} />
                   <Route path="profile/progress" element={<ErrorBoundary><LazyPage><ProgressDashboard /></LazyPage></ErrorBoundary>} />
-                  <Route path="admin" element={<ErrorBoundary><LazyPage><AdminPanel /></LazyPage></ErrorBoundary>} />
+                  {/* Legacy /admin retired in Phase 4 WS8d — Content Studio replaced it (spec §10.1). */}
+                  <Route path="admin" element={<Navigate to="/studio" replace />} />
                   <Route path="shop" element={<ErrorBoundary><LazyPage><Shop /></LazyPage></ErrorBoundary>} />
                   <Route path="stats" element={<ErrorBoundary><LazyPage><GlobalStats /></LazyPage></ErrorBoundary>} />
                   <Route path="social/challenges" element={<ErrorBoundary><LazyPage><Challenges /></LazyPage></ErrorBoundary>} />

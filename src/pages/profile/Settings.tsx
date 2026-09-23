@@ -13,6 +13,7 @@ import { Icon } from '../../components/Icon';
 import { useAuthSession } from '../../context/AuthSessionContext';
 import { useResolvedProfile } from '../../hooks/domain/useProfileWriter';
 import { usePreferences } from '../../hooks/usePreferences';
+import { useStudioAccess } from '../../hooks/useStudioAccess';
 import { useMotionCapabilities } from '../../components/motion/MotionProvider';
 import { hasApi } from '../../repos/apiClient';
 import { progressionRepo } from '../../repos/progressionRepo';
@@ -50,6 +51,7 @@ export function Settings() {
   const navigate = useNavigate();
   const { userId } = useAuthSession();
   const profile = useResolvedProfile();
+  const canOpenStudio = useStudioAccess();
   const { activeTheme, setBibleTranslation } = usePreferences();
   const bibleTranslation = normalizeBollsTranslation(profile.bibleTranslation);
   const { intensity, setIntensity } = useMotionCapabilities();
@@ -118,9 +120,11 @@ export function Settings() {
         <SectionHeader title="Акаунт" />
         <div className={styles.card}>
           <ListRow leading={<Icon name="profile" size={20} />} title="Ім'я" subtitle={profile.displayName} />
-          <Link to="/admin" className={styles.plainLink} onClick={() => haptic.impact('light')}>
-            <ListRow leading={<Icon name="admin" size={20} />} title="Адмін-панель" navigates />
-          </Link>
+          {canOpenStudio && (
+            <Link to="/studio" className={styles.plainLink} onClick={() => haptic.impact('light')}>
+              <ListRow leading={<Icon name="admin" size={20} />} title="Студія контенту" navigates />
+            </Link>
+          )}
         </div>
       </section>
 

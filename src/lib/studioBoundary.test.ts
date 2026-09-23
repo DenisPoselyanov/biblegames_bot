@@ -20,7 +20,9 @@ const CORE_ROUTE_ENTRIES = [
   path.resolve(srcDir, 'pages/learn/Today.tsx'),
   path.resolve(srcDir, 'pages/learn/LearningHub.tsx'),
   path.resolve(srcDir, 'pages/Home.tsx'),
-  path.resolve(srcDir, 'pages/AdminPanel.tsx'),
+  // Player screens that link into the studio (WS8d) must still not import it.
+  path.resolve(srcDir, 'pages/Profile.tsx'),
+  path.resolve(srcDir, 'pages/profile/Settings.tsx'),
 ];
 
 const IMPORT_SPECIFIER_RE =
