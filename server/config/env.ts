@@ -37,6 +37,14 @@ export type JobQueueDriver = 'memory' | 'postgres';
  */
 export type ObjectStorageDriver = 'filesystem' | 's3';
 
+/**
+ * AI content-generation provider (Phase 4 §7.1, WS1). Cloud-only — no local
+ * model path: Ollama was removed from the dev laptop (2026-09-22). `mock` is
+ * for tests/CI. `off` (default) disables `content.ai_generate` job
+ * registration entirely rather than registering a handler that always fails.
+ */
+export type AiProviderId = 'off' | 'gemini' | 'groq' | 'openrouter' | 'mock';
+
 export interface S3Config {
   endpoint: string;
   bucket: string;
@@ -112,6 +120,16 @@ export interface ServerConfig {
    * it off so schedules don't run in N places at once.
    */
   jobSchedulesEnabled: boolean;
+  /** Which `AiProvider` `createAiProvider()` builds (Phase 4 §7.1). `off` by default. */
+  aiProvider: AiProviderId;
+  geminiApiKey: string;
+  geminiModel: string;
+  groqApiKey: string;
+  groqModel: string;
+  openRouterApiKey: string;
+  openRouterModel: string;
+  /** Hard stop for a single AI content job's provider calls (§8.2). */
+  aiJobBudget: { maxRequests: number; maxTokens: number };
 }
 
 export interface LoadConfigResult {
@@ -208,6 +226,13 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     }
   }
 
+  let aiProvider: AiProviderId = 'off';
+  if (env.CONTENT_AI_PROVIDER === 'gemini' || env.CONTENT_AI_PROVIDER === 'groq' || env.CONTENT_AI_PROVIDER === 'openrouter' || env.CONTENT_AI_PROVIDER === 'mock') {
+    aiProvider = env.CONTENT_AI_PROVIDER;
+  } else if (env.CONTENT_AI_PROVIDER && env.CONTENT_AI_PROVIDER !== 'off') {
+    warnings.push(`Unknown CONTENT_AI_PROVIDER "${env.CONTENT_AI_PROVIDER}", falling back to "off"`);
+  }
+
   let storageProvider: StorageProvider = 'json';
   if (env.STORAGE_PROVIDER === 'sql') {
     storageProvider = 'sql';
@@ -250,6 +275,17 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): LoadConfigResu
     objectStorageDriver,
     objectStorageDir: env.OBJECT_STORAGE_DIR ?? 'server/.data/objects',
     s3,
+    aiProvider,
+    geminiApiKey: env.GEMINI_API_KEY ?? '',
+    geminiModel: env.GEMINI_MODEL ?? 'gemini-3.1-flash-lite',
+    groqApiKey: env.GROQ_API_KEY ?? '',
+    groqModel: env.GROQ_MODEL ?? 'llama-3.3-70b-versatile',
+    openRouterApiKey: env.OPENROUTER_API_KEY ?? '',
+    openRouterModel: env.OPENROUTER_MODEL ?? 'deepseek/deepseek-chat-v3-0324:free',
+    aiJobBudget: {
+      maxRequests: parseIntOr(env.AI_JOB_MAX_REQUESTS, 20),
+      maxTokens: parseIntOr(env.AI_JOB_MAX_TOKENS, 200_000),
+    },
   });
 
   return { config, warnings };

@@ -15,6 +15,8 @@ import { createInMemoryJobQueue } from '../domains/jobs/inMemoryQueue';
 import type { JobQueue } from '../domains/jobs/queue';
 import type { ContentRepositories } from '../domains/content/repository';
 import type { ObjectStore } from '../domains/storage/objectStore';
+import type { AiBudget } from '../domains/ai/budget';
+import type { AiProvider } from '../domains/ai/types';
 import {
   idempotencySweepHandler,
   rateLimitSweepHandler,
@@ -22,6 +24,7 @@ import {
   type SweepQuery,
 } from './sweeps';
 import { contentSnapshotHandler } from './contentSnapshot';
+import { contentAiGenerateHandler } from './contentAi';
 
 export function createJobQueue(config: ServerConfig): JobQueue {
   if (config.jobQueueDriver === 'postgres') {
@@ -49,6 +52,13 @@ export interface CoreJobDeps {
    * `content.snapshot` job type is registered.
    */
   content?: { repos: ContentRepositories; store: ObjectStore };
+  /**
+   * AI content generation (Phase 4 §7, §8, WS1). Absent when no provider is
+   * configured (`createAiProvider()` returned `null`) — `content.ai_generate`
+   * is then simply not registered rather than registered with a handler that
+   * always fails.
+   */
+  ai?: { provider: AiProvider; store: ObjectStore; budget: AiBudget };
 }
 
 export function registerCoreJobs(queue: JobQueue, deps: CoreJobDeps): void {
@@ -72,6 +82,13 @@ export function registerCoreJobs(queue: JobQueue, deps: CoreJobDeps): void {
     // On demand only — no `everyMs`. Enqueued after a content publish.
     queue.register(JOB_TYPES.CONTENT_SNAPSHOT, {
       handler: contentSnapshotHandler(deps.content),
+    });
+  }
+
+  if (deps.ai) {
+    // On demand only — one job per generation call (§8.3, no batch loop yet).
+    queue.register(JOB_TYPES.AI_CONTENT_GENERATE, {
+      handler: contentAiGenerateHandler(deps.ai),
     });
   }
 }

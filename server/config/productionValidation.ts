@@ -55,6 +55,18 @@ export function collectProductionConfigErrors(config: ServerConfig): string[] {
       `CLIENT_ORIGIN(S) must be https and non-loopback in production ("${unsafeOrigin}").`,
     );
   }
+  if (config.aiProvider === 'mock') {
+    errors.push('CONTENT_AI_PROVIDER must not be "mock" in production (Phase 4 §7.4 — tests only).');
+  }
+  if (config.aiProvider === 'gemini' && !config.geminiApiKey) {
+    errors.push('GEMINI_API_KEY is required when CONTENT_AI_PROVIDER=gemini in production.');
+  }
+  if (config.aiProvider === 'groq' && !config.groqApiKey) {
+    errors.push('GROQ_API_KEY is required when CONTENT_AI_PROVIDER=groq in production.');
+  }
+  if (config.aiProvider === 'openrouter' && !config.openRouterApiKey) {
+    errors.push('OPENROUTER_API_KEY is required when CONTENT_AI_PROVIDER=openrouter in production.');
+  }
 
   return errors;
 }

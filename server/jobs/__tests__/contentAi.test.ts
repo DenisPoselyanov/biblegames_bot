@@ -1,0 +1,96 @@
+import { describe, expect, it } from 'vitest';
+import { createMemoryObjectStore } from '../../infrastructure/storage/memoryObjectStore';
+import { createMockAiProvider } from '../../infrastructure/ai/mockProvider';
+import { AiProviderError } from '../../domains/ai/types';
+import { JOB_TYPES } from '../../domains/jobs/catalog';
+import { createInMemoryJobQueue } from '../../domains/jobs/inMemoryQueue';
+import { registerCoreJobs } from '../index';
+
+describe('content.ai_generate job (Phase 4 §7, §8, WS1)', () => {
+  it('writes a raw artifact to object storage on success', async () => {
+    const store = createMemoryObjectStore();
+    const provider = createMockAiProvider();
+    provider.enqueue({ text: '{"question":"Хто збудував ковчег?"}' });
+    const queue = createInMemoryJobQueue({ onEvent: () => {} });
+
+    registerCoreJobs(queue, {
+      query: async () => ({ rowCount: 0 }),
+      ai: { provider, store, budget: { maxRequests: 5 } },
+    });
+
+    const { id } = await queue.enqueue(JOB_TYPES.AI_CONTENT_GENERATE, {
+      promptVersion: 'question.generate.v1',
+      prompt: 'Згенеруй питання про Ноя',
+    });
+    await queue.runDue();
+
+    const job = queue.peek(id)!;
+    expect(job.status).toBe('completed');
+    const artifact = await store.get(`ai-artifacts/${id}.json`);
+    expect(artifact).not.toBeNull();
+    const parsed = JSON.parse(artifact!.body.toString('utf-8'));
+    expect(parsed.output).toBe('{"question":"Хто збудував ковчег?"}');
+    expect(parsed.promptVersion).toBe('question.generate.v1');
+  });
+
+  it('rejects an invalid payload at the queue boundary (missing promptVersion)', async () => {
+    const store = createMemoryObjectStore();
+    const provider = createMockAiProvider();
+    const queue = createInMemoryJobQueue({ onEvent: () => {} });
+    registerCoreJobs(queue, {
+      query: async () => ({ rowCount: 0 }),
+      ai: { provider, store, budget: {} },
+    });
+
+    await expect(
+      queue.enqueue(JOB_TYPES.AI_CONTENT_GENERATE, { prompt: 'no version' }),
+    ).rejects.toThrow(/invalid payload/i);
+  });
+
+  it('retries a retryable provider error via the queue backoff, then succeeds', async () => {
+    const store = createMemoryObjectStore();
+    const provider = createMockAiProvider();
+    provider.enqueue(
+      { throw: new AiProviderError('rate limited', { kind: 'rate_limited', retryable: true }) },
+      { text: 'ok on retry' },
+    );
+    const queue = createInMemoryJobQueue({ onEvent: () => {}, backoffMs: () => 0 });
+    registerCoreJobs(queue, {
+      query: async () => ({ rowCount: 0 }),
+      ai: { provider, store, budget: { maxRequests: 5 } },
+    });
+
+    const { id } = await queue.enqueue(JOB_TYPES.AI_CONTENT_GENERATE, {
+      promptVersion: 'question.generate.v1',
+      prompt: 'p',
+    });
+    await queue.runDue();
+    expect(queue.peek(id)!.status).toBe('retry');
+
+    await queue.runDue();
+    expect(queue.peek(id)!.status).toBe('completed');
+    const artifact = await store.get(`ai-artifacts/${id}.json`);
+    expect(JSON.parse(artifact!.body.toString('utf-8')).output).toBe('ok on retry');
+  });
+
+  it('checkpoints usage after a successful call so a later resume can see it', async () => {
+    const store = createMemoryObjectStore();
+    const provider = createMockAiProvider();
+    provider.enqueue({ text: 'ok' });
+    const queue = createInMemoryJobQueue({ onEvent: () => {} });
+    registerCoreJobs(queue, {
+      query: async () => ({ rowCount: 0 }),
+      ai: { provider, store, budget: { maxRequests: 5 } },
+    });
+
+    const { id } = await queue.enqueue(JOB_TYPES.AI_CONTENT_GENERATE, {
+      promptVersion: 'question.generate.v1',
+      prompt: 'p',
+    });
+    await queue.runDue();
+
+    expect(queue.peek(id)!.checkpoint).toMatchObject({
+      usage: { requests: 1, tokens: 0, costUsd: 0 },
+    });
+  });
+});
