@@ -1,7 +1,7 @@
 import { Lock } from 'lucide-react';
 import { plural } from '../lib/plural';
 import { useSettingsQuery } from '../lib/queries';
-import { ROLE_LABEL, type Permission } from '../lib/rbac';
+import { PERMISSION_LABEL, ROLE_LABEL } from '../lib/rbac';
 import { useStudio } from '../lib/useStudio';
 import { Badge, Disclosure, Grid, KeyVal, Mono, Note, Page, Panel, Status, Term } from '../ui/kit';
 
@@ -13,17 +13,6 @@ import { Badge, Disclosure, Grid, KeyVal, Mono, Note, Page, Panel, Status, Term 
  * be a button that pretends — the prototype's «Ключ» buttons are dropped.
  * The server never sends a key, only whether one is set.
  */
-
-const PERMISSION_LABEL: Partial<Record<Permission, string>> = {
-  'content:draft:create': 'Створювати чернетки',
-  'content:import': 'Імпортувати контент',
-  'content:ai:run': 'Запускати AI',
-  'content:review': 'Коментувати й повертати',
-  'content:approve': 'Схвалювати',
-  'content:publish': 'Публікувати в гру',
-  'content:rollback': 'Відкочувати випуск',
-  'content:audit:read': 'Бачити Студію й журнал',
-};
 
 export function Settings() {
   const { identity } = useStudio();

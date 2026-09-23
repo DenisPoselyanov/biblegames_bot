@@ -22,7 +22,6 @@ function getTabKey(pathname: string): TabKey {
   if (pathname.startsWith('/shop')) return 'shop';
   if (
     pathname.startsWith('/profile') ||
-    pathname.startsWith('/admin') ||
     pathname.startsWith('/stats') ||
     pathname.startsWith('/social')
   ) {

@@ -536,6 +536,11 @@ question/quarantine tab → `review` filtered "З помилками", quality r
 in `review/:id`. Once Studio covers all of it, `AdminPanel.tsx` is deleted
 rather than kept running as a second, competing admin surface.
 
+> **Done (Phase 4 WS8d, 2026-09-23).** Mapping verified and `AdminPanel.tsx` /
+> `ScripturePreview.tsx` deleted; `/admin` redirects to `/studio`. The ad-hoc
+> reference check lives in `review` → «Писання під питанням» → «Перевірити
+> посилання вручну». Pool statistics were not ported (no pool target exists).
+
 ## 10.2 Studio modules
 
 > The module names below are this spec's functional groupings. The prototype

@@ -5,6 +5,7 @@ import { THEMES } from '../data/themes';
 import { useResolvedProfile } from '../hooks/domain/useProfileWriter';
 import { usePreferences } from '../hooks/usePreferences';
 import { useTelegram } from '../hooks/useTelegram';
+import { useStudioAccess } from '../hooks/useStudioAccess';
 import { useToast } from '../components/Toast';
 import { Icon } from '../components/Icon';
 import { haptic, WebApp } from '../lib/telegram';
@@ -69,6 +70,7 @@ export function Profile() {
   const navigate = useNavigate();
   const [socialVersion, setSocialVersion] = useState(0);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const canOpenStudio = useStudioAccess();
   const [showAllAchievements, setShowAllAchievements] = useState(false);
   const [showId, setShowId] = useState(false);
   const [masteryOpen, setMasteryOpen] = useState(false);
@@ -189,9 +191,11 @@ export function Profile() {
               <Icon name="close" size={18} />
             </button>
           </div>
-          <Link to="/admin" className={styles.settingsAdminBtn} onClick={() => { haptic.impact('light'); setSettingsOpen(false); }}>
-            <Icon name="admin" size={16} /> Адмін-панель
-          </Link>
+          {canOpenStudio && (
+            <Link to="/studio" className={styles.settingsAdminBtn} onClick={() => { haptic.impact('light'); setSettingsOpen(false); }}>
+              <Icon name="admin" size={16} /> Студія контенту
+            </Link>
+          )}
           <div className={styles.settingsSection}>
             <h3 className={styles.settingsSubtitle}>Переклад Писання</h3>
             <p className={styles.settingsHint}>Текст уривків з bolls.life у поясненнях та на головній</p>

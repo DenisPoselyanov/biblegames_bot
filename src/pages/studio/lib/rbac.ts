@@ -36,6 +36,18 @@ export const ROLE_LABEL: Record<Role, string> = {
   admin: 'Адміністратор',
 };
 
+/** Plain-language names for the Studio permissions (Settings matrix, Guide). */
+export const PERMISSION_LABEL: Partial<Record<Permission, string>> = {
+  'content:draft:create': 'Створювати чернетки',
+  'content:import': 'Імпортувати контент',
+  'content:ai:run': 'Запускати AI',
+  'content:review': 'Коментувати й повертати',
+  'content:approve': 'Схвалювати',
+  'content:publish': 'Публікувати в гру',
+  'content:rollback': 'Відкочувати випуск',
+  'content:audit:read': 'Бачити Студію й журнал',
+};
+
 /** True when a role holds any Studio-relevant permission at all. */
 export function isStudioRole(roles: readonly string[]): boolean {
   return roles.some((r) => r === 'content_reviewer' || r === 'content_publisher' || r === 'admin');

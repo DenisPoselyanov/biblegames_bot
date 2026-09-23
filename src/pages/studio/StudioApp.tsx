@@ -20,7 +20,6 @@ import { useDashboardQuery } from './lib/queries';
 import { ROLE_LABEL, type Role } from './lib/rbac';
 import type { ThemePref } from './lib/studioContext';
 import { Avatar, Badge } from './ui/kit';
-import { ComingSoon } from './screens/ComingSoon';
 import { Review } from './screens/Review';
 import { ReviewItem } from './screens/ReviewItem';
 import { Overview } from './screens/Overview';
@@ -31,6 +30,7 @@ import { Library } from './screens/Library';
 import { Releases } from './screens/Releases';
 import { Settings } from './screens/Settings';
 import { Reports } from './screens/Reports';
+import { Guide } from './screens/Guide';
 
 interface NavItem {
   to: string;
@@ -45,7 +45,7 @@ interface NavItem {
  * inside the library, the audit log inside releases, Scripture inside the
  * review queue — each of them is a second view of the same subject, not a
  * separate place to remember. Review is live since WS8b; Library/Releases/
- * Settings since WS8c; only the Guide is still a placeholder (WS8d).
+ * Settings since WS8c; the Guide since WS8d — no placeholder screens left.
  */
 function useNav(): { primary: NavItem[]; foot: NavItem[] } {
   const dashboard = useDashboardQuery();
@@ -284,7 +284,7 @@ export function StudioApp() {
             <Route path="library" element={<Library />} />
             <Route path="releases" element={<Releases />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="guide" element={<ComingSoon title="Як це працює" />} />
+            <Route path="guide" element={<Guide />} />
             <Route path="*" element={<Navigate to="/studio" replace />} />
           </Route>
         </Routes>

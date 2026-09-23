@@ -43,11 +43,14 @@ export const PERMISSIONS = [
   /**
    * Mutate the live question bank. Admin-only in Phase 1 — live question
    * mutation stays minimally protected until Phase 4 Content Studio exists
-   * (ADR-004). Still admin-only as of Phase 4 WS5: granting it to
-   * `content_publisher` before Studio (WS8) replaces `AdminPanel.tsx` would
-   * hand that role a review-free shortcut into the exact legacy direct-write
-   * path Content Studio exists to retire — the grant belongs with the WS8
-   * cutover, not RBAC hardening in isolation.
+   * (ADR-004). Still admin-only after the WS8d cutover, on purpose:
+   * `AdminPanel.tsx` is gone (it never used this route — its quarantine was
+   * in-memory), but the in-game `QuestionEditModal` (Quiz) still writes the
+   * live bank directly through `/api/admin/questions`, with no revision,
+   * review or publish gate. Granting it to `content_publisher` would hand that
+   * role exactly the review-free shortcut Content Studio exists to replace;
+   * content roles edit through Studio revisions instead. The route retires
+   * when the in-game editor does, not by widening who may call it.
    */
   'questions:admin',
 ] as const;
