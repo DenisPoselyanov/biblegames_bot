@@ -127,6 +127,51 @@ export function runContentRepositoryContract(makeHarness: () => Promise<Contract
     });
   });
 
+  it('listByStatus returns revisions across questions by status, bounded, never other statuses (Phase 4 WS8b)', async () => {
+    const { revisions } = await setup();
+    const d1 = (await revisions.appendRevision(draft({ questionId: 'qa', status: 'draft' }))).revision;
+    const d2 = (await revisions.appendRevision(draft({ questionId: 'qb', status: 'draft' }))).revision;
+    const legacy = (await revisions.appendRevision(draft({ questionId: 'qc' }))).revision;
+    const pub = (await revisions.appendRevision(draft({ questionId: 'qd', status: 'draft' }))).revision;
+    await revisions.publishRevision(pub.id);
+
+    const drafts = await revisions.listByStatus({ statuses: ['draft'] });
+    expect(drafts.map((r) => r.id).sort()).toEqual([d1.id, d2.id].sort());
+    expect(drafts.every((r) => r.status === 'draft')).toBe(true);
+
+    const mixed = await revisions.listByStatus({ statuses: ['draft', 'legacy_unreviewed'] });
+    expect(mixed.map((r) => r.id).sort()).toEqual([d1.id, d2.id, legacy.id].sort());
+
+    expect(await revisions.listByStatus({ statuses: [] })).toEqual([]);
+    expect((await revisions.listByStatus({ statuses: ['draft'], limit: 1 })).length).toBe(1);
+    // newest-first: createdAt desc, id desc as the tiebreaker
+    const ordered = await revisions.listByStatus({ statuses: ['draft', 'legacy_unreviewed', 'published'] });
+    for (let i = 1; i < ordered.length; i += 1) {
+      const [a, b] = [ordered[i - 1], ordered[i]];
+      expect(a.createdAt > b.createdAt || (a.createdAt === b.createdAt && a.id > b.id)).toBe(true);
+    }
+  });
+
+  it('countByStatus reports every status, zero when none (Phase 4 WS8b)', async () => {
+    const { revisions } = await setup();
+    const empty = await revisions.countByStatus();
+    expect(empty).toMatchObject({ draft: 0, published: 0, legacy_unreviewed: 0, quarantined: 0 });
+
+    await revisions.appendRevision(draft({ questionId: 'qa', status: 'draft' }));
+    const pub = (await revisions.appendRevision(draft({ questionId: 'qb', status: 'draft' }))).revision;
+    await revisions.publishRevision(pub.id);
+    await revisions.appendRevision(draft({ questionId: 'qc' }));
+
+    expect(await revisions.countByStatus()).toEqual({
+      legacy_unreviewed: 1,
+      draft: 1,
+      ready_for_review: 0,
+      published: 1,
+      quarantined: 0,
+      archived: 0,
+    });
+  });
+
   it('publishVersion freezes an ordered set and is idempotent by membership', async () => {
     const { revisions, sets } = await setup();
     const a = (await revisions.appendRevision(draft({ questionId: 'qa' }))).revision;

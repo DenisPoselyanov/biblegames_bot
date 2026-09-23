@@ -366,6 +366,55 @@ export function runLearningRepositoryContract(makeHarness: () => Promise<Contrac
     expect((await lessonRevisions.getById(r1.id))?.quarantineReason).toBe('theological review');
   });
 
+  it('lesson listByStatus/countByStatus read across lessons by status (Phase 4 WS8b)', async () => {
+    const { plans, modules, objectives, lessonRevisions } = await setup();
+    await plans.upsert({ id: 'jonah', themeId: 'jonah', title: 'Йона' });
+    await modules.upsert({ id: 'jonah-sub-1', planId: 'jonah', title: 'Втеча', position: 0 });
+    await objectives.upsert({ id: 'jonah-sub-1-sub-1', planId: 'jonah', title: 'Корабель', position: 0 });
+    await objectives.upsert({ id: 'jonah-sub-1-sub-2', planId: 'jonah', title: 'Ніневія', position: 1 });
+
+    const base = {
+      planId: 'jonah',
+      moduleId: 'jonah-sub-1',
+      blocks: [{ id: 'b1', blockType: 'heading' as const, schemaVersion: 1, payload: { text: 'Йона' } }],
+    };
+    const a = (
+      await lessonRevisions.appendRevision({
+        ...base,
+        lessonId: 'lesson_jonah-1',
+        objectiveId: 'jonah-sub-1-sub-1',
+        title: 'Корабель',
+        status: 'draft',
+      })
+    ).revision;
+    const b = (
+      await lessonRevisions.appendRevision({
+        ...base,
+        lessonId: 'lesson_jonah-2',
+        objectiveId: 'jonah-sub-1-sub-2',
+        title: 'Ніневія',
+      })
+    ).revision;
+
+    const drafts = await lessonRevisions.listByStatus({ statuses: ['draft'] });
+    expect(drafts.map((r) => r.id)).toEqual([a.id]);
+    expect(drafts[0].blocks).toEqual(base.blocks);
+    const both = await lessonRevisions.listByStatus({ statuses: ['draft', 'legacy_unreviewed'] });
+    expect(both.map((r) => r.id).sort()).toEqual([a.id, b.id].sort());
+    expect(await lessonRevisions.listByStatus({ statuses: [] })).toEqual([]);
+    expect((await lessonRevisions.listByStatus({ statuses: ['draft', 'legacy_unreviewed'], limit: 1 })).length).toBe(1);
+
+    const counts = await lessonRevisions.countByStatus();
+    expect(counts).toEqual({
+      legacy_unreviewed: 1,
+      draft: 1,
+      ready_for_review: 0,
+      published: 0,
+      quarantined: 0,
+      archived: 0,
+    });
+  });
+
   it('rejects an AI-originated lesson appendRevision that claims a reviewed/published status (ADR-019 §3)', async () => {
     const { plans, modules, objectives, lessonRevisions } = await setup();
     await plans.upsert({ id: 'exodus', themeId: 'exodus', title: 'Вихід' });

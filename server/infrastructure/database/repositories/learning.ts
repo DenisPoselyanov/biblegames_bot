@@ -15,6 +15,10 @@ import type {
 } from '../../../../contracts/index';
 import type { Transaction as OpaqueTx } from '../../../domains/shared/context';
 import { assertAiWriteAllowed } from '../../../domains/shared/contentWriteGuard';
+import {
+  boundedStatusLimit,
+  emptyStatusCounts,
+} from '../../../domains/shared/revisionStatusFilter';
 import { hashLessonRevisionBody } from '../../../domains/learning/lessonHash';
 import type {
   LearningModuleRepository,
@@ -603,6 +607,25 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
         .where(eq(lessonRevisions.lessonId, lessonId))
         .orderBy(desc(lessonRevisions.revisionNumber));
       return rows.map(toLessonRevision);
+    },
+    async listByStatus(filter, tx) {
+      if (filter.statuses.length === 0) return [];
+      const rows = await asExecutor(db, tx)
+        .select()
+        .from(lessonRevisions)
+        .where(inArray(lessonRevisions.status, [...filter.statuses]))
+        .orderBy(desc(lessonRevisions.createdAt), desc(lessonRevisions.id))
+        .limit(boundedStatusLimit(filter.limit));
+      return rows.map(toLessonRevision);
+    },
+    async countByStatus(tx) {
+      const rows = await asExecutor(db, tx)
+        .select({ status: lessonRevisions.status, count: sql<number>`count(*)::int` })
+        .from(lessonRevisions)
+        .groupBy(lessonRevisions.status);
+      const counts = emptyStatusCounts();
+      for (const row of rows) counts[row.status as ContentStatus] = row.count;
+      return counts;
     },
     async appendRevision(draft, tx) {
       assertAiWriteAllowed(draft.source, draft.status);

@@ -47,6 +47,8 @@ export const queryKeys = {
     jobs: (filter?: string) => ['studio', 'jobs', filter ?? null] as const,
     job: (jobId: string) => ['studio', 'job', jobId] as const,
     dashboard: () => ['studio', 'dashboard'] as const,
+    review: (statuses?: string) => ['studio', 'review', statuses ?? null] as const,
+    reviewItem: (type: string, revisionId: string) => ['studio', 'review-item', type, revisionId] as const,
   },
 } as const;
 

@@ -43,6 +43,10 @@ export function createSqlAuditLog(): AuditLog {
         params.push(filter.actorUserId);
         where.push(`actor_user_id = $${params.length}`);
       }
+      if (filter.target) {
+        params.push(filter.target);
+        where.push(`target = $${params.length}`);
+      }
       if (filter.since) {
         params.push(filter.since);
         where.push(`created_at >= $${params.length}::timestamptz`);

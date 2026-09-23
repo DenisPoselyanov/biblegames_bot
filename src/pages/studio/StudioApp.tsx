@@ -21,6 +21,8 @@ import { ROLE_LABEL, type Role } from './lib/rbac';
 import type { ThemePref } from './lib/studioContext';
 import { Avatar, Badge } from './ui/kit';
 import { ComingSoon } from './screens/ComingSoon';
+import { Review } from './screens/Review';
+import { ReviewItem } from './screens/ReviewItem';
 import { Overview } from './screens/Overview';
 import { Jobs } from './screens/Jobs';
 import { JobDetail } from './screens/JobDetail';
@@ -38,8 +40,8 @@ interface NavItem {
  * Seven entries, not thirteen (kept from the design prototype). Quality lives
  * inside the library, the audit log inside releases, Scripture inside the
  * review queue — each of them is a second view of the same subject, not a
- * separate place to remember. Review/Library/Releases/Settings ship as
- * placeholders in WS8a — their real data lands in WS8b/c.
+ * separate place to remember. Review is live since WS8b; Library/Releases/
+ * Settings are still placeholders until WS8c.
  */
 function useNav(): { primary: NavItem[]; foot: NavItem[] } {
   const dashboard = useDashboardQuery();
@@ -72,7 +74,11 @@ function NavRow({ item }: { item: NavItem }) {
   const { to, label, icon: Icon, badge, live } = item;
   return (
     <NavLink
-      to={to}
+      // Absolute on purpose: the layout route sits under the `studio/*` splat, so
+      // a relative `to` resolves against the current URL (react-router v7
+      // relative-splat semantics) — from /studio/jobs, `library` became
+      // /studio/jobs/library and `''` marked Огляд active on every screen.
+      to={to ? `/studio/${to}` : '/studio'}
       end={to === ''}
       className={({ isActive }) =>
         cn(
@@ -139,6 +145,8 @@ const CRUMBS: Record<string, string> = {
   releases: 'Випуск',
   settings: 'Налаштування',
   guide: 'Як це працює',
+  question: 'Питання',
+  lesson: 'Урок',
 };
 
 const THEME_CYCLE: ThemePref[] = ['system', 'light', 'dark'];
@@ -209,7 +217,7 @@ function Topbar() {
 
 /**
  * The studio chrome. Screens render through `Outlet`, so every link in them can
- * stay relative (`review/d-101`, `../jobs`).
+ * stay relative (`review/question/<revisionId>`, `../jobs`).
  */
 function StudioLayout() {
   const location = useLocation();
@@ -263,8 +271,8 @@ export function StudioApp() {
         <Routes>
           <Route element={<StudioLayout />}>
             <Route index element={<Overview />} />
-            <Route path="review" element={<ComingSoon title="Черга ревʼю" />} />
-            <Route path="review/:draftId" element={<ComingSoon title="Черга ревʼю" />} />
+            <Route path="review" element={<Review />} />
+            <Route path="review/:type/:revisionId" element={<ReviewItem />} />
             <Route path="jobs" element={<Jobs />} />
             <Route path="jobs/new" element={<NewJob />} />
             <Route path="jobs/:jobId" element={<JobDetail />} />

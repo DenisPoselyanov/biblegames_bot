@@ -10,6 +10,7 @@
  */
 import type { Testament } from '../../../contracts/index';
 import type { Transaction } from '../shared/context';
+import type { RevisionStatusCounts, RevisionStatusFilter } from '../shared/revisionStatusFilter';
 import type {
   AppendLessonRevisionOutcome,
   LearningModuleRecord,
@@ -133,6 +134,14 @@ export interface LessonRevisionRepository {
   getPublished(lessonId: string, tx?: Transaction): Promise<LessonRevisionRecord | null>;
   /** Every revision for a lesson, newest `revisionNumber` first. */
   listRevisions(lessonId: string, tx?: Transaction): Promise<LessonRevisionRecord[]>;
+  /**
+   * Revisions across every lesson whose status is in `filter.statuses`,
+   * newest `createdAt` first (Phase 4 WS8b — the Studio review queue). Bounded:
+   * default 100, max 500.
+   */
+  listByStatus(filter: RevisionStatusFilter, tx?: Transaction): Promise<LessonRevisionRecord[]>;
+  /** Revision count per status, every status present (zero when none). */
+  countByStatus(tx?: Transaction): Promise<RevisionStatusCounts>;
   /**
    * Append a new revision from a draft. Idempotent by body hash: if the latest
    * revision for the lesson already has the same `contentHash`, returns

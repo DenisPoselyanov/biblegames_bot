@@ -7,6 +7,11 @@
  */
 import type { Transaction } from '../shared/context';
 import { assertAiWriteAllowed } from '../shared/contentWriteGuard';
+import {
+  boundedStatusLimit,
+  compareNewestFirst,
+  emptyStatusCounts,
+} from '../shared/revisionStatusFilter';
 import { hashContentSet, hashRevisionBody } from './contentHash';
 import type {
   ContentRepositories,
@@ -90,6 +95,21 @@ export function createInMemoryContentRepositories(
         .sort((a, b) => (a.questionId < b.questionId ? -1 : a.questionId > b.questionId ? 1 : 0))
         .slice(0, limit)
         .map((r) => ({ ...r }));
+    },
+    async listByStatus(filter, tx) {
+      rejectTx(tx);
+      const statuses = new Set(filter.statuses);
+      return [...revisions.values()]
+        .filter((r) => statuses.has(r.status))
+        .sort(compareNewestFirst)
+        .slice(0, boundedStatusLimit(filter.limit))
+        .map((r) => ({ ...r }));
+    },
+    async countByStatus(tx) {
+      rejectTx(tx);
+      const counts = emptyStatusCounts();
+      for (const r of revisions.values()) counts[r.status] += 1;
+      return counts;
     },
     async appendRevision(draft: RevisionDraft, tx) {
       rejectTx(tx);
