@@ -175,4 +175,85 @@ describe('in-memory job queue (§17)', () => {
       /already registered/,
     );
   });
+
+  describe('list / get / cancel (Phase 4 WS8a)', () => {
+    it('lists jobs newest-first and filters by status/type', async () => {
+      queue.register(JOB_TYPES.RATE_LIMIT_SWEEP, { handler: vi.fn().mockResolvedValue(undefined) });
+      queue.register(JOB_TYPES.IDEMPOTENCY_SWEEP, { handler: vi.fn().mockResolvedValue(undefined) });
+      const { id: a } = await queue.enqueue(JOB_TYPES.RATE_LIMIT_SWEEP, {});
+      advance(1);
+      const { id: b } = await queue.enqueue(JOB_TYPES.IDEMPOTENCY_SWEEP, {});
+
+      const all = await queue.list();
+      expect(all.map((j) => j.id)).toEqual([b, a]);
+
+      const onlyIdempotency = await queue.list({ type: JOB_TYPES.IDEMPOTENCY_SWEEP });
+      expect(onlyIdempotency.map((j) => j.id)).toEqual([b]);
+
+      const onlyPending = await queue.list({ status: 'pending' });
+      expect(onlyPending.map((j) => j.id).sort()).toEqual([a, b].sort());
+    });
+
+    it('gets a job by id, or undefined for an unknown one', async () => {
+      queue.register(JOB_TYPES.RATE_LIMIT_SWEEP, { handler: vi.fn().mockResolvedValue(undefined) });
+      const { id } = await queue.enqueue(JOB_TYPES.RATE_LIMIT_SWEEP, {});
+      expect((await queue.get(id))?.id).toBe(id);
+      expect(await queue.get('nope')).toBeUndefined();
+    });
+
+    it('cancels a pending job immediately', async () => {
+      queue.register(JOB_TYPES.RATE_LIMIT_SWEEP, { handler: vi.fn().mockResolvedValue(undefined) });
+      const { id } = await queue.enqueue(JOB_TYPES.RATE_LIMIT_SWEEP, {});
+      expect(await queue.cancel(id)).toBe(true);
+      expect(queue.peek(id)!.status).toBe('cancelled');
+      expect(queue.peek(id)!.completedAt).not.toBeNull();
+    });
+
+    it('cancels a running job once its handler observes the abort signal', async () => {
+      let release: (() => void) | undefined;
+      queue.register(JOB_TYPES.TELEMETRY_RETENTION, {
+        handler: (ctx) =>
+          new Promise<void>((resolve, reject) => {
+            release = resolve;
+            ctx.signal.addEventListener('abort', () => reject(new Error('aborted')));
+          }),
+      });
+      await queue.enqueue(JOB_TYPES.TELEMETRY_RETENTION, {});
+      const running = queue.runDue();
+      const jobId = [...(await queue.list())][0].id;
+
+      expect(await queue.cancel(jobId)).toBe(true);
+      await running;
+
+      expect(queue.peek(jobId)!.status).toBe('cancelled');
+      release?.();
+    });
+
+    it('cancels a running job that finishes successfully despite the abort signal', async () => {
+      let finishHandler: (() => void) | undefined;
+      queue.register(JOB_TYPES.TELEMETRY_RETENTION, {
+        // Ignores the abort signal on purpose — cancellation must still stick
+        // once the handler eventually resolves normally.
+        handler: () => new Promise<void>((resolve) => { finishHandler = resolve; }),
+      });
+      await queue.enqueue(JOB_TYPES.TELEMETRY_RETENTION, {});
+      const jobId = (await queue.list())[0].id;
+      const running = queue.runDue();
+
+      expect(await queue.cancel(jobId)).toBe(true);
+      finishHandler?.();
+      await running;
+
+      expect(queue.peek(jobId)!.status).toBe('cancelled');
+    });
+
+    it('refuses to cancel an unknown or already-terminal job', async () => {
+      queue.register(JOB_TYPES.RATE_LIMIT_SWEEP, { handler: vi.fn().mockResolvedValue(undefined) });
+      const { id } = await queue.enqueue(JOB_TYPES.RATE_LIMIT_SWEEP, {});
+      await queue.runDue();
+      expect(queue.peek(id)!.status).toBe('completed');
+      expect(await queue.cancel(id)).toBe(false);
+      expect(await queue.cancel('nope')).toBe(false);
+    });
+  });
 });

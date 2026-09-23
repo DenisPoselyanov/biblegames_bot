@@ -41,6 +41,13 @@ export const queryKeys = {
     root: () => ['kahoot'] as const,
     room: (roomId: string) => ['kahoot', 'room', roomId] as const,
   },
+  studio: {
+    root: () => ['studio'] as const,
+    identity: (userId: string) => ['studio', 'identity', userId] as const,
+    jobs: (filter?: string) => ['studio', 'jobs', filter ?? null] as const,
+    job: (jobId: string) => ['studio', 'job', jobId] as const,
+    dashboard: () => ['studio', 'dashboard'] as const,
+  },
 } as const;
 
 /**

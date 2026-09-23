@@ -45,6 +45,8 @@ import { createIdempotencyStore, type IdempotencyStore } from './lib/idempotency
 import { createMigrationStore, type MigrationStore } from './migration/migrationStore';
 import { scriptureRouter } from './routes/scripture';
 import { createQuestionsAdminRouter } from './routes/questionsAdmin';
+import { createStudioRouter } from './routes/studio';
+import type { JobQueue } from './domains/jobs/queue';
 import { createClientErrorsRouter } from './routes/clientErrors';
 import { createMeRouter } from './routes/me';
 import { createProgressionRouter } from './routes/progression';
@@ -87,6 +89,16 @@ export interface AppDeps {
    * (`compare`), or serves published revisions (`canonical`).
    */
   contentRepositories?: ContentRepositories;
+  /**
+   * A job queue instance running in THIS process (Phase 4 WS8a). Absent by
+   * default in production — jobs run in the separate worker deployable
+   * (Phase 2 §17, `server/worker.ts`), which has its own in-memory `Map` no
+   * HTTP request can see. Pass one (e.g. in tests, or a single-process
+   * deployment that also calls `queue.start()`) to power the Studio Jobs
+   * screen with live data; without it, `/api/v1/studio/jobs*` reports
+   * `available: false` instead of a fabricated empty list.
+   */
+  jobQueue?: JobQueue;
 }
 
 /**
@@ -294,6 +306,20 @@ export function createApp(deps: AppDeps): Express {
       createAdminRolesRouter({ roleService }),
     );
   }
+
+  // --- Content Studio (Phase 4 WS8a) — any content role may read; cancel needs content:ai:run ---
+  app.use(
+    '/api/v1/studio',
+    ...authed,
+    requirePermission('content:audit:read'),
+    rl('studio', 60_000, 60),
+    createStudioRouter({
+      auditLog,
+      jobQueue: deps.jobQueue,
+      aiJobBudget: config.aiJobBudget,
+      requireAiRun: requirePermission('content:ai:run'),
+    }),
+  );
 
   app.use(
     '/api/v1/me',

@@ -146,6 +146,13 @@ const Communities = lazy(() =>
 const CommunityDetails = lazy(() =>
   import('./pages/social/CommunityDetails').then((m) => ({ default: m.CommunityDetails })),
 );
+// Content Studio (Phase 4 WS8) — its own protected surface, not part of the
+// player-facing shell tree; mounted as a top-level splat route below so it
+// never pulls a shell (AppShellV2/Layout) or user-app CSS into its chunk.
+const StudioGate = lazy(() =>
+  import('./pages/studio/StudioGate').then((m) => ({ default: m.StudioGate })),
+);
+
 // Dev-only WS3 visual QA harness (DESIGN_RULES §20.3) — tree-shaken out of production builds.
 const DesignSystemFixture = import.meta.env.DEV
   ? lazy(() =>
@@ -417,6 +424,8 @@ export default function App() {
                 <Route path="play/kahoot/display/:code" element={<ErrorBoundary><LazyPage><KahootDisplay /></LazyPage></ErrorBoundary>} />
               </>
             )}
+
+            <Route path="studio/*" element={<ErrorBoundary><LazyPage><StudioGate /></LazyPage></ErrorBoundary>} />
 
             {DesignSystemFixture && (
               <Route path="dev/design-system" element={<LazyPage><DesignSystemFixture /></LazyPage>} />

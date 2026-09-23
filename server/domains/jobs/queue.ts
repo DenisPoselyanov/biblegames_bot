@@ -24,6 +24,13 @@ export interface JobQueueStats {
   types: string[];
 }
 
+export interface JobListFilter {
+  status?: JobStatus;
+  type?: string;
+  /** Default 50, capped by the adapter. */
+  limit?: number;
+}
+
 export interface JobQueue {
   /**
    * Register the handler for a job type. Must be called before `start()`.
@@ -48,6 +55,23 @@ export interface JobQueue {
   stop(graceMs?: number): Promise<void>;
 
   stats(): Promise<JobQueueStats>;
+
+  /**
+   * List jobs, newest first (Phase 4 WS8 — Studio Jobs screen). Read-only
+   * introspection; adapters may cap `limit`.
+   */
+  list(filter?: JobListFilter): Promise<JobRecord[]>;
+
+  /** One job by id, or `undefined` if unknown (Phase 4 WS8). */
+  get(id: string): Promise<JobRecord | undefined>;
+
+  /**
+   * Request cancellation (Phase 4 WS8). A `pending`/`retry` job is cancelled
+   * immediately; an `active` job's handler is signalled to abort and is
+   * cancelled once it stops (or forcibly, if it never observes the signal).
+   * Returns `false` when the job is unknown or already terminal.
+   */
+  cancel(id: string): Promise<boolean>;
 }
 
 export type { JobHandler, JobRecord, JobTypeRegistration, EnqueueOptions };
