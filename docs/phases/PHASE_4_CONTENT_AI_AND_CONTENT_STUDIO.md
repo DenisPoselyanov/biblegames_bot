@@ -160,6 +160,72 @@ Lessons consist of typed blocks defined in Phase 3. Content Studio must validate
 - locale consistency;
 - required editorial metadata.
 
+### 5.3.1 Interactive lesson block library (2026-09-23)
+
+Phase 3 shipped nine "reading" block types (heading, text, scripture, explanation,
+glossary, image, reflection, question, summary, next_step) plus a payload schema
+per type in `contracts/schemas/lessonBlocks.ts` — the one canonical source both
+the client renderer (`src/components/learn/LessonBlockRenderer.tsx`) and the
+server quality checks (`server/domains/learning/qualityChecks.ts`) read. Of
+those nine, only `question` was interactive; a lesson could be, and every
+migrated lesson was, entirely paragraphs.
+
+Eight interactive block types were added on top of that same schema table,
+all client-only (no answer state reaches the server — same trust boundary as
+`question`'s ungraded self-check mode):
+
+| `blockType` | UI name | Payload shape |
+|---|---|---|
+| `true_false` | Правда чи міф | `{ prompt?, statements: [{ text, isTrue, explanation? }] }` |
+| `order_events` | Розстав по порядку | `{ prompt, items: string[] }` — authored in correct order, client shuffles |
+| `fill_blank` | Допиши вірш | `{ reference, translation, text (one `___` gap), answer, distractors[] }` |
+| `match_pairs` | Зістав | `{ prompt, pairs: [{ left, right }] }` (3–5 pairs) |
+| `reveal` | Чи знав ти? | `{ kicker?, front, back }` — tap-to-flip card |
+| `scenario` | Що б ти зробив? | `{ situation, choices: [{ text, response, reference? }] }` — no wrong answer, every choice gets its own response |
+| `character_card` | (profile card) | `{ name, role, facts[], quote?, reference? }` |
+| `memory_verse` | Вивчи напам'ять | `{ reference, translation, text }` — client progressively hides words over 4 rounds |
+
+`INTERACTIVE_LESSON_BLOCK_TYPES` (same file) is `question` plus these eight —
+used by `LessonSession` to decide which blocks render on their own card, and
+by a new deterministic quality check (`missing_interactive_block`, warning
+severity) that flags a lesson made only of reading blocks.
+
+**Lesson archetypes.** `LESSON_ARCHETYPES` (same file) is an advisory block
+sequence per kind of lesson — `story`, `verse`, `character`, `concept`,
+`application` — so a generator (Content Studio) has a template for lesson
+*variety* instead of every lesson converging on the same `heading →
+explanation → question` shape. Not enforced by validation; a generation
+prompt or Studio UI is expected to pick one and follow it.
+
+**Shuffle determinism.** `order_events`/`fill_blank`/`match_pairs` shuffle by
+a seed derived from the block's own id (`src/components/learn/
+interactiveBlockUtils.ts`) — same order on every render and on lesson resume,
+and (for 2+ items) never the already-solved order. `memory_verse`'s
+word-hiding schedule is seeded the same way.
+
+**Dev reference:** `/dev/lesson-blocks` (`src/pages/dev/LessonBlocksFixture.tsx`,
+`import.meta.env.DEV`-gated, tree-shaken from production) renders one
+worked example of every block type — doubles as a payload reference for
+prompt engineering.
+
+**Legacy cleanup.** The Phase 3 topic-tree mapping script
+(`scripts/migrate/map-learning-content.ts`) used to emit a `question` block
+shaped `{ topicNodeId, availableCount }` — a pointer, not a real question
+payload, which `questionPayload` rejects; nothing ever resolved it, so every
+migrated lesson's "question" rendered as the renderer's unknown-block
+fallback. The script no longer emits it. `npm run
+migrate:drop-legacy-question-blocks -- --dry` reports how many exist in a
+target database; without `--dry` it deletes them (targeted `DELETE` on the
+legacy pointer shape only — does not touch Studio-authored blocks). Not yet
+run against production as of this writing. Re-running
+`map-learning-content.ts` is **not** the fix once Content Studio has authored
+real content over a mapped lesson — it calls `replaceForLesson`, which
+rewrites a lesson's entire block set.
+
+Explicitly out of scope here (needs a schema change, §5.1/§17): a
+server-backed `poll` block with aggregate community results, and a
+`reflection` variant that persists the reader's own answer.
+
 ## 5.4 Scripture evidence
 
 For every exact quotation, store:

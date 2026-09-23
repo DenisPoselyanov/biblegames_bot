@@ -537,7 +537,7 @@ Unlocking rules are server-driven.
 
 ## 11.3 Lesson blocks
 
-Supported typed blocks:
+Reading blocks (this phase's original set):
 
 - heading/text;
 - Scripture reference/quotation;
@@ -550,6 +550,8 @@ Supported typed blocks:
 - next step.
 
 Each block has schema/version and editorial status. Rendering unknown block types must fail safely with logging rather than crashing the lesson.
+
+**Interactive blocks (added Phase 4):** `true_false`, `order_events`, `fill_blank`, `match_pairs`, `reveal`, `scenario`, `character_card`, `memory_verse` — client-only (no answer state is sent to the server), added so a lesson is not just a sequence of paragraphs with one occasional multiple-choice question. Full block catalog, payload schemas, and the lesson-archetype system that sequences them are documented in [Phase 4 §5.3](./PHASE_4_CONTENT_AI_AND_CONTENT_STUDIO.md#53-lesson-payload).
 
 ## 11.4 Lesson session
 

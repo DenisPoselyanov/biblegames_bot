@@ -152,6 +152,11 @@ const DesignSystemFixture = import.meta.env.DEV
       import('./pages/dev/DesignSystemFixture').then((m) => ({ default: m.DesignSystemFixture })),
     )
   : null;
+const LessonBlocksFixture = import.meta.env.DEV
+  ? lazy(() =>
+      import('./pages/dev/LessonBlocksFixture').then((m) => ({ default: m.LessonBlocksFixture })),
+    )
+  : null;
 
 function LazyPage({ children }: { children: ReactNode }) {
   return <Suspense fallback={<AppSkeleton />}>{children}</Suspense>;
@@ -420,6 +425,9 @@ export default function App() {
 
             {DesignSystemFixture && (
               <Route path="dev/design-system" element={<LazyPage><DesignSystemFixture /></LazyPage>} />
+            )}
+            {LessonBlocksFixture && (
+              <Route path="dev/lesson-blocks" element={<LazyPage><LessonBlocksFixture /></LazyPage>} />
             )}
 
             <Route path="*" element={<Navigate to="/" replace />} />

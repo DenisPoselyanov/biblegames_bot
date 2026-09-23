@@ -18,6 +18,7 @@ import {
   useStartLessonSession,
 } from '../../queries/useLearning';
 import { LessonBlockRenderer } from '../../components/learn/LessonBlockRenderer';
+import { INTERACTIVE_LESSON_BLOCK_TYPES } from '../../components/learn/lessonBlockPayloads';
 import { Icon } from '../../components/Icon';
 import {
   AppPage,
@@ -193,7 +194,8 @@ export function LessonSession() {
       {designSystemV2 ? (
         <div className={styles.blocksStack}>
           {blocks.slice(0, index + 1).map((block) =>
-            block.blockType === 'question' ? (
+            // Interactive blocks read as a distinct "task" card in the scrolling lesson.
+            (INTERACTIVE_LESSON_BLOCK_TYPES as readonly string[]).includes(block.blockType) ? (
               <ContentCard key={block.id}>
                 <LessonBlockRenderer block={block} richBlocks />
               </ContentCard>

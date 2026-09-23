@@ -9,7 +9,7 @@
  * (`contracts/schemas/lessonBlocks.ts`, formerly duplicated only on the
  * client at `src/components/learn/lessonBlockPayloads.ts`).
  */
-import { LESSON_BLOCK_PAYLOAD_SCHEMAS } from '../../../contracts/index';
+import { INTERACTIVE_LESSON_BLOCK_TYPES, LESSON_BLOCK_PAYLOAD_SCHEMAS } from '../../../contracts/index';
 import type { NewValidationFinding } from '../shared/validationFindings';
 import type { LessonRevisionBlock } from './types';
 
@@ -117,6 +117,22 @@ function missingRequiredBlocksCheck(body: LessonBody): NewValidationFinding[] {
   ];
 }
 
+/** A lesson made only of reading blocks — flagged so every lesson asks the reader to do something at least once. */
+function missingInteractiveBlockCheck(body: LessonBody): NewValidationFinding[] {
+  const interactive = INTERACTIVE_LESSON_BLOCK_TYPES as readonly string[];
+  if (body.blocks.some((b) => interactive.includes(b.blockType))) return [];
+  return [
+    {
+      revisionType: 'lesson',
+      revisionId: body.lessonId,
+      kind: 'missing_interactive_block',
+      severity: 'warning',
+      label: 'Урок без інтерактиву',
+      detail: `Урок складається лише з блоків для читання — додай хоча б один із: ${INTERACTIVE_LESSON_BLOCK_TYPES.join(', ')}.`,
+    },
+  ];
+}
+
 function orphanObjectiveCheck(
   body: LessonBody,
   knownObjectiveIds?: readonly string[],
@@ -150,6 +166,7 @@ export function runLessonQualityChecks(
     ...unknownBlockTypeCheck(body),
     ...malformedPayloadCheck(body),
     ...missingRequiredBlocksCheck(body),
+    ...missingInteractiveBlockCheck(body),
     ...orphanObjectiveCheck(body, context.knownObjectiveIds),
   ];
 }

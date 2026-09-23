@@ -82,6 +82,14 @@ export const LESSON_BLOCK_TYPES = [
   'question',
   'summary',
   'next_step',
+  'true_false',
+  'order_events',
+  'fill_blank',
+  'match_pairs',
+  'reveal',
+  'scenario',
+  'character_card',
+  'memory_verse',
 ] as const;
 export type LessonBlockType = (typeof LESSON_BLOCK_TYPES)[number];
 

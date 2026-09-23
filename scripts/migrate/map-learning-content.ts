@@ -132,8 +132,16 @@ function mapTheme(root: TopicNode): WalkOutput {
   };
 }
 
-/** A lesson's default content — heading + explanation, always safe to regenerate. */
-function defaultBlocksFor(objective: ObjectiveUpsert, publishedCount: number): LessonBlockUpsert[] {
+/**
+ * A lesson's default content — heading + explanation, always safe to regenerate.
+ *
+ * No `question` block: an earlier version emitted `{ topicNodeId, availableCount }`
+ * here, a pointer shape that `questionPayload` rejects and nothing ever resolved —
+ * every such block rendered as "тимчасово недоступний". Interactive blocks are
+ * now authored per lesson in Content Studio instead. Re-running this script
+ * removes the stale blocks (`replaceForLesson` rewrites a lesson's full set).
+ */
+function defaultBlocksFor(objective: ObjectiveUpsert): LessonBlockUpsert[] {
   const lessonId = `lesson_${objective.id}`;
   const blocks: LessonBlockUpsert[] = [
     { id: `${lessonId}_b0`, lessonId, position: 0, blockType: 'heading', payload: { text: objective.title } },
@@ -145,15 +153,6 @@ function defaultBlocksFor(objective: ObjectiveUpsert, publishedCount: number): L
       position: 1,
       blockType: 'explanation',
       payload: { text: objective.description },
-    });
-  }
-  if (publishedCount > 0) {
-    blocks.push({
-      id: `${lessonId}_b${blocks.length}`,
-      lessonId,
-      position: blocks.length,
-      blockType: 'question',
-      payload: { topicNodeId: objective.id, availableCount: publishedCount },
     });
   }
   return blocks;
@@ -241,10 +240,7 @@ async function main(): Promise<void> {
 
       if (!dry) {
         const objective = mapped.objectives.find((o) => o.id === l.objectiveId)!;
-        await learning.blocks.replaceForLesson(
-          l.id,
-          defaultBlocksFor(objective, coverage.get(objective.id) ?? 0),
-        );
+        await learning.blocks.replaceForLesson(l.id, defaultBlocksFor(objective));
       }
     }
   }

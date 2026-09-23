@@ -12,6 +12,16 @@ import type { LessonBlock } from '../../../contracts/api/learning';
 import { Icon } from '../Icon';
 import { AnswerFeedback } from '../ui/AnswerFeedback';
 import { AnswerOption } from '../ui/AnswerOption';
+import {
+  CharacterCardBlock,
+  FillBlankBlock,
+  MatchPairsBlock,
+  MemoryVerseBlock,
+  OrderEventsBlock,
+  RevealBlock,
+  ScenarioBlock,
+  TrueFalseBlock,
+} from './InteractiveBlocks';
 import { LESSON_BLOCK_PAYLOAD_SCHEMAS, type questionPayload } from './lessonBlockPayloads';
 import styles from './LessonBlockRenderer.module.css';
 
@@ -62,11 +72,15 @@ function QuestionBlock({ payload }: { payload: z.infer<typeof questionPayload> }
   );
 }
 
+type PayloadOf<T extends keyof typeof LESSON_BLOCK_PAYLOAD_SCHEMAS> = z.infer<(typeof LESSON_BLOCK_PAYLOAD_SCHEMAS)[T]>;
+
 function BlockByType({
+  blockId,
   blockType,
   payload,
   richBlocks,
 }: {
+  blockId: string;
   blockType: keyof typeof LESSON_BLOCK_PAYLOAD_SCHEMAS;
   payload: unknown;
   richBlocks?: boolean;
@@ -144,6 +158,22 @@ function BlockByType({
       return <p className={styles.summary}>{(payload as z.infer<typeof LESSON_BLOCK_PAYLOAD_SCHEMAS.summary>).text}</p>;
     case 'next_step':
       return <p className={styles.nextStep}>{(payload as z.infer<typeof LESSON_BLOCK_PAYLOAD_SCHEMAS.next_step>).text}</p>;
+    case 'true_false':
+      return <TrueFalseBlock blockId={blockId} payload={payload as PayloadOf<'true_false'>} />;
+    case 'order_events':
+      return <OrderEventsBlock blockId={blockId} payload={payload as PayloadOf<'order_events'>} />;
+    case 'fill_blank':
+      return <FillBlankBlock blockId={blockId} payload={payload as PayloadOf<'fill_blank'>} />;
+    case 'match_pairs':
+      return <MatchPairsBlock blockId={blockId} payload={payload as PayloadOf<'match_pairs'>} />;
+    case 'reveal':
+      return <RevealBlock blockId={blockId} payload={payload as PayloadOf<'reveal'>} />;
+    case 'scenario':
+      return <ScenarioBlock blockId={blockId} payload={payload as PayloadOf<'scenario'>} />;
+    case 'character_card':
+      return <CharacterCardBlock blockId={blockId} payload={payload as PayloadOf<'character_card'>} />;
+    case 'memory_verse':
+      return <MemoryVerseBlock blockId={blockId} payload={payload as PayloadOf<'memory_verse'>} />;
   }
 }
 
@@ -161,6 +191,7 @@ export function LessonBlockRenderer({ block, richBlocks }: { block: LessonBlock;
   }
   return (
     <BlockByType
+      blockId={block.id}
       blockType={block.blockType as keyof typeof LESSON_BLOCK_PAYLOAD_SCHEMAS}
       payload={parsed.data}
       richBlocks={richBlocks}
