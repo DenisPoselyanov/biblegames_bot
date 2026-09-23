@@ -38,3 +38,6 @@ question-quality-report.json
 question-pools-report.json
 data/topics-db/*.bak
 data/topic-preview-index.json
+
+# npm run ai -- … machine-readable reports (Phase 4 WS10)
+reports/content/

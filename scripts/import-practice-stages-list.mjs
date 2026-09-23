@@ -6,6 +6,8 @@
  * npm run import-practice-stages-list
  * npm run import-practice-stages-list -- --dry-run
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import { dirname, join } from 'path';

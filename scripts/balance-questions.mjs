@@ -8,6 +8,8 @@
  *
  * practice-ready: ціль на підтему × складність (як fill-practice-nodes).
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import { join, dirname } from 'path';

@@ -55,11 +55,11 @@ AI-скрипти можуть допомагати створювати, кла
 
 > **2026-09-22: Ollama видалено з ноутбука.** Локальна генерація більше не
 > підтримується в цьому середовищі — усі провайдери нижче хмарні, без
-> завантаження моделей. `scripts/lib/llm.mjs`'s `resolveProvider()` усе ще
-> падає назад на `'ollama'`, коли `--provider`/`AI_PROVIDER` не задано — це
-> тепер **зламаний дефолт**, доки Phase 4 (WS1) не прибере його. До того часу
-> завжди передавайте `--provider gemini` або `--provider omniroute` явно, або
-> задайте `AI_PROVIDER` у `.env`.
+> завантаження моделей. З Phase 4 WS10 `scripts/lib/llm.mjs`'s
+> `resolveProvider()` без `--provider`/`AI_PROVIDER` бере `gemini` (раніше —
+> зламаний дефолт `'ollama'`); `ollama` приймається лише явно. Самі legacy-
+> скрипти застарілі — див. [CONTENT_TOOLING.md](./CONTENT_TOOLING.md) і
+> `npm run ai`.
 
 | Provider | Призначення | Основні вимоги |
 |---|---|---|

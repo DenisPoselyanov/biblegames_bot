@@ -8,6 +8,8 @@
  * npm run assign-practice-stages -- --bootstrap-fallback
  * npm run assign-practice-stages -- --dry-run --node acts-sub-6-sub-5
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import { dirname, join } from 'path';

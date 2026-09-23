@@ -6,6 +6,8 @@
  * npm run fill-practice-nodes -- --theme pentateuch
  * npm run fill-practice-nodes -- --node pentateuch-sub-1-sub-1 --difficulty baby
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import { dirname, join } from 'path';

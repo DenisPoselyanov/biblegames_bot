@@ -19,6 +19,8 @@
  *   npm run sort-topics-ai -- --all --dry-run       # лише показати зміни
  *   npm run sort-topics-ai -- --theme gospels --model llama3.2
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import { join, dirname } from 'path';

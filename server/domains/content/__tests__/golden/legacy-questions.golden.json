@@ -1,0 +1,61 @@
+{
+  "_about": "Phase 4 WS10 golden dataset (spec §19 'golden datasets for Ukrainian wording, Scripture references, duplicate detection'). Each case pins the audit classification and the finding kinds the canonical validators must produce. Change an expectation only together with the rule that changed it.",
+  "context": {
+    "catalogThemeIds": ["pentateuch", "gospels", "kings"],
+    "practiceNodeIds": ["pentateuch-sub-1-sub-1"],
+    "learningNodeIds": ["gospels-sub-1-sub-1"],
+    "rareThemeThreshold": 2
+  },
+  "cases": [
+    {
+      "name": "clean core-practice question → awaiting review, wave 1",
+      "raw": { "id": "g-clean", "themeId": "pentateuch", "difficulty": "youth", "topicNodeId": "pentateuch-sub-1-sub-1", "text": "Хто збудував ковчег за Божим наказом?", "options": ["Ной", "Мойсей", "Авраам", "Давид"], "correctIndex": 0, "reference": "Бут 6:14", "explanationShort": "Бог доручив Ноєві збудувати ковчег перед потопом.", "explanationDeep": "Бут 6:13–22 описує доручення і розміри ковчега." },
+      "expect": { "classification": "awaiting_review", "wave": 1, "findings": [] }
+    },
+    {
+      "name": "exact duplicate of the clean question → superseded, archived",
+      "raw": { "id": "g-dup-exact", "themeId": "pentateuch", "difficulty": "child", "text": "Хто збудував ковчег за Божим наказом?", "options": ["Ной", "Мойсей", "Авраам", "Давид"], "correctIndex": 0, "reference": "Бут 6:14", "explanationShort": "Бог доручив Ноєві збудувати ковчег перед потопом.", "explanationDeep": "—" },
+      "expect": { "classification": "duplicate_superseded", "wave": 6, "duplicateOf": "g-clean" }
+    },
+    {
+      "name": "same words reordered, same theme → near duplicate",
+      "raw": { "id": "g-dup-near", "themeId": "pentateuch", "difficulty": "youth", "text": "За Божим наказом хто збудував ковчег?", "options": ["Ной", "Сим", "Хам", "Яфет"], "correctIndex": 0, "reference": "Бут 6:14", "explanationShort": "Ковчег збудував Ной разом із синами.", "explanationDeep": "Бут 6." },
+      "expect": { "classification": "duplicate_superseded", "wave": 6, "duplicateOf": "g-clean" }
+    },
+    {
+      "name": "Russian-only letter → mixed language → needs repair",
+      "raw": { "id": "g-ru", "themeId": "gospels", "difficulty": "youth", "topicNodeId": "gospels-sub-1-sub-1", "text": "Скільки учнів обрав Ісус?", "options": ["Дванадцять", "Сімдесят", "Сорок два", "Тридцять"], "correctIndex": 0, "reference": "Мк 3:14", "explanationShort": "Ісус обрав дванадцятьох — это апостоли.", "explanationDeep": "Мк 3:13–19." },
+      "expect": { "classification": "needs_repair", "wave": 2, "findings": ["mixed_language"] }
+    },
+    {
+      "name": "no Scripture reference → needs repair (evidence cannot be gathered)",
+      "raw": { "id": "g-noref", "themeId": "gospels", "difficulty": "youth", "text": "Де народився Ісус?", "options": ["Вифлеєм", "Назарет", "Єрусалим", "Капернаум"], "correctIndex": 0, "explanationShort": "Ісус народився у Вифлеємі Юдейському.", "explanationDeep": "Мт 2:1." },
+      "expect": { "classification": "needs_repair", "findings": ["missing_reference"] }
+    },
+    {
+      "name": "answer spelled out in the question → leakage → needs repair",
+      "raw": { "id": "g-leak", "themeId": "kings", "difficulty": "child", "text": "Який цар Давид переміг Голіята?", "options": ["Давид", "Саул", "Соломон", "Ровоам"], "correctIndex": 0, "reference": "1 Сам 17:50", "explanationShort": "Давид переміг Голіята пращею і каменем.", "explanationDeep": "1 Сам 17." },
+      "expect": { "classification": "needs_repair", "findings": ["answer_leakage"] }
+    },
+    {
+      "name": "short explanation → weak → needs repair",
+      "raw": { "id": "g-weak", "themeId": "kings", "difficulty": "youth", "text": "Хто збудував перший храм у Єрусалимі?", "options": ["Соломон", "Давид", "Єзекія", "Йосія"], "correctIndex": 0, "reference": "1 Цар 6:14", "explanationShort": "Соломон.", "explanationDeep": "1 Цар 6." },
+      "expect": { "classification": "needs_repair", "findings": ["weak_explanation"] }
+    },
+    {
+      "name": "sensitive keyword → blocking for a human, still awaiting review (not repair)",
+      "raw": { "id": "g-sensitive", "themeId": "kings", "difficulty": "theologian", "text": "Яке покарання спіткало Содом і Гоморру?", "options": ["Вогонь із неба", "Потоп", "Голод", "Сарана"], "correctIndex": 0, "reference": "Бут 19:24", "explanationShort": "Господь послав на міста сірку та вогонь.", "explanationDeep": "Бут 19." },
+      "expect": { "classification": "awaiting_review", "findingsInclude": ["sensitivity_divine_judgment"] }
+    },
+    {
+      "name": "answer key out of range → invalid, quarantined, archived",
+      "raw": { "id": "g-badkey", "themeId": "kings", "difficulty": "youth", "text": "Хто був першим царем Ізраїлю?", "options": ["Саул", "Давид"], "correctIndex": 5, "reference": "1 Сам 10" },
+      "expect": { "classification": "invalid_quarantined", "wave": 6, "findings": ["correct_index_out_of_range"] }
+    },
+    {
+      "name": "theme players cannot reach → unsupported",
+      "raw": { "id": "g-offcatalog", "themeId": "apocrypha", "difficulty": "youth", "text": "Хто автор книги Товита?", "options": ["Невідомо", "Мойсей", "Павло", "Лука"], "correctIndex": 0, "reference": "Тов 1:1", "explanationShort": "Авторство книги Товита невідоме.", "explanationDeep": "—" },
+      "expect": { "classification": "unsupported", "wave": 6 }
+    }
+  ]
+}

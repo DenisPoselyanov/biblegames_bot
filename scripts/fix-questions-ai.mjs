@@ -6,6 +6,8 @@
  * npm run fix-questions-ai -- --status quarantined --issue duplicate --limit 10
  * npm run fix-questions-ai -- --node pentateuch-sub-1-sub-1 --dry-run
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import path from 'path';

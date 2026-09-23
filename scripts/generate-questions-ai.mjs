@@ -7,6 +7,8 @@
  *
  * Генерація лише по конкретних підтемах (--topic). Для масового заповнення: fill-practice-nodes.
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import { fileURLToPath } from 'url';
 import path from 'path';

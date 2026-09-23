@@ -5,6 +5,8 @@
  * npm run fix-explanations-ai -- --coverage missing --theme paul --limit 20
  * npm run fix-explanations-ai -- --ids geo-child-ai-00042 --mode improve
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import path from 'path';

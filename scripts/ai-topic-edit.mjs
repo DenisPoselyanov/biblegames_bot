@@ -9,6 +9,8 @@
  * node scripts/ai-topic-edit.mjs --action delete-node --file nt-group --node gospels-sub-1
  * node scripts/ai-topic-edit.mjs --action organize-children --file gospels --node gospels-sub-2
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import { join, dirname } from 'path';

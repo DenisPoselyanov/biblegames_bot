@@ -12,74 +12,18 @@
  *
  * Usage:  DATABASE_URL=postgres://… npx tsx scripts/content/import-legacy-questions.ts [--dry]
  */
-import fs from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { ALL_QUESTIONS } from '../../src/data/questions';
-import type { Question } from '../../src/types';
+import { warnDeprecated } from '../lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 import { importLegacyQuestions } from '../../server/domains/content/import';
 import { createInMemoryContentRepositories } from '../../server/domains/content/inMemoryRepository';
 import { createSqlContentRepositories } from '../../server/infrastructure/database/repositories/content';
 import { createDatabase } from '../../server/infrastructure/database/client';
 import { getPool, isDatabaseConfigured } from '../../server/db/pgPool';
 import type { RawQuestionInput } from '../../server/domains/content/validation';
-
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const DB_DIR = join(ROOT, 'data/question-db');
-
-function loadRootEnv(): void {
-  const envPath = join(ROOT, '.env');
-  if (!fs.existsSync(envPath)) return;
-  for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
-    const t = line.trim();
-    if (!t || t.startsWith('#')) continue;
-    const eq = t.indexOf('=');
-    if (eq <= 0) continue;
-    const key = t.slice(0, eq).trim();
-    let value = t.slice(eq + 1).trim();
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
-    }
-    if (process.env[key] == null) process.env[key] = value;
-  }
-}
-
-function toRaw(q: Question): RawQuestionInput {
-  return {
-    id: q.id,
-    themeId: q.themeId,
-    difficulty: q.difficulty,
-    text: q.text,
-    options: q.options,
-    correctIndex: q.correctIndex,
-    explanationShort: q.explanationShort ?? null,
-    explanationDeep: q.explanationDeep ?? null,
-    reference: q.reference ?? null,
-    topicNodeId: q.topicNodeId ?? null,
-    topicPath: q.topicPath ?? null,
-    tags: q.tags ?? null,
-    source: q.sourceQuality === 'ai-draft' || q.createdAt ? 'ai' : 'embedded',
-  };
-}
+import { loadLegacyCorpus, loadRootEnv } from './legacyCorpus';
 
 function collectCorpus(): RawQuestionInput[] {
-  const byId = new Map<string, Question>();
-  for (const q of ALL_QUESTIONS) if (q?.id) byId.set(q.id, q);
-  if (fs.existsSync(DB_DIR)) {
-    for (const file of fs.readdirSync(DB_DIR)) {
-      if (!file.endsWith('.json')) continue;
-      const themeId = file.replace(/\.json$/, '');
-      try {
-        const list = JSON.parse(fs.readFileSync(join(DB_DIR, file), 'utf8')) as Question[];
-        if (Array.isArray(list)) {
-          for (const q of list) if (q?.id) byId.set(q.id, { ...q, themeId: q.themeId || themeId });
-        }
-      } catch {
-        console.warn(`  skipped unreadable ${file}`);
-      }
-    }
-  }
-  return [...byId.values()].map(toRaw);
+  return loadLegacyCorpus().items.map((i) => i.raw);
 }
 
 async function main(): Promise<void> {

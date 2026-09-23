@@ -3,6 +3,8 @@
  * Видаляє питання без прив’язки до конкретної підтеми (topicNodeId).
  * npm run prune-untagged -- --dry-run
  */
+import { warnDeprecated } from './lib/deprecation.mjs';
+warnDeprecated(import.meta.url);
 
 import fs from 'fs';
 import { dirname, join } from 'path';
