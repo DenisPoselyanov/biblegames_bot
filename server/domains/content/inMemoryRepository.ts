@@ -18,11 +18,15 @@ import type {
   ContentSetRepository,
   QuestionRevisionRepository,
 } from './repository';
-import type {
-  ContentSetVersionRecord,
-  PublishedFilter,
-  QuestionRevisionRecord,
-  RevisionDraft,
+import {
+  boundedSetVersionLimit,
+  type ContentSetVersionRecord,
+  type ContentSetVersionSummary,
+  type PublishedFilter,
+  type QuestionRevisionRecord,
+  type RevisionDraft,
+  type ThemeStatusCount,
+  setVersionHead,
 } from './types';
 
 /**
@@ -110,6 +114,17 @@ export function createInMemoryContentRepositories(
       const counts = emptyStatusCounts();
       for (const r of revisions.values()) counts[r.status] += 1;
       return counts;
+    },
+    async countByTheme(tx) {
+      rejectTx(tx);
+      const buckets = new Map<string, ThemeStatusCount>();
+      for (const r of revisions.values()) {
+        const k = `${r.themeId}\u0000${r.status}`;
+        const bucket = buckets.get(k) ?? { themeId: r.themeId, status: r.status, count: 0 };
+        bucket.count += 1;
+        buckets.set(k, bucket);
+      }
+      return sortThemeCounts([...buckets.values()]);
     },
     async appendRevision(draft: RevisionDraft, tx) {
       rejectTx(tx);
@@ -212,6 +227,22 @@ export function createInMemoryContentRepositories(
         .sort((a, b) => b.version - a.version);
       return all[0] ? clone(all[0]) : null;
     },
+    async listVersions(options, tx) {
+      rejectTx(tx);
+      const latestBySet = new Map<string, number>();
+      for (const v of versions.values()) {
+        latestBySet.set(v.setId, Math.max(latestBySet.get(v.setId) ?? 0, v.version));
+      }
+      return [...versions.values()]
+        .sort(compareVersionsNewestFirst)
+        .slice(0, boundedSetVersionLimit(options?.limit))
+        .map(
+          (v): ContentSetVersionSummary => ({
+            ...setVersionHead(v),
+            isLatest: latestBySet.get(v.setId) === v.version,
+          }),
+        );
+    },
     async publishVersion(input, tx) {
       rejectTx(tx);
       const contentHash = hashContentSet(input.items.map((i) => i.revisionId));
@@ -238,6 +269,19 @@ export function createInMemoryContentRepositories(
   };
 
   return { revisions: revisionRepo, sets: setRepo };
+}
+
+/** Newest publish first; set id + version break ties so the order is total (matches the SQL adapter). */
+function compareVersionsNewestFirst(a: ContentSetVersionRecord, b: ContentSetVersionRecord): number {
+  if (a.publishedAt !== b.publishedAt) return a.publishedAt < b.publishedAt ? 1 : -1;
+  if (a.setId !== b.setId) return a.setId < b.setId ? -1 : 1;
+  return b.version - a.version;
+}
+
+function sortThemeCounts(rows: ThemeStatusCount[]): ThemeStatusCount[] {
+  return rows.sort((a, b) =>
+    a.themeId === b.themeId ? (a.status < b.status ? -1 : 1) : a.themeId < b.themeId ? -1 : 1,
+  );
 }
 
 function clone(v: ContentSetVersionRecord): ContentSetVersionRecord {

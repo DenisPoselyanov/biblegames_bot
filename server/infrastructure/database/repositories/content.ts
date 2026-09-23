@@ -19,12 +19,15 @@ import type {
   ContentSetRepository,
   QuestionRevisionRepository,
 } from '../../../domains/content/repository';
-import type {
-  ContentSetVersionRecord,
-  PublishedFilter,
-  QuestionRevisionRecord,
-  RevisionDraft,
-  ScriptureRef,
+import {
+  boundedSetVersionLimit,
+  type ContentSetVersionRecord,
+  type ContentSetVersionSummary,
+  type PublishedFilter,
+  type QuestionRevisionRecord,
+  type RevisionDraft,
+  type ScriptureRef,
+  type ThemeStatusCount,
 } from '../../../domains/content/types';
 import type { Database, Transaction } from '../client';
 import {
@@ -213,6 +216,21 @@ export function createSqlContentRepositories(db: Database): ContentRepositories 
       return counts;
     },
 
+    async countByTheme(tx) {
+      const rows = await asExecutor(db, tx)
+        .select({
+          themeId: questionRevisions.themeId,
+          status: questionRevisions.status,
+          count: sql<number>`count(*)::int`,
+        })
+        .from(questionRevisions)
+        .groupBy(questionRevisions.themeId, questionRevisions.status)
+        .orderBy(asc(questionRevisions.themeId), asc(questionRevisions.status));
+      return rows.map(
+        (r): ThemeStatusCount => ({ themeId: r.themeId, status: r.status as ContentStatus, count: r.count }),
+      );
+    },
+
     async appendRevision(draft: RevisionDraft, tx) {
       assertAiWriteAllowed(draft.source, draft.status);
       const exec = asExecutor(db, tx);
@@ -344,6 +362,43 @@ export function createSqlContentRepositories(db: Database): ContentRepositories 
         .limit(1);
       if (!row) return null;
       return loadVersion(exec, setId, row.version);
+    },
+
+    async listVersions(options, tx) {
+      const exec = asExecutor(db, tx);
+      const rows = await exec
+        .select({
+          setId: contentSetVersions.setId,
+          version: contentSetVersions.version,
+          contentHash: contentSetVersions.contentHash,
+          questionCount: contentSetVersions.questionCount,
+          publishedAt: contentSetVersions.publishedAt,
+          publishedBy: contentSetVersions.publishedBy,
+          kind: contentSets.kind,
+          filter: contentSets.filter,
+          latest: sql<number>`max(${contentSetVersions.version}) over (partition by ${contentSetVersions.setId})`,
+        })
+        .from(contentSetVersions)
+        .innerJoin(contentSets, eq(contentSets.id, contentSetVersions.setId))
+        .orderBy(
+          desc(contentSetVersions.publishedAt),
+          asc(contentSetVersions.setId),
+          desc(contentSetVersions.version),
+        )
+        .limit(boundedSetVersionLimit(options?.limit));
+      return rows.map(
+        (r): ContentSetVersionSummary => ({
+          setId: r.setId,
+          kind: r.kind as ContentSetVersionRecord['kind'],
+          version: r.version,
+          contentHash: r.contentHash,
+          filter: (r.filter ?? {}) as ContentSetVersionRecord['filter'],
+          questionCount: r.questionCount,
+          publishedAt: r.publishedAt,
+          publishedBy: r.publishedBy,
+          isLatest: Number(r.latest) === r.version,
+        }),
+      );
     },
 
     async publishVersion(input, tx) {

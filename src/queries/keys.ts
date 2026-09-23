@@ -49,6 +49,11 @@ export const queryKeys = {
     dashboard: () => ['studio', 'dashboard'] as const,
     review: (statuses?: string) => ['studio', 'review', statuses ?? null] as const,
     reviewItem: (type: string, revisionId: string) => ['studio', 'review-item', type, revisionId] as const,
+    library: () => ['studio', 'library'] as const,
+    releases: () => ['studio', 'releases'] as const,
+    setVersion: (setId: string, version: number) => ['studio', 'set-version', setId, version] as const,
+    activity: (action?: string) => ['studio', 'activity', action ?? null] as const,
+    settings: () => ['studio', 'settings'] as const,
   },
 } as const;
 

@@ -2,12 +2,14 @@
  * SQL `ValidationFindingRepository` (Phase 4 WS3) — the production adapter for
  * `server/domains/shared/validationFindingsRepository.ts`, on Drizzle.
  */
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import type { Transaction as OpaqueTx } from '../../../domains/shared/context';
-import type {
-  NewValidationFinding,
-  ValidationFinding,
-  ValidationRevisionType,
+import {
+  compareFindingSummaries,
+  type NewValidationFinding,
+  type ValidationFinding,
+  type ValidationFindingSummary,
+  type ValidationRevisionType,
 } from '../../../domains/shared/validationFindings';
 import type { ValidationFindingRepository } from '../../../domains/shared/validationFindingsRepository';
 import type { Database, Transaction } from '../client';
@@ -94,6 +96,34 @@ export function createSqlValidationFindingRepository(db: Database): ValidationFi
         )
         .limit(1);
       return rows.length > 0;
+    },
+
+    async summarize(tx) {
+      const rows = await asExecutor(db, tx)
+        .select({
+          revisionType: contentValidationFindings.revisionType,
+          kind: contentValidationFindings.kind,
+          severity: contentValidationFindings.severity,
+          label: sql<string>`min(${contentValidationFindings.label})`,
+          revisions: sql<number>`count(distinct ${contentValidationFindings.revisionId})::int`,
+        })
+        .from(contentValidationFindings)
+        .groupBy(
+          contentValidationFindings.revisionType,
+          contentValidationFindings.kind,
+          contentValidationFindings.severity,
+        );
+      return rows
+        .map(
+          (r): ValidationFindingSummary => ({
+            revisionType: r.revisionType as ValidationRevisionType,
+            kind: r.kind,
+            severity: r.severity as ValidationFindingSummary['severity'],
+            label: r.label,
+            revisions: r.revisions,
+          }),
+        )
+        .sort(compareFindingSummaries);
     },
   };
 }

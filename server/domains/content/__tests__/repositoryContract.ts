@@ -212,4 +212,54 @@ export function runContentRepositoryContract(makeHarness: () => Promise<Contract
     expect((await sets.getLatest('quiz:genesis'))?.version).toBe(2);
     expect((await sets.getVersion('quiz:genesis', 1))?.questionCount).toBe(2);
   });
+
+  it('countByTheme buckets revisions per (theme, status), non-zero only, sorted (Phase 4 WS8c)', async () => {
+    const { revisions } = await setup();
+    expect(await revisions.countByTheme()).toEqual([]);
+
+    await revisions.appendRevision(draft({ questionId: 'qa', themeId: 'kings' }));
+    await revisions.appendRevision(draft({ questionId: 'qb', themeId: 'genesis', status: 'draft' }));
+    const pub = (await revisions.appendRevision(draft({ questionId: 'qc', themeId: 'genesis', status: 'draft' })))
+      .revision;
+    await revisions.publishRevision(pub.id);
+    await revisions.appendRevision(draft({ questionId: 'qd', themeId: 'genesis', status: 'draft' }));
+
+    expect(await revisions.countByTheme()).toEqual([
+      { themeId: 'genesis', status: 'draft', count: 2 },
+      { themeId: 'genesis', status: 'published', count: 1 },
+      { themeId: 'kings', status: 'legacy_unreviewed', count: 1 },
+    ]);
+  });
+
+  it('listVersions lists every set version newest-first with isLatest, no items, bounded (Phase 4 WS8c)', async () => {
+    const { revisions, sets } = await setup();
+    expect(await sets.listVersions()).toEqual([]);
+
+    const a = (await revisions.appendRevision(draft({ questionId: 'qa' }))).revision;
+    const b = (await revisions.appendRevision(draft({ questionId: 'qb', text: 'b' }))).revision;
+    const filter = { themeIds: ['genesis'], difficulty: null, topicNodeId: null, questionIds: [] };
+    await sets.publishVersion({ setId: 'quiz:genesis', kind: 'quiz', filter, items: [{ questionId: 'qa', revisionId: a.id }] });
+    await sets.publishVersion({
+      setId: 'quiz:genesis',
+      kind: 'quiz',
+      filter,
+      items: [
+        { questionId: 'qa', revisionId: a.id },
+        { questionId: 'qb', revisionId: b.id },
+      ],
+      publishedBy: 'u1',
+    });
+    await sets.publishVersion({ setId: 'kahoot:x', kind: 'kahoot', filter, items: [{ questionId: 'qb', revisionId: b.id }] });
+
+    const all = await sets.listVersions();
+    expect(all).toHaveLength(3);
+    expect(all.every((v) => !('items' in v))).toBe(true);
+    const byKey = new Map(all.map((v) => [`${v.setId}#${v.version}`, v]));
+    expect(byKey.get('quiz:genesis#1')).toMatchObject({ isLatest: false, questionCount: 1, kind: 'quiz' });
+    expect(byKey.get('quiz:genesis#2')).toMatchObject({ isLatest: true, questionCount: 2, publishedBy: 'u1' });
+    expect(byKey.get('kahoot:x#1')).toMatchObject({ isLatest: true, kind: 'kahoot' });
+    for (let i = 1; i < all.length; i += 1) expect(all[i - 1].publishedAt >= all[i].publishedAt).toBe(true);
+
+    expect(await sets.listVersions({ limit: 2 })).toHaveLength(2);
+  });
 }

@@ -45,7 +45,8 @@ import { createIdempotencyStore, type IdempotencyStore } from './lib/idempotency
 import { createMigrationStore, type MigrationStore } from './migration/migrationStore';
 import { scriptureRouter } from './routes/scripture';
 import { createQuestionsAdminRouter } from './routes/questionsAdmin';
-import { createStudioRouter } from './routes/studio';
+import { buildStudioSettings, createStudioRouter } from './routes/studio';
+import { createStudioLibraryRouter, createStudioReleasesRouter } from './routes/studioLibrary';
 import { createStudioReviewRouter, type StudioReviewRepositories } from './routes/studioReview';
 import { createSqlValidationFindingRepository } from './infrastructure/database/repositories/validationFindings';
 import { createSqlScriptureEvidenceRepository } from './infrastructure/database/repositories/scriptureEvidence';
@@ -339,6 +340,23 @@ export function createApp(deps: AppDeps): Express {
     createStudioReviewRouter({ auditLog, review: studioReview, requirePermission }),
   );
 
+  // --- Content Studio library + releases (Phase 4 WS8c) — own prefixes, so each
+  // request still runs exactly one auth + rate-limit chain; rollback gated inside. ---
+  app.use(
+    '/api/v1/studio/library',
+    ...authed,
+    requirePermission('content:audit:read'),
+    rl('studio_library', 60_000, 60),
+    createStudioLibraryRouter({ review: studioReview }),
+  );
+  app.use(
+    '/api/v1/studio/releases',
+    ...authed,
+    requirePermission('content:audit:read'),
+    rl('studio_releases', 60_000, 60),
+    createStudioReleasesRouter({ auditLog, review: studioReview, requirePermission }),
+  );
+
   // --- Content Studio (Phase 4 WS8a) — any content role may read; cancel needs content:ai:run ---
   app.use(
     '/api/v1/studio',
@@ -350,6 +368,7 @@ export function createApp(deps: AppDeps): Express {
       jobQueue: deps.jobQueue,
       aiJobBudget: config.aiJobBudget,
       requireAiRun: requirePermission('content:ai:run'),
+      settings: buildStudioSettings(config),
     }),
   );
 

@@ -181,6 +181,83 @@ export interface ReviewDetail {
   siblings: Array<{ revisionId: string; revisionNumber: number; status: ContentStatus; createdAt: string }>;
 }
 
+// --- Library + releases + settings (Phase 4 WS8c) --------------------------
+
+export interface LibraryTheme {
+  themeId: string;
+  title: string;
+  categoryId: string | null;
+  categoryTitle: string | null;
+  inCatalog: boolean;
+  counts: StatusCounts;
+}
+
+export interface FindingSummary {
+  revisionType: ReviewRevisionType;
+  kind: string;
+  severity: 'info' | 'warning' | 'blocking';
+  label: string;
+  revisions: number;
+}
+
+export interface LibraryResponse {
+  available: boolean;
+  themes: LibraryTheme[];
+  findings: FindingSummary[];
+}
+
+export interface SetVersionSummary {
+  setId: string;
+  kind: string;
+  version: number;
+  contentHash: string;
+  questionCount: number;
+  publishedAt: string;
+  publishedBy: string | null;
+  isLatest: boolean;
+}
+
+export interface ReleasesResponse {
+  available: boolean;
+  sets: SetVersionSummary[];
+  history: StudioActivityEntry[];
+}
+
+export interface SetVersionDetail {
+  available: boolean;
+  version: (SetVersionSummary & { latestVersion: number | null }) | null;
+  items: Array<{
+    position: number;
+    questionId: string;
+    revisionId: string;
+    text: string | null;
+    status: ContentStatus | null;
+    themeId: string | null;
+  }>;
+  truncated?: boolean;
+}
+
+export interface StudioSettings {
+  providers: Array<{
+    id: 'gemini' | 'groq' | 'openrouter' | 'mock';
+    label: string;
+    model: string | null;
+    selected: boolean;
+    configured: boolean;
+  }>;
+  aiEnabled: boolean;
+  jobBudget: { maxRequests?: number; maxTokens?: number; maxCostUsd?: number } | null;
+  roles: Array<{ role: Role; permissions: Permission[] }>;
+  permissions: Permission[];
+  queueAvailable: boolean;
+  promptVersions: Array<{ promptVersion: string; lastUsedAt: string; jobs: number }>;
+}
+
+export interface ActivityFilter {
+  action?: string;
+  limit?: number;
+}
+
 const reviewPath = (type: ReviewRevisionType, id: string) =>
   `/studio/review/${type}/${encodeURIComponent(id)}`;
 
@@ -206,8 +283,38 @@ export const studioRepo = {
     return call(`/studio/jobs/${encodeURIComponent(id)}/cancel`, { method: 'POST' });
   },
 
-  getActivity(limit = 10): Promise<{ activity: StudioActivityEntry[] }> {
-    return call(`/studio/activity?limit=${limit}`);
+  getActivity(filter: ActivityFilter = {}): Promise<{ activity: StudioActivityEntry[] }> {
+    const qs = new URLSearchParams({ limit: String(filter.limit ?? 10) });
+    if (filter.action) qs.set('action', filter.action);
+    return call(`/studio/activity?${qs.toString()}`);
+  },
+
+  getLibrary(): Promise<LibraryResponse> {
+    return call('/studio/library');
+  },
+
+  getReleases(): Promise<ReleasesResponse> {
+    return call('/studio/releases');
+  },
+
+  getSetVersion(setId: string, version: number): Promise<SetVersionDetail> {
+    return call(`/studio/releases/${encodeURIComponent(setId)}/versions/${version}`);
+  },
+
+  /** `confirmSetId` must equal `setId` — the server refuses a rollback the caller didn't explicitly confirm. */
+  rollbackSet(
+    setId: string,
+    toVersion: number,
+    confirmSetId: string,
+  ): Promise<{ ok: true; version: Omit<SetVersionSummary, 'isLatest'> }> {
+    return call(`/studio/releases/${encodeURIComponent(setId)}/rollback`, {
+      method: 'POST',
+      body: { toVersion, confirmSetId },
+    });
+  },
+
+  getSettings(): Promise<StudioSettings> {
+    return call('/studio/settings');
   },
 
   getDashboard(): Promise<StudioDashboard> {
