@@ -54,6 +54,9 @@ export const queryKeys = {
     setVersion: (setId: string, version: number) => ['studio', 'set-version', setId, version] as const,
     activity: (action?: string) => ['studio', 'activity', action ?? null] as const,
     settings: () => ['studio', 'settings'] as const,
+    quality: () => ['studio', 'quality'] as const,
+    reportGroups: (closed: boolean) => ['studio', 'report-groups', closed] as const,
+    reportDetail: (type: string, entityId: string) => ['studio', 'report-detail', type, entityId] as const,
   },
 } as const;
 

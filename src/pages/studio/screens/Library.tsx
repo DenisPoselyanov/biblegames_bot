@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import { useLibraryQuery } from '../lib/queries';
+import { useLibraryQuery, useQualityQuery, useRepairOutlierMutation } from '../lib/queries';
 import { plural } from '../lib/plural';
 import { useCan } from '../lib/useStudio';
-import type { FindingSummary, LibraryTheme, StatusCounts } from '../../../repos/studioRepo';
+import type { AccuracyBand, FindingSummary, LibraryTheme, StatusCounts } from '../../../repos/studioRepo';
 import {
   Badge,
   Button,
@@ -29,8 +29,9 @@ import {
  *
  * Deliberately not ported: the prototype's per-topic *target* pool size (no
  * such number exists anywhere in the product — inventing one would be the
- * "fake progress" §3 forbids) and its gameplay-accuracy distribution (needs
- * the WS9 quality-analytics aggregation; shown here as an honest gap).
+ * "fake progress" §3 forbids). The gameplay-accuracy distribution and the
+ * outlier list come from WS9's `/studio/quality` aggregation over recorded
+ * answers — real counts only, empty until players have answered enough.
  */
 
 const COLS = '1fr 110px 110px 110px 150px';
@@ -301,22 +302,150 @@ function Quality({ findings, themes }: { findings: FindingSummary[]; themes: Lib
           )}
         </Panel>
 
-        <Panel title={<Term k="accuracy">Як відповідають гравці</Term>}>
-          <p className="text-[13px] leading-relaxed text-muted">
-            Розподіл правильних відповідей і питання-«викиди» зʼявляться тут, коли запрацює аналітика
-            якості (Phase 4 WS9). Зараз цих чисел немає — тому тут їх і не показано.
-          </p>
-          <p className="mt-3 border-t border-line pt-3 text-[12px] leading-relaxed text-faint">
-            Погані обидва хвости: 18% правильних означає, що питання незрозуміле, а 97% — що воно нічого
-            не перевіряє.
-          </p>
-        </Panel>
+        <PlayerAccuracy />
       </div>
+
+      <Outliers />
 
       <Note className="mt-3">
         Кожна ревізія зберігає лише результат своєї останньої перевірки. Щоб побачити конкретні позиції —
         відкрийте <Link to="/studio/review" className="font-semibold text-indigo underline underline-offset-2">чергу</Link>.
       </Note>
     </>
+  );
+}
+
+const BAND_LABEL: Record<AccuracyBand, string> = {
+  too_hard: 'Надто складні · до 40%',
+  hard: 'Складні · 40–60%',
+  normal: 'Норма · 60–85%',
+  easy: 'Легкі · 85–95%',
+  too_easy: 'Надто легкі · від 95%',
+};
+
+const BAND_COLOR: Record<AccuracyBand, string> = {
+  too_hard: 'var(--p-danger)',
+  hard: 'var(--p-gold)',
+  normal: 'var(--p-success)',
+  easy: 'var(--p-gold)',
+  too_easy: 'var(--p-danger)',
+};
+
+const pct = (share: number) => `${Math.round(share * 100)}%`;
+
+function PlayerAccuracy() {
+  const query = useQualityQuery();
+  const analysis = query.data?.analysis;
+  const bias = query.data?.positionBias;
+  const max = Math.max(1, ...(analysis?.distribution.map((d) => d.count) ?? [1]));
+
+  return (
+    <Panel title={<Term k="accuracy">Як відповідають гравці</Term>}>
+      {!query.data ? (
+        <p className="text-[13px] text-faint">{query.isError ? (query.error as Error).message : 'Завантажую…'}</p>
+      ) : !query.data.available || !analysis ? (
+        <p className="text-[13px] text-muted">Статистика недоступна: сервер працює без бази даних.</p>
+      ) : analysis.sampleSize === 0 ? (
+        <p className="text-[13px] leading-relaxed text-muted">
+          Ще немає жодного питання з {analysis.minAttempts}+ відповідями гравців — розподіл зʼявиться, щойно
+          назбирається достатньо відповідей. Менше — це шум, а не сигнал.
+        </p>
+      ) : (
+        <div className="grid gap-2.5">
+          {analysis.distribution.map((d) => (
+            <div key={d.band}>
+              <div className="mb-1 flex items-baseline justify-between">
+                <span className="text-[12.5px] text-muted">{BAND_LABEL[d.band]}</span>
+                <span className="studio-num text-[12.5px] font-semibold">{d.count.toLocaleString('uk-UA')}</span>
+              </div>
+              <div className="h-2 overflow-hidden rounded-full bg-line-strong">
+                <div className="h-full rounded-full" style={{ width: `${(d.count / max) * 100}%`, background: BAND_COLOR[d.band] }} />
+              </div>
+            </div>
+          ))}
+          <p className="text-[12px] text-faint">
+            {analysis.sampleSize.toLocaleString('uk-UA')} питань із {analysis.minAttempts}+ відповідями.
+          </p>
+        </div>
+      )}
+      {bias && bias.picks > 0 && (
+        <p className="mt-3 border-t border-line pt-3 text-[12.5px] leading-relaxed text-muted">
+          Перший варіант обирають у <b className="studio-num">{pct(bias.firstOptionShare)}</b> випадків; без
+          ефекту позиції було б близько <span className="studio-num">{pct(bias.expectedShare)}</span> (
+          {bias.picks.toLocaleString('uk-UA')} виборів у практиці).
+        </p>
+      )}
+      <p className="mt-3 border-t border-line pt-3 text-[12px] leading-relaxed text-faint">
+        Погані обидва хвости: 18% правильних означає, що питання незрозуміле, а 97% — що воно нічого не
+        перевіряє. Рахуються лише відповіді — без персональних даних.
+      </p>
+    </Panel>
+  );
+}
+
+function Outliers() {
+  const can = useCan();
+  const query = useQualityQuery();
+  const repair = useRepairOutlierMutation();
+  const outliers = query.data?.analysis?.outliers ?? [];
+  if (outliers.length === 0) return null;
+
+  return (
+    <Panel
+      className="mt-4"
+      title="Питання, які варто переробити"
+      subtitle={`${query.data?.analysis?.outlierTotal ?? outliers.length} за відповідями гравців`}
+      flush
+    >
+      {repair.isError && (
+        <p className="border-b border-line px-4 py-2 text-[12.5px] text-danger">{(repair.error as Error).message}</p>
+      )}
+      {repair.data && (
+        <p className="border-b border-line px-4 py-2 text-[12.5px] text-success">
+          Завдання створено —{' '}
+          <Link to={`/studio/jobs/${repair.data.jobId}`} className="font-semibold underline underline-offset-2">
+            відкрити
+          </Link>
+          . Результат буде пропозицією для ревʼю, а не зміною в грі.
+        </p>
+      )}
+      <Grid head cols="1fr 120px 120px 190px">
+        <span>Питання</span>
+        <span>Правильних</span>
+        <span>Відповідей</span>
+        <span />
+      </Grid>
+      {outliers.map((o) => (
+        <Grid key={o.questionId} cols="1fr 120px 120px 190px">
+          <span className="min-w-0">
+            <span className="block truncate font-medium">{o.text ?? o.questionId}</span>
+            <span className="mt-0.5 flex items-center gap-2">
+              <Badge tone="danger">{o.issue === 'too_hard' ? 'надто складне' : 'надто легке'}</Badge>
+              <Mono className="truncate text-[11.5px]">{o.questionId}</Mono>
+            </span>
+          </span>
+          <span className="studio-num">{pct(o.accuracy)}</span>
+          <span className="studio-num text-muted">{o.attempts.toLocaleString('uk-UA')}</span>
+          <span className="justify-self-end">
+            <Button
+              variant="ghost"
+              denied={
+                !can('content:ai:run')
+                  ? 'Ваша роль не запускає AI'
+                  : !o.revisionId
+                    ? 'Цього питання немає в банку ревізій'
+                    : repair.isPending
+                      ? 'Створюю…'
+                      : null
+              }
+              onClick={() => repair.mutate(o.questionId)}
+            >
+              <Sparkles size={13} />
+              Виправити через AI
+            </Button>
+          </span>
+        </Grid>
+      ))}
+    </Panel>
   );
 }

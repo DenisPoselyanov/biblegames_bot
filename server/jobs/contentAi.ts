@@ -30,7 +30,35 @@ export interface ContentAiGeneratePayload {
   label?: string;
 }
 
+/** `content.ai_repair` (Phase 4 WS9): a generate call plus the question it is about. */
+export interface ContentAiRepairPayload extends ContentAiGeneratePayload {
+  questionId: string;
+  revisionId: string;
+  signal: string;
+}
+
+/**
+ * Same single-call primitive as `content.ai_generate`, audited as
+ * `content.repair` against the flagged question — the repair suggestion is
+ * still only an artifact; a reviewer turns it into a draft (or doesn't).
+ */
+export function contentAiRepairHandler(deps: ContentAiDeps): JobHandler<ContentAiRepairPayload> {
+  return runAiArtifactJob(deps, 'content.repair', (p) => ({
+    questionId: p.questionId,
+    revisionId: p.revisionId,
+    signal: p.signal,
+  }));
+}
+
 export function contentAiGenerateHandler(deps: ContentAiDeps): JobHandler<ContentAiGeneratePayload> {
+  return runAiArtifactJob(deps, 'content.generate', () => ({}));
+}
+
+function runAiArtifactJob<P extends ContentAiGeneratePayload>(
+  deps: ContentAiDeps,
+  auditAction: string,
+  extra: (payload: P) => Record<string, unknown>,
+): JobHandler<P> {
   const now = deps.now ?? (() => new Date());
   return async (ctx) => {
     const priorUsage = (ctx.job.checkpoint?.usage ?? undefined) as
@@ -38,7 +66,7 @@ export function contentAiGenerateHandler(deps: ContentAiDeps): JobHandler<Conten
       | undefined;
     const budget = new BudgetTracker(deps.budget, priorUsage);
     if (budget.exceeded()) {
-      throw new AiProviderError('content.ai_generate: job budget already exhausted', {
+      throw new AiProviderError(`${ctx.job.type}: job budget already exhausted`, {
         kind: 'unknown',
         retryable: false,
       });
@@ -55,6 +83,7 @@ export function contentAiGenerateHandler(deps: ContentAiDeps): JobHandler<Conten
         promptVersion,
         label: label ?? null,
         prompt,
+        ...extra(ctx.job.payload),
         output: result.value,
         meta: result.meta,
         generatedAt: now().toISOString(),
@@ -70,10 +99,16 @@ export function contentAiGenerateHandler(deps: ContentAiDeps): JobHandler<Conten
       await deps.auditLog.append(
         buildAuditRecord({
           actor: SYSTEM_ACTOR,
-          action: 'content.generate',
+          action: auditAction,
           target: ctx.job.id,
           result: 'ok',
-          metadata: { promptVersion, label: label ?? null, artifactKey, provider: result.meta.provider },
+          metadata: {
+            promptVersion,
+            label: label ?? null,
+            artifactKey,
+            provider: result.meta.provider,
+            ...extra(ctx.job.payload),
+          },
         }),
       );
     }

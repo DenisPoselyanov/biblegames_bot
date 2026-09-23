@@ -17,5 +17,6 @@ export * as meContract from './api/me';
 export * as progressionContract from './api/progression';
 export * as shopContract from './api/shop';
 export * as learningContract from './api/learning';
+export * as contentReportsContract from './api/contentReports';
 
 export * as realtimeContract from './events/realtime';

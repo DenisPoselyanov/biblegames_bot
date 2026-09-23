@@ -25,7 +25,7 @@ import {
   type SweepQuery,
 } from './sweeps';
 import { contentSnapshotHandler } from './contentSnapshot';
-import { contentAiGenerateHandler } from './contentAi';
+import { contentAiGenerateHandler, contentAiRepairHandler } from './contentAi';
 
 export function createJobQueue(config: ServerConfig): JobQueue {
   if (config.jobQueueDriver === 'postgres') {
@@ -90,6 +90,9 @@ export function registerCoreJobs(queue: JobQueue, deps: CoreJobDeps): void {
     // On demand only — one job per generation call (§8.3, no batch loop yet).
     queue.register(JOB_TYPES.AI_CONTENT_GENERATE, {
       handler: contentAiGenerateHandler(deps.ai),
+    });
+    queue.register(JOB_TYPES.AI_CONTENT_REPAIR, {
+      handler: contentAiRepairHandler(deps.ai),
     });
   }
 }

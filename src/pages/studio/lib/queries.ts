@@ -164,3 +164,49 @@ export function useRollbackMutation() {
     studioRepo.rollbackSet(input.setId, input.toVersion, input.confirmSetId),
   );
 }
+
+// --- Quality feedback loop (Phase 4 WS9) ------------------------------------
+
+export function useQualityQuery() {
+  return useQuery({
+    queryKey: queryKeys.studio.quality(),
+    queryFn: () => studioRepo.getQuality(),
+    refetchInterval: REVIEW_REFRESH_MS,
+  });
+}
+
+export function useReportGroupsQuery(includeClosed: boolean) {
+  return useQuery({
+    queryKey: queryKeys.studio.reportGroups(includeClosed),
+    queryFn: () => studioRepo.listReportGroups(includeClosed),
+    refetchInterval: REVIEW_REFRESH_MS,
+  });
+}
+
+export function useReportDetailQuery(type: ReviewRevisionType | undefined, entityId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.studio.reportDetail(type ?? '', entityId ?? ''),
+    queryFn: () => studioRepo.getReportDetail(type as ReviewRevisionType, entityId as string),
+    enabled: Boolean(type && entityId),
+  });
+}
+
+export function useRepairOutlierMutation() {
+  return useStudioWrite((questionId: string) => studioRepo.repairOutlier(questionId));
+}
+
+export function useRepairFromReportsMutation() {
+  return useStudioWrite((entityId: string) => studioRepo.repairFromReports(entityId));
+}
+
+export function useResolveReportsMutation() {
+  return useStudioWrite(
+    (input: {
+      type: ReviewRevisionType;
+      entityId: string;
+      status: 'resolved' | 'dismissed';
+      note?: string;
+      revisionId?: string;
+    }) => studioRepo.resolveReports(input.type, input.entityId, input),
+  );
+}

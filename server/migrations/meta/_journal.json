@@ -92,6 +92,13 @@
       "when": 1789750932000,
       "tag": "0012_scripture_evidence",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1789837332000,
+      "tag": "0013_content_quality_signals",
+      "breakpoints": true
     }
   ]
 }

@@ -20,6 +20,8 @@ export const JOB_TYPES = {
   CONTENT_SNAPSHOT: 'content.snapshot',
   /** One AI generation call → a raw artifact in object storage (Phase 4 §7, §8, WS1). Not a draft/revision yet — WS2 consumes the artifact. */
   AI_CONTENT_GENERATE: 'content.ai_generate',
+  /** AI repair suggestion for one flagged question (Phase 4 WS9) — same single-call primitive, artifact only. */
+  AI_CONTENT_REPAIR: 'content.ai_repair',
 } as const;
 
 export type JobType = (typeof JOB_TYPES)[keyof typeof JOB_TYPES];
@@ -31,6 +33,7 @@ export const JOB_TYPE_LABELS: Record<string, string> = {
   [JOB_TYPES.TELEMETRY_RETENTION]: 'Прибирання телеметрії',
   [JOB_TYPES.CONTENT_SNAPSHOT]: 'Знімок опублікованого контенту',
   [JOB_TYPES.AI_CONTENT_GENERATE]: 'Генерація контенту (AI)',
+  [JOB_TYPES.AI_CONTENT_REPAIR]: 'Виправлення питання (AI)',
 };
 
 export function labelForJobType(type: string): string {
@@ -56,6 +59,18 @@ export const JOB_PAYLOAD_SCHEMAS = {
       prompt: z.string().min(1),
       /** Free-form label for what this batch is for (theme id, topic id, …) — not interpreted by the job. */
       label: z.string().min(1).optional(),
+    })
+    .strict(),
+  [JOB_TYPES.AI_CONTENT_REPAIR]: z
+    .object({
+      promptVersion: z.string().min(1),
+      prompt: z.string().min(1),
+      label: z.string().min(1).optional(),
+      /** The flagged question and the revision the prompt was built from. */
+      questionId: z.string().min(1),
+      revisionId: z.string().min(1),
+      /** Why it was flagged: `accuracy:too_hard`, `reports`, … */
+      signal: z.string().min(1),
     })
     .strict(),
 } satisfies Record<string, z.ZodType>;

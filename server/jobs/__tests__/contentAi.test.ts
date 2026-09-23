@@ -138,3 +138,43 @@ describe('content.ai_generate job (Phase 4 §7, §8, WS1)', () => {
     expect(queue.peek(id)!.status).toBe('completed');
   });
 });
+
+describe('content.ai_repair job (Phase 4 WS9)', () => {
+  it('stores the suggestion as an artifact tied to the question and audits it as content.repair', async () => {
+    const store = createMemoryObjectStore();
+    const provider = createMockAiProvider();
+    provider.enqueue({ text: '{"text":"виправлено"}' });
+    const auditLog = createMemoryAuditLog();
+    const queue = createInMemoryJobQueue({ onEvent: () => {} });
+    registerCoreJobs(queue, {
+      query: async () => ({ rowCount: 0 }),
+      ai: { provider, store, budget: { maxRequests: 5 }, auditLog },
+    });
+
+    const { id } = await queue.enqueue(JOB_TYPES.AI_CONTENT_REPAIR, {
+      promptVersion: 'question.repair.v1',
+      prompt: 'Виправ питання',
+      questionId: 'q-ark',
+      revisionId: 'qrev_1',
+      signal: 'accuracy:too_hard',
+    });
+    await queue.runDue();
+
+    expect(queue.peek(id)!.status).toBe('completed');
+    const artifact = JSON.parse((await store.get(`ai-artifacts/${id}.json`))!.body.toString('utf-8'));
+    expect(artifact).toMatchObject({ questionId: 'q-ark', revisionId: 'qrev_1', output: '{"text":"виправлено"}' });
+    const [record] = await auditLog.query({ action: 'content.repair' });
+    expect(record).toMatchObject({ target: id, metadata: { questionId: 'q-ark', signal: 'accuracy:too_hard' } });
+  });
+
+  it('rejects a repair payload without the question it is about', async () => {
+    const queue = createInMemoryJobQueue({ onEvent: () => {} });
+    registerCoreJobs(queue, {
+      query: async () => ({ rowCount: 0 }),
+      ai: { provider: createMockAiProvider(), store: createMemoryObjectStore(), budget: {} },
+    });
+    await expect(
+      queue.enqueue(JOB_TYPES.AI_CONTENT_REPAIR, { promptVersion: 'v', prompt: 'p' }),
+    ).rejects.toThrow(/invalid payload/i);
+  });
+});

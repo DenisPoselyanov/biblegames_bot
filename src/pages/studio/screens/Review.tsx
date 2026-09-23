@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Check, Inbox } from 'lucide-react';
-import { useApproveMutation, useReviewQueueQuery } from '../lib/queries';
+import { useApproveMutation, useQualityQuery, useReviewQueueQuery } from '../lib/queries';
 import { plural } from '../lib/plural';
 import { useCan } from '../lib/useStudio';
 import type {
@@ -81,6 +81,7 @@ export function Review() {
   const activeGroup = STATUS_GROUPS.find((g) => g.id === group) ?? STATUS_GROUPS[0];
   const query = useReviewQueueQuery(activeGroup.statuses);
   const approve = useApproveMutation();
+  const quality = useQualityQuery();
 
   const items = useMemo(() => query.data?.items ?? [], [query.data]);
   const counts = query.data?.counts ?? null;
@@ -128,6 +129,9 @@ export function Review() {
                 {g.label}
               </Chip>
             ))}
+            <Chip onClick={() => navigate('/studio/review/reports')} count={quality.data?.openReports}>
+              Скарги гравців
+            </Chip>
           </Toolbar>
           <Toolbar className="mb-3">
             {TYPE_FILTERS.map((f) => (

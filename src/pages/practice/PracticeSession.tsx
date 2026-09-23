@@ -46,6 +46,7 @@ import {
   ProgressRing,
 } from '../../components/ui';
 import { Icon } from '../../components/Icon';
+import { ReportQuestion } from './ReportQuestion';
 import styles from './PracticeSession.module.css';
 
 /** Segmented per-question progress (Phase 3.5 §6 WS4) — mirrors `LessonSession`'s `SegmentedProgress`. */
@@ -264,6 +265,12 @@ export function PracticeSession() {
           <Button fullWidth onClick={next}>
             {result.nextQuestion ? 'Далі' : 'Завершити'}
           </Button>
+          <ReportQuestion
+            key={question.revisionId}
+            questionId={question.questionId}
+            revisionId={question.revisionId}
+            sessionId={sessionId}
+          />
         </>
       )}
     </AppPage>

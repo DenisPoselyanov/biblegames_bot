@@ -49,6 +49,10 @@ import { buildStudioSettings, createStudioRouter } from './routes/studio';
 import { createStudioLibraryRouter, createStudioReleasesRouter } from './routes/studioLibrary';
 import { createStudioReviewRouter, type StudioReviewRepositories } from './routes/studioReview';
 import { createSqlValidationFindingRepository } from './infrastructure/database/repositories/validationFindings';
+import { createSqlQualityRepositories } from './infrastructure/database/repositories/quality';
+import type { QualityRepositories } from './domains/quality/repository';
+import { createContentReportsRouter } from './routes/contentReports';
+import { createStudioQualityRouter } from './routes/studioQuality';
 import { createSqlScriptureEvidenceRepository } from './infrastructure/database/repositories/scriptureEvidence';
 import type { JobQueue } from './domains/jobs/queue';
 import { createClientErrorsRouter } from './routes/clientErrors';
@@ -110,6 +114,12 @@ export interface AppDeps {
    * `available: false`.
    */
   studioReview?: StudioReviewRepositories;
+  /**
+   * Content-quality signals + player reports (Phase 4 WS9). Defaults to the SQL
+   * adapters with a database; tests inject in-memory peers. Without either,
+   * reports answer 503 and the Studio quality screen reports `available: false`.
+   */
+  quality?: QualityRepositories;
 }
 
 /**
@@ -193,6 +203,8 @@ export function createApp(deps: AppDeps): Express {
   // below: there is no legacy-blob equivalent for lesson/practice content, so
   // the whole surface is simply absent without a database. ---
   const learningRepos = deps.database ? createSqlLearningRepositories(deps.database) : undefined;
+  const quality: QualityRepositories | undefined =
+    deps.quality ?? (deps.database ? createSqlQualityRepositories(deps.database) : undefined);
   const learningService = deps.database && learningRepos
     ? createLearningService({
         learningRepos,
@@ -202,6 +214,7 @@ export function createApp(deps: AppDeps): Express {
         preferences: preferencesCutover,
         progression: progressionCutover,
         progressionService,
+        questionSignals: quality?.signals,
       })
     : undefined;
   const roleResolver =
@@ -338,6 +351,27 @@ export function createApp(deps: AppDeps): Express {
     requirePermission('content:audit:read'),
     rl('studio_review', 60_000, 60),
     createStudioReviewRouter({ auditLog, review: studioReview, requirePermission }),
+  );
+
+  // --- Content quality feedback loop (Phase 4 WS9) — player reports + Studio signals. ---
+  app.use(
+    '/api/v1/content-reports',
+    ...authed,
+    rl('content_reports', 60_000, 10),
+    createContentReportsRouter({ auditLog, reports: quality?.reports, content: studioReview?.content ?? contentRepositories }),
+  );
+  app.use(
+    '/api/v1/studio/quality',
+    ...authed,
+    requirePermission('content:audit:read'),
+    rl('studio_quality', 60_000, 60),
+    createStudioQualityRouter({
+      auditLog,
+      quality,
+      review: studioReview,
+      jobQueue: deps.jobQueue,
+      requirePermission,
+    }),
   );
 
   // --- Content Studio library + releases (Phase 4 WS8c) — own prefixes, so each
