@@ -20,11 +20,17 @@ legacy file / AI call ──► artifact or draft revision ──► WS3/WS4 che
 | `scripts` | — | prints the deprecation matrix |
 | `audit-legacy` | report only | §12.1–§12.3 inventory, classification and waves → `reports/content/legacy-audit.json`; summary in [LEGACY_CONTENT_AUDIT.md](./LEGACY_CONTENT_AUDIT.md) |
 | `validate-content` | — | canonical WS2/WS3 findings per question (`--theme`, `--class`, `--limit`) |
-| `validate-revisions` | `--apply`: `content_validation_findings` | re-runs the quality checks over every stored question revision and records them with a run marker. The publish gate refuses a question with no run for the current checker version, so run this after any check changes (bump `QUESTION_CHECKS_VERSION`) |
-| `migrate-wave --wave N` | `--apply`: `question_revisions` (`legacy_unreviewed`) | imports one wave, writes before/after report; `--rollback <report> --apply` quarantines what that wave created |
+| `validate-revisions [--lessons]` | `--apply`: `content_validation_findings` | re-runs the quality checks over every stored question (or, with `--lessons`, lesson) revision and records them with a run marker. The publish gate refuses a question/lesson with no run for the current checker version, so run this after any check changes (bump `QUESTION_CHECKS_VERSION` / `LESSON_CHECKS_VERSION`) |
+| `migrate-wave --wave N` | `--apply`: `question_revisions` (`legacy_unreviewed`) | imports one wave, writes before/after report; `--rollback <report> --apply` quarantines what that wave created. **Quality gate:** `--apply` imports only questions with a current AI assessment and skips AI-rejected ones; unreviewed questions block the wave unless `--allow-unreviewed` |
 | `import-legacy` | `--apply`: `question_revisions` | waves 1–5 at once (the Phase 2 importer) |
 | `generate-questions --prompt …` | `--apply`: AI artifact | one `content.ai_generate` job |
 | `repair-question --id Q --note …` | `--apply`: AI artifact | one `content.ai_repair` job built from a legacy question |
+| `golden-sample` | `--apply`: `data/quality/golden-sample.json` | draws the stratified ~200-question set the owner labels in Studio (Черга → Еталон) |
+| `ai-review (--golden \| --ids \| --theme \| --all)` | `--apply`: `question_assessments` (`ai`) | layer 2: the AI reviewer, grounded in the cited verses (Ohienko, bolls.life), eight criteria + verdict. Resumable (skips bodies already reviewed with the current rubric), `--max-usd` budget stop (default $5), `--signals-first`, `--concurrency`. `--all` refuses to run until `ai-calibrate` passes the trust gate. Dry-run prints the prompt and a cost estimate |
+| `ai-calibrate` | report only | AI verdicts vs the owner's golden labels: agreement, confusion matrix, reject precision/recall, per-criterion agreement, trust gate → `reports/content/calibration-*.json` |
+| `apply-review-decisions` | `--apply`: `data/question-exclusions.json`, `data/question-overrides.json`, revisions | writes accepted/overridden Studio decisions into the bank: reject → exclusion (+ quarantine of imported revisions), level/theme/explanations → override (+ a *draft* revision for imported questions). Stale decisions (body changed since the review) are skipped |
+
+The content quality gate (layers 0–4) and its owner runbook: [CONTENT_QUALITY_GATE.md](./CONTENT_QUALITY_GATE.md).
 
 ## Legacy scripts
 
