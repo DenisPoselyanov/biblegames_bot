@@ -57,3 +57,14 @@ export function hiddenWordIndices(words: readonly string[], round: number, seed:
   const share = Math.min(Math.max(round, 0), MEMORY_VERSE_ROUNDS - 1) / (MEMORY_VERSE_ROUNDS - 1);
   return new Set(order.slice(0, Math.round(order.length * share)));
 }
+
+/**
+ * Root-relative lesson assets (`/lessons/…`, shipped from `public/`) resolve
+ * against the app's base path — the GitHub Pages build lives under
+ * `/biblegames_bot/`, where a bare `/lessons/x.svg` would 404. Absolute and
+ * protocol-relative URLs pass through unchanged.
+ */
+export function resolveAssetSrc(src: string, base: string = import.meta.env.BASE_URL ?? '/'): string {
+  if (!src.startsWith('/') || src.startsWith('//')) return src;
+  return `${base.replace(/\/$/, '')}${src}`;
+}
