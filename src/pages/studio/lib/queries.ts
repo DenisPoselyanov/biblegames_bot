@@ -10,6 +10,8 @@ import {
   type JobStatus,
   type ReviewRevisionType,
   type AssessmentLabelInput,
+  type AssessmentQueueParams,
+  type DecideAssessmentsInput,
 } from '../../../repos/studioRepo';
 import { queryKeys } from '../../../queries/keys';
 
@@ -218,6 +220,32 @@ export function useGoldenQuery() {
   return useQuery({
     queryKey: queryKeys.studio.golden(),
     queryFn: () => studioRepo.getGolden(),
+  });
+}
+
+export function useAssessmentQueueQuery(params: AssessmentQueueParams) {
+  return useQuery({
+    queryKey: queryKeys.studio.assessmentQueue(JSON.stringify(params)),
+    queryFn: () => studioRepo.getAssessmentQueue(params),
+  });
+}
+
+export function useAssessmentSummaryQuery() {
+  return useQuery({
+    queryKey: queryKeys.studio.assessmentSummary(),
+    queryFn: () => studioRepo.getAssessmentSummary(),
+  });
+}
+
+export function useDecideAssessmentsMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: DecideAssessmentsInput) => studioRepo.decideAssessments(input),
+    onSuccess: (result) => {
+      void queryClient.invalidateQueries({ queryKey: ['studio', 'assessment-queue'] });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.studio.assessmentSummary() });
+      if (result.repairJobs.length) void queryClient.invalidateQueries({ queryKey: ['studio', 'jobs'] });
+    },
   });
 }
 

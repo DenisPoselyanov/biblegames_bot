@@ -30,6 +30,7 @@ import { Library } from './screens/Library';
 import { Releases } from './screens/Releases';
 import { Settings } from './screens/Settings';
 import { Reports } from './screens/Reports';
+import { AiReview } from './screens/AiReview';
 import { Golden } from './screens/Golden';
 import { Guide } from './screens/Guide';
 
@@ -279,6 +280,7 @@ export function StudioApp() {
             <Route path="review" element={<Review />} />
             <Route path="review/reports" element={<Reports />} />
             <Route path="review/golden" element={<Golden />} />
+            <Route path="review/ai" element={<AiReview />} />
             <Route path="review/:type/:revisionId" element={<ReviewItem />} />
             <Route path="jobs" element={<Jobs />} />
             <Route path="jobs/new" element={<NewJob />} />

@@ -15,6 +15,7 @@ import { loadConfig } from '../../server/config/env';
 import { createApp } from '../../server/app';
 import { RoleRegistry } from '../../server/authz/roleRegistry';
 import { createMemoryAuditLog } from '../../server/audit';
+import { createInMemoryJobQueue } from '../../server/domains/jobs/inMemoryQueue';
 import { createInMemoryContentRepositories } from '../../server/domains/content/inMemoryRepository';
 import { createInMemoryLearningRepositories } from '../../server/domains/learning/inMemoryRepository';
 import { createInMemoryQualityRepositories } from '../../server/domains/quality/inMemory';
@@ -54,6 +55,8 @@ async function main(): Promise<void> {
     auditLog: createMemoryAuditLog(),
     roleRegistry: new RoleRegistry([{ userId: 'guest', roles: ['admin'] }]),
     quality,
+    // Jobs are queued (visible in «Робота AI») but never run — there is no provider here.
+    jobQueue: createInMemoryJobQueue(),
     studioReview: {
       content: createInMemoryContentRepositories(),
       learning: createInMemoryLearningRepositories(),

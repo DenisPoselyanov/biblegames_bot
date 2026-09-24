@@ -405,7 +405,104 @@ export interface CalibrationReportView {
   }>;
 }
 
+/** What a decision changes in the bank — mirrors `AssessmentPatch` on the server. */
+export interface AssessmentPatchView {
+  difficulty?: Difficulty;
+  themeId?: string;
+  topicNodeId?: string | null;
+  explanationShort?: string;
+  explanationDeep?: string;
+  exclude?: boolean;
+}
+
+export type AssessmentDecisionKind = 'accepted' | 'overridden' | 'dismissed';
+
+/** Mirrors `toAiView` in `server/routes/studioAssessments.ts`. */
+export interface AiAssessmentView {
+  id: string;
+  questionId: string;
+  contentHash: string;
+  assessor: string;
+  rubricVersion: string;
+  verdict: AssessmentVerdict;
+  criteria: AssessmentCriteria;
+  confidence: number | null;
+  risk: number;
+  boost: number;
+  priority: number;
+  signals: { openReports: number; wrongAnswerReports: number; accuracyBand: 'too_hard' | 'too_easy' | 'ok' | null } | null;
+  suggestedDifficulty: Difficulty | null;
+  suggestedThemeId: string | null;
+  suggestedTopicNodeId: string | null;
+  suggestedExplanationShort: string | null;
+  suggestedExplanationDeep: string | null;
+  notes: string | null;
+  subject: AssessmentSubject;
+  acceptPatch: AssessmentPatchView | null;
+  evidence: {
+    verdictAdjusted: { from: AssessmentVerdict; to: AssessmentVerdict } | null;
+    passages: Array<{ label: string; found: boolean; note?: string }>;
+  };
+  decision: AssessmentDecisionKind | null;
+  decisionNote: string | null;
+  decisionPatch: AssessmentPatchView | null;
+  decidedBy: string | null;
+  decidedAt: string | null;
+  appliedAt: string | null;
+  createdAt: string;
+}
+
+export interface AssessmentQueueParams {
+  verdicts?: AssessmentVerdict[];
+  themeId?: string;
+  decided?: 'undecided' | 'decided' | 'all';
+  /** Only questions players reported or answer unusually. */
+  signals?: boolean;
+  limit?: number;
+  offset?: number;
+}
+
+export interface AssessmentSummaryView {
+  ai: {
+    total: number;
+    byVerdict: Partial<Record<AssessmentVerdict, number>>;
+    undecided: number;
+    decidedUnapplied: number;
+  };
+  golden: { total: number };
+}
+
+export interface DecideAssessmentsInput {
+  ids: string[];
+  decision: AssessmentDecisionKind;
+  note?: string | null;
+  patch?: AssessmentPatchView | null;
+  enqueueRepair?: boolean;
+}
+
 export const studioRepo = {
+  getAssessmentQueue(params: AssessmentQueueParams): Promise<{ available: boolean; items: AiAssessmentView[]; total: number }> {
+    const qs = new URLSearchParams();
+    if (params.verdicts?.length) qs.set('verdicts', params.verdicts.join(','));
+    if (params.themeId) qs.set('themeId', params.themeId);
+    if (params.decided) qs.set('decided', params.decided);
+    if (params.signals) qs.set('signals', '1');
+    if (params.limit) qs.set('limit', String(params.limit));
+    if (params.offset) qs.set('offset', String(params.offset));
+    const q = qs.toString();
+    return call(`/studio/assessments/queue${q ? `?${q}` : ''}`);
+  },
+
+  getAssessmentSummary(): Promise<{ available: boolean; summary: AssessmentSummaryView | null }> {
+    return call('/studio/assessments/summary');
+  },
+
+  decideAssessments(
+    input: DecideAssessmentsInput,
+  ): Promise<{ ok: true; changed: number; repairJobs: Array<{ questionId: string; jobId: string }> }> {
+    return call('/studio/assessments/decide', { method: 'POST', body: input });
+  },
+
   getGolden(): Promise<GoldenResponse> {
     return call('/studio/assessments/golden');
   },

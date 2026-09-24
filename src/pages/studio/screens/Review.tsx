@@ -133,6 +133,7 @@ export function Review() {
             <Chip onClick={() => navigate('/studio/review/reports')} count={quality.data?.openReports}>
               Скарги гравців
             </Chip>
+            <Chip onClick={() => navigate('/studio/review/ai')}>AI-рецензія</Chip>
             <Chip onClick={() => navigate('/studio/review/golden')}>Еталон</Chip>
           </Toolbar>
           <Toolbar className="mb-3">

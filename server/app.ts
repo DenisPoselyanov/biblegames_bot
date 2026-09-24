@@ -384,7 +384,13 @@ export function createApp(deps: AppDeps): Express {
     ...authed,
     requirePermission('content:audit:read'),
     rl('studio_assessments', 60_000, 120),
-    createStudioAssessmentsRouter({ auditLog, quality, requirePermission, loadGoldenSample: deps.goldenSample }),
+    createStudioAssessmentsRouter({
+      auditLog,
+      quality,
+      requirePermission,
+      loadGoldenSample: deps.goldenSample,
+      jobQueue: deps.jobQueue,
+    }),
   );
 
   // --- Content Studio library + releases (Phase 4 WS8c) — own prefixes, so each

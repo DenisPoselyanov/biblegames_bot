@@ -16,6 +16,17 @@ import {
   type AssessmentSubject,
 } from '../../src/lib/contentAssessment';
 import { calibrate } from '../../server/domains/quality/calibration';
+import type { QuestionAssessment } from '../../server/domains/quality/assessment';
+import { planReviewApplication, type ReviewApplicationPlan } from '../../server/domains/quality/reviewDecisions';
+import type { ContentRepositories } from '../../server/domains/content/repository';
+import { validateQuestionRevision, type RevisionValidationDeps } from '../../server/domains/content/revisionValidation';
+import {
+  loadExclusionsFromDisk,
+  loadOverridesFromDisk,
+  saveExclusionsToDisk,
+  saveOverridesToDisk,
+} from '../../server/questionMutations';
+import { THEMES } from '../../src/data/themes';
 import { runAiReview, subjectKey, type TokenPricing } from '../../server/domains/quality/aiReview';
 import { buildAiReviewPrompt, fetchReviewPassages } from '../../server/domains/quality/aiReviewPrompt';
 import { subjectFromDraft } from '../../server/domains/quality/assessmentSubject';
@@ -81,6 +92,73 @@ export async function withQualityDb<T>(
   } finally {
     await pool.end();
   }
+}
+
+/** Quality + content repositories on one database connection (DATABASE_URL). */
+async function withGateDb<T>(
+  fail: (message: string) => never,
+  fn: (quality: QualityRepositories, content: ContentRepositories, checks: RevisionValidationDeps) => Promise<T>,
+): Promise<T> {
+  const { getPool, isDatabaseConfigured } = await import('../../server/db/pgPool');
+  if (!isDatabaseConfigured()) fail('DATABASE_URL is required for this task.');
+  const { createDatabase } = await import('../../server/infrastructure/database/client');
+  const { createSqlQualityRepositories } = await import('../../server/infrastructure/database/repositories/quality');
+  const { createSqlContentRepositories } = await import('../../server/infrastructure/database/repositories/content');
+  const { createSqlValidationFindingRepository } = await import('../../server/infrastructure/database/repositories/validationFindings');
+  const pool = await getPool();
+  try {
+    const database = createDatabase(pool);
+    const checks: RevisionValidationDeps = {
+      findings: createSqlValidationFindingRepository(database),
+      context: { siblings: [], knownThemeIds: THEMES.map((t) => t.id) },
+    };
+    return await fn(createSqlQualityRepositories(database), createSqlContentRepositories(database), checks);
+  } finally {
+    await pool.end();
+  }
+}
+
+/**
+ * Imported questions get the same decision as a revision: a reject quarantines
+ * every revision of the question; a patch becomes a new *draft* revision (goes
+ * through Studio review, never published here), with its findings recorded.
+ */
+async function applyPlanToRevisions(
+  plan: ReviewApplicationPlan,
+  content: ContentRepositories,
+  checks: RevisionValidationDeps,
+): Promise<{ quarantined: number; drafts: number }> {
+  let quarantined = 0;
+  let drafts = 0;
+  for (const questionId of plan.exclude) {
+    quarantined += await content.revisions.quarantine({ questionId, reason: 'AI review: rejected by reviewer' });
+  }
+  for (const [questionId, patch] of Object.entries(plan.overrides)) {
+    const [latest] = await content.revisions.listRevisions(questionId);
+    if (!latest) continue;
+    const outcome = await content.revisions.appendRevision({
+      questionId,
+      themeId: patch.themeId ?? latest.themeId,
+      difficulty: patch.difficulty ?? latest.difficulty,
+      topicNodeId: patch.topicNodeId ?? latest.topicNodeId,
+      topicPath: latest.topicPath,
+      text: latest.text,
+      options: latest.options,
+      correctIndex: latest.correctIndex,
+      explanationShort: patch.explanationShort ?? latest.explanationShort,
+      explanationDeep: patch.explanationDeep ?? latest.explanationDeep,
+      reference: latest.reference,
+      scriptureRefs: latest.scriptureRefs,
+      tags: latest.tags,
+      source: 'ai_review_decision',
+      status: 'draft',
+    });
+    if (outcome.kind === 'created') {
+      drafts += 1;
+      await validateQuestionRevision(checks, outcome.revision);
+    }
+  }
+  return { quarantined, drafts };
 }
 
 /** Rough per-question token use of the reviewer prompt — for the dry-run estimate only. */
@@ -217,6 +295,66 @@ export function createQualityTasks(ctx: QualityTaskContext): Record<string, Task
             .filter(Boolean)
             .join('\n'),
           { ...summary, report: path },
+        );
+      },
+    },
+
+    'apply-review-decisions': {
+      summary:
+        'write accepted/overridden AI-review decisions into the bank: rejects → question-exclusions.json, level/theme/explanations → question-overrides.json, imported revisions → quarantine / draft ([--apply])',
+      async run() {
+        const current = new Map(legacyCandidates(ctx).map((c) => [c.subject.questionId, c.subject.contentHash]));
+        const result = await withGateDb(ctx.fail, async (quality, content, checks) => {
+          const decided: QuestionAssessment[] = [];
+          for (let offset = 0; ; offset += 500) {
+            const page = await quality.assessments.queue({
+              verdicts: ['pass', 'reclassify', 'repair', 'reject'],
+              decided: 'decided',
+              unappliedOnly: true,
+              limit: 500,
+              offset,
+            });
+            decided.push(...page.items);
+            if (page.items.length < 500) break;
+          }
+          // Questions no longer in the file bank may still live as revisions.
+          const revisionHash = new Map<string, string>();
+          for (const a of decided) {
+            if (current.has(a.questionId)) continue;
+            const [latest] = await content.revisions.listRevisions(a.questionId);
+            if (latest) revisionHash.set(a.questionId, latest.contentHash);
+          }
+          const plan = planReviewApplication(decided, (id) => current.get(id) ?? revisionHash.get(id) ?? null);
+          if (!ctx.apply) return { plan, decided: decided.length, revisions: null };
+
+          const exclusions = new Set(loadExclusionsFromDisk());
+          for (const id of plan.exclude) exclusions.add(id);
+          saveExclusionsToDisk([...exclusions]);
+          const overrides = loadOverridesFromDisk();
+          for (const [id, patch] of Object.entries(plan.overrides)) overrides[id] = { ...overrides[id], ...patch };
+          saveOverridesToDisk(overrides);
+          const revisions = await applyPlanToRevisions(plan, content, checks);
+          await quality.assessments.markApplied(plan.applied, new Date().toISOString());
+          return { plan, decided: decided.length, revisions };
+        });
+        const { plan } = result;
+        const stale = plan.skipped.filter((s) => s.reason === 'stale').length;
+        const gone = plan.skipped.length - stale;
+        const at = new Date().toISOString();
+        const path = ctx.writeReport(`review-decisions-${at.replace(/[:.]/g, '-')}.json`, { at, dryRun: !ctx.apply, ...result });
+        ctx.out(
+          [
+            `${ctx.apply ? 'Applied' : '[dry] Would apply'} ${plan.applied.length} of ${result.decided} decided verdict(s): ${plan.exclude.length} excluded from play, ${Object.keys(plan.overrides).length} question(s) patched, ${plan.applied.length - plan.changed.length} with nothing to write.`,
+            stale || gone ? `  skipped: ${stale} stale (question changed since the review — re-review it), ${gone} not in the bank` : '',
+            result.revisions ? `  revisions: ${result.revisions.quarantined} quarantined, ${result.revisions.drafts} draft(s) for Studio review` : '',
+            ctx.apply
+              ? '  → data/question-exclusions.json, data/question-overrides.json (commit and deploy them to reach players).'
+              : '  Pass --apply to write data/question-exclusions.json + data/question-overrides.json.',
+            `  Report: ${path}`,
+          ]
+            .filter(Boolean)
+            .join('\n'),
+          { dryRun: !ctx.apply, ...result, report: path },
         );
       },
     },
