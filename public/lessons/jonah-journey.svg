@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-labelledby="t d">
+  <title id="t">Втеча Йони</title>
+  <desc id="d">Схематична мапа: Ніневія на сході, Яфа на березі Середземного моря, Таршіш далеко на заході. Бог посилає Йону на схід, а він пливе на захід.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f5d7c"/>
+      <stop offset="1" stop-color="#1f425c"/>
+    </linearGradient>
+    <marker id="arrowGold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#e3b04b"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#e0664f"/>
+    </marker>
+  </defs>
+
+  <!-- land -->
+  <rect width="800" height="450" fill="#e9dcc0"/>
+  <!-- Mediterranean -->
+  <path d="M0 150 C80 140 150 175 230 165 C320 150 380 190 460 180 C520 172 560 200 585 230 C600 260 570 300 520 310 C440 330 360 300 280 320 C200 340 110 320 0 330 Z" fill="url(#sea)"/>
+  <!-- Tigris river -->
+  <path d="M680 40 C690 120 700 200 720 290 C730 340 750 390 760 450" fill="none" stroke="#3f7a9e" stroke-width="5" stroke-linecap="round"/>
+  <!-- subtle waves -->
+  <g stroke="#9cc2d8" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M120 240 q12 -8 24 0 t24 0"/>
+    <path d="M300 260 q12 -8 24 0 t24 0"/>
+    <path d="M430 230 q12 -8 24 0 t24 0"/>
+  </g>
+
+  <!-- God's call: Joppa → Nineveh (east) -->
+  <path d="M592 232 C620 180 650 150 690 135" fill="none" stroke="#e3b04b" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#arrowGold)"/>
+  <!-- Jonah's flight: Joppa → Tarshish (west) -->
+  <path d="M570 248 C480 262 330 250 190 240 C140 236 100 232 70 230" fill="none" stroke="#e0664f" stroke-width="5" marker-end="url(#arrowRed)"/>
+
+  <!-- places -->
+  <g font-family="Georgia, 'Times New Roman', serif" font-size="22" fill="#2b2118">
+    <circle cx="700" cy="130" r="9" fill="#2b2118"/>
+    <text x="686" y="122" text-anchor="end">Ніневія</text>
+    <circle cx="592" cy="240" r="8" fill="#2b2118"/>
+    <text x="604" y="268">Яфа</text>
+    <circle cx="60" cy="230" r="9" fill="#2b2118"/>
+    <text x="22" y="205">Таршіш</text>
+  </g>
+
+  <!-- legend -->
+  <g font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="17" fill="#2b2118">
+    <rect x="24" y="360" width="360" height="72" rx="10" fill="#fff8e8" opacity="0.92"/>
+    <line x1="40" y1="382" x2="90" y2="382" stroke="#e3b04b" stroke-width="4" stroke-dasharray="10 8"/>
+    <text x="102" y="388">Куди посилає Бог — на схід</text>
+    <line x1="40" y1="412" x2="90" y2="412" stroke="#e0664f" stroke-width="5"/>
+    <text x="102" y="418">Куди пливе Йона — на захід</text>
+  </g>
+  <text x="300" y="215" font-family="Georgia, serif" font-size="18" font-style="italic" fill="#dbe9f2">Велике море</text>
+</svg>
