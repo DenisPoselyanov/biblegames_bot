@@ -3,7 +3,8 @@
 > **Priority:** P1/P2  
 > **Depends on:** Phase 1 security/RBAC, Phase 2 content repository/job foundation, Phase 3 objective-based learning UI  
 > **Canonical parent:** [`../BIBLE_GAMES_MASTER_SPECIFICATION.md`](../BIBLE_GAMES_MASTER_SPECIFICATION.md)  
-> **Design/IA reference (2026-09-21):** the `proto/design-v2` branch's `/proto/studio` clickable prototype (`src/proto/studio/README.md` + `src/proto/studio/ROADMAP.md`) is the concrete screen-by-screen design for Content Studio (§10, §15) and the retirement path for legacy `/admin`. See the note under §10.
+> **Design/IA reference (2026-09-21):** the `proto/design-v2` branch's `/proto/studio` clickable prototype (`src/proto/studio/README.md` + `src/proto/studio/ROADMAP.md`) is the concrete screen-by-screen design for Content Studio (§10, §15) and the retirement path for legacy `/admin`. See the note under §10.  
+> **Status (2026-09-24):** code complete — WS1–WS13 merged to `main`, including the WS11/WS11c content quality gate (§6.6), the WS12 render-time option shuffle, and WS13's responsive Studio (§10.2). Migrations `0000`–`0014` applied and verified on production. Remaining work is owner-only: label the 200-item golden set, approve Gemini API spend before enabling the AI-reviewer layer, run the legacy migration waves against production, and seed the «Йона» showcase content. See `docs/PHASE_STATUS.md` row 4 for the full narrative.
 
 ---
 
@@ -283,6 +284,13 @@ Implement checks for:
 
 Heuristics create warnings or quarantine according to policy. They do not auto-publish.
 
+> **Done (Phase 4 WS12, 2026-09-24, PR #48).** First-option bias is also
+> addressed at render time, not only flagged at review time: answer options
+> are shuffled per render, unconditionally, no flag. `question_option_picks`
+> (§6.6, WS9) still tracks the pick distribution so the underlying dataset's
+> bias — the thing the shuffle masks from players, not fixes in the data —
+> stays visible to reviewers.
+
 ## 6.3 Scripture checks
 
 - normalize book names and ranges;
@@ -320,6 +328,43 @@ Create sensitivity categories, for example:
 - historical reconstruction.
 
 Sensitive items require an appropriate reviewer and cannot be auto-approved.
+
+## 6.6 Content quality gate rollout status (WS9, WS11, WS11c — 2026-09-23→24)
+
+> **Done.** The gate is implemented as four layers, shipped across three
+> workstreams:
+>
+> - **Layer 0-1 (WS11, PR #47)**: recorded deterministic checks (§6.2) feed a
+>   publish gate — a revision with unresolved blockers cannot be approved.
+>   Scripture reference/language checks (§6.3/§6.4) wired in.
+> - **Layer 2 (WS11c, PR #49)**: an AI reviewer scores a revision against a
+>   rubric, calibrated against a golden set of hand-labeled questions.
+>   Verdicts, criteria and suggested fixes are stored in `question_assessments`
+>   (migration `0014`) alongside the golden labels themselves (`source =
+>   'golden'` vs `'ai'`, one unique golden label per question).
+> - **Layer 3-4 (WS11c, PR #49)**: a review queue surfaces AI-flagged items by
+>   risk; a reviewer applies or overrides the AI's decision. Lesson revisions
+>   now fail closed at the publish gate (no silent pass-through), and legacy
+>   migration waves (§12.3) consult AI-review verdicts before advancing a wave.
+> - **WS9 (PR #43, migration `0013`)**: player-facing signal collection —
+>   `content_reports` (user reports on a question/lesson) and
+>   `question_option_picks` (per-option pick counts, the data source for
+>   detecting the first/B-position answer bias §6.2 flags heuristically).
+>
+> **Landing note**: WS11c and WS13 (§10.2) were merged via `gh pr merge` into
+> stale stacked-branch bases instead of `main` — GitHub does not auto-retarget
+> a PR's base when an earlier PR in the stack merges. Caught by diffing
+> `origin/main` against the feature branches; corrected via a follow-up PR
+> (#51) before either workstream's code actually reached `main`. See
+> `docs/PHASE_STATUS.md` row 4 for the full incident note — worth knowing
+> before trusting a `gh pr merge` "Merged" status on any future stacked PR
+> chain without checking `git log origin/main` directly.
+>
+> **Owner-only remaining**: the 200-item golden set is not yet labeled via the
+> Studio labelling page, so the AI reviewer has nothing to calibrate against
+> yet. `CONTENT_AI_PROVIDER` stays `off` in production pending Gemini API
+> spend approval — layers 0-1 run regardless (they're deterministic), only
+> layer 2 (the AI reviewer) is gated on this.
 
 ---
 
@@ -627,6 +672,12 @@ rather than kept running as a second, competing admin surface.
 - superseded/archived states;
 - rollback entry.
 
+> **Done (Phase 4 WS13, 2026-09-24, PR #50).** Studio is responsive from
+> tablet width up (768px+): the sidebar collapses to an icon strip with a
+> flyout, and a theme menu replaces the always-visible theme controls at
+> narrower widths, matching `/proto/studio`'s adaptive layout. Landed on
+> `main` via the stacked-PR fix described in §6.6.
+
 ---
 
 ## 11. Review workflow and permissions
@@ -698,6 +749,12 @@ Recommended order:
 6. archive unsupported files.
 
 Each wave has before/after metrics and rollback.
+
+> **Status (WS10 tooling + WS11c integration, 2026-09-23→24).** The unified
+> `npm run ai` CLI and wave tooling exist (`docs/LEGACY_CONTENT_AUDIT.md`,
+> `docs/CONTENT_TOOLING.md`) and waves now consult AI-review verdicts (§6.6)
+> before advancing. **Not yet run against production** — this remains an
+> owner-triggered step.
 
 ## 12.4 Compatibility
 
