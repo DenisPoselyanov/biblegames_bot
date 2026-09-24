@@ -45,7 +45,7 @@ export function NewJob() {
         </Link>
       }
     >
-      <div className="grid grid-cols-[1fr_300px] items-start gap-4">
+      <div className="grid items-start gap-4 @min-[900px]:grid-cols-[1fr_300px]">
         <div className="flex flex-col gap-3">
           <Panel title="1 · Що зробити">
             <div className="grid grid-cols-3 gap-2">

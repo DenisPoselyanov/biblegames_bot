@@ -191,7 +191,7 @@ export function ReviewItem() {
               <span className="block text-[13px] font-medium">{check.label}</span>
               <span className="block text-[12.5px] leading-relaxed text-faint">{check.detail}</span>
             </span>
-            <span className="shrink-0 text-[11.5px] text-faint">
+            <span className="max-w-[160px] shrink-0 text-right text-[11.5px] text-faint">
               {CHECK_KIND_LABEL[check.kind]}
             </span>
           </div>
@@ -319,8 +319,10 @@ export function ReviewItem() {
         </dl>
       </Disclosure>
 
-      {/* Decision bar — always last, never above the thing being decided. */}
-      <div className="sticky bottom-0 -mx-6 flex items-center gap-2 border-t border-line bg-[var(--s-chrome)] px-6 py-3">
+      {/* Decision bar — always last, never above the thing being decided. Until
+          the page is centred with room to spare, its right end runs under the
+          assistant dock in the corner, so it keeps that corner clear. */}
+      <div className="sticky bottom-0 -mx-4 flex flex-wrap items-center gap-2 border-t border-line bg-[var(--s-chrome)] px-4 py-3 @min-[900px]:-mx-6 @min-[900px]:px-6 @max-[1150px]:pr-16">
         <Button variant="primary" size="md" denied={approveDenied}>
           <Check size={14} />
           Схвалити

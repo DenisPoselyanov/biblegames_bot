@@ -21,6 +21,11 @@
   --s-panel-2: color-mix(in srgb, var(--p-surface) 55%, var(--p-canvas));
   --s-hover: color-mix(in srgb, var(--p-ink) 6%, transparent);
   --s-console: color-mix(in srgb, var(--p-canvas) 70%, black);
+  /* Anything that floats over other content — menus, tooltips, the `?`
+     popover, the drawer. `--s-panel` is translucent in the dark theme (the
+     surfaces are glass), which is right for a card on the wash but lets the
+     page text show through a layer on top of it. This one is opaque. */
+  --s-float: color-mix(in srgb, #ffffff 9%, var(--p-canvas));
   --s-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.75);
 
   font-size: 14px;
@@ -37,6 +42,7 @@
   --s-panel-2: #f7f5ff;
   --s-hover: color-mix(in srgb, var(--p-indigo) 7%, transparent);
   --s-console: #f3f1fb;
+  --s-float: #ffffff;
   --s-shadow: 0 24px 60px -30px rgba(76, 56, 140, 0.35);
 }
 
@@ -85,6 +91,83 @@
   border-radius: 999px;
   border: 3px solid transparent;
   background-clip: padding-box;
+}
+
+/* Responsive --------------------------------------------------------------- */
+
+/* Screens respond to the width of the content area, not the window: the same
+   1180px window leaves 1124px with the rail and 968px with the menu open. The
+   only threshold screens use is 900px — see `WIDE_ONLY` in `ui/kit.tsx`. */
+.studio-main {
+  container-type: inline-size;
+}
+
+.studio-grid {
+  display: grid;
+  grid-template-columns: var(--cols);
+}
+
+@container (max-width: 899px) {
+  .studio-grid {
+    grid-template-columns: var(--cols-narrow, var(--cols));
+  }
+}
+
+/* Sidebar: the width animates so the content visibly makes room instead of
+   jumping. */
+.studio-sidebar {
+  width: 212px;
+  transition: width 200ms var(--ease-out-soft);
+}
+
+.studio-sidebar[data-rail='true'] {
+  width: 56px;
+}
+
+/* Tablet: the open menu floats over the content instead of squeezing it. */
+.studio-sidebar[data-overlay='true'] {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 35;
+  box-shadow: var(--s-shadow);
+}
+
+.studio-nav-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 34;
+  background: var(--p-veil);
+  animation: studio-fade 160ms var(--ease-out-soft);
+}
+
+/* Rail labels. Rendered fixed from the sidebar, because the nav list scrolls
+   and would clip anything that sticks out of it. */
+.studio-tip {
+  position: fixed;
+  z-index: 60;
+  left: 62px;
+  transform: translateY(-50%);
+  padding: 4px 9px;
+  border-radius: var(--s-radius-sm);
+  border: 1px solid var(--p-line-strong);
+  background: var(--s-float);
+  box-shadow: var(--s-shadow);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: studio-fade 120ms var(--ease-out-soft);
+}
+
+.studio-menu {
+  animation: studio-drop 140ms var(--ease-out-soft);
+}
+
+@keyframes studio-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 }
 
 /* Rows --------------------------------------------------------------------- */
@@ -191,7 +274,7 @@
   display: flex;
   flex-direction: column;
   border-left: 1px solid var(--p-line-strong);
-  background: var(--s-panel);
+  background: var(--s-float);
   box-shadow: var(--s-shadow);
   animation: studio-slide 220ms var(--ease-out-soft);
 }
@@ -220,7 +303,7 @@
   padding: 12px;
   border-radius: var(--s-radius);
   border: 1px solid var(--p-line-strong);
-  background: var(--s-panel);
+  background: var(--s-float);
   box-shadow: var(--s-shadow);
   animation: studio-fade 140ms var(--ease-out-soft);
 
@@ -246,8 +329,15 @@
   .studio-pulse,
   .studio-drawer,
   .studio-overlay,
-  .studio-pop {
+  .studio-pop,
+  .studio-menu,
+  .studio-tip,
+  .studio-nav-veil {
     animation: none;
+  }
+
+  .studio-sidebar {
+    transition: none;
   }
 
   .studio-live::after {

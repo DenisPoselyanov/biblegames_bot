@@ -6,6 +6,8 @@ import { plural } from '../lib/plural';
 import { useCan, useStudio } from '../lib/useStudio';
 import type { Check as CheckType, Draft, ScriptureCheck } from '../lib/types';
 import {
+  NARROW_ONLY,
+  WIDE_ONLY,
   Badge,
   Button,
   Chip,
@@ -31,6 +33,8 @@ function problemOf(draft: Draft): { text: string; tone: 'bad' | 'warn' | 'ok' } 
   if (warn) return { text: warn.detail, tone: 'warn' };
   return { text: 'Усі перевірки пройдено — потрібне рішення людини', tone: 'ok' };
 }
+
+const TONE_TEXT = { bad: 'text-danger', warn: 'text-gold-ink', ok: 'text-faint' } as const;
 
 function IssueList({ checks }: { checks: CheckType[] }) {
   const notable = checks.filter((c) => c.severity !== 'pass');
@@ -117,29 +121,36 @@ export function Review() {
           </Toolbar>
 
           <Panel flush>
-            <Grid head cols="1fr 1fr 150px">
+            <Grid head cols="1fr 1fr 150px" narrow="1fr 150px">
               <span>Позиція</span>
-              <span>Що з нею</span>
+              <span className={WIDE_ONLY}>Що з нею</span>
               <span>Стан</span>
             </Grid>
             {rows.map((d) => {
               const problem = problemOf(d);
               return (
-                <Grid key={d.id} cols="1fr 1fr 150px" onClick={() => setOpenDraft(d)}>
+                <Grid
+                  key={d.id}
+                  cols="1fr 1fr 150px"
+                  narrow="1fr 150px"
+                  onClick={() => setOpenDraft(d)}
+                >
                   <span className="min-w-0">
                     <span className="block truncate font-medium">{d.title}</span>
                     <span className="block truncate text-[12px] text-faint">{d.topicPath}</span>
+                    {/* Narrow: the reason moves under the title instead of
+                        getting a column too thin to read. */}
+                    <span
+                      className={cn(
+                        'mt-0.5 block truncate text-[12px]',
+                        NARROW_ONLY,
+                        TONE_TEXT[problem.tone],
+                      )}
+                    >
+                      {problem.text}
+                    </span>
                   </span>
-                  <span
-                    className={cn(
-                      'truncate text-[12.5px]',
-                      problem.tone === 'bad'
-                        ? 'text-danger'
-                        : problem.tone === 'warn'
-                          ? 'text-gold-ink'
-                          : 'text-faint',
-                    )}
-                  >
+                  <span className={cn('truncate text-[12.5px]', WIDE_ONLY, TONE_TEXT[problem.tone])}>
                     {problem.text}
                   </span>
                   <Status value={d.status} />

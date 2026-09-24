@@ -73,7 +73,7 @@ export function JobDetail() {
       </div>
 
       <Panel className="mb-3" title={<Term k="budget">Бюджет і обсяг</Term>}>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4 @min-[900px]:grid-cols-4">
           <div>
             <p className="text-[12px] text-faint">Опрацьовано</p>
             <p className="studio-num mt-1 font-display text-[22px] leading-none font-semibold">

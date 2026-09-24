@@ -143,13 +143,16 @@ export function Overview() {
         </Link>
       }
     >
-      <div className={cn('mb-4 grid gap-3', cards.length === 2 ? 'grid-cols-2' : 'grid-cols-3')}>
+      <div className={cn(
+          'mb-4 grid gap-3',
+          cards.length === 2 ? '@min-[560px]:grid-cols-2' : '@min-[900px]:grid-cols-3',
+        )}>
         {cards.map((c) => (
           <ActionCard key={c.title} {...c} />
         ))}
       </div>
 
-      <div className="grid grid-cols-[1.25fr_1fr] gap-4">
+      <div className="grid gap-4 @min-[900px]:grid-cols-[1.25fr_1fr]">
         <Panel title="AI зараз працює" flush>
           {working.length === 0 ? (
             <p className="px-4 py-8 text-center text-[13px] text-faint">

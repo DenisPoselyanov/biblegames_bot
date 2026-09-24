@@ -11,9 +11,15 @@ interface Persisted {
   role: Role;
   env: 'staging' | 'production';
   themePref: ThemePref;
+  navCollapsed: boolean;
 }
 
-const INITIAL: Persisted = { role: 'admin', env: 'staging', themePref: 'system' };
+const INITIAL: Persisted = {
+  role: 'admin',
+  env: 'staging',
+  themePref: 'system',
+  navCollapsed: false,
+};
 
 function read(): Persisted {
   try {
@@ -33,7 +39,7 @@ function systemTheme(): 'light' | 'dark' {
 }
 
 /**
- * The prototype keeps only what the viewer chose — role, environment, theme.
+ * The prototype keeps only what the viewer chose — role, environment, theme, sidebar.
  * Content, jobs and releases stay read-only mocks: this is a design prototype,
  * not a second implementation to keep in sync.
  */
@@ -68,6 +74,11 @@ export function StudioStoreProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const setNavCollapsed = useCallback(
+    (navCollapsed: boolean) => setState((prev) => ({ ...prev, navCollapsed })),
+    [],
+  );
+
   const theme = state.themePref === 'system' ? system : state.themePref;
 
   const value = useMemo<StudioStore>(
@@ -79,8 +90,20 @@ export function StudioStoreProvider({ children }: { children: ReactNode }) {
       setRole,
       setEnv,
       setThemePref,
+      navCollapsed: state.navCollapsed,
+      setNavCollapsed,
     }),
-    [state.role, state.env, state.themePref, theme, setRole, setEnv, setThemePref],
+    [
+      state.role,
+      state.env,
+      state.themePref,
+      state.navCollapsed,
+      theme,
+      setRole,
+      setEnv,
+      setThemePref,
+      setNavCollapsed,
+    ],
   );
 
   return <StudioContext.Provider value={value}>{children}</StudioContext.Provider>;

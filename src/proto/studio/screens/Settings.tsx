@@ -2,7 +2,9 @@ import { KeyRound, Lock } from 'lucide-react';
 import { PROMPTS, PROVIDERS, ROLE_LABEL, ROLE_PERMISSIONS } from '../lib/mock';
 import { useCan, useStudio } from '../lib/useStudio';
 import type { Permission, Role } from '../lib/types';
+import { cn } from '../../ui/cn';
 import {
+  WIDE_ONLY,
   Badge,
   Bar,
   Button,
@@ -40,21 +42,21 @@ export function Settings() {
   return (
     <Page wide title="Налаштування">
       <Panel className="mb-3" title={<Term k="provider">Провайдери AI</Term>} flush>
-        <Grid head cols="150px 130px 1fr 190px 130px">
+        <Grid head cols="150px 130px 1fr 190px 130px" narrow="1fr 120px 170px 110px">
           <span>Сервіс</span>
           <span>Стан</span>
-          <span>Для чого</span>
+          <span className={WIDE_ONLY}>Для чого</span>
           <span>Витрати за місяць</span>
           <span />
         </Grid>
         {PROVIDERS.map((p) => (
-          <Grid key={p.id} cols="150px 130px 1fr 190px 130px">
+          <Grid key={p.id} cols="150px 130px 1fr 190px 130px" narrow="1fr 120px 170px 110px">
             <span className="min-w-0">
               <span className="block truncate font-medium">{p.label}</span>
               <Mono>{p.defaultModel}</Mono>
             </span>
             <Status value={p.status} />
-            <span className="truncate text-[12.5px] text-faint" title={p.note}>
+            <span className={cn('truncate text-[12.5px] text-faint', WIDE_ONLY)} title={p.note}>
               {p.note}
             </span>
             <span className="min-w-0">
@@ -103,7 +105,7 @@ export function Settings() {
         help={<Term k="rbac" align="end" iconOnly />}
         hint="перемикач ролі — у шапці"
       >
-        <Grid head cols="240px repeat(3, 1fr)">
+        <Grid head cols="240px repeat(3, 1fr)" narrow="1fr repeat(3, 110px)">
           <span>Дія</span>
           {ROLES.map((r) => (
             <span key={r} className={role === r ? 'text-ink' : undefined}>
@@ -112,7 +114,7 @@ export function Settings() {
           ))}
         </Grid>
         {ALL_PERMISSIONS.map((permission) => (
-          <Grid key={permission} cols="240px repeat(3, 1fr)">
+          <Grid key={permission} cols="240px repeat(3, 1fr)" narrow="1fr repeat(3, 110px)">
             <span className="min-w-0">
               <span className="block truncate text-[13px]">{PERMISSION_LABEL[permission]}</span>
               <Mono>{permission}</Mono>

@@ -4,7 +4,10 @@ import { ArrowRight, Ban, PlayCircle, Plus } from 'lucide-react';
 import { JOBS } from '../lib/mock';
 import { useCan } from '../lib/useStudio';
 import type { Job, JobStatus } from '../lib/types';
+import { cn } from '../../ui/cn';
 import {
+  NARROW_ONLY,
+  WIDE_ONLY,
   Badge,
   Bar,
   Button,
@@ -27,6 +30,8 @@ const FILTERS: Array<{ id: string; label: string; match: (s: JobStatus) => boole
 ];
 
 const COLS = '1fr 150px 130px 130px';
+/* Narrow: the start time folds under the task name. */
+const COLS_NARROW = '1fr 140px 110px';
 
 export function Jobs() {
   const navigate = useNavigate();
@@ -68,17 +73,20 @@ export function Jobs() {
       </Toolbar>
 
       <Panel flush>
-        <Grid head cols={COLS}>
+        <Grid head cols={COLS} narrow={COLS_NARROW}>
           <span>Завдання</span>
           <span>Стан</span>
           <span>Зроблено</span>
-          <span className="text-right">Початок</span>
+          <span className={cn('text-right', WIDE_ONLY)}>Початок</span>
         </Grid>
         {rows.map((j) => (
-          <Grid key={j.id} cols={COLS} onClick={() => setOpen(j)}>
+          <Grid key={j.id} cols={COLS} narrow={COLS_NARROW} onClick={() => setOpen(j)}>
             <span className="min-w-0">
               <span className="block truncate font-medium">{j.taskLabel}</span>
-              <span className="block truncate text-[12px] text-faint">{j.target}</span>
+              <span className="block truncate text-[12px] text-faint">
+                {j.target}
+                <span className={NARROW_ONLY}> · {j.startedAt.slice(11) || j.startedAt}</span>
+              </span>
             </span>
             <span>
               <Status value={j.status} />
@@ -89,7 +97,7 @@ export function Jobs() {
             <span className="studio-num text-[12.5px]">
               {j.itemsDone} <span className="text-faint">з {j.itemsTotal}</span>
             </span>
-            <Mono className="text-right">{j.startedAt.slice(11) || j.startedAt}</Mono>
+            <Mono className={cn('text-right', WIDE_ONLY)}>{j.startedAt.slice(11) || j.startedAt}</Mono>
           </Grid>
         ))}
       </Panel>

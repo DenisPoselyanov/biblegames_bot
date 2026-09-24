@@ -4,7 +4,10 @@ import { AUDIT, DRAFTS, RELEASES, ROLE_LABEL } from '../lib/mock';
 import { plural } from '../lib/plural';
 import { useCan, useStudio } from '../lib/useStudio';
 import type { Release } from '../lib/types';
+import { cn } from '../../ui/cn';
 import {
+  NARROW_ONLY,
+  WIDE_ONLY,
   Badge,
   Button,
   Drawer,
@@ -107,16 +110,22 @@ export function Releases() {
       ) : (
         <>
           <Panel flush>
-            <Grid head cols="160px 150px 190px 1fr">
+            <Grid head cols="160px 150px 190px 1fr" narrow="150px 170px 1fr">
               <span>Коли</span>
-              <span>Хто</span>
+              <span className={WIDE_ONLY}>Хто</span>
               <span>Що зробив</span>
               <span>Деталі</span>
             </Grid>
             {AUDIT.map((a) => (
-              <Grid key={a.id} cols="160px 150px 190px 1fr">
-                <Mono className="text-muted">{a.at}</Mono>
+              <Grid key={a.id} cols="160px 150px 190px 1fr" narrow="150px 170px 1fr">
                 <span className="min-w-0">
+                  <Mono className="text-muted">{a.at}</Mono>
+                  {/* Narrow: who did it folds under when. */}
+                  <span className={cn('block truncate text-[11.5px] text-faint', NARROW_ONLY)}>
+                    {a.actor}
+                  </span>
+                </span>
+                <span className={cn('min-w-0', WIDE_ONLY)}>
                   <span className="block truncate text-[12.5px]">{a.actor}</span>
                   <span className="block text-[11.5px] text-faint">{ROLE_LABEL[a.role]}</span>
                 </span>

@@ -140,7 +140,7 @@ export function Library() {
             ))}
           </div>
 
-          <div className="grid grid-cols-[1fr_1fr] items-start gap-4">
+          <div className="grid items-start gap-4 @min-[900px]:grid-cols-2">
             <Panel title={<Term k="accuracy">Як відповідають гравці</Term>}>
               <div className="grid gap-2.5">
                 {DISTRIBUTION.map((d) => (
