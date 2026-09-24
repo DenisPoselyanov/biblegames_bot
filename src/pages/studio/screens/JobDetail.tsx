@@ -67,7 +67,7 @@ export function JobDetail() {
         </>
       }
     >
-      <div className="grid grid-cols-[1fr_1.2fr] gap-4">
+      <div className="grid gap-4 @min-[900px]:grid-cols-[1fr_1.2fr]">
         <Panel title="Стан">
           <div className="mb-3">
             <Status value={job.status} />

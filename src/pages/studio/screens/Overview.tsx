@@ -49,7 +49,7 @@ export function Overview() {
         </Link>
       }
     >
-      <div className="grid grid-cols-[1.25fr_1fr] gap-4">
+      <div className="grid gap-4 @min-[900px]:grid-cols-[1.25fr_1fr]">
         <Panel title="AI зараз працює" flush>
           {!jobsAvailable ? (
             <p className="px-4 py-8 text-center text-[13px] text-faint">

@@ -42,7 +42,7 @@ export function CalibrationPanel() {
         </Note>
       ) : (
         <div className="grid gap-4">
-          <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2 @min-[640px]:grid-cols-4">
             <Metric
               label="Збіг вердиктів"
               value={pct(report.verdictAgreement)}
@@ -74,7 +74,7 @@ export function CalibrationPanel() {
             </Note>
           )}
 
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-4 @min-[900px]:grid-cols-2">
             <div>
               <p className="mb-1.5 text-[11.5px] font-semibold tracking-[0.02em] text-faint uppercase">
                 Ваш вердикт → вердикт AI

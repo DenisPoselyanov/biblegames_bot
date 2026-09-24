@@ -124,7 +124,7 @@ export function Golden() {
           </Panel>
 
           {current && index !== null && (
-            <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_380px]">
+            <div className="grid gap-3 @min-[900px]:grid-cols-[minmax(0,1fr)_380px]">
               <Panel
                 title={`Питання ${index + 1} з ${items.length}`}
                 action={

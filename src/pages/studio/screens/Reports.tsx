@@ -20,13 +20,20 @@ import {
   Grid,
   Input,
   Mono,
+  NARROW_ONLY,
   Note,
   Page,
   Panel,
   Status,
   Textarea,
   Toolbar,
+  WIDE_ONLY,
 } from '../ui/kit';
+import { cn } from '../ui/cn';
+
+const COLS = '1fr 260px 110px 170px';
+/* Narrow: the time of the latest report folds under the item's id. */
+const COLS_NARROW = '1fr 210px 90px';
 
 /**
  * Player content reports (Phase 4 WS9, spec §14) — a second view of the review
@@ -91,16 +98,17 @@ export function Reports() {
             />
           ) : (
             <>
-              <Grid head cols="1fr 260px 110px 170px">
+              <Grid head cols={COLS} narrow={COLS_NARROW}>
                 <span>Що</span>
                 <span>Про що скаржаться</span>
                 <span>Відкритих</span>
-                <span>Остання</span>
+                <span className={WIDE_ONLY}>Остання</span>
               </Grid>
               {groups.map((g) => (
                 <Grid
                   key={`${g.entityType}:${g.entityId}`}
-                  cols="1fr 260px 110px 170px"
+                  cols={COLS}
+                  narrow={COLS_NARROW}
                   onClick={() => setOpen(g)}
                   active={open?.entityId === g.entityId && open.entityType === g.entityType}
                 >
@@ -109,6 +117,9 @@ export function Reports() {
                     <span className="mt-0.5 flex items-center gap-2">
                       <Badge>{g.entityType === 'question' ? 'питання' : 'урок'}</Badge>
                       <Mono className="truncate text-[11.5px]">{g.entityId}</Mono>
+                      <span className={cn('shrink-0 text-[11.5px] text-faint', NARROW_ONLY)}>
+                        {fmt(g.latestAt)}
+                      </span>
                     </span>
                   </span>
                   <span className="flex min-w-0 flex-wrap gap-1">
@@ -120,7 +131,7 @@ export function Reports() {
                     {g.openCount === 0 && <Status value="archived" />}
                   </span>
                   <span className="studio-num">{g.openCount}</span>
-                  <Mono className="text-muted">{fmt(g.latestAt)}</Mono>
+                  <Mono className={cn('text-muted', WIDE_ONLY)}>{fmt(g.latestAt)}</Mono>
                 </Grid>
               ))}
             </>

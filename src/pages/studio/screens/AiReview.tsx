@@ -220,11 +220,13 @@ export function AiReview() {
               />
             </Panel>
           ) : (
-            <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+            /* Side by side once the content area (not the window) has room; stacked
+               below that, the list gets shorter so the verdict stays in view. */
+            <div className="grid gap-3 @min-[900px]:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
               <Panel
                 title={`${query.data?.total ?? items.length} у черзі`}
                 flush
-                bodyClassName="max-h-[75vh] overflow-y-auto"
+                bodyClassName="max-h-[40vh] overflow-y-auto @min-[900px]:max-h-[75vh]"
               >
                 <Grid head cols="28px 104px minmax(0,1fr) 44px">
                   <input
