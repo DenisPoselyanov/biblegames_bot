@@ -4,6 +4,7 @@ import { createInMemoryContentRepositories } from '../../domains/content/inMemor
 import { validateQuestionRevision } from '../../domains/content/revisionValidation';
 import type { RevisionDraft } from '../../domains/content/types';
 import { createInMemoryLearningRepositories } from '../../domains/learning/inMemoryRepository';
+import { validateLessonRevision } from '../../domains/learning/revisionValidation';
 import { createInMemoryScriptureEvidenceRepository } from '../../domains/shared/inMemoryScriptureEvidence';
 import { createInMemoryValidationFindingRepository } from '../../domains/shared/inMemoryValidationFindings';
 import {
@@ -239,11 +240,32 @@ describe('publishLessonRevision', () => {
     });
   };
 
-  it('publishes a clean lesson revision', async () => {
+  it('refuses a lesson revision whose checks never ran (fail closed)', async () => {
     const { learning, service } = await harness();
     const { revision } = await seedLesson(learning);
+    await expect(service.publishLessonRevision(revision.id)).rejects.toMatchObject({
+      blockers: [{ revisionId: revision.id, reason: 'not_validated' }],
+    });
+  });
+
+  it('publishes a lesson revision once its checks ran clean of blockers', async () => {
+    const { learning, findings, service } = await harness();
+    const { revision } = await seedLesson(learning);
+    const recorded = await validateLessonRevision({ findings }, revision);
+    // Heading-only lesson: warnings (no summary, no interactive block) do not block publishing.
+    expect(recorded.map((f) => f.kind).sort()).toEqual(['missing_interactive_block', 'missing_required_block', 'validation_run']);
+    expect(recorded.every((f) => f.revisionId === revision.id)).toBe(true);
     const published = await service.publishLessonRevision(revision.id);
     expect(published.status).toBe('published');
+  });
+
+  it('a lesson validated with an older checker version is not validated', async () => {
+    const { learning, findings, service } = await harness();
+    const { revision } = await seedLesson(learning);
+    await findings.record('lesson', revision.id, [
+      { revisionType: 'lesson', revisionId: revision.id, kind: 'validation_run', severity: 'info', label: 'x', detail: 'lesson-checks@0' },
+    ]);
+    await expect(service.publishLessonRevision(revision.id)).rejects.toThrow(ContentPublicationBlockedError);
   });
 
   it('refuses to publish a lesson revision with a blocking finding', async () => {

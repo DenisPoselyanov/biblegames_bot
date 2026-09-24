@@ -37,6 +37,7 @@ import {
   type RevisionValidationDeps,
 } from '../../server/domains/content/revisionValidation';
 import type { QuestionRevisionRecord, RevisionDraft } from '../../server/domains/content/types';
+import { LESSON_CHECKS_VERSION, lessonRevisionFindings } from '../../server/domains/learning/revisionValidation';
 import { JOB_TYPES } from '../../server/domains/jobs/catalog';
 import { createInMemoryJobQueue } from '../../server/domains/jobs/inMemoryQueue';
 import { buildRepairPrompt, REPAIR_PROMPT_VERSION } from '../../server/domains/quality/repairPrompt';
@@ -214,9 +215,35 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
   },
 
   'validate-revisions': {
-    summary: `re-run the quality checks (${QUESTION_CHECKS_VERSION}) over every stored question revision; --apply records the findings the publish gate reads`,
+    summary: `re-run the quality checks (${QUESTION_CHECKS_VERSION} / ${LESSON_CHECKS_VERSION} with --lessons) over every stored revision; --apply records the findings the publish gate reads`,
     async run() {
+      const lessons = flag('lessons');
+      const version = lessons ? LESSON_CHECKS_VERSION : QUESTION_CHECKS_VERSION;
       const result = await withContentDb(async (repos, checks) => {
+        if (lessons) {
+          const { createDatabase } = await import('../../server/infrastructure/database/client');
+          const { createSqlLearningRepositories } = await import('../../server/infrastructure/database/repositories/learning');
+          const { getPool } = await import('../../server/db/pgPool');
+          // Same singleton pool withContentDb opened (and closes).
+          const learning = createSqlLearningRepositories(createDatabase(await getPool()));
+          const byKind: Record<string, number> = {};
+          let total = 0;
+          let blocked = 0;
+          let afterId: string | null = null;
+          for (;;) {
+            const page = await learning.lessonRevisions.listPage({ afterId, limit: 500 });
+            if (page.length === 0) break;
+            for (const revision of page) {
+              const findings = lessonRevisionFindings(revision);
+              total += 1;
+              if (findings.some((f) => f.severity === 'blocking')) blocked += 1;
+              for (const f of findings) byKind[f.kind] = (byKind[f.kind] ?? 0) + 1;
+              if (APPLY) await checks.findings.record('lesson', revision.id, findings);
+            }
+            afterId = page[page.length - 1].id;
+          }
+          return { total, blocked, byKind };
+        }
         const byKind: Record<string, number> = {};
         let total = 0;
         let blocked = 0;
@@ -241,11 +268,11 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
         .map(([k, v]) => `  ${k.padEnd(34)} ${String(v).padStart(7)}`);
       out(
         [
-          `${APPLY ? 'Recorded' : '[dry] Would record'} findings for ${result.total} revision(s) — ${result.blocked} with a blocking finding.`,
+          `${APPLY ? 'Recorded' : '[dry] Would record'} findings for ${result.total} ${lessons ? 'lesson' : 'question'} revision(s) — ${result.blocked} with a blocking finding.`,
           ...rows,
           ...(APPLY ? [] : ['  Pass --apply to write them (the publish gate refuses revisions without a current run).']),
         ].join('\n'),
-        { dryRun: !APPLY, version: QUESTION_CHECKS_VERSION, ...result },
+        { dryRun: !APPLY, version, ...result },
       );
     },
   },

@@ -398,6 +398,12 @@ export function runLearningRepositoryContract(makeHarness: () => Promise<Contrac
 
     const drafts = await lessonRevisions.listByStatus({ statuses: ['draft'] });
     expect(drafts.map((r) => r.id)).toEqual([a.id]);
+    // Keyset sweep over every revision (quality-check re-runs).
+    const sorted = [a.id, b.id].sort();
+    const first = await lessonRevisions.listPage({ limit: 1 });
+    expect(first.map((r) => r.id)).toEqual([sorted[0]]);
+    expect((await lessonRevisions.listPage({ afterId: first[0].id })).map((r) => r.id)).toEqual([sorted[1]]);
+    expect(await lessonRevisions.listPage({ afterId: sorted[1] })).toEqual([]);
     expect(drafts[0].blocks).toEqual(base.blocks);
     const both = await lessonRevisions.listByStatus({ statuses: ['draft', 'legacy_unreviewed'] });
     expect(both.map((r) => r.id).sort()).toEqual([a.id, b.id].sort());

@@ -268,7 +268,9 @@ function ReviewBody({ type, detail }: { type: ReviewRevisionType; detail: Review
     : !reviewable
       ? 'Цю ревізію вже не рецензують'
       : notValidated
-        ? 'Питання ще не пройшло автоматичну перевірку — запустіть npm run ai -- validate-revisions --apply'
+        ? item.revisionType === 'lesson'
+          ? 'Урок ще не пройшов автоматичну перевірку — запустіть npm run ai -- validate-revisions --lessons --apply'
+          : 'Питання ще не пройшло автоматичну перевірку — запустіть npm run ai -- validate-revisions --apply'
       : blockers.length > 0
         ? `Спершу треба усунути ${blockers.length} ${plural(blockers.length, 'блокер', 'блокери', 'блокерів')}`
         : approved

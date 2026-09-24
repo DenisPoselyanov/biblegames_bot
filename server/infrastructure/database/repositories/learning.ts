@@ -5,7 +5,7 @@
  * The opaque `Transaction` from `ServiceContext` is narrowed to the Drizzle
  * executor here and nowhere else (`asExecutor`), same pattern as `content.ts`.
  */
-import { and, asc, desc, eq, gte, ilike, inArray, or, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, gte, ilike, inArray, or, sql } from 'drizzle-orm';
 import type {
   ContentStatus,
   LessonSessionStatus,
@@ -626,6 +626,15 @@ export function createSqlLearningRepositories(db: Database): LearningRepositorie
       const counts = emptyStatusCounts();
       for (const row of rows) counts[row.status as ContentStatus] = row.count;
       return counts;
+    },
+    async listPage(page, tx) {
+      const rows = await asExecutor(db, tx)
+        .select()
+        .from(lessonRevisions)
+        .where(page.afterId ? gt(lessonRevisions.id, page.afterId) : undefined)
+        .orderBy(asc(lessonRevisions.id))
+        .limit(boundedStatusLimit(page.limit));
+      return rows.map(toLessonRevision);
     },
     async appendRevision(draft, tx) {
       assertAiWriteAllowed(draft.source, draft.status);
