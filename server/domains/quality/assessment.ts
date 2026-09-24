@@ -38,6 +38,8 @@ export interface QuestionAssessment {
   verdict: AssessmentVerdict;
   criteria: AssessmentCriteria;
   suggestedDifficulty: Difficulty | null;
+  /** A better theme for a misfiled question (`topic_fit` failed). */
+  suggestedThemeId: string | null;
   suggestedTopicNodeId: string | null;
   suggestedExplanationShort: string | null;
   suggestedExplanationDeep: string | null;
@@ -64,6 +66,7 @@ export interface QuestionAssessment {
 /** The content change a decision applies — a subset of the question body. */
 export interface AssessmentPatch {
   difficulty?: Difficulty;
+  themeId?: string;
   topicNodeId?: string | null;
   explanationShort?: string;
   explanationDeep?: string;

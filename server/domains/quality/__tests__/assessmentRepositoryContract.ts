@@ -36,6 +36,7 @@ export function assessment(over: Partial<NewAssessment> & { verdict?: Assessment
     verdict,
     criteria,
     suggestedDifficulty: over.suggestedDifficulty ?? null,
+    suggestedThemeId: over.suggestedThemeId ?? null,
     suggestedTopicNodeId: over.suggestedTopicNodeId ?? null,
     suggestedExplanationShort: over.suggestedExplanationShort ?? null,
     suggestedExplanationDeep: over.suggestedExplanationDeep ?? null,

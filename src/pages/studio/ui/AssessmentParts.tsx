@@ -142,6 +142,7 @@ export function AssessmentForm({
   const implied = impliedVerdict(value.criteria);
   const showLevel = value.criteria.level_fit !== 'pass' || value.verdict === 'reclassify';
   const showExplanation = value.criteria.explanation_fit !== 'pass';
+  const showTheme = value.criteria.topic_fit !== 'pass';
 
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-3">
@@ -209,6 +210,18 @@ export function AssessmentForm({
             options={[
               { value: '', label: '— не змінювати —' },
               ...LEVEL_RUBRIC.map((r) => ({ value: r.level, label: `${r.label} — ${r.question}` })),
+            ]}
+          />
+        </Field>
+      )}
+      {showTheme && (
+        <Field label="Правильна тема">
+          <Select
+            value={value.suggestedThemeId ?? ''}
+            onChange={(e) => onChange({ ...value, suggestedThemeId: e.target.value || null })}
+            options={[
+              { value: '', label: '— не змінювати —' },
+              ...THEMES.map((t) => ({ value: t.id, label: t.title })),
             ]}
           />
         </Field>

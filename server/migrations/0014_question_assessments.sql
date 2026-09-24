@@ -8,6 +8,7 @@ CREATE TABLE "question_assessments" (
 	"verdict" text NOT NULL,
 	"criteria" jsonb NOT NULL,
 	"suggested_difficulty" text,
+	"suggested_theme_id" text,
 	"suggested_topic_node_id" text,
 	"suggested_explanation_short" text,
 	"suggested_explanation_deep" text,

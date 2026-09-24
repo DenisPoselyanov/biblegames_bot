@@ -337,6 +337,7 @@ export interface AssessmentLabelView {
   verdict: AssessmentVerdict;
   criteria: AssessmentCriteria;
   suggestedDifficulty: Difficulty | null;
+  suggestedThemeId: string | null;
   suggestedTopicNodeId: string | null;
   suggestedExplanationShort: string | null;
   suggestedExplanationDeep: string | null;
@@ -366,6 +367,7 @@ export interface AssessmentLabelInput {
   verdict: AssessmentVerdict;
   criteria: AssessmentCriteria;
   suggestedDifficulty?: Difficulty | null;
+  suggestedThemeId?: string | null;
   suggestedTopicNodeId?: string | null;
   suggestedExplanationShort?: string | null;
   suggestedExplanationDeep?: string | null;

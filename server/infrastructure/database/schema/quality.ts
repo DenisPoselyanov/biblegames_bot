@@ -86,6 +86,7 @@ export const questionAssessments = pgTable(
     verdict: text('verdict').notNull(),
     criteria: jsonb('criteria').notNull().$type<Record<string, string>>(),
     suggestedDifficulty: text('suggested_difficulty'),
+    suggestedThemeId: text('suggested_theme_id'),
     suggestedTopicNodeId: text('suggested_topic_node_id'),
     suggestedExplanationShort: text('suggested_explanation_short'),
     suggestedExplanationDeep: text('suggested_explanation_deep'),

@@ -369,7 +369,7 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
 
 Object.assign(
   TASKS,
-  createQualityTasks({ apply: APPLY, opt, flag, out, fail, runAudit }),
+  createQualityTasks({ apply: APPLY, opt, flag, out, fail, runAudit, writeReport }),
 );
 
 async function main(): Promise<void> {

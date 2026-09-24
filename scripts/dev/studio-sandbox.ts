@@ -6,6 +6,8 @@
  * - AUTH_MODE=development: the client's dev identity is `guest`, granted `admin` here.
  * - Everything lives in memory and is gone when the process stops.
  *
+ * - `--seed-ai`: heuristic AI verdicts over the golden sample (no provider needed).
+ *
  * Start the web app separately (`npm run dev`) with VITE_API_BASE_URL=http://localhost:3001.
  */
 import { loadConfig } from '../../server/config/env';
@@ -18,6 +20,8 @@ import { createInMemoryQualityRepositories } from '../../server/domains/quality/
 import { createInMemoryScriptureEvidenceRepository } from '../../server/domains/shared/inMemoryScriptureEvidence';
 import { createInMemoryValidationFindingRepository } from '../../server/domains/shared/inMemoryValidationFindings';
 import { createMemoryStore } from '../../server/__tests__/helpers/memoryStore';
+import { loadGoldenSampleFromDisk } from '../../server/routes/studioAssessments';
+import { seedHeuristicAi } from './sandboxSeed';
 
 const PORT = Number(process.env.SANDBOX_PORT ?? 3001);
 
@@ -32,6 +36,11 @@ async function main(): Promise<void> {
     CLIENT_ORIGINS: process.env.CLIENT_ORIGINS ?? 'http://localhost:5173,http://localhost:5199,http://127.0.0.1:5173',
   });
   const quality = createInMemoryQualityRepositories();
+  const sample = loadGoldenSampleFromDisk();
+  if (process.argv.includes('--seed-ai') && sample) {
+    const n = await seedHeuristicAi(quality.assessments, sample);
+    console.log(`Seeded ${n} heuristic AI verdicts over the golden sample.`);
+  }
 
   const app = createApp({
     config,

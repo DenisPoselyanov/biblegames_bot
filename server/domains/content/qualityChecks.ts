@@ -268,7 +268,7 @@ function mixedLanguageCheck(body: QuestionBody): NewValidationFinding[] {
 }
 
 /** "1 Цар."/"2 Цар." — 1–2 Samuel in Synodal numbering, 1–2 Kings in Ohienko. */
-const AMBIGUOUS_KINGS = /^\s*([12])\s*цар(?=[\s.]|$)/i;
+export const AMBIGUOUS_KINGS = /^\s*([12])\s*цар(?=[\s.]|$)/i;
 
 function referenceChecks(body: QuestionBody): NewValidationFinding[] {
   if (body.reference === undefined) return [];
