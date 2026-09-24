@@ -7,6 +7,7 @@
  * - Everything lives in memory and is gone when the process stops.
  *
  * - `--seed-ai`: heuristic AI verdicts over the golden sample (no provider needed).
+ * - `--seed-golden N`: fake owner labels for the first N sample items (calibration demo).
  *
  * Start the web app separately (`npm run dev`) with VITE_API_BASE_URL=http://localhost:3001.
  */
@@ -21,7 +22,7 @@ import { createInMemoryScriptureEvidenceRepository } from '../../server/domains/
 import { createInMemoryValidationFindingRepository } from '../../server/domains/shared/inMemoryValidationFindings';
 import { createMemoryStore } from '../../server/__tests__/helpers/memoryStore';
 import { loadGoldenSampleFromDisk } from '../../server/routes/studioAssessments';
-import { seedHeuristicAi } from './sandboxSeed';
+import { seedHeuristicAi, seedHeuristicGolden } from './sandboxSeed';
 
 const PORT = Number(process.env.SANDBOX_PORT ?? 3001);
 
@@ -40,6 +41,11 @@ async function main(): Promise<void> {
   if (process.argv.includes('--seed-ai') && sample) {
     const n = await seedHeuristicAi(quality.assessments, sample);
     console.log(`Seeded ${n} heuristic AI verdicts over the golden sample.`);
+  }
+  const goldenArg = process.argv.indexOf('--seed-golden');
+  if (goldenArg >= 0 && sample) {
+    const n = await seedHeuristicGolden(quality.assessments, sample, Number(process.argv[goldenArg + 1] ?? 120));
+    console.log(`Seeded ${n} fake owner labels.`);
   }
 
   const app = createApp({

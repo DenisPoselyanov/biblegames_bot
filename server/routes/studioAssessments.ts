@@ -5,6 +5,7 @@
  *
  * - `GET  /golden`               — the golden sample with the owner's labels and progress.
  * - `PUT  /golden/:questionId`   — `content:review`: save (replace) the label for one sample item.
+ * - `GET  /calibration`          — AI verdicts vs golden labels, and whether the AI can be trusted yet.
  *
  * The subject of a label always comes from the committed sample file, never from
  * the request body — a label can't be attached to a body that isn't in the set.
@@ -29,6 +30,7 @@ import {
 import { buildAuditRecord, type AuditActor, type AuditLog } from '../audit';
 import type { Permission } from '../authz/roles';
 import type { QuestionAssessment } from '../domains/quality/assessment';
+import { calibrate } from '../domains/quality/calibration';
 import type { GoldenSample } from '../domains/quality/goldenSample';
 import type { QualityRepositories } from '../domains/quality/repository';
 import { AppError } from '../lib/errors';
@@ -204,6 +206,20 @@ export function createStudioAssessmentsRouter({
         }),
       );
       res.json({ ok: true, label: toLabelView(saved) });
+    }),
+  );
+
+  router.get(
+    '/calibration',
+    asyncHandler(async (_req, res) => {
+      if (!quality) {
+        res.json({ available: false, report: null });
+        return;
+      }
+      const golden = await quality.assessments.listGolden();
+      const ai = golden.length ? await quality.assessments.latestAi({ questionIds: golden.map((g) => g.questionId) }) : [];
+      const report = calibrate(golden, ai);
+      res.json({ available: true, report: { ...report, disagreements: report.disagreements.slice(0, 50) } });
     }),
   );
 

@@ -9,7 +9,13 @@ import { dirname, join } from 'node:path';
 import { IMPORTABLE_CLASSES, type LegacyAuditReport, type LegacyItem } from '../../server/domains/content/legacyAudit';
 import { validateQuestion } from '../../server/domains/content/validation';
 import type { RevisionDraft } from '../../server/domains/content/types';
-import { ASSESSMENT_RUBRIC_VERSION, type AssessmentSubject } from '../../src/lib/contentAssessment';
+import {
+  ASSESSMENT_CRITERIA,
+  ASSESSMENT_RUBRIC_VERSION,
+  ASSESSMENT_VERDICTS,
+  type AssessmentSubject,
+} from '../../src/lib/contentAssessment';
+import { calibrate } from '../../server/domains/quality/calibration';
 import { runAiReview, subjectKey, type TokenPricing } from '../../server/domains/quality/aiReview';
 import { buildAiReviewPrompt, fetchReviewPassages } from '../../server/domains/quality/aiReviewPrompt';
 import { subjectFromDraft } from '../../server/domains/quality/assessmentSubject';
@@ -168,6 +174,16 @@ export function createQualityTasks(ctx: QualityTaskContext): Record<string, Task
         const provider = createAiProvider(config);
         if (!provider) ctx.fail(`No AI provider configured (CONTENT_AI_PROVIDER=${config.aiProvider}). See docs/AI_SETUP.md.`);
         const summary = await withQualityDb(ctx.fail, async (quality) => {
+          if (ctx.flag('all') && !ctx.flag('skip-trust-gate')) {
+            const golden = await quality.assessments.listGolden();
+            const ai = golden.length ? await quality.assessments.latestAi({ questionIds: golden.map((g) => g.questionId) }) : [];
+            const calibration = calibrate(golden, ai);
+            if (!calibration.trusted) {
+              ctx.fail(
+                `The AI reviewer is not calibrated yet (${calibration.gateFailures.join('; ')}). Run \`ai-review --golden --apply\` + \`ai-calibrate\` first, or pass --skip-trust-gate with the owner's approval.`,
+              );
+            }
+          }
           if (ctx.flag('signals-first')) {
             const signals = await loadPlayerSignals(quality);
             subjects = [...subjects].sort((a, b) => boostFor(signals, b.questionId) - boostFor(signals, a.questionId));
@@ -201,6 +217,44 @@ export function createQualityTasks(ctx: QualityTaskContext): Record<string, Task
             .filter(Boolean)
             .join('\n'),
           { ...summary, report: path },
+        );
+      },
+    },
+
+    'ai-calibrate': {
+      summary: 'AI verdicts vs the owner\'s golden labels: agreement, confusion matrix, reject recall, trust gate → reports/content/',
+      async run() {
+        const report = await withQualityDb(ctx.fail, async (quality) => {
+          const golden = await quality.assessments.listGolden();
+          const ai = golden.length ? await quality.assessments.latestAi({ questionIds: golden.map((g) => g.questionId) }) : [];
+          return calibrate(golden, ai);
+        });
+        const at = new Date().toISOString();
+        const path = ctx.writeReport(`calibration-${at.replace(/[:.]/g, '-')}.json`, { at, ...report });
+        const pc = (v: number | null) => (v === null ? '—' : `${(v * 100).toFixed(0)}%`);
+        const matrix = ASSESSMENT_VERDICTS.map(
+          (g) => `  ${g.padEnd(11)} ${ASSESSMENT_VERDICTS.map((a) => String(report.confusion[g][a]).padStart(8)).join('')}`,
+        );
+        const criteria = ASSESSMENT_CRITERIA.map((c) => {
+          const s = report.byCriterion[c];
+          return `  ${c.padEnd(17)} agreement ${pc(s.agreement).padStart(5)}   fails caught ${pc(s.failRecall).padStart(5)} of ${s.goldenFails}`;
+        });
+        ctx.out(
+          [
+            `Calibration: ${report.pairs} pair(s) of ${report.goldenLabels} golden label(s)${report.missingAi ? ` — ${report.missingAi} without an AI verdict yet` : ''}.`,
+            `  verdict agreement ${pc(report.verdictAgreement)} · reject recall ${pc(report.byVerdict.reject.recall)} · reject precision ${pc(report.byVerdict.reject.precision)} · problems flagged ${pc(report.flagRecall)}`,
+            '',
+            `  owner \\ AI ${ASSESSMENT_VERDICTS.map((v) => v.padStart(8)).join('')}`,
+            ...matrix,
+            '',
+            ...criteria,
+            '',
+            report.trusted
+              ? '✔ Trust gate passed — a full `ai-review --all` run is allowed.'
+              : `✖ Not trusted yet: ${report.gateFailures.join('; ')}.`,
+            `Report (with every disagreement): ${path}`,
+          ].join('\n'),
+          { ...report, report: path },
         );
       },
     },

@@ -19,7 +19,11 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run",
-        "studio:sandbox"
+        "studio:sandbox",
+        "--",
+        "--seed-ai",
+        "--seed-golden",
+        "120"
       ],
       "port": 3001
     }

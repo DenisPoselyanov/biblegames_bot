@@ -13,8 +13,10 @@ import { ApiError, apiRequest, type ApiRequestOptions } from '../lib/apiClient';
 import type { Permission, Role } from '../pages/studio/lib/rbac';
 import type {
   AssessmentCriteria,
+  AssessmentCriterion,
   AssessmentSubject,
   AssessmentVerdict,
+  CriterionValue,
 } from '../lib/contentAssessment';
 import type { Difficulty } from '../types';
 
@@ -374,9 +376,42 @@ export interface AssessmentLabelInput {
   notes?: string | null;
 }
 
+/** Mirrors `CalibrationReport` in `server/domains/quality/calibration.ts` (first 50 disagreements). */
+export interface CalibrationReportView {
+  goldenLabels: number;
+  pairs: number;
+  missingAi: number;
+  verdictAgreement: number | null;
+  flagRecall: number | null;
+  confusion: Record<AssessmentVerdict, Record<AssessmentVerdict, number>>;
+  byVerdict: Record<AssessmentVerdict, { golden: number; ai: number; both: number; precision: number | null; recall: number | null }>;
+  byCriterion: Record<
+    AssessmentCriterion,
+    { decided: number; agree: number; agreement: number | null; goldenFails: number; caught: number; failRecall: number | null }
+  >;
+  confidence: { agreed: number | null; disagreed: number | null };
+  trusted: boolean;
+  gateFailures: string[];
+  thresholds: { minPairs: number; rejectRecall: number; verdictAgreement: number };
+  disagreements: Array<{
+    questionId: string;
+    text: string;
+    golden: AssessmentVerdict;
+    ai: AssessmentVerdict;
+    aiConfidence: number | null;
+    criteria: Partial<Record<AssessmentCriterion, [CriterionValue, CriterionValue]>>;
+    goldenNotes: string | null;
+    aiNotes: string | null;
+  }>;
+}
+
 export const studioRepo = {
   getGolden(): Promise<GoldenResponse> {
     return call('/studio/assessments/golden');
+  },
+
+  getCalibration(): Promise<{ available: boolean; report: CalibrationReportView | null }> {
+    return call('/studio/assessments/calibration');
   },
 
   saveGoldenLabel(questionId: string, input: AssessmentLabelInput): Promise<{ ok: true; label: AssessmentLabelView }> {

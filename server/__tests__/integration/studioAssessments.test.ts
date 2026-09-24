@@ -132,3 +132,22 @@ describe('/api/v1/studio/assessments/golden (WS11c)', () => {
     expect(badVerdict.status).toBe(400);
   });
 });
+
+describe('/api/v1/studio/assessments/calibration (WS11c)', () => {
+  it('compares AI verdicts with the golden labels on the same body', async () => {
+    const { app, quality } = assessmentsApp();
+    await as(app, 'reviewer-1').put('/api/v1/studio/assessments/golden/g1', {
+      verdict: 'reject',
+      criteria: { ...passCriteria, factual: 'fail' },
+    });
+    const empty = await as(app, 'reviewer-1').get('/api/v1/studio/assessments/calibration');
+    expect(empty.body.report).toMatchObject({ goldenLabels: 1, pairs: 0, missingAi: 1, trusted: false });
+
+    const [label] = await quality.assessments.listGolden();
+    await quality.assessments.addAi({ ...label, source: 'ai', assessor: 'mock:model', verdict: 'pass', criteria: passCriteria as never, confidence: 0.9, meta: {} });
+    const res = await as(app, 'reviewer-1').get('/api/v1/studio/assessments/calibration');
+    expect(res.status).toBe(200);
+    expect(res.body.report).toMatchObject({ pairs: 1, verdictAgreement: 0, confusion: { reject: { pass: 1 } } });
+    expect(res.body.report.disagreements[0]).toMatchObject({ questionId: 'g1', golden: 'reject', ai: 'pass' });
+  });
+});

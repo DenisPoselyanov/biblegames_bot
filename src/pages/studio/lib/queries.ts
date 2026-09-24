@@ -221,6 +221,13 @@ export function useGoldenQuery() {
   });
 }
 
+export function useCalibrationQuery() {
+  return useQuery({
+    queryKey: queryKeys.studio.calibration(),
+    queryFn: () => studioRepo.getCalibration(),
+  });
+}
+
 export function useSaveGoldenLabelMutation() {
   const queryClient = useQueryClient();
   return useMutation({

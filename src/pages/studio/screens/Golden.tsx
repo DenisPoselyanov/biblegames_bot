@@ -7,6 +7,7 @@ import { useCan } from '../lib/useStudio';
 import type { GoldenItem } from '../../../repos/studioRepo';
 import { VERDICT_TONE, formFromLabel, type AssessmentFormValue } from '../lib/assessmentForm';
 import { AssessmentForm, SubjectCard } from '../ui/AssessmentParts';
+import { CalibrationPanel } from '../ui/CalibrationPanel';
 import { cn } from '../ui/cn';
 import { Badge, Bar, Button, EmptyState, Note, Page, Panel } from '../ui/kit';
 
@@ -161,6 +162,7 @@ export function Golden() {
               </Panel>
             </div>
           )}
+          <CalibrationPanel />
         </div>
       )}
     </Page>

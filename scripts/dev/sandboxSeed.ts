@@ -6,7 +6,13 @@
  * reviewer output (escalation, risk, trimmed suggestions). Never used outside
  * the sandbox.
  */
-import { ALL_PASS, impliedVerdict, type AssessmentCriteria } from '../../src/lib/contentAssessment';
+import {
+  ALL_PASS,
+  ASSESSMENT_RUBRIC_VERSION,
+  assessmentRisk,
+  impliedVerdict,
+  type AssessmentCriteria,
+} from '../../src/lib/contentAssessment';
 import { LEVEL_RUBRIC } from '../../src/lib/contentLevelRubric';
 import type { AiReviewOutput } from '../../server/domains/quality/aiReviewPrompt';
 import { assessmentFromOutput } from '../../server/domains/quality/aiReview';
@@ -97,4 +103,39 @@ export async function seedHeuristicAi(repo: AssessmentRepository, sample: Golden
     await repo.addAi(a);
   }
   return sample.items.length;
+}
+
+/**
+ * Fake owner labels for the first `count` sample items: the heuristic view,
+ * with every fifth item judged harder (a reject the "AI" may miss), so the
+ * calibration panel has disagreements to show.
+ */
+export async function seedHeuristicGolden(repo: AssessmentRepository, sample: GoldenSample, count: number): Promise<number> {
+  const items = sample.items.slice(0, Math.max(0, count));
+  for (const item of items) {
+    const out = heuristicOutput(item);
+    const criteria: AssessmentCriteria = { ...out.criteria };
+    if (hash(`${item.subject.questionId}:owner`) % 5 === 0) criteria.answer_supported = 'fail';
+    const verdict = impliedVerdict(criteria);
+    await repo.upsertGolden({
+      questionId: item.subject.questionId,
+      contentHash: item.subject.contentHash,
+      source: 'golden',
+      assessor: 'guest',
+      rubricVersion: ASSESSMENT_RUBRIC_VERSION,
+      verdict,
+      criteria,
+      suggestedDifficulty: out.suggestedDifficulty ?? null,
+      suggestedThemeId: out.suggestedThemeId ?? null,
+      suggestedTopicNodeId: null,
+      suggestedExplanationShort: null,
+      suggestedExplanationDeep: null,
+      notes: null,
+      confidence: null,
+      risk: assessmentRisk({ verdict, criteria, confidence: 1 }),
+      subject: item.subject,
+      meta: { stratum: item.stratum, sandbox: true },
+    });
+  }
+  return items.length;
 }
