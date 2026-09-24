@@ -15,13 +15,25 @@ import {
   Grid,
   KeyVal,
   Mono,
+  NARROW_ONLY,
   Note,
   Page,
   Panel,
   Status,
   Term,
   Toolbar,
+  WIDE_ONLY,
 } from '../ui/kit';
+import { cn } from '../ui/cn';
+
+/* Narrow variants: the timestamp folds under the set name, and who acted
+   folds under when — a 150px column of names does not survive a tablet. */
+const SET_COLS = '1fr 110px 180px 110px 130px';
+const SET_COLS_NARROW = '1fr 80px 90px 120px';
+const HISTORY_COLS = '180px 150px 170px 1fr';
+const HISTORY_COLS_NARROW = '150px 150px 1fr';
+const AUDIT_COLS = '180px 150px 190px 1fr';
+const AUDIT_COLS_NARROW = '150px 170px 1fr';
 
 /**
  * Releases (Phase 4 WS8c) — ported from the design prototype's `releases`
@@ -125,26 +137,30 @@ function ReleaseList({ query }: { query: ReturnType<typeof useReleasesQuery> }) 
             />
           ) : (
             <>
-              <Grid head cols="1fr 110px 180px 110px 130px">
+              <Grid head cols={SET_COLS} narrow={SET_COLS_NARROW}>
                 <span>Набір</span>
                 <span>Версія</span>
-                <span>Коли</span>
+                <span className={WIDE_ONLY}>Коли</span>
                 <span>Позицій</span>
                 <span>Стан</span>
               </Grid>
               {data.sets.map((s) => (
                 <Grid
                   key={`${s.setId}#${s.version}`}
-                  cols="1fr 110px 180px 110px 130px"
+                  cols={SET_COLS}
+                  narrow={SET_COLS_NARROW}
                   onClick={() => setOpen(s)}
                   active={open?.setId === s.setId && open.version === s.version}
                 >
                   <span className="min-w-0">
                     <span className="block truncate font-medium">{s.setId}</span>
-                    <span className="block truncate text-[12px] text-faint">{s.kind}</span>
+                    <span className="block truncate text-[12px] text-faint">
+                      {s.kind}
+                      <span className={NARROW_ONLY}> · {fmt(s.publishedAt)}</span>
+                    </span>
                   </span>
                   <span className="studio-num">v{s.version}</span>
-                  <Mono className="text-muted">{fmt(s.publishedAt)}</Mono>
+                  <Mono className={cn('text-muted', WIDE_ONLY)}>{fmt(s.publishedAt)}</Mono>
                   <span className="studio-num">{s.questionCount}</span>
                   <span>
                     {s.isLatest ? <Badge tone="success">активна</Badge> : <Badge>попередня</Badge>}
@@ -161,18 +177,23 @@ function ReleaseList({ query }: { query: ReturnType<typeof useReleasesQuery> }) 
           <p className="px-4 py-8 text-center text-[13px] text-faint">Ще нічого не публікували.</p>
         ) : (
           <>
-            <Grid head cols="180px 150px 170px 1fr">
+            <Grid head cols={HISTORY_COLS} narrow={HISTORY_COLS_NARROW}>
               <span>Коли</span>
-              <span>Хто</span>
+              <span className={WIDE_ONLY}>Хто</span>
               <span>Що</span>
               <span>Позиція</span>
             </Grid>
             {history.map((h, i) => {
               const link = revisionLink(h);
               return (
-                <Grid key={`${h.at}-${i}`} cols="180px 150px 170px 1fr">
-                  <Mono className="text-muted">{fmt(h.at)}</Mono>
-                  <span className="truncate text-[12.5px]">{whoOf(h)}</span>
+                <Grid key={`${h.at}-${i}`} cols={HISTORY_COLS} narrow={HISTORY_COLS_NARROW}>
+                  <span className="min-w-0">
+                    <Mono className="text-muted">{fmt(h.at)}</Mono>
+                    <span className={cn('block truncate text-[11.5px] text-faint', NARROW_ONLY)}>
+                      {whoOf(h)}
+                    </span>
+                  </span>
+                  <span className={cn('truncate text-[12.5px]', WIDE_ONLY)}>{whoOf(h)}</span>
                   <span>
                     <Badge tone={actionTone(h.action, h.result)}>{actionLabel(h.action)}</Badge>
                   </span>
@@ -322,9 +343,9 @@ function Journal() {
         ))}
       </Toolbar>
       <Panel flush>
-        <Grid head cols="180px 150px 190px 1fr">
+        <Grid head cols={AUDIT_COLS} narrow={AUDIT_COLS_NARROW}>
           <span>Коли</span>
-          <span>Хто</span>
+          <span className={WIDE_ONLY}>Хто</span>
           <span>Що зробив</span>
           <span>Деталі</span>
         </Grid>
@@ -336,9 +357,12 @@ function Journal() {
           </p>
         ) : (
           rows.map((a, i) => (
-            <Grid key={`${a.at}-${i}`} cols="180px 150px 190px 1fr">
-              <Mono className="text-muted">{fmt(a.at)}</Mono>
+            <Grid key={`${a.at}-${i}`} cols={AUDIT_COLS} narrow={AUDIT_COLS_NARROW}>
               <span className="min-w-0">
+                <Mono className="text-muted">{fmt(a.at)}</Mono>
+                <span className={cn('block truncate text-[11.5px] text-faint', NARROW_ONLY)}>{whoOf(a)}</span>
+              </span>
+              <span className={cn('min-w-0', WIDE_ONLY)}>
                 <span className="block truncate text-[12.5px]">{whoOf(a)}</span>
                 {a.actor.authSource && <span className="block text-[11.5px] text-faint">{a.actor.authSource}</span>}
               </span>

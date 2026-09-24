@@ -50,7 +50,9 @@ export function NewJob() {
             );
           }}
         >
-          <div className="grid grid-cols-[1fr_180px_90px_auto] items-end gap-2">
+          {/* Narrow: the template button drops to its own row instead of
+              squeezing the topic picker. */}
+          <div className="grid grid-cols-[1fr_150px_80px] items-end gap-2 @min-[900px]:grid-cols-[1fr_180px_90px_auto]">
             <Field label="Тема">
               <Select
                 value={themeId}
@@ -68,7 +70,12 @@ export function NewJob() {
             <Field label="Скільки">
               <Input type="number" min={1} max={50} value={count} onChange={(e) => setCount(e.target.value)} />
             </Field>
-            <Button variant="ghost" size="md" onClick={applyTemplate}>
+            <Button
+              variant="ghost"
+              size="md"
+              onClick={applyTemplate}
+              className="justify-self-start @max-[899px]:col-span-3"
+            >
               <Wand2 size={14} />
               Шаблон за рубрикою
             </Button>

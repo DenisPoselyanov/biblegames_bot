@@ -14,13 +14,16 @@ import {
   KeyVal,
   Metric,
   Mono,
+  NARROW_ONLY,
   Note,
   Page,
   Panel,
   Status,
   Term,
   Toolbar,
+  WIDE_ONLY,
 } from '../ui/kit';
+import { cn } from '../ui/cn';
 
 /**
  * Library (Phase 4 WS8c) — ported from the design prototype's `library`
@@ -35,6 +38,11 @@ import {
  */
 
 const COLS = '1fr 110px 110px 110px 150px';
+/* Narrow: «Не перевірено» folds under the theme name. */
+const COLS_NARROW = '1fr 80px 90px 130px';
+
+const OUTLIER_COLS = '1fr 120px 120px 190px';
+const OUTLIER_COLS_NARROW = '1fr 100px 190px';
 
 /** Waiting on a person: everything that exists but isn't live and isn't blocked. */
 const inQueue = (c: StatusCounts) => c.draft + c.ready_for_review;
@@ -129,13 +137,13 @@ function Topics({ themes }: { themes: LibraryTheme[] }) {
       </Toolbar>
 
       <Panel flush>
-        <Grid head cols={COLS}>
+        <Grid head cols={COLS} narrow={COLS_NARROW}>
           <span>Тема</span>
           <span>
             <Term k="coverage">У грі</Term>
           </span>
           <span>У черзі</span>
-          <span>Не перевірено</span>
+          <span className={WIDE_ONLY}>Не перевірено</span>
           <span>Стан</span>
         </Grid>
         {groups.length === 0 && (
@@ -143,26 +151,39 @@ function Topics({ themes }: { themes: LibraryTheme[] }) {
         )}
         {groups.map(([key, group]) => (
           <div key={key}>
-            <Grid cols={COLS} className="bg-[var(--s-panel-2)]">
+            <Grid cols={COLS} narrow={COLS_NARROW} className="bg-[var(--s-panel-2)]">
               <span className="font-display text-[14px] font-semibold">{group.title}</span>
               <span className="studio-num text-[12.5px] text-muted">
                 {group.rows.reduce((n, t) => n + t.counts.published, 0).toLocaleString('uk-UA')}
               </span>
               <span />
-              <span />
+              <span className={WIDE_ONLY} />
               <span />
             </Grid>
             {group.rows.map((t) => {
               const flag = flagOf(t);
               return (
-                <Grid key={t.themeId} cols={COLS} onClick={() => setOpen(t)} active={open?.themeId === t.themeId}>
+                <Grid
+                  key={t.themeId}
+                  cols={COLS}
+                  narrow={COLS_NARROW}
+                  onClick={() => setOpen(t)}
+                  active={open?.themeId === t.themeId}
+                >
                   <span className="min-w-0 pl-5">
                     <span className="block truncate font-medium">{t.title}</span>
                     <Mono className="block truncate text-[11.5px]">{t.themeId}</Mono>
+                    {t.counts.legacy_unreviewed > 0 && (
+                      <span className={cn('block text-[11.5px] text-faint', NARROW_ONLY)}>
+                        не перевірено: {t.counts.legacy_unreviewed.toLocaleString('uk-UA')}
+                      </span>
+                    )}
                   </span>
                   <span className="studio-num">{t.counts.published.toLocaleString('uk-UA')}</span>
                   <span className="studio-num text-muted">{inQueue(t.counts) || '—'}</span>
-                  <span className="studio-num text-muted">{t.counts.legacy_unreviewed || '—'}</span>
+                  <span className={cn('studio-num text-muted', WIDE_ONLY)}>
+                    {t.counts.legacy_unreviewed || '—'}
+                  </span>
                   <span>
                     <Badge tone={flag.tone}>{flag.label}</Badge>
                   </span>
@@ -251,7 +272,7 @@ function Quality({ findings, themes }: { findings: FindingSummary[]; themes: Lib
 
   return (
     <>
-      <div className="mb-4 grid grid-cols-4 gap-3">
+      <div className="mb-4 grid grid-cols-2 gap-3 @min-[900px]:grid-cols-4">
         <Metric label="У грі" value={total.published.toLocaleString('uk-UA')} hint="Опубліковані ревізії питань" />
         <Metric
           label="Не перевірено"
@@ -272,7 +293,7 @@ function Quality({ findings, themes }: { findings: FindingSummary[]; themes: Lib
         />
       </div>
 
-      <div className="grid grid-cols-[1.4fr_1fr] items-start gap-4">
+      <div className="grid items-start gap-4 @min-[900px]:grid-cols-[1.4fr_1fr]">
         <Panel title="Що знайшли автоматичні перевірки" flush>
           {findings.length === 0 ? (
             <p className="px-4 py-8 text-center text-[13px] text-faint">
@@ -409,14 +430,14 @@ function Outliers() {
           . Результат буде пропозицією для ревʼю, а не зміною в грі.
         </p>
       )}
-      <Grid head cols="1fr 120px 120px 190px">
+      <Grid head cols={OUTLIER_COLS} narrow={OUTLIER_COLS_NARROW}>
         <span>Питання</span>
         <span>Правильних</span>
-        <span>Відповідей</span>
+        <span className={WIDE_ONLY}>Відповідей</span>
         <span />
       </Grid>
       {outliers.map((o) => (
-        <Grid key={o.questionId} cols="1fr 120px 120px 190px">
+        <Grid key={o.questionId} cols={OUTLIER_COLS} narrow={OUTLIER_COLS_NARROW}>
           <span className="min-w-0">
             <span className="block truncate font-medium">{o.text ?? o.questionId}</span>
             <span className="mt-0.5 flex items-center gap-2">
@@ -424,8 +445,14 @@ function Outliers() {
               <Mono className="truncate text-[11.5px]">{o.questionId}</Mono>
             </span>
           </span>
-          <span className="studio-num">{pct(o.accuracy)}</span>
-          <span className="studio-num text-muted">{o.attempts.toLocaleString('uk-UA')}</span>
+          <span className="studio-num">
+            {pct(o.accuracy)}
+            {/* Narrow: the answer count folds under the share it is out of. */}
+            <span className={cn('block text-[11.5px] text-faint', NARROW_ONLY)}>
+              з {o.attempts.toLocaleString('uk-UA')}
+            </span>
+          </span>
+          <span className={cn('studio-num text-muted', WIDE_ONLY)}>{o.attempts.toLocaleString('uk-UA')}</span>
           <span className="justify-self-end">
             <Button
               variant="ghost"
