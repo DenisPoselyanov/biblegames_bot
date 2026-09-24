@@ -1,1 +1,0 @@
-import{Ln as e,Yn as t,bn as n,qn as r,vn as i}from"./index-CW1dMeZ7.js";var a=new Set([`content_reviewer`,`content_publisher`,`admin`]);function o(){let{userId:o}=e();return(t({queryKey:r.studio.identity(o),queryFn:()=>i(`/me`),enabled:!!o&&n(),staleTime:6e4,retry:!1}).data?.roles??[]).some(e=>a.has(e))}export{o as t};
