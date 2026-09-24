@@ -428,6 +428,77 @@ function expandVerseRange(start: number, end: number): number[] {
   return out;
 }
 
+/**
+ * Stem fallback for the inflected/abbreviated Ukrainian book names the exact
+ * aliases miss ("Іс. Нав.", "1 Самуїлова", "Повт. зак.", "Об'явлення").
+ * Ordered: numbered books first. "Царств" is Synodal numbering (1–2 Царств =
+ * Samuel, 3–4 = Kings); "Царів" is Ohienko (1–2 Царів = Kings).
+ * Deliberately absent: bare "ав" (Obadiah or Habakkuk) and the Maccabees —
+ * those stay unparsed so a reviewer sees them.
+ */
+const NUMBERED_BOOK_STEMS: Array<[RegExp, number[]]> = [
+  [/^самуїл/, [9, 10]],
+  [/^царств/, [9, 10, 11, 12]],
+  [/^цар/, [11, 12, 11, 12]],
+  [/^(хронік|пар)/, [13, 14]],
+  [/^(коринт|кор)/, [46, 47]],
+  [/^(фес|солун)/, [52, 53]],
+  [/^(тимоф|тим)/, [54, 55]],
+  [/^(петр|пет)/, [60, 61]],
+  [/^(іван|ів|йоан)/, [62, 63, 64]],
+];
+
+const BOOK_STEMS: Array<[RegExp, number]> = [
+  [/^іс(ус|уса)?\s*нав/, 6],
+  [/^повт/, 5],
+  [/^чис/, 4],
+  [/^вих/, 2],
+  [/^суд/, 7],
+  [/^езд?р/, 15],
+  [/^неем/, 16],
+  [/^(естер|есф)/, 17],
+  [/^(іов|йов)/, 18],
+  [/^пс/, 19],
+  [/^(припов|притч)/, 20],
+  [/^еккл/, 21],
+  [/^пісн/, 22],
+  [/^іса/, 23],
+  [/^єрем/, 24],
+  [/^плач/, 25],
+  [/^єзек/, 26],
+  [/^дан/, 27],
+  [/^осі/, 28],
+  [/^йо[їі]л/, 29],
+  [/^амос/, 30],
+  [/^(овд|авд)/, 31],
+  [/^йон/, 32],
+  [/^мих/, 33],
+  [/^наум/, 34],
+  [/^захар/, 38],
+  [/^римл/, 45],
+  [/^галат/, 48],
+  [/^ефес/, 49],
+  [/^колос/, 51],
+  [/^тит/, 56],
+  [/^филим/, 57],
+  [/^євре/, 58],
+  [/^(об'?яв|одкров|апок)/, 66],
+];
+
+function resolveBookStem(key: string): number | null {
+  const plain = key.replace(/[ʼ’`]/g, "'");
+  const numbered = plain.match(/^([1-4])\s*(.+)$/);
+  if (numbered) {
+    const n = Number(numbered[1]);
+    for (const [stem, ids] of NUMBERED_BOOK_STEMS) {
+      if (stem.test(numbered[2])) return ids[n - 1] ?? null;
+    }
+    return null;
+  }
+  for (const [stem, id] of BOOK_STEMS) if (stem.test(plain)) return id;
+  return null;
+}
+
 function resolveBookId(bookPart: string): number | null {
   const key = normalizeBookKey(bookPart);
   if (BOOK_ALIASES[key] != null) return BOOK_ALIASES[key];
@@ -436,7 +507,7 @@ function resolveBookId(bookPart: string): number | null {
   const compact = key.replace(/\s/g, '');
   if (BOOK_ALIASES[compact] != null) return BOOK_ALIASES[compact];
 
-  return null;
+  return resolveBookStem(key);
 }
 
 /**

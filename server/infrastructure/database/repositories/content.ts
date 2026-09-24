@@ -5,7 +5,7 @@
  * The opaque `Transaction` from `ServiceContext` is narrowed to the Drizzle
  * executor here and nowhere else (`asExecutor`).
  */
-import { and, asc, desc, eq, inArray, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, inArray, sql } from 'drizzle-orm';
 import type { ContentStatus, Difficulty } from '../../../../contracts/index';
 import type { Transaction as OpaqueTx } from '../../../domains/shared/context';
 import { assertAiWriteAllowed } from '../../../domains/shared/contentWriteGuard';
@@ -202,6 +202,18 @@ export function createSqlContentRepositories(db: Database): ContentRepositories 
         .where(inArray(questionRevisions.status, [...filter.statuses]))
         .orderBy(desc(questionRevisions.createdAt), desc(questionRevisions.id))
         .limit(boundedStatusLimit(filter.limit));
+      const refs = await loadRefs(exec, rows.map((r) => r.id));
+      return rows.map((r) => toRevisionRecord(r, refs));
+    },
+
+    async listPage(page, tx) {
+      const exec = asExecutor(db, tx);
+      const rows = await exec
+        .select()
+        .from(questionRevisions)
+        .where(page.afterId ? gt(questionRevisions.id, page.afterId) : undefined)
+        .orderBy(asc(questionRevisions.id))
+        .limit(boundedStatusLimit(page.limit));
       const refs = await loadRefs(exec, rows.map((r) => r.id));
       return rows.map((r) => toRevisionRecord(r, refs));
     },

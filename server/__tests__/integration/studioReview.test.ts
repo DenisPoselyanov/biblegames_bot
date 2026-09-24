@@ -5,6 +5,7 @@ import { createApp } from '../../app';
 import { RoleRegistry } from '../../authz/roleRegistry';
 import { createMemoryAuditLog } from '../../audit';
 import { createInMemoryContentRepositories } from '../../domains/content/inMemoryRepository';
+import { validateQuestionRevision } from '../../domains/content/revisionValidation';
 import { createInMemoryLearningRepositories } from '../../domains/learning/inMemoryRepository';
 import { createInMemoryScriptureEvidenceRepository } from '../../domains/shared/inMemoryScriptureEvidence';
 import { createInMemoryValidationFindingRepository } from '../../domains/shared/inMemoryValidationFindings';
@@ -47,6 +48,8 @@ const draft = {
   text: 'Хто збудував ковчег?',
   options: ['Ной', 'Мойсей'],
   correctIndex: 0,
+  explanationShort: 'Ной збудував ковчег за Божим наказом перед потопом.',
+  reference: 'Бут. 6:14',
   status: 'draft' as const,
 };
 
@@ -87,6 +90,7 @@ describe('/api/v1/studio/review (Phase 4 WS8b)', () => {
   it('a reviewer can approve but not publish; a publisher publishes only with explicit confirmation', async () => {
     const { app, repos, auditLog } = reviewApp();
     const { revision } = await repos.content.revisions.appendRevision(draft);
+    await validateQuestionRevision({ findings: repos.findings }, revision);
     const base = `/api/v1/studio/review/question/${revision.id}`;
 
     const denied = await as(app, 'reviewer-1').post(`${base}/publish`, { confirmRevisionId: revision.id });

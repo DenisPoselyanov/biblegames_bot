@@ -10,7 +10,9 @@
  * them, WS6's publish/approve action should refuse when `hasBlocking()` is
  * true per `server/domains/shared/validationFindingsRepository.ts`).
  */
+import { expandReferenceStrings, parseBibleReference } from '../../../src/lib/bibleReference';
 import type { NewValidationFinding } from '../shared/validationFindings';
+import { canonFit } from './themeCanon';
 
 /** The subset of a draft/revision every check needs — both `RevisionDraft` and `QuestionRevisionRecord` satisfy this structurally. */
 export interface QuestionBody {
@@ -21,6 +23,8 @@ export interface QuestionBody {
   correctIndex: number;
   explanationShort?: string | null;
   explanationDeep?: string | null;
+  /** `undefined` skips the reference checks (callers that don't carry one); `null`/'' means "has none". */
+  reference?: string | null;
 }
 
 /** A sibling question to compare against for duplicate detection — same shape, minus the fields checks don't need. */
@@ -197,24 +201,86 @@ function explanationChecks(body: QuestionBody): NewValidationFinding[] {
 }
 
 /** Cyrillic letters that do not exist in the Ukrainian alphabet — a cheap, high-signal Russianism tell. */
-const RUSSIAN_ONLY_LETTERS = /[ыъэЫЪЭ]/;
+const RUSSIAN_ONLY_LETTERS = /[ыъэёЫЪЭЁ]/;
+
+/**
+ * Frequent Russian words spelled only with letters Ukrainian also has, so the
+ * letter check misses them ("Кто был первым…" passes on «кто» alone). Every
+ * entry is a non-word in Ukrainian.
+ */
+const RUSSIAN_WORDS = new Set([
+  'кто', 'что', 'которая', 'которое', 'которого', 'только', 'если', 'когда', 'почему', 'также',
+  'можно', 'нужно', 'сказал', 'его', 'него', 'свой', 'своего', 'своих', 'всех', 'после', 'будет',
+]);
 
 function mixedLanguageCheck(body: QuestionBody): NewValidationFinding[] {
   const haystack = [body.text, ...body.options, body.explanationShort, body.explanationDeep]
     .filter((s): s is string => !!s)
     .join(' ');
-  const match = haystack.match(RUSSIAN_ONLY_LETTERS);
-  if (!match) return [];
+  const letter = haystack.match(RUSSIAN_ONLY_LETTERS)?.[0];
+  const word = letter ? undefined : normalize(haystack).split(' ').find((t) => RUSSIAN_WORDS.has(t));
+  if (!letter && !word) return [];
   return [
     {
       revisionType: 'question',
       revisionId: body.questionId,
       kind: 'mixed_language',
-      severity: 'warning',
-      label: 'Можливий росіянізм',
-      detail: `Знайдено літеру «${match[0]}», відсутню в українському алфавіті.`,
+      severity: 'blocking',
+      label: 'Російська мова в тексті',
+      detail: letter
+        ? `Знайдено літеру «${letter}», відсутню в українському алфавіті.`
+        : `Знайдено російське слово «${word}».`,
     },
   ];
+}
+
+/** "1 Цар."/"2 Цар." — 1–2 Samuel in Synodal numbering, 1–2 Kings in Ohienko. */
+const AMBIGUOUS_KINGS = /^\s*([12])\s*цар(?=[\s.]|$)/i;
+
+function referenceChecks(body: QuestionBody): NewValidationFinding[] {
+  if (body.reference === undefined) return [];
+  const finding = (kind: string, severity: NewValidationFinding['severity'], label: string, detail: string) => ({
+    revisionType: 'question' as const,
+    revisionId: body.questionId,
+    kind,
+    severity,
+    label,
+    detail,
+  });
+
+  const refs = expandReferenceStrings(body.reference);
+  if (refs.length === 0) {
+    return [finding('missing_reference', 'blocking', 'Немає посилання на Писання', 'Поле reference порожнє — факт неможливо перевірити.')];
+  }
+
+  const bookIds = new Set<number>();
+  let ambiguous: string | null = null;
+  for (const ref of refs) {
+    const parsed = parseBibleReference(ref);
+    if (parsed) bookIds.add(parsed.bookId);
+    const kings = ref.match(AMBIGUOUS_KINGS);
+    if (kings) {
+      ambiguous = ref;
+      bookIds.add(kings[1] === '1' ? 9 : 10);
+    }
+  }
+
+  if (bookIds.size === 0) {
+    return [finding('reference_unparsed', 'blocking', 'Посилання не розпізнано', `«${body.reference}» не є впізнаваним посиланням на книгу Біблії.`)];
+  }
+
+  const findings: NewValidationFinding[] = [];
+  if (ambiguous) {
+    findings.push(
+      finding('reference_ambiguous', 'warning', 'Неоднозначне посилання', `«${ambiguous}» — 1–2 Самуїлова (синодальна нумерація) чи 1–2 Царів (Огієнко)? Запишіть повну назву книги.`),
+    );
+  }
+  if (canonFit(body.themeId, [...bookIds]) === 'outside') {
+    findings.push(
+      finding('theme_canon_mismatch', 'warning', 'Посилання поза темою', `«${body.reference}» не належить до книг теми «${body.themeId}» — питання в чужій темі або вигадане.`),
+    );
+  }
+  return findings;
 }
 
 function orphanThemeCheck(body: QuestionBody, knownThemeIds?: readonly string[]): NewValidationFinding[] {
@@ -247,7 +313,7 @@ const SENSITIVITY_CATEGORIES: Record<string, { label: string; keywords: string[]
   },
   sexuality_relationships: {
     label: 'Сексуальність/стосунки',
-    keywords: ['перелюб', 'блуд', 'повія', 'наложниц', 'статев'],
+    keywords: ['перелюб', 'блуд', 'повія', 'наложниц', 'статев', 'похіт', 'хтив', 'розпуст', 'сьомої заповіді', 'сьома заповідь'],
   },
   end_times: {
     label: 'Есхатологія/кінець часів',
@@ -308,35 +374,35 @@ export function runQuestionQualityChecks(
     ...explanationChecks(body),
     ...mixedLanguageCheck(body),
     ...orphanThemeCheck(body, context.knownThemeIds),
+    ...referenceChecks(body),
     ...theologicalSensitivityChecks(body),
   ];
 }
 
-export interface FirstOptionBiasReport {
+export interface AnswerPositionBiasReport {
   sampleSize: number;
-  firstOptionCount: number;
-  firstOptionRatio: number;
-  /** Flagged when the ratio clears `threshold` — a *batch*-level signal, never computed for a single question. */
+  /** Share of correct answers at each position (A, B, C, …). */
+  shares: number[];
+  /** Positions whose share strays more than `tolerance` from the uniform `1 / optionCount`. */
+  skewedPositions: number[];
+  /** A *batch*-level signal, never computed for a single question. */
   flagged: boolean;
 }
 
 /**
- * §6.2 "first-option bias distribution" is a property of a batch, not of any
- * one question — reporting it per-draft would be a fabricated metric. Callers
- * (a generation-batch review, WS9's dashboard) pass every `correctIndex` in
- * the set being judged.
+ * §6.2 answer-position bias is a property of a batch, not of any one question.
+ * Every position is checked — the legacy bank's skew is at B (53.6%), which a
+ * first-option-only check never sees.
  */
-export function computeFirstOptionBias(
+export function computeAnswerPositionBias(
   correctIndexes: readonly number[],
-  threshold = 0.4,
-): FirstOptionBiasReport {
+  optionCount = 4,
+  tolerance = 0.1,
+): AnswerPositionBiasReport {
   const sampleSize = correctIndexes.length;
-  const firstOptionCount = correctIndexes.filter((i) => i === 0).length;
-  const firstOptionRatio = sampleSize === 0 ? 0 : firstOptionCount / sampleSize;
-  return {
-    sampleSize,
-    firstOptionCount,
-    firstOptionRatio,
-    flagged: sampleSize > 0 && firstOptionRatio >= threshold,
-  };
+  const counts = Array.from({ length: optionCount }, (_, p) => correctIndexes.filter((i) => i === p).length);
+  const shares = counts.map((c) => (sampleSize === 0 ? 0 : c / sampleSize));
+  const uniform = 1 / optionCount;
+  const skewedPositions = sampleSize === 0 ? [] : shares.flatMap((s, p) => (Math.abs(s - uniform) > tolerance ? [p] : []));
+  return { sampleSize, shares, skewedPositions, flagged: skewedPositions.length > 0 };
 }

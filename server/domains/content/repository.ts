@@ -40,6 +40,11 @@ export interface QuestionRevisionRepository {
    * default 100, max 500.
    */
   listByStatus(filter: RevisionStatusFilter, tx?: Transaction): Promise<QuestionRevisionRecord[]>;
+  /**
+   * Every revision, keyset-paged by `id` ascending — a full-bank sweep such as
+   * re-running the quality checks after they change. `limit` default 100, max 500.
+   */
+  listPage(page: { afterId?: string | null; limit?: number }, tx?: Transaction): Promise<QuestionRevisionRecord[]>;
   /** Revision count per status, every status present (zero when none). */
   countByStatus(tx?: Transaction): Promise<RevisionStatusCounts>;
   /**

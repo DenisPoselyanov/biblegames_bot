@@ -54,3 +54,35 @@ describe('normalizeQuestionReference / expandReferenceStrings', () => {
     expect(expandReferenceStrings('Ів 3:16; Рим 5:8')).toEqual(['Ів 3:16', 'Рим 5:8']);
   });
 });
+
+describe('parseBibleReference — inflected / abbreviated Ukrainian book names (content quality gate)', () => {
+  const book = (ref: string) => parseBibleReference(ref)?.bookId ?? null;
+
+  it.each([
+    ['Іс. Нав. 6:20', 6],
+    ['Повт. зак. 5:7', 5],
+    ['Повторення закону 6:4', 5],
+    ['Суддів 7:7', 7],
+    ['1 Самуїлова 3:3', 9],
+    ['2 Самуїлова 7:4', 10],
+    ['2 Царів 2:11', 12],
+    ['3 Царств 3:9', 11],
+    ['1 Царств 7:15', 9],
+    ['2 Хронік 7:1', 14],
+    ['1 Петра 5:8', 60],
+    ['1 Івана 4:8', 62],
+    ['Йони 1:17', 32],
+    ["Об'явлення 21:1", 66],
+    ['Приповісті 3:5', 20],
+    ['Естер 4:14', 17],
+    ['Ісаї 53:5', 23],
+  ])('%s → book %i', (ref, id) => {
+    expect(book(ref)).toBe(id);
+  });
+
+  it('leaves non-Scripture and ambiguous sources unparsed so a reviewer sees them', () => {
+    expect(book('Медична енциклопедія 12')).toBeNull();
+    expect(book('Ав. 1:5')).toBeNull();
+    expect(book('1 Мак. 2:1')).toBeNull();
+  });
+});

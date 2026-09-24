@@ -27,6 +27,12 @@ import {
 } from '../../server/domains/content/legacyAudit';
 import { validateQuestion } from '../../server/domains/content/validation';
 import { importWave, rollbackWave } from '../../server/domains/content/legacyWaves';
+import type { ContentRepositories } from '../../server/domains/content/repository';
+import {
+  QUESTION_CHECKS_VERSION,
+  questionRevisionFindings,
+  type RevisionValidationDeps,
+} from '../../server/domains/content/revisionValidation';
 import type { QuestionRevisionRecord } from '../../server/domains/content/types';
 import { JOB_TYPES } from '../../server/domains/jobs/catalog';
 import { createInMemoryJobQueue } from '../../server/domains/jobs/inMemoryQueue';
@@ -80,14 +86,22 @@ function runAudit(): { corpus: ReturnType<typeof loadLegacyCorpus>; report: Lega
 
 const pct = (n: number, total: number) => (total ? `${((n / total) * 100).toFixed(1)}%` : '—');
 
-async function withContentDb<T>(fn: (repos: import('../../server/domains/content/repository').ContentRepositories) => Promise<T>): Promise<T> {
+async function withContentDb<T>(
+  fn: (repos: ContentRepositories, checks: RevisionValidationDeps) => Promise<T>,
+): Promise<T> {
   const { getPool, isDatabaseConfigured } = await import('../../server/db/pgPool');
-  if (!isDatabaseConfigured()) fail('DATABASE_URL is required for --apply.');
+  if (!isDatabaseConfigured()) fail('DATABASE_URL is required for this task.');
   const { createDatabase } = await import('../../server/infrastructure/database/client');
   const { createSqlContentRepositories } = await import('../../server/infrastructure/database/repositories/content');
+  const { createSqlValidationFindingRepository } = await import('../../server/infrastructure/database/repositories/validationFindings');
   const pool = await getPool();
   try {
-    return await fn(createSqlContentRepositories(createDatabase(pool)));
+    const database = createDatabase(pool);
+    const checks: RevisionValidationDeps = {
+      findings: createSqlValidationFindingRepository(database),
+      context: { siblings: [], knownThemeIds: THEMES.map((t) => t.id) },
+    };
+    return await fn(createSqlContentRepositories(database), checks);
   } finally {
     await pool.end();
   }
@@ -193,6 +207,43 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
     },
   },
 
+  'validate-revisions': {
+    summary: `re-run the quality checks (${QUESTION_CHECKS_VERSION}) over every stored question revision; --apply records the findings the publish gate reads`,
+    async run() {
+      const result = await withContentDb(async (repos, checks) => {
+        const byKind: Record<string, number> = {};
+        let total = 0;
+        let blocked = 0;
+        let afterId: string | null = null;
+        for (;;) {
+          const page = await repos.revisions.listPage({ afterId, limit: 500 });
+          if (page.length === 0) break;
+          for (const revision of page) {
+            const findings = questionRevisionFindings(revision, checks.context);
+            total += 1;
+            if (findings.some((f) => f.severity === 'blocking')) blocked += 1;
+            for (const f of findings) byKind[f.kind] = (byKind[f.kind] ?? 0) + 1;
+            if (APPLY) await checks.findings.record('question', revision.id, findings);
+          }
+          afterId = page[page.length - 1].id;
+        }
+        return { total, blocked, byKind };
+      });
+      const rows = Object.entries(result.byKind)
+        .filter(([k]) => k !== 'validation_run')
+        .sort((a, b) => b[1] - a[1])
+        .map(([k, v]) => `  ${k.padEnd(34)} ${String(v).padStart(7)}`);
+      out(
+        [
+          `${APPLY ? 'Recorded' : '[dry] Would record'} findings for ${result.total} revision(s) — ${result.blocked} with a blocking finding.`,
+          ...rows,
+          ...(APPLY ? [] : ['  Pass --apply to write them (the publish gate refuses revisions without a current run).']),
+        ].join('\n'),
+        { dryRun: !APPLY, version: QUESTION_CHECKS_VERSION, ...result },
+      );
+    },
+  },
+
   'migrate-wave': {
     summary: 'import one §12.3 wave as legacy_unreviewed revisions (--wave N [--apply] | --rollback <report> --apply)',
     async run() {
@@ -231,7 +282,7 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
         return;
       }
 
-      const result = await withContentDb((repos) => importWave(repos, selected.map((i) => byId.get(i.id)!.raw)));
+      const result = await withContentDb((repos, checks) => importWave(repos, selected.map((i) => byId.get(i.id)!.raw), checks));
       const saved = { wave, label: meta.label, at: new Date().toISOString(), selected: selected.length, ...result };
       const path = writeReport(`wave-${wave}-${saved.at.replace(/[:.]/g, '-')}.json`, saved);
       out(
@@ -257,7 +308,7 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
         return;
       }
       const { importLegacyQuestions } = await import('../../server/domains/content/import');
-      const r = await withContentDb((repos) => importLegacyQuestions(repos, corpus.items.map((i) => i.raw)));
+      const r = await withContentDb((repos, checks) => importLegacyQuestions(repos, corpus.items.map((i) => i.raw), checks));
       out(`created ${r.created}, unchanged ${r.unchanged}, quarantined ${r.quarantined}, rejected ${r.rejected.length}`, r);
     },
   },

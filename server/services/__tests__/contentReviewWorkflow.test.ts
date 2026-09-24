@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { createMemoryAuditLog, type AuditActor } from '../../audit';
 import { createInMemoryContentRepositories } from '../../domains/content/inMemoryRepository';
+import { validateQuestionRevision } from '../../domains/content/revisionValidation';
+import type { RevisionDraft } from '../../domains/content/types';
 import { createInMemoryLearningRepositories } from '../../domains/learning/inMemoryRepository';
 import { createInMemoryScriptureEvidenceRepository } from '../../domains/shared/inMemoryScriptureEvidence';
 import { createInMemoryValidationFindingRepository } from '../../domains/shared/inMemoryValidationFindings';
@@ -24,16 +26,24 @@ function harness() {
     gates: { findings, scripture },
     auditLog,
   });
-  return { content, learning, findings, scripture, auditLog, workflow };
+  /** Append + run the real quality checks — approval and publish refuse anything never checked. */
+  const append = async (draft: RevisionDraft) => {
+    const { revision } = await content.revisions.appendRevision(draft);
+    await validateQuestionRevision({ findings }, revision);
+    return revision;
+  };
+  return { content, learning, findings, scripture, auditLog, workflow, append };
 }
 
 const questionDraft = {
   questionId: 'q1',
   themeId: 'genesis',
   difficulty: 'youth' as const,
-  text: 'Who built the ark?',
-  options: ['Noah', 'Moses'],
+  text: 'Хто збудував ковчег?',
+  options: ['Ной', 'Мойсей'],
   correctIndex: 0,
+  explanationShort: 'Ной збудував ковчег за Божим наказом перед потопом.',
+  reference: 'Бут. 6:14',
   status: 'draft' as const,
 };
 
@@ -69,7 +79,7 @@ describe('contentReviewWorkflow.listQueue', () => {
     const qItem = queue.items.find((i) => i.revisionId === q.id)!;
     expect(qItem.findings.blocking).toBe(1);
     expect(qItem.topProblem).toMatchObject({ severity: 'blocking', label: 'Богословська чутливість' });
-    expect(qItem.title).toBe('Who built the ark?');
+    expect(qItem.title).toBe('Хто збудував ковчег?');
     expect(queue.items.find((i) => i.revisionId === l.id)?.topProblem).toBeNull();
 
     expect(queue.counts.question).toMatchObject({ draft: 1, legacy_unreviewed: 1 });
@@ -82,8 +92,8 @@ describe('contentReviewWorkflow.listQueue', () => {
   });
 
   it('shows the standing (latest) decision per revision', async () => {
-    const { content, workflow } = harness();
-    const q = (await content.revisions.appendRevision(questionDraft)).revision;
+    const { append, workflow } = harness();
+    const q = await append(questionDraft);
     await workflow.decide('question', q.id, 'changes_requested', reviewer, { comment: 'Уточнити пояснення' });
     await workflow.decide('question', q.id, 'approved', reviewer);
 
@@ -98,7 +108,7 @@ describe('contentReviewWorkflow.getDetail', () => {
     const v1 = (await content.revisions.appendRevision(questionDraft)).revision;
     await content.revisions.publishRevision(v1.id);
     const v2 = (
-      await content.revisions.appendRevision({ ...questionDraft, text: 'Who built the ark of gopher wood?' })
+      await content.revisions.appendRevision({ ...questionDraft, text: 'Хто збудував ковчег із дерева гофер?' })
     ).revision;
     await findings.record('question', v2.id, [blockingFinding(v2.id)]);
     await workflow.decide('question', v2.id, 'changes_requested', reviewer, { comment: 'Перевір формулювання' });
@@ -106,7 +116,10 @@ describe('contentReviewWorkflow.getDetail', () => {
     const detail = await workflow.getDetail('question', v2.id);
     expect(detail?.baseline).toMatchObject({ revisionId: v1.id, status: 'published' });
     expect(detail?.diff.map((d) => d.field)).toEqual(['text']);
-    expect(detail?.blockers).toEqual([{ revisionId: v2.id, reason: 'validation_blocking' }]);
+    expect(detail?.blockers).toEqual([
+      { revisionId: v2.id, reason: 'not_validated' },
+      { revisionId: v2.id, reason: 'validation_blocking' },
+    ]);
     expect(detail?.history.map((h) => h.action)).toEqual([REVIEW_DECISION_ACTION]);
     expect(detail?.siblings.map((s) => s.revisionNumber)).toEqual([2, 1]);
   });
@@ -155,9 +168,15 @@ describe('contentReviewWorkflow.decide', () => {
 });
 
 describe('contentReviewWorkflow.publish', () => {
-  it('refuses an unapproved revision, then publishes it once approved', async () => {
-    const { content, auditLog, workflow } = harness();
+  it('refuses to approve a revision whose quality checks never ran', async () => {
+    const { content, workflow } = harness();
     const q = (await content.revisions.appendRevision(questionDraft)).revision;
+    await expect(workflow.decide('question', q.id, 'approved', reviewer)).rejects.toThrow(ContentApprovalBlockedError);
+  });
+
+  it('refuses an unapproved revision, then publishes it once approved', async () => {
+    const { append, auditLog, workflow } = harness();
+    const q = await append(questionDraft);
 
     await expect(workflow.publish('question', q.id, reviewer)).rejects.toMatchObject({
       code: 'content_not_approved',
@@ -171,8 +190,8 @@ describe('contentReviewWorkflow.publish', () => {
   });
 
   it('a later changes_requested withdraws the approval', async () => {
-    const { content, workflow } = harness();
-    const q = (await content.revisions.appendRevision(questionDraft)).revision;
+    const { append, workflow } = harness();
+    const q = await append(questionDraft);
     await workflow.decide('question', q.id, 'approved', reviewer);
     await workflow.decide('question', q.id, 'changes_requested', reviewer, { comment: 'Стоп, помилка' });
     await expect(workflow.publish('question', q.id, reviewer)).rejects.toMatchObject({

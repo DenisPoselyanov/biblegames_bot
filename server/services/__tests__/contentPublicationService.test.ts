@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { createMemoryAuditLog } from '../../audit';
 import { createInMemoryContentRepositories } from '../../domains/content/inMemoryRepository';
+import { validateQuestionRevision } from '../../domains/content/revisionValidation';
+import type { RevisionDraft } from '../../domains/content/types';
 import { createInMemoryLearningRepositories } from '../../domains/learning/inMemoryRepository';
 import { createInMemoryScriptureEvidenceRepository } from '../../domains/shared/inMemoryScriptureEvidence';
 import { createInMemoryValidationFindingRepository } from '../../domains/shared/inMemoryValidationFindings';
@@ -15,24 +17,64 @@ async function harness() {
   const findings = createInMemoryValidationFindingRepository();
   const scripture = createInMemoryScriptureEvidenceRepository();
   const service = createContentPublicationService({ content, learning, gates: { findings, scripture } });
-  return { content, learning, findings, scripture, service };
+  return { content, learning, findings, scripture, service, append: appendValidated(content, findings) };
 }
 
 const questionDraft = {
   questionId: 'q1',
   themeId: 'genesis',
   difficulty: 'youth' as const,
-  text: 'Who built the ark?',
-  options: ['Noah', 'Moses'],
+  text: 'Хто збудував ковчег?',
+  options: ['Ной', 'Мойсей'],
   correctIndex: 0,
+  explanationShort: 'Ной збудував ковчег за Божим наказом перед потопом.',
+  reference: 'Бут. 6:14',
 };
 
+/** Append + run the real quality checks — the gate refuses anything never checked. */
+function appendValidated(
+  content: ReturnType<typeof createInMemoryContentRepositories>,
+  findings: ReturnType<typeof createInMemoryValidationFindingRepository>,
+) {
+  return async (draft: RevisionDraft) => {
+    const { revision } = await content.revisions.appendRevision(draft);
+    await validateQuestionRevision({ findings }, revision);
+    return revision;
+  };
+}
+
 describe('publishQuestionRevision', () => {
-  it('publishes a clean revision', async () => {
-    const { content, service } = await harness();
-    const { revision } = await content.revisions.appendRevision(questionDraft);
+  it('publishes a clean revision once its quality checks have run', async () => {
+    const { append, service } = await harness();
+    const revision = await append(questionDraft);
     const published = await service.publishQuestionRevision(revision.id);
     expect(published.status).toBe('published');
+  });
+
+  it('refuses to publish a revision whose quality checks never ran — empty findings are not clean', async () => {
+    const { content, service } = await harness();
+    const { revision } = await content.revisions.appendRevision(questionDraft);
+    await expect(service.publishQuestionRevision(revision.id)).rejects.toMatchObject({
+      blockers: [{ revisionId: revision.id, reason: 'not_validated' }],
+    });
+    expect((await content.revisions.getById(revision.id))?.status).toBe('legacy_unreviewed');
+  });
+
+  it('refuses to publish a revision checked by an older checker version', async () => {
+    const { content, findings, service } = await harness();
+    const { revision } = await content.revisions.appendRevision(questionDraft);
+    await findings.record('question', revision.id, [
+      { revisionType: 'question', revisionId: revision.id, kind: 'validation_run', severity: 'info', label: 'x', detail: 'question-checks@1' },
+    ]);
+    await expect(service.publishQuestionRevision(revision.id)).rejects.toThrow(ContentPublicationBlockedError);
+  });
+
+  it('refuses to publish a revision whose checks found no Scripture reference', async () => {
+    const { append, service } = await harness();
+    const revision = await append({ ...questionDraft, reference: null });
+    await expect(service.publishQuestionRevision(revision.id)).rejects.toMatchObject({
+      blockers: [{ revisionId: revision.id, reason: 'validation_blocking' }],
+    });
   });
 
   it('refuses to publish a revision with a blocking validation finding', async () => {
@@ -70,8 +112,8 @@ describe('publishQuestionRevision', () => {
   });
 
   it('allows publishing once a paraphrase verdict is explicitly accepted by a reviewer', async () => {
-    const { content, scripture, service } = await harness();
-    const { revision } = await content.revisions.appendRevision(questionDraft);
+    const { append, scripture, service } = await harness();
+    const revision = await append(questionDraft);
     const [row] = await scripture.record('question', revision.id, [
       {
         revisionType: 'question',
@@ -121,9 +163,9 @@ describe('publishQuestionSet / rollbackQuestionSet', () => {
   });
 
   it('rollback republishes an older version as the new latest without deleting the superseded one', async () => {
-    const { content, service } = await harness();
-    const a = (await content.revisions.appendRevision({ ...questionDraft, questionId: 'qa' })).revision;
-    const b = (await content.revisions.appendRevision({ ...questionDraft, questionId: 'qb', text: 'b?' })).revision;
+    const { content, append, service } = await harness();
+    const a = await append({ ...questionDraft, questionId: 'qa' });
+    const b = await append({ ...questionDraft, questionId: 'qb', text: 'Хто був сином Ноя?' });
 
     const v1 = await service.publishQuestionSet({
       setId: 'quiz:genesis',
@@ -158,8 +200,8 @@ describe('publishQuestionSet / rollbackQuestionSet', () => {
   });
 
   it('rollback does not re-run the publish gate — a rule change after the fact cannot block recovery', async () => {
-    const { content, findings, service } = await harness();
-    const a = (await content.revisions.appendRevision({ ...questionDraft, questionId: 'qa' })).revision;
+    const { append, findings, service } = await harness();
+    const a = await append({ ...questionDraft, questionId: 'qa' });
     const v1 = await service.publishQuestionSet({
       setId: 'quiz:genesis',
       kind: 'quiz',
@@ -229,12 +271,12 @@ describe('audit trail (WS7)', () => {
       gates: { findings, scripture },
       audit: { log: auditLog, actor, requestId: 'req-1' },
     });
-    return { content, findings, service, auditLog };
+    return { content, findings, service, auditLog, append: appendValidated(content, findings) };
   }
 
   it('logs a successful publish with the calling actor', async () => {
-    const { content, service, auditLog } = await auditedHarness();
-    const { revision } = await content.revisions.appendRevision(questionDraft);
+    const { append, service, auditLog } = await auditedHarness();
+    const revision = await append(questionDraft);
     await service.publishQuestionRevision(revision.id);
 
     expect(auditLog.records).toHaveLength(1);
@@ -259,13 +301,14 @@ describe('audit trail (WS7)', () => {
     expect(auditLog.records).toHaveLength(1);
     expect(auditLog.records[0]).toMatchObject({ action: 'content.publish_denied', result: 'denied' });
     expect(auditLog.records[0]?.metadata?.blockers).toEqual([
+      { revisionId: revision.id, reason: 'not_validated' },
       { revisionId: revision.id, reason: 'validation_blocking' },
     ]);
   });
 
   it('logs a rollback distinctly from a publish', async () => {
-    const { content, service, auditLog } = await auditedHarness();
-    const a = (await content.revisions.appendRevision({ ...questionDraft, questionId: 'qa' })).revision;
+    const { append, service, auditLog } = await auditedHarness();
+    const a = await append({ ...questionDraft, questionId: 'qa' });
     await service.publishQuestionSet({
       setId: 'quiz:genesis',
       kind: 'quiz',
@@ -284,8 +327,8 @@ describe('audit trail (WS7)', () => {
   });
 
   it('produces no audit records at all when no audit sink is configured', async () => {
-    const { content, service } = await harness();
-    const { revision } = await content.revisions.appendRevision(questionDraft);
+    const { append, service } = await harness();
+    const revision = await append(questionDraft);
     // Not throwing is the assertion — an absent `audit` dep must not be a hard dependency.
     await expect(service.publishQuestionRevision(revision.id)).resolves.toMatchObject({ status: 'published' });
   });

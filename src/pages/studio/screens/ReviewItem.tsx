@@ -262,10 +262,13 @@ function ReviewBody({ type, detail }: { type: ReviewRevisionType; detail: Review
   const busy = approve.isPending || requestChanges.isPending || publish.isPending;
   const lastError = [approve, requestChanges, publish].find((m) => m.isError)?.error as Error | undefined;
 
+  const notValidated = blockers.some((b) => b.reason === 'not_validated');
   const approveDenied = !can('content:approve')
     ? 'Ваша роль не схвалює контент'
     : !reviewable
       ? 'Цю ревізію вже не рецензують'
+      : notValidated
+        ? 'Питання ще не пройшло автоматичну перевірку — запустіть npm run ai -- validate-revisions --apply'
       : blockers.length > 0
         ? `Спершу треба усунути ${blockers.length} ${plural(blockers.length, 'блокер', 'блокери', 'блокерів')}`
         : approved

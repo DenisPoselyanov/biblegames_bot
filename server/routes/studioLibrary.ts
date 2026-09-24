@@ -26,6 +26,7 @@ import type { Permission } from '../authz/roles';
 import { AppError } from '../lib/errors';
 import { asyncHandler } from '../middleware/asyncHandler';
 import { createContentPublicationService } from '../services/contentPublicationService';
+import { isValidationRunMarker } from '../domains/content/revisionValidation';
 import { setVersionHead } from '../domains/content/types';
 import type { StudioReviewRepositories } from './studioReview';
 
@@ -96,7 +97,7 @@ export function createStudioLibraryRouter({ review }: { review?: StudioReviewRep
       for (const theme of THEMES) ensure(theme.id);
       for (const bucket of byTheme) ensure(bucket.themeId).counts[bucket.status] += bucket.count;
 
-      res.json({ available: true, themes: [...themes.values()], findings });
+      res.json({ available: true, themes: [...themes.values()], findings: findings.filter((f) => !isValidationRunMarker(f)) });
     }),
   );
 

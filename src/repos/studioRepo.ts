@@ -176,7 +176,7 @@ export interface ReviewDetail {
   diff: Array<{ field: string; before: unknown; after: unknown }>;
   findings: ValidationFinding[];
   scripture: ScriptureEvidence[];
-  blockers: Array<{ revisionId: string; reason: 'validation_blocking' | 'scripture_unresolved' }>;
+  blockers: Array<{ revisionId: string; reason: 'not_validated' | 'validation_blocking' | 'scripture_unresolved' }>;
   history: StudioActivityEntry[];
   siblings: Array<{ revisionId: string; revisionNumber: number; status: ContentStatus; createdAt: string }>;
 }
