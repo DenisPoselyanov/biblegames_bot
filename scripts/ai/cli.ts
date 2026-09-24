@@ -36,14 +36,16 @@ import {
   questionRevisionFindings,
   type RevisionValidationDeps,
 } from '../../server/domains/content/revisionValidation';
-import type { QuestionRevisionRecord } from '../../server/domains/content/types';
+import type { QuestionRevisionRecord, RevisionDraft } from '../../server/domains/content/types';
 import { JOB_TYPES } from '../../server/domains/jobs/catalog';
 import { createInMemoryJobQueue } from '../../server/domains/jobs/inMemoryQueue';
 import { buildRepairPrompt, REPAIR_PROMPT_VERSION } from '../../server/domains/quality/repairPrompt';
 import { createAiProvider } from '../../server/infrastructure/ai';
 import { createObjectStore } from '../../server/infrastructure/storage';
 import { registerCoreJobs } from '../../server/jobs';
-import { createQualityTasks } from './qualityTasks';
+import { subjectFromDraft } from '../../server/domains/quality/assessmentSubject';
+import { gateWave, type WaveGateResult } from '../../server/domains/quality/waveGate';
+import { createQualityTasks, withQualityDb } from './qualityTasks';
 import { ROOT, loadLearningNodeIds, loadLegacyCorpus, loadPracticeNodeIds, loadRootEnv } from '../content/legacyCorpus';
 
 // --- args ------------------------------------------------------------------
@@ -249,7 +251,8 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
   },
 
   'migrate-wave': {
-    summary: 'import one §12.3 wave as legacy_unreviewed revisions (--wave N [--apply] | --rollback <report> --apply)',
+    summary:
+      'import one §12.3 wave as legacy_unreviewed revisions — only AI-reviewed, not AI-rejected questions (--wave N [--allow-unreviewed] [--apply] | --rollback <report> --apply)',
     async run() {
       const rollbackFile = opt('rollback');
       if (rollbackFile) {
@@ -269,29 +272,69 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
       if (wave === 6) fail('Wave 6 is the archive — it is never imported.');
       const { corpus, report } = runAudit();
       const byId = new Map<string, LegacyItem>(corpus.items.map((i) => [i.raw.id, i]));
-      const selected = report.items.filter((i) => i.wave === wave && IMPORTABLE_CLASSES.has(i.classification));
-      const byClass = selected.reduce<Record<string, number>>((acc, i) => ({ ...acc, [i.classification]: (acc[i.classification] ?? 0) + 1 }), {});
+      const candidates = report.items.filter((i) => i.wave === wave && IMPORTABLE_CLASSES.has(i.classification));
+      const byClass = candidates.reduce<Record<string, number>>((acc, i) => ({ ...acc, [i.classification]: (acc[i.classification] ?? 0) + 1 }), {});
+
+      // Content quality gate (layer 2): only questions the AI reviewer has seen, never the ones it rejected.
+      const gateItems = candidates.flatMap((i) => {
+        const v = validateQuestion(byId.get(i.id)!.raw);
+        return v.ok ? [{ questionId: i.id, contentHash: subjectFromDraft(v.draft as RevisionDraft).contentHash }] : [];
+      });
+      const allowUnreviewed = flag('allow-unreviewed');
+      const { isDatabaseConfigured } = await import('../../server/db/pgPool');
+      const readGate = () =>
+        withQualityDb(fail, async (quality) =>
+          gateWave(gateItems, await quality.assessments.latestAi({ questionIds: gateItems.map((g) => g.questionId) }), { allowUnreviewed }),
+        );
+      let gate: WaveGateResult | null = null;
+      let gateError: string | null = null;
+      if (APPLY) gate = await readGate(); // fail closed: no verdicts, no import
+      else if (isDatabaseConfigured()) {
+        try {
+          gate = await readGate();
+        } catch (err) {
+          gateError = (err as Error).message;
+        }
+      }
+      const admitted = gate ? new Set(gate.admit) : null;
+      const selected = admitted ? candidates.filter((i) => admitted.has(i.id)) : candidates;
+      const gateLine = gate
+        ? `  AI review: ${gate.admit.length} admitted, ${gate.rejected.length} rejected by the AI (skipped), ${gate.unreviewed.length} not reviewed yet${gate.unreviewed.length ? (allowUnreviewed ? ' (let through: --allow-unreviewed)' : ' (held back)') : ''}`
+        : `  AI review: not checked (${gateError ?? 'no DATABASE_URL'}) — --apply requires it.`;
 
       if (!APPLY) {
         out(
           [
             `[dry] Wave ${wave} — ${meta.label}`,
-            `  would import ${selected.length} question(s) as legacy_unreviewed: ${JSON.stringify(byClass)}`,
-            `  never published; players are unaffected until a reviewer approves + publishes in Studio.`,
+            `  ${candidates.length} importable question(s): ${JSON.stringify(byClass)}`,
+            gateLine,
+            `  would import ${selected.length} as legacy_unreviewed — never published; players are unaffected until a reviewer approves + publishes in Studio.`,
             `  sample: ${selected.slice(0, 5).map((i) => i.id).join(', ')}`,
             '  Pass --apply (with DATABASE_URL) to import. Rollback: --rollback <report> --apply.',
           ].join('\n'),
-          { dryRun: true, wave, count: selected.length, byClassification: byClass },
+          { dryRun: true, wave, count: selected.length, candidates: candidates.length, byClassification: byClass, gate: gate && { ...gate, admit: gate.admit.length, verdicts: undefined } },
         );
         return;
       }
 
+      if (gate && gate.unreviewed.length > 0 && !allowUnreviewed) {
+        fail(
+          `${gate.unreviewed.length} question(s) in wave ${wave} have no current AI assessment. Run \`npm run ai -- ai-review --ids …\` (or --all) first, or pass --allow-unreviewed with the owner's approval.`,
+        );
+      }
       const result = await withContentDb((repos, checks) => importWave(repos, selected.map((i) => byId.get(i.id)!.raw), checks));
-      const saved = { wave, label: meta.label, at: new Date().toISOString(), selected: selected.length, ...result };
+      const saved = {
+        wave,
+        label: meta.label,
+        at: new Date().toISOString(),
+        selected: selected.length,
+        aiReview: gate && { rejected: gate.rejected, unreviewed: gate.unreviewed, byVerdict: gate.byVerdict, verdicts: gate.verdicts },
+        ...result,
+      };
       const path = writeReport(`wave-${wave}-${saved.at.replace(/[:.]/g, '-')}.json`, saved);
       out(
         [
-          `Wave ${wave} imported: ${result.created} created, ${result.unchanged} unchanged.`,
+          `Wave ${wave} imported: ${result.created} created, ${result.unchanged} unchanged${gate ? `; ${gate.rejected.length} AI-rejected skipped` : ''}.`,
           `  legacy_unreviewed ${result.before.legacy_unreviewed} → ${result.after.legacy_unreviewed}; published ${result.before.published} → ${result.after.published} (unchanged by design)`,
           `  Report (keep it — it is the rollback input): ${path}`,
         ].join('\n'),
