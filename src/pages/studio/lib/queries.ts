@@ -9,6 +9,9 @@ import {
   type ContentStatus,
   type JobStatus,
   type ReviewRevisionType,
+  type AssessmentLabelInput,
+  type AssessmentQueueParams,
+  type DecideAssessmentsInput,
 } from '../../../repos/studioRepo';
 import { queryKeys } from '../../../queries/keys';
 
@@ -209,4 +212,59 @@ export function useResolveReportsMutation() {
       revisionId?: string;
     }) => studioRepo.resolveReports(input.type, input.entityId, input),
   );
+}
+
+// --- Content quality gate (WS11c/d) ------------------------------------------
+
+export function useGoldenQuery() {
+  return useQuery({
+    queryKey: queryKeys.studio.golden(),
+    queryFn: () => studioRepo.getGolden(),
+  });
+}
+
+export function useAssessmentQueueQuery(params: AssessmentQueueParams) {
+  return useQuery({
+    queryKey: queryKeys.studio.assessmentQueue(JSON.stringify(params)),
+    queryFn: () => studioRepo.getAssessmentQueue(params),
+  });
+}
+
+export function useAssessmentSummaryQuery() {
+  return useQuery({
+    queryKey: queryKeys.studio.assessmentSummary(),
+    queryFn: () => studioRepo.getAssessmentSummary(),
+  });
+}
+
+export function useDecideAssessmentsMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: DecideAssessmentsInput) => studioRepo.decideAssessments(input),
+    onSuccess: (result) => {
+      void queryClient.invalidateQueries({ queryKey: ['studio', 'assessment-queue'] });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.studio.assessmentSummary() });
+      if (result.repairJobs.length) void queryClient.invalidateQueries({ queryKey: ['studio', 'jobs'] });
+    },
+  });
+}
+
+export function useCalibrationQuery() {
+  return useQuery({
+    queryKey: queryKeys.studio.calibration(),
+    queryFn: () => studioRepo.getCalibration(),
+  });
+}
+
+export function useSaveGoldenLabelMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { questionId: string; label: AssessmentLabelInput }) =>
+      studioRepo.saveGoldenLabel(input.questionId, input.label),
+    // Only the golden list changes — no need to refetch every Studio screen after each label.
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.studio.golden() });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.studio.calibration() });
+    },
+  });
 }

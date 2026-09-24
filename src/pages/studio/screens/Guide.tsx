@@ -141,7 +141,7 @@ export function Guide() {
         ))}
       </Panel>
 
-      <div className="mb-3 grid grid-cols-3 gap-3">
+      <div className="mb-3 grid gap-3 @min-[720px]:grid-cols-3">
         {LEVELS.map(({ icon: Icon, title, body }) => (
           <div key={title} className="rounded-[var(--s-radius)] border border-line bg-[var(--s-panel)] p-4">
             <Icon size={17} className="text-indigo" />
@@ -165,7 +165,7 @@ export function Guide() {
       </Panel>
 
       <Disclosure label="Словник" hint={`${TERM_COUNT} ${plural(TERM_COUNT, 'термін', 'терміни', 'термінів')}`}>
-        <dl className="grid grid-cols-2 gap-x-6 px-4 py-3">
+        <dl className="grid gap-x-6 px-4 py-3 @min-[720px]:grid-cols-2">
           {Object.entries(GLOSSARY).map(([key, entry]) => (
             <div key={key} className="border-b border-line py-2">
               <dt className="text-[13px] font-semibold">{entry.term}</dt>

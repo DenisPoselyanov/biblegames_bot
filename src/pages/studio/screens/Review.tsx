@@ -18,12 +18,14 @@ import {
   EmptyState,
   Grid,
   Mono,
+  NARROW_ONLY,
   Note,
   Page,
   Panel,
   Status,
   Term,
   Toolbar,
+  WIDE_ONLY,
 } from '../ui/kit';
 import { cn } from '../ui/cn';
 import { ScriptureLookup } from './ScriptureLookup';
@@ -49,6 +51,11 @@ const TYPE_FILTERS: Array<{ id: 'all' | ReviewRevisionType | 'scripture'; label:
 const TYPE_LABEL: Record<ReviewRevisionType, string> = { question: 'питання', lesson: 'урок' };
 
 const COLS = '1fr 1fr 170px';
+/* Narrow: the reason moves under the title instead of getting a column too
+   thin to read. */
+const COLS_NARROW = '1fr 170px';
+
+const TONE_TEXT = { bad: 'text-danger', warn: 'text-gold-ink', ok: 'text-faint' } as const;
 
 function groupCount(counts: Record<ReviewRevisionType, StatusCounts> | null, statuses: ContentStatus[]) {
   if (!counts) return undefined;
@@ -133,6 +140,8 @@ export function Review() {
             <Chip onClick={() => navigate('/studio/review/reports')} count={quality.data?.openReports}>
               Скарги гравців
             </Chip>
+            <Chip onClick={() => navigate('/studio/review/ai')}>AI-рецензія</Chip>
+            <Chip onClick={() => navigate('/studio/review/golden')}>Еталон</Chip>
           </Toolbar>
           <Toolbar className="mb-3">
             {TYPE_FILTERS.map((f) => (
@@ -159,9 +168,9 @@ export function Review() {
           )}
 
           <Panel flush>
-            <Grid head cols={COLS}>
+            <Grid head cols={COLS} narrow={COLS_NARROW}>
               <span>Позиція</span>
-              <span>Що з нею</span>
+              <span className={WIDE_ONLY}>Що з нею</span>
               <span>Стан</span>
             </Grid>
             {query.isLoading && <p className="px-4 py-8 text-center text-[13px] text-faint">Завантаження…</p>}
@@ -171,6 +180,7 @@ export function Review() {
                 <Grid
                   key={item.revisionId}
                   cols={COLS}
+                  narrow={COLS_NARROW}
                   active={open?.revisionId === item.revisionId}
                   onClick={() => setOpen(item)}
                 >
@@ -179,13 +189,11 @@ export function Review() {
                     <span className="block truncate text-[12px] text-faint">
                       {TYPE_LABEL[item.revisionType]} · {item.context}
                     </span>
+                    <span className={cn('mt-0.5 block truncate text-[12px]', NARROW_ONLY, TONE_TEXT[problem.tone])}>
+                      {problem.text}
+                    </span>
                   </span>
-                  <span
-                    className={cn(
-                      'truncate text-[12.5px]',
-                      problem.tone === 'bad' ? 'text-danger' : problem.tone === 'warn' ? 'text-gold-ink' : 'text-faint',
-                    )}
-                  >
+                  <span className={cn('truncate text-[12.5px]', WIDE_ONLY, TONE_TEXT[problem.tone])}>
                     {problem.text}
                   </span>
                   <span className="flex flex-wrap gap-1">

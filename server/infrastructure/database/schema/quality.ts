@@ -10,7 +10,7 @@
  *   signal without new personal data). Correctness itself is already in
  *   `study_answers` and is aggregated on read, not duplicated here.
  */
-import { index, integer, pgTable, primaryKey, text, uniqueIndex } from 'drizzle-orm/pg-core';
+import { index, integer, jsonb, pgTable, primaryKey, real, text, uniqueIndex } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 import { tstz } from './_shared';
 
@@ -63,5 +63,55 @@ export const questionOptionPicks = pgTable(
   (t) => [
     primaryKey({ columns: [t.revisionId, t.optionIndex] }),
     index('idx_question_option_picks_question').on(t.questionId),
+  ],
+);
+
+/**
+ * Question assessments (content quality gate, layers 2–3) — the owner's golden
+ * labels and the AI reviewer's verdicts, in one shape so they can be compared
+ * criterion by criterion. Bound to a body by `content_hash`, not a revision id:
+ * the legacy bank is still files. See `server/domains/quality/assessment.ts`.
+ */
+export const questionAssessments = pgTable(
+  'question_assessments',
+  {
+    id: text('id').primaryKey(),
+    questionId: text('question_id').notNull(),
+    contentHash: text('content_hash').notNull(),
+    /** 'golden' | 'ai'. */
+    source: text('source').notNull(),
+    assessor: text('assessor').notNull(),
+    rubricVersion: text('rubric_version').notNull(),
+    /** 'pass' | 'reclassify' | 'repair' | 'reject'. */
+    verdict: text('verdict').notNull(),
+    criteria: jsonb('criteria').notNull().$type<Record<string, string>>(),
+    suggestedDifficulty: text('suggested_difficulty'),
+    suggestedThemeId: text('suggested_theme_id'),
+    suggestedTopicNodeId: text('suggested_topic_node_id'),
+    suggestedExplanationShort: text('suggested_explanation_short'),
+    suggestedExplanationDeep: text('suggested_explanation_deep'),
+    notes: text('notes'),
+    confidence: real('confidence'),
+    risk: integer('risk').notNull().default(0),
+    /** The question body as assessed (`AssessmentSubject`). */
+    subject: jsonb('subject').notNull().$type<Record<string, unknown>>(),
+    meta: jsonb('meta').notNull().$type<Record<string, unknown>>().default({}),
+    /** 'accepted' | 'overridden' | 'dismissed' — AI rows only. */
+    decision: text('decision'),
+    decisionNote: text('decision_note'),
+    decisionPatch: jsonb('decision_patch').$type<Record<string, unknown>>(),
+    decidedBy: text('decided_by'),
+    decidedAt: tstz('decided_at'),
+    appliedAt: tstz('applied_at'),
+    createdAt: tstz('created_at').notNull().defaultNow(),
+    updatedAt: tstz('updated_at').notNull().defaultNow(),
+  },
+  (t) => [
+    index('idx_question_assessments_question').on(t.source, t.questionId, t.createdAt),
+    index('idx_question_assessments_queue').on(t.source, t.risk),
+    // One golden label per question — relabelling replaces it.
+    uniqueIndex('uq_question_assessments_golden')
+      .on(t.questionId)
+      .where(sql`${t.source} = 'golden'`),
   ],
 );

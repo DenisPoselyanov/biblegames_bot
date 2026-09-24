@@ -14,6 +14,9 @@ import { Badge, Disclosure, Grid, KeyVal, Mono, Note, Page, Panel, Status, Term 
  * The server never sends a key, only whether one is set.
  */
 
+const PROVIDER_COLS = '200px 150px 1fr 140px';
+const PROVIDER_COLS_NARROW = '1fr 130px 1fr 100px';
+
 export function Settings() {
   const { identity } = useStudio();
   const query = useSettingsQuery();
@@ -34,6 +37,9 @@ export function Settings() {
     );
   }
 
+  const roleCols = `260px repeat(${data.roles.length}, 1fr)`;
+  const roleColsNarrow = `1fr repeat(${data.roles.length}, 100px)`;
+
   return (
     <Page wide title="Налаштування" subtitle="Тільки для перегляду — змінюється конфігурацією сервера">
       <Panel
@@ -44,14 +50,14 @@ export function Settings() {
         }
         flush
       >
-        <Grid head cols="200px 150px 1fr 140px">
+        <Grid head cols={PROVIDER_COLS} narrow={PROVIDER_COLS_NARROW}>
           <span>Сервіс</span>
           <span>Стан</span>
           <span>Модель</span>
           <span>Вибраний</span>
         </Grid>
         {data.providers.map((p) => (
-          <Grid key={p.id} cols="200px 150px 1fr 140px">
+          <Grid key={p.id} cols={PROVIDER_COLS} narrow={PROVIDER_COLS_NARROW}>
             <span className="font-medium">{p.label}</span>
             <Status value={p.configured ? 'connected' : 'not_configured'} />
             <Mono>{p.model ?? '—'}</Mono>
@@ -60,7 +66,7 @@ export function Settings() {
         ))}
       </Panel>
 
-      <div className="mb-3 grid grid-cols-2 items-start gap-3">
+      <div className="mb-3 grid items-start gap-3 @min-[900px]:grid-cols-2">
         <Panel title={<Term k="budget">Бюджет одного запуску</Term>}>
           <dl>
             <KeyVal
@@ -101,7 +107,7 @@ export function Settings() {
         hint={`ваші ролі: ${(identity?.roles ?? []).map((r) => ROLE_LABEL[r]).join(', ') || '—'}`}
         defaultOpen
       >
-        <Grid head cols={`260px repeat(${data.roles.length}, 1fr)`}>
+        <Grid head cols={roleCols} narrow={roleColsNarrow}>
           <span>Дія</span>
           {data.roles.map((r) => (
             <span key={r.role} className={identity?.roles.includes(r.role) ? 'text-ink' : undefined}>
@@ -110,7 +116,7 @@ export function Settings() {
           ))}
         </Grid>
         {data.permissions.map((permission) => (
-          <Grid key={permission} cols={`260px repeat(${data.roles.length}, 1fr)`}>
+          <Grid key={permission} cols={roleCols} narrow={roleColsNarrow}>
             <span className="min-w-0">
               <span className="block truncate text-[13px]">{PERMISSION_LABEL[permission] ?? permission}</span>
               <Mono>{permission}</Mono>

@@ -16,6 +16,9 @@
 import fs from 'node:fs';
 import { join } from 'node:path';
 import { THEMES } from '../../src/data/themes';
+import { buildQuestionGenerationPrompt, GENERATION_PROMPT_VERSION } from '../../src/lib/contentGenerationPrompt';
+import { rubricFor } from '../../src/lib/contentLevelRubric';
+import type { Difficulty } from '../../src/types';
 import { loadConfig } from '../../server/config/env';
 import { createMemoryAuditLog } from '../../server/audit';
 import {
@@ -33,13 +36,17 @@ import {
   questionRevisionFindings,
   type RevisionValidationDeps,
 } from '../../server/domains/content/revisionValidation';
-import type { QuestionRevisionRecord } from '../../server/domains/content/types';
+import type { QuestionRevisionRecord, RevisionDraft } from '../../server/domains/content/types';
+import { LESSON_CHECKS_VERSION, lessonRevisionFindings } from '../../server/domains/learning/revisionValidation';
 import { JOB_TYPES } from '../../server/domains/jobs/catalog';
 import { createInMemoryJobQueue } from '../../server/domains/jobs/inMemoryQueue';
 import { buildRepairPrompt, REPAIR_PROMPT_VERSION } from '../../server/domains/quality/repairPrompt';
 import { createAiProvider } from '../../server/infrastructure/ai';
 import { createObjectStore } from '../../server/infrastructure/storage';
 import { registerCoreJobs } from '../../server/jobs';
+import { subjectFromDraft } from '../../server/domains/quality/assessmentSubject';
+import { gateWave, type WaveGateResult } from '../../server/domains/quality/waveGate';
+import { createQualityTasks, withQualityDb } from './qualityTasks';
 import { ROOT, loadLearningNodeIds, loadLegacyCorpus, loadPracticeNodeIds, loadRootEnv } from '../content/legacyCorpus';
 
 // --- args ------------------------------------------------------------------
@@ -208,9 +215,35 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
   },
 
   'validate-revisions': {
-    summary: `re-run the quality checks (${QUESTION_CHECKS_VERSION}) over every stored question revision; --apply records the findings the publish gate reads`,
+    summary: `re-run the quality checks (${QUESTION_CHECKS_VERSION} / ${LESSON_CHECKS_VERSION} with --lessons) over every stored revision; --apply records the findings the publish gate reads`,
     async run() {
+      const lessons = flag('lessons');
+      const version = lessons ? LESSON_CHECKS_VERSION : QUESTION_CHECKS_VERSION;
       const result = await withContentDb(async (repos, checks) => {
+        if (lessons) {
+          const { createDatabase } = await import('../../server/infrastructure/database/client');
+          const { createSqlLearningRepositories } = await import('../../server/infrastructure/database/repositories/learning');
+          const { getPool } = await import('../../server/db/pgPool');
+          // Same singleton pool withContentDb opened (and closes).
+          const learning = createSqlLearningRepositories(createDatabase(await getPool()));
+          const byKind: Record<string, number> = {};
+          let total = 0;
+          let blocked = 0;
+          let afterId: string | null = null;
+          for (;;) {
+            const page = await learning.lessonRevisions.listPage({ afterId, limit: 500 });
+            if (page.length === 0) break;
+            for (const revision of page) {
+              const findings = lessonRevisionFindings(revision);
+              total += 1;
+              if (findings.some((f) => f.severity === 'blocking')) blocked += 1;
+              for (const f of findings) byKind[f.kind] = (byKind[f.kind] ?? 0) + 1;
+              if (APPLY) await checks.findings.record('lesson', revision.id, findings);
+            }
+            afterId = page[page.length - 1].id;
+          }
+          return { total, blocked, byKind };
+        }
         const byKind: Record<string, number> = {};
         let total = 0;
         let blocked = 0;
@@ -235,17 +268,18 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
         .map(([k, v]) => `  ${k.padEnd(34)} ${String(v).padStart(7)}`);
       out(
         [
-          `${APPLY ? 'Recorded' : '[dry] Would record'} findings for ${result.total} revision(s) — ${result.blocked} with a blocking finding.`,
+          `${APPLY ? 'Recorded' : '[dry] Would record'} findings for ${result.total} ${lessons ? 'lesson' : 'question'} revision(s) — ${result.blocked} with a blocking finding.`,
           ...rows,
           ...(APPLY ? [] : ['  Pass --apply to write them (the publish gate refuses revisions without a current run).']),
         ].join('\n'),
-        { dryRun: !APPLY, version: QUESTION_CHECKS_VERSION, ...result },
+        { dryRun: !APPLY, version, ...result },
       );
     },
   },
 
   'migrate-wave': {
-    summary: 'import one §12.3 wave as legacy_unreviewed revisions (--wave N [--apply] | --rollback <report> --apply)',
+    summary:
+      'import one §12.3 wave as legacy_unreviewed revisions — only AI-reviewed, not AI-rejected questions (--wave N [--allow-unreviewed] [--apply] | --rollback <report> --apply)',
     async run() {
       const rollbackFile = opt('rollback');
       if (rollbackFile) {
@@ -265,29 +299,69 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
       if (wave === 6) fail('Wave 6 is the archive — it is never imported.');
       const { corpus, report } = runAudit();
       const byId = new Map<string, LegacyItem>(corpus.items.map((i) => [i.raw.id, i]));
-      const selected = report.items.filter((i) => i.wave === wave && IMPORTABLE_CLASSES.has(i.classification));
-      const byClass = selected.reduce<Record<string, number>>((acc, i) => ({ ...acc, [i.classification]: (acc[i.classification] ?? 0) + 1 }), {});
+      const candidates = report.items.filter((i) => i.wave === wave && IMPORTABLE_CLASSES.has(i.classification));
+      const byClass = candidates.reduce<Record<string, number>>((acc, i) => ({ ...acc, [i.classification]: (acc[i.classification] ?? 0) + 1 }), {});
+
+      // Content quality gate (layer 2): only questions the AI reviewer has seen, never the ones it rejected.
+      const gateItems = candidates.flatMap((i) => {
+        const v = validateQuestion(byId.get(i.id)!.raw);
+        return v.ok ? [{ questionId: i.id, contentHash: subjectFromDraft(v.draft as RevisionDraft).contentHash }] : [];
+      });
+      const allowUnreviewed = flag('allow-unreviewed');
+      const { isDatabaseConfigured } = await import('../../server/db/pgPool');
+      const readGate = () =>
+        withQualityDb(fail, async (quality) =>
+          gateWave(gateItems, await quality.assessments.latestAi({ questionIds: gateItems.map((g) => g.questionId) }), { allowUnreviewed }),
+        );
+      let gate: WaveGateResult | null = null;
+      let gateError: string | null = null;
+      if (APPLY) gate = await readGate(); // fail closed: no verdicts, no import
+      else if (isDatabaseConfigured()) {
+        try {
+          gate = await readGate();
+        } catch (err) {
+          gateError = (err as Error).message;
+        }
+      }
+      const admitted = gate ? new Set(gate.admit) : null;
+      const selected = admitted ? candidates.filter((i) => admitted.has(i.id)) : candidates;
+      const gateLine = gate
+        ? `  AI review: ${gate.admit.length} admitted, ${gate.rejected.length} rejected by the AI (skipped), ${gate.unreviewed.length} not reviewed yet${gate.unreviewed.length ? (allowUnreviewed ? ' (let through: --allow-unreviewed)' : ' (held back)') : ''}`
+        : `  AI review: not checked (${gateError ?? 'no DATABASE_URL'}) — --apply requires it.`;
 
       if (!APPLY) {
         out(
           [
             `[dry] Wave ${wave} — ${meta.label}`,
-            `  would import ${selected.length} question(s) as legacy_unreviewed: ${JSON.stringify(byClass)}`,
-            `  never published; players are unaffected until a reviewer approves + publishes in Studio.`,
+            `  ${candidates.length} importable question(s): ${JSON.stringify(byClass)}`,
+            gateLine,
+            `  would import ${selected.length} as legacy_unreviewed — never published; players are unaffected until a reviewer approves + publishes in Studio.`,
             `  sample: ${selected.slice(0, 5).map((i) => i.id).join(', ')}`,
             '  Pass --apply (with DATABASE_URL) to import. Rollback: --rollback <report> --apply.',
           ].join('\n'),
-          { dryRun: true, wave, count: selected.length, byClassification: byClass },
+          { dryRun: true, wave, count: selected.length, candidates: candidates.length, byClassification: byClass, gate: gate && { ...gate, admit: gate.admit.length, verdicts: undefined } },
         );
         return;
       }
 
+      if (gate && gate.unreviewed.length > 0 && !allowUnreviewed) {
+        fail(
+          `${gate.unreviewed.length} question(s) in wave ${wave} have no current AI assessment. Run \`npm run ai -- ai-review --ids …\` (or --all) first, or pass --allow-unreviewed with the owner's approval.`,
+        );
+      }
       const result = await withContentDb((repos, checks) => importWave(repos, selected.map((i) => byId.get(i.id)!.raw), checks));
-      const saved = { wave, label: meta.label, at: new Date().toISOString(), selected: selected.length, ...result };
+      const saved = {
+        wave,
+        label: meta.label,
+        at: new Date().toISOString(),
+        selected: selected.length,
+        aiReview: gate && { rejected: gate.rejected, unreviewed: gate.unreviewed, byVerdict: gate.byVerdict, verdicts: gate.verdicts },
+        ...result,
+      };
       const path = writeReport(`wave-${wave}-${saved.at.replace(/[:.]/g, '-')}.json`, saved);
       out(
         [
-          `Wave ${wave} imported: ${result.created} created, ${result.unchanged} unchanged.`,
+          `Wave ${wave} imported: ${result.created} created, ${result.unchanged} unchanged${gate ? `; ${gate.rejected.length} AI-rejected skipped` : ''}.`,
           `  legacy_unreviewed ${result.before.legacy_unreviewed} → ${result.after.legacy_unreviewed}; published ${result.before.published} → ${result.after.published} (unchanged by design)`,
           `  Report (keep it — it is the rollback input): ${path}`,
         ].join('\n'),
@@ -314,11 +388,24 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
   },
 
   'generate-questions': {
-    summary: 'one AI generation → artifact (--prompt "…" [--prompt-version v] [--label l] [--apply])',
+    summary: 'one AI generation → artifact (--theme id --level l [--count n] [--focus "…"] | --prompt "…" [--prompt-version v]) [--label l] [--apply]',
     async run() {
-      const prompt = opt('prompt');
-      if (!prompt) fail('--prompt is required.');
-      const payload = { promptVersion: opt('prompt-version') ?? 'question.generate.v1', prompt, label: opt('label') };
+      let prompt = opt('prompt');
+      let promptVersion = opt('prompt-version') ?? 'question.generate.v1';
+      if (!prompt) {
+        const themeId = opt('theme');
+        const level = opt('level');
+        const theme = THEMES.find((t) => t.id === themeId);
+        if (!theme || !level || !rubricFor(level)) fail('Pass --theme <id> --level <baby…theologian> (or a free-form --prompt).');
+        prompt = buildQuestionGenerationPrompt({
+          themeTitle: theme.title,
+          level: level as Difficulty,
+          count: Number(opt('count') ?? 10),
+          focus: opt('focus'),
+        });
+        promptVersion = GENERATION_PROMPT_VERSION;
+      }
+      const payload = { promptVersion, prompt, label: opt('label') ?? (opt('theme') ? `generate:${opt('theme')}:${opt('level')}` : undefined) };
       if (!APPLY) {
         out(`[dry] would run content.ai_generate with:\n${JSON.stringify(payload, null, 2)}\nPass --apply to call the provider.`, { dryRun: true, payload });
         return;
@@ -349,6 +436,11 @@ const TASKS: Record<string, { summary: string; run: () => Promise<void> }> = {
     },
   },
 };
+
+Object.assign(
+  TASKS,
+  createQualityTasks({ apply: APPLY, opt, flag, out, fail, runAudit, writeReport }),
+);
 
 async function main(): Promise<void> {
   loadRootEnv();

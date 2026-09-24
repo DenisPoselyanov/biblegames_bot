@@ -88,6 +88,25 @@
   line-height: 1.55;
 }
 
+.deep {
+  margin: 0 0 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.deep .explanation {
+  margin-bottom: 0;
+}
+
+.deepTitle {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
 .primaryButton {
   composes: btn-cta from global;
   width: 100%;

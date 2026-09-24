@@ -63,6 +63,7 @@
     "content:import-legacy": "tsx scripts/content/import-legacy-questions.ts",
     "ai": "tsx scripts/ai/cli.ts",
     "content:seed-showcase": "tsx scripts/content/seed-showcase-lessons.ts",
+    "studio:sandbox": "tsx scripts/dev/studio-sandbox.ts",
     "migrate:backfill-preferences": "tsx scripts/migrate/backfill-preferences.ts",
     "migrate:backfill-progression": "tsx scripts/migrate/backfill-progression.ts",
     "migrate:map-learning-content": "tsx scripts/migrate/map-learning-content.ts",

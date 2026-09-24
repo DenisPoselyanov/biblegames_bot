@@ -81,6 +81,8 @@ describe('Drizzle schema ↔ server/db/schema.sql parity', () => {
         // Phase 4 WS9 — player content reports + anonymous option-pick counters
         'content_reports',
         'question_option_picks',
+        // WS11c — content quality gate: golden labels + AI reviewer verdicts
+        'question_assessments',
       ].sort(),
     );
   });

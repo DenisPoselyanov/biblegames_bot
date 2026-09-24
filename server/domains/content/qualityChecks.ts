@@ -13,6 +13,7 @@
 import { expandReferenceStrings, parseBibleReference } from '../../../src/lib/bibleReference';
 import type { NewValidationFinding } from '../shared/validationFindings';
 import { canonFit } from './themeCanon';
+import { rubricFor } from '../../../src/lib/contentLevelRubric';
 
 /** The subset of a draft/revision every check needs — both `RevisionDraft` and `QuestionRevisionRecord` satisfy this structurally. */
 export interface QuestionBody {
@@ -23,6 +24,8 @@ export interface QuestionBody {
   correctIndex: number;
   explanationShort?: string | null;
   explanationDeep?: string | null;
+  /** Difficulty level; `undefined` skips the per-level explanation checks (`src/lib/contentLevelRubric.ts`). */
+  difficulty?: string;
   /** `undefined` skips the reference checks (callers that don't carry one); `null`/'' means "has none". */
   reference?: string | null;
 }
@@ -187,15 +190,45 @@ function explanationChecks(body: QuestionBody): NewValidationFinding[] {
       detail: `explanationShort має лише ${short.length} символів.`,
     });
   }
-  if (!body.explanationDeep?.trim()) {
+  const rubric = body.difficulty ? rubricFor(body.difficulty) : undefined;
+  const deep = body.explanationDeep?.trim() ?? '';
+  if (!deep) {
+    // From «Проповідник» up the point of a question is context and meaning — a one-line
+    // confirmation is not a level-appropriate explanation, so the gap is a warning there.
     findings.push({
       revisionType: 'question',
       revisionId: body.questionId,
       kind: 'missing_deep_explanation',
-      severity: 'info',
-      label: 'Розширене пояснення відсутнє',
-      detail: 'explanationDeep не заповнено.',
+      severity: rubric?.deepExpected ? 'warning' : 'info',
+      label: rubric?.deepExpected ? `Для рівня «${rubric.label}» потрібне розширене пояснення` : 'Розширене пояснення відсутнє',
+      detail: rubric?.deepExpected ? `explanationDeep не заповнено; потрібно: ${rubric.explanationDeep}.` : 'explanationDeep не заповнено.',
     });
+  }
+  if (rubric && short.length >= MIN_EXPLANATION_LENGTH) {
+    const { min, max } = rubric.shortChars;
+    if (short.length < min || short.length > max) {
+      findings.push({
+        revisionType: 'question',
+        revisionId: body.questionId,
+        kind: 'explanation_length_for_level',
+        severity: 'warning',
+        label: `Коротке пояснення не під рівень «${rubric.label}»`,
+        detail: `${short.length} символів, для цього рівня ${min}–${max}: ${rubric.explanationShort}.`,
+      });
+    }
+  }
+  if (rubric && deep) {
+    const { min, max } = rubric.deepChars;
+    if (deep.length < min || deep.length > max) {
+      findings.push({
+        revisionType: 'question',
+        revisionId: body.questionId,
+        kind: 'deep_explanation_length_for_level',
+        severity: 'warning',
+        label: `Розширене пояснення не під рівень «${rubric.label}»`,
+        detail: `${deep.length} символів, для цього рівня ${min}–${max}: ${rubric.explanationDeep}.`,
+      });
+    }
   }
   return findings;
 }
@@ -235,7 +268,7 @@ function mixedLanguageCheck(body: QuestionBody): NewValidationFinding[] {
 }
 
 /** "1 Цар."/"2 Цар." — 1–2 Samuel in Synodal numbering, 1–2 Kings in Ohienko. */
-const AMBIGUOUS_KINGS = /^\s*([12])\s*цар(?=[\s.]|$)/i;
+export const AMBIGUOUS_KINGS = /^\s*([12])\s*цар(?=[\s.]|$)/i;
 
 function referenceChecks(body: QuestionBody): NewValidationFinding[] {
   if (body.reference === undefined) return [];

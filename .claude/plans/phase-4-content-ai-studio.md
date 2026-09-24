@@ -190,10 +190,19 @@ Layers: L0 structure · L1 references · L2 AI reviewer grounded in the fetched 
   - `bibleReference.ts` stem fallback for inflected book names (unparsed references in the bank dropped 8 717 → 512).
   - `revisionValidation.ts`: findings + a `validation_run` marker (`QUESTION_CHECKS_VERSION`); wave/legacy importers record them; `findBlockers` adds `not_validated` for questions (fail closed); `listPage` keyset sweep on the revision repo; `npm run ai -- validate-revisions [--apply]`.
   - Audit after L1: `needs_repair` 1 088 → 13 835 (15.5%) — see `docs/LEGACY_CONTENT_AUDIT.md`. Draft level rubric `docs/CONTENT_DIFFICULTY_RUBRIC.md` has an open owner question (are «Немовля»/«Дитина» child-safe tiers or only knowledge depth?).
-  - Not done here: lesson revisions still fail open (no lesson findings are recorded anywhere yet).
-- **WS11b — render-time option shuffle**: not started.
-- **WS11c — golden set labelling page (~200 items, stratified)**: not started.
-- **WS11d — `content.ai_review` (L2) + calibration on 500 items + full run**: not started.
+  - Not done here: lesson revisions still failed open — closed in WS11c step 8.
+- **WS11b — render-time option shuffle: done**, PR #48 (`phase-4/ws12-option-shuffle`, off main).
+- **WS11c — branch `phase-4/ws11c-golden-ai-review` (stacked on WS11a / PR #47): code complete, steps 1–9 committed (2026-09-24).** Owner runbook: `docs/CONTENT_QUALITY_GATE.md`.
+  1. `12d03c9` level rubric for questions AND explanations: `src/lib/contentLevelRubric.ts` (+ `docs/CONTENT_DIFFICULTY_RUBRIC.md`), per-level explanation checks (`question-checks@3`), repair prompt v2 + generation template, ExplanationModal «Детальніше». Finding: explanations are ~80 chars at every level and `explanationDeep` is empty in all 88 672 questions.
+  2. `7152bac` assessments store: `src/lib/contentAssessment.ts` (8 criteria, 4 verdicts, risk, `signalBoost`, `impliedVerdict`), in-memory + SQL repos, contract test on pglite, **migration `0014_question_assessments` — NOT applied anywhere**.
+  3. `9ae3994` golden labelling: `goldenSample.ts`, `data/quality/golden-sample.json` (200), `GET/PUT /api/v1/studio/assessments/golden`, Studio `Черга → Еталон`, `npm run studio:sandbox`.
+  4. `177e233` AI reviewer (L2): `aiReviewPrompt.ts` (verses via bolls.life UBIO, both readings of «1–2 Цар.», theme canon books, level rubric, criteria; lenient zod schema), `aiReview.ts` (`reviewSubject`, fail-closed escalation to `impliedVerdict` + `meta.verdictAdjusted`, `runAiReview` with concurrency/retries/budget/auth stop), `playerSignals.ts`, `bibleBooks.ts`; CLI `ai-review` (resumable via `aiKeys`, dry-run prints the prompt + cost estimate); `suggested_theme_id` added to 0014 (still unapplied); sandbox `--seed-ai`.
+  5. `b9ffed7` calibration: `calibration.ts` (agreement, confusion matrix, per-verdict precision/recall, per-criterion, confidence split, worst disagreements first), `CALIBRATION_THRESHOLDS` = ≥100 pairs, reject recall ≥0.9, agreement ≥0.75 (tune with owner); `ai-review --all --apply` refuses until trusted (`--skip-trust-gate`); CLI `ai-calibrate`; `GET /assessments/calibration`; `CalibrationPanel` under Еталон; sandbox `--seed-golden N`.
+  6. `cbba92b` L3 queue + L4 signals: `GET /assessments/queue|summary|ai/:id`, `POST /decide` (bulk accept / override with patch / dismiss, audited; accepted `repair` → `content.ai_repair` with `RepairSignal` kind `ai_review`); Studio `Черга → AI-рецензія`; `reviewDecisions.ts` + CLI `apply-review-decisions` (exclusions/overrides files, quarantine or draft revision for imported questions, stale decisions skipped).
+  7. `c389a3f` waves respect verdicts: `waveGate.ts`; `migrate-wave --apply` needs a current AI assessment per question (`--allow-unreviewed`), skips AI-rejected, records verdicts in the wave report. Lifts "wave 1 on hold" once L2 has run over the wave.
+  8. `9d3fc21` lessons fail closed: `learning/revisionValidation.ts` (`lesson-checks@1` run marker), `findBlockers` → `not_validated` for lessons, `LessonRevisionRepository.listPage`, `validate-revisions --lessons`.
+  9. docs (`docs/CONTENT_TOOLING.md`, `docs/CONTENT_QUALITY_GATE.md`) + PR.
+- **Owner-only steps:** label the 200 items (Studio → Черга → Еталон); confirm applying migration 0014 to prod Supabase; approve Gemini spend for the full run (~88k items); tune the calibration thresholds; commit/deploy the exclusions/overrides files after `apply-review-decisions --apply`.
 
 ## 4. Testing strategy notes
 

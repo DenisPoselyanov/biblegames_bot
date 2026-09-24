@@ -23,10 +23,10 @@ export function ExplanationModal({
   const translation = normalizeBollsTranslation(profile.bibleTranslation);
 
   const answer = question.options[question.correctIndex];
-  const explanationText =
-    question.explanationShort?.trim() ||
-    question.explanationDeep?.trim() ||
-    null;
+  // Short = the confirmation shown at every level; deep = the level-appropriate context
+  // (expected from «Проповідник» up, see src/lib/contentLevelRubric.ts). Show both.
+  const shortText = question.explanationShort?.trim() || null;
+  const deepText = question.explanationDeep?.trim() || null;
 
   return (
     <MotionSheet
@@ -60,7 +60,13 @@ export function ExplanationModal({
           )}
         </dl>
 
-        {explanationText && <p className={styles.explanation}>{explanationText}</p>}
+        {shortText && <p className={styles.explanation}>{shortText}</p>}
+        {deepText && deepText !== shortText && (
+          <section className={styles.deep} aria-label="Детальніше">
+            <h3 className={styles.deepTitle}>Детальніше</h3>
+            <p className={styles.explanation}>{deepText}</p>
+          </section>
+        )}
 
         {question.reference && (
           <ScripturePanel

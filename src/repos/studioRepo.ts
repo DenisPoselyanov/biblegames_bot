@@ -11,6 +11,14 @@
 import type { ContentStatus } from '@contracts';
 import { ApiError, apiRequest, type ApiRequestOptions } from '../lib/apiClient';
 import type { Permission, Role } from '../pages/studio/lib/rbac';
+import type {
+  AssessmentCriteria,
+  AssessmentCriterion,
+  AssessmentSubject,
+  AssessmentVerdict,
+  CriterionValue,
+} from '../lib/contentAssessment';
+import type { Difficulty } from '../types';
 
 export class StudioError extends Error {
   readonly code: string;
@@ -323,7 +331,190 @@ export interface ActivityFilter {
 const reviewPath = (type: ReviewRevisionType, id: string) =>
   `/studio/review/${type}/${encodeURIComponent(id)}`;
 
+// --- Content quality gate: golden labels (WS11c) -----------------------------
+
+/** Mirrors `toLabelView` in `server/routes/studioAssessments.ts`. */
+export interface AssessmentLabelView {
+  id: string;
+  verdict: AssessmentVerdict;
+  criteria: AssessmentCriteria;
+  suggestedDifficulty: Difficulty | null;
+  suggestedThemeId: string | null;
+  suggestedTopicNodeId: string | null;
+  suggestedExplanationShort: string | null;
+  suggestedExplanationDeep: string | null;
+  notes: string | null;
+  assessor: string;
+  /** The question body changed since this label was saved. */
+  stale: boolean;
+  updatedAt: string;
+}
+
+export interface GoldenItem {
+  index: number;
+  subject: AssessmentSubject;
+  findings: string[];
+  label: AssessmentLabelView | null;
+}
+
+export interface GoldenResponse {
+  available: boolean;
+  sampleMissing?: boolean;
+  seed?: string;
+  items: GoldenItem[];
+  progress: { labelled: number; total: number } | null;
+}
+
+export interface AssessmentLabelInput {
+  verdict: AssessmentVerdict;
+  criteria: AssessmentCriteria;
+  suggestedDifficulty?: Difficulty | null;
+  suggestedThemeId?: string | null;
+  suggestedTopicNodeId?: string | null;
+  suggestedExplanationShort?: string | null;
+  suggestedExplanationDeep?: string | null;
+  notes?: string | null;
+}
+
+/** Mirrors `CalibrationReport` in `server/domains/quality/calibration.ts` (first 50 disagreements). */
+export interface CalibrationReportView {
+  goldenLabels: number;
+  pairs: number;
+  missingAi: number;
+  verdictAgreement: number | null;
+  flagRecall: number | null;
+  confusion: Record<AssessmentVerdict, Record<AssessmentVerdict, number>>;
+  byVerdict: Record<AssessmentVerdict, { golden: number; ai: number; both: number; precision: number | null; recall: number | null }>;
+  byCriterion: Record<
+    AssessmentCriterion,
+    { decided: number; agree: number; agreement: number | null; goldenFails: number; caught: number; failRecall: number | null }
+  >;
+  confidence: { agreed: number | null; disagreed: number | null };
+  trusted: boolean;
+  gateFailures: string[];
+  thresholds: { minPairs: number; rejectRecall: number; verdictAgreement: number };
+  disagreements: Array<{
+    questionId: string;
+    text: string;
+    golden: AssessmentVerdict;
+    ai: AssessmentVerdict;
+    aiConfidence: number | null;
+    criteria: Partial<Record<AssessmentCriterion, [CriterionValue, CriterionValue]>>;
+    goldenNotes: string | null;
+    aiNotes: string | null;
+  }>;
+}
+
+/** What a decision changes in the bank — mirrors `AssessmentPatch` on the server. */
+export interface AssessmentPatchView {
+  difficulty?: Difficulty;
+  themeId?: string;
+  topicNodeId?: string | null;
+  explanationShort?: string;
+  explanationDeep?: string;
+  exclude?: boolean;
+}
+
+export type AssessmentDecisionKind = 'accepted' | 'overridden' | 'dismissed';
+
+/** Mirrors `toAiView` in `server/routes/studioAssessments.ts`. */
+export interface AiAssessmentView {
+  id: string;
+  questionId: string;
+  contentHash: string;
+  assessor: string;
+  rubricVersion: string;
+  verdict: AssessmentVerdict;
+  criteria: AssessmentCriteria;
+  confidence: number | null;
+  risk: number;
+  boost: number;
+  priority: number;
+  signals: { openReports: number; wrongAnswerReports: number; accuracyBand: 'too_hard' | 'too_easy' | 'ok' | null } | null;
+  suggestedDifficulty: Difficulty | null;
+  suggestedThemeId: string | null;
+  suggestedTopicNodeId: string | null;
+  suggestedExplanationShort: string | null;
+  suggestedExplanationDeep: string | null;
+  notes: string | null;
+  subject: AssessmentSubject;
+  acceptPatch: AssessmentPatchView | null;
+  evidence: {
+    verdictAdjusted: { from: AssessmentVerdict; to: AssessmentVerdict } | null;
+    passages: Array<{ label: string; found: boolean; note?: string }>;
+  };
+  decision: AssessmentDecisionKind | null;
+  decisionNote: string | null;
+  decisionPatch: AssessmentPatchView | null;
+  decidedBy: string | null;
+  decidedAt: string | null;
+  appliedAt: string | null;
+  createdAt: string;
+}
+
+export interface AssessmentQueueParams {
+  verdicts?: AssessmentVerdict[];
+  themeId?: string;
+  decided?: 'undecided' | 'decided' | 'all';
+  /** Only questions players reported or answer unusually. */
+  signals?: boolean;
+  limit?: number;
+  offset?: number;
+}
+
+export interface AssessmentSummaryView {
+  ai: {
+    total: number;
+    byVerdict: Partial<Record<AssessmentVerdict, number>>;
+    undecided: number;
+    decidedUnapplied: number;
+  };
+  golden: { total: number };
+}
+
+export interface DecideAssessmentsInput {
+  ids: string[];
+  decision: AssessmentDecisionKind;
+  note?: string | null;
+  patch?: AssessmentPatchView | null;
+  enqueueRepair?: boolean;
+}
+
 export const studioRepo = {
+  getAssessmentQueue(params: AssessmentQueueParams): Promise<{ available: boolean; items: AiAssessmentView[]; total: number }> {
+    const qs = new URLSearchParams();
+    if (params.verdicts?.length) qs.set('verdicts', params.verdicts.join(','));
+    if (params.themeId) qs.set('themeId', params.themeId);
+    if (params.decided) qs.set('decided', params.decided);
+    if (params.signals) qs.set('signals', '1');
+    if (params.limit) qs.set('limit', String(params.limit));
+    if (params.offset) qs.set('offset', String(params.offset));
+    const q = qs.toString();
+    return call(`/studio/assessments/queue${q ? `?${q}` : ''}`);
+  },
+
+  getAssessmentSummary(): Promise<{ available: boolean; summary: AssessmentSummaryView | null }> {
+    return call('/studio/assessments/summary');
+  },
+
+  decideAssessments(
+    input: DecideAssessmentsInput,
+  ): Promise<{ ok: true; changed: number; repairJobs: Array<{ questionId: string; jobId: string }> }> {
+    return call('/studio/assessments/decide', { method: 'POST', body: input });
+  },
+
+  getGolden(): Promise<GoldenResponse> {
+    return call('/studio/assessments/golden');
+  },
+
+  getCalibration(): Promise<{ available: boolean; report: CalibrationReportView | null }> {
+    return call('/studio/assessments/calibration');
+  },
+
+  saveGoldenLabel(questionId: string, input: AssessmentLabelInput): Promise<{ ok: true; label: AssessmentLabelView }> {
+    return call(`/studio/assessments/golden/${encodeURIComponent(questionId)}`, { method: 'PUT', body: input });
+  },
+
   getMyIdentity(): Promise<MyIdentity> {
     return call<MyIdentity>('/me');
   },

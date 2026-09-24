@@ -22,7 +22,13 @@ const golden = JSON.parse(
 ) as { context: LegacyAuditContext; cases: GoldenCase[] };
 
 /** Only the kinds that drive a decision — info-level and length heuristics are noise for a golden pin. */
-const DECISIVE = (k: string) => k !== 'missing_deep_explanation' && k !== 'option_length_imbalance';
+const NOT_DECISIVE = new Set([
+  'missing_deep_explanation',
+  'option_length_imbalance',
+  'explanation_length_for_level',
+  'deep_explanation_length_for_level',
+]);
+const DECISIVE = (k: string) => !NOT_DECISIVE.has(k);
 
 describe('legacy bank audit — golden dataset (Phase 4 WS10, spec §12, §19)', () => {
   const report = auditLegacyBank(

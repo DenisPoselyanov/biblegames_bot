@@ -268,7 +268,9 @@ function ReviewBody({ type, detail }: { type: ReviewRevisionType; detail: Review
     : !reviewable
       ? 'Цю ревізію вже не рецензують'
       : notValidated
-        ? 'Питання ще не пройшло автоматичну перевірку — запустіть npm run ai -- validate-revisions --apply'
+        ? item.revisionType === 'lesson'
+          ? 'Урок ще не пройшов автоматичну перевірку — запустіть npm run ai -- validate-revisions --lessons --apply'
+          : 'Питання ще не пройшло автоматичну перевірку — запустіть npm run ai -- validate-revisions --apply'
       : blockers.length > 0
         ? `Спершу треба усунути ${blockers.length} ${plural(blockers.length, 'блокер', 'блокери', 'блокерів')}`
         : approved
@@ -505,7 +507,7 @@ function ReviewBody({ type, detail }: { type: ReviewRevisionType; detail: Review
       )}
 
       {/* Decision bar — always last, never above the thing being decided. */}
-      <div className="sticky bottom-0 -mx-6 flex flex-wrap items-center gap-2 border-t border-line bg-[var(--s-chrome)] px-6 py-3">
+      <div className="sticky bottom-0 -mx-4 flex flex-wrap items-center gap-2 border-t border-line bg-[var(--s-chrome)] px-4 py-3 @min-[900px]:-mx-6 @min-[900px]:px-6">
         {confirming ? (
           <>
             <span className="text-[13px]">

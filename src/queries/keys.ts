@@ -57,6 +57,10 @@ export const queryKeys = {
     quality: () => ['studio', 'quality'] as const,
     reportGroups: (closed: boolean) => ['studio', 'report-groups', closed] as const,
     reportDetail: (type: string, entityId: string) => ['studio', 'report-detail', type, entityId] as const,
+    golden: () => ['studio', 'golden'] as const,
+    assessmentQueue: (filter: string) => ['studio', 'assessment-queue', filter] as const,
+    assessmentSummary: () => ['studio', 'assessment-summary'] as const,
+    calibration: () => ['studio', 'calibration'] as const,
   },
 } as const;
 

@@ -52,10 +52,14 @@ describe('quality analytics (Phase 4 WS9)', () => {
       correctIndex: 0,
       explanationShort: 'Бут 6',
       reference: 'Бут 6:14',
+      difficulty: 'preacher',
     } as QuestionRevisionRecord;
     const accuracy = buildRepairPrompt(revision, { kind: 'accuracy', issue: 'too_easy', accuracy: 0.98, attempts: 300 });
     expect(accuracy).toContain('1. Ной (правильна)');
     expect(accuracy).toContain('98% із 300');
+    // the level rubric travels with the prompt, so both explanations are rewritten at the question's level
+    expect(accuracy).toContain('Рівень «Проповідник»');
+    expect(accuracy).toContain('"explanationDeep": string');
     const reports = buildRepairPrompt(revision, {
       kind: 'reports',
       categories: { wrong_answer: 2 },

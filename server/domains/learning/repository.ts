@@ -143,6 +143,11 @@ export interface LessonRevisionRepository {
   /** Revision count per status, every status present (zero when none). */
   countByStatus(tx?: Transaction): Promise<RevisionStatusCounts>;
   /**
+   * Every lesson revision in id order, one page at a time (keyset on `id`) —
+   * for sweeps like re-running the quality checks. Default 100, max 500.
+   */
+  listPage(page: { afterId?: string | null; limit?: number }, tx?: Transaction): Promise<LessonRevisionRecord[]>;
+  /**
    * Append a new revision from a draft. Idempotent by body hash: if the latest
    * revision for the lesson already has the same `contentHash`, returns
    * `{ kind: 'unchanged' }` and writes nothing.

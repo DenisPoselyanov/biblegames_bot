@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { STUDIO_STORAGE_KEY, StudioContext, type StudioStore, type ThemePref } from './studioContext';
+import {
+  STUDIO_NAV_STORAGE_KEY,
+  STUDIO_STORAGE_KEY,
+  StudioContext,
+  type StudioStore,
+  type ThemePref,
+} from './studioContext';
 import { studioRepo } from '../../../repos/studioRepo';
 import { useAuthSession } from '../../../context/AuthSessionContext';
 import { queryKeys } from '../../../queries/keys';
@@ -11,6 +17,14 @@ function readThemePref(): ThemePref {
     return raw === 'light' || raw === 'dark' || raw === 'system' ? raw : 'system';
   } catch {
     return 'system';
+  }
+}
+
+function readNavCollapsed(): boolean {
+  try {
+    return window.localStorage.getItem(STUDIO_NAV_STORAGE_KEY) === '1';
+  } catch {
+    return false;
   }
 }
 
@@ -25,12 +39,13 @@ function systemTheme(): 'light' | 'dark' {
  * Identity (roles/permissions) comes from the server — `GET /api/v1/me` — and
  * is never client-chosen (unlike the design prototype this was ported from,
  * which let a viewer switch roles locally for a click-through demo). Only the
- * theme preference is a genuine per-viewer, no-security-stake choice, so only
- * that is kept in `localStorage`.
+ * theme and the folded sidebar are genuine per-viewer, no-security-stake
+ * choices, so only those are kept in `localStorage`.
  */
 export function StudioStoreProvider({ children }: { children: ReactNode }) {
   const { userId } = useAuthSession();
   const [themePref, setThemePrefState] = useState<ThemePref>(readThemePref);
+  const [navCollapsed, setNavCollapsed] = useState<boolean>(readNavCollapsed);
   const [system, setSystem] = useState<'light' | 'dark'>(systemTheme);
 
   const identityQuery = useQuery({
@@ -49,6 +64,14 @@ export function StudioStoreProvider({ children }: { children: ReactNode }) {
   }, [themePref]);
 
   useEffect(() => {
+    try {
+      window.localStorage.setItem(STUDIO_NAV_STORAGE_KEY, navCollapsed ? '1' : '0');
+    } catch {
+      /* same as above */
+    }
+  }, [navCollapsed]);
+
+  useEffect(() => {
     if (!window.matchMedia) return;
     const media = window.matchMedia(DARK_QUERY);
     const onChange = (e: MediaQueryListEvent) => setSystem(e.matches ? 'dark' : 'light');
@@ -65,8 +88,17 @@ export function StudioStoreProvider({ children }: { children: ReactNode }) {
       themePref,
       setThemePref: setThemePrefState,
       theme,
+      navCollapsed,
+      setNavCollapsed,
     }),
-    [identityQuery.data, identityQuery.isLoading, identityQuery.isError, themePref, theme],
+    [
+      identityQuery.data,
+      identityQuery.isLoading,
+      identityQuery.isError,
+      themePref,
+      theme,
+      navCollapsed,
+    ],
   );
 
   return <StudioContext.Provider value={value}>{children}</StudioContext.Provider>;

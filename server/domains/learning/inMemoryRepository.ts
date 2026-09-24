@@ -406,6 +406,15 @@ export function createInMemoryLearningRepositories(
       for (const r of lessonRevisions.values()) counts[r.status] += 1;
       return counts;
     },
+    async listPage(page, tx) {
+      rejectTx(tx);
+      const afterId = page.afterId ?? '';
+      return [...lessonRevisions.values()]
+        .filter((r) => r.id > afterId)
+        .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
+        .slice(0, boundedStatusLimit(page.limit))
+        .map((r) => ({ ...r, blocks: r.blocks.map((b) => ({ ...b, payload: { ...b.payload } })) }));
+    },
     async appendRevision(draft, tx) {
       rejectTx(tx);
       assertAiWriteAllowed(draft.source, draft.status);
