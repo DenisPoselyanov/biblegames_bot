@@ -20,13 +20,14 @@
  * practice-session contract doesn't return any (not fabricated, same rule as
  * `PracticeIntent`/`ReviewHub`).
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAnswerPracticeSession } from '../../queries/useLearning';
 import { useEventOnce } from '../../hooks/useEventOnce';
 import { trackEvent } from '../../lib/telemetry';
 import { isFeatureEnabled } from '../../lib/flags';
+import { buildOptionOrder, toCanonicalIndex, toDisplayIndex } from '../../lib/optionShuffle';
 import { queryKeys } from '../../queries/keys';
 import type {
   PracticeQuestionView,
@@ -81,6 +82,12 @@ export function PracticeSession() {
   const [achievements, setAchievements] = useState<string[]>([]);
 
   const answer = useAnswerPracticeSession(sessionId ?? '');
+  // Options shown shuffled (seeded by session, so stable within it). The server grades
+  // canonical indexes: `selected` is a display index, mapped on the way in and out.
+  const optionOrder = useMemo(
+    () => (question ? buildOptionOrder(question.options, `${sessionId}:${question.questionId}`) : []),
+    [question, sessionId],
+  );
   const celebrate = useEventOnce(
     result && result.achievementsGranted.length > 0 ? `practice-answer:${result.eventId}` : null,
   );
@@ -137,7 +144,7 @@ export function PracticeSession() {
   function choose(chosenIndex: number) {
     if (selected !== null || answer.isPending) return;
     setSelected(chosenIndex);
-    answer.mutate(chosenIndex, {
+    answer.mutate(toCanonicalIndex(optionOrder, chosenIndex), {
       onSuccess: (data) => {
         setResult(data);
         if (data.isCorrect) setCorrectCount((c) => c + 1);
@@ -230,10 +237,11 @@ export function PracticeSession() {
       )}
 
       <div className={designSystemV2 ? styles.optionList : undefined}>
-        {question.options.map((option, i) => {
+        {optionOrder.map((canonicalIndex, i) => {
+          const option = question.options[canonicalIndex];
           let visualState: AnswerOptionVisualState = 'idle';
           if (result) {
-            if (i === result.correctIndex) visualState = 'correct';
+            if (i === toDisplayIndex(optionOrder, result.correctIndex)) visualState = 'correct';
             else if (i === selected) visualState = 'wrong';
             else visualState = 'hidden';
           } else if (i === selected) {
